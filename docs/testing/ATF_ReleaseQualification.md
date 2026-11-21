@@ -215,10 +215,13 @@ Fiecare săgeată numește decizia reprezentată. Reutilizarea cere în continua
 | Pachet de aplicație declarat în `config/gradle-app-collections.properties` | Rulează colecția proprietară și guvernanța framework-ului; celelalte colecții ale aplicației pot fi reutilizate dacă intrările lor corespund. |
 | Nucleu comun al jocului, nume, modulul Android UI, configurația Gradle sau librărie comună | Invalidează fiecare suită care consumă dependența respectivă. |
 | Infrastructură Maven, politica release-ului, ownership-ul suitei sau instrumentele de dovezi | Rulează `atf-tests`; suitele de produs pot fi reutilizate dacă intrările lor nu s-au schimbat. |
+| Numai inventarul `config/documentation-editions.json` | Înregistrează `DOCUMENTATION_EDITIONS` ca verificare RAG obligatorie la fiecare evaluare și păstrează dovezile componentelor Maven reutilizabile. Modificările evaluatorului, politicii sau conținutului documentelor păstrează regulile lor de ownership. |
 | Cale nouă, necunoscută sau cu ownership ambiguu | Refuză implicit și rulează toate grupurile de componente. |
 | Numai `versionCode`/`versionName` | Reutilizează dovezile de produs numai când baza publicată este calificată și reconstrucția exactă demonstrează că înlocuirea celor două valori reface hash-ul original al fișierului de build. Guvernanța rulează în continuare. |
 
 Reutilizarea se decide per suită, nu per release. Un rezultat trecut pentru alt fingerprint al sursei nu este suficient: receipt-ul original trebuie să corespundă hash-urilor intrărilor suitei, octeților Extent, numărului de rezultate și provenienței sursei. Dovezile lipsă, eșuate, expirate sau neconforme selectează o rulare nouă.
+
+Inventarul bilingv nu este o intrare de suită Maven: fiecare evaluare RAG îl verifică și notează această gardă lângă fiecare decizie de reutilizare afectată. Astfel, inventarul documentației rămâne guvernat fără recompilarea testelor de framework care nu au legătură cu schimbarea.
 
 ```powershell
 $ProjectRoot = (Get-Location).Path
