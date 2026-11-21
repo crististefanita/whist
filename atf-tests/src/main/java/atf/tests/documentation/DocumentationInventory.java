@@ -76,6 +76,16 @@ public final class DocumentationInventory {
         return false;
     }
 
+    /** Machine-produced indexes inside a sealed release report are evidence metadata, not owner guides. */
+    public static boolean isReleaseReportIndex(Path root, Path file) throws IOException {
+        Path relative = root.relativize(file);
+        return relative.getNameCount() >= 4
+                && relative.getName(0).toString().equals("release")
+                && relative.getName(2).toString().equals("reports")
+                && isReadme(file)
+                && isReleaseEvidence(root, file);
+    }
+
     private static boolean governed(Path root, Path file) {
         return file.getFileName().toString().toLowerCase(java.util.Locale.ROOT).endsWith(".md");
     }

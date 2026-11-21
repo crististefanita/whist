@@ -3,9 +3,9 @@
   "mode": "changes",
   "previousVersion": "0.22",
   "points": [
-    "Selectează doar suitele de componentă afectate, pe baza proprietății sursei.",
-    "Reutilizează dovezile componentelor numai cât timp intrările deținute și proveniența rămân neschimbate.",
-    "Păstrează descărcarea APK-ului autentificat și dovezile de release legate de aceeași versiune."
+    "Use source ownership to select only the component suites affected by a change.",
+    "Reuse component evidence only while owned inputs and provenance remain unchanged.",
+    "Keep the authenticated APK download and source-bound release evidence linked to the same version."
   ],
   "evidenceUrl": "https://github.com/crististefanita/whist/blob/53f81ac299a82b8b68ed01b70c67a1baec267d6d/release/0.22.1/reports/README.md"
 }

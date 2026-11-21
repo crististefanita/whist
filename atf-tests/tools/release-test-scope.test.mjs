@@ -18,6 +18,56 @@ test('a bidding change requires the native bidding and AutoGame selections', () 
   });
 });
 
+test('a changed app package reruns its declared owner while unchanged suites reuse hash-bound evidence', () => {
+  const all = ['atf-validation', 'atf-test-android', 'atf-tests', 'whist-lab-app-achievements',
+    'whist-lab-app-atf-card-table-ui', 'whist-lab-app-bidding', 'whist-lab-app-commands',
+    'whist-lab-app-display', 'whist-lab-app-history', 'whist-lab-app-rules'];
+  const old = new Map([['whist-lab-app/app/src/main/java/ro/whistlab/app/navigation/GameCommand.java', 'old']]);
+  const current = new Map([[[...old.keys()][0], 'new']]);
+  const selection = deriveReleaseTestScope(old, current, all);
+  const decisions = new Map(selection.components.map(row => [row.group, row]));
+  assert.deepEqual(selection.runComponentGroups, ['atf-tests', 'whist-lab-app-commands']);
+  assert.equal(decisions.get('whist-lab-app-commands').decision, 'RUN');
+  assert.equal(decisions.get('whist-lab-app-commands').reason, 'OWNED_OR_SHARED_INPUT_CHANGED');
+  for (const group of all.filter(name => !['atf-tests', 'whist-lab-app-commands'].includes(name))) {
+    assert.equal(decisions.get(group).decision, 'REUSE', group);
+    assert.deepEqual(decisions.get(group).affectedInputs, [], group);
+  }
+});
+
+test('package ownership covers product, score and test sources and rejects an unmapped package conservatively', () => {
+  const all = ['atf-validation', 'atf-test-android', 'atf-tests', 'whist-lab-app-achievements',
+    'whist-lab-app-atf-card-table-ui', 'whist-lab-app-bidding', 'whist-lab-app-commands',
+    'whist-lab-app-display', 'whist-lab-app-history', 'whist-lab-app-rules'];
+  for (const [file, owner] of [
+    ['whist-lab-app/app/src/main/java/ro/whistlab/app/achievements/AchievementCatalog.java', 'whist-lab-app-achievements'],
+    ['whist-lab-app/app/src/test/java/ro/whistlab/app/score/ScoreHistoryTableComponentTest.java', 'whist-lab-app-history'],
+    ['whist-lab-app/app/src/main/java/ro/whistlab/app/localization/WhistUiText.java', 'whist-lab-app-display']
+  ]) {
+    const scope = deriveReleaseTestScope(new Map(), new Map([[file, 'changed']]), all);
+    assert.deepEqual(scope.runComponentGroups, ['atf-tests', owner], file);
+    assert.equal(scope.components.find(row => row.group === owner).decision, 'RUN', file);
+  }
+  const unknown = deriveReleaseTestScope(new Map(), new Map([[
+    'whist-lab-app/app/src/main/java/ro/whistlab/app/newpackage/UnknownContract.java', 'changed'
+  ]]), all);
+  assert.deepEqual(unknown.runComponentGroups, all);
+});
+
+test('shared Gradle dependencies invalidate their consumers and unknown paths fail closed', () => {
+  const all = ['atf-validation', 'atf-test-android', 'atf-tests', 'whist-lab-app-achievements',
+    'whist-lab-app-atf-card-table-ui', 'whist-lab-app-bidding', 'whist-lab-app-commands',
+    'whist-lab-app-display', 'whist-lab-app-history', 'whist-lab-app-rules'];
+  const core = deriveReleaseTestScope(new Map(), new Map([[
+    'whist-lab-app/game-core/src/main/java/ro/whistlab/core/session/GameSession.java', 'changed'
+  ]]), all);
+  assert.deepEqual(core.runComponentGroups, all.filter(group => !['atf-validation', 'atf-test-android',
+    'whist-lab-app-atf-card-table-ui'].includes(group)));
+  const unknown = deriveReleaseTestScope(new Map(), new Map([['new-runtime/Unknown.java', 'changed']]), all);
+  assert.deepEqual(unknown.runComponentGroups, all);
+  assert.ok(unknown.components.every(row => row.reason === 'UNKNOWN_INPUT_FAIL_CLOSED'));
+});
+
 test('editorial additions and removals run governance and preserve reusable evidence', () => {
   const old = new Map([['README.md', 'old']]);
   const current = new Map([['docs/testing/Guide.md', 'new']]);
@@ -27,6 +77,22 @@ test('editorial additions and removals run governance and preserve reusable evid
   assert.deepEqual(selection.requiredE2eGroups, []);
   assert.deepEqual(selection.changes.map(row => row.kind), ['DELETED', 'ADDED']);
   assert.deepEqual(selection.components.map(row => row.decision), ['RUN', 'REUSE', 'REUSE', 'REUSE']);
+});
+
+test('Markdown guides embedded in source directories run governance without replaying product suites', () => {
+  const guides = [
+    'whist-lab-app/atf-card-table-ui/src/main/java/ro/cardtable/ui/score/README.md',
+    'whist-lab-app/app/src/main/java/ro/whistlab/app/bidding/README.md'
+  ];
+  const previous = new Map(guides.map(file => [file, 'old']));
+  const candidate = new Map(guides.map(file => [file, 'new']));
+  const selection = deriveReleaseTestScope(previous, candidate, groups);
+  assert.equal(selection.kind, 'DOCUMENTATION_ONLY');
+  assert.deepEqual(selection.runComponentGroups, ['atf-tests']);
+  assert.deepEqual(selection.requiredE2eGroups, []);
+  assert.ok(selection.changes.every(change => change.rule === 'documentation'));
+  assert.ok(selection.components.filter(row => row.group !== 'atf-tests')
+    .every(row => row.decision === 'REUSE'));
 });
 
 test('a qualification policy edit affects governance and leaves the game build evidence reusable', () => {
@@ -40,7 +106,8 @@ test('a qualification policy edit affects governance and leaves the game build e
 test('a bilingual review record reruns governance without replaying unchanged game or device tests', () => {
   const file='config/documentation-editions.json';
   const selection=deriveReleaseTestScope(new Map([[file,'old']]),new Map([[file,'new']]),groups);
-  assert.deepEqual(selection.runComponentGroups,['atf-tests']);
+  assert.deepEqual(selection.runComponentGroups,[]);
+  assert.equal(selection.components.find(row => row.group === 'atf-tests').reason,'RAG_GATE_ONLY');
   assert.deepEqual(selection.requiredE2eGroups,[]);
   const changedRuntime=deriveReleaseTestScope(new Map([[bid,'old']]),new Map([[bid,'new'],[file,'new']]),groups);
   assert.deepEqual(changedRuntime.requiredE2eGroups,['signed-release-auto-game','signed-release-bidding']);
@@ -62,6 +129,15 @@ test('standalone governance launchers rerun only the offline governance componen
     'scripts/run-documentation-governance.ps1', 'scripts/run-atf-governance.ps1', 'scripts/AtfTestChangeBatch.ps1'];
   const candidate = new Map(paths.map(file => [file, 'new']));
   const selection = deriveReleaseTestScope(new Map(), candidate, groups);
+  assert.equal(selection.kind, 'MAINTENANCE');
+  assert.deepEqual(selection.runComponentGroups, ['atf-tests']);
+  assert.deepEqual(selection.requiredE2eGroups, []);
+  assert.ok(selection.changes.every(change => change.rule === 'non-runtime'));
+});
+
+test('qualification path and UI export helpers require offline governance without native replay', () => {
+  const paths = ['scripts/AtfLocalPaths.ps1', 'scripts/export-card-table-ui.ps1'];
+  const selection = deriveReleaseTestScope(new Map(), new Map(paths.map(file => [file, 'new'])), groups);
   assert.equal(selection.kind, 'MAINTENANCE');
   assert.deepEqual(selection.runComponentGroups, ['atf-tests']);
   assert.deepEqual(selection.requiredE2eGroups, []);
@@ -98,15 +174,23 @@ test('the version metadata exemption must reproduce the exact baseline build byt
   const current = forBuild(currentBuild);
   const exact = isOnlyAndroidVersionChange(old, current, currentBuild, release, '0.21.4', digest);
   assert.equal(exact, true);
-  assert.equal(deriveReleaseTestScope(old, current, groups, exact).kind, 'DOCUMENTATION_ONLY');
-  assert.deepEqual(deriveReleaseTestScope(old, current, groups, exact).requiredE2eGroups, []);
+  const selection = deriveReleaseTestScope(old, current, groups, exact);
+  assert.equal(selection.kind, 'DOCUMENTATION_ONLY');
+  assert.equal(selection.androidVersionMetadataOnly, true);
+  assert.deepEqual(selection.requiredE2eGroups, []);
+  assert.deepEqual(selection.runComponentGroups, ['atf-tests']);
+  assert.equal(selection.components.find(row => row.group === 'atf-tests').decision, 'RUN');
+  assert.ok(selection.components.filter(row => row.group !== 'atf-tests').every(row => row.decision === 'REUSE'));
   for (const changed of [
     currentBuild.replace('targetSdk 36', 'targetSdk 35'),
     currentBuild.replace('Code 35', 'Code 34'),
     currentBuild + '    versionCode 36\r\n'
   ]) {
     assert.equal(isOnlyAndroidVersionChange(old, forBuild(changed), changed, release, '0.21.4', digest), false);
-    assert.equal(deriveReleaseTestScope(old, forBuild(changed), groups).userFlowChanged, true);
+    const unsafe = deriveReleaseTestScope(old, forBuild(changed), groups);
+    assert.equal(unsafe.androidVersionMetadataOnly, false);
+    assert.equal(unsafe.userFlowChanged, true);
+    assert.deepEqual(unsafe.runComponentGroups, ['atf-tests', 'whist-lab-app-bidding']);
   }
 });
 

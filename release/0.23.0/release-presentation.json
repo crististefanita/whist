@@ -3,9 +3,9 @@
   "mode": "changes",
   "previousVersion": "0.22.1",
   "points": [
-    "Condiționează licitarea și jocul de licitațiile publice și cărțile deja văzute.",
-    "Păstrează strategia Normal și îmbunătățește controlul final de joc pentru nivelul Greu.",
-    "Califică același APK prin dovezi de componente legate de surse și fluxuri Android selectate."
+    "Condition bidding and play on public bids and cards already seen.",
+    "Preserve the Normal strategy while improving Hard endgame control.",
+    "Qualify the exact APK through source-bound component evidence and selected Android flows."
   ],
   "evidenceUrl": "https://github.com/crististefanita/whist/blob/642cc04f26898732dc714e3ecef21166a6c5bac1/release/0.23.0/reports/README.md"
 }

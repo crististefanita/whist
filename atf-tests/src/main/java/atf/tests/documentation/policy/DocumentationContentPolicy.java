@@ -63,7 +63,7 @@ public final class DocumentationContentPolicy {
         boolean english = context.language().equals("en");
         boolean ownerGuide = DocumentationInventory.isReadme(file) || DocumentationInventory.isLibraryGuide(root, file);
         int foreignLine = DocumentationLanguageRules.firstForeignLine(source, context.language());
-        if (foreignLine > 0) {
+        if (foreignLine > 0 && !DocumentationInventory.isReleaseReportIndex(root, file)) {
             String required = english ? "English" : "Romanian";
             violations.add(violation(ownerGuide ? "DOC-README-LANGUAGE" : "DOC-DOCUMENT-LANGUAGE", root, file, foreignLine,
                     "document contains prose outside " + required,

@@ -1,7 +1,7 @@
 schema_version: 1
 id: "NORMAL_HARD_CONTRACT_OBJECTIVES_V1"
 status: "ACTIVE_CODE_BOUND_RULES"
-runtime_influence: "Implemented by AiPolicy, NormalBidPolicy, NormalPlayPolicy, MonteCarloAi, PublicSalvage, and ZeroMatchSearch."
+runtime_influence: "Implemented by AiPolicy, HandTrickPotential, NormalBidPolicy, NormalPlayPolicy, MonteCarloAi, BidConditioning, PublicSalvage, and ZeroMatchSearch."
 profile: "Romanian Whist, legal moves only, four seats, public information."
 information: ["own hand", "public bids", "tricks already won", "current trick", "public card history", "turned card", "remaining opportunities", "public scores"]
 normal:
@@ -19,41 +19,49 @@ normal:
   information_boundary: "The policy input contains its own hand and public seat state only; opponent card lists are removed before the decision method is called."
   tests: ["bothDifficultiesReceiveOnlyTheActorsHandAndPublicSeatStates"]
   limit: "Transparent local heuristic for ordinary contract pursuit. Match-level zero has its own public-world planner."
+hand_potential:
+  owner: "HandTrickPotential, consumed by BidConditioning only."
+  rule: "A same-suit lower card adds capped cover value to a king when the ace is not held; longer queen sequences add a smaller value. A void or singleton in a non-trump suit adds modest ruff flexibility only when trump is held, scaled by trump count. These are soft clues for interpreting an opponent bid, not certain tricks and not a change to Normal's bid policy."
+  shape_weights: { void: 0.22, singleton: 0.03, trump_scale: "min(trump_count / 2, 1)" }
+  tests: ["aCoveredKingCarriesNearlyAceLevelPotentialWithoutBecomingACertainty", "shortSideSuitsGainOnlyModestRuffFlexibilityWhenTrumpIsHeld"]
 independent:
   scope: "Test-only independent implementation; it does not call the Hard engine."
   objective: ["own expected Romanian points", "lower strongest rival score"]
   public_context:
     remaining_need: "For every seat, recompute bid - tricks already won after each completed trick."
     voids: "Combine completed public history with the unfinished table; an off-suit non-trump Romanian discard proves no led suit and no trump."
-    bids: "Submitted bids are literal continuation targets. They do not yet weight the hidden-hand assignment model."
+    bids: "Submitted bids remain literal continuation targets; the independent implementation does not weight hidden assignments by bid likelihood."
   hidden_worlds:
     small_endgame: "The independent contract certifier enumerates every compatible assignment for four seats when each opponent has at most two cards, the unseen pool has at most ten cards, and the complete set is at most 256 worlds."
     card_planner: "Independent card choices use constrained sampled worlds; complete enumeration supplies the bounded contract certifier."
-    otherwise: "The 48 constrained samples are not a calibrated uniform posterior."
+    otherwise: "Constrained samples describe compatible deals but are not proven to be uniformly distributed."
   continuation: "The card planner uses heuristic rollouts; exhaustive hidden-world certification does not mean perfect-information play or perfect strategy."
   tests: ["currentTrickDiscardConstrainsIndependentWorldsEvenWhenHistoryOmitsItsSuffix", "independentCardOrderEnumeratesEverySmallPubliclyFeasibleWorld", "bothDifficultiesReceiveOnlyTheActorsHandAndPublicSeatStates"]
-  limitations: ["No bid-conditioned hidden-hand likelihood.", "Large information sets still use constrained samples.", "No perfect-play claim."]
+  limitations: ["The bid likelihood does not use actual opponent cards and is not a calibrated posterior.", "Large information sets still use constrained samples.", "No perfect-play claim."]
 hard:
   objective: "Maximize own exact-contract probability while the public state leaves a route to the bid."
   switch_to_salvage_when: "The public lower bound on unavoidable wins exceeds remaining need, or remaining need exceeds remaining trick opportunities."
   salvage:
-    rule_ro: "Când limitele publice dovedesc că propriul contract nu mai poate fi realizat, păstrează mai întâi punctajul propriu estimat, apoi maximizează numărul estimat de adversari care ratează. Certificatul compară limitele tuturor răspunsurilor: în fiecare lume candidatul este neinferior la puncte proprii și ratări adverse, cu cel puțin o îmbunătățire strictă într-o lume."
-    rule_en: "When public bounds prove the own contract unreachable, preserve estimated own points first, then maximize the estimated number of opponents who miss. A certified move requires non-worse own-point and rival-miss bounds in every feasible world, with at least one strict bound improvement in at least one world."
+    rule_ro: "Când limitele publice dovedesc că propriul contract nu mai poate fi realizat, Hard păstrează punctajul propriu înaintea ratărilor adverse cât timp mai sunt peste două levate. În ultimele două levate trece la prioritatea de ardere: maximizează adversarii care ratează, apoi punctajul propriu estimat. Certificatul finit rămâne mai prudent: în fiecare lume candidatul trebuie să nu înrăutățească punctele proprii și ratările adverse față de propunerea de bază. Normal nu folosește profilul de ardere."
+    rule_en: "When public bounds prove the own contract unreachable, Hard protects own points before rival misses while more than two tricks remain. In the final two tricks it switches to burn priority: maximize opponents who miss, then own expected points. The finite certificate remains conservative: in every world the candidate may not worsen own points or rival misses against the baseline proposal. Normal never enters the burn profile."
     certificate_scope: "Four-seat Romanian hands with two cards remaining; all feasible hidden deals and all legal continuations, bounded by the configured search limit."
     tests: ["certifiedLeadBurnsThreeRivalsInsteadOfTwoWithoutWorseningOwnPenalty", "recoverableContractCannotBeSacrificedForRivalDamage", "anImpossibleContractUsesRivalMissPriorityWithoutClaimingProof"]
-  fallback: "For a publicly unreachable contract without a complete certificate, preserve expected own points, then maximize the rollout-estimated number of opponent contract misses; use the strongest rival score only as a final tie break."
+  fallback: "For a publicly unreachable contract without a complete certificate, preserve expected own points first except in the final two tricks, when production Hard prioritizes rollout-estimated opponent contract misses and then own points; use the strongest rival score only as a final tie break."
   ranking:
     feasible: ["exact_contract_probability", "own_expected_points", "lower_strongest_rival_score"]
     publicly_impossible: ["own_expected_points", "expected_rival_contract_misses", "lower_strongest_rival_score"]
+    final_two_tricks: ["expected_rival_contract_misses", "own_expected_points", "lower_strongest_rival_score"]
     weighting: "State-dependent lexicographic priorities, not learned numeric weights. Recomputed after every public bid or played card."
   inference:
     unseen_pool: "Remove own cards, publicly played cards, current-trick cards, and the turned-up trump."
     ownership_constraints: "Sample only deals consistent with inferred suit voids from the full public history and current table."
     public_bids: "Use known bids as contract targets and scoring outcomes during rollouts."
-    bid_conditioned_hand_likelihood: "At 2-8 cards, general seat-specific weighting of hidden deals by observed bids remains experimental. At one card, OneCardBidBelief conditions enumeration on eligible earlier bids in its four-seat Romanian domain with a turned card; outside that domain it preserves the baseline estimate."
+    bid_conditioned_hand_likelihood: "At 2-8 cards in four-seat Romanian Whist, reconstruct each bidder's original hand from the sampled remaining hand plus distinct public plays. For each known bid with a complete legal prefix and more than one legal value, multiply a tempered soft likelihood: 65% uniform support plus 35% normalized Gaussian around HandTrickPotential.score, dispersion 0.90 bids, temperature 0.25 at two cards and 0.50 at three through eight. Forced, missing-prefix, and own bids add no evidence. Recompute after public cards and void constraints change. This is a regularized relative likelihood over the existing sampler, not a calibrated posterior. At one card, retain the specialized OneCardBidBelief domain."
+    cover_rule: "An unaccompanied king is weaker than a king with a lower same-suit cover; the cover bonus is capped and remains an estimate because lead order, remaining higher cards, trumps, and legal follow-suit constraints determine the actual trick chance."
+    effective_sample_size: "Weighted bid/card estimates report effective sample size; bid sampling continues until its existing confidence gate or budget, while card worlds retain the declared bounded sampler."
     information_boundary: "The Hard decision view likewise contains only the actor's own hand and public information; simulated hidden deals are generated after observation and never expose the actual opponent holdings."
-    tests: ["bothDifficultiesReceiveOnlyTheActorsHandAndPublicSeatStates", "runsAndCapturesACompleteFourSeatRomanian181MockMatch", "replaysTheSameDealsAndTurnOrderAcrossHardSeatPerspectives", "comparesBidAndCardProfilesOnTheSameDealsAtEverySeat", "currentTrickDiscardConstrainsHiddenHandsBeforeTheTrickIsScored", "publicIrrecoverabilityRanksOwnPointsBeforeRivalMisses", "rolloutUtilityCountsHowManyOpponentsMiss"]
-  limitations: ["Salvage certificate currently covers two-card endings only.", "General bid-conditioned hidden-hand likelihood at 2-8 cards remains experimental; the specialized one-card model has a separate runtime domain.", "No claim of perfect Hard play or universal perfect play."]
+    tests: ["aCoveredKingCarriesNearlyAceLevelPotentialWithoutBecomingACertainty", "shortSideSuitsGainOnlyModestRuffFlexibilityWhenTrumpIsHeld", "publicBidsPreferCompatibleDealsButRetainSupportForUnusualHands", "twoCardBidEvidenceIsMoreConservativeThanTheLongerHandModel", "completedPublicCardsReconstructTheBidTimeHandWithoutDoubleCounting", "aCardInTheUnfinishedTrickIsAuctionEvidenceEvenIfHistoryOmitsItsSuffix", "missingBidPrefixIsNotInventedAsEvidence", "forbiddenLastBidIsIgnoredButALegalLastBidRemainsEvidence", "aLegalLastBidUpdatesThePosteriorFromTheBidderHandNotThePositionAlone", "romanianBidLikelihoodDoesNotLeakIntoOhHell", "auctionInferenceAndLateBurnStayScopedToCalibrated181", "longRomanianAuctionEvidenceRemainsNeutralUntilItsOwnCalibrationExists", "absentOrIncompleteAuctionEvidenceLeavesWorldWeightsNeutral", "fourSeatBidConditioningStaysNeutralAtOtherRomanianTableSizes", "weightedBidSamplesReportTheEffectiveRatherThanRawSampleCount", "lowWeightWorldsCannotInflateTheBidStoppingConfidence", "productionHardBurnsOnlyInTheLastTwoTricksAfterPublicImpossibility", "runsAndCapturesACompleteFourSeatMockMatch", "replaysTheSameDealsAndTurnOrderAcrossHardSeatPerspectives", "comparesBidAndCardProfilesOnTheSameDealsAtEverySeat", "currentTrickDiscardConstrainsHiddenHandsBeforeTheTrickIsScored", "publicIrrecoverabilityRanksOwnPointsBeforeRivalMisses", "rolloutUtilityCountsHowManyOpponentsMiss", "turnedTrumpIsExcludedFromTheUnseenPoolAndEverySampledHand"]
+  limitations: ["Salvage certificate currently covers two-card endings only.", "Bid-conditioned likelihood at 2-8 cards regularizes the existing sampler; it is not a calibrated posterior and does not model opponents' card-choice behavior.", "Calibrate bid likelihood by first, middle, and last auction position and validate on both homogeneous and mixed-policy rosters; aggregate-only gains and tuning seeds are not held-out evidence.", "No claim of perfect Hard play or universal perfect play."]
 zero_match:
   variants: ["ROMANIAN_WHIST", "LONG_ROMANIAN"]
   players: [3, 4, 5, 6]

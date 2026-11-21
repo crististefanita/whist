@@ -61,10 +61,11 @@ async function fixture(t, options = {}) {
   t.after(() => fs.rm(root, {recursive: true, force: true}));
   const previous = await fs.mkdir(path.join(root, 'previous')).then(() => path.join(root, 'previous'));
   const target = await fs.mkdir(path.join(root, 'target')).then(() => path.join(root, 'target'));
-  await writeJson(previous, inputManifest, inputs);
-  await writeJson(target, inputManifest, options.current ?? inputs);
+  const previousInputs = options.previous ?? inputs;
+  await writeJson(previous, inputManifest, previousInputs);
+  await writeJson(target, inputManifest, options.current ?? previousInputs);
   const original = {...componentRun, sourceFingerprint: digest(await read(previous, inputManifest)),
-    inputCount: inputs.length, inputManifest};
+    inputCount: previousInputs.length, inputManifest};
   if (options.release) {
     const rows = [{path: 'release/index.json', sha256: 'd'.repeat(64)}];
     await writeJson(previous, 'release-inputs.json', rows);
@@ -110,6 +111,88 @@ test('identical inputs preserve the original bytes and a single snapshot across 
   }
 });
 
+test('the current published release admits reuse for an exact Android version-only build edit', async t => {
+  const root = await fs.mkdtemp(path.join(os.tmpdir(), 'whist-version-reuse-test-'));
+  t.after(() => fs.rm(root, {recursive: true, force: true}));
+  const previous = path.join(root, 'release', '0.22', 'reports', 'component');
+  const target = path.join(root, 'next-run');
+  const source = path.join(root, 'pinned-source');
+  const build = 'whist-lab-app/app/build.gradle';
+  const oldText = 'android {\n    versionCode 45\n    versionName "0.22"\n    targetSdk 36\n}\n';
+  const candidateText = oldText.replace('versionCode 45', 'versionCode 46').replace('0.22', '0.22.1');
+  const documentationEdition = 'config/documentation-editions.json';
+  const oldRows = [{path: build, sha256: digest(oldText)},
+    {path: documentationEdition, sha256: 'a'.repeat(64)}];
+  const currentRows = [{path: build, sha256: digest(candidateText)},
+    {path: documentationEdition, sha256: 'b'.repeat(64)}];
+  await fs.mkdir(previous, {recursive: true});
+  await fs.mkdir(path.join(source, path.dirname(build)), {recursive: true});
+  await fs.mkdir(target, {recursive: true});
+  await fs.writeFile(path.join(source, build), candidateText);
+  await writeJson(previous, inputManifest, oldRows);
+  await writeJson(target, inputManifest, currentRows);
+  await writeJson(path.join(root, 'release', '0.22'), 'release-validation.json', {
+    release: {versionName: '0.22', versionCode: 45}, qualification: {state: 'PASS'}, publication: {state: 'PUBLISHED'}
+  });
+  const original = {...componentRun, sourceFingerprint: digest(await read(previous, inputManifest)),
+    inputCount: oldRows.length, inputManifest};
+  await writeJson(previous, provenanceReceipt, original);
+  const provenanceSha256 = digest(await read(previous, provenanceReceipt));
+  const report = '<html><img src="data:image/png;base64,AA=="></html>';
+  const execution = {...componentRun, tests: 1, outcomes: {PASS: 1}, coverageErrors: [], containerFailures: [],
+    provenanceSha256, reportSha256: digest(report)};
+  await fs.mkdir(path.join(previous, 'whist-lab-app-display'));
+  await writeJson(previous, runReceipt, {...original, provenanceReceiptSha256: provenanceSha256, sourceStable: true,
+    status: 'PASS', results: [{module: 'whist-lab-app-display', exitCode: 0, receipt: execution}]});
+  await writeJson(previous, 'whist-lab-app-display/execution.json', execution);
+  await fs.writeFile(path.join(previous, 'whist-lab-app-display/component-report.html'), report);
+
+  const decisions = await prepareComponentReuse(target, previous, ['whist-lab-app-display'], {sourceRoot: source});
+  assert.equal(decisions[0].decision, 'REUSE');
+  assert.equal(decisions[0].reason, 'RAG_GATE_ONLY');
+  assert.deepEqual(decisions[0].alwaysEvaluatedRagChecks, ['DOCUMENTATION_EDITIONS']);
+  assert.equal(JSON.parse(await read(target, 'component-reuse.json')).comparison.androidVersionMetadataOnly, true);
+});
+
+test('a build configuration edit cannot borrow the version-only reuse exception', async t => {
+  const root = await fs.mkdtemp(path.join(os.tmpdir(), 'whist-nonmetadata-reuse-test-'));
+  t.after(() => fs.rm(root, {recursive: true, force: true}));
+  const previous = path.join(root, 'release', '0.22', 'reports', 'component');
+  const target = path.join(root, 'next-run');
+  const source = path.join(root, 'pinned-source');
+  const build = 'whist-lab-app/app/build.gradle';
+  const oldText = 'android {\n    versionCode 45\n    versionName "0.22"\n    targetSdk 36\n}\n';
+  const candidateText = oldText.replace('versionCode 45', 'versionCode 46').replace('0.22', '0.22.1')
+    .replace('targetSdk 36', 'targetSdk 35');
+  const oldRows = [{path: build, sha256: digest(oldText)}];
+  const currentRows = [{path: build, sha256: digest(candidateText)}];
+  await fs.mkdir(previous, {recursive: true});
+  await fs.mkdir(path.join(source, path.dirname(build)), {recursive: true});
+  await fs.mkdir(target, {recursive: true});
+  await fs.writeFile(path.join(source, build), candidateText);
+  await writeJson(previous, inputManifest, oldRows);
+  await writeJson(target, inputManifest, currentRows);
+  await writeJson(path.join(root, 'release', '0.22'), 'release-validation.json', {
+    release: {versionName: '0.22', versionCode: 45}, qualification: {state: 'PASS'}, publication: {state: 'PUBLISHED'}
+  });
+  const original = {...componentRun, sourceFingerprint: digest(await read(previous, inputManifest)),
+    inputCount: oldRows.length, inputManifest};
+  await writeJson(previous, provenanceReceipt, original);
+  const provenanceSha256 = digest(await read(previous, provenanceReceipt));
+  const report = '<html><img src="data:image/png;base64,AA=="></html>';
+  const execution = {...componentRun, tests: 1, outcomes: {PASS: 1}, coverageErrors: [], containerFailures: [],
+    provenanceSha256, reportSha256: digest(report)};
+  await fs.mkdir(path.join(previous, 'whist-lab-app-display'));
+  await writeJson(previous, runReceipt, {...original, provenanceReceiptSha256: provenanceSha256, sourceStable: true,
+    status: 'PASS', results: [{module: 'whist-lab-app-display', exitCode: 0, receipt: execution}]});
+  await writeJson(previous, 'whist-lab-app-display/execution.json', execution);
+  await fs.writeFile(path.join(previous, 'whist-lab-app-display/component-report.html'), report);
+
+  const decisions = await prepareComponentReuse(target, previous, ['whist-lab-app-display'], {sourceRoot: source});
+  assert.equal(decisions[0].decision, 'RUN');
+  assert.equal(JSON.parse(await read(target, 'component-reuse.json')).comparison.androidVersionMetadataOnly, false);
+});
+
 test('editorial changes retain the independent suite and schedule the governance selection', async t => {
   const current = [{...inputs[0], sha256: 'c'.repeat(64)}, inputs[1]];
   const {previous, target} = await fixture(t, {current});
@@ -117,6 +200,21 @@ test('editorial changes retain the independent suite and schedule the governance
   assert.deepEqual(results.map(row => row.decision), ['RUN', 'REUSE']);
   assert.deepEqual(results.map(row => row.affectedInputs), [['README.md'], []]);
   await assert.rejects(fs.stat(path.join(target, groups[0])), {code: 'ENOENT'});
+});
+
+test('documentation edition inventory changes use the mandatory RAG check without rerunning Maven groups', async t => {
+  const pathName = 'config/documentation-editions.json';
+  const previousInputs = [...inputs, {path: pathName, sha256: 'd'.repeat(64)}];
+  const currentInputs = [...inputs, {path: pathName, sha256: 'e'.repeat(64)}];
+  const {previous, target} = await fixture(t, {previous: previousInputs, current: currentInputs, release: 'same'});
+  const results = await prepareComponentReuse(target, previous, groups);
+  assert.deepEqual(results.map(row => row.decision), ['REUSE', 'REUSE']);
+  assert.deepEqual(results.map(row => row.affectedInputs), [[], []]);
+  assert.deepEqual(results.map(row => row.alwaysEvaluatedRagChecks),
+    [['DOCUMENTATION_EDITIONS'], ['DOCUMENTATION_EDITIONS']]);
+  const plan = JSON.parse(await read(target, 'component-reuse.json'));
+  assert.deepEqual(plan.decisions.map(row => row.alwaysEvaluatedRagChecks),
+    [['DOCUMENTATION_EDITIONS'], ['DOCUMENTATION_EDITIONS']]);
 });
 
 test('only governance requires a matching release inventory for reuse', async t => {

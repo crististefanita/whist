@@ -3,6 +3,7 @@ package atf.tests.governance.documentation;
 import atf.testkit.assertions.AuditedAssertions;
 
 import atf.testkit.AtfComponentTest;
+import atf.tests.documentation.DocumentationInventory;
 import atf.tests.documentation.DocumentationGovernanceSupport;
 import atf.tests.documentation.DocumentationGovernance;
 import atf.tests.governance.documentation.support.DocumentationAssertions;
@@ -49,6 +50,16 @@ class DocumentationPolicyGovernanceTest {
                 () -> "Missing governed module README: " + module);
         var result = DocumentationGovernance.scanProject(root, DocumentationGovernance.Rule.CONTENT);
         DocumentationAssertions.assertNoViolations("local documentation content", result.violations());
+    }
+
+    @Test void sealedReportIndexesStayOutsideOwnerProseAndLanguageRules() throws Exception {
+        var root = GovernanceProject.locateProjectRoot();
+        String reportIndex = "release/0.23.0/reports/component/README.md";
+        var file = root.resolve(reportIndex);
+        AuditedAssertions.assertTrue(DocumentationInventory.isReleaseReportIndex(root, file));
+        var result = DocumentationGovernance.scanFile(root, reportIndex,
+                DocumentationGovernance.Rule.CONTENT, DocumentationGovernance.Rule.PROSE);
+        DocumentationAssertions.assertNoViolations("sealed report index metadata", result.violations());
     }
 
     @Test void historicalReleaseReadmeRecognizesOnlyItsOwnTaggedUrisAsTechnicalData() {

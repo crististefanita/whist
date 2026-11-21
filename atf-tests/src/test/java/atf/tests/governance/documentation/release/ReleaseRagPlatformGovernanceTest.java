@@ -61,6 +61,17 @@ class ReleaseRagPlatformGovernanceTest {
         assertFalse(reporting.path("duplicateJUnitXmlInFinalRelease").asBoolean());
         assertTrue(reporting.path("capturedImagesMustBeInlineBase64").asBoolean());
         assertTrue(reporting.path("reportBindsQualifiedSourceSnapshot").asBoolean());
+        var schema = reporting.path("schemaAdmission");
+        assertEquals("qualification.schemaVersion", schema.path("qualificationSchemaField").asText());
+        assertEquals("qualification.reportSchema", schema.path("declarationField").asText());
+        assertEquals(3, schema.path("requiredQualificationSchemaVersion").asInt());
+        assertEquals("ATF_EXTENT_HTML_INLINE_BASE64_V1", schema.path("canonicalValue").asText());
+        assertEquals("JUNIT_XML_ONLY", schema.path("legacyXmlValue").asText());
+        var allowedVersions = new ArrayList<Integer>();
+        schema.path("allowedUndeclaredQualificationSchemaVersions").forEach(value -> allowedVersions.add(value.asInt()));
+        assertEquals(List.of(1, 2), allowedVersions);
+        assertTrue(schema.path("allDeclaredReportsMustBeHtml").asBoolean());
+        assertFalse(schema.path("legacyXmlMayQualify").asBoolean());
     }
 
     @Test void apkSigningGateDistinguishesTestDistributionFromProduction() throws Exception {

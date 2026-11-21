@@ -61,7 +61,10 @@ public final class DocumentationGovernance {
                 case LINKS -> DocumentationLocalLinks.validate(file, root, lines, violations);
                 case DIAGRAM -> DocumentationDiagramRules.validate(file, root, lines, violations);
                 case STYLE -> DocumentationStyleRules.validate(file, root, lines, violations);
-                case PROSE -> DocumentationProseRules.validate(file, root, lines, violations);
+                case PROSE -> {
+                    if (!DocumentationInventory.isReleaseReportIndex(root, file))
+                        DocumentationProseRules.validate(file, root, lines, violations);
+                }
                 case PATHS -> DocumentationPathRules.validatePaths(file, root, lines, violations);
                 case ARTIFACT_NAMES -> DocumentationPathRules.validateGeneratedReportNames(file, root, lines, violations);
                 case CONTENT -> DocumentationContentPolicy.validate(file, root, lines, context, violations);

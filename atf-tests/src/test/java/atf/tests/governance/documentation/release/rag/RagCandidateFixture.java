@@ -55,7 +55,8 @@ record RagCandidateFixture(Path candidate, Path source, Path plan, Path output, 
         ObjectNode sourceReceipt = JSON.createObjectNode().put("sourceCommit", commit).put("workingTreeFingerprint", fingerprint)
                 .put("inputManifest", "reports/apk-inputs.json")
                 .put("fingerprintFormat", "SHA-256 of UTF-8 ordinal-sorted path TAB sha256 LF records");
-        ObjectNode qualification = JSON.createObjectNode().put("state", "PASS"); qualification.set("auditedGroups", groups);
+        ObjectNode qualification = JSON.createObjectNode().put("state", "PASS").put("schemaVersion", 2);
+        qualification.set("auditedGroups", groups);
         ObjectNode platformGates = JSON.createObjectNode();
         platformGates.set("androidComponents", gate("reports/component/source-component-run.json"));
         platformGates.set("apkBuild", gate("reports/diagnostics/build.log"));

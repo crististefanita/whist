@@ -28,7 +28,7 @@ const rules = [
 
 const nonProduct = /^(?:atf-validation\/|atf-tests\/|atf-test-android\/|ios\/|whist-lab-app\/(?:ai-lab|ios-bridge|test-audit|algorithm-build)\/|whist-lab-app\/[^/]+\/src\/(?:test|androidTest|rasterTest)\/|\.github\/|\.atf-signing\/)/;
 const testConfiguration = /^config\/(?:atf-governance-policy\.json|atf-test-suites\.json|release-platform-rag-policy\.json|documentation-editions\.json|gradle-(?:app|audit)-collections\.properties|test-collections\.json)$/;
-const testLaunchers = /^scripts\/(?:AtfSigningSourcePolicy\.ps1|Get-AtfSourceInputs\.ps1|Copy-AtfSourceInputs\.ps1|AtfQualificationSnapshot\.ps1|AtfComponentJvm\.ps1|AtfComponentResume\.ps1|AtfQualificationTiming\.ps1|Measure-AtfReleaseCommand\.ps1|AtfAndroidMaven\.ps1|AtfAndroidPackageRegistration\.ps1|AtfAndroidUserReadiness\.ps1|AtfAndroidUserOwnership\.ps1|AtfDeviceLease\.ps1|Invoke-AtfAndroidDisposableUser\.ps1|check-android-release-device\.ps1|run-(?:atf-governance|component-suites|whist-collection|whist-responsive-sanity|whist-signed-e2e)\.ps1)$/;
+const testLaunchers = /^scripts\/(?:AtfLocalPaths\.ps1|AtfSigningSourcePolicy\.ps1|Get-AtfSourceInputs\.ps1|Copy-AtfSourceInputs\.ps1|AtfQualificationSnapshot\.ps1|AtfComponentJvm\.ps1|AtfComponentResume\.ps1|AtfQualificationTiming\.ps1|Measure-AtfReleaseCommand\.ps1|AtfAndroidMaven\.ps1|AtfAndroidPackageRegistration\.ps1|AtfAndroidUserReadiness\.ps1|AtfAndroidUserOwnership\.ps1|AtfDeviceLease\.ps1|Invoke-AtfAndroidDisposableUser\.ps1|check-android-release-device\.ps1|export-card-table-ui\.ps1|run-(?:atf-governance|component-suites|whist-collection|whist-responsive-sanity|whist-signed-e2e)\.ps1)$/;
 
 function classify(file, metadataOnly, hasRulesComponents) {
   if (hasRulesComponents && file === 'whist-lab-app/game-core/src/main/java/ro/whistlab/core/rules/HowToPlay.java') {
@@ -60,14 +60,16 @@ export function deriveReleaseTestScope(previous, candidate, componentGroups, met
   });
   const e2eGroups = [...new Set(changes.flatMap(row => row.e2eGroups))].sort();
   const components = componentGroups.map(group => {
-    const {decision, affected} = componentEvidenceScope(group, candidate, previous);
-    return {group, decision, affectedInputs: affected};
+    const {decision, reason, affected, affectedGroups} = componentEvidenceScope(group, candidate, previous,
+      {androidVersionMetadataOnly: metadataOnly});
+    return {group, decision, reason, affectedGroups, affectedInputs: affected};
   });
   return {
     kind: !changes.length ? 'UNCHANGED' : changes.some(row => row.rule === 'documentation') && changes.every(row =>
       ['documentation', 'android-version-metadata'].includes(row.rule))
       ? 'DOCUMENTATION_ONLY' : e2eGroups.length ? 'USER_FLOW' : 'MAINTENANCE',
     userFlowChanged: e2eGroups.length > 0,
+    androidVersionMetadataOnly: metadataOnly,
     changes, componentGroups: [...componentGroups], components,
     runComponentGroups: components.filter(row => row.decision === 'RUN').map(row => row.group),
     requiredE2eGroups: e2eGroups
