@@ -14,8 +14,10 @@ $ErrorActionPreference = 'Stop'
 . (Join-Path $PSScriptRoot 'AtfQualificationSnapshot.ps1')
 . (Join-Path $PSScriptRoot 'AtfQualificationTiming.ps1')
 $sourceRoot = [IO.Path]::GetFullPath($SourceRoot)
+$evidenceRoot = if (-not [string]::IsNullOrWhiteSpace($env:WHIST_EVIDENCE_ROOT) -or [string]::IsNullOrWhiteSpace($RunRoot)) {
+    Ensure-AtfEvidenceRoot $sourceRoot
+} else { $null }
 if ([string]::IsNullOrWhiteSpace($RunRoot)) {
-    $evidenceRoot = Get-AtfEvidenceRoot
     $RunRoot = Join-Path $evidenceRoot ('atf-governance\' + (Get-Date -Format 'yyyyMMdd-HHmmss') + '-' + [guid]::NewGuid().ToString('N').Substring(0,8))
 }
 $RunRoot = [IO.Path]::GetFullPath($RunRoot)

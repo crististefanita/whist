@@ -109,6 +109,8 @@ Before publication, [audit admission](../../atf-tests/tools/publication-audit.mj
 
 The plan declares version, channel (`LOCAL`, `TEST` or `PRODUCTION`), risk, platforms, component groups, flow-change status and a justified E2E decision.
 
+The active policy parks iOS (`platforms.ios.status = PARKED`, `activeReleaseGate = false`). Release plans qualify Android only until a reviewed policy change enables a separately qualified native path.
+
 ### Reporting schema admission
 
 - Qualification schema versions 1 and 2 may omit `qualification.reportSchema` only when every declared component and E2E report path is HTML.
@@ -124,6 +126,7 @@ The production RAG path is deterministic: Git inventory selects owners, the Powe
 
 Operational controls:
 
+- Both qualification launchers prepare the configured `WHIST_EVIDENCE_ROOT` before staging and reject a root inside the source checkout. Node fixtures also create a missing configured parent themselves, so direct and RAG-launched tests have the same filesystem precondition.
 - `AtfRagGovernanceSuite` has a closed selection contract for schema admission, provenance, Android/GitHub preflight, diff selection, launcher isolation, report integrity and publication sealing. Its contract test rejects missing gates and unrelated/live distribution checks.
 - The runner requires one Extent HTML, copies it to `component-extent.html`, and records its byte count and SHA-256 in `governance-report-manifest.json`. JUnit sidecars remain available for invocation diagnostics.
 - Component reuse currently operates at the declared selection boundary. If a selection fails, a passing isolated rerun does not replace its failed group receipt; rerun the complete selection or keep qualification blocked. Selective JUnit recovery requires a source-bound reconciliation receipt and a new Extent report that links the original failure and retry outcomes without rewriting either report.

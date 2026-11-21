@@ -20,10 +20,26 @@ class ReleaseRagPlatformGovernanceTest {
         JsonNode policy = policy();
         assertEquals(List.of("apk"), strings(policy.path("platforms").path("android").path("artifactKinds")));
         assertEquals(List.of("ipa", "xcarchive"), strings(policy.path("platforms").path("ios").path("artifactKinds")));
+        assertEquals("PARKED", policy.path("platforms").path("ios").path("status").asText());
+        assertFalse(policy.path("platforms").path("ios").path("activeReleaseGate").asBoolean());
+        assertEquals(List.of("reviewed policy change", "qualified native delivery gates"),
+                strings(policy.path("platforms").path("ios").path("reactivationRequires")));
+        String iosGuide = Files.readString(GovernanceProject.locateProjectRoot().resolve("docs/platform/ATF_iOSDelivery.md"));
+        assertTrue(iosGuide.contains("platforms.ios.status = PARKED") && iosGuide.contains("activeReleaseGate = false"));
         assertTrue(strings(policy.path("platforms").path("android").path("requiredGates")).contains("apkBuild"));
         assertTrue(strings(policy.path("platforms").path("ios").path("requiredGates")).containsAll(
                 List.of("xcodeSimulator", "iosArtifactIdentity", "iosDistribution")));
         assertFalse(policy.path("rules").path("androidEvidenceSatisfiesIos").asBoolean());
+    }
+
+    @Test void bothQualificationLaunchersPrepareOnlyExternalEvidenceRoots() throws Exception {
+        Path root = GovernanceProject.locateProjectRoot();
+        String helper = Files.readString(root.resolve("scripts/AtfLocalPaths.ps1"));
+        assertTrue(helper.contains("function Ensure-AtfEvidenceRoot"));
+        for (String runner : List.of("scripts/run-atf-governance.ps1", "scripts/run-component-suites.ps1"))
+            assertTrue(Files.readString(root.resolve(runner)).contains("Ensure-AtfEvidenceRoot $sourceRoot"), runner);
+        String qualification = Files.readString(root.resolve("docs/testing/ATF_ReleaseQualification.md"));
+        assertTrue(qualification.contains("Both qualification launchers prepare the configured `WHIST_EVIDENCE_ROOT`"));
     }
 
     @Test void candidateLifecycleKeepsBuildAndPublicationOutsideRagAndRequiresAnExactMainSnapshot() throws Exception {

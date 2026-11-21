@@ -247,6 +247,9 @@
       ]
     },
     "ios": {
+      "status": "PARKED",
+      "activeReleaseGate": false,
+      "reactivationRequires": ["reviewed policy change", "qualified native delivery gates"],
       "artifactKinds": ["ipa", "xcarchive"],
       "requiredGates": [
         "iosBridgeComponents",

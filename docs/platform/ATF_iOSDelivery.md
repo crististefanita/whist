@@ -1,60 +1,44 @@
-# Compatibility and delivery iOS
+# iOS delivery status
 
 ## Overview
 
-The apk of the Whist Lab is an Android package and does not install on iPhone or iPad.
-Project iOS is a separate SwiftUI interface application and uses the engine
-Joint Java by J2ObjC translation. The original engine continues to be the source of the rules
-game, AI, bidding, score and save; adapter iOS does not implement a second
-variant of these rules.
+The Whist APK is an Android package and cannot be installed on iPhone or iPad. The
+iOS bridge is a separate SwiftUI application that adapts the shared Java game
+engine through J2ObjC. The shared engine remains the source for rules, AI, bidding,
+scoring and saved-game behavior.
 
-The iOS project is parked and is not part of active release qualification. Values
-recorded in project and workflow files are implementation pins, not a current support
-matrix or a compatibility claim. Recheck Apple's supported Xcode and simulator versions
-before this platform is reactivated; do not infer iOS support from an Android APK.
-[Versions Apple](https://developer.apple.com/news/releases/) ·
-[Xcode Matrix and SDK](https://developer.apple.com/xcode/system-requirements/)
+## Release status
 
-## Qualification on GitHub Actions
+- iOS delivery is parked; the executable release policy records
+  `platforms.ios.status = PARKED` and `activeReleaseGate = false`.
+- Current release plans qualify Android only. An Android APK is never evidence of
+  iOS support.
+- The retained native workflow and iOS gate definitions are not part of active
+  release qualification.
 
-A macOS hosted runner can provide build and test capacity when iOS work resumes. This
-separate path is not a gate for the active Android release.
+## Reactivation criteria
 
-- For public repositoryes, standard runners are free and unlimited.
-- For private repositorys, consumption uses the minutes included, then is charged at the plan rate. Check visibility and billing before estimating cost.
-- The workflow pins its toolchain rather than selecting `latest`; refresh those pins and
-  verify current runner availability before reactivating the path.
-[Runners and conditions GitHub](https://docs.github.com/en/actions/reference/runners/github-hosted-runners) ·
-[Current image macOS Xcode 27](https://github.com/actions/runner-images/blob/main/images/macos/xcode-27-arm64-Readme.md) ·
-[Preview Xcode 27](https://github.blog/changelog/2026-09-10-xcode-27-runner-image-now-runs-on-macos-27/)
+Reactivation requires a reviewed policy change and qualified native delivery gates.
+Before enabling the platform, verify the current Apple toolchain and runner
+availability, restore a complete native test path, produce the declared Apple
+artifact, and validate signing and distribution independently from Android. The
+policy must then explicitly make iOS an active release target; documentation or a
+successful Android release cannot do this implicitly.
 
-The retained [iOS](../../.github/workflows/ios.yml) workflow can check a commit when explicitly used:
+The retained [iOS workflow](../../.github/workflows/ios.yml) can still be invoked
+for isolated engineering checks. Such a run does not qualify a release while the
+policy marks iOS as parked.
 
-1. JVM tests of the native engine and adapter;
-2. translation of Java sources with J2ObjC;
-3. The application building for the simulator;
-4. Swift test smoke in simulator iOS 27.2.
+[Apple platform releases](https://developer.apple.com/news/releases/) ·
+[Xcode system requirements](https://developer.apple.com/xcode/system-requirements/) ·
+[J2ObjC project and limits](https://github.com/google/j2objc)
 
-J2ObjC 3.1 is fixed in workflow and built from source because distribution
-pre-compiled is no longer published by the project. J2ObjC is beta and translates logic,
-not the interface; SwiftUI remains the native layer of IU. The runner build qualifies
-compatibility of the compilation and automatic test for iOS 27.2, not each
-intermediate version and no experience on physical devices.
-[J2ObjC - project and limits](https://github.com/google/j2objc) ·
-[J2ObjC building](https://developers.google.com/j2objc/guides/building-j2objc)
+## Delivery boundary
 
-## Delivery steps
+When work resumes, build and test the native app on a reviewed source commit,
+retain the simulator result, then separately qualify signing, physical-device
+installation and the chosen Apple distribution channel. Keep the resulting
+`xcarchive` or IPA and its evidence distinct from the Android APK and release
+receipts.
 
-1. When iOS work resumes, run the `iOS simulator qualification` workflow on the reviewed source commit.
-2. Check the test results and retain the `xcresult` attached to that run.
-3. For TestFlight or App Store, archive with Xcode, sign with identity
-   be able to use the system and validate installation on devices iPhone and iPad.
-4. Publish the iOS app separately through Apple's distribution flow. The Android APK and hash
-   serve only as Android artifacts and evidence.
-
-The simulator runner builds the app without Apple signing. Creation of IPA
-Distribuible and upload it in TestFlight/App Store asking for an Apple Developer
-Team, certificates, profiling profile and Apple release steps; these
-Accreditation is not stored in the reposition or in the public workshop.
-
-[Delivery Android](ATF_AndroidDelivery.md) · [Project iOS](../../ios/README.md)
+[Android delivery](ATF_AndroidDelivery.md) · [iOS bridge](../../ios/README.md)

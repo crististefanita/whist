@@ -93,6 +93,50 @@ class ComponentEvidencePortabilityComponentTest {
         }
     }
 
+    @Test void aMissingEvidenceRootIsCreatedAndACheckoutRootIsRejected() throws Exception {
+        Path source = Files.createDirectories(temporary.resolve("pinned checkout"));
+        Path missing = temporary.resolve("external evidence").resolve("nested");
+        Path helper = GovernanceProject.locateProjectRoot().resolve("scripts/AtfLocalPaths.ps1");
+        Path script = temporary.resolve("prepare-evidence-root.ps1");
+        Path output = temporary.resolve("evidence-root-result.txt");
+        Files.writeString(script, ". $env:ATF_LOCAL_PATH_HELPER; Ensure-AtfEvidenceRoot $env:ATF_LOCAL_PATH_SOURCE");
+
+        var processBuilder = new ProcessBuilder("pwsh", "-NoProfile", "-NonInteractive", "-File", script.toString())
+                .redirectErrorStream(true).redirectOutput(output.toFile());
+        var environment = processBuilder.environment();
+        environment.put("ATF_LOCAL_PATH_HELPER", helper.toString());
+        environment.put("ATF_LOCAL_PATH_SOURCE", source.toString());
+        environment.put("WHIST_EVIDENCE_ROOT", missing.toString());
+        var process = processBuilder.start();
+        try {
+            AuditedAssertions.assertTrue(process.waitFor(20, TimeUnit.SECONDS), "Evidence-root creation timed out");
+            AuditedAssertions.assertEquals(0, process.exitValue(), Files.readString(output));
+            AuditedAssertions.assertEquals(missing.toString(), Files.readString(output).trim());
+            AuditedAssertions.assertTrue(Files.isDirectory(missing), "The configured external root must be created recursively");
+        } finally {
+            if (process.isAlive()) {
+                process.destroyForcibly();
+                process.waitFor();
+            }
+        }
+
+        Path checkoutOutput = source.resolve("generated evidence");
+        environment.put("WHIST_EVIDENCE_ROOT", checkoutOutput.toString());
+        process = processBuilder.start();
+        try {
+            AuditedAssertions.assertTrue(process.waitFor(20, TimeUnit.SECONDS), "Checkout evidence-root rejection timed out");
+            AuditedAssertions.assertNotEquals(0, process.exitValue(), Files.readString(output));
+            AuditedAssertions.assertTrue(Files.readString(output).contains("QUALIFICATION-EVIDENCE-IN-CHECKOUT"),
+                    "The path guard identifies an evidence root inside the source tree");
+            AuditedAssertions.assertFalse(Files.exists(checkoutOutput), "The rejected path must not be created");
+        } finally {
+            if (process.isAlive()) {
+                process.destroyForcibly();
+                process.waitFor();
+            }
+        }
+    }
+
     @Test void androidSdkDoesNotSilentlyFallBackWhenNoMachinePathIsConfigured() throws Exception {
         Path helper = GovernanceProject.locateProjectRoot().resolve("scripts/AtfLocalPaths.ps1");
         Path script = temporary.resolve("require-android-sdk.ps1");

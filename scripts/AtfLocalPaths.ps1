@@ -10,6 +10,26 @@ function Get-AtfEvidenceRoot([string]$ConfiguredRoot = '') {
     [IO.Path]::GetFullPath($selected)
 }
 
+function Ensure-AtfEvidenceRoot([string]$SourceRoot) {
+    $root = Get-AtfEvidenceRoot
+    $source = [IO.Path]::GetFullPath($SourceRoot).TrimEnd([char[]]@('\', '/'))
+    $normalizedRoot = $root.TrimEnd([char[]]@('\', '/'))
+    $sourcePrefix = $source + [IO.Path]::DirectorySeparatorChar
+    if ($normalizedRoot.Equals($source, [StringComparison]::OrdinalIgnoreCase) -or
+        $normalizedRoot.StartsWith($sourcePrefix, [StringComparison]::OrdinalIgnoreCase)) {
+        throw 'QUALIFICATION-EVIDENCE-IN-CHECKOUT: WHIST_EVIDENCE_ROOT must be outside the source checkout.'
+    }
+    if (Test-Path -LiteralPath $root) {
+        $entry = Get-Item -LiteralPath $root -Force
+        if (-not $entry.PSIsContainer -or ($entry.Attributes -band [IO.FileAttributes]::ReparsePoint)) {
+            throw 'QUALIFICATION-EVIDENCE-ROOT-INVALID: WHIST_EVIDENCE_ROOT must be a real directory.'
+        }
+    } else {
+        New-Item -ItemType Directory -Path $root -Force | Out-Null
+    }
+    $root
+}
+
 function Get-AtfAndroidSdkRoot([string]$ConfiguredRoot = '') {
     $selected = if (-not [string]::IsNullOrWhiteSpace($ConfiguredRoot)) { $ConfiguredRoot }
         elseif (-not [string]::IsNullOrWhiteSpace($env:ANDROID_SDK_ROOT)) { $env:ANDROID_SDK_ROOT }

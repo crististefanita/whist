@@ -24,6 +24,9 @@ Assert-AtfComponentJavaEnvironment
 . (Join-Path $PSScriptRoot 'AtfTestChangeBatch.ps1')
 . (Join-Path $PSScriptRoot 'AtfComponentResume.ps1')
 $sourceRoot = [IO.Path]::GetFullPath($SourceRoot)
+$evidenceRoot = if (-not [string]::IsNullOrWhiteSpace($env:WHIST_EVIDENCE_ROOT) -or -not $RunRoot) {
+    Ensure-AtfEvidenceRoot $sourceRoot
+} else { $null }
 if ($ResumeFrom) {
     if ($ReuseFrom -or $TestChangeControl -or $AllTestChangeControls) {
         throw 'ResumeFrom cere o rulare normală de componentă și propria sursă validată de dovezi.'
@@ -47,8 +50,7 @@ if ($TestChangeControl -or $AllTestChangeControls) {
     if ($LASTEXITCODE -ne 0 -or $dirty) { throw 'Proba testChanges cere un checkout curat.' }
 }
 if (-not $RunRoot) {
-    $archive = Get-AtfEvidenceRoot
-    $RunRoot = Join-Path $archive ('component-suites/' + (Get-Date -Format 'yyyyMMdd-HHmmss') + '-' + [guid]::NewGuid().ToString('N').Substring(0,8))
+    $RunRoot = Join-Path $evidenceRoot ('component-suites/' + (Get-Date -Format 'yyyyMMdd-HHmmss') + '-' + [guid]::NewGuid().ToString('N').Substring(0,8))
 }
 $RunRoot = [IO.Path]::GetFullPath($RunRoot)
 if ($RunRoot.Equals($sourceRoot,[StringComparison]::OrdinalIgnoreCase) -or
