@@ -47,7 +47,7 @@ The positive demand amounts to `max(0, necesar)` per place: a contract already e
 The runtime order and the certificate quantifiers are defined in [decision model](ATF_DecisionModel.md#priority-objectives). [Rules and configuration](ATF_RulesConfiguration.md) Distinguishing these active branches of experimental clues and weights.
 
 - [ContextualHonorDiscardTest](../../whist-lab-app/game-core/src/test/java/ro/whistlab/core/ai/engine/ContextualHonorDiscardTest.java) checks the borders of the rules through legal witnesses and controlled changes of the need.
-- [BidConditioningTest](../../whist-lab-app/game-core/src/test/java/ro/whistlab/core/ai/engine/BidConditioningTest.java) checks honor cover, trump-backed short-suit flexibility, legal-bid evidence, exclusion of an illegal final bid, reconstruction from current/completed plays, effective-sample stopping, and neutral behavior outside the calibrated four-seat Romanian 1–8–1 scope.
+- [BidConditioningTest](../../whist-lab-app/game-core/src/test/java/ro/whistlab/core/ai/engine/inference/BidConditioningTest.java) checks honor cover, trump-backed short-suit flexibility, legal-bid evidence, exclusion of an illegal final bid, reconstruction from current/completed plays, effective-sample stopping, and neutral behavior outside the calibrated four-seat Romanian 1–8–1 scope.
 - [ContractEndgameTest](../../whist-lab-app/game-core/src/test/java/ro/whistlab/core/ai/engine/ContractEndgameTest.java) checks that exposed and played cards cannot return to hidden deals and that public voids constrain generated worlds.
 - [Design of components](../testing/ATF_AiComponents.md) delimits the actor's observation and oracle.
 - [Independent Player](../../whist-lab-app/ai-lab/README.md) has separate implementation and utility.

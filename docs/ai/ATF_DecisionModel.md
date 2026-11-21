@@ -61,7 +61,7 @@ The laboratory observation distinguishes the first choice for zero from an eligi
 | Owner | Contract |
 |---|---|
 | [MonteCarloAi](../../whist-lab-app/game-core/src/main/java/ro/whistlab/core/ai/engine/MonteCarloAi.java) | Observing API, generating and aggregation of comparisons, then the finished guards. |
-| [BidConditioning](../../whist-lab-app/game-core/src/main/java/ro/whistlab/core/ai/engine/BidConditioning.java) | Reweights hypothetical original hands with bounded evidence from bids whose legal prefix is known. |
+| [BidConditioning](../../whist-lab-app/game-core/src/main/java/ro/whistlab/core/ai/engine/inference/BidConditioning.java) | Reweights hypothetical original hands with bounded evidence from bids whose legal prefix is known. |
 | [HandTrickPotential](../../whist-lab-app/game-core/src/main/java/ro/whistlab/core/ai/policy/HandTrickPotential.java) | Soft honor, same-suit cover and trump-backed short-suit score consumed by bid conditioning only; Normal's bid estimate remains unchanged. |
 | [DecisionEvaluation](../../whist-lab-app/game-core/src/main/java/ro/whistlab/core/ai/engine/DecisionEvaluation.java) | It turns hypothetical sequels into utility using the same targets and score rules; it does not select worlds or actions. |
 | [DecisionOrdering](../../whist-lab-app/game-core/src/main/java/ro/whistlab/core/ai/engine/DecisionOrdering.java) | Ordering alternatives already assessed by profile and established tolerances; not consuming random numbers. |
