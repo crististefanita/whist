@@ -7,10 +7,9 @@
 ## Stare
 
 Ținta nativă iOS este pusă în așteptare. Proiectul păstrează un adaptor SwiftUI și o
-cale de traducere J2ObjC pentru motorul Java comun, astfel încât regulile, licitațiile,
-scorul, adversarii și validarea acțiunilor să rămână într-o singură implementare.
-Această arhitectură nu reprezintă o aplicație suportată sau calificată pentru release;
-adaptorul expune doar starea publică și acțiunile omului.
+cale de traducere J2ObjC pentru motorul Java comun, astfel încât regulile și licitațiile,
+scorul, adversarii și validarea acțiunilor să rămână într-o singură implementare; această
+arhitectură nu reprezintă o aplicație suportată sau calificată pentru release. Adaptorul expune doar starea publică și acțiunile omului.
 
 Valorile deployment și simulator din fișiere sunt setări de implementare, nu o matrice
 curentă de suport. Release-urile active nu includ un runner iOS, simulator, dispozitiv

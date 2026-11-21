@@ -8,11 +8,10 @@ Java comun prin traducerea J2ObjC. Motorul original continuă să fie sursa regu
 de joc, AI, licitare, scor și salvări; adaptorul iOS nu implementează o a doua
 variantă a acestor reguli.
 
-Proiectul iOS este pus în așteptare și nu intră în calificarea release-urilor active.
-Valorile din fișierele proiectului și workflow sunt setări de implementare, nu o
-matrice curentă de suport sau o declarație de compatibilitate. Verificați versiunile
-Xcode și simulator susținute de Apple înainte de reluarea platformei; APK-ul Android
-nu dovedește suportul iOS.
+Proiectul iOS este pus în așteptare și nu intră în calificarea release-urilor active. Valorile
+din fișierele proiectului și workflow sunt setări de implementare, nu o matrice curentă
+de suport sau o declarație de compatibilitate. Verificați versiunile Xcode și simulator
+susținute de Apple înainte de reluarea platformei; APK-ul Android nu dovedește suportul iOS.
 [Versiunile Apple](https://developer.apple.com/news/releases/) ·
 [Matricea Xcode și SDK](https://developer.apple.com/xcode/system-requirements/)
 
