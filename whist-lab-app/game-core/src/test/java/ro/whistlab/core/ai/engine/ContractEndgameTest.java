@@ -52,14 +52,59 @@ assertArrayEquals("world "+t+" first "+first,expected,actual);compared++;
         GameSession g=GameSession.newGame(atf.gradle.audit.GradleInputs.created("Game configuration before creation", new GameConfig(4,GameMode.ROMANIAN_WHIST,AiDifficulty.HARD,31)));
         while(g.snapshot().handSize()!=8){finish(g);g.startNextHand();}while(g.snapshot().phase()==GamePhase.BIDDING){var s=g.snapshot();g.submitBid(s.biddingSeat(),AiPolicy.chooseBid(s,s.biddingSeat(),AiDifficulty.HARD));}
         while(g.snapshot().history().size()<24){var s=g.snapshot();g.playCard(s.currentSeat(),AiPolicy.chooseCard(s,s.currentSeat(),AiDifficulty.HARD));}
-        var v=MonteCarloAi.observe(g.snapshot(),g.snapshot().currentSeat());Set<Card> forbidden=new HashSet<>(v.hand());for(var p:v.history())forbidden.add(p.card());
-        for(int sample=0;sample<100;sample++){var hands=MonteCarloAi.sample(v,new Random(sample));
-atf.gradle.audit.GradleInputs.fixture("Fixture before first assertion", "forbidden", forbidden, "g", g, "hands", hands, "sample", sample, "v", v);
-assertNotNull("hands is available", hands);Set<Card> all=new HashSet<>();for(int s=0;s<4;s++){assertEquals("hands.get(s).size() must equal v.seats().get(s).remaining()", v.seats().get(s).remaining(),hands.get(s).size());for(Card c:hands.get(s)){assertTrue("all.add(c) must hold", all.add(c));if(s!=v.seat())assertFalse("forbidden.contains(c) must remain false", forbidden.contains(c));}}
-            for(int i=0;i<v.history().size();i++){var p=v.history().get(i);Suit led=v.history().get(i-i%4).card().suit();if(p.card().suit()!=led){assertTrue("hands.get(p.seat()).stream().noneMatch((c)->c.suit() == led) must hold", hands.get(p.seat()).stream().noneMatch(c->c.suit()==led));}}
+        var v=MonteCarloAi.observe(g.snapshot(),g.snapshot().currentSeat());
+        Set<Card> forbidden=new HashSet<>(v.hand());
+        for(var p:v.history())forbidden.add(p.card());
+        if(v.turnedCard()!=null){
+            forbidden.add(v.turnedCard());
+            assertFalse("the exposed trump card must leave the unknown-card pool",
+                    MonteCarloAi.unknownCards(v).contains(v.turnedCard()));
+        }
+        for(int sample=0;sample<100;sample++){
+            var hands=MonteCarloAi.sample(v,new Random(sample));
+            atf.gradle.audit.GradleInputs.fixture("Sampled world respects public card ownership and void evidence",
+                    "forbidden cards",forbidden,"game",g,"hands",hands,"sample",sample,"view",v);
+            assertNotNull("a legal sampled world is available",hands);
+            Set<Card> all=new HashSet<>();
+            for(int s=0;s<4;s++){
+                assertEquals("sampled hand preserves each public remaining-card count",
+                        v.seats().get(s).remaining(),hands.get(s).size());
+                for(Card c:hands.get(s)){
+                    assertTrue("a card is assigned to at most one hand",all.add(c));
+                    if(s!=v.seat())assertFalse("hidden hands contain no known card",forbidden.contains(c));
+                }
+            }
+            for(int i=0;i<v.history().size();i++){
+                var p=v.history().get(i);
+                Suit led=v.history().get(i-i%4).card().suit();
+                if(p.card().suit()!=led){
+                    assertTrue("a public discard proves the player void in the led suit",
+                            hands.get(p.seat()).stream().noneMatch(c->c.suit()==led));
+                }
+            }
         }
     }
     private static void finish(GameSession g){while(g.snapshot().phase()==GamePhase.BIDDING){var s=g.snapshot();g.submitBid(s.biddingSeat(),AiPolicy.chooseBid(s,s.biddingSeat(),AiDifficulty.HARD));}while(g.snapshot().phase()==GamePhase.PLAYING){var s=g.snapshot();g.playCard(s.currentSeat(),AiPolicy.chooseCard(s,s.currentSeat(),AiDifficulty.HARD));}}
+    @Test public void turnedTrumpIsExcludedFromTheUnseenPoolAndEverySampledHand(){
+        Card turned=new Card(Suit.SPADES,14);
+        List<Card> own=List.of(new Card(Suit.HEARTS,7),new Card(Suit.HEARTS,8),new Card(Suit.CLUBS,7));
+        List<MonteCarloAi.Seat> seats=List.of(new MonteCarloAi.Seat(3,1,0),new MonteCarloAi.Seat(3,1,0),
+                new MonteCarloAi.Seat(3,0,0),new MonteCarloAi.Seat(3,1,0));
+        var view=new MonteCarloAi.View(GameMode.ROMANIAN_WHIST,Trump.SPADES,0,3,3,
+                own,seats,List.of(),List.of(),turned);
+        atf.gradle.audit.GradleInputs.fixture("An exposed trump stays outside every hidden deal",
+                "turned card",turned,"own hand",own,"view",view,
+                "unknown pool",MonteCarloAi.unknownCards(view));
+        assertFalse("The turned card is not an unknown card",MonteCarloAi.unknownCards(view).contains(turned));
+        for(int seed=0;seed<100;seed++){
+            var hands=MonteCarloAi.sample(view,new Random(seed));
+            assertNotNull("a feasible world is sampled",hands);
+            for(int seat=0;seat<4;seat++){
+                assertEquals("each seat receives its public remaining count",3,hands.get(seat).size());
+                assertFalse("the exposed trump cannot be dealt to any player",hands.get(seat).contains(turned));
+            }
+        }
+    }
     @Test public void aRomanianDiscardProvesBothLedSuitAndTrumpAreMissing(){
         var history=List.of(new PlayedCard(0,new Card(Suit.HEARTS,7)),new PlayedCard(1,new Card(Suit.CLUBS,7)),new PlayedCard(2,new Card(Suit.HEARTS,8)),new PlayedCard(3,new Card(Suit.SPADES,7)),new PlayedCard(3,new Card(Suit.SPADES,9)));
         var seats=List.of(new MonteCarloAi.Seat(2,0,0),new MonteCarloAi.Seat(2,0,0),new MonteCarloAi.Seat(2,0,0),new MonteCarloAi.Seat(1,0,1));

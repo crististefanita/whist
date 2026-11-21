@@ -26,6 +26,8 @@ Legality precedes any intention. Feasibility uses public and certified limits in
 
 | Condition | Implication |
 |---|---|
+| A king has a lower card in the same suit | Treat the lower card as cover that can help expose or spend a higher card before the king; increase potential, but do not count the king as a certain trick. |
+| Public bids are complete or have a known prefix | Use them as bounded clues about opponents' original holdings; a bid remains uncertain evidence, not a card identity. |
 | The contract is made | Reduce the risk of additional levatates within the limits of legality. |
 | There are still no achievable tricks | Keep or use cards that offer the necessary opportunities. |
 | Missing the required color, but there is trump | Compulsory cutting takes precedence over the intention to avoid. |
@@ -45,6 +47,8 @@ The positive demand amounts to `max(0, necesar)` per place: a contract already e
 The runtime order and the certificate quantifiers are defined in [decision model](ATF_DecisionModel.md#priority-objectives). [Rules and configuration](ATF_RulesConfiguration.md) Distinguishing these active branches of experimental clues and weights.
 
 - [ContextualHonorDiscardTest](../../whist-lab-app/game-core/src/test/java/ro/whistlab/core/ai/engine/ContextualHonorDiscardTest.java) checks the borders of the rules through legal witnesses and controlled changes of the need.
+- [BidConditioningTest](../../whist-lab-app/game-core/src/test/java/ro/whistlab/core/ai/engine/BidConditioningTest.java) checks honor cover, trump-backed short-suit flexibility, legal-bid evidence, exclusion of an illegal final bid, reconstruction from current/completed plays, effective-sample stopping, and neutral behavior outside the calibrated four-seat Romanian 1–8–1 scope.
+- [ContractEndgameTest](../../whist-lab-app/game-core/src/test/java/ro/whistlab/core/ai/engine/ContractEndgameTest.java) checks that exposed and played cards cannot return to hidden deals and that public voids constrain generated worlds.
 - [Design of components](../testing/ATF_AiComponents.md) delimits the actor's observation and oracle.
 - [Independent Player](../../whist-lab-app/ai-lab/README.md) has separate implementation and utility.
 

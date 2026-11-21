@@ -212,6 +212,7 @@ public final class MonteCarloAi {
             List<List<Card>> hands = sample(view, new Random(seed(view, sample)));
             if (hands == null) continue;
             SearchWork.event(SearchWork.Event.WORLD);
+            double worldWeight = BidConditioning.likelihood(view, hands);
             double[] points = new double[view.handSize() + 1],
                     exact = new double[view.handSize() + 1];
             for (int bid : allowed) {
@@ -221,13 +222,17 @@ public final class MonteCarloAi {
                 points[bid] = result[0];
                 exact[bid] = result[2];
             }
-            evidence.add(points, exact);
+            evidence.add(points, exact, worldWeight);
             if ((sample + 1) % 32 == 0 && evidence.enough()) break;
         }
         List<BidOption> candidates = evidence.options();
         int selected = selectBid(candidates, profile, safety);
         return new BidDecision(
-                selected, candidates, "paired-world bid estimates; " + profile.name());
+                selected, candidates,
+                "paired-world bid estimates; " + BidConditioning.evidenceCount(view)
+                        + " public bid clues; effective samples="
+                        + String.format(Locale.ROOT, "%.1f", evidence.effectiveSamples())
+                        + "; " + profile.name());
     }
 
     public static int selectBid(
@@ -242,6 +247,8 @@ public final class MonteCarloAi {
         private final double[] primary, points, exactTotals;
         private final double[][] squaredDifferences;
         private int count;
+        private double weightTotal;
+        private double squaredWeightTotal;
 
         public BidSamples(List<Integer> allowed, int size, boolean safety) {
             this.allowed = List.copyOf(allowed);
@@ -254,22 +261,30 @@ public final class MonteCarloAi {
         }
 
         public void add(double[] scores, double[] exact) {
+            add(scores, exact, 1.0);
+        }
+
+        public void add(double[] scores, double[] exact, double weight) {
+            if (!Double.isFinite(weight) || weight <= 0)
+                throw new IllegalArgumentException("Sample weight must be finite and positive");
             for (int bid : allowed) {
                 double value = safety ? exact[bid] : scores[bid];
                 if (!Double.isFinite(value)
                         || !Double.isFinite(scores[bid])
                         || !Double.isFinite(exact[bid]))
                     throw new IllegalArgumentException("Non-finite sampled utility");
-                primary[bid] += value;
-                points[bid] += scores[bid];
-                exactTotals[bid] += exact[bid];
+                primary[bid] += value * weight;
+                points[bid] += scores[bid] * weight;
+                exactTotals[bid] += exact[bid] * weight;
             }
             for (int a : allowed)
                 for (int b : allowed) {
                     double d = safety ? exact[a] - exact[b] : scores[a] - scores[b];
-                    squaredDifferences[a][b] += d * d;
+                    squaredDifferences[a][b] += d * d * weight;
                 }
             count++;
+            weightTotal += weight;
+            squaredWeightTotal += weight * weight;
         }
 
         public int best() {
@@ -288,27 +303,31 @@ public final class MonteCarloAi {
                                     bid ->
                                             new BidOption(
                                                     bid,
-                                                    count == 0 ? 0.0 : exactTotals[bid] / count,
-                                                    count == 0 ? 0.0 : points[bid] / count,
+                                                    weightTotal == 0 ? 0.0 : exactTotals[bid] / weightTotal,
+                                                    weightTotal == 0 ? 0.0 : points[bid] / weightTotal,
                                                     count))
                             .collect(java.util.stream.Collectors.toList()));
         }
 
         public boolean enough() {
-            if (count < 32) return false;
-            if (count >= 128 || allowed.size() == 1) return true;
+            double effectiveSamples = effectiveSamples();
+            if (effectiveSamples < 32) return false;
+            if (effectiveSamples >= 128 || allowed.size() == 1) return true;
             int leader = best();
             for (int rival : allowed)
                 if (rival != leader) {
-                    double gap = (primary[leader] - primary[rival]) / count;
+                    double gap = (primary[leader] - primary[rival]) / weightTotal;
                     double variance =
                             Math.max(
                                     0,
-                                    (squaredDifferences[leader][rival] - count * gap * gap)
-                                            / (count - 1));
-                    if (variance > 1e-15 && gap <= 2 * Math.sqrt(variance / count)) return false;
+                                    squaredDifferences[leader][rival] / weightTotal - gap * gap);
+                    if (variance > 1e-15 && gap <= 2 * Math.sqrt(variance / effectiveSamples)) return false;
                 }
             return true;
+        }
+
+        public double effectiveSamples() {
+            return squaredWeightTotal == 0 ? 0 : weightTotal * weightTotal / squaredWeightTotal;
         }
 
         public int samples() {
@@ -317,15 +336,23 @@ public final class MonteCarloAi {
     }
 
     public static Decision chooseCard(View view) {
-        return chooseCard(view, .5, HardStrategyProfile.CURRENT);
+        return chooseCard(view, .5, runtimeProfile(view));
     }
 
     public static Decision chooseCard(View view, double exactWeight) {
-        return chooseCard(view, exactWeight, HardStrategyProfile.CURRENT);
+        return chooseCard(view, exactWeight, runtimeProfile(view));
     }
 
     public static Decision chooseCard(View view, HardStrategyProfile profile) {
         return chooseCard(view, .5, profile);
+    }
+
+    static HardStrategyProfile runtimeProfile(View view) {
+        if (view.mode() != GameMode.ROMANIAN_WHIST) return HardStrategyProfile.CURRENT;
+        PublicSalvage.Quota quota = PublicSalvage.quota(view);
+        return quota.impossible() && quota.opportunities() <= 2
+                ? HardStrategyProfile.BURN_IF_DOOMED
+                : HardStrategyProfile.CURRENT;
     }
 
     private static Decision chooseCard(View view, double exactWeight, HardStrategyProfile profile) {
@@ -382,6 +409,8 @@ public final class MonteCarloAi {
                 exact = new double[legal.size()],
                 misses = new double[legal.size()];
         int samples = 0;
+        double weightTotal = 0;
+        double squaredWeightTotal = 0;
         List<List<List<Card>>> exactDeals =
                 unknownCards(view).size() <= 7 ? enumerateSmallDeals(view) : List.of();
         int worlds = exactDeals.isEmpty() ? SAMPLES : exactDeals.size();
@@ -393,6 +422,9 @@ public final class MonteCarloAi {
                             : exactDeals.get(sample);
             if (hands == null) continue;
             samples++;
+            double worldWeight = BidConditioning.likelihood(view, hands);
+            weightTotal += worldWeight;
+            squaredWeightTotal += worldWeight * worldWeight;
             SearchWork.event(SearchWork.Event.WORLD);
             for (int c = 0; c < legal.size(); c++) {
                 double[] value =
@@ -403,10 +435,10 @@ public final class MonteCarloAi {
                                 targets,
                                 seed(view, sample) ^ 0xCA4D2026L,
                                 exactWeight);
-                values[c] += value[0];
-                rivals[c] += value[1];
-                exact[c] += value[2];
-                misses[c] += value[3];
+                values[c] += value[0] * worldWeight;
+                rivals[c] += value[1] * worldWeight;
+                exact[c] += value[2] * worldWeight;
+                misses[c] += value[3] * worldWeight;
             }
         }
         int best = 0;
@@ -414,11 +446,11 @@ public final class MonteCarloAi {
             evaluations.add(
                     new Candidate(
                             legal.get(c),
-                            samples == 0 ? Double.NEGATIVE_INFINITY : values[c] / samples,
+                            weightTotal == 0 ? Double.NEGATIVE_INFINITY : values[c] / weightTotal,
                             samples,
-                            samples == 0 ? 0.0 : misses[c] / samples,
-                            samples == 0 ? 0.0 : rivals[c] / samples,
-                            samples == 0 ? 0.0 : exact[c] / samples));
+                            weightTotal == 0 ? 0.0 : misses[c] / weightTotal,
+                            weightTotal == 0 ? 0.0 : rivals[c] / weightTotal,
+                            weightTotal == 0 ? 0.0 : exact[c] / weightTotal));
             if (prefer(
                     view.mode().isRomanian(),
                     salvage,
@@ -445,7 +477,11 @@ public final class MonteCarloAi {
                 evaluations,
                 samples
                         + (exactDeals.isEmpty() ? " sampled" : " exhaustively enumerated")
-                        + " feasible common possible deals; public void inference; small-endgame exact/heuristic mixture weight="
+                        + " feasible common possible deals; " + BidConditioning.evidenceCount(view)
+                        + " public bid clues, effective samples="
+                        + String.format(Locale.ROOT, "%.1f", squaredWeightTotal == 0 ? 0
+                                : weightTotal * weightTotal / squaredWeightTotal)
+                        + "; void and card-count inference; small-endgame exact/heuristic mixture weight="
                         + exactWeight
                         + "; "
                         + profile.name()
@@ -572,6 +608,17 @@ public final class MonteCarloAi {
             seed = seed * 31 + p.seat();
             seed = seed * 31 + p.card().suit().ordinal();
             seed = seed * 31 + p.card().rank();
+        }
+        // Runtime history includes the unfinished-trick suffix; hand-built observations may not.
+        int suffixStart = view.history().size() - view.trick().size();
+        boolean historyIncludesTrick = suffixStart >= 0
+                && view.history().subList(suffixStart, view.history().size()).equals(view.trick());
+        if (!historyIncludesTrick) {
+            for (PlayedCard p : view.trick()) {
+                seed = seed * 31 + p.seat();
+                seed = seed * 31 + p.card().suit().ordinal();
+                seed = seed * 31 + p.card().rank();
+            }
         }
         if (view.turnedCard() != null) {
             seed = seed * 31 + view.turnedCard().suit().ordinal();

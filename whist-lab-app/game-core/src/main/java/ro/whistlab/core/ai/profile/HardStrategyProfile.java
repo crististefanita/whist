@@ -1,6 +1,6 @@
 package ro.whistlab.core.ai.profile;
 
-/** Offline comparison profiles. Production play keeps CURRENT unless a profile is explicitly supplied by a test. */
+/** Offline comparison profiles; production CURRENT adds a late burn only after public impossibility. */
 public enum HardStrategyProfile {
     CURRENT(0.0),
     PRUDENT_BID_04(0.04),

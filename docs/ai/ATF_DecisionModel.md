@@ -61,6 +61,8 @@ The laboratory observation distinguishes the first choice for zero from an eligi
 | Owner | Contract |
 |---|---|
 | [MonteCarloAi](../../whist-lab-app/game-core/src/main/java/ro/whistlab/core/ai/engine/MonteCarloAi.java) | Observing API, generating and aggregation of comparisons, then the finished guards. |
+| [BidConditioning](../../whist-lab-app/game-core/src/main/java/ro/whistlab/core/ai/engine/BidConditioning.java) | Reweights hypothetical original hands with bounded evidence from bids whose legal prefix is known. |
+| [HandTrickPotential](../../whist-lab-app/game-core/src/main/java/ro/whistlab/core/ai/policy/HandTrickPotential.java) | Soft honor, same-suit cover and trump-backed short-suit score consumed by bid conditioning only; Normal's bid estimate remains unchanged. |
 | [DecisionEvaluation](../../whist-lab-app/game-core/src/main/java/ro/whistlab/core/ai/engine/DecisionEvaluation.java) | It turns hypothetical sequels into utility using the same targets and score rules; it does not select worlds or actions. |
 | [DecisionOrdering](../../whist-lab-app/game-core/src/main/java/ro/whistlab/core/ai/engine/DecisionOrdering.java) | Ordering alternatives already assessed by profile and established tolerances; not consuming random numbers. |
 
@@ -69,7 +71,7 @@ The way of evaluation depends on the field. [MonteCarloAi](../../whist-lab-app/g
 | Scope | Assessment and limit |
 |---|---|
 | Bidding of a card | `OneCardBidBelief` makes the enumeration conditional on the bids already observed in the Romanian domain of four places with a card turned over; outside the domain or without eligible evidence, the basic estimate is used. |
-| Bidding of 2–8 cards | Legal alternatives use the same worlds; public contracts are maintained and offers still unknown are estimated below. |
+| Bidding of 2–8 cards | Legal alternatives use common possible deals. Earlier public bids softly weight the original hypothetical hands of opponents; bids with a missing prefix and the actor's own bid are not evidence. |
 | Play the card | A single legal action or rule of dominance can avoid simulation; otherwise the candidate cards are compared on common worlds. |
 | Small endings | The enumeration of worlds and the search for continuances have distinct areas; full listing does not make the model of continuation a universal certificate. |
 
@@ -78,14 +80,20 @@ The model of a card has [implementation in engine](../../whist-lab-app/game-core
 For simulated alternatives, the terminal vector shall contain its own points, the main rival score, the exact contract indicator and the number of adverse failures:
 
 ```text
-estimate(action) = weighted_sum_utilities / sum_weights
+world_weight(D) = tempered_product(public_bid_likelihoods(D))
+estimate(action) = sum(world_weight(D) × utility(action, D)) / sum(world_weight(D))
 mixed_utility = (1 − α) × rollout_utility + α × MaxN_utility
+effective_sample_size = sum(world_weights)² / sum(world_weights²)
 ```
 
-- The aggregation of general simulations uses equal weights of the worlds generated; the sampler is not proven uniformly over all feasible distributions.
+- At 2–8 cards in four-seat Romanian 1–8–1, the bid likelihood gives 65% uniform support and 35% normalized soft strength likelihood per eligible bid; its product is tempered by 0.25 at two cards and 0.50 at three through eight. The shared strength estimate gives a king capped same-suit cover value and modest ruff flexibility for short non-trump suits when trump is held, but neither is treated as a certain trick. Long Romanian remains neutral until its own held-out calibration supports transfer.
+- Auction position changes the legal bid set and the information available before the decision. Calibrate and validate bid-conditioned play separately for first, middle and last bidder positions, and on both homogeneous and mixed-policy tables; an aggregate gain on tuning seeds is not held-out evidence.
+- Played cards are removed from the unknown pool, known voids constrain assignments, and distinct public plays are added back when reconstructing the bidder's original hand. The turned-up trump is excluded from the pool.
+- A legal bid forced by the auction, a bid after an incomplete prefix, and the observer's own bid add no likelihood. The one-card auction keeps its separately calibrated `OneCardBidBelief` domain.
+- The weights are regularized relative likelihoods over the existing constrained sampler; neither that proposal distribution nor the resulting values are claimed to be a calibrated posterior. Effective sample size exposes concentration; the card planner keeps its bounded world budget.
 - The mixture with MaxN is only applied in the small field defined by `DecisionEvaluation.evaluate`; otherwise the rollout is used.
 - Searching a hypothetical world can use that world for consequences without demonstrating the optimal of the hidden information strategy.
-- The exact frequency depends on the model of worlds and on the continuation; general conditioning after bids at 2–8 cards is [separate research](ATF_RulesConfiguration.md#behavior-inference).
+- The exact frequency depends on the model of worlds and on the continuation; opponent card-choice behavior is not yet used as likelihood evidence.
 
 ## Priority objectives
 
@@ -97,10 +105,16 @@ The order below concerns the Romanian profile; the other variants use their decl
 | Normal, game | Tracking the need through rank and current situation; avoiding tricks by target. |
 | Romanian Hard, Bidding | The estimated contract opportunity, the exact points, then the smaller bid at equal. |
 | Hard, recoverable contract | Estimated chance of exact, points of the individual, then reduction of the main rival score. |
-| Hard, publicly proven impossibility | Estimated own points, estimated adverse failures, then the score of the main rival. |
+| Hard, publicly proven impossibility, more than two tricks left | Estimated own points, estimated adverse failures, then the score of the main rival. |
+| Hard, publicly proven impossibility, final two tricks | Estimated adverse failures first, estimated own points second, then the score of the main rival. A universal certificate can replace the proposal only when it does not worsen own points or rival misses. |
 | Independent Player | His own points; by the card, the score of his main rival departs equality. |
 
-The table describes the runtime profile `CURRENT`; experimental profiles can change order and be explicitly selected. The criteria apply to lexicographic, numeric tolerances in the comparator: a subsequent criterion departs values considered equal to the previous level.
+The table describes production `Hard`:
+
+- Late burn is selected only after public proof of impossibility and with at most two tricks remaining.
+- Normal keeps its contract-first policy and never enters the burn profile.
+- Experimental profiles remain explicitly selectable.
+- The comparator applies lexicographic numeric tolerances: each later criterion separates values considered equal at the preceding level.
 
 ## Feasibility and certificates
 

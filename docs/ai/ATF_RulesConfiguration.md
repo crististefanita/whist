@@ -118,12 +118,28 @@ The contextual correction shall apply only in the eligible branch of the experim
 
 ## Behavior inference
 
-This section describes the general research model for 2–8 The runtime model specialized in a card and its fallback are documented in [decision model](ATF_DecisionModel.md#estimate-of-alternatives); automatic control of the consistency of the manifest with that domain remains [criterion open](../feedback/ATF_Ai.md#coordination-of-evaluation-and-delimitation-of-mechanisms).
+The accepted engine now applies a bounded public-bid likelihood to four-seat Romanian 1–8–1 hands of 2–8 cards. Other schedules have not earned this transfer; the one-card model and experimental forecast models remain separate. See [decision model](ATF_DecisionModel.md#estimate-of-alternatives) for owners and limits.
+
+The likelihood is a soft interpretation of the public auction and is recomputed from the current observation.
+
+| Concern | Runtime contract |
+|---|---|
+| Hand reconstruction | Restore each bidder's sampled remaining cards plus distinct public plays to recover the bid-time hand; see [HandTrickPotential](../../whist-lab-app/game-core/src/main/java/ro/whistlab/core/ai/policy/HandTrickPotential.java). |
+| Bid likelihood | Use only legal bid values; retain 65% uniform support and 35% strength-based likelihood. Apply temperature 0.25 at two cards and 0.50 at three through eight. |
+| Honor and shape clues | Cap covered-king potential. Add modest void/singleton ruff flexibility only when trump is held (0.22 per void and 0.03 per singleton, scaled by up to two trumps). |
+| Evidence exclusions | Do not count an own bid, a bid after a missing prefix, or a mechanically forced bid. Keep every surprising legal bid above zero likelihood. |
+| Evolving public state | Remove played and turned cards from hidden deals; add new public plays and proven voids before reweighting. |
+| Scope | Apply only to four-seat Romanian Whist 1–8–1 with two through eight cards. One-card hands use `OneCardBidBelief`; Long Romanian, other modes and other table sizes retain neutral likelihood. Normal's bid estimator and forecasts for bids not yet submitted are unchanged. |
+| Limits | These are relative weights over a constrained sampler, not a calibrated posterior. The sampler is not proven uniform, card-choice behavior is not modeled as likelihood, and the card planner retains a fixed bounded world budget. Effective sample size is reported. |
+
+### Experimental calibration models
+
+The models below are research alternatives; they do not supply the accepted runtime likelihood unless explicitly promoted by a separate implementation and regression gate.
 
 [Experimental bid model](../../whist-lab-app/ai-lab/experiments/bid-models/shared/game-core/src/main/java/ro/whistlab/core/LearnedBidEvidence.java) uses fixed coefficients and features of the original hypothetical hand and prefix available then. The remaining and the cards played by the same place meet without doubling the current table.
 
 <details>
-<summary>Plausibility, regularisation and actual sample size</summary>
+<summary>Alternative feature-model calibration and sample size</summary>
 
 ```text
 μ = clamp(scale × θ · φ(initial_hand, prefix), 0, hand_size)

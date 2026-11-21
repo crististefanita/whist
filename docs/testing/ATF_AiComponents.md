@@ -55,6 +55,9 @@ An Android path remains E2E only when performing new interactions in the install
 | Source | Responsibility |
 |---|---|
 | [ContextualHonorDiscardTest](../../whist-lab-app/game-core/src/test/java/ro/whistlab/core/ai/engine/ContextualHonorDiscardTest.java) | Legal witnesses, necessary and the effect of public cards. |
+| [BidConditioningTest](../../whist-lab-app/game-core/src/test/java/ro/whistlab/core/ai/engine/BidConditioningTest.java) | Honor cover and ruff flexibility; soft likelihood with legal and forbidden final bids; completed/current-trick reconstruction; effective sample-size stopping; and neutral behavior for uncalibrated modes, schedules and table sizes. |
+| [ContractEndgameTest](../../whist-lab-app/game-core/src/test/java/ro/whistlab/core/ai/engine/ContractEndgameTest.java) | Public void constraints, exact small endings, card counts, exposed-trump exclusion, and current-table evidence before a trick is scored. |
+| [OfflinePerspectiveMatchTest](../../whist-lab-app/game-core/src/test/java/ro/whistlab/core/match/OfflinePerspectiveMatchTest.java) | Replays one fixed deal sequence in a selected ruleset with Normal-all, Hard-all, and each single-Hard seat; validates opaque deal commitments and the declared hand schedule within the matrix. |
 | [BlindPolicyObservationTest](../../whist-lab-app/game-core/src/test/java/ro/whistlab/core/ai/information/BlindPolicyObservationTest.java) | Separating his own hand and public information before the call for policy. |
 | [CertifiedContractRegressionTest](../../whist-lab-app/game-core/src/test/java/ro/whistlab/core/ai/engine/CertifiedContractRegressionTest.java) | Certificate, lack of guarantee and fallback. |
 | [HardSalvageObjectiveTest](../../whist-lab-app/game-core/src/test/java/ro/whistlab/core/ai/contract/HardSalvageObjectiveTest.java) | The order of objectives when the exact is publicly impossible. |
@@ -69,8 +72,15 @@ An Android path remains E2E only when performing new interactions in the install
 
 ## Organisation of collections
 
-Default regression keeps small, stable and independent cases. Research, tournaments and diagnostics exploring unresolved boundaries are explicit collections with a stated budget and purpose.
+| Collection | Purpose | Boundary |
+|---|---|---|
+| Default regression | Small, stable, independent cases | Each case covers a distinct property or boundary. |
+| Research, tournament and diagnostic | Explore unresolved behavior | Declare the purpose and budget; keep large game sets in the external corpus. [Focused selection](../learning/ATF_Selection.md) controls analysis cost. |
+| `offlineMockMatchTest`, `offlinePerspectiveMatchTest` | Four-seat offline matches | Romanian 1–8–1 is the default; perspective runs accept every declared `GameMode` to check that Romanian rules do not leak into other variants. |
 
-A new case must bring a distinct property or border. The large sets of games and their results remain in the external corpus, and [Focused selection](../learning/ATF_Selection.md) controls the cost of analysis.
+- `whist.offlineMatch.seed` selects the first deterministic seed; `whist.offlineMatch.mode` selects a `GameMode`; `whist.offlineMatch.roster` selects four `NORMAL`/`HARD` seats; `whist.offlineMatch.count` accepts 1–100 complete matches.
+- `run-offline-perspectives.ps1 -Mode <GameMode> -Seed <seed>` compares all six seat rosters on the same private deal order. Its default is `ROMANIAN_WHIST`; alternate runs should be stored with their mode and paired seed under the external evidence root.
+- One match writes its complete public bid/card trace. A batch writes compact per-match scores and contract-hit counts to `whist.offlineMatch.output`, which must point outside the checkout.
+- Aggregates screen ideas; paired same-seed comparisons and component regressions are still required before promoting a policy change.
 
 [Collections](ATF_Collections.md) · [Governance of changes](../governance/ATF_TestChanges.md) · [Decision model](../ai/ATF_DecisionModel.md)

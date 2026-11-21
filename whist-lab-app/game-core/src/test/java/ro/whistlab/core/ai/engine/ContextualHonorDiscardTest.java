@@ -216,7 +216,7 @@ public class ContextualHonorDiscardTest extends atf.gradle.audit.GradleAuditedTe
             r.equal("Own exact contract is recoverable",false,PublicSalvage.quota(v).impossible());
             var decision=MonteCarloAi.chooseCard(v);
             r.equal("Both physical choices are evaluated",2,decision.candidates().size());
-            for(var choice:decision.candidates())r.equal("Each top trump preserves exactly two tricks and seven points",7.0,choice.meanContractPoints());
+            for(var choice:decision.candidates())r.equal("Each top trump preserves exactly two tricks and seven points",true,Math.abs(7.0-choice.meanContractPoints())<1e-9);
         });
     }
 }
