@@ -1,4 +1,5 @@
 # Whist 0.23.0
+This release improves Whist bidding and play by using public bids, visible cards and remaining-card probabilities.
 
 ## Download
 

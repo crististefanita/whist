@@ -3,7 +3,7 @@
   "mode": "changes",
   "previousVersion": "0.22.1",
   "points": [
-    "Condition bidding and play on public bids and cards already played.",
+    "Condition bidding and play on public bids and cards already seen.",
     "Preserve the Normal strategy while improving Hard endgame control.",
     "Qualify the exact APK through source-bound component evidence and selected Android flows."
   ],
