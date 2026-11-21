@@ -1,5 +1,36 @@
 {
   "schemaVersion": 1,
-  "status": "NOT_RUN",
-  "reason": "Authenticated download is verified after GitHub publication."
+  "status": "PASS",
+  "observedUtc": "2026-11-21T15:25:57.693Z",
+  "authenticatedDownload": {
+    "url": "https://github.com/crististefanita/whist/releases/download/v0.23.0/WhistLab-0.23.0.apk",
+    "authenticated": true,
+    "authMode": "GITHUB_ACCOUNT",
+    "httpStatus": 200,
+    "bytes": 1033649,
+    "sha256": "f77a65d25f7c1249409d10de3379751592ca018b350394a3ef852bc73e32665a",
+    "zipCrc": "PASS",
+    "channel": "GitHub API authenticated"
+  },
+  "checksumDownload": {
+    "url": "https://github.com/crististefanita/whist/releases/download/v0.23.0/WhistLab-0.23.0.apk.sha256",
+    "authenticated": true,
+    "httpStatus": 200,
+    "bytes": 86,
+    "sha256": "63f91f5910c6276b6083e5838828e72820ad661e4ee7b6ed0ca11dae60c629b6",
+    "match": true
+  },
+  "publicDownload": {
+    "url": "https://github.com/crististefanita/whist/releases/download/v0.23.0/WhistLab-0.23.0.apk",
+    "httpStatus": 200,
+    "bytes": 1033649,
+    "sha256": "f77a65d25f7c1249409d10de3379751592ca018b350394a3ef852bc73e32665a"
+  },
+  "readme": {
+    "url": "https://github.com/crististefanita/whist/blob/main/README.md",
+    "apkUrl": "https://github.com/crististefanita/whist/releases/download/v0.23.0/WhistLab-0.23.0.apk",
+    "commit": "6da1bf9cad765826fcb8b4c4f048406792af04e6"
+  },
+  "tagCommit": "8b8b9d3681b2cdc44ef89d74241dc86cce34669c",
+  "crc32": "d433ac47"
 }

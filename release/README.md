@@ -6,7 +6,7 @@ Catalogul identifică ediția Android curentă și păstrează o ediție publica
 
 ## Versiunea curentă
 
-[0.23.0 — actualizare contextuală Whist](0.23.0/README.md) a trecut calificarea; publicarea APK-ului autentificat este în curs. README-ul principal indică activul fixat.
+[0.23.0 — actualizare contextuală Whist](0.23.0/README.md) este publicată; APK-ul și checksum-ul au fost descărcate și verificate. README-ul principal indică activul fixat.
 
 ## Versiunea anterioară
 
@@ -16,7 +16,7 @@ Catalogul identifică ediția Android curentă și păstrează o ediție publica
 
 | Versiune | Stare | Dosar |
 |---|---|---|
-| 0.23.0 | Calificat; publicarea este în curs | [APK și dovezi](0.23.0/README.md) |
+| 0.23.0 | Publicat; descărcările verificate | [APK și dovezi](0.23.0/README.md) |
 | 0.22.1 | Ediția publicată anterioară | [APK și dovezi](0.22.1/README.md) |
 
 ## Publicare și verificare

@@ -7,5 +7,5 @@
     "Păstrează strategia Normal și îmbunătățește controlul final de joc pentru nivelul Greu.",
     "Califică același APK prin dovezi de componente legate de surse și fluxuri Android selectate."
   ],
-  "evidenceUrlTemplate": "https://github.com/crististefanita/whist/blob/{evidenceCommit}/release/0.23.0/reports/README.md"
+  "evidenceUrl": "https://github.com/crististefanita/whist/blob/642cc04f26898732dc714e3ecef21166a6c5bac1/release/0.23.0/reports/README.md"
 }
