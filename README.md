@@ -2,7 +2,7 @@
 
 ## Pe scurt
 
-Proiectul reunește Whist Lab, un joc local de levate pentru 3–6 jucători, și infrastructura ATF care verifică motorul, aplicațiile și livrarea. Motorul Java deservește Android, Web și ținta iOS. Laboratorul compară politicile de joc pe distribuiri controlate.
+Proiectul reunește Whist Lab, un joc local de levate pentru 3–6 jucători, și infrastructura ATF care verifică motorul, aplicațiile și livrarea. Edițiile Android și browser sunt active; puntea iOS este pusă în așteptare și nu intră în calificarea release-urilor curente. Laboratorul compară politicile de joc pe distribuiri controlate.
 
 ## Jocul
 
@@ -38,7 +38,7 @@ flowchart LR
 <details>
 <summary>Legendă privind buildurile și dovezile</summary>
 
-- Gradle include aplicația Android, motorul și puntea Java pentru iOS. Buildul nativ iOS folosește Xcode și motorul tradus. Intrarea Gradle JVM configurează motorul, laboratorul, politica numelor și auditul testelor.
+- Gradle include aplicația Android, motorul și o punte Java pentru iOS, pusă în așteptare. Buildul iOS și calificarea pe simulator nu fac parte din release-urile curente. Intrarea Gradle JVM configurează motorul, laboratorul, politica numelor și auditul testelor.
 - Maven verifică proiectul și coordonează testele Android. Consumă Core, Reporting, Console, Mock și Test Kit din perechile JAR/POM. Auditul Gradle folosește Reporting și Test Kit în configurațiile de test.
 - Calificarea confruntă selecția, APK-ul și dovezile. Dosarul versiunii păstrează identitatea binarului, rezultatele și verificarea descărcării. [Ghidul calificării](docs/testing/ATF_ReleaseQualification.md)
 
@@ -46,14 +46,17 @@ flowchart LR
 
 ### Motorul și platformele
 
-Motorul validează comenzile, calculează scorul și furnizează starea. Android și iOS îl integrează prin buildurile native. Web îl apelează prin adaptorul JVM sau îl compilează pentru GitHub Pages. [Traseul Android–Web](atf-ui-browser/README.md#what-android-and-web-share)
+- Motorul validează comenzile, calculează scorul și furnizează starea.
+- Android îl integrează prin build nativ.
+- Web îl apelează prin adaptorul JVM sau îl compilează pentru GitHub Pages.
+- Puntea iOS este pusă în așteptare. [Traseul Android–Web](atf-ui-browser/README.md#what-android-and-web-share)
 
 ```mermaid
 flowchart LR
     app[Aplicație Android]
     atf_card_table_ui[UI comun Android]
-    ios[Aplicație iOS]
-    ios_bridge[Punte iOS]
+    ios[iOS parcat]
+    ios_bridge[Punte parcată]
     game_core[Motor Java]
     card_table_names[Politica numelor]
     app -->|folosește| atf_card_table_ui
@@ -68,7 +71,7 @@ flowchart LR
 
 - Motorul deține regulile, sesiunea, scorul și deciziile AI. Politica AI primește mâna proprie și informația publică a mesei.
 - Android păstrează adaptarea la ecrane, preferințele și checkpoint-ul. Biblioteca vizuală comună oferă prezentarea mesei și emite intențiile de interacțiune.
-- SwiftUI apelează puntea restrânsă către motorul tradus cu J2ObjC. Ținta iOS are o calificare proprie pe simulator. [Ghidul iOS](docs/platform/ATF_iOSDelivery.md)
+- Puntea SwiftUI către motorul tradus este pusă în așteptare. Procesul activ de release nu include build IPA sau calificare pe simulator. [Ghidul iOS](docs/platform/ATF_iOSDelivery.md)
 - Diagrama arată dependențele buildurilor native. [Adaptorul Web](atf-ui-browser/README.md#web-execution-paths) explică traseul separat al aceluiași motor și al contractelor portabile de afișare.
 
 </details>
@@ -76,7 +79,7 @@ flowchart LR
 | Zonă | Module și responsabilități |
 |---|---|
 | Motor și cercetare | [`game-core`](whist-lab-app/game-core/README.md) deține domeniul. [`card-table-names`](whist-lab-app/card-table-names/README.md) validează și distribuie numele. [`ai-lab`](whist-lab-app/ai-lab/README.md) evaluează politicile offline prin [buildul JVM](whist-lab-app/algorithm-build/README.md). |
-| Aplicații | [Android](whist-lab-app/app/src/main/java/ro/whistlab/app/README.md) integrează [`atf-card-table-ui`](whist-lab-app/atf-card-table-ui/README.md). [iOS](ios/README.md) apelează [puntea Java](whist-lab-app/ios-bridge/src/main/java/ro/whistlab/ios/WhistGameBridge.java). [Browser](atf-ui-browser/README.md) folosește motorul compilat. |
+| Aplicații | [Android](whist-lab-app/app/src/main/java/ro/whistlab/app/README.md) integrează [`atf-card-table-ui`](whist-lab-app/atf-card-table-ui/README.md). [Browser](atf-ui-browser/README.md) folosește motorul compilat. [Puntea iOS](ios/README.md) este pusă în așteptare și nu este o țintă de release acceptată. |
 | Infrastructură ATF | [`atf-validation`](atf-validation/README.md) evaluează semantic răspunsuri API. [`atf-test-android`](atf-test-android/README.md) execută comenzi ADB și scenarii. [`atf-tests`](atf-tests/README.md) verifică integrarea, guvernanța și livrarea. |
 | Audit și execuție | [`test-audit`](whist-lab-app/test-audit/README.md) capturează comparațiile Gradle. [`lib`](lib/README.md) păstrează bibliotecile cu proveniență, iar [`scripts`](scripts/README.md) pregătește rulările izolate. |
 | Livrare | [Catalogul](release/README.md) identifică versiunea disponibilă și dosarul de calificare. |
