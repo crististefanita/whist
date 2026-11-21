@@ -58,7 +58,8 @@ export async function prepareComponentReuse(runRoot, previousRoot, groups, {resu
       verifyComponentExecution(origin, group, execution.value, execution.value?.tests, digest(report));
       const scope = componentEvidenceScope(group, current, origin.sourceSet, {androidVersionMetadataOnly});
       const decision = {group, decision: scope.decision, reason: scope.reason,
-        affectedGroups: scope.affectedGroups, changedInputs: scope.changed, affectedInputs: scope.affected};
+        affectedGroups: scope.affectedGroups, changedInputs: scope.changed, affectedInputs: scope.affected,
+        alwaysEvaluatedRagChecks: scope.alwaysEvaluatedRagChecks};
       if (scope.decision === 'RUN') {
         decisions.push(decision);
         continue;

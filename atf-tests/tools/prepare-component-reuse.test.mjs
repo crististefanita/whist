@@ -61,10 +61,11 @@ async function fixture(t, options = {}) {
   t.after(() => fs.rm(root, {recursive: true, force: true}));
   const previous = await fs.mkdir(path.join(root, 'previous')).then(() => path.join(root, 'previous'));
   const target = await fs.mkdir(path.join(root, 'target')).then(() => path.join(root, 'target'));
-  await writeJson(previous, inputManifest, inputs);
-  await writeJson(target, inputManifest, options.current ?? inputs);
+  const previousInputs = options.previous ?? inputs;
+  await writeJson(previous, inputManifest, previousInputs);
+  await writeJson(target, inputManifest, options.current ?? previousInputs);
   const original = {...componentRun, sourceFingerprint: digest(await read(previous, inputManifest)),
-    inputCount: inputs.length, inputManifest};
+    inputCount: previousInputs.length, inputManifest};
   if (options.release) {
     const rows = [{path: 'release/index.json', sha256: 'd'.repeat(64)}];
     await writeJson(previous, 'release-inputs.json', rows);
@@ -195,6 +196,21 @@ test('editorial changes retain the independent suite and schedule the governance
   assert.deepEqual(results.map(row => row.decision), ['RUN', 'REUSE']);
   assert.deepEqual(results.map(row => row.affectedInputs), [['README.md'], []]);
   await assert.rejects(fs.stat(path.join(target, groups[0])), {code: 'ENOENT'});
+});
+
+test('documentation edition inventory changes use the mandatory RAG check without rerunning Maven groups', async t => {
+  const pathName = 'config/documentation-editions.json';
+  const previousInputs = [...inputs, {path: pathName, sha256: 'd'.repeat(64)}];
+  const currentInputs = [...inputs, {path: pathName, sha256: 'e'.repeat(64)}];
+  const {previous, target} = await fixture(t, {previous: previousInputs, current: currentInputs, release: 'same'});
+  const results = await prepareComponentReuse(target, previous, groups);
+  assert.deepEqual(results.map(row => row.decision), ['REUSE', 'REUSE']);
+  assert.deepEqual(results.map(row => row.affectedInputs), [[], []]);
+  assert.deepEqual(results.map(row => row.alwaysEvaluatedRagChecks),
+    [['DOCUMENTATION_EDITIONS'], ['DOCUMENTATION_EDITIONS']]);
+  const plan = JSON.parse(await read(target, 'component-reuse.json'));
+  assert.deepEqual(plan.decisions.map(row => row.alwaysEvaluatedRagChecks),
+    [['DOCUMENTATION_EDITIONS'], ['DOCUMENTATION_EDITIONS']]);
 });
 
 test('only governance requires a matching release inventory for reuse', async t => {

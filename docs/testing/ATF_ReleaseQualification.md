@@ -215,10 +215,13 @@ Each arrow names the decision it represents. Reuse still requires matching input
 | App package declared in `config/gradle-app-collections.properties` | Run its owning collection and framework governance; keep other app collections reusable when their inputs match. |
 | Shared game core, names, Android UI module, Gradle configuration or common library | Invalidate every suite that consumes that dependency. |
 | Maven infrastructure, release policy, suite ownership or evidence tooling | Run `atf-tests`; product suites remain eligible for reuse when their inputs are unchanged. |
+| `config/documentation-editions.json` inventory only | Record `DOCUMENTATION_EDITIONS` as an always-run RAG check; keep Maven component evidence reusable. Changes to the evaluator, policy or document content retain their existing ownership rules. |
 | New, unknown or ambiguously owned path | Fail closed and run every component group. |
 | `versionCode`/`versionName` only | Reuse product evidence only when the published baseline is qualified and exact reconstruction proves that replacing those two fields restores the original build-file hash. Governance still runs. |
 
 Reuse is decided per suite, not per release. A passing run from another source fingerprint is insufficient: the original receipt must match the suite input hashes, Extent bytes, outcome counts and source provenance. Missing, failed, stale or mismatched evidence selects a fresh run.
+
+The bilingual inventory is not a Maven suite input: every RAG evaluation checks it and records that gate beside each affected reuse decision. This keeps the documentation inventory governed without recompiling unrelated framework tests.
 
 ```powershell
 $ProjectRoot = (Get-Location).Path

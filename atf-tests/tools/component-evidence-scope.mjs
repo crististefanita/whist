@@ -39,7 +39,7 @@ const allGroups = [...mavenGroups, ...gradleGroups];
 const frameworkOnly = file => nonBuildDocumentation(file)
     || file.startsWith('atf-tests/') || file.startsWith('docs/') || file.startsWith('release/')
     || file.startsWith('atf-ui-browser/') || file === '.github/workflows/whist-components.yml'
-    || file.startsWith('config/documentation-editions.') || file.startsWith('config/release-platform-rag-policy.')
+    || file.startsWith('config/release-platform-rag-policy.')
     || file.startsWith('config/atf-governance-policy.') || file.startsWith('config/atf-test-suites.')
     || file.startsWith('config/test-collections.') || file.startsWith('scripts/')
     || file.startsWith('.atf-signing/');
@@ -52,6 +52,9 @@ function appPackageOwner(file, sourceSet) {
 }
 
 function affectedGroups(file) {
+  // This inventory is checked by every RAG evaluation. A change to the inventory
+  // must not invalidate the independent Maven framework suite by itself.
+  if (file === 'config/documentation-editions.json') return [];
   if (/^docs\/game\/ATF_Rules(?:Ro|En)\.md$/.test(file)) return ['whist-lab-app-rules', 'atf-tests'];
   if (file.startsWith('.github/')) return file === '.github/workflows/whist-components.yml' ? ['atf-tests'] : allGroups;
   if (frameworkOnly(file)) return ['atf-tests'];
@@ -105,6 +108,9 @@ export function componentEvidenceScope(group, releaseInputs, executionInputs, {a
     return {decision: 'RUN', reason: 'UNKNOWN_SUITE_FAIL_CLOSED', changed, affected: changed, affectedGroups: allGroups};
   }
   const classified = changed.map(file => ({file, groups: affectedGroups(file)}));
+  const alwaysEvaluatedRagChecks = [...new Set(classified
+    .filter(row => row.file === 'config/documentation-editions.json')
+    .map(() => 'DOCUMENTATION_EDITIONS'))].sort();
   const metadataOnlyBuildFile = androidVersionMetadataOnly
       && classified.every(row => row.file === 'whist-lab-app/app/build.gradle' || frameworkOnly(row.file));
   const affected = classified.filter(row => row.groups.includes(group)
@@ -113,7 +119,9 @@ export function componentEvidenceScope(group, releaseInputs, executionInputs, {a
   const decision = affected.length ? 'RUN' : changed.length ? 'REUSE' : 'MATCH';
   const reason = affected.length
       ? unclassified.some(row => affected.includes(row.file)) ? 'UNKNOWN_INPUT_FAIL_CLOSED' : 'OWNED_OR_SHARED_INPUT_CHANGED'
-      : changed.length ? 'OWNED_INPUTS_UNCHANGED' : 'IDENTICAL_INPUTS';
+      : alwaysEvaluatedRagChecks.length ? 'RAG_GATE_ONLY'
+        : changed.length ? 'OWNED_INPUTS_UNCHANGED' : 'IDENTICAL_INPUTS';
   return {decision, reason, changed, affected,
-    affectedGroups: [...new Set(classified.flatMap(row => row.groups))].sort()};
+    affectedGroups: [...new Set(classified.flatMap(row => row.groups))].sort(),
+    alwaysEvaluatedRagChecks};
 }
