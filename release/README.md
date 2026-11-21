@@ -6,7 +6,7 @@ The catalog identifies the current Android edition and retains one preceding pub
 
 ## Current version
 
-[0.23.0 — contextual Whist update](0.23.0/README.md) has passed qualification; its authenticated APK publication is being completed. The main README points to its pinned asset.
+[0.23.0 — contextual Whist update](0.23.0/README.md) is published; its APK and checksum were downloaded and verified. The main README points to the pinned asset.
 
 ## Previous version
 
@@ -16,7 +16,7 @@ The catalog identifies the current Android edition and retains one preceding pub
 
 | Version | State | Dossier |
 |---|---|---|
-| 0.23.0 | Qualified; publication pending | [APK and evidence](0.23.0/README.md) |
+| 0.23.0 | Published; downloads verified | [APK and evidence](0.23.0/README.md) |
 | 0.22.1 | Previous published edition | [APK and evidence](0.22.1/README.md) |
 
 ## Publication and verification
