@@ -62,6 +62,12 @@ Calea de producție rămâne deterministă: inventarul Git selectează responsab
 
 LangGraph oferă noduri explicite, stare partajată și limite de checkpoint, dar nu scurtează compilarea. Un nod eșuat poate fi reluat de la început, așadar pilotul trebuie să demonstreze idempotența efectelor secundare și să lege fiecare reluare de sursă, comandă și receipt-urile inițiale. Vezi [îndrumarul oficial LangGraph pentru fluxuri](https://docs.langchain.com/oss/javascript/langgraph/thinking-in-langgraph).
 
+| Verificare pilot | Rezultat observat | Decizie |
+|---|---|---|
+| Repornire și selector | Planul persistent s-a reluat cu paritate exactă a selectorului. | Trecut |
+| Sursă schimbată | Respinsă înainte de predare. | Trecut |
+| Efecte secundare și prag de adoptare | Nu s-au executat comenzi; paritatea rapoartelor/JUnit și pragurile de timp nu sunt încă măsurate. | LangGraph rămâne în afara producției. |
+
 | Prioritate | Lacună delimitată | Criteriu de închidere |
 |---|---|---|
 | P2 | Încă nu există măsurători care să arate că un coordonator grafic îmbunătățește acest proces determinist de release față de checkpoint-urile actuale ale invocărilor. | Construiți un pilot shadow izolat care apelează numai comenzile existente. Injectați întreruperi în fiecare etapă și cereți paritate exactă pentru selecție, identitățile rapoartelor/JUnit și verdict, fără efecte secundare duplicate și fără autoritate de semnare, publicare sau ciclu de viață. Măsurați pornirea, costul unei rulări normale și recuperarea pe aceleași cazuri; adoptați numai dacă timpul median de recuperare scade cu cel puțin 20%, iar costul unei rulări neîntrerupte crește cu cel mult 5%. Niciun model nu poate stabili sau slăbi verdictul unui release. |
