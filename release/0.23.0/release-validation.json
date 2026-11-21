@@ -237,7 +237,7 @@
   "integrity": {
     "schemaVersion": 1,
     "kind": "OBSERVED_PAYLOAD_HASHES",
-    "observedUtc": "2026-11-21T14:55:38.255Z",
+    "observedUtc": "2026-11-21T15:07:52.471Z",
     "files": [
       {
         "path": "README.md",
@@ -255,19 +255,19 @@
         "sha256": "63f91f5910c6276b6083e5838828e72820ad661e4ee7b6ed0ca11dae60c629b6"
       },
       {
-        "path": "release-notes.md",
-        "bytes": 682,
-        "sha256": "af011802b6ba0ed3b78480717c8f133ca3e8c62caae5f23fe189d5a05442c1e1"
+        "path": "release-notes.template.md",
+        "bytes": 641,
+        "sha256": "1e2fbce41f194ebb7a66402d819ad30e3a5323b7e9051b16f0648f3d4c58234d"
       },
       {
         "path": "release-presentation.json",
-        "bytes": 490,
-        "sha256": "962e0f99cbfc8441909ffd81257b8ce0c983b80dcbcec40be8e1d4f68beab942"
+        "bytes": 466,
+        "sha256": "af011582600c0802ec6441d052596f45c722322ffee3b1ada154e19a10ca7334"
       },
       {
         "path": "reports/README.md",
-        "bytes": 4236,
-        "sha256": "c108fc2f804dbfa0fd7d7d39004ad66de61e95727807ae8e55df6a54a5f884ef"
+        "bytes": 4334,
+        "sha256": "d70e38672b9cd57f22913f0abb98c7cd63be7494b810f28f5648c77766e1854b"
       },
       {
         "path": "reports/apk-inputs.json",
@@ -678,6 +678,11 @@
         "path": "reports/e2e/sources/2f1ef201926e95523ab3eb8179a36e66c7fe883897c92b97d315721f15825bc4/source-inputs.json",
         "bytes": 254513,
         "sha256": "ec9b1c13061a3149bdac4096a4dca4967d996f5b6f4167b1bac2fe9b7492e7a7"
+      },
+      {
+        "path": "reports/qualification-plan.json",
+        "bytes": 1307,
+        "sha256": "6698da39cb1a097b322cb3508232c55f9eed97d6571eeba5c58e51d3c0106e7a"
       }
     ]
   }

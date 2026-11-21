@@ -60,3 +60,5 @@ The APK checksum sidecar is included beside the binary. The post-publication dow
 ## Source and APK identity
 
 The source snapshot was rebuilt at commit ``8b8b9d3681b2cdc44ef89d74241dc86cce34669c``. The signed output is byte-identical to the APK used for the seven accepted Android flows (SHA-256 `f77a65d25f7c1249409d10de3379751592ca018b350394a3ef852bc73e32665a`), so those native reports remain valid. Their original execution-source commit is retained in each receipt; the only intervening source change is the reviewed bilingual-documentation record.
+
+[Release catalog](../../README.md) · [Shared testing strategy](../../../docs/testing/README.md)
