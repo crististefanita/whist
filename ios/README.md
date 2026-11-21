@@ -6,16 +6,15 @@ The native target iOS is separated from the Android APK and requires qualificati
 
 ## Status
 
-The native target iOS is in skill. The project uses SwiftUI for interface
-and J2ObjC to sweat out the existing Java engine, so that the rules,
-bids, score, opponents and validation of actions to remain implemented a
-only once. The adapter only displays the status required for the screen to Swift, and
-human actions; the hands of the opponents are not included in the public state.
+The native iOS target is parked. The project records a SwiftUI adapter and a J2ObjC
+translation path for the shared Java engine, keeping rules, bids, scoring, opponents
+and action validation single-sourced. This design is not a supported or
+release-qualified application; the adapter exposes only public state and human actions.
 
-Configuration declares iOS 17 as a target deployment target and simulator iOS 27.2 as target
-current qualification. Support gets qualified after a green run of the workshop
-`iOS simulator qualification`; the verdict of the simulator must be attached to the commit
-release before the support was declared qualified.
+The deployment and simulator values in project files are implementation settings, not a
+current support matrix. No iOS runner, simulator, physical device, signed IPA or distribution
+result is included in active releases. Resume this platform only after its scope and a current
+Apple toolchain baseline are reviewed and the qualification workflow passes.
 
 ## Structure
 
@@ -31,9 +30,8 @@ release before the support was declared qualified.
 
 - **Requirements: ** macOS, Xcode 27.2, JDK 21, Homebrew, XcodeGen and J2ObjC 3.1.
   Windows Development Machine does not include Xcode.
-- **Workflow: ** public runner `xcode-27` builds J2ObjC distribution from
-  the set tag, run engine and adapter tests, then the application build
-  and test in simulator iOS 27.2.
+- **Workflow:** the repository retains a separate iOS CI path for shared-engine checks.
+  Its result is not required by Android releases and does not qualify iOS support or distribution.
 - **Native dependencies: ** project connects `libjre_emul` and `libiconv`, necessary
   J2ObjC runtime. See [Guide iOS](../docs/platform/ATF_iOSDelivery.md).
 

@@ -3,8 +3,9 @@
 ## Overview
 
 The Android Whist Lab app runs locally with the shared Java engine and AI opponents.
-The native iOS project is being qualified. Its SwiftUI interface and integration with the same
-engine are in the `../ios` directory.
+The native iOS project is parked; its SwiftUI adapter and shared-engine bridge are not currently
+built, tested or release-qualified. The files remain in `../ios`; iOS is outside the active
+Android and browser release scope.
 
 ## Usage
 
@@ -40,7 +41,7 @@ Automation only affects bidding and play in the active hand. It does not change 
 
 ```mermaid
 flowchart LR
-UI[Android or SwiftUI] -->|sends commands| SESSION[GameSession]
+UI[Android active; SwiftUI parked] -->|sends commands| SESSION[GameSession]
 SESSION -->|produce| VIEW[State captured]
 VIEW -->|feeds| UI
 SESSION -->|calls for decisions| AI[AiPolicy]
@@ -66,7 +67,7 @@ GameSession validates the controls prior to the change of status; UIU returns th
 | [ai-lab](ai-lab/README.md) | JVM module of independent player, tools and experiments offline; consumed only on testing. |
 | [test-audit](test-audit/README.md) | JVM fixtures for component capture and verification; excluded from application runtimeter. |
 | [algorithm-build](algorithm-build/README.md) | JVM exclusive Gradle input without configuration of Android application. |
-| [iOS](../ios/README.md) | SwiftUI project, joint engine translation and Apple simulator qualification. |
+| [iOS](../ios/README.md) | Parked SwiftUI adapter and shared-engine bridge; outside active release qualification. |
 | [atf-test-android](../atf-test-android/README.md) | Android verification components and scenarios explicitly activated. |
 
 The application version, the SDKs and package identifier have as source

@@ -8,26 +8,27 @@ Joint Java by J2ObjC translation. The original engine continues to be the source
 game, AI, bidding, score and save; adapter iOS does not implement a second
 variant of these rules.
 
-The Deployment target is iOS 17.0. Current Qualification uses iOS 27.2 and
-Xcode 27.2, latest stable versions found on 7 November 2026; iOS 27.3
-It's still beta. Apple versions change; simultaneously update the runner,
-The simulator runtime and this page after checking official documentation.
+The iOS project is parked and is not part of active release qualification. Values
+recorded in project and workflow files are implementation pins, not a current support
+matrix or a compatibility claim. Recheck Apple's supported Xcode and simulator versions
+before this platform is reactivated; do not infer iOS support from an Android APK.
 [Versions Apple](https://developer.apple.com/news/releases/) ·
 [Xcode Matrix and SDK](https://developer.apple.com/xcode/system-requirements/)
 
 ## Qualification on GitHub Actions
 
-A macOS hosted runner allows build and tests without local Mac.
+A macOS hosted runner can provide build and test capacity when iOS work resumes. This
+separate path is not a gate for the active Android release.
 
 - For public repositoryes, standard runners are free and unlimited.
 - For private repositorys, consumption uses the minutes included, then is charged at the plan rate. Check visibility and billing before estimating cost.
-- The image `xcode-27` is public preview and has no guarantees of a stable runner.
-- On 7 November 2026, the image includes Xcode 27.2 and the simulator iOS 27.2. the workflower fixes the version instead of choosing `latest`.
+- The workflow pins its toolchain rather than selecting `latest`; refresh those pins and
+  verify current runner availability before reactivating the path.
 [Runners and conditions GitHub](https://docs.github.com/en/actions/reference/runners/github-hosted-runners) ·
 [Current image macOS Xcode 27](https://github.com/actions/runner-images/blob/main/images/macos/xcode-27-arm64-Readme.md) ·
 [Preview Xcode 27](https://github.blog/changelog/2026-09-10-xcode-27-runner-image-now-runs-on-macos-27/)
 
-The [iOS](../../.github/workflows/ios.yml) workshop checks on the same commit:
+The retained [iOS](../../.github/workflows/ios.yml) workflow can check a commit when explicitly used:
 
 1. JVM tests of the native engine and adapter;
 2. translation of Java sources with J2ObjC;
@@ -44,8 +45,8 @@ intermediate version and no experience on physical devices.
 
 ## Delivery steps
 
-1. Run the `iOS simulator qualification` workflow on the source compost of the release.
-2. Check the test results and keep the `xcresult`the attached to the run.
+1. When iOS work resumes, run the `iOS simulator qualification` workflow on the reviewed source commit.
+2. Check the test results and retain the `xcresult` attached to that run.
 3. For TestFlight or App Store, archive with Xcode, sign with identity
    be able to use the system and validate installation on devices iPhone and iPad.
 4. Publish the iOS app separately through Apple's distribution flow. The Android APK and hash

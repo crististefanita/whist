@@ -18,6 +18,6 @@ From directory `whist-lab-app`, run:
 ./gradlew :ios-bridge:test --no-daemon
 ```
 
-The iOS workflow runs separately the deck tests and Xcode tests on the simulator. The signed building and distribution iOS have their own evidence.
+The retained iOS CI workflow may run shared-engine and bridge checks separately. It does not qualify an iOS application, simulator support, signing or distribution; the platform remains parked.
 
 [Common test strategy](../../../../docs/testing/README.md)
