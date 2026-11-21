@@ -120,8 +120,11 @@ test('the current published release admits reuse for an exact Android version-on
   const build = 'whist-lab-app/app/build.gradle';
   const oldText = 'android {\n    versionCode 45\n    versionName "0.22"\n    targetSdk 36\n}\n';
   const candidateText = oldText.replace('versionCode 45', 'versionCode 46').replace('0.22', '0.22.1');
-  const oldRows = [{path: build, sha256: digest(oldText)}];
-  const currentRows = [{path: build, sha256: digest(candidateText)}];
+  const documentationEdition = 'config/documentation-editions.json';
+  const oldRows = [{path: build, sha256: digest(oldText)},
+    {path: documentationEdition, sha256: 'a'.repeat(64)}];
+  const currentRows = [{path: build, sha256: digest(candidateText)},
+    {path: documentationEdition, sha256: 'b'.repeat(64)}];
   await fs.mkdir(previous, {recursive: true});
   await fs.mkdir(path.join(source, path.dirname(build)), {recursive: true});
   await fs.mkdir(target, {recursive: true});
@@ -146,7 +149,8 @@ test('the current published release admits reuse for an exact Android version-on
 
   const decisions = await prepareComponentReuse(target, previous, ['whist-lab-app-display'], {sourceRoot: source});
   assert.equal(decisions[0].decision, 'REUSE');
-  assert.equal(decisions[0].reason, 'OWNED_INPUTS_UNCHANGED');
+  assert.equal(decisions[0].reason, 'RAG_GATE_ONLY');
+  assert.deepEqual(decisions[0].alwaysEvaluatedRagChecks, ['DOCUMENTATION_EDITIONS']);
   assert.equal(JSON.parse(await read(target, 'component-reuse.json')).comparison.androidVersionMetadataOnly, true);
 });
 

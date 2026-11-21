@@ -39,6 +39,7 @@ const allGroups = [...mavenGroups, ...gradleGroups];
 const frameworkOnly = file => nonBuildDocumentation(file)
     || file.startsWith('atf-tests/') || file.startsWith('docs/') || file.startsWith('release/')
     || file.startsWith('atf-ui-browser/') || file === '.github/workflows/whist-components.yml'
+    || file === 'config/documentation-editions.json'
     || file.startsWith('config/release-platform-rag-policy.')
     || file.startsWith('config/atf-governance-policy.') || file.startsWith('config/atf-test-suites.')
     || file.startsWith('config/test-collections.') || file.startsWith('scripts/')
