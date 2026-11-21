@@ -61,3 +61,5 @@ Fișierul checksum al APK-ului este inclus lângă binar. Dovada descărcării d
 ## Sursa și identitatea APK-ului
 
 Snapshotul sursă a fost reconstruit la commitul ``8b8b9d3681b2cdc44ef89d74241dc86cce34669c``. Binarul semnat este identic octet cu octet cu APK-ul folosit pentru cele șapte fluxuri Android acceptate (SHA-256 `f77a65d25f7c1249409d10de3379751592ca018b350394a3ef852bc73e32665a`), deci rapoartele native rămân valabile. Commitul sursei fiecărei execuții inițiale este păstrat în dovada sa; singura schimbare intermediară de sursă este înregistrarea reviziei bilingve a documentației.
+
+[Catalogul release-urilor](../../README.md) · [Strategia de testare comună](../../../docs/testing/README.md)
