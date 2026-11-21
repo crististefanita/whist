@@ -56,23 +56,15 @@ Proba de transfer prin Android DownloadManager și verificarea certificatului ap
 
 Separarea sursei native de validator aparține [contractului de calificare](../testing/ATF_ReleaseQualification.md#proveniența-execuției-native-și-a-validatorului). Reutilizarea cere în continuare motor, scenariu, APK și dovezi originale neschimbate.
 
-## Costul calificării și reluarea invocărilor
+## Pilot LangGraph în umbră
 
-Validarea snapshot-ului și a cache-ului consumă timp chiar când execuția testelor se reutilizează. Măsurați aceste costuri separat de execuție și de așteptarea rezervării.
+Calea de producție rămâne deterministă: inventarul Git selectează responsabilii, lansatorul PowerShell pregătește copiile și execută numai suitele lipsă sau invalidate, checkpoint-urile Maven/Gradle leagă probele acceptate de sursă, iar evaluatorul Node citește doar dosarul. Testele de componentă acoperă deja întreruperile, intrările schimbate, checkpoint-urile parțiale și respingerea probelor. [Calificarea release-ului](../testing/ATF_ReleaseQualification.md#orchestrare-și-poarta-de-adoptare-langgraph) definește contractele stabile de reluare și selecție pe platformă.
 
-- Salvați fiecare invocare acceptată împreună cu sursa, dependențele compilate, identitatea, comparațiile originale și hash-urile rapoartelor.
-- Reluați invocările nerezolvate numai după verificarea acestor intrări imuabile. Păstrați încercările respinse ca diagnostice.
-- Dovediți paritatea întregului set de identități JUnit față de o rulare completă; respingeți sursele schimbate, cazurile lipsă, identitățile duplicate și dovezile modificate.
-- Păstrați timeout-urile explicite până trece o reluare reală. Un caz vecin trecut sau un receipt rescris nu reprezintă dovezi înlocuitoare.
-- Oferiți un lansator țintit versionat, care rezolvă semnăturile parametrilor metodelor și contextul raportului agregat înaintea execuției. Păstrați încercările respinse la descoperire sau publicare separat de probele acceptate.
+LangGraph oferă noduri explicite, stare partajată și limite de checkpoint, dar nu scurtează compilarea. Un nod eșuat poate fi reluat de la început, așadar pilotul trebuie să demonstreze idempotența efectelor secundare și să lege fiecare reluare de sursă, comandă și receipt-urile inițiale. Vezi [îndrumarul oficial LangGraph pentru fluxuri](https://docs.langchain.com/oss/javascript/langgraph/thinking-in-langgraph).
 
-## Costul selecției pe platformă
-
-Selecția conservatoare include resursele exclusiv Web, pachetele istorice ale navigatorului și instrumentele de împachetare în fluxurile Android. Păstrați această limită de siguranță până când componentele bazate pe dependențe demonstrează o selecție mai restrânsă.
-
-- Declarați platforma responsabilă pentru resurse și împachetare; schimbările necunoscute ale execuției comune trebuie să selecteze în continuare fiecare flux afectat.
-- Simulați schimbări exclusiv Web, eliminarea versiunilor nefolosite, schimbări ale meniului Android și ale dependențelor de execuție. Cereți un caz vecin valid și un control negativ pentru fiecare excludere.
-- Măsurați separat inventarul, copierea, compilarea, execuția și așteptarea dispozitivului. Păstrați separat snapshot-ul RAG exclusiv de surse și workspace-urile componentelor care conțin catalogul de release și fișiere generate.
+| Prioritate | Lacună delimitată | Criteriu de închidere |
+|---|---|---|
+| P2 | Încă nu există măsurători care să arate că un coordonator grafic îmbunătățește acest proces determinist de release față de checkpoint-urile actuale ale invocărilor. | Construiți un pilot shadow izolat care apelează numai comenzile existente. Injectați întreruperi în fiecare etapă și cereți paritate exactă pentru selecție, identitățile rapoartelor/JUnit și verdict, fără efecte secundare duplicate și fără autoritate de semnare, publicare sau ciclu de viață. Măsurați pornirea, costul unei rulări normale și recuperarea pe aceleași cazuri; adoptați numai dacă timpul median de recuperare scade cu cel puțin 20%, iar costul unei rulări neîntrerupte crește cu cel mult 5%. Niciun model nu poate stabili sau slăbi verdictul unui release. |
 
 ## Admiterea testChanges înainte de pregătirea colecției
 
@@ -90,8 +82,10 @@ Fluxul izolat primește acum explicit baza reviziei. Admiterea probelor de contr
 
 ## Admiterea schemei de raportare
 
-Evaluatorul poate accepta dovezi HTML canonice când manifestul declară calificarea XML istorică. Guvernanța integrității respinge ulterior nepotrivirea; cele două etape au nevoie de aceeași regulă de admitere.
+Evaluatorul aplică acum aceeași regulă de admitere a raportării înainte de verdict și păstrează manifestele istorice neschimbate. Combinațiile de scheme și rapoarte acceptate sunt:
 
-- Verificați schema calificării și reprezentarea dovezilor înaintea verdictului sau publicării. Cereți schema HTML canonică pentru dosarele moderne și o limită explicit acceptată pentru dovezile XML istorice.
-- Acoperiți prin componente schemele absente sau neacceptate, dovezile mixte, receipt-urile lipsă ale grupurilor și numerele contradictorii de invocări.
-- Aliniați diagnosticele evaluatorului, preflight-ului independent și guvernanței complete. Respingeți intrarea inconsistentă fără rescrierea receipt-urilor vechi sau inventarea datelor JUnit.
+- Versiunile 1 și 2 pot omite `qualification.reportSchema` numai dacă toate rapoartele declarate pentru componente și E2E sunt HTML.
+- Versiunea 3 și cele ulterioare declară `ATF_EXTENT_HTML_INLINE_BASE64_V1`.
+- Modul XML-only, valorile necunoscute, declarația modernă absentă sau formatele amestecate blochează verdictul. JUnit XML rămâne o dovadă temporară, nu raportul canonic.
+
+Politica se află în `config/release-platform-rag-policy.json`, admiterea este aplicată de `atf-tests/tools/evaluate-release-rag.mjs`, iar testele de componentă aparțin claselor `ReleaseRagProvenanceComponentTest` și `ReleaseRagPlatformGovernanceTest`.

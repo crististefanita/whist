@@ -109,6 +109,52 @@ Evaluatorul RAG consumă dovezile deja produse și emite un verdict read-only.
 
 Planul fixează versiunea, canalul (`LOCAL`, `TEST` sau `PRODUCTION`), riscul, platformele, grupurile componente, schimbarea fluxului utilizatorului și decizia E2E cu motiv.
 
+### Admiterea schemei de raportare
+
+- Versiunile 1 și 2 ale schemei de calificare pot omite `qualification.reportSchema` numai dacă toate căile declarate pentru rapoartele de componente și E2E sunt HTML.
+- Versiunea 3 și cele ulterioare trebuie să declare `ATF_EXTENT_HTML_INLINE_BASE64_V1`.
+- `JUNIT_XML_ONLY`, o valoare necunoscută, o declarație modernă absentă sau orice cale de raport non-HTML blochează verdictul.
+- JUnit XML este o dovadă temporară independentă; nu poate înlocui Extent HTML canonic.
+
+Contractul de componentă este în [ReleaseRagProvenanceComponentTest](../../atf-tests/src/test/java/atf/tests/governance/documentation/release/rag/ReleaseRagProvenanceComponentTest.java); forma politicii este protejată de [ReleaseRagPlatformGovernanceTest](../../atf-tests/src/test/java/atf/tests/governance/documentation/release/ReleaseRagPlatformGovernanceTest.java). Manifestele release-urilor existente nu sunt rescrise pentru a adăuga noul câmp.
+
+### Orchestrare și poarta de adoptare LangGraph
+
+Calea de producție RAG este deterministă: inventarul Git selectează proprietarii, lansatorul PowerShell pregătește copiile și execută numai suitele lipsă sau invalidate, receipt-urile salvează checkpoint-uri pentru lucrul acceptat, iar evaluatorul Node citește dosarul complet. LangGraph nu este o dependență de producție sau un motor de verdict. Modelul lui oficial adaugă noduri explicite și limite de checkpoint; nu accelerează compilarea Maven sau Gradle, iar un nod reluat poate executa din nou lucrul de la început.
+
+Controale operaționale:
+
+- `AtfRagGovernanceSuite` are un contract de selecție închis pentru admiterea schemei, proveniență, preflight Android/GitHub, selecția din diff, izolarea lansatorului, integritatea raportului și sigilarea publicării. Testul contractului respinge porțile lipsă și verificările fără legătură sau de distribuire live.
+- Lansatorul cere un singur raport Extent HTML, îl copiază în `component-extent.html` și-i înregistrează numărul de octeți și SHA-256 în `governance-report-manifest.json`. Fișierele JUnit rămân disponibile pentru diagnosticul invocărilor.
+
+```mermaid
+flowchart LR
+    DIFF[Diff Git și intrări fixate] -->|fixează| SELECT[Proprietate pe diff]
+    SELECT -->|verifică| REUSE[Verifică receipt-ul anterior]
+    SELECT -->|selectează| RUN[Lansatorul PowerShell]
+    REUSE -->|validează| IMPORT[Reutilizează dovezile originale]
+    REUSE -->|respinge| RUN
+    RUN -->|salvează| CHECKPOINT[Checkpoint al invocării legat de hash]
+    IMPORT -->|păstrează| DOSSIER[Dosarul cu dovezile release-ului]
+    CHECKPOINT -->|leagă| DOSSIER
+    DOSSIER -->|evaluează| RAG[Evaluator Node read-only]
+    RAG -->|prezintă| REVIEW[Revizie umană]
+    PILOT[Shadow LangGraph opțional] -.->|coordonează| RUN
+```
+
+<details>
+<summary>Legendă — proprietatea execuției și a deciziei</summary>
+
+Selectorul alege responsabilii pe baza schimbărilor sursei. Lansatorul deține execuția și scrierea checkpoint-urilor. RAG doar calculează verdictul de readiness pe baza probelor citate; revizia umană deține promovarea. Pilotul LangGraph poate coordona comenzile existente, dar nu poate crea dovezi, schimba verdictul, semna sau publica.
+
+</details>
+
+- Întrerupeți fluxul în fiecare etapă și demonstrați selecții identice, aceleași identități de raport/JUnit și absența efectelor secundare repetate.
+- Verificați că graful nu poate modifica un verdict read-only, semna APK-ul sau publica un release.
+- Comparați aceleași cazuri de recuperare cu lansatorul existent; cereți o reducere de cel puțin 20% a timpului median de recuperare și un cost de cel mult 5% pentru rulările neîntrerupte.
+
+Până la demonstrarea acestor praguri, LangGraph rămâne o evaluare opțională. [Îndrumarul LangGraph pentru fluxuri](https://docs.langchain.com/oss/javascript/langgraph/thinking-in-langgraph).
+
 ### Regresiile evaluatorului
 
 Probele Node folosesc același executor cu termen limitat ca verificările Git. Citirea ieșirii începe odată cu procesul, iar diagnosticul copilului se păstrează la eșec. [Probe de componentă](../../atf-tests/src/test/java/atf/tests/governance/documentation/release/rag/scope/ComponentEvidenceScopeComponentTest.java)
@@ -162,6 +208,7 @@ Snapshot-ul APK este reperul pentru compararea intrărilor fiecărei suite. RAG 
 - `TMP`, `TEMP` și directorul ales de sistem trebuie să indice directoare externe existente.
 - Controlul verifică atât calea declarată, cât și destinația fizică după rezolvarea linkurilor. Un checkout detectat la oricare dintre strămoși, inclusiv un worktree cu fișier `.git`, produce `QUALIFICATION-TEMP-IN-CHECKOUT`.
 - O cale inexistentă, relativă ori inaccesibilă produce `QUALIFICATION-TEMP-INVALID`.
+- Lansatorul de guvernanță plasează fișierele temporare Maven și Surefire în spațiul izolat (`maven-temp`) și restaurează `TEMP`/`TMP` ale apelantului. Setați `WHIST_QUALIFICATION_TEMP_ROOT` pentru a păstra acest spațiu pe discul dorit.
 
 | Moment | Control și dovadă |
 | --- | --- |
