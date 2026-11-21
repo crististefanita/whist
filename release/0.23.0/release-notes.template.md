@@ -1,4 +1,5 @@
 # Whist 0.23.0
+Acest release îmbunătățește licitarea și jocul la Whist folosind licitațiile publice, cărțile vizibile și probabilitățile pentru cărțile rămase.
 
 ## Descărcare
 
