@@ -126,6 +126,7 @@ Controale operaționale:
 
 - `AtfRagGovernanceSuite` are un contract de selecție închis pentru admiterea schemei, proveniență, preflight Android/GitHub, selecția din diff, izolarea lansatorului, integritatea raportului și sigilarea publicării. Testul contractului respinge porțile lipsă și verificările fără legătură sau de distribuire live.
 - Lansatorul cere un singur raport Extent HTML, îl copiază în `component-extent.html` și-i înregistrează numărul de octeți și SHA-256 în `governance-report-manifest.json`. Fișierele JUnit rămân disponibile pentru diagnosticul invocărilor.
+- Reutilizarea componentelor funcționează momentan la limita selecției declarate. Dacă o selecție eșuează, o reluare izolată trecută nu înlocuiește receipt-ul de grup eșuat; reluați întreaga selecție sau păstrați calificarea blocată. Recuperarea selectivă JUnit cere un receipt de reconciliere legat de sursă și un raport Extent nou care leagă eșecul inițial de rezultatele reluării, fără să rescrie niciun raport.
 - Înaintea reluării unui graf persistent, citește și validează ID-ul rulării și amprenta sursei. Respinge nepotrivirea fără să consume checkpoint-ul în așteptare și fără să intre într-un nod cu efecte secundare.
 
 ```mermaid
