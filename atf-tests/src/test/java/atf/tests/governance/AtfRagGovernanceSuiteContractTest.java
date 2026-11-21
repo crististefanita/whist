@@ -17,6 +17,7 @@ class AtfRagGovernanceSuiteContractTest {
     @Test void theTargetedEntryPointSelectsOnlyOfflineReleaseGovernance() {
         Class<AtfRagGovernanceSuite> suite = AtfRagGovernanceSuite.class;
         assertTrue(suite.isAnnotationPresent(Suite.class), "The RAG entry point must remain a JUnit suite.");
+        assertTrue(suite.isAnnotationPresent(AtfComponentTest.class), "The RAG entry point runs offline component checks.");
         assertEquals(List.of("atf.tests.governance"),
                 List.of(suite.getAnnotation(SelectPackages.class).value()));
         var patterns = suite.getAnnotation(IncludeClassNamePatterns.class).value();

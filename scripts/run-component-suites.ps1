@@ -353,15 +353,15 @@ try {
         androidComponentsReceipt=$androidComponentsReceipt
     }
     Write-AtfComponentJson (Join-Path $RunRoot 'source-component-run.json') $run
-    $lines = @('# Rapoartele componentelor pe sursa fixată','','## Pe scurt','','Selecțiile noi au raport Extent și receipt proprii. Rularea privește sursa fixată; calificarea APK-ului și testele native au intrări separate.','','| Selecție | Execuție | Raport | Metadate |','|---|---|---|---|')
+    $lines = @('# Component reports for the pinned source','','## Overview','','Each newly executed selection has its own Extent report and execution receipt. These results qualify the pinned source; APK qualification and native Android flows have separate evidence.','','| Selection | Execution | Report | Metadata |','|---|---|---|---|')
     foreach ($group in $selectedGroups) {
         $origin = $reused | Where-Object {$_.group -ceq $group}
         $mode = if ($origin) { $origin.decision } else { 'RUN' }
         $reportPath = $group + '/component-report.html'
         $receiptPath = $group + '/execution.json'
-        $lines += "| $group | $mode | [Extent]($reportPath) | [Execuție]($receiptPath) |"
+        $lines += "| $group | $mode | [Extent]($reportPath) | [Execution]($receiptPath) |"
     }
-    $lines += @('','Manifestul surselor, proveniența și receipt-ul agregat leagă execuțiile noi de amprenta surselor. Planul de reutilizare indică decizia fiecărei suite și dosarul original. XML-ul JUnit rămâne temporar pentru verificare.')
+    $lines += @('','The source manifest, provenance and aggregate receipt bind each new execution to the pinned source fingerprint. The reuse plan records each selection decision and its original evidence directory. JUnit XML files remain temporary inputs to the audited report.')
     $lines | Set-Content -LiteralPath (Join-Path $RunRoot 'README.md') -Encoding utf8
     foreach ($logFile in Get-ChildItem -LiteralPath $RunRoot -File -Filter '*.log') {
         $content = [IO.File]::ReadAllText($logFile.FullName)

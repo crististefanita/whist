@@ -57,6 +57,14 @@
       "layer": "integration"
     },
     {
+      "module": "atf-tests",
+      "suite": "atf.tests.governance.AtfRagGovernanceSuite",
+      "role": "focused",
+      "parents": [
+        "atf.tests.suites.AtfComponentSuite"
+      ]
+    },
+    {
       "module": "atf-test-android",
       "suite": "atf.android.suites.AndroidDisplayComponentSuite",
       "role": "focused",
