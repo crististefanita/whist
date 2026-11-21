@@ -5,5 +5,14 @@
   "documents": 109,
   "englishSha256": "9dcc36975b22f97d7dae7f238b28f14d9caa9760334c321f524c524363a55dd3",
   "romanianSha256": "f265cd7bf09e1982ef55c155423f7aa214e166bbb4c06da76c837561fc8ebb19",
-  "romanianCommit": "aa854d31e1d95781d72e8ad3e081b92a42f24e5c"
+  "romanianCommit": "aa854d31e1d95781d72e8ad3e081b92a42f24e5c",
+  "review": {
+    "schemaVersion": 2,
+    "englishBranch": "main",
+    "romanianBranch": "main_RO",
+    "documents": 109,
+    "englishSha256": "aec31eae0462886bd6a91289a5091509a00f80a54c2ca635689ef9c5a4426003",
+    "romanianSha256": "c4d14cbff6df0a3ece19311c42b781d6f5b44e94a05444ce0432b490f54498f7",
+    "romanianCommit": "8a23a8665bc2bea841cae398d30ddc1ae9e6ae03"
+  }
 }
