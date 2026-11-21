@@ -18,6 +18,6 @@ Din directorul `whist-lab-app`, executați:
 ./gradlew :ios-bridge:test --no-daemon
 ```
 
-Workflow-ul iOS rulează separat testele punții și testele Xcode pe simulator. Build-ul semnat și distribuția iOS au propriile dovezi.
+Workflow-ul CI iOS păstrat poate rula separat verificări ale motorului comun și ale punții. Acesta nu califică aplicația iOS, suportul simulatorului, semnarea sau distribuția; platforma rămâne în așteptare.
 
 [Strategia comună de testare](../../../../docs/testing/README.md)

@@ -8,26 +8,28 @@ Java comun prin traducerea J2ObjC. Motorul original continuă să fie sursa regu
 de joc, AI, licitare, scor și salvări; adaptorul iOS nu implementează o a doua
 variantă a acestor reguli.
 
-Deployment target-ul este iOS 17.0. Calificarea curentă folosește iOS 27.2 și
-Xcode 27.2, cele mai noi versiuni stabile găsite la 7 noiembrie 2026; iOS 27.3
-este încă beta. Versiunile Apple se schimbă; actualizați simultan runner-ul,
-runtime-ul simulatorului și această pagină după verificarea documentației oficiale.
+Proiectul iOS este pus în așteptare și nu intră în calificarea release-urilor active.
+Valorile din fișierele proiectului și workflow sunt setări de implementare, nu o
+matrice curentă de suport sau o declarație de compatibilitate. Verificați versiunile
+Xcode și simulator susținute de Apple înainte de reluarea platformei; APK-ul Android
+nu dovedește suportul iOS.
 [Versiunile Apple](https://developer.apple.com/news/releases/) ·
 [Matricea Xcode și SDK](https://developer.apple.com/xcode/system-requirements/)
 
 ## Calificarea pe GitHub Actions
 
-Un runner macOS găzduit permite build și teste fără Mac local.
+Un runner macOS găzduit poate asigura build și teste la reluarea lucrului iOS. Această
+cale separată nu este o condiție pentru release-ul Android activ.
 
 - Pentru repository-uri publice, runner-ele standard sunt gratuite și nelimitate.
 - Pentru repository-uri private, consumul folosește minutele incluse, apoi se taxează la tariful planului. Verificați vizibilitatea și facturarea înainte de a estima costul.
-- Imaginea `xcode-27` este public preview și nu are garanțiile unui runner stabil.
-- La 7 noiembrie 2026, imaginea include Xcode 27.2 și simulatorul iOS 27.2. Workflow-ul fixează versiunea în loc să aleagă `latest`.
+- Workflow-ul fixează toolchain-ul în loc să aleagă `latest`; verificați disponibilitatea
+  curentă a runner-ului și actualizați aceste versiuni înainte de reactivarea traseului.
 [Runner-e și condiții GitHub](https://docs.github.com/en/actions/reference/runners/github-hosted-runners) ·
 [Imaginea curentă macOS Xcode 27](https://github.com/actions/runner-images/blob/main/images/macos/xcode-27-arm64-Readme.md) ·
 [Preview Xcode 27](https://github.blog/changelog/2026-09-10-xcode-27-runner-image-now-runs-on-macos-27/)
 
-Workflow-ul [iOS](../../.github/workflows/ios.yml) verifică pe același commit:
+Workflow-ul [iOS](../../.github/workflows/ios.yml) păstrat poate verifica un commit când este folosit explicit:
 
 1. testele JVM ale motorului și adaptorului nativ;
 2. traducerea surselor Java cu J2ObjC;
@@ -44,8 +46,8 @@ versiune intermediară și nici experiența pe dispozitive fizice.
 
 ## Pașii de livrare
 
-1. Rulați workflow-ul `iOS simulator qualification` pe commitul sursă al release-ului.
-2. Verificați rezultatul testului și păstrați `xcresult`-ul atașat run-ului.
+1. La reluarea lucrului iOS, rulați workflow-ul `iOS simulator qualification` pe commitul sursă revizuit.
+2. Verificați rezultatele și păstrați `xcresult`-ul atașat acelui run.
 3. Pentru TestFlight sau App Store, arhivați cu Xcode, semnați cu identitatea
    organizației și validați instalarea pe dispozitive iPhone și iPad.
 4. Publicați separat aplicația iOS prin fluxul Apple. APK-ul și hash-ul Android nu

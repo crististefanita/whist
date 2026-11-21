@@ -6,16 +6,16 @@
 
 ## Stare
 
-Ținta nativă iOS este în calificare. Proiectul folosește SwiftUI pentru interfață
-și J2ObjC pentru a transpila motorul Java existent, astfel încât regulile,
-licitațiile, scorul, adversarii și validarea acțiunilor să rămână implementate o
-singură dată. Adaptorul expune către Swift doar starea necesară ecranului și
-acțiunile omului; mâinile adversarilor nu sunt incluse în starea publică.
+Ținta nativă iOS este pusă în așteptare. Proiectul păstrează un adaptor SwiftUI și o
+cale de traducere J2ObjC pentru motorul Java comun, astfel încât regulile, licitațiile,
+scorul, adversarii și validarea acțiunilor să rămână într-o singură implementare.
+Această arhitectură nu reprezintă o aplicație suportată sau calificată pentru release;
+adaptorul expune doar starea publică și acțiunile omului.
 
-Configurația declară iOS 17 ca deployment target și simulatorul iOS 27.2 ca țintă
-de calificare curentă. Suportul devine calificat după un run verde al workflow-ului
-`iOS simulator qualification`; verdictul de simulator trebuie atașat commitului
-de release înainte ca suportul să fie declarat calificat.
+Valorile deployment și simulator din fișiere sunt setări de implementare, nu o matrice
+curentă de suport. Release-urile active nu includ un runner iOS, simulator, dispozitiv
+fizic, IPA semnat sau rezultat de distribuție. Reluăm platforma numai după revizuirea
+scopului și a unei baze curente de toolchain Apple, apoi după trecerea workflow-ului de calificare.
 
 ## Structură
 
@@ -31,9 +31,8 @@ de release înainte ca suportul să fie declarat calificat.
 
 - **Cerințe:** macOS, Xcode 27.2, JDK 21, Homebrew, XcodeGen și J2ObjC 3.1.
   Mașina Windows de dezvoltare nu include Xcode.
-- **Workflow:** runner-ul public `xcode-27` construiește distribuția J2ObjC din
-  tag-ul fixat, rulează testele motorului și adaptorului, apoi build-ul aplicației
-  și testul în simulatorul iOS 27.2.
+- **Workflow:** repository-ul păstrează o cale CI iOS separată pentru verificări ale motorului comun.
+  Rezultatul nu este obligatoriu pentru release-urile Android și nu califică suportul sau distribuția iOS.
 - **Dependențe native:** proiectul leagă `libjre_emul` și `libiconv`, necesare
   runtime-ului J2ObjC. Vezi [ghidul iOS](../docs/platform/ATF_iOSDelivery.md).
 

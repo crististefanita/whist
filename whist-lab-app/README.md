@@ -3,8 +3,9 @@
 ## Pe scurt
 
 Aplicația Android Whist Lab rulează local cu motorul Java comun și adversari AI.
-Proiectul nativ iOS este în calificare; interfața SwiftUI și integrarea aceluiași
-motor se află în directorul `../ios`.
+Proiectul nativ iOS este pus în așteptare; adaptorul SwiftUI și puntea către motorul
+comun nu sunt construite, testate sau calificate pentru release în prezent. Fișierele
+rămân în `../ios`; iOS este în afara ariei active Android și browser.
 
 ## Folosire
 
@@ -40,7 +41,7 @@ Automatizarea afectează numai tura de licitare și turele de joc ale mâinii ac
 
 ```mermaid
 flowchart LR
-UI[Android sau SwiftUI] -->|trimite comenzi| SESSION[GameSession]
+UI[Android activ; SwiftUI în așteptare] -->|trimite comenzi| SESSION[GameSession]
 SESSION -->|produce| VIEW[Stare capturată]
 VIEW -->|alimentează| UI
 SESSION -->|solicită decizii| AI[AiPolicy]
@@ -66,7 +67,7 @@ GameSession validează comenzile înaintea schimbării stării; UI-ul redă star
 | [ai-lab](ai-lab/README.md) | Modul JVM al jucătorului independent, uneltelor și experimentelor offline; consumat numai la testare. |
 | [test-audit](test-audit/README.md) | Fixture-uri JVM pentru captura și verificarea componentelor; exclus din runtime-ul aplicației. |
 | [algorithm-build](algorithm-build/README.md) | Intrare Gradle exclusiv JVM, fără configurarea aplicației Android. |
-| [iOS](../ios/README.md) | Proiect SwiftUI, traducerea motorului comun și calificarea pe simulator Apple. |
+| [iOS](../ios/README.md) | Adaptor SwiftUI și punte către motorul comun, puse în așteptare; în afara calificării release-urilor active. |
 | [atf-test-android](../atf-test-android/README.md) | Componente de verificare și scenarii Android activate explicit. |
 
 Versiunea aplicației, SDK-urile și identificatorul pachetului au ca sursă
