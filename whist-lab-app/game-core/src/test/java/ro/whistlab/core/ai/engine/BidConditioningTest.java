@@ -2,6 +2,7 @@ package ro.whistlab.core.ai.engine;
 
 import java.util.ArrayList;
 import java.util.List;
+import ro.whistlab.core.ai.engine.inference.BidConditioning;
 import ro.whistlab.core.ai.policy.HandTrickPotential;
 import ro.whistlab.core.model.Card;
 import ro.whistlab.core.model.PlayedCard;

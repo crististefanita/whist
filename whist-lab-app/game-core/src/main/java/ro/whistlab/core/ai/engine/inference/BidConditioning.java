@@ -1,4 +1,4 @@
-package ro.whistlab.core.ai.engine;
+package ro.whistlab.core.ai.engine.inference;
 
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
@@ -13,7 +13,7 @@ import ro.whistlab.core.rules.GameMode;
 import ro.whistlab.core.rules.GameRules;
 
 /** Soft public-bid evidence for hypothetical four-seat Romanian 1–8–1 deals with two to eight cards. */
-final class BidConditioning {
+public final class BidConditioning {
     private static final double UNINFORMED_MIX = .65;
     private static final double STRENGTH_MIX = 1 - UNINFORMED_MIX;
     private static final double BID_DISPERSION = .90;
@@ -22,7 +22,7 @@ final class BidConditioning {
 
     private BidConditioning() {}
 
-    static int evidenceCount(View view) {
+    public static int evidenceCount(View view) {
         if (!supported(view)) return 0;
         int count = 0;
         int prefix = 0;
@@ -44,7 +44,7 @@ final class BidConditioning {
     }
 
     /** Likelihood is bounded away from zero so a bid remains evidence, never a card reveal. */
-    static double likelihood(View view, List<List<Card>> possibleHands) {
+    public static double likelihood(View view, List<List<Card>> possibleHands) {
         if (!supported(view) || possibleHands.size() != view.seats().size()) return 1.0;
         double logWeight = 0;
         int evidence = 0;

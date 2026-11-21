@@ -1,6 +1,7 @@
 package ro.whistlab.core.ai.engine;
 
 import ro.whistlab.core.ai.profile.HardStrategyProfile;
+import ro.whistlab.core.ai.engine.inference.BidConditioning;
 import ro.whistlab.core.ai.simulation.PossibleDeals;
 import ro.whistlab.core.ai.simulation.SearchCancellation;
 import ro.whistlab.core.ai.simulation.SearchWork;

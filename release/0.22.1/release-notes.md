@@ -1,3 +1,5 @@
+# Whist 0.22.1
+
 RAG maintenance updates make component selection ownership-aware and reuse verified evidence for unchanged modules.
 
 ## Changes
