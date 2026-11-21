@@ -109,6 +109,8 @@ Evaluatorul RAG consumă dovezile deja produse și emite un verdict read-only.
 
 Planul fixează versiunea, canalul (`LOCAL`, `TEST` sau `PRODUCTION`), riscul, platformele, grupurile componente, schimbarea fluxului utilizatorului și decizia E2E cu motiv.
 
+Politica activă ține iOS în așteptare (`platforms.ios.status = PARKED`, `activeReleaseGate = false`). Planurile release-urilor califică doar Android până când o modificare revizuită a politicii activează o cale nativă calificată separat.
+
 ### Admiterea schemei de raportare
 
 - Versiunile 1 și 2 ale schemei de calificare pot omite `qualification.reportSchema` numai dacă toate căile declarate pentru rapoartele de componente și E2E sunt HTML.
@@ -124,6 +126,7 @@ Calea de producție RAG este deterministă: inventarul Git selectează proprieta
 
 Controale operaționale:
 
+- Ambele lansatoare de calificare pregătesc rădăcina configurată `WHIST_EVIDENCE_ROOT` înainte de staging și resping o rădăcină aflată în checkout-ul sursă. Fixture-urile Node își creează și singure părintele configurat dacă lipsește, astfel testele directe și cele lansate prin RAG au aceeași precondiție de fișiere.
 - `AtfRagGovernanceSuite` are un contract de selecție închis pentru admiterea schemei, proveniență, preflight Android/GitHub, selecția din diff, izolarea lansatorului, integritatea raportului și sigilarea publicării. Testul contractului respinge porțile lipsă și verificările fără legătură sau de distribuire live.
 - Lansatorul cere un singur raport Extent HTML, îl copiază în `component-extent.html` și-i înregistrează numărul de octeți și SHA-256 în `governance-report-manifest.json`. Fișierele JUnit rămân disponibile pentru diagnosticul invocărilor.
 - Reutilizarea componentelor funcționează momentan la limita selecției declarate. Dacă o selecție eșuează, o reluare izolată trecută nu înlocuiește receipt-ul de grup eșuat; reluați întreaga selecție sau păstrați calificarea blocată. Recuperarea selectivă JUnit cere un receipt de reconciliere legat de sursă și un raport Extent nou care leagă eșecul inițial de rezultatele reluării, fără să rescrie niciun raport.
