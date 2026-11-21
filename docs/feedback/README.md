@@ -34,12 +34,10 @@ The 1–100 score expresses work priority, not quality or completion percentage.
 | ACH-01 | P1 | 90 | Qualify restoration of Achievements scroll position and selection on the APK, and notification resumption after activity recreation. [Register](ATF_Achievements.md) |
 | AND-03 | P1 | 89 | Qualify API 37, navigation of the system, resumption, enlarged fonts and memory on an identified device. [Register](ATF_Android.md) |
 | RPT-03 | P1 | 88 | Publish large suites within the declared limit of the heap, without repeated copies of HTML and without losing JUnit or comparisons to failure. [Register](ATF_Reporting.md#rpt-bounded-report-heap---safe-completion-for-large-suites) |
-| RAG-20 | P1 | 88 | Admit the declared reporting schema before RAG readiness; canonical HTML evidence must not enter the legacy XML qualification mode. [Register](ATF_Governance.md#reporting-schema-admission) |
 | RAG-18 | P1 | 87 | Admit the Git base and testChanges proofs before collection preparation; missing, stale or foreign evidence must fail before Maven. [Register](ATF_Governance.md#testchanges-admission-before-collection-preparation) |
 | UI-01 | P1 | 86 | Qualify headers, player boxes and notifications on consumer APKs, including Unicode name entry. [Register](ATF_CardUi_Extraction.md#priorities-and-closing-conditions) |
-| RAG-16 | P2 | 85 | Resume unresolved component invocations from verified checkpoints, retaining original comparisons and complete JUnit identity parity. [Register](ATF_Governance.md#qualification-cost-and-invocation-recovery) |
 | UI-02 | P2 | 84 | Qualify enlarged result actions and scrolling on the consumer APKs in RO/EN with enlarged text. [Register](ATF_CardUi_Extraction.md#result-action-acceptance) |
-| RAG-17 | P2 | 83 | Distinguish Web-only resources and packaging from Android runtime inputs without weakening the fallback for unknown dependencies. [Register](ATF_Governance.md#platform-specific-selection-cost) |
+| RAG-21 | P2 | 82 | Evaluate a LangGraph shadow coordinator only if restart tests preserve evidence identity and measurably reduce recovery time; the RAG evaluator remains read-only. [Register](ATF_Governance.md#langgraph-shadow-pilot) |
 | AI-02 | P2 | 82 | Measure opportunities, conversions to 500, ranking impact and latency on new batches; separate natural play from controlled prefixes. [Register](ATF_Ai.md#playing-for-zero) |
 | WEB-07 | P2 | 79 | Qualify settings, resume, Play again and history in APK and Chrome on the same Android in RO/EN and with increased text. [Register](ATF_UiBrowser.md#qualification-on-the-same-device) |
 | WEB-11 | P2 | 78 | Qualify ranks and suit glyphs in a 17-card hand with enlarged text in Android Chrome. [Register](ATF_UiBrowser.md#qualification-on-the-same-device) |

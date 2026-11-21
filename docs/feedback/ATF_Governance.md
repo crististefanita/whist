@@ -56,23 +56,15 @@ Android Download Manager transfer and certificate checks belong to the tested re
 
 Native source and validator separation belongs to the [qualification contract](../testing/ATF_ReleaseQualification.md#native-execution-and-validator-provenance). Reuse remains conditional on unchanged runtime, scenario, APK and original evidence.
 
-## Qualification cost and invocation recovery
+## LangGraph shadow pilot
 
-Snapshot and cache validation consume time even when test execution is reused. Measure those costs separately from execution and lease waiting.
+The production path remains a deterministic PowerShell stage runner with source-bound Maven/Gradle checkpoints and a read-only Node evaluator. Component tests already cover interruption, changed inputs, partial checkpoints and evidence rejection. [Release qualification](../testing/ATF_ReleaseQualification.md#orchestration-and-the-langgraph-adoption-gate) owns the stable contracts for resume and platform-aware selection.
 
-- Checkpoint each accepted invocation with its source, compiled dependencies, identity, original comparisons and report hashes.
-- Resume unresolved invocations only after those immutable inputs are verified. Preserve rejected attempts as diagnostics.
-- Prove parity of the complete JUnit identity set against a full run; reject changed sources, missing cases, duplicate identities and altered evidence.
-- Keep timeout failures explicit until a real retry succeeds. A passing neighbouring case or a rewritten receipt is not replacement evidence.
-- Provide a versioned targeted runner that resolves method parameter signatures and aggregate-report scope before execution. Keep rejected discovery or publication attempts separate from accepted test evidence.
+LangGraph offers explicit nodes, shared state and checkpoint boundaries, but it does not shorten compilation. A failed node can run again from its beginning, so a pilot must prove side-effect idempotency and bind every resume to the original source, command and evidence receipts. See the [official LangGraph workflow guidance](https://docs.langchain.com/oss/javascript/langgraph/thinking-in-langgraph).
 
-## Platform-specific selection cost
-
-The conservative fallback includes Web-only resources, retired browser packages and packaging tools in Android flow selection. Keep that safety boundary until dependency-aware component checks prove a narrower selection.
-
-- Declare platform ownership for resources and packaging; unknown shared-runtime changes must still select every affected flow.
-- Mock Web-only changes, removal of unused versions, Android menu changes and runtime dependency changes. Require a valid neighbor and a negative control for every exclusion.
-- Measure inventory, copying, compilation, execution and device waiting separately. Keep the source-only RAG snapshot distinct from component workspaces containing the release catalog and build outputs.
+| Priority | Bounded gap | Closure criterion |
+|---|---|---|
+| P2 | No measured evidence yet shows that a graph coordinator improves this deterministic release workflow over its existing invocation checkpoints. | Build an isolated shadow pilot that calls existing commands only. Inject interruptions at each stage, then require exact selection, report/JUnit identity and verdict parity, no duplicate side effects, and no signing, publication or lifecycle authority. Measure startup, normal-run overhead and recovery across the same cases; adopt only with at least 20% lower median recovery time and no more than 5% overhead on uninterrupted runs. No model may set or weaken a release verdict. |
 
 ## testChanges admission before collection preparation
 
@@ -90,8 +82,10 @@ The isolated workflow now receives the review base explicitly. Admission of unre
 
 ## Reporting schema admission
 
-The evaluator can accept canonical HTML evidence while the manifest declares legacy XML qualification mode. Dossier integrity governance rejects the mismatch later; the two stages need the same admission rule.
+The evaluator applies one reporting admission rule before readiness and preserves historical manifests. Accepted schema/report combinations are:
 
-- Check the qualification schema and evidence representation before readiness or publication. Require the canonical HTML schema for modern dossiers and an explicit supported boundary for historical XML evidence.
-- Cover absent or unsupported schemas, mixed evidence modes, missing group receipts and contradictory invocation counts through component tests.
-- Keep evaluator, standalone preflight and full governance diagnostics aligned. Reject the inconsistent input without rewriting old receipts or inventing JUnit data.
+- Versions 1 and 2 may omit `qualification.reportSchema` only while every declared component and E2E report is HTML.
+- Version 3 and later declare `ATF_EXTENT_HTML_INLINE_BASE64_V1`.
+- XML-only, unknown, missing-modern or mixed-format declarations block readiness. JUnit XML remains a temporary oracle, never the canonical report.
+
+The policy is in `config/release-platform-rag-policy.json`, admission is enforced by `atf-tests/tools/evaluate-release-rag.mjs`, and component coverage belongs to `ReleaseRagProvenanceComponentTest` and `ReleaseRagPlatformGovernanceTest`.

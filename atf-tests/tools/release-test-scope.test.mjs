@@ -106,7 +106,8 @@ test('a qualification policy edit affects governance and leaves the game build e
 test('a bilingual review record reruns governance without replaying unchanged game or device tests', () => {
   const file='config/documentation-editions.json';
   const selection=deriveReleaseTestScope(new Map([[file,'old']]),new Map([[file,'new']]),groups);
-  assert.deepEqual(selection.runComponentGroups,['atf-tests']);
+  assert.deepEqual(selection.runComponentGroups,[]);
+  assert.equal(selection.components.find(row => row.group === 'atf-tests').reason,'RAG_GATE_ONLY');
   assert.deepEqual(selection.requiredE2eGroups,[]);
   const changedRuntime=deriveReleaseTestScope(new Map([[bid,'old']]),new Map([[bid,'new'],[file,'new']]),groups);
   assert.deepEqual(changedRuntime.requiredE2eGroups,['signed-release-auto-game','signed-release-bidding']);

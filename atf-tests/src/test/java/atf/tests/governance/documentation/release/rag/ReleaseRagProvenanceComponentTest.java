@@ -54,6 +54,69 @@ class ReleaseRagProvenanceComponentTest {
         AuditedAssertions.assertEquals("/source", citation.path("jsonPointer").asText());
     }
 
+    @Test void reportSchemaAdmissionPreservesLegacyHtmlAndRejectsXmlModeMissingModernSchemaAndMixedPaths() throws Exception {
+        RagCandidateFixture fixture = create(temporary);
+        JsonNode legacyHtml = evaluateAndRead(fixture);
+        AuditedAssertions.assertEquals("PASS", check(legacyHtml, "REPORT_SCHEMA_ADMISSION"),
+                "Qualification schema 2 may omit the new declaration only while every declared report is HTML.");
+
+        ObjectNode manifest = readCandidate(fixture);
+        ObjectNode qualification = (ObjectNode) manifest.path("qualification");
+        qualification.put("reportSchema", "JUNIT_XML_ONLY");
+        writeCandidate(fixture, manifest);
+        int legacyXmlExit = evaluate(fixture, fixture.output());
+        JsonNode declaredLegacyXml = JSON.readTree(fixture.output().toFile());
+        AuditedAssertions.assertEquals(2, legacyXmlExit);
+        AuditedAssertions.assertEquals("BLOCKED", check(declaredLegacyXml, "REPORT_SCHEMA_ADMISSION"));
+        AuditedAssertions.assertTrue(details(declaredLegacyXml, "REPORT_SCHEMA_ADMISSION").stream()
+                .anyMatch(value -> value.contains("LEGACY_XML_MODE_CANNOT_QUALIFY_EXTENT_HTML")));
+
+        qualification.remove("reportSchema");
+        qualification.put("schemaVersion", 3);
+        writeCandidate(fixture, manifest);
+        JsonNode missingModernDeclaration = evaluateAndRead(fixture);
+        AuditedAssertions.assertEquals("BLOCKED", check(missingModernDeclaration, "REPORT_SCHEMA_ADMISSION"));
+        AuditedAssertions.assertTrue(details(missingModernDeclaration, "REPORT_SCHEMA_ADMISSION").stream()
+                .anyMatch(value -> value.contains("REPORT_SCHEMA_REQUIRED_FOR_QUALIFICATION_SCHEMA:3")));
+
+        qualification.put("reportSchema", "ATF_EXTENT_HTML_INLINE_BASE64_V1");
+        ((ObjectNode) qualification.path("auditedGroups").path("whist-lab-app-history"))
+                .put("report", "reports/component/whist-lab-app-history/component-report.xml");
+        writeCandidate(fixture, manifest);
+        JsonNode mixedFormats = evaluateAndRead(fixture);
+        AuditedAssertions.assertEquals("BLOCKED", check(mixedFormats, "REPORT_SCHEMA_ADMISSION"));
+        AuditedAssertions.assertTrue(details(mixedFormats, "REPORT_SCHEMA_ADMISSION").stream()
+                .anyMatch(value -> value.contains("NON_HTML_REPORT:component/whist-lab-app-history")));
+
+        ((ObjectNode) qualification.path("auditedGroups").path("whist-lab-app-history"))
+                .put("report", "reports/component/whist-lab-app-history/component-report.html");
+        qualification.putObject("e2eGroups").putObject("responsive-flow")
+                .put("report", "reports/e2e/responsive-flow/report.xml");
+        writeCandidate(fixture, manifest);
+        JsonNode e2eXml = evaluateAndRead(fixture);
+        AuditedAssertions.assertEquals("BLOCKED", check(e2eXml, "REPORT_SCHEMA_ADMISSION"));
+        AuditedAssertions.assertTrue(details(e2eXml, "REPORT_SCHEMA_ADMISSION").stream()
+                .anyMatch(value -> value.contains("NON_HTML_REPORT:e2e/responsive-flow")));
+
+        ((ObjectNode) qualification).remove("e2eGroups");
+        writeCandidate(fixture, manifest);
+        JsonNode canonical = evaluateAndRead(fixture);
+        AuditedAssertions.assertEquals("PASS", check(canonical, "REPORT_SCHEMA_ADMISSION"));
+    }
+
+    private static ObjectNode readCandidate(RagCandidateFixture fixture) throws Exception {
+        return (ObjectNode) JSON.readTree(fixture.candidate().resolve("release-validation.json").toFile());
+    }
+
+    private static void writeCandidate(RagCandidateFixture fixture, ObjectNode manifest) throws Exception {
+        JSON.writerWithDefaultPrettyPrinter().writeValue(fixture.candidate().resolve("release-validation.json").toFile(), manifest);
+    }
+
+    private static JsonNode evaluateAndRead(RagCandidateFixture fixture) throws Exception {
+        evaluate(fixture, fixture.output());
+        return JSON.readTree(fixture.output().toFile());
+    }
+
     @Test void verdictEmbedsExactPlanBytesAndCitesTheEmbeddedReceipt() throws Exception {
         RagCandidateFixture fixture = create(temporary);
         byte[] originalPlan = Files.readAllBytes(fixture.plan());

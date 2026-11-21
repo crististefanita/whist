@@ -451,6 +451,16 @@ export async function evaluateRelease({projectRoot, candidateDir, sourceRoot, pl
       && policy.reportingContract?.duplicateJUnitXmlInFinalRelease === false
       && policy.reportingContract?.capturedImagesMustBeInlineBase64 === true
       && policy.reportingContract?.reportBindsQualifiedSourceSnapshot === true
+      && isDeepStrictEqual({...policy.reportingContract?.schemaAdmission}, {
+        qualificationSchemaField: 'qualification.schemaVersion',
+        declarationField: 'qualification.reportSchema',
+        requiredQualificationSchemaVersion: 3,
+        canonicalValue: 'ATF_EXTENT_HTML_INLINE_BASE64_V1',
+        legacyXmlValue: 'JUNIT_XML_ONLY',
+        allowedUndeclaredQualificationSchemaVersions: [1, 2],
+        allDeclaredReportsMustBeHtml: true,
+        legacyXmlMayQualify: false
+      })
       && policy.rules?.authenticatedDownloadChannels
       && typeof policy.rules.authenticatedDownloadChannels === 'object'
       && !Array.isArray(policy.rules.authenticatedDownloadChannels)
@@ -496,6 +506,45 @@ export async function evaluateRelease({projectRoot, candidateDir, sourceRoot, pl
   const qualificationPass = manifest.qualification?.state === 'PASS';
   recordCheck('QUALIFICATION_STATE', qualificationPass,
       qualificationPass ? 'Manifestul declară starea PASS pentru calificarea înregistrată.' : 'Calificarea manifestului nu este PASS.', evidence('/qualification/state'));
+
+  const schemaAdmission = policy.reportingContract?.schemaAdmission ?? {};
+  const qualificationSchemaVersion = manifest.qualification?.schemaVersion;
+  const reportSchema = manifest.qualification?.reportSchema;
+  const declaredReports = [
+    ...Object.entries(manifest.qualification?.auditedGroups ?? {}).map(([name, group]) => ['component', name, group]),
+    ...Object.entries(manifest.qualification?.e2eGroups ?? {}).map(([name, group]) => ['e2e', name, group])
+  ];
+  const nonHtmlReports = declaredReports.filter(([, , group]) =>
+    typeof group?.report !== 'string' || !/\.html$/i.test(group.report));
+  const canonicalReportSchema = reportSchema === schemaAdmission.canonicalValue;
+  const compatibleUndeclaredSchema = reportSchema === undefined
+      && schemaAdmission.allowedUndeclaredQualificationSchemaVersions?.includes(qualificationSchemaVersion) === true;
+  const schemaDeclarationOkay = (canonicalReportSchema || compatibleUndeclaredSchema)
+      && declaredReports.length > 0 && nonHtmlReports.length === 0
+      && Number.isSafeInteger(qualificationSchemaVersion) && qualificationSchemaVersion > 0;
+  const schemaProblems = [];
+  if (reportSchema === schemaAdmission.legacyXmlValue) {
+    schemaProblems.push('LEGACY_XML_MODE_CANNOT_QUALIFY_EXTENT_HTML');
+  } else if (reportSchema !== undefined && !canonicalReportSchema) {
+    schemaProblems.push(`UNSUPPORTED_REPORT_SCHEMA:${String(reportSchema)}`);
+  } else if (reportSchema === undefined && !compatibleUndeclaredSchema) {
+    schemaProblems.push(`REPORT_SCHEMA_REQUIRED_FOR_QUALIFICATION_SCHEMA:${schemaAdmission.requiredQualificationSchemaVersion}`);
+  }
+  if (declaredReports.length === 0) schemaProblems.push('DECLARED_REPORTS_MISSING');
+  for (const [scope, name, group] of nonHtmlReports) {
+    schemaProblems.push(`NON_HTML_REPORT:${scope}/${name}:${group?.report ?? 'missing'}`);
+  }
+  recordCheck('REPORT_SCHEMA_ADMISSION', schemaDeclarationOkay,
+      schemaDeclarationOkay
+        ? canonicalReportSchema
+          ? 'The declared inline-HTML Extent schema matches the qualification schema and every declared report path.'
+          : 'A legacy manifest without reportSchema is accepted only for a compatible qualification schema with HTML reports.'
+        : 'The reporting schema is missing, unknown, or inconsistent with the declared report paths.',
+      [...evidence('/qualification/schemaVersion'), ...evidence('/qualification/reportSchema'),
+        ...evidence('/qualification/auditedGroups'), ...evidence('/qualification/e2eGroups'),
+        citation('config/release-platform-rag-policy.json', policyDoc.sha256,
+          '/reportingContract/schemaAdmission', policyDoc.lines.get('/reportingContract/schemaAdmission') ?? 1)],
+      schemaProblems);
 
   const payloadEntries = manifest.integrity?.files;
   let payloadOkay = Array.isArray(payloadEntries) && payloadEntries.length > 0, payloadProblem = null;

@@ -217,7 +217,17 @@
     "junitXmlRole": "temporary-independent-oracle",
     "duplicateJUnitXmlInFinalRelease": false,
     "capturedImagesMustBeInlineBase64": true,
-    "reportBindsQualifiedSourceSnapshot": true
+    "reportBindsQualifiedSourceSnapshot": true,
+    "schemaAdmission": {
+      "qualificationSchemaField": "qualification.schemaVersion",
+      "declarationField": "qualification.reportSchema",
+      "requiredQualificationSchemaVersion": 3,
+      "canonicalValue": "ATF_EXTENT_HTML_INLINE_BASE64_V1",
+      "legacyXmlValue": "JUNIT_XML_ONLY",
+      "allowedUndeclaredQualificationSchemaVersions": [1, 2],
+      "allDeclaredReportsMustBeHtml": true,
+      "legacyXmlMayQualify": false
+    }
   },
   "signingChannels": {
     "channelMustBeDeclared": true,

@@ -84,14 +84,56 @@ class QualificationLauncherComponentTest {
         var run = launch(GOVERNANCE, source, output, "", null, sibling, sibling);
         AuditedAssertions.assertEquals(0, run.exit(), run.log());
         JsonNode result = JSON.readTree(output.resolve("governance-result.json").toFile());
+        AuditedAssertions.assertEquals("-Dtest=AtfQualityGovernanceSuite",
+                Files.readString(scratch.resolve("maven-test-selector")));
         Path stage = Path.of(result.required("stage").asText());
         AuditedAssertions.assertEquals(stage.toString(), Files.readString(scratch.resolve("maven.entered")));
+        String expectedMavenTemp = stage.getParent().resolve("maven-temp").toString();
+        AuditedAssertions.assertEquals(List.of(expectedMavenTemp, expectedMavenTemp),
+                Files.readAllLines(scratch.resolve("maven-temp-roots")),
+                "The isolated Maven/Surefire JVM must keep its temporary files beside the staged workspace.");
         AuditedAssertions.assertTrue(stage.startsWith(sibling.toRealPath()), "A sibling with the same prefix is external");
         AuditedAssertions.assertTrue(Files.isRegularFile(stage.resolve(RELEASE + APK)));
         AuditedAssertions.assertEquals(hash(output.resolve("release-inputs.json")), result.required("releaseFingerprint").asText());
         AuditedAssertions.assertEquals("PASS", JSON.readTree(output.resolve("release-preflight.log").toFile()).required("status").asText());
         AuditedAssertions.assertEquals(0, launch(GOVERNANCE, source, scratch.resolve("matching"), "",
                 output.resolve("source-inputs.json")).exit());
+    }
+
+    @Test void governanceLauncherAllowsTheBoundedRagSuiteAndRejectsUnknownSelectorsBeforeStaging() throws Exception {
+        Path source = fixture();
+        var selected = launch(GOVERNANCE, source, scratch.resolve("rag-only"), "", null, scratch, scratch,
+                "AtfRagGovernanceSuite");
+        AuditedAssertions.assertEquals(0, selected.exit(), selected.log());
+        AuditedAssertions.assertEquals("-Dtest=AtfRagGovernanceSuite",
+                Files.readString(scratch.resolve("maven-test-selector")));
+        Path reportManifest = scratch.resolve("rag-only/governance-report-manifest.json");
+        JsonNode extent = JSON.readTree(reportManifest.toFile());
+        AuditedAssertions.assertEquals("PASS", extent.required("status").asText());
+        AuditedAssertions.assertEquals("ATF_EXTENT_COMPONENT_SUITE", extent.required("kind").asText());
+        AuditedAssertions.assertEquals(hash(scratch.resolve("rag-only/component-extent.html")),
+                extent.required("report").required("sha256").asText());
+        AuditedAssertions.assertTrue(Files.readString(scratch.resolve("rag-only/component-extent.html"))
+                .contains("data:image/png;base64,"));
+
+        Files.delete(scratch.resolve("maven.entered"));
+        Files.delete(scratch.resolve("maven-test-selector"));
+        var missingExtent = launch(GOVERNANCE, source, scratch.resolve("rag-no-extent"), "no-extent", null,
+                scratch, scratch, "AtfRagGovernanceSuite");
+        AuditedAssertions.assertEquals(1, missingExtent.exit());
+        JsonNode rejectedExtent = JSON.readTree(scratch.resolve("rag-no-extent/governance-report-manifest.json").toFile());
+        AuditedAssertions.assertEquals("FAIL", rejectedExtent.required("status").asText());
+        AuditedAssertions.assertTrue(rejectedExtent.required("diagnostics").toString().contains("EXPECTED_ONE_EXTENT_REPORT"));
+
+        Files.delete(scratch.resolve("maven.entered"));
+        Files.delete(scratch.resolve("maven-test-selector"));
+        var rejected = launch(GOVERNANCE, source, scratch.resolve("invalid-suite"), "", null, scratch, scratch,
+                "ArbitraryTestSelector");
+        AuditedAssertions.assertEquals(1, rejected.exit());
+        AuditedAssertions.assertFalse(Files.exists(scratch.resolve("maven.entered")),
+                "An unrecognized selector must fail before Maven or staging.");
+        AuditedAssertions.assertFalse(Files.exists(scratch.resolve("invalid-suite")),
+                "An invalid selector must not create an output run.");
     }
 
     @Test void checkoutTmpStopsBothLaunchersBeforeStagingOrMaven() throws Exception {
@@ -186,12 +228,25 @@ class QualificationLauncherComponentTest {
     }
 
     private Run launch(String runner, Path source, Path output, String mutation, Path pinned, Path tmp, Path temp) throws Exception {
+        return launch(runner, source, output, mutation, pinned, tmp, temp, null);
+    }
+
+    private Run launch(String runner, Path source, Path output, String mutation, Path pinned, Path tmp, Path temp,
+                       String governanceSuite) throws Exception {
         Path tool = scratch.resolve("maven-probe.ps1");
         Files.writeString(tool, """
                 $stage = (Get-Location).Path
                 if ($stage -eq $env:ATF_FIXTURE_SOURCE -or -not ($args -contains "-Datf.governance.root=$stage") -or
                     -not (Test-Path -LiteralPath (Join-Path $stage 'release/index.json'))) { exit 19 }
                 [IO.File]::WriteAllText($env:ATF_FIXTURE_ENTERED, $stage)
+                [IO.File]::WriteAllText($env:ATF_FIXTURE_TEMP_ROOTS, ($env:TEMP + [Environment]::NewLine + $env:TMP))
+                if ($env:ATF_FIXTURE_MUTATION -ne 'no-extent') {
+                    $reportDirectory = Join-Path $env:TEMP 'whist-component-reports'
+                    New-Item -ItemType Directory -Path $reportDirectory -Force | Out-Null
+                    [IO.File]::WriteAllText((Join-Path $reportDirectory 'fixture.html'), '<!doctype html><html><body><img src="data:image/png;base64,aW1hZ2U="></body></html>')
+                }
+                $testSelector = @($args | Where-Object { $_ -like '-Dtest=*' } | Select-Object -First 1)
+                [IO.File]::WriteAllText($env:ATF_FIXTURE_TEST_SELECTOR, [string]$testSelector)
                 switch ($env:ATF_FIXTURE_MUTATION) {
                     'live-add' { [IO.File]::WriteAllText((Join-Path $env:ATF_FIXTURE_SOURCE 'release/added.json'), '{}') }
                     'live-delete' { Remove-Item -LiteralPath (Join-Path $env:ATF_FIXTURE_SOURCE 'release/index.json') }
@@ -203,6 +258,7 @@ class QualificationLauncherComponentTest {
                 GovernanceProject.locateProjectRoot().resolve("scripts").resolve(runner).toString(),
                 "-SourceRoot", source.toString(), "-RunRoot", output.toString(), "-Maven", tool.toString(),
                 "-MavenCache", scratch.resolve("unused-cache").toString()));
+        if (governanceSuite != null) command.addAll(List.of("-GovernanceSuite", governanceSuite));
         if (pinned != null) command.addAll(List.of("-PinnedSourceInputs", pinned.toString()));
         var builder = new ProcessBuilder(command);
         var environment = builder.environment();
@@ -214,6 +270,8 @@ class QualificationLauncherComponentTest {
         environment.put("TMP", tmp.toString());
         environment.put("ATF_FIXTURE_SOURCE", source.toString());
         environment.put("ATF_FIXTURE_ENTERED", scratch.resolve("maven.entered").toString());
+        environment.put("ATF_FIXTURE_TEMP_ROOTS", scratch.resolve("maven-temp-roots").toString());
+        environment.put("ATF_FIXTURE_TEST_SELECTOR", scratch.resolve("maven-test-selector").toString());
         environment.put("ATF_FIXTURE_MUTATION", mutation);
         Path log = Files.createTempFile(scratch, "launcher-", ".log");
         var process = builder.redirectErrorStream(true).redirectOutput(log.toFile()).start();

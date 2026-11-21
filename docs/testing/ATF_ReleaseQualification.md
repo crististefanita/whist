@@ -109,6 +109,52 @@ Before publication, [audit admission](../../atf-tests/tools/publication-audit.mj
 
 The plan declares version, channel (`LOCAL`, `TEST` or `PRODUCTION`), risk, platforms, component groups, flow-change status and a justified E2E decision.
 
+### Reporting schema admission
+
+- Qualification schema versions 1 and 2 may omit `qualification.reportSchema` only when every declared component and E2E report path is HTML.
+- Version 3 and later must declare `ATF_EXTENT_HTML_INLINE_BASE64_V1`.
+- `JUNIT_XML_ONLY`, an unknown value, a missing modern declaration or any non-HTML report path blocks readiness.
+- JUnit XML is a temporary independent oracle; it cannot replace canonical Extent HTML.
+
+The component contract is in [ReleaseRagProvenanceComponentTest](../../atf-tests/src/test/java/atf/tests/governance/documentation/release/rag/ReleaseRagProvenanceComponentTest.java); policy shape is protected by [ReleaseRagPlatformGovernanceTest](../../atf-tests/src/test/java/atf/tests/governance/documentation/release/ReleaseRagPlatformGovernanceTest.java). Existing release manifests are not rewritten to add the new field.
+
+### Orchestration and the LangGraph adoption gate
+
+The production RAG path is deterministic: Git inventory selects owners, the PowerShell runner stages and executes only missing or invalidated suites, receipts checkpoint accepted work, and the Node evaluator reads the completed dossier. LangGraph is not a production dependency or a verdict engine. Its official model adds explicit nodes and checkpoint boundaries; it does not make Maven or Gradle compilation faster, and a resumed node may repeat work from its start.
+
+Operational controls:
+
+- `AtfRagGovernanceSuite` has a closed selection contract for schema admission, provenance, Android/GitHub preflight, diff selection, launcher isolation, report integrity and publication sealing. Its contract test rejects missing gates and unrelated/live distribution checks.
+- The runner requires one Extent HTML, copies it to `component-extent.html`, and records its byte count and SHA-256 in `governance-report-manifest.json`. JUnit sidecars remain available for invocation diagnostics.
+
+```mermaid
+flowchart LR
+    DIFF[Git diff and pinned inputs] -->|pins| SELECT[Diff ownership]
+    SELECT -->|checks| REUSE[Verify prior receipt]
+    SELECT -->|selects| RUN[PowerShell stage runner]
+    REUSE -->|verifies| IMPORT[Reuse original evidence]
+    REUSE -->|rejects| RUN
+    RUN -->|checkpoints| CHECKPOINT[Hash-bound invocation checkpoint]
+    IMPORT -->|preserves| DOSSIER[Release evidence dossier]
+    CHECKPOINT -->|binds| DOSSIER
+    DOSSIER -->|evaluates| RAG[Read-only Node evaluator]
+    RAG -->|presents| REVIEW[Human review]
+    PILOT[Optional LangGraph shadow] -.->|coordinates| RUN
+```
+
+<details>
+<summary>Legend — execution and decision ownership</summary>
+
+The selector chooses owners from source changes. The runner owns execution and checkpoint writes. RAG owns only the cited readiness calculation; human review owns promotion. A LangGraph pilot may coordinate existing commands, but it cannot create evidence, change the verdict, sign or publish.
+
+</details>
+
+- Inject an interruption at each stage and prove identical test selection, original report/JUnit identities and no repeated side effects.
+- Verify the graph cannot change a read-only verdict, sign an APK or publish a release.
+- Compare the same recovery cases with the existing runner; require at least 20% lower median recovery time and no more than 5% overhead on uninterrupted runs.
+
+Until those thresholds are demonstrated, LangGraph remains an optional evaluation. [LangGraph workflow reference](https://docs.langchain.com/oss/javascript/langgraph/thinking-in-langgraph).
+
 ### Evaluator regression tests
 
 Node regression tests use the same bounded process executor as Git checks. Read output from process start and retain child diagnostics on failure. [Component coverage](../../atf-tests/src/test/java/atf/tests/governance/documentation/release/rag/scope/ComponentEvidenceScopeComponentTest.java)
@@ -162,6 +208,7 @@ The [component launcher](../../scripts/run-component-suites.ps1) and [governance
 - `TMP`, `TEMP` and the system-selected temporary directory must resolve to existing external directories.
 - Check both declared paths and physical destinations after resolving links. A checkout in any ancestor, including a worktree `.git` file, produces `QUALIFICATION-TEMP-IN-CHECKOUT`.
 - A non-existent, relative or inaccessible path produces `QUALIFICATION-TEMP-INVALID`.
+- The governance launcher places Maven and Surefire temporary files under the isolated workspace (`maven-temp`) and restores the caller's `TEMP`/`TMP` afterward. Set `WHIST_QUALIFICATION_TEMP_ROOT` to keep this workspace on a chosen disk.
 
 | Moment | Control and proof |
 | --- | --- |
