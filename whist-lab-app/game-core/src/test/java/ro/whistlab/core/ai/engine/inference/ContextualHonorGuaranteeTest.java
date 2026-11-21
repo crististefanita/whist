@@ -1,4 +1,4 @@
-package ro.whistlab.core.ai.engine;
+package ro.whistlab.core.ai.engine.inference;
 import ro.whistlab.core.testing.match.PlayerObservations;
 
 import ro.whistlab.core.ai.policy.LostGameContractRegressionTest;
@@ -7,6 +7,7 @@ import ro.whistlab.core.model.Card;
 import ro.whistlab.core.model.Trump;
 import ro.whistlab.core.rules.GameMode;
 import ro.whistlab.core.testing.CapturedRegression;
+import ro.whistlab.core.ai.engine.MonteCarloAi;
 import static atf.gradle.audit.assertions.GradleAssertions.*;import java.util.*;import org.junit.Test;import ro.whistlab.coach.IndependentPlayer;
 public class ContextualHonorGuaranteeTest extends atf.gradle.audit.GradleAuditedTest {
  static MonteCarloAi.View view(List<Card> hand,Trump trump,Card turned,int size){var seats=new ArrayList<MonteCarloAi.Seat>();for(int i=0;i<4;i++)seats.add(new MonteCarloAi.Seat(size,null,0,0,0));return new MonteCarloAi.View(GameMode.ROMANIAN_WHIST,trump,0,3,size,hand,seats,List.of(),List.of(),turned,true,10);}
