@@ -1,0 +1,12 @@
+{
+  "schemaVersion": 1,
+  "kind": "source-rebuild-byte-identity",
+  "sourceCommit": "8b8b9d3681b2cdc44ef89d74241dc86cce34669c",
+  "sourceFingerprint": "c813b42301e31857181155f1c37d37826052b2b000b33bb0411eae5f9ae30928",
+  "command": ":app:assembleRelease",
+  "apkName": "WhistLab-0.23.0.apk",
+  "apkBytes": 1033649,
+  "apkSha256": "f77a65d25f7c1249409d10de3379751592ca018b350394a3ef852bc73e32665a",
+  "previouslyQualifiedApkSha256": "f77a65d25f7c1249409d10de3379751592ca018b350394a3ef852bc73e32665a",
+  "matchesPreviouslyQualifiedApk": true
+}

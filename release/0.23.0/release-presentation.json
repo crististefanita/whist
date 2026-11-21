@@ -1,0 +1,11 @@
+{
+  "version": "0.23.0",
+  "mode": "behavior-change",
+  "previousVersion": "0.22.1",
+  "points": [
+    "Condition bidding and play on public bids and cards already played.",
+    "Preserve the Normal strategy while improving Hard endgame control.",
+    "Qualify the exact APK through source-bound component evidence and selected Android flows."
+  ],
+  "evidenceUrl": "https://github.com/crististefanita/whist/blob/0334a7641e16dcad63f2ad6f4f07c37c273f923e/release/0.23.0/reports/README.md"
+}

@@ -2,22 +2,22 @@
 
 ## Pe scurt
 
-Catalogul identifică ediția Android curentă și păstrează o singură ediție publicată anterioară pentru proveniență.
+Catalogul identifică ediția Android curentă și păstrează o ediție publicată anterioară pentru proveniență.
 
 ## Versiunea curentă
 
-[0.22.1 — APK de mentenanță verificat](0.22.1/README.md) este publicată, iar descărcarea APK-ului autentificată și checksum-ul au fost verificate. README-ul principal duce la activul APK fixat.
+[0.23.0 — actualizare contextuală Whist](0.23.0/README.md) a trecut calificarea; publicarea APK-ului autentificat este în curs. README-ul principal indică activul fixat.
 
 ## Versiunea anterioară
 
-[0.22 — APK și dovezi](0.22/README.md) este ediția publicată anterioară.
+[0.22.1 — APK și dovezi](0.22.1/README.md) este ediția publicată imediat anterioară.
 
 ## Versiuni disponibile
 
 | Versiune | Stare | Dosar |
 |---|---|---|
-| 0.22.1 | Publicată; descărcare autentificată verificată | [APK și dovezi](0.22.1/README.md) |
-| 0.22 | Ediție publicată anterioară | [APK și dovezi](0.22/README.md) |
+| 0.23.0 | Calificat; publicarea este în curs | [APK și dovezi](0.23.0/README.md) |
+| 0.22.1 | Ediția publicată anterioară | [APK și dovezi](0.22.1/README.md) |
 
 ## Publicare și verificare
 
@@ -29,4 +29,4 @@ Pregătirea, calificarea și publicarea urmează [procesul RAG](../docs/testing/
 2. Urmați indexul Extent pentru selecții și proveniență.
 3. Consultați manifestul pentru identitatea APK-ului, calificare și inventarul payload-ului.
 
-[Strategia testării](../docs/testing/README.md) se aplică fiecărei ediții; rezultatele apar în dosarul ei.
+[Strategia de testare](../docs/testing/README.md) se aplică fiecărei ediții; dosarul conține rezultatele.
