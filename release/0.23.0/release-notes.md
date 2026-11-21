@@ -1,6 +1,6 @@
 # Whist Lab 0.23.0
 
-This behavior release improves contextual bidding and card play in Romanian Whist, using public bids, visible cards, remaining cards and contract progress.
+This behavior release improves contextual bidding and card play in Romanian Whist by using public bids, visible cards, remaining cards and contract progress.
 
 ## Changes since 0.22.1
 
@@ -10,4 +10,4 @@ This behavior release improves contextual bidding and card play in Romanian Whis
 
 ## Documentation
 
-- [Qualification and Extent evidence](reports/README.md)
+- [Qualification and Extent evidence](https://github.com/crististefanita/whist/blob/0334a7641e16dcad63f2ad6f4f07c37c273f923e/release/0.23.0/reports/README.md)

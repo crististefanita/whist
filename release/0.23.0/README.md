@@ -12,6 +12,6 @@ This Android behavior release improves contextual bidding and play using opponen
 
 - Source-bound component and governance qualification passed.
 - Seven focused flows passed on the same signed APK.
-- The authenticated GitHub asset download is pending publication verification.
+- The release passed qualification; authenticated GitHub asset verification follows publication.
 
 [Project README](../../README.md) · [Catalog](../README.md) · [Release qualification](../../docs/testing/ATF_ReleaseQualification.md)
