@@ -62,6 +62,12 @@ The production path remains a deterministic PowerShell stage runner with source-
 
 LangGraph offers explicit nodes, shared state and checkpoint boundaries, but it does not shorten compilation. A failed node can run again from its beginning, so a pilot must prove side-effect idempotency and bind every resume to the original source, command and evidence receipts. See the [official LangGraph workflow guidance](https://docs.langchain.com/oss/javascript/langgraph/thinking-in-langgraph).
 
+| Pilot check | Observed result | Decision |
+|---|---|---|
+| Process restart and selector | Persisted plan resumed with exact selector parity. | Pass |
+| Changed source | Rejected before handoff. | Pass |
+| Side effects and adoption gate | No commands ran; release-level report/JUnit parity and timing remain unmeasured. | Keep LangGraph out of production. |
+
 | Priority | Bounded gap | Closure criterion |
 |---|---|---|
 | P2 | No measured evidence yet shows that a graph coordinator improves this deterministic release workflow over its existing invocation checkpoints. | Build an isolated shadow pilot that calls existing commands only. Inject interruptions at each stage, then require exact selection, report/JUnit identity and verdict parity, no duplicate side effects, and no signing, publication or lifecycle authority. Measure startup, normal-run overhead and recovery across the same cases; adopt only with at least 20% lower median recovery time and no more than 5% overhead on uninterrupted runs. No model may set or weaken a release verdict. |

@@ -126,6 +126,7 @@ Operational controls:
 
 - `AtfRagGovernanceSuite` has a closed selection contract for schema admission, provenance, Android/GitHub preflight, diff selection, launcher isolation, report integrity and publication sealing. Its contract test rejects missing gates and unrelated/live distribution checks.
 - The runner requires one Extent HTML, copies it to `component-extent.html`, and records its byte count and SHA-256 in `governance-report-manifest.json`. JUnit sidecars remain available for invocation diagnostics.
+- Before resuming a persisted graph, read and validate its run ID and source fingerprint. Reject a mismatch without consuming the pending checkpoint or entering a side-effecting node.
 
 ```mermaid
 flowchart LR
