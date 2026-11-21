@@ -2,7 +2,7 @@
 
 ## Overview
 
-Whist Lab combines a local trick-taking game for 3–6 players with an automation test framework (ATF) that verifies the engine, applications and delivery. The same Java engine serves Android, Web and the iOS target. The lab compares playing policies on controlled deals.
+Whist Lab combines a local trick-taking game for 3–6 players with an automation test framework (ATF) that verifies the engine, applications and delivery. Android and browser editions are active; the iOS bridge is parked and is outside current release qualification. The lab compares playing policies on controlled deals.
 
 ## Game
 
@@ -38,7 +38,7 @@ flowchart LR
 <details>
 <summary>Build and evidence legend</summary>
 
-- Gradle includes the Android app, engine and Java bridge for iOS. The native iOS build uses Xcode and the translated engine. The Gradle JVM entry point configures the engine, lab, name policy and test audit.
+- Gradle includes the Android app, engine and a parked Java bridge for iOS. The active Gradle JVM entry point configures the engine, lab, name policy and test audit. iOS build and simulator qualification are not part of current releases.
 - Maven verifies the project and coordinates Android tests. It consumes Core, Reporting, Console, Mock and Test Kit as JAR/POM pairs. The Gradle audit uses Reporting and Test Kit in its test configurations.
 - Qualification checks the selection, APK and evidence together. The version dossier keeps binary identity, results and download verification. [Qualification guide](docs/testing/ATF_ReleaseQualification.md)
 
@@ -46,14 +46,17 @@ flowchart LR
 
 ### Engine and platforms
 
-The engine validates commands, calculates scores and provides state. Android and iOS integrate it through native builds. Web calls it through the JVM adapter or compiles it for GitHub Pages. [Android–Web path](atf-ui-browser/README.md#what-android-and-web-share)
+- The engine validates commands, calculates scores and provides state.
+- Android integrates it through a native build.
+- Web calls it through the JVM adapter or compiles it for GitHub Pages.
+- The iOS bridge is parked. [Android–Web path](atf-ui-browser/README.md#what-android-and-web-share)
 
 ```mermaid
 flowchart LR
     app[Android app]
     atf_card_table_ui[Shared Android UI]
-    ios[iOS app]
-    ios_bridge[iOS bridge]
+    ios[iOS parked]
+    ios_bridge[Bridge parked]
     game_core[Java engine]
     card_table_names[Name policy]
     app -->|uses| atf_card_table_ui
@@ -68,7 +71,7 @@ flowchart LR
 
 - The engine owns rules, session, score and AI decisions. The AI policy receives its own hand and the table's public information.
 - Android owns screen adaptation, preferences and checkpoints. The shared visual library presents the table and emits interaction intents.
-- SwiftUI calls the restricted bridge to the J2ObjC-translated engine. The iOS target has its own simulator qualification. [iOS guide](docs/platform/ATF_iOSDelivery.md)
+- The SwiftUI bridge to the translated engine is parked. No IPA build or simulator qualification is part of the active release process. [iOS guide](docs/platform/ATF_iOSDelivery.md)
 - The diagram shows native-build dependencies. The [Web adapter](atf-ui-browser/README.md#web-execution-paths) explains the separate path for the same engine and portable display contracts.
 
 </details>
@@ -76,7 +79,7 @@ flowchart LR
 | Area | Modules and responsibilities |
 |---|---|
 | Engine and research | [`game-core`](whist-lab-app/game-core/README.md) owns the domain. [`card-table-names`](whist-lab-app/card-table-names/README.md) validates and distributes names. [`ai-lab`](whist-lab-app/ai-lab/README.md) evaluates policies offline through the [JVM build](whist-lab-app/algorithm-build/README.md). |
-| Applications | [Android](whist-lab-app/app/src/main/java/ro/whistlab/app/README.md) integrates [`atf-card-table-ui`](whist-lab-app/atf-card-table-ui/README.md). [iOS](ios/README.md) calls the [Java bridge](whist-lab-app/ios-bridge/src/main/java/ro/whistlab/ios/WhistGameBridge.java). [Browser](atf-ui-browser/README.md) uses the compiled engine. |
+| Applications | [Android](whist-lab-app/app/src/main/java/ro/whistlab/app/README.md) integrates [`atf-card-table-ui`](whist-lab-app/atf-card-table-ui/README.md). [Browser](atf-ui-browser/README.md) uses the compiled engine. The [iOS bridge](ios/README.md) is parked and is not a supported release target. |
 | ATF infrastructure | [`atf-validation`](atf-validation/README.md) evaluates API responses semantically. [`atf-test-android`](atf-test-android/README.md) runs ADB commands and scenarios. [`atf-tests`](atf-tests/README.md) verifies integration, governance and delivery. |
 | Audit and execution | [`test-audit`](whist-lab-app/test-audit/README.md) captures Gradle comparisons. [`lib`](lib/README.md) keeps libraries with provenance, while [`scripts`](scripts/README.md) prepares isolated runs. |
 | Delivery | The [catalog](release/README.md) identifies the available version and its qualification dossier. |

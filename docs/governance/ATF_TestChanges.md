@@ -10,10 +10,10 @@ A change in the tests shall preserve the meaning of the contract and the reason 
 |---|---|
 | Expected | Derived from requirement, invariant or independent oracle. |
 | Control negative | The intended failure demonstrates that the test detects the defect concerned. |
-| Identitate | The case, sources, configuration and domain are explicit. |
-| Verdict | The original cause shall be retained by catch and publication. |
-| Population | The selection and omissions shall be declared without historical counting fixed in the guide. |
-| Results | Concrete runs and version comparisons shall be kept in the external archive. |
+| Identity | The case, sources, configuration and scope are explicit. |
+| Verdict | Preserve the original cause through exception handling and report publication. |
+| Population | Declare the selection and omissions; keep run counts out of generic guidance. |
+| Results | Keep concrete runs and version comparisons in the external archive. |
 
 ## Revision of a change
 
@@ -27,7 +27,7 @@ A change in the tests shall preserve the meaning of the contract and the reason 
 
 ## Checking the Git diff
 
-Run [Governance launcher](../../scripts/run-atf-governance.ps1) from the revised checkout. Choose the joint communique before change. The launcher checks the tests on an isolated copy and reads the difference in the Git checkout indicated.
+Run the [governance launcher](../../scripts/run-atf-governance.ps1) from the reviewed checkout. Select the shared commit before the change. The launcher checks tests on an isolated copy and reads the Git diff from the declared checkout.
 
 ```powershell
 .\scripts\run-atf-governance.ps1 -TestChangeBaseRef $reviewBase
@@ -35,14 +35,14 @@ Run [Governance launcher](../../scripts/run-atf-governance.ps1) from the revised
 
 | Contract | Verification |
 |---|---|
-| Base | A local commit prior to or equal to head. In CI, you declare the explicit and prior basis of head. Locally, without a parameter, HEAD only delimits uncommitted changes. |
-| Git inputs | Differences from base, index, work files and new files. Includes protected entries ignored by Git. |
-| Scope | Maven and Gradle sets of tests and resources, POMS, Gradle configuration, suite selections and executable inputs of governance and qualification. |
-| Authorisation | Only one entry eligible for exact route, base SHAUS and UTC date. The expiry date is inclusive. |
-| Rejection | Absence or foreign base, uncovered path, expired control, ambiguous eligibility, invalid metadata or unaccepted Git status. |
-| renaming | Erase the old path plus add the new path. The deletion explicitly requires allowDelete. |
+| Base | A local commit at or before `HEAD`. CI declares an explicit base that is an ancestor of `HEAD`. Without a local parameter, `HEAD` delimits only uncommitted changes. |
+| Git inputs | Committed changes from the base, index, working tree and untracked files, including protected files ignored by Git. |
+| Scope | Maven and Gradle tests and resources, POMs, Gradle configuration, suite selections, and executable governance or qualification inputs. |
+| Authorization | Exactly one eligible record must match the exact path, base SHA and UTC review date. Expiry is inclusive. |
+| Rejection | Missing or unrelated base, uncovered path, expired or ambiguous control, invalid metadata, or unsupported Git state. |
+| Rename | A rename is evaluated as deletion of the old path plus addition of the new path. Deletion requires `allowDelete: true`. |
 
-The launcher shall transmit the base by property atf.government ance.testChanges.baseRef. For the selection of components, set ATF_TEST_CHANGE_BASE_REF prior to launch. The entire branch's review always uses a commit prior to head.
+The launcher transmits the base through `atf.governance.testChanges.baseRef`. For component selection, set `ATF_TEST_CHANGE_BASE_REF` before launch. A branch review always uses a commit earlier than `HEAD`.
 
 ## Life cycle of control
 
@@ -51,16 +51,16 @@ The launcher shall transmit the base by property atf.government ance.testChanges
 | ACTIVE | The [feedback owner](../feedback/README.md) document keeps the reason, the order of the sample and the exact list of pathways. |
 | VERIFIED | [Technical registry](ATF_TestChangesBaseline.md) keeps the same ID and sample selection. The current diff authorization requires verified proof, basis and expiration. |
 | DRAFT AND CLOSED | The structured entry may record the proposal or closure. These states have zero eligibility. |
-| withdrawal | Face control with the basis of the review. Remove the entrance only when the diff targeted no longer needs it. |
+| Withdrawal | Compare the control against the review base. Remove it only when the targeted diff no longer needs it. |
 
-- The YAML block has the `testChanges` key and a blank list. Each item declares `id`, `status`, `base`, `expires`, `reason`, `proof` and `paths`. Field `allowDelete` is optional and implicitly false.
-- Relative pathways use the `/` separator. Each ID shall be unique in the documents inspected.
+- A YAML block may declare a `testChanges` list. Each item declares `id`, `status`, `base`, `expires`, `reason`, `proof` and `paths`. `allowDelete` is optional and defaults to `false`.
+- Relative paths use `/`. IDs must be unique across the inspected documents.
 
-The proof command expresses the planned verification and runs separately. [Component samples](../../atf-tests/src/test/java/atf/tests/governance/source/changes/TestChangeReviewComponentTest.java) builds local Git histories and qualifies the mechanism without device.
+The proof command declares the planned verification and runs separately. [Component tests](../../atf-tests/src/test/java/atf/tests/governance/source/changes/TestChangeReviewComponentTest.java) create local Git histories and qualify the mechanism without a device.
 
 ## Proof of verified control
 
-Keep the control and its test selection in the commit being assessed. Write the proof to a new directory outside the checkout. The launcher builds an isolated copy and publishes evidence after verifying that its inputs did not change.
+Keep the control and its test selection in the reviewed commit. Write proof to a new directory outside the checkout. The launcher prepares an isolated copy and publishes evidence only after confirming that the inputs did not change.
 
 ```powershell
 .\scripts\run-component-suites.ps1 -AllTestChangeControls -TestChangeBaseRef $reviewBase -RunRoot $runRoot
@@ -70,23 +70,23 @@ $env:ATF_TEST_CHANGE_PROOF_ROOT = Join-Path $runRoot 'proofs'
 
 | Element | Contract |
 |---|---|
-| selectors | Declare checks.positive and negative checks.negative checks.negative checks.negative checks.negative checks.negative checks.negative checks.negative checks.negative checks.negative checks.negative checks.negative checks.negative checks.negative check.positive checks.negative check.positive check.positive |
-| Control negative | The method injects the defect and affirms the expected refusal. In evidence, both the valid case and the case of refusal must have a PASS verdict at JUnit level. |
-| Identitate | The receipt fixes the IDA, base SHAA, verified commit SHAA and the SHA-256 of the gross Git diff. Includes blobs and file modes. |
-| Lot of diff | A single compilation feeds all required VERIFIED controls. Each control has its own JVM, log and HTML. The publication of the Director of `proofs` shall be made after the whole lot has passed and the selection and source has been reconfirmed. |
-| Execution | The launcher shall perform the exact selection declared and shall face the invocations with Extent. The receipt and HTML are stored together in the directory with the control ID. |
-| Verification | Other commit, other diff, other control, missing or missed samples and HTML with different hash blocks the VERIFIED authorisation. A modified checkout requires a new candidate. |
-| History | Old controls are kept in the register. Using a VERIFIED control for the revised diff requires accurate selection and proof. |
+| Selectors | Declare distinct `checks.positive` and `checks.negative` component methods in `package.Class#method` form. |
+| Negative control | The test injects the defect and asserts the expected rejection. Both the valid case and the rejection case must pass at the JUnit level. |
+| Identity | The receipt binds the control ID, base SHA, reviewed commit SHA and raw Git diff SHA-256, including blobs and file modes. |
+| Diff batch | One compilation feeds all required `VERIFIED` controls. Each control has its own JVM, log and HTML report. Publish `proofs` only after every control passes and the source and selection are reconfirmed. |
+| Execution | The launcher runs exactly the declared selectors and reconciles invocations with Extent. The receipt and HTML are stored together under the control ID. |
+| Verification | A different commit, diff or control, missing selectors, or an HTML hash mismatch blocks `VERIFIED` authorization. A changed checkout requires a new candidate. |
+| History | Keep prior controls in the register. A `VERIFIED` control applies only when its selection and proof match the reviewed diff. |
 
-When failing or changing source, see the logs per control and the `proofs.pending` diagnostic folder. For a spot test, `-TestChangeControl` keeps the receipt under `<RunRoot>/<ID>`. Reuse the receipt and report for the same commit and diff.
+On failure or source change, inspect the per-control logs and the `proofs.pending` diagnostic directory. For a focused run, `-TestChangeControl` stores the receipt under `<RunRoot>/<ID>`. Reuse that receipt and report only for the same commit and diff.
 
 ## Transferring ownership of a check
 
 The transfer of an implementation to a library shall keep all native contracts to the producer. The consumer shall retain the acceptance of the API used, the identity of the loaded JARs and the refusal of metadata or inconsistent deliveries.
 
-- The request for change shall identify the affected sources, the new owner, the equivalent replacement and the independent acceptance criteria.
-- The transfers and captures shall be linked to delivery. The technical check shall keep the base of Git and its paths in the register.
-- Wiping the local copy does not suppress a negative case and does not transform a library check into an Android acceptance.
-- The current documentation describes the liability limit without historical lists of deleted tests.
+- A transfer request identifies affected sources, the new owner, the equivalent replacement and independent acceptance criteria.
+- Link the transfer and captures to delivery. Keep the Git base and affected paths in the technical register.
+- Deleting a local copy does not remove a negative case or turn a library check into Android acceptance.
+- Document ownership limits without retaining historical lists of deleted tests.
 
 [Quality governance](README.md) checks the current perimeter and prohibits parallel sources of binary libraries.
