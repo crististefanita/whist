@@ -6,18 +6,18 @@ The catalog identifies the current Android edition and retains one preceding pub
 
 ## Current version
 
-[0.22.1 — qualified Android maintenance edition](0.22.1/README.md) is published and its authenticated APK download and checksum are verified. The main README links to its pinned APK asset.
+[0.23.0 — contextual Whist update](0.23.0/README.md) has passed qualification; its authenticated APK publication is being completed. The main README points to its pinned asset.
 
 ## Previous version
 
-[0.22 — APK and evidence](0.22/README.md) is the preceding published edition.
+[0.22.1 — APK and evidence](0.22.1/README.md) is the immediately preceding published edition.
 
 ## Available versions
 
 | Version | State | Dossier |
 |---|---|---|
-| 0.22.1 | Published; authenticated download verified | [APK and evidence](0.22.1/README.md) |
-| 0.22 | Previous published edition | [APK and evidence](0.22/README.md) |
+| 0.23.0 | Qualified; publication pending | [APK and evidence](0.23.0/README.md) |
+| 0.22.1 | Previous published edition | [APK and evidence](0.22.1/README.md) |
 
 ## Publication and verification
 
