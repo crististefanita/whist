@@ -189,6 +189,8 @@ Compilation and execution have separate identities. The [compiler inventory](../
 | Execution snapshot | The current source and release snapshots remain mandatory. Reusing compilation does not credit a test; owner selection and original report validation remain independent. |
 | Lifetime | References work only while the verified compiler workspace survives. Busy, missing, indirect, foreign or legacy workspaces trigger fresh compilation; retained reports can still be reused independently. |
 
+- A documentation-only rerun preserves the compiled owner and records new assertions against the current snapshot; after workspace cleanup, preparation starts again from source.
+
 The runner records compiler identity, cache admission and output sealing as named timing stages. A borrowed build has its original receipt and a hash-bound reference in the new workspace; neither source provenance nor old test reports are rewritten.
 
 ```mermaid
