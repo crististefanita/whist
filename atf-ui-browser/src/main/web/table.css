@@ -285,10 +285,11 @@ thead, tr:nth-child(even) { background: #e8efe4; }
 /* Whist uses the APK's light home/setup surfaces and its game header composition. */
 [data-surface="whist"] {
   --whist-outline: #d3dcd2;
-  --whist-text-scale: 1.5;
 }
+[data-surface="whist"] .viewport { min-height: 0; height: 100dvh; }
+[data-surface="whist"] #table { transform: none; }
 [data-surface="whist"] #table { background: var(--whist-paper); color: var(--whist-pine); }
-[data-surface="whist"] select { font-size: .75em; }
+[data-surface="whist"] select { font-size: var(--menu-selection-size, 1.125rem); }
 [data-surface="whist"] select :is(option, optgroup) { font-size: inherit; }
 .whist-match { background: var(--whist-felt); color: var(--whist-seat-text); }
 .whist-match .seat { background: var(--whist-seat-fill); border-color: var(--whist-seat-line); }
@@ -383,7 +384,8 @@ thead, tr:nth-child(even) { background: #e8efe4; }
 .whist-match .played-name[hidden] { display: none; }
 #table:not([data-automatic]) .whist-match .fan .legal-card:not(.suggested-card) { border: 2px solid #dcb569; }
 #table[data-automatic] .whist-match .fan .card { pointer-events: none; }
-.whist-home, .whist-score, .whist-help, [data-surface="whist"] .setup { padding: 16px 22px 14px; }
+.whist-home, .whist-score, .whist-help, [data-surface="whist"] .setup { padding: 16px clamp(12px, 3vw, 22px) 14px; }
+.whist-home, .whist-help, [data-surface="whist"] .setup { max-width: 42rem; margin-inline: auto; width: 100%; }
 .whist-home { display: grid; gap: 10px; }
 .whist-home-dedication {
   display: grid;
@@ -392,17 +394,17 @@ thead, tr:nth-child(even) { background: #e8efe4; }
   margin: 2px 0 0;
   text-align: center;
   color: var(--whist-score-muted, #536356);
-  font-size: calc(.9375rem * var(--whist-text-scale));
+  font-size: var(--menu-dedication-size, 1.40625rem);
 }
 .whist-home-dedication img { display: block; width: min(112px, 100%); height: auto; }
 .whist-home h1, .whist-help h1, [data-surface="whist"] .setup h1 { font-size: 1.56rem; margin: 0 0 8px; }
 .whist-home, [data-surface="whist"] .setup {
-  font-size: calc(1rem * var(--whist-text-scale));
+  font-size: var(--menu-action-size, 1.5rem);
   overflow-wrap: anywhere;
 }
-.whist-home h1, [data-surface="whist"] .setup h1 { font-size: calc(1.56rem * var(--whist-text-scale)); }
+.whist-home h1, [data-surface="whist"] .setup h1 { font-size: var(--menu-title-size, 2.34rem); }
 .whist-home button, .whist-score button, [data-surface="whist"] .setup button {
-  min-height: 48px;
+  min-height: max(48px, 3rem);
   border: 1px solid var(--whist-outline);
   border-radius: 14px;
   background: var(--whist-surface);
@@ -425,7 +427,7 @@ thead, tr:nth-child(even) { background: #e8efe4; }
   align-items: center;
   justify-content: space-between;
   min-height: 48px;
-  font-size: calc(.875rem * var(--whist-text-scale));
+  font-size: var(--menu-section-size, 1.3125rem);
   font-weight: 600;
 }
 [data-surface="whist"] .setup select {
@@ -445,7 +447,7 @@ thead, tr:nth-child(even) { background: #e8efe4; }
 [data-surface="whist"] .series-row select { width: min(100%, 7em); }
 [data-surface="whist"] .setup .setup-toggle {
   justify-content: flex-start;
-  font-size: calc(.8125rem * var(--whist-text-scale));
+  font-size: var(--menu-helper-size, 1.21875rem);
   font-weight: 400;
 }
 [data-surface="whist"] .setup input[type="checkbox"] { min-height: 0; width: 18px; height: 18px; accent-color: var(--whist-accent); }
@@ -517,7 +519,7 @@ thead, tr:nth-child(even) { background: #e8efe4; }
 .whist-menu-items button {
   text-align: start;
   min-height: var(--whist-menu-touch);
-  font-size: calc(1rem * var(--whist-text-scale));
+  font-size: var(--menu-action-size, 1.5rem);
   overflow-wrap: anywhere;
   border-color: transparent;
   background: transparent;
@@ -661,14 +663,14 @@ thead, tr:nth-child(even) { background: #e8efe4; }
 }
 .whist-header-details > :first-child { flex: 1; min-width: 0; overflow-wrap: anywhere; padding-block-start: var(--whist-summary-inset, 0); }
 .whist-progress {
-  font-size: calc(var(--progress-size, .6875rem) * var(--whist-text-scale));
-  line-height: var(--whist-summary-leading, calc(.9375rem * var(--whist-text-scale)));
+  font-size: calc(var(--progress-size, .6875rem) * var(--table-progress-emphasis, 1.5));
+  line-height: var(--whist-summary-leading, var(--table-progress-leading, 1.40625rem));
   font-weight: 700;
   color: #e5efe6;
 }
 .whist-bids {
-  font-size: calc(var(--bid-size, .73125rem) * var(--whist-text-scale) * .9);
-  line-height: var(--whist-summary-leading, calc(.90625rem * var(--whist-text-scale)));
+  font-size: calc(var(--bid-size, .73125rem) * var(--table-bid-emphasis, 1.35));
+  line-height: var(--whist-summary-leading, var(--table-bid-leading, 1.359375rem));
   color: #c2d8c7;
   white-space: var(--whist-summary-whitespace, pre-line);
 }

@@ -60,6 +60,40 @@ Comanda de probă declară verificarea planificată și se execută separat. [Te
 
 ## Dovada controlului verificat
 
+<a id="editorial-continuation-of-original-proofs"></a>
+
+### Continuarea editorială a probelor originale
+
+O probă originală rămâne legată de commitul, baza, diff-ul, selectorii și octeții Extent înregistrați la execuție. Un commit editorial ulterior nu devine o execuție nouă: [validatorul continuării](../../atf-tests/src/main/java/atf/tests/testchange/EditorialProofContinuation.java) admite reutilizarea păstrând identitatea originală.
+
+| Graniță | Verificare necesară |
+|---|---|
+| Istoric | Commitul original există local și este strămoș prin cel mult 256 de commituri editoriale consecutive cu un singur părinte. Îmbinările sau istoriile fără înrudire cer probe noi. |
+| Intrări executabile | Fiecare commit intermediar modifică numai Markdown fără rol în build ori `config/documentation-editions.json`. Codul, resursele, regulile împachetate ale jocului și alte configurări rămân neschimbate, inclusiv modificările ulterior anulate. |
+| Diff protejat | Recalculează diff-ul Git brut integral al probei originale față de baza înregistrată și verifică hash-ul. Diff-ul brut protejat, inclusiv identitățile blob-urilor și modurile Git, trebuie să coincidă cu diff-ul protejat curent de la aceeași bază. |
+| Controale | Metadatele `testChanges` din fiecare document modificat rămân semantic neschimbate, inclusiv motivele, comenzile, căile și selectorii pozitivi/negativi. Autorizarea și expirarea curente se aplică în continuare. |
+| Fișiere și rezultate | Documentele sunt blob-uri Git obișnuite, neexecutabile. Cazurile originale trebuie să rămână exact populația declarată și trecută, iar hash-ul HTML-ului original trebuie să coincidă. Un checkout necurat rămâne blocat. |
+| Proveniență | Receipt-ul admiterii expune `continuations`: commitul original, commitul admis, hash-ul diff-ului protejat și căile editoriale. Nici receipt-ul original, nici Extent nu sunt rescrise. |
+
+```mermaid
+flowchart LR
+    Proof[Proba originală] -->|hash și cazuri| Identity[Identitatea originală]
+    Head[Commitul curent] -->|istoricul Git| Scope[Granița editorială]
+    Identity -->|același diff protejat| Reuse[Admite proba originală]
+    Scope -->|intrări executabile neschimbate| Reuse
+    Scope -->|sursă sau control modificat| Regenerate[Generează probă nouă]
+    Reuse -->|documentele curente| Docs[Guvernanță documentară nouă]
+```
+
+<details>
+<summary>Legendă — execuția păstrată și documentația curentă</summary>
+
+- Reutilizarea probei autorizează contractul neschimbat al controlului sursei; nu califică documentația modificată și nu adaugă cazuri executate.
+- Păstrează `ATF_TEST_CHANGE_PROOF_ROOT` către pachetul original și folosește lansatorul normal al colecțiilor cu `-ReuseFrom`. Ieșirile Maven neschimbate rămân admisibile independent; nu invoca `-AllTestChangeControls` când toate probele originale necesare sunt admise.
+- Un control nou, o intrare executabilă modificată, un istoric nesuportat sau un rezultat original eșuat cere generarea probelor. [Cazurile de componentă](../../atf-tests/src/test/java/atf/tests/governance/source/changes/TestChangeEditorialProofComponentTest.java) exercită istorii Git reale și intrări simulate explicit la granița verificării probelor.
+
+</details>
+
 ### Admiterea timpurie a controlului sursei
 
 Ambele lansatoare de calificare apelează [adaptorul de admitere](../../scripts/AtfTestChangeAdmission.ps1) înaintea copierii sau restaurării snapshot-ului sursei, copierii cache-urilor de dependențe ori pornirii Maven. Un compilator autonom restrâns construiește [CLI-ul](../../atf-tests/src/main/java/atf/tests/testchange/TestChangeAdmissionCli.java) din sursele curente ale uneltelor și citește JAR-urile fixate ale parserelor din `-MavenCache`. CLI-ul apelează aceiași validatori `TestChangeReview` și `TestChangeProof` ca guvernanța finală.
@@ -115,10 +149,10 @@ $env:ATF_TEST_CHANGE_PROOF_ROOT = Join-Path $runRoot 'proofs'
 | Identitate | Chitanța leagă ID-ul controlului, SHA-ul bazei, SHA-ul commitului revizuit și SHA-256 al diff-ului Git brut, inclusiv bloburi și moduri de fișiere. |
 | Lotul diff-ului | O singură compilare deservește toate controalele `VERIFIED` cerute. Fiecare control are JVM, jurnal și raport HTML proprii. Publicați `proofs` numai după trecerea tuturor controalelor și reconfirmarea sursei și a selecției. |
 | Execuție | Lansatorul rulează exact selectorii declarați și reconciliază invocările cu Extent. Chitanța și HTML-ul se păstrează împreună, sub ID-ul controlului. |
-| Verificare | Un alt commit, diff sau control, selectori lipsă ori hash HTML diferit blochează autorizarea `VERIFIED`. Un checkout schimbat cere un candidat nou. |
+| Verificare | O intrare executabilă, un diff protejat ori un control modificat, selectorii lipsă sau un hash HTML diferit blochează autorizarea `VERIFIED`. Numai un descendent editorial admis poate reutiliza proba commitului original. |
 | Istoric | Păstrați controalele anterioare în registru. Un control `VERIFIED` se aplică numai dacă selecția și dovada corespund diff-ului revizuit. |
 
-La eșec sau schimbarea sursei, consultați jurnalele fiecărui control și directorul de diagnostic `proofs.pending`. Pentru o probă punctuală, `-TestChangeControl` păstrează chitanța sub `<RunRoot>/<ID>`. Reutilizați chitanța și raportul numai pentru același commit și același diff.
+La eșec sau schimbarea sursei, inspectați jurnalele fiecărui control și dosarul diagnostic `proofs.pending`. Pentru o rulare focalizată, `-TestChangeControl` păstrează receipt-ul în `<RunRoot>/<ID>`. Reutilizați receipt-ul și raportul pentru commitul și diff-ul originale sau pentru o continuare editorială verificată care le păstrează identitatea.
 
 ## Mutarea proprietății unei verificări
 

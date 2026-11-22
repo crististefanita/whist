@@ -1,11 +1,11 @@
-import { fitTextWidth, isPhone, viewportGeometry, textScale } from "./viewport.mjs?v=0.3";
+import { adaptiveViewport, surfaceTypography, fitTextWidth, isPhone, viewportGeometry, textScale } from "./viewport.mjs?v=0.4";
 import { collect } from "./collection.mjs";
 import { autoGame, waitForDecision } from "./auto-game.mjs";
 import { bindHandFeedback } from "./hand-feedback.mjs";
-import { historyGrid, applyHistoryAppearance } from "./records.mjs?v=0.3";
+import { historyGrid, applyHistoryAppearance } from "./records.mjs?v=0.4";
 import { fitSeatLine, fitSeatLines, retainSeatFrames, measureSeatActionClearance } from "./seat-presentation.mjs";
-import { historyFirst, menuFromEntries } from "./table-menu.mjs?v=0.3";
-import { createProfileDialogs, deviceProfile, dismissGameMenuOnOutsideClick, preferredLanguage, saveLanguage } from "./profile.mjs?v=0.3";
+import { historyFirst, menuFromEntries } from "./table-menu.mjs?v=0.4";
+import { createProfileDialogs, deviceProfile, dismissGameMenuOnOutsideClick, preferredLanguage, saveLanguage } from "./profile.mjs?v=0.4";
 
 const stage = document.querySelector("#table");
 const frame = document.querySelector("#frame");
@@ -21,7 +21,9 @@ const resize = () => {
   const height = (visual?.height ?? innerHeight) - parseFloat(inset.paddingTop) - parseFloat(inset.paddingBottom);
   if (width <= 0 || height <= 0) return;
   const phone = isPhone(navigator.userAgent);
-  const result = viewportGeometry(width, height, phone);
+  const adaptive = document.documentElement.dataset.surface === "whist" || document.documentElement.dataset.engine === "whist";
+  const result = adaptive ? adaptiveViewport(width, height) : viewportGeometry(width, height, phone);
+  if (adaptive) viewport.style.height = (visual?.height ?? innerHeight) + "px";
   frame.dataset.viewport = phone ? "phone" : "desktop";
   frame.style.width = result.frameWidth + "px";
   frame.style.height = result.frameHeight + "px";
@@ -38,6 +40,12 @@ const resize = () => {
 resize();
 window.addEventListener("resize", resize);
 window.visualViewport?.addEventListener("resize", resize);
+// Observe rem itself: changing browser text preferences need not change the window dimensions.
+const textProbe = document.createElement("span");
+textProbe.setAttribute("aria-hidden", "true");
+textProbe.style.cssText = "position:fixed;visibility:hidden;pointer-events:none;width:1rem;height:1rem";
+document.body.append(textProbe);
+new ResizeObserver(resize).observe(textProbe);
 
 function randomClient() {
   return Array.from(crypto.getRandomValues(new Uint8Array(16)), n => n.toString(16).padStart(2, "0")).join("");
@@ -942,6 +950,9 @@ try {
     rememberLanguage("en");
   }
   document.documentElement.dataset.surface = setup.surface ?? "table";
+  if (setup.surface === "whist") for (const [name, value] of Object.entries(surfaceTypography()))
+    document.documentElement.style.setProperty(name, value);
+  resize();
   for (const token of setup.palette ?? []) document.documentElement.style.setProperty(token.name, token.color);
   document.documentElement.style.setProperty('--card-rank-scale', setup.cardFace?.rankScale ?? 1.5);
   const savedName = transport.cachedName?.();

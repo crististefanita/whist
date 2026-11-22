@@ -40,12 +40,12 @@ public final class TestChangeAdmissionCli {
             boolean passed = result.diagnostics().isEmpty();
             emit(output, new Response(1, "ATF_TEST_CHANGE_ADMISSION", passed ? "PASS" : "BLOCKED",
                     request.generate() ? "GENERATE" : "VERIFY", result.base(), result.protectedPaths(),
-                    controls, result.diagnostics()));
+                    controls, result.diagnostics(), result.continuations()));
             return passed ? 0 : 2;
         } catch (Exception invalid) {
             if (invalid instanceof InterruptedException) Thread.currentThread().interrupt();
             emit(output, new Response(1, "ATF_TEST_CHANGE_ADMISSION", "BLOCKED", "REJECTED", "", 0,
-                    List.of(), List.of(invalid.getMessage() == null ? invalid.getClass().getSimpleName() : invalid.getMessage())));
+                    List.of(), List.of(invalid.getMessage() == null ? invalid.getClass().getSimpleName() : invalid.getMessage()), List.of()));
             return 2;
         }
     }
@@ -83,5 +83,6 @@ public final class TestChangeAdmissionCli {
 
     private record Request(Path root, String base, boolean generate, String control) { }
     private record Response(int schemaVersion, String kind, String status, String mode, String base,
-                            int protectedPaths, List<String> controls, List<String> diagnostics) { }
+                            int protectedPaths, List<String> controls, List<String> diagnostics,
+                            List<TestChangeProof.Continuation> continuations) { }
 }

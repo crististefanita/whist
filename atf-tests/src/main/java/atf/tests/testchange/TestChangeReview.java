@@ -58,6 +58,8 @@ public final class TestChangeReview {
             "atf-ui-browser/tests/whist-surface-contract.test.mjs",
             "atf-ui-browser/tests/shared-presentation.test.mjs", "atf-ui-browser/tests/trick-playback.mjs",
             "atf-ui-browser/tests/fixtures.mjs",
+            "atf-ui-browser/tests/responsive-surface.test.mjs", "atf-ui-browser/tests/responsive-game.mjs",
+            "atf-ui-browser/tests/packaged-sanity.mjs",
             "atf-tests/tools/evaluate-release-rag.mjs", "atf-tests/tools/atf-component-ownership.mjs",
             "atf-tests/tools/component-compiler-inputs.mjs",
             "config/atf-component-dependencies.json", "atf-tests/tools/atf-component-dependencies.mjs",
@@ -80,10 +82,15 @@ public final class TestChangeReview {
         String configured = environment.get(TestChangeProof.ROOT_ENV);
         Path proofRoot = configured == null || configured.isBlank() ? null : Path.of(configured);
         String diff = GitTestChangeSnapshot.proofDiff(review.snapshot());
+        var continuations = new ArrayList<TestChangeProof.Continuation>();
         for (Control control : review.verified().values()) {
-            TestChangeProof.verify(plan(review.snapshot(), control, diff), review.snapshot().root(), proofRoot);
+            var admitted = TestChangeProof.verify(plan(review.snapshot(), control, diff), review.snapshot().root(), proofRoot);
+            if (admitted != null) continuations.add(admitted);
         }
-        return review.result();
+        if (!diff.equals(GitTestChangeSnapshot.proofDiff(review.snapshot())))
+            throw TestChangeProof.failure("DIFF", "review moved during proof admission");
+        var result = review.result();
+        return new Result(result.base(), result.protectedPaths(), result.diagnostics(), List.copyOf(continuations));
     }
 
     public static TestChangeProof.Plan proofPlan(Path root, String base, String id, LocalDate today)
@@ -216,5 +223,10 @@ public final class TestChangeReview {
 
     private record Review(Snapshot snapshot, Result result, Map<String, Control> verified) { }
 
-    public record Result(String base, int protectedPaths, List<String> diagnostics) { }
+    public record Result(String base, int protectedPaths, List<String> diagnostics,
+                         List<TestChangeProof.Continuation> continuations) {
+        public Result(String base, int protectedPaths, List<String> diagnostics) {
+            this(base, protectedPaths, diagnostics, List.of());
+        }
+    }
 }

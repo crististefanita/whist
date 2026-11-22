@@ -26,22 +26,22 @@ Deciziile AI, seriile și Jocul la 0 se extind prin componente cu oracol de dome
 
 ## WEB-16 Suprafața de joc responsivă și tipografia meniurilor
 
-**P1 · 88/100 · Deschis; constatare din cod, paritatea randată nu este încă calificată.**
+**P1 · 88/100 · Implementarea sursei calificată offline; acceptanța APK/browser pe același dispozitiv rămâne deschisă.**
 
 Whist partajează deja calculele portabile ale locurilor și mâinii. Păstrați această graniță; lacuna aparține învelișului browserului, nu justifică duplicarea geometriei mesei sau importarea interfeței specifice Chess în Whist.
 
-- Pe telefoane, `viewportGeometry` folosește viewport-ul CSS primit. Pe desktop pornește de la referința 414 × 896 și aplică o singură scară întregului cadru. Astfel, ecranele late pot rămâne insuficient utilizate, iar într-o fereastră scundă meniul, etichetele, masa și controalele se pot micșora împreună. Vezi [politica viewport-ului](../../atf-ui-browser/src/main/web/viewport.mjs) și [dimensionarea cadrului](../../atf-ui-browser/src/main/web/table.mjs).
-- Suprafața Whist fixează `--whist-text-scale: 1.5`, iar `table.mjs` citește separat fontul rădăcină pentru `/api/layout`. Browserul nu are, așadar, un contract explicit unic între rolurile meniurilor, zoom-ul textului și măsurătorile geometriei. Factorul 1.5 poate corespunde unui profil APK ales, dar nu înlocuiește testarea textului normal și mărit în browser. Vezi [tipografia meniurilor și geometria](../../atf-ui-browser/src/main/web/table.css).
+- Whist adoptă acum dimensionarea după viewport-ul util, fără transformarea întregii scene, cu lățime maximă lizibilă centrată și derulare locală a meniurilor în ferestre scunde. Pachetul publicat imuabil și consumatorii existenți păstrează adaptorul cadrului de referință până la o livrare calificată separat. Vezi [politica viewport-ului](../../atf-ui-browser/src/main/web/viewport.mjs) și [dimensionarea cadrului](../../atf-ui-browser/src/main/web/table.mjs).
+- Rolurile tipografice explicite ale meniurilor înlocuiesc multiplicatorul global implicit. Schimbarea textului rădăcină declanșează măsurarea geometriei prin același adaptor; masa primește dimensiunile sale utile reale. [Tipografia meniurilor și geometria](../../atf-ui-browser/src/main/web/table.css) păstrează ierarhia implicită aprobată fără scalarea întregii scene.
 
 **Direcția necesară**
 
-1. Înlocuiți zoom-ul întregului cadru desktop cu dimensionarea condusă de conținut, bazată pe viewport-ul util și zonele sigure. Folosiți lățimea disponibilă pentru suprafața de joc până la un maxim lizibil; păstrați ancorele locurilor și proporțiile mesei stabile când se schimbă lățimea și înălțimea. Nu reparați depășirile micșorând fiecare element sau adăugând ajustări izolate la praguri de rezoluție.
-2. Definiți roluri tipografice explicite pentru titlul meniului, subtitluri, acțiuni primare/secundare și text ajutător. Mapați rolurile la `sp` Android și `rem` Web; zoom-ul textului în browser trebuie să afecteze textul fără scalarea mesei sau a țintelor tactile. Verificați formulările reale RO și EN din meniuri, nu numai etichetele englezești.
+1. Păstrați dimensionarea condusă de conținut, zonele sigure și geometria comună a locurilor/cărților. Nu reintroduceți micșorarea întregii scene ori ajustări izolate la praguri de rezoluție pentru a ascunde depășirile.
+2. Păstrați rolurile tipografice explicite și mărirea independentă a textului. Politicile native `sp` ale APK-ului rămân autoritatea comparației deschise; componentele browserului singure nu dovedesc echivalența fonturilor native.
 3. Păstrați ierarhia informației între adaptoare: numele, licitațiile, levatele câștigate, jucătorul activ, atuul, cărțile jucate, mâna umană și scorul trebuie să rămână ușor de parcurs, cu aceeași proeminență relativă. Controalele rămân accesibile, fără decupare sau derulare inutilă a paginii pe profilurile acceptate.
 
 **Dovezi de închidere**
 
-- Componentele acoperă dimensionarea viewport-ului, rolurile tipografice, ferestrele scunde/înalte, etichetele localizate lungi și textul 1.0×/1.3×, fără emulator.
+- [Componentele](../../atf-ui-browser/tests/responsive-surface.test.mjs) acoperă dimensionarea viewport-ului, rolurile tipografice, ferestrele scunde/înalte, etichetele localizate lungi și textul 1.0×/1.3× fără emulator. Granița HTTP este un fixture controlat. [Verificările browserului cu motor real](../../atf-ui-browser/tests/responsive-game.mjs) păstrează aceeași mână Whist la redimensionare și schimbarea limbii; niciuna dintre suite nu pretinde acceptanță nativă APK.
 - Același checkpoint de partidă salvată și meniurile principal/configurare sunt randate pe același Android în APK și Chrome la un profil compact; un profil browser desktop verifică utilizarea lățimii și depășirile. Includeți RO/EN și text 1.0×/1.3× în comparația focalizată, fără o partidă completă la fiecare rezoluție.
 - Capturile Extent includ dimensiunile viewport-ului, identitatea browserului și APK-ului, fonturile, limitele elementelor principale, verdictele de depășire/derulare și faptele vizibile ale jocului. Păstrați problema deschisă până trece comparația randată; geometria de componentă singură nu este paritate vizuală.
 

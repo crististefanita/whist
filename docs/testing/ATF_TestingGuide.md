@@ -104,6 +104,8 @@ Folosește [contractul adaptorului](ATF_DisplayComponents.md) pentru a identific
 3. Solicită o singură metodă de instanță `void @Test` declarată neambiguu în perimetrul componentelor. Fabricile/șabloanele dinamice, testele parametrizate/repetate, supraîncărcările și compunerea nerezolvată a adnotărilor nu sunt selectori statici de probă. Vezi [admiterea selectorilor](../governance/ATF_TestChanges.md#admiterea-timpurie-a-controlului-sursei).
 4. Compilează o singură dată pentru controalele necesare, apoi reconciliază descoperirea și rezultatele JUnit reale cu fiecare selector declarat. Eligibilitatea sursei nu autorizează invocări lipsă, omise sau eșuate.
 5. Reutilizează numai dovezi admise pentru responsabili nemodificați. Reevaluează deriva exclusiv documentară față de ambele snapshot-uri; păstrează agregatul eșuat și cauza originală.
+   Probele originale ale controlului sursei pot continua după commituri editoriale admise fără schimbarea identității execuției; guvernanța documentației curente rulează în continuare. [Continuarea probelor](../governance/ATF_TestChanges.md#editorial-continuation-of-original-proofs)
+
 6. Execută responsabilii lipsă sau invalidați, publică comparațiile și lasă evaluatorul RAG doar în citire să decidă dacă populația necesară este calificată.
 
 Suitele primare dețin populații disjuncte. Selecțiile focalizate își păstrează părinții primari; rularea unui caz prin ambele puncte de intrare nu creează două cazuri unice. [Catalogul suitelor](../../config/atf-test-suites.json) și [inventarul responsabililor componentelor](../../config/atf-component-collections.json) sunt intrări executabile, nu liste istorice de rezultate.
