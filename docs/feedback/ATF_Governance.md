@@ -87,6 +87,10 @@ Fluxul izolat primește acum explicit baza reviziei. Admiterea probelor de contr
 
 [Responsabilii ATF independenți](../testing/ATF_Collections.md#responsabili-independenți-pentru-componentele-atf) separă verificările editoriale și ale payload-ului de proveniență, Android simulat, GitHub simulat, orchestrare și raportare. Fiecare colecție primară are un inventar pozitiv de clase, un singur Extent canonic și propriul receipt legat de surse.
 
+| Prioritate | Lacună delimitată | Criteriu de închidere |
+|---|---|---|
+| P2 | Modificările helper-elor și surselor de test ale framework-ului încă selectează conservator fiecare responsabil ATF. Separarea colecțiilor nu demonstrează singură ce cod consumă fiecare fixture izolat. | Declarați dependențe tranzitive executabile pentru helper-ele framework-ului și fixture-urile Java/Node. Demonstrați că responsabilii neafectați păstrează dovezile originale, dependențele schimbate invalidează fiecare consumator, iar legăturile lipsă sau necunoscute sunt respinse conservator. Măsurați execuțiile evitate separat de admiterea snapshot-ului și compilatorului; nu restrângeți selecția doar pe baza extensiilor de fișier sau a rezultatelor verzi precedente. |
+
 - Schimbările numai în Markdown selectează responsabilul documentației fără reluarea fixture-urilor independente ale lansatoarelor. Helper-ele comune, dependențele și intrările necunoscute invalidează în continuare consumatorii în mod conservator.
 - Reutilizarea păstrează identitățile și rezultatele JUnit originale, comparațiile și hash-urile rapoartelor. Rapoartele monolitice istorice rămân imuabile și nu pot califica noile identități ale partițiilor.
 
