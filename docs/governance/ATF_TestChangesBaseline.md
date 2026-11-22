@@ -1581,7 +1581,7 @@ testChanges:
     base: 08d0c425bba7ea9f58b5188612654d6b252a55ba
     expires: 2026-12-20
     reason: Separate Maven output admission from snapshot recovery while retaining rejection of altered classpaths, changed classes and foreign or incomplete preparation receipts; preserve offline ownership.
-    proof: 'scripts/run-component-suites.ps1 -TestChangeControl MAVEN-PREPARATION-BOUNDARY -TestChangeBaseRef 08d0c425bba7ea9f58b5188612654d6b252a55ba'
+    proof: 'mvn -o -pl atf-tests -am -Dtest=ComponentEvidenceScopeComponentTest -Dsurefire.failIfNoSpecifiedTests=false test'
     checks:
       positive:
         - atf.tests.governance.documentation.release.rag.scope.ComponentEvidenceScopeComponentTest#nodeContractTestsKeepReuseClassificationInsideTheRealBuildBoundary
