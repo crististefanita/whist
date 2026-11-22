@@ -73,7 +73,7 @@ Confruntați rolurile din hartă cu [reactorul Maven](../../pom.xml), [modulele 
 
 - Toate documentele Markdown sunt în engleză pe `main` și în română cu diacritice pe `main_RO`, la aceleași căi. Numele stabile ale fișierelor și identificatorii API își păstrează forma. Nivelurile titlurilor, forma tabelelor, topologia diagramelor, destinațiile legăturilor și comenzile se mențin sincronizate.
 - Titlurile, tabelele, diagramele și rezumatele pliabile folosesc limba documentului.
-- Verificarea limbii clasifică proza vizibilă; destinațiile Markdown, codul în linie și atributele ancorelor HTML rămân date tehnice. Textul din ancoră sau de lângă ea este verificat în continuare, iar marcajul escapăt rămâne proză vizibilă.
+- Verificarea limbii clasifică proza vizibilă; destinațiile Markdown, codul în linie și atributele ancorelor HTML rămân date tehnice. Textul din ancoră sau de lângă ea este verificat în continuare, iar marcajul redat literal rămâne proză vizibilă.
 - Identificatorii API, comenzile și etichetele originale citate își păstrează forma exactă.
 - Folosiți un singur titlu principal, o secțiune `Overview` în engleză sau `Pe scurt` în română, titluri progresive și liste cu marcatorul `-`.
 - Un paragraf vizibil are cel mult trei propoziții; responsabilitățile și comparațiile se exprimă prin forma care le face ușor de parcurs.
