@@ -206,7 +206,9 @@ Snapshot-ul APK este reperul pentru compararea intrărilor fiecărei suite. RAG 
 
 ### Limitele pregătirii Maven
 
-[Recuperarea snapshotului](../../scripts/AtfComponentResume.ps1) deține identitatea sursei și persistența checkpointurilor; [admiterea Maven](../../scripts/AtfComponentMaven.ps1) deține verificarea claselor compilate, a dependențelor și a classpathului. Lansatorul componentelor compune aceste verificări. Compilarea validă supraviețuiește unui classpath întrerupt sau alterat, dar clasele schimbate ori chitanțele străine, lipsă sau invalide cer o nouă pregătire. Testele verifică ambele decizii fără Maven sau dispozitiv.
+[Recuperarea snapshotului](../../scripts/AtfComponentResume.ps1) deține identitatea sursei și persistența checkpointurilor; [admiterea Maven](../../scripts/AtfComponentMaven.ps1) deține verificarea claselor compilate, a dependențelor și a classpathului.
+
+Lansatorul componentelor compune aceste verificări. Compilarea validă supraviețuiește unui classpath întrerupt sau alterat, dar clasele schimbate ori chitanțele străine, lipsă sau invalide cer o nouă pregătire. Testele verifică ambele decizii fără Maven sau dispozitiv.
 
 ### Snapshot și preflight înainte de Maven
 

@@ -87,6 +87,8 @@ Respingeți probele de control al sursei lipsă sau expirate înainte de copiere
 
 Fluxul izolat primește acum explicit baza reviziei. Admiterea probelor de control al sursei lipsă înaintea pregătirii dependențelor rămâne deschisă; alegerea bazei corecte nu închide singură această limită.
 
+- Verificați sintaxa comenzilor de control, inventarul E2E explicit al dosarului activ, linkurile la catalog și limitele editoriale printr-o admitere ieftină înaintea colecției lungi. Păstrați raportul eșuat; reverificarea focalizată nu califică un grup primar eșuat.
+
 ## Admiterea schemei de raportare
 
 Evaluatorul aplică acum aceeași regulă de admitere a raportării înainte de verdict și păstrează manifestele istorice neschimbate. Combinațiile de scheme și rapoarte acceptate sunt:

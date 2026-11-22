@@ -78,7 +78,9 @@ Colecțiile JVM nu cer conectarea emulatorului. Pregătirea Java/Maven/Gradle nu
 
 ## Pregătirea Maven și recuperarea snapshotului
 
-[Recuperarea snapshotului](AtfComponentResume.ps1) validează inventarele originale ale surselor și release-urilor și scrie checkpointuri atomice. [Admiterea Maven](AtfComponentMaven.ps1) verifică separat identitatea pregătirii, clasele compilate, octeții dependențelor și classpathul. Lansatorul poate reutiliza compilarea după întreruperea etapei de classpath; un classpath alterat reface doar acea etapă, iar clasele schimbate sau o chitanță străină, invalidă ori lipsă cer o nouă pregătire. Niciun helper nu rulează jocul și nu schimbă verdictul raportului.
+[Recuperarea snapshotului](AtfComponentResume.ps1) validează inventarele originale ale surselor și release-urilor și scrie checkpointuri atomice. [Admiterea Maven](AtfComponentMaven.ps1) verifică separat identitatea pregătirii, clasele compilate, octeții dependențelor și classpathul.
+
+Lansatorul poate reutiliza compilarea după întreruperea etapei de classpath; un classpath alterat reface doar acea etapă, iar clasele schimbate sau o chitanță străină, invalidă ori lipsă cer o nouă pregătire. Niciun helper nu rulează jocul și nu schimbă verdictul raportului.
 
 ## Intrări private de semnare
 
