@@ -35,7 +35,7 @@ Coordonatele selectează livrarea, iar identitatea fizică a binarului se verifi
 
 ## Verificarea exemplelor din ghiduri
 
-[LibraryReadmeExamplesIntegrationTest](../../atf-tests/src/test/java/atf/libraries/LibraryReadmeExamplesIntegrationTest.java) compilează fragmentele Java curente din cele patru ghiduri, cu JAR-urile fizice din `lib` înaintea dependențelor tranzitive. Execuția are un director temporar propriu și compară rezultate observabile; controalele negative disting compilarea invalidă de reușita exemplului.
+[LibraryReadmeExamplesIntegrationTest](../../atf-tests/src/test/java/atf/libraries/LibraryReadmeExamplesIntegrationTest.java) compilează fragmentele Java curente din toate cele cinci ghiduri ale bibliotecilor, cu JAR-urile fizice din `lib` înaintea dependențelor tranzitive. Execuția are un director temporar propriu și compară rezultate observabile; controalele negative disting compilarea invalidă de reușita exemplului.
 
 Dintr-o copie temporară completă, cu JDK 21, modulele și depozitul Maven propriu:
 
@@ -43,7 +43,7 @@ Dintr-o copie temporară completă, cu JDK 21, modulele și depozitul Maven prop
 mvn -B -pl atf-tests -am '-Dtest=LibraryReadmeExamplesIntegrationTest' '-Dsurefire.failIfNoSpecifiedTests=false' test
 ```
 
-Proba verifică integrarea consumatorului și fragmentele documentate; nu modifică JAR-ul și nu înlocuiește regresia producătorului. [Responsabilul comun](../feedback/README.md) păstrează împachetarea și sincronizarea ghidurilor în livrările următoare.
+Proba verifică integrarea consumatorului și fragmentele documentate fără să modifice JAR-ul. Regresiile producătorului și acceptanța consumatorului rămân distincte. Direcționați împachetarea comună și actualizarea ghidurilor prin [feedback-ul local](../feedback/README.md) și [nota despre sursa bibliotecilor](../../lib/README.md#shared-library-source).
 
 ## Modificări concurente
 
