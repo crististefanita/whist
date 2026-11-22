@@ -1581,7 +1581,7 @@ testChanges:
     base: 08d0c425bba7ea9f58b5188612654d6b252a55ba
     expires: 2026-12-20
     reason: Separă admiterea outputurilor Maven de recuperarea snapshotului păstrând refuzul classpathurilor alterate, claselor schimbate și chitanțelor străine sau incomplete; păstrează selecția offline.
-    proof: 'scripts/run-component-suites.ps1 -TestChangeControl MAVEN-PREPARATION-BOUNDARY -TestChangeBaseRef 08d0c425bba7ea9f58b5188612654d6b252a55ba'
+    proof: 'mvn -o -pl atf-tests -am -Dtest=ComponentEvidenceScopeComponentTest -Dsurefire.failIfNoSpecifiedTests=false test'
     checks:
       positive:
         - atf.tests.governance.documentation.release.rag.scope.ComponentEvidenceScopeComponentTest#nodeContractTestsKeepReuseClassificationInsideTheRealBuildBoundary
