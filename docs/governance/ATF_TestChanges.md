@@ -90,6 +90,8 @@ Inițializarea scrie numai clase temporare ale utilitarului în rădăcina tempo
 
 Java 21 și dependențele JSON/YAML fixate din cache-ul local sunt necesare inclusiv când compilarea Maven este reutilizată. Imuabilitatea sursei și guvernanța finală rulează și după admiterea timpurie; un receipt nu le dezactivează verificările.
 
+Workflow-ul găzduit pregătește numai intrările JSON/YAML fixate ale parserului din Maven Central prin HTTPS, apoi admite planul generării înaintea pregătirii reactorului Maven. Eșecul pregătirii parserului sau al admiterii planului împiedică Maven; calificarea normală cere în continuare probele originale generate ulterior.
+
 ### Generarea și folosirea probei
 
 Păstrați controlul și selecția de teste în commitul revizuit. Scrieți dovada într-un dosar nou, în afara checkout-ului. Lansatorul pregătește o copie izolată și publică dovada numai după ce confirmă că intrările nu s-au schimbat.
