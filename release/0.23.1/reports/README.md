@@ -44,5 +44,3 @@ Planul bazat pe diff-ul sursei a selectat un singur grup de componente și guver
 - [Inventarul sursei APK-ului](apk-inputs.json)
 - [Planul de calificare fixat](qualification-plan.json)
 - Build-ul, semnarea și identitatea sunt documentate în [diagnostics](diagnostics/).
-
-[Catalogul release-urilor](../../README.md) · [Strategia comună de testare](../../../docs/testing/README.md)
