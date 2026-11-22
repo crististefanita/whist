@@ -26,23 +26,25 @@ Extend coverage of AI decisions, streaks and playing for zero through component 
 
 ## WEB-16 Responsive game surface and menu typography
 
-**P1 · 88/100 · Source implementation qualified offline; same-device APK/browser acceptance remains open.**
+**P1 · 88/100 · Height-fit implementation and portable contracts available; same-device APK/browser acceptance remains open.**
 
-Whist already shares the portable seat and hand calculations. Keep that boundary; the gap is the browser shell, not a reason to duplicate table geometry or pull Chess-specific UI into Whist.
+Whist shares native seat, card and animation policies. Preserve that boundary and qualify the physical renderers independently.
 
-- Whist now opts into usable-viewport sizing with no whole-stage transform, a centered readable width limit and local menu scrolling in short windows. The immutable published package and existing consumers retain the legacy reference-frame adapter until a separately qualified delivery. See [viewport policy](../../atf-ui-browser/src/main/web/viewport.mjs) and [stage sizing](../../atf-ui-browser/src/main/web/table.mjs).
-- Explicit menu typography roles replace the implicit global multiplier. Root text changes trigger layout measurement through the same adapter; the table receives its actual usable dimensions. [Menu typography and layout](../../atf-ui-browser/src/main/web/table.css) preserve the approved default hierarchy without scaling the entire scene.
+- The [viewport policy](../../atf-ui-browser/src/main/web/viewport.mjs) derives one proportional fit from usable height, width and required logical content. [The DOM adapter](../../atf-ui-browser/src/main/web/surface-fit.mjs) fits menus and dialogs, pages long content and follows keyboard offsets. Published packages remain immutable.
+- Explicit typography roles and [native/Web components](../../atf-ui-browser/tests/ro/cardtable/browser/WhistSurfaceContract.java) govern frames, cards, commands and the reserved action-label band. Collection overlays and AutoGame changes must not trigger fitting callbacks.
 
 **Required direction**
 
-1. Preserve content-first sizing, safe areas and the shared seat/card geometry. Do not reintroduce whole-stage shrinkage or isolated breakpoint overrides to conceal overflow.
-2. Keep explicit typography roles and independent text enlargement. The APK's native `sp` policies remain authoritative for the pending comparison; browser components alone do not prove native font equivalence.
-3. Preserve the game's information hierarchy across adapters: player names, bids, tricks won, active player, trump, cards played, the human hand and score must remain easy to scan at the same relative prominence. Keep controls reachable and avoid clipping or unnecessary page scroll at supported profiles.
+1. Preserve one measured height-led fit through the adapter. Use logical geometry and typography roles before applying the proportional fit; avoid unrelated breakpoint constants or clipping content to hide overflow.
+2. Bidding, play, menus and every non-history dialog fit usable height without vertical scrolling. Rules, achievement groups and rankings use bounded pages; score history is the sole internal vertical-scroll exception. Preserve complete text, input fields, navigation and manual choices.
+3. Keep frames fixed between bidding, play and collection. Localized play labels sit above their frames in bands reserved for both phase labels. Three-player Oh Hell, Reverse Oh Hell and descending variants must not intersect labels, bid buttons, other frames or the human hand.
+4. Retain the native horizontal hand gesture for dense cards. Test first/last-card access rather than forcing all 17 cards into a narrow viewport by reducing their indices.
 
 **Closure evidence**
 
-- [Component checks](../../atf-ui-browser/tests/responsive-surface.test.mjs) cover viewport sizing, typography roles, short/tall windows, long localized labels and 1.0×/1.3× text without requiring an emulator. Their HTTP boundary is a controlled fixture. [Real-engine browser checks](../../atf-ui-browser/tests/responsive-game.mjs) keep the same Whist hand across resizing and language changes; neither suite claims native APK acceptance.
-- One identical saved-game checkpoint and the home/setup menus are rendered on the same Android device in APK and Chrome at a compact profile; one desktop browser profile verifies width use and overflow. Include RO/EN and 1.0×/1.3× text in the focused comparison, not a full match on every resolution.
-- Extent captures include viewport dimensions, browser and APK identity, font sizes, key element bounds, overflow/scroll verdicts and the visible game facts. Keep the issue open until the rendered comparison passes; component geometry alone is not visual parity.
+- [Components](../../atf-ui-browser/tests/responsive-surface.test.mjs) cover fixed-height menus/dialogs, paging, callback isolation, localized labels and 1.0×/1.3× text through a controlled HTTP boundary. [Real-engine checks](../../atf-ui-browser/tests/responsive-game.mjs) retain the same hand across resizing and language changes; neither suite claims native APK acceptance.
+- Record page/panel scroll ranges and all visible bounds. Include compact and desktop profiles, three-player labels and dense hands. Hidden scrollbars or a single one-card picture cannot establish this contract.
+- Render the same saved checkpoint and home/setup menus in APK and Chrome on one Android device. Compare a compact profile, RO/EN and normal/enlarged text; add a desktop browser profile without repeating complete matches at every size.
+- Extent includes viewport, density, browser/APK identity, text sizes, bounds, scroll verdicts and visible game facts, with inline captures. Keep native acceptance open until the physical comparison passes.
 
-Use Chess Web's fluid `rem`, `clamp()` and viewport-derived board limit as the responsive reference. Preserve Whist's own engine, table semantics, colors and adapter ownership. This criterion supplements WEB-07 and WEB-11; those flow and card-glyph checks do not close responsive menu typography or desktop sizing.
+Use Chess Web's explicit typography and viewport-derived limits as design references, retaining Whist's own engine and adapter ownership. WEB-07 and WEB-11 remain separate flow and glyph criteria.

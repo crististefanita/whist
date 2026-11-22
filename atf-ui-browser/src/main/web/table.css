@@ -286,11 +286,24 @@ thead, tr:nth-child(even) { background: #e8efe4; }
 [data-surface="whist"] {
   --whist-outline: #d3dcd2;
 }
-[data-surface="whist"] .viewport { min-height: 0; height: 100dvh; }
-[data-surface="whist"] #table { transform: none; }
+[data-surface="whist"] .viewport { position: fixed; top: 0; left: 0; width: 100%; min-height: 0; height: 100dvh; }
+[data-surface="whist"] #frame { overflow: clip; }
+[data-surface="whist"] #table { overflow: visible; }
 [data-surface="whist"] #table { background: var(--whist-paper); color: var(--whist-pine); }
 [data-surface="whist"] select { font-size: var(--menu-selection-size, 1.125rem); }
 [data-surface="whist"] select :is(option, optgroup) { font-size: inherit; }
+[data-surface="whist"] .surface-paged { max-height: none; overflow: visible; }
+[data-surface="whist"] .surface-paged > [hidden], .surface-pages[hidden] { display: none !important; }
+.surface-pages { display: flex; align-items: center; justify-content: space-between; gap: .5rem; flex: none; }
+.surface-pages button { min-height: 3rem; }
+[data-surface="whist"] .player-dialog[open] {
+  position: fixed; inset: auto; left: var(--modal-center-x, 50%); top: var(--modal-center-y, 50%); margin: 0;
+  width: var(--modal-width); height: var(--modal-height); max-width: none; max-height: none;
+  transform: translate(-50%, -50%) scale(var(--modal-scale)); transform-origin: center;
+  font-size: 1rem; padding: 14px; overflow: visible;
+  display: flex; flex-direction: column; gap: 8px;
+}
+[data-surface="whist"] .player-dialog > button { margin-top: auto; align-self: end; flex: none; }
 .whist-match { background: var(--whist-felt); color: var(--whist-seat-text); }
 .whist-match .seat { background: var(--whist-seat-fill); border-color: var(--whist-seat-line); }
 .whist-match .seat.active { background: var(--whist-turn-fill); border-color: var(--whist-turn-line); color: var(--whist-turn-text); }

@@ -18,6 +18,7 @@ final class BrowserGeometry {
         int width = number(inputs, "width", 1, 1200);
         int height = number(inputs, "height", 1, 2400);
         int seatHeight = number(inputs, "seatHeight", 1, 240);
+        int actorClearance = inputs.containsKey("actorClearance") ? number(inputs, "actorClearance", 0, 120) : 0;
         int viewport = number(inputs, "viewport", 1, 2400);
         int players = number(inputs, "players", 2, 6);
         int cards = number(inputs, "cards", 0, 17);
@@ -39,12 +40,14 @@ final class BrowserGeometry {
             played = profile.playedCards();
             bids = profile.bids();
             var spec = new TableGeometry.BoardSpec(players, TableSizing.seatWidthDp(width, policy.isCompact()),
-                    seatHeight, center, policy.regionGapDp(), policy.minimumBoardHeightDp(),
+                    seatHeight + actorClearance, center, policy.regionGapDp(), policy.minimumBoardHeightDp(),
                     profile.handClearance(), true);
             height = Math.max(height, spec.requiredHeight(0));
             var plan = spec.plan(width, height, 0);
             int centerWidth = center.fullWidth() ? width : Math.min(width, center.width());
-            board = new TableGeometry.Plan(plan.seats(), spec.content(plan, centerWidth, center.reservedHeight()));
+            var frames = plan.seats().stream().map(cell -> new TableGeometry.Rect(
+                    cell.left(), cell.top() + actorClearance, cell.right(), cell.bottom())).toList();
+            board = new TableGeometry.Plan(frames, spec.content(plan, centerWidth, center.reservedHeight()));
         }
         var hand = cards == 0 ? null : HandLayoutMetrics.fan(cards, handWidth, 1, fontScale, handIndexWidth);
         var style = played == null ? Map.<String, Integer>of() : Map.of(

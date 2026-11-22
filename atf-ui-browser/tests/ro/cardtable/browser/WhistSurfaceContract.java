@@ -110,10 +110,42 @@ public final class WhistSurfaceContract {
             try { BrowserGeometry.measure(WEB, invalid); throw new AssertionError("Accepted invalid font scale"); }
             catch (IllegalArgumentException expected) { }
         }
-        return Map.of("name", "Web reference and native geometry adapter", "samples", samples,
+        return Map.of("name", "Web reference and native geometry adapter", "samples", samples, "actionBands", actionBands(),
                 "viewportHeights", List.of(568, 896, 1280), "widths", List.of(280, 320, 360, 414, 560, 760), "examples", examples,
                 "densities", List.of(1, 1.5, 2.75, 3.5), "fontScales", List.of(1, 1.3, 2),
                 "expected", "Equal logical regions, phase stability, complete fan and bounded physical rounding", "status", "PASS");
+    }
+
+    private static int actionBands() {
+        int samples = 0;
+        for (var mode : GameMode.values()) for (int players = 3; players <= 6; players++)
+            for (int width : new int[]{280, 320, 414, 760}) for (float scale : new float[]{1f, 1.3f, 2f}) {
+                int frameHeight = Math.round(50 * scale), clearance = Math.round(14 * scale);
+                var inputs = new HashMap<>(Map.of("mode", mode.name(), "players", "" + players,
+                        "width", "" + width, "height", "600", "seatHeight", "" + frameHeight,
+                        "actorClearance", "" + clearance, "viewport", "896", "cards", "17", "handWidth", "" + width));
+                inputs.put("fontScale", "" + scale); inputs.put("bidOptions", "18");
+                var web = BrowserGeometry.measure(WEB, inputs);
+                var viewport = new TableViewportPolicy(896, scale);
+                var center = TableLayoutMetrics.matchCenterReservation(mode, players, width, scale, viewport).center(width, scale, true, 18);
+                var nativeSpec = new TableGeometry.BoardSpec(players, TableSizing.seatWidthDp(width, viewport.isCompact()),
+                        frameHeight + clearance, center, viewport.regionGapDp(), viewport.minimumBoardHeightDp(),
+                        TableLayoutMetrics.HUMAN_HAND_CLEARANCE_DP, true);
+                var nativePlan = nativeSpec.plan(width, web.boardHeight(), 0);
+                for (int seat = 0; seat < players; seat++) {
+                    var cell = nativePlan.seats().get(seat); var frame = web.board().seats().get(seat);
+                    equal(cell.top() + clearance, frame.top(), "Native badge slot above the Web frame");
+                    equal(cell.bottom(), frame.bottom(), "The badge does not enlarge the visible player frame");
+                    var badge = new TableGeometry.Rect(frame.left(), cell.top(), frame.right(), frame.top());
+                    if (badge.overlaps(web.board().center())) throw new AssertionError("Action label intersects bidding controls");
+                    for (int other = 0; other < players; other++) if (other != seat && badge.overlaps(web.board().seats().get(other)))
+                        throw new AssertionError("Action label intersects another player's frame");
+                }
+                inputs.put("bidOptions", "0");
+                equal(web.board().seats(), BrowserGeometry.measure(WEB, inputs).board().seats(), "Badge reservation remains phase-stable");
+                samples++;
+            }
+        return samples;
     }
 
     private static Map<String, Object> faces() {

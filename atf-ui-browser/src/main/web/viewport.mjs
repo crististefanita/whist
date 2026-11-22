@@ -1,17 +1,19 @@
 export const REFERENCE = Object.freeze({ width: 414, height: 896 });
 export const MIN_DESKTOP_SCALE = 0.68;
-export const ADAPTIVE_SURFACE = Object.freeze({ maxWidth: 768 });
+export const ADAPTIVE_SURFACE = Object.freeze({ minWidth: 320, maxWidth: 768, height: 896 });
 export const MENU_TYPOGRAPHY = Object.freeze({
   title: 2.34, section: 1.3125, action: 1.5, selection: 1.125, helper: 1.21875, dedication: 1.40625
 });
 export const SUMMARY_TYPOGRAPHY = Object.freeze({ progress: 1.5, bid: 1.35, progressLeading: 1.40625, bidLeading: 1.359375 });
 
-/** Content stays in CSS pixels; text zoom never becomes a whole-scene transform. */
-export function adaptiveViewport(width, height) {
-  if (![width, height].every(value => Number.isFinite(value) && value > 0))
+/** One height-led fitting scale keeps all presentation roles proportional. */
+export function adaptiveViewport(width, height, contentHeight = ADAPTIVE_SURFACE.height) {
+  if (![width, height, contentHeight].every(value => Number.isFinite(value) && value > 0))
     throw new RangeError("The usable viewport must have positive finite dimensions");
-  const available = Math.min(width, ADAPTIVE_SURFACE.maxWidth);
-  return { width: available, height, scale: 1, frameWidth: available, frameHeight: height };
+  const logicalHeight = contentHeight;
+  const scale = Math.min(height / logicalHeight, width / ADAPTIVE_SURFACE.minWidth);
+  const available = Math.min(width / scale, ADAPTIVE_SURFACE.maxWidth);
+  return { width: available, height: logicalHeight, scale, frameWidth: available * scale, frameHeight: logicalHeight * scale };
 }
 
 /** Explicit menu roles retain the approved default sizes and follow the user's root font. */

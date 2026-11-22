@@ -75,7 +75,7 @@ flowchart LR
 |---|---|
 | [The game contract](src/main/java/ro/cardtable/browser/BrowserGame.java) | Publishes seats, permitted cards, legal commands and scores. Each game engine owns validation. |
 | [Server](src/main/java/ro/cardtable/browser/BrowserServer.java) | Serves same-origin resources, isolates matches by tab, validates revisions and rejects repeated commands. |
-| [Geometry](src/main/java/ro/cardtable/browser/BrowserGeometry.java) | Apply the Java plan used in Android for seats and fans. Whist uses the available CSS viewport without scene scaling; the legacy reference-frame adapter remains available to existing consumers. |
+| [Geometry](src/main/java/ro/cardtable/browser/BrowserGeometry.java) | Apply the Java plan used in Android for seats and fans. Whist measures the usable viewport, applies a height-led proportional fit and retains native table geometry; existing consumers keep their legacy adapter. |
 | [Adapter Whist](whist/src/main/java/ro/whistlab/browser/WhistBrowser.java) | Uses dealing, AI policies and engine settlement. Recommendations use the same human-player selection as Android. |
 
 ## Whist on GitHub Pages
@@ -193,35 +193,42 @@ The published legacy viewport contract preserves a 414 × 896 logical frame on d
 
 ## Adaptive Whist surface
 
-The [viewport adapter](src/main/web/viewport.mjs) separates available space, typography and the existing table geometry. Whist uses CSS pixels without a whole-stage transform; Android continues to own its native rendering and sp-based policies.
+The [viewport policy](src/main/web/viewport.mjs) and [DOM adapter](src/main/web/surface-fit.mjs) fit the whole presentation into usable height. Labels, frames, cards and commands keep coherent proportions. Android retains its native renderer; both adapters use the same logical table and card policies.
 
-| Responsibility | Current contract |
+| Responsibility | Contract |
 |---|---|
-| Available space | Measure the visual viewport after safe-area padding. Center a surface up to 768 CSS pixels wide and use the available height; keyboard-height and short windows retain readable controls through local scrolling. |
-| Menu roles | Title, section, action, selection and helper roles use explicit rem values. Preserve their approved default hierarchy; root text enlargement applies once and does not become a scene scale. |
-| Table adaptation | The existing Java port receives measured width, height and root font scale. Seat, card, actor and animation policies keep their shared owners. |
-| Text changes | A rem-sized observation probe triggers remeasurement when text preferences change independently of window dimensions. |
-| Compatibility | Existing consumers may keep `viewportGeometry`; Whist opts into `adaptiveViewport`. Exported legacy archives remain immutable. |
+| Available space | Measure visual-viewport width, height, offsets and safe areas. A 896-unit table reference uses a logical width between 320 and 768; one proportional fit respects both physical limits and centers the result. |
+| Text roles | Menu title, section, action, selection and helper roles use explicit rem values. Root text enlargement is distinct from the subsequent presentation fit; labels and frames share that fit. |
+| Fixed-height surfaces | Bidding, play, menus and non-history dialogs fit without vertical page or panel scrolling. Measure actual content before fitting; hiding a scrollbar does not prove that content fits. |
+| Long content | Rules, achievement groups and rankings use bounded pages with visible navigation. Original nodes, progress, IDs and handlers remain intact; forms retain all fields together. Score history alone retains internal vertical scrolling. |
+| Table adaptation | The Java port receives logical measured regions and text scale. Reserve the measured bidding/playing action-label band above every frame, including hidden labels, before positioning the native-style cells. |
+| Stable phases | Keep the required table height for the same hand, viewport and text scale. Bid selection, player turns and collection must not resize the seat frames. Collection overlays and AutoGame toggles do not request a new fit. |
+| Keyboard and lifecycle | Follow visual-viewport offsets when the keyboard pans the page. Observe root text changes; coalesce callbacks and disconnect observers when the adapter is disposed. |
+| Compatibility | Whist opts into the fitted surface. Existing consumers and immutable exports retain their admitted adapter until a new runtime/test package is qualified. |
 
 ```mermaid
 flowchart LR
-    Viewport[Visual viewport and safe areas] -->|CSS pixels| Frame[Unscaled surface]
-    Font[User root font] -->|rem roles| Menu[Readable menus]
-    Font -->|font scale| Port[Java table port]
-    Frame -->|measured dimensions| Port
-    Port -->|shared geometry| Table[Seats and cards]
+    Viewport[Visual viewport and safe areas] -->|available height and width| Fit[Proportional fit]
+    Font[Root text preference] -->|rem roles| Measure[Measured content]
+    Pages[Bounded content pages] -->|complete visible content| Measure
+    Measure -->|required height| Fit
+    Native[Shared native geometry] -->|seat cells and action bands| Scene[Logical table]
+    Scene -->|measured regions| Fit
+    Fit -->|one scale| Surface[Fixed-height surface]
 ```
 
 <details>
-<summary>Legend — layout, text and remaining native acceptance</summary>
+<summary>Legend — measured fit and independent native acceptance</summary>
 
-- A wider window provides table space up to the readable cap; it does not enlarge every character, touch target and animation by one transform.
-- [Controlled components](tests/responsive-surface.test.mjs) render the production shell against an explicit API fixture, with localized menus and enlarged text. [Real-game verification](tests/responsive-game.mjs) uses one JVM-backed hand across browser profiles and captures measurements and images.
-- Numeric agreement and browser captures do not establish native font identity. The [remaining acceptance](../docs/feedback/ATF_UiBrowser.md#web-16-responsive-game-surface-and-menu-typography) requires an identified APK/browser comparison on the same Android; no iOS acceptance is claimed.
+- [Controlled components](tests/responsive-surface.test.mjs) exercise the production shell, localized menus, paging, profile form, text enlargement and a panned keyboard viewport. Negative inputs and collection/lifecycle isolation remain component boundaries.
+- [Real-game verification](tests/responsive-game.mjs) uses the JVM engine across the game variants and retains the identical hand while changing viewport, language and text. It checks the reserved action band, phase-stable frames and access to the native horizontal hand fan.
+- Logical agreement and browser captures do not establish native font identity. The [remaining acceptance](../docs/feedback/ATF_UiBrowser.md#web-16-responsive-game-surface-and-menu-typography) compares an identified APK and Chrome on the same Android; iOS is outside this qualification.
 
 </details>
 
-Pass the JVM classpath produced by `Start-WhistBrowser.ps1 -BuildOnly`, a new external evidence directory and optionally a Chromium executable to `tests/responsive-game.mjs`. Browser evidence records version, viewport, language, root font, visible card facts, geometry and scenario-owned captures; the [publisher](tests/Publish-BrowserExtent.ps1) embeds images in the standard English Extent report.
+Pass the JVM classpath produced by `Start-WhistBrowser.ps1 -BuildOnly`, a new external evidence directory and optionally a Chromium executable to `tests/responsive-game.mjs`. Evidence records viewport, browser, language, text, bounds and game facts; the [publisher](tests/Publish-BrowserExtent.ps1) embeds captures in standard English Extent. Horizontal hand navigation preserves the APK contract for dense hands; it is distinct from vertical page scrolling.
+
+### Packaging and portable adapters
 
 ```powershell
 .\atf-ui-browser\Package-CardTableBrowser.ps1 -WorkRoot $WorkRoot -Version $BrowserLibraryVersion
@@ -239,7 +246,7 @@ Whist uses the same native table policy through [WhistBoardAdapter](whist/src/ma
 | Component boundary | Checked contract |
 |---|---|
 | Table geometry | All modes, 3–6 seats, compact and wide widths, 1–17 cards and enlarged text; bidding and play retain identical seat anchors. |
-| Unit adaptation | Normalize Android density to Web logical coordinates. The rounding bound accounts for repeated dimension conversions and integer placement in each renderer; unit-density coordinates must match exactly. Whist supplies usable viewport dimensions; legacy desktop scaling remains in its own adapter. |
+| Unit adaptation | Normalize Android density to Web logical coordinates. The rounding bound accounts for repeated dimension conversions and integer placement in each renderer; unit-density coordinates must match exactly. Whist supplies logical regions before the height-led presentation fit; legacy desktop scaling remains in its own adapter. |
 | Card presentation | All 52 rank/suit combinations retain visible marks, color role and proportional sizing through the actual hand adapters. |
 | Interaction | The shared gesture fixture checks rejection, legal highlights, stale expiry and one accepted deposit; collection keyframes are compared through both adapters. |
 | Acceptance limit | These components execute portable production code, not Android Views or browser font rasterization. Same-device visual acceptance remains separate. |
@@ -278,7 +285,7 @@ node .\atf-ui-browser\pages\verify-card-adapter.mjs $Site $AdapterEvidence
 .\atf-ui-browser\tests\Publish-BrowserExtent.ps1 -EvidenceRoot $EvidenceRoot -MavenClasspathFile $MavenClasspath
 ```
 
-- `-Check viewport` runs the focused resize contract in Edge or Chrome across phone portrait/landscape and desktop height-/width-limited sizes, including narrow windows.
+- `-Check viewport` checks the reference-frame contract of exported packages in Edge or Chrome. The current fitted Whist source uses `tests/responsive-surface.test.mjs` and `tests/responsive-game.mjs` for its viewport, menus and table.
 - The browser check waits for page content and the resize event, then verifies the logical frame, CSS transform and centering.
 - The shared JAR includes the independent Node component contract for phone, desktop, monotonic resize, invalid dimensions and overflow on both axes.
 
@@ -300,13 +307,13 @@ The trump tile loads a local subset of Noto Sans Symbols 2 containing the four s
 |---|---|
 | Measurement | The shell supplies `actorClearance` for the label above the seat frame. |
 | DOM probe | An invisible node is measured in CSS units and removed immediately; scene scaling does not change the reservation. |
-| Adapter | A dense board may exclude the reserved band without moving common seat anchors. |
+| Adapter | Match the native seat cell: add the phase-independent badge band to its measured height, then place the visible frame below that band. The center and other frames remain disjoint from the label. |
 | Compatibility | Games that do not consume the parameter retain their existing geometry. |
 | Components | Visible or hidden labels, different heights and probe removal. |
 
 ### Score text and shared playback checks
 
-- `ScoreTypography` owns the logical score sizes. Android uses sp and the Whist Web adapter exports the same roles as rem at a 16 px root. The score does not inherit menu-role sizes; accessibility text enlargement applies once. Legacy consumers retain their own viewport scaling.
+- `ScoreTypography` owns the logical score sizes. Android uses sp and the Whist Web adapter exports the same roles as rem at a 16 px root. The score does not inherit menu-role sizes; root text enlargement and the coherent surface fit each apply once. Legacy consumers retain their own viewport policy.
 - A focusable scroll region with intrinsic column minima keeps enlarged score columns accessible in narrow windows. Native score sizes and game scoring are preserved.
 
 - The shared tests execute the real Web constructor and collection code with a controlled DOM and clock. Actor cues precede cards; measured faces retain their origins, dimensions and destination until collection finishes.
@@ -320,7 +327,7 @@ The trump tile loads a local subset of Noto Sans Symbols 2 containing the four s
 Score actions have dedicated shared roles: primary actions use 24 logical units and secondary actions use 21, a 50% increase over the legacy 16/14 roles. Android consumes sp and Web consumes rem; user accessibility scaling applies once.
 
 - The native adapter uses `ScreenViews.scoreActionButton` or `addScoreAction`. Wrapped labels use content height with a minimum 48-unit touch target; fixed-height quiet controls remain separate.
-- The Web adapter uses the same exported `ScoreTypography` tokens. Narrow windows wrap complete labels and scroll the score page; Whist uses actual viewport space without a scene transform.
+- The Web adapter uses the same exported `ScoreTypography` tokens. Whist fits the complete score page into usable height, including enlarged localized actions. Only score history retains internal vertical scrolling.
 - Numeric columns, history cells, card ranks, generic dialogs and other menus keep their own roles. Game adapters own localized captions, confirmed values and callbacks.
 - Consumer tests execute the delivered renderer and compare the actual AAR/JAR roles. Cover RO/EN, short windows, enlarged text, reachable actions, unchanged callback order and rejection of stale or double-scaled styles.
 
