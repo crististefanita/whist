@@ -118,7 +118,7 @@ Corecția contextuală se aplică doar în ramura eligibilă a modelului experim
 
 ## Inferența comportamentului
 
-Motorul acceptat aplică acum o plauzibilitate limitată a licitațiilor publice în mâinile de 2–8 cărți, la Whist românesc 1–8–1 cu patru locuri. Celelalte programe nu au validat încă acest transfer; modelul pentru o carte și modelele experimentale de estimare a licitațiilor rămân separate. [Modelul deciziei](ATF_DecisionModel.md#estimate-of-alternatives) descrie responsabilitățile și limitele.
+Motorul acceptat aplică acum o plauzibilitate limitată a licitațiilor publice în mâinile de 2–8 cărți, la Whist românesc 1–8–1 cu patru locuri. Celelalte programe nu au validat încă acest transfer; modelul pentru o carte și modelele experimentale de estimare a licitațiilor rămân separate. [Modelul deciziei](ATF_DecisionModel.md#estimarea-alternativelor) descrie responsabilitățile și limitele.
 
 Plauzibilitatea interpretează moderat licitația publică și se recalculează din observația curentă.
 
