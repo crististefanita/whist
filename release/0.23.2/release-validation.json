@@ -166,7 +166,7 @@
   "integrity": {
     "schemaVersion": 1,
     "kind": "OBSERVED_PAYLOAD_HASHES",
-    "observedUtc": "2026-11-22T08:57:06.846Z",
+    "observedUtc": "2026-11-22T09:00:54.472Z",
     "files": [
       {
         "path": "README.md",
@@ -439,6 +439,11 @@
         "sha256": "ec55ebbd8d67947f849112664be1cc7a384c8daaf3f7c46de453fa09c806c9fa"
       },
       {
+        "path": "reports/diagnostics/process-cost.json",
+        "bytes": 21706,
+        "sha256": "1aea7f8d8618eae8fc8e0aa6301b3fc1cbf30e87fa310692b9f2f0fa9d986844"
+      },
+      {
         "path": "reports/diagnostics/signature.log",
         "bytes": 971,
         "sha256": "8ea575401afe32e39e59e381e44c06d72f93cd18edede2659817a135b1479a44"
@@ -465,8 +470,8 @@
       },
       {
         "path": "reports/runtime-source-parity.json",
-        "bytes": 1439,
-        "sha256": "b6f2b95f53820401a911b95434d1413f5c584591735e6893785635b83d25dfd5"
+        "bytes": 1693,
+        "sha256": "b25d11672a9142f86b2a44b50193e3d327ab1cd39b6beece029002478de79802"
       },
       {
         "path": "reports/test-change-control/component-report.html",

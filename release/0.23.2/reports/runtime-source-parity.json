@@ -2,17 +2,23 @@
   "schemaVersion": 1,
   "kind": "POST_PUBLICATION_SOURCE_COMPARISON",
   "status": "PASS",
-  "observedUtc": "2026-11-22T08:54:53.745Z",
+  "observedUtc": "2026-11-22T09:00:52.665Z",
   "apkSourceCommit": "6adb87e7a6bba7e26cebfc0e08a8cf894d46d56a",
-  "observedMainCommit": "dcb270b606863601c14b353bf8087860ace4dfe9",
+  "observedMainCommit": "8cde675b9059966adb0089b7e242282c3633b6e9",
   "apkFingerprint": "fe7f357c98719d623f2232f9d86c06c77b923cc1657374ccb413f4a9707b895b",
-  "liveFingerprint": "deb3a1802704042af034bf77f626e3e3aec2122c37257d465e1e59276bbb3cc6",
+  "liveFingerprint": "fb98536ab85cef4623558dc0bbb656e5f411f5350680f2406acb1451562dfe96",
   "runtimeInputsUnchanged": true,
   "changes": [
     {
       "path": "README.md",
       "before": "a593bd584ba37b72298d26e9e5861e7c60f341972720145187cf38da7f46d3bc",
       "after": "8ef815cd5d924c99ba079c7cae177842454031d9842f71842c3a7a8c51a29b3b",
+      "allowed": true
+    },
+    {
+      "path": "config/documentation-editions.json",
+      "before": "b673e3c3f87e9ff406e89961dc1ef14b816ce950af2f9b232e9f9ec8172c6159",
+      "after": "96abd8583dfae4eb55695ee35d4f3213e2b9c7e7d2982289a419844c3916ef2f",
       "allowed": true
     },
     {
