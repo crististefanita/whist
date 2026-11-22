@@ -2,19 +2,19 @@
 
 ## Overview
 
-`atf-core` provides the ATF's vocabulary and reusable mechanisms. Use it to compose adapters and executions, keeping the application rules in the consumer.
+`atf-core` provides ATF's reusable vocabulary and mechanisms. Use it to compose adapters and executions while keeping application rules in the consumer.
 
-| You need | Start API |
+| Need | Starting API |
 |---|---|
-| HTTP applications, replies and execution | `ApiRequest`, `ApiResponse`, `ApiTransport`, `ApiExecutor` |
-| Configuration captured for a rolling | `AtfConfiguration`, `ApiSettingsSnapshot`, `AtfRuntimeSnapshot` |
-| JSON strict and drafting sensitive data | `JsonDocuments`, `SensitiveDataRedactor` |
+| HTTP requests, responses, and execution | `ApiRequest`, `ApiResponse`, `ApiTransport`, `ApiExecutor` |
+| Configuration captured for a run | `AtfConfiguration`, `ApiSettingsSnapshot`, `AtfRuntimeSnapshot` |
+| Strict JSON and sensitive-data redaction | `JsonDocuments`, `SensitiveDataRedactor` |
 | Releasing resources in reverse order | `CleanupRegistry` |
-| Selective timing with baseline verification | `AtfPromotionManifest`, `AtfPromotionGuard` |
+| Selective synchronization with baseline verification | `AtfPromotionManifest`, `AtfPromotionGuard` |
 
 ## Minimal example
 
-Fragment in a method that can propagate `IOException`; build data without sending a request:
+Snippet inside a method that may propagate `IOException`; it constructs the data without sending a request:
 
 ```java
 import atf.core.http.request.ApiRequest;
@@ -29,29 +29,29 @@ var body = JsonDocuments.read("{\"total\":19.90}");
 var total = body.path("total").decimalValue();
 ```
 
-`url` is `https://example.test/api/orders/42`. `JsonDocuments` rejects duplicate keys and the content left behind; decimal numbers do not pass through `double`.
+`url` is `https://example.test/api/orders/42`. `JsonDocuments` rejects duplicate keys and trailing content after the document; decimal numbers are not converted through `double`.
 
 ## Use in ATF
 
-- Inject a `ApiTransport` in `ApiExecutor`; actual transport or muck is explicitly chosen for composition.
-- `HttpClientTransport` and `UrlConnectionTransport` propagate cancellation to the operation held; the fallback includes the body in the deadline. Cancellation does not prove rollback and does not authorise rephrase.
-- Reuse the running configuration snapshots; the oracle, assertions and business verdict belong to the consumer.
-- Keep the original model for comparison; the drafting and preview apply to the publication of the diagnosis.
-- Core exposes neutral ports; [Console](README.Console.md), [Mock](README.Mock.md) and [Reporting](README.Reporting.md) they have distinct roles.
+- Inject an `ApiTransport` into `ApiExecutor`; select the real or mock transport explicitly during composition.
+- `HttpClientTransport` and `UrlConnectionTransport` propagate cancellation to the owned operation; the fallback includes the body in the deadline. Cancellation does not prove rollback or authorize replay.
+- Reuse the run's configuration snapshot; the oracle, assertions, and business verdict belong to the consumer.
+- Keep the original model for comparison; apply redaction and preview limits when publishing diagnostics.
+- Core exposes neutral ports; [Console](README.Console.md), [Mock](README.Mock.md), and [Reporting](README.Reporting.md) have distinct roles.
 
 ## Verification of use
 
-| Action | Observed result |
+| Action | Observable result |
 |---|---|
-| Compile the fragment with JDK 21 and the dependencies in the POM. | The types and methods shall be resolved from the chosen binary delivery. |
-| Execute the fragment. | The URL is based on and the path of the application; `total` is numerically equal to `19.90` by `BigDecimal`. |
-| Provide duplicate or root content JSON keys. | The parser rejects the document without partially accepted result. |
+| Compile the snippet with JDK 21 and the dependencies declared in the POM. | Types and methods resolve from the selected binary delivery. |
+| Execute the snippet. | The URL combines the request base and path; `total` equals `19.90` numerically as a `BigDecimal`. |
+| Supply duplicate JSON keys or content after the root value. | Parsing rejects the document without accepting a partial result. |
 
-The example builds local data; does not execute a HTTP call. The transport check shall be made separately by means of the actual adapter or explicitly selected muck.
+The example constructs local data; it sends no HTTP request. Verify transport separately through the explicitly selected real or mock adapter.
 
 ---
 
-The Core is an external binary fixed in the POM and the home register. This guide only holds the contract consumed here; report an incompatibility with version, hash, minimum fragment and observed result. [Local procedure](README.md#maintenance-and-feedback)
+The Core pair is an external binary pinned in the POM and provenance register. This guide owns the locally consumed contract; report an incompatibility with the version, hash, minimal snippet and observed result. [Local procedure](README.md#maintenance-and-feedback)
 
 <a id="shared-library-source"></a>
 

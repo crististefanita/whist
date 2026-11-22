@@ -2,11 +2,11 @@
 
 ## Overview
 
-`atf-console` design ATF events in stdout/stderr: lifecycle, durates and configurable details. It is useful for tracking a Maven or IntelliJ run; HTML artifact is produced by [Reporting](README.Reporting.md).
+`atf-console` projects ATF events to stdout/stderr: lifecycle events, durations, and configurable details. It is useful for monitoring a Maven or IntelliJ run; the HTML artifact is produced by [Reporting](README.Reporting.md).
 
 ## Minimal example
 
-Fragment in a method; policy is explicit and the stream remains in the adaptor:
+Snippet inside a method; the policy is explicit, and the stream remains in the adapter:
 
 ```java
 import atf.console.AtfConsoleReporter;
@@ -14,10 +14,10 @@ import atf.console.ConsoleSettings;
 
 var console = AtfConsoleReporter.configuredStdout(
         new ConsoleSettings(true, false));
-console.info("The scenario catalog was loaded");
+console.info("Catalogul de scenarii a fost încărcat");
 ```
 
-`configuredStdout()` read `atf.report.config` → `ATF_REPORT_CONFIG` → `atf.yaml/yml`; options are:
+`configuredStdout()` reads `atf.report.config` → `ATF_REPORT_CONFIG` → `atf.yaml/yml`; the options are:
 
 ```yaml
 reporting:
@@ -30,29 +30,29 @@ reporting:
 
 | Intent | Choice |
 |---|---|
-| Independent message of details | `info(...)` |
-| Typed events with lifecycle and duration | `publish(AtfConsoleEvent)` by port of Core `AtfConsoleSink` |
-| Full console off | `enabled: false` or `ConsoleSettings.disabled()` |
-| End of Console Report Path | Builder with `reportPathEnabled: true` and event `REPORT_PUBLISHED` |
-| JUnit policy per class | JUnit Console Adapter and Test Kit annotations; declare Kit explicit |
+| Message independent of details | `info(...)` |
+| Typed events with lifecycle and duration | `publish(AtfConsoleEvent)` through the Core `AtfConsoleSink` port |
+| Console fully disabled | `enabled: false` or `ConsoleSettings.disabled()` |
+| Final report path in the console | Constructor with `reportPathEnabled: true` and the `REPORT_PUBLISHED` event |
+| Per-class JUnit policy | JUnit Console adapter and Test Kit annotations; declare Kit explicitly |
 
-The path requires eighty-in, active console and event with confirmed artifact; `detailsEnabled` controls only details.
+The path requires opt-in, an enabled console, and an event with a confirmed artifact; `detailsEnabled` controls details only.
 
-Console depends on Core; Kit is optional for JUnit link. The projection remains diagnostic: the comparison and the verdict belong to the test.
+Console depends on Core; Kit is optional for JUnit integration. The projection is diagnostic: the comparison and verdict belong to the test.
 
 ## Verification of use
 
-| Action | Observed result |
+| Action | Observable result |
 |---|---|
-| Perform the example with explicit policy. | The message provided appears in stdout, including with the details disabled. |
-| Disable console via `ConsoleSettings.disabled()`. | A new `info(...)` call does not produce a message in the stream. |
-| Activate only the path display. | The path occurs only after the confirmed publication event; the option does not create the report. |
+| Run the example with its explicit policy. | The supplied message appears in stdout, including when details are disabled. |
+| Disable the console through `ConsoleSettings.disabled()`. | A new `info(...)` call produces no message in the stream. |
+| Enable only report-path display. | The path appears only after a confirmed publication event; the option does not create a report. |
 
-The compilation of the fragment qualifies API signature on the selected JAR. The control of the stream qualifies the message projection; the console does not change the test result or application rules.
+Compiling the snippet verifies the API signature on the selected JAR. Inspecting the stream verifies message projection; the console changes neither the test result nor application rules.
 
 ---
 
-The Console pair is an external binary fixed in the POM and the home registry. This guide verifies only the output contract consumed by the project; attach the version, hash and reproduction to [Feedback local](../docs/feedback/README.md).
+The Console pair is an external binary pinned in the POM and provenance register. This guide verifies the output contract consumed by this project; attach the version, hash and reproducer to [local feedback](../docs/feedback/README.md).
 
 <a id="shared-library-source"></a>
 

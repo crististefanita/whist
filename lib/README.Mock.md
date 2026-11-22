@@ -2,7 +2,7 @@
 
 ## Overview
 
-`atf-mock` replaces Core `ApiTransport` port with a local catalogue of responses. Use it for offline components and contracts with controlled inputs and an explicit fallback.
+`atf-mock` replaces the Core `ApiTransport` port with a local response catalog. Use it for offline components and contracts, with controlled inputs and an explicit fallback.
 
 ## Minimal example
 
@@ -15,7 +15,7 @@ mock:
   fallback: {status: 500, body: '{}'}
 ```
 
-Fragment in a method; the transport remains offline:
+Snippet inside a method; the transport remains offline:
 
 ```java
 import atf.core.http.request.ApiRequest;
@@ -27,35 +27,35 @@ var response = mock.send(ApiRequest.of("GET", "/health"),
         "https://offline.test/health", "none").join();
 ```
 
-`response.status()` is `200`; an unrouted application receives the `500` fallback. The test independently compares the response with the expected result.
+`response.status()` is `200`; a request with no matching route receives the `500` fallback. The test independently compares the response with the expected result.
 
 ## Catalogue and Matching
 
-| need | API or contract |
+| Need | API or contract |
 |---|---|
-| Catalog YAML explicit | `AtfMockTransport.fromConfiguration(Path)` |
+| Explicit YAML catalog | `AtfMockTransport.fromConfiguration(Path)` |
 | Project configuration | `fromProjectConfiguration()`: `atf.mock.config` > `ATF_MOCK_CONFIG` > `atf-mock.yaml/yml` |
-| Requiest conditions | Method, path, auth profile, query, requested heads and body expected in `MockRoute` |
-| Body de request | Input mode `json`, negative sample MIME `wrong-content-type`; numerical fit without conversion by `double` |
-| Query repeated | `ApiQueryParameters`; includes the required values, multiplication |
+| Request conditions | Method, path, auth profile, query, required headers, and expected body in `MockRoute` |
+| Request body | Default `json` mode, negative MIME probe `wrong-content-type`; numeric matching without conversion through `double` |
+| Repeated query values | `ApiQueryParameters`; includes the required values with multiplicity |
 
-- Without configuration, `fromProjectConfiguration()` uses the `defaults()` fixture; the application catalogue remains local.
-- The en route duration is metadata of the response, not a simulated real delay.
-- A mock sample shall verify integration; the acceptance of the service, broker or actual device shall remain separate.
+- Without configuration, `fromProjectConfiguration()` uses the `defaults()` fixture; the application catalog remains local.
+- The duration in a route is response metadata, not a simulated real delay.
+- A mock probe verifies integration; acceptance of the real service, broker, or device remains separate.
 
 ## Verification of use
 
-| Action | Observed result |
+| Action | Observable result |
 |---|---|
-| Save YAML as `mock.yaml`, in the trial director. | The example reads exactly that local catalogue. |
-| Send application `GET /health`. | The response has status `200`; the body corresponds to the configured route. |
-| Send a route without route to the same catalogue. | The response has the fallback status `500`. |
+| Save the YAML as `mock.yaml` in the process working directory. | The example reads that exact local catalog. |
+| Send the request `GET /health`. | The response has status `200`; its body matches the configured route. |
+| Send a path with no matching route in the same catalog. | The response has fallback status `500`. |
 
-Address `offline.test` is the context of the application for mock transport. The successful sample qualifies the matching of the catalogue and the contract consumed without confirming the availability of an external service.
+The address `offline.test` supplies request context for the mock transport. A passing probe verifies catalog matching and the consumed contract; it does not confirm the availability of an external service.
 
 ---
 
-Mock is an external binary fixed in the POM and the home register. The tests here check the route and the fallback used by the project; a defect is reported with the version, hashness, minimum catalogue and the expected / observed response in [registry local](../docs/feedback/README.md).
+The Mock pair is an external binary pinned in the POM and provenance register. Local tests verify the route and fallback used by this project; report defects with the version, hash, minimal catalog and expected/observed response in the [local register](../docs/feedback/README.md).
 
 <a id="shared-library-source"></a>
 
