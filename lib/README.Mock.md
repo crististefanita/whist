@@ -56,3 +56,8 @@ Address `offline.test` is the context of the application for mock transport. The
 ---
 
 Mock is an external binary fixed in the POM and the home register. The tests here check the route and the fallback used by the project; a defect is reported with the version, hashness, minimum catalogue and the expected / observed response in [registry local](../docs/feedback/README.md).
+
+<a id="shared-library-source"></a>
+
+> **Library source:** [Mock · ATF J0](https://github.com/crististefanita/atf_j0/blob/HEAD/lib/README.Mock.md).
+> This project’s POM, provenance and tests define the consumed version and local acceptance.

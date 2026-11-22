@@ -76,3 +76,8 @@ The duration of HTTP comes from `ReportResponse.duration()`; `detail(...)` retai
 ---
 
 The reporting pair is an external binary fixed in the POM and the register of provenance. This guide checks the API consumed and the result of the report in the application; an observed limitation is attached to the version, hash and a reproducible example. [Local procedure](README.md#maintenance-and-feedback)
+
+<a id="shared-library-source"></a>
+
+> **Library source:** [Reporting · ATF J0](https://github.com/crististefanita/atf_j0/blob/HEAD/lib/README.Reporting.md).
+> This project’s POM, provenance and tests define the consumed version and local acceptance.

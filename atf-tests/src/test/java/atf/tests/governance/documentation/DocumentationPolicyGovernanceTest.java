@@ -18,6 +18,7 @@ import static atf.tests.documentation.policy.DocumentationContentPolicy.deployme
 import static atf.tests.documentation.policy.DocumentationContentPolicy.hasEnglishReadmeProse;
 import static atf.tests.documentation.policy.DocumentationContentPolicy.hasRomanianReadmeProse;
 import static atf.tests.documentation.policy.DocumentationContentPolicy.historicalReleaseProse;
+import static atf.tests.documentation.policy.DocumentationContentPolicy.librarySourceProse;
 import static atf.tests.documentation.policy.DocumentationContentPolicy.publicReleaseProse;
 
 @AtfComponentTest
@@ -150,9 +151,38 @@ class DocumentationPolicyGovernanceTest {
         for (String name : List.of("README.md", "README.Core.md", "README.Reporting.md", "README.Console.md", "README.Mock.md", "README.TestKit.md")) {
             Path file = root.resolve("lib").resolve(name); AuditedAssertions.assertTrue(files.contains(file), name);
             String source = Files.readString(file);
-            AuditedAssertions.assertFalse(java.util.regex.Pattern.compile("(?i)\\batf[_-]j[0-9]+\\b").matcher(source).find(), name);
+            AuditedAssertions.assertFalse(java.util.regex.Pattern.compile("(?i)\\batf[_-]j[0-9]+\\b")
+                    .matcher(librarySourceProse("lib/" + name, source)).find(), name);
             AuditedAssertions.assertFalse(english ? hasRomanianReadmeProse(source) : hasEnglishReadmeProse(source), name);
         }
+    }
+
+    @Test void canonicalLibrarySourceNotesAreNavigationInBothLanguages() {
+        for (String kind : List.of("Catalog", "Core", "Reporting", "Console", "Mock", "TestKit")) {
+            boolean catalog = kind.equals("Catalog");
+            String file = catalog ? "README.md" : "README." + kind + ".md";
+            for (String label : catalog ? List.of("Library sources", "Sursa bibliotecilor")
+                    : List.of("Library source", "Sursa bibliotecii")) {
+                String note = "# Library\n\n<a id=\"shared-library-source\"></a>\n\n> **" + label + ":** ["
+                        + kind.replace("TestKit", "Test Kit") + " · ATF J0]"
+                        + "(https://github.com/crististefanita/atf_j0/blob/HEAD/lib/" + file + ").\n";
+                AuditedAssertions.assertFalse(librarySourceProse("lib/" + file, note).contains("ATF J0"), file);
+            }
+        }
+    }
+
+    @Test void librarySourceNoteCannotHideWrongPathsFencesOrExtraProjectText() {
+        String marker = "<a id=\"shared-library-source\"></a>";
+        String note = marker + "\n\n> **Library source:** [Core · ATF J0]"
+                + "(https://github.com/crististefanita/atf_j0/blob/HEAD/lib/README.Core.md).\n";
+        for (String invalid : List.of(note.replace(marker, ""), note.replace("README.Core.md", "README.Reporting.md"),
+                "~~~markdown\n" + note + "~~~\n", note + marker + "\n", note.replace(").", "). J2"),
+                note.replace("atf_j0/blob", "atf_j2/blob"))) {
+            AuditedAssertions.assertEquals(invalid, librarySourceProse("lib/README.Core.md", invalid), invalid);
+        }
+        for (String path : List.of("README.md", "docs/lib/README.Core.md", "lib/nested/README.Core.md"))
+            AuditedAssertions.assertEquals(note, librarySourceProse(path, note), path);
+        AuditedAssertions.assertTrue(librarySourceProse("lib/README.Core.md", note + "\nJ2 still remains prose.\n").contains("J2"));
     }
 
     @Test void feedbackPriorityRegisterUsesUniqueScoresFromHighestToLowest() throws Exception {

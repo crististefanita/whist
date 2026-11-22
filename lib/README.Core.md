@@ -52,3 +52,8 @@ The example builds local data; does not execute a HTTP call. The transport check
 ---
 
 The Core is an external binary fixed in the POM and the home register. This guide only holds the contract consumed here; report an incompatibility with version, hash, minimum fragment and observed result. [Local procedure](README.md#maintenance-and-feedback)
+
+<a id="shared-library-source"></a>
+
+> **Library source:** [Core · ATF J0](https://github.com/crististefanita/atf_j0/blob/HEAD/lib/README.Core.md).
+> This project’s POM, provenance and tests define the consumed version and local acceptance.

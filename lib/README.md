@@ -55,3 +55,8 @@ Check first the compilation on physical pairs JAR/POM, then the behavior of the 
 ## Maintenance and feedback
 
 Libraries are consumed as versed pairs JAR/POM; their source code is not part of this project. Keep exact coordinates and hash of the pair, then qualify the contract by compiling examples and local integration tests. For an observed limitation, attach the pair, hash, reproduction and expected / observed values in [project feedback](../docs/feedback/README.md).
+
+<a id="shared-library-source"></a>
+
+> **Library sources:** [Catalog · ATF J0](https://github.com/crististefanita/atf_j0/blob/HEAD/lib/README.md).
+> This project’s POM, provenance and tests define the consumed version and local acceptance.

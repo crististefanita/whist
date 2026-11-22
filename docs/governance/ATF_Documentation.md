@@ -167,3 +167,10 @@ For verifiable statements, use a table in the responsible guide and compare its 
 The same grid applies to the whole revised set. Keep the score and its justification in the external audit; passing automated checks does not imply a perfect score or close a product acceptance criterion.
 
 [Documentation index](../README.md) · [Change of tests](ATF_TestChanges.md) · [Responsibilities and gaps](../feedback/README.md)
+
+## Library source notes
+
+The six guides in `lib` may end with one marked canonical library-source note.
+The source link provides navigation; the local POM, provenance and tests define
+the consumed version and acceptance. Other project references remain subject
+to the documentation policy.
