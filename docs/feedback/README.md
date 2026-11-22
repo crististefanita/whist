@@ -34,7 +34,6 @@ Scorul 1–100 exprimă ordinea recomandată de lucru, nu calitatea sau procentu
 | ACH-01 | P1 | 90 | Califică pe APK restaurarea poziției și selecției din Realizări, apoi reluarea notificărilor după recrearea activității. [Registru](ATF_Achievements.md) |
 | AND-03 | P1 | 89 | Califică API 37, navigarea sistemului, reluarea, fonturile mărite și memoria pe un dispozitiv identificat. [Registru](ATF_Android.md) |
 | RPT-03 | P1 | 88 | Publică suite mari în limita de heap declarată, fără copii repetate ale HTML-ului și fără să piardă JUnit sau comparațiile la eșec. [Registru](ATF_Reporting.md#rpt-bounded-report-heap--finalizare-sigură-pentru-suite-mari) |
-| RAG-18 | P1 | 87 | Validează baza și probele testChanges înaintea pregătirii colecției; configurația lipsă, expirată sau străină trebuie respinsă înainte de Maven. [Registru](ATF_Governance.md#admiterea-testchanges-înainte-de-pregătirea-colecției) |
 | UI-01 | P1 | 86 | Califică antetul, chenarele și notificările pe APK-urile consumatorilor și verifică nativ intrarea Unicode a numelui. [Registru](ATF_CardUi_Extraction.md#priorități-și-condiții-de-închidere) |
 | UI-02 | P2 | 84 | Calificați acțiunile de rezultat mărite și derularea pe APK-urile consumatorilor în RO/EN cu text mărit. [Registru](ATF_CardUi_Extraction.md#acceptanța-acțiunilor-de-rezultat) |
 | RAG-21 | P2 | 84 | Pilotul doar de planificare demonstrează reluarea legată de sursă și paritatea selectorului; paritatea completă a rapoartelor/JUnit și pragul de timp rămân deschise. [Registru](ATF_Governance.md#pilot-langgraph-în-umbră) |

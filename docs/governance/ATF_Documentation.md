@@ -167,3 +167,10 @@ Pentru afirmații verificabile, folosiți un tabel în ghidul responsabil și co
 Aceeași grilă se aplică întregului set revizuit. Nota și justificarea se păstrează în auditul extern; trecerea verificărilor automate nu produce automat nota maximă sau închiderea unui criteriu de produs.
 
 [Indexul documentației](../README.md) · [Schimbarea testelor](ATF_TestChanges.md) · [Responsabilități și lacune](../feedback/README.md)
+
+## Note despre sursa bibliotecilor
+
+Cele șase ghiduri din `lib` pot încheia cu o singură notă marcată către sursa canonică a bibliotecii.
+Linkul oferă navigare; POM-ul, proveniența și testele locale stabilesc versiunea
+consumată și acceptanța. Celelalte referințe la proiecte rămân supuse politicii
+documentației.

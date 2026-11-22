@@ -60,6 +60,38 @@ Comanda de probă declară verificarea planificată și se execută separat. [Te
 
 ## Dovada controlului verificat
 
+### Admiterea timpurie a controlului sursei
+
+Ambele lansatoare de calificare apelează [adaptorul de admitere](../../scripts/AtfTestChangeAdmission.ps1) înaintea copierii sau restaurării snapshot-ului sursei, copierii cache-urilor de dependențe ori pornirii Maven. Un compilator autonom restrâns construiește [CLI-ul](../../atf-tests/src/main/java/atf/tests/testchange/TestChangeAdmissionCli.java) din sursele curente ale uneltelor și citește JAR-urile fixate ale parserelor din `-MavenCache`. CLI-ul apelează aceiași validatori `TestChangeReview` și `TestChangeProof` ca guvernanța finală.
+
+| Mod | Contractul admiterii |
+|---|---|
+| Guvernanță sau componente normale | Verifică eligibilitatea controalelor și toate receipt-urile originale necesare, inclusiv ID-ul, baza Git, commitul, diff-ul brut, selectorii pozitivi/negativi și SHA-256 al HTML-ului. |
+| Generarea probelor | Validează diff-ul comis și curat, controalele actuale și selectorii pozitivi/negativi declarați, fără să ceară receipt-uri încă negenerate. Numai opțiunile explicite pentru generarea controalelor selectează acest mod. |
+| După snapshot sau reluare | Reverifică același contract canonic înaintea selectării sau pregătirii execuțiilor; sursele sau octeții probelor schimbați nu pot împrumuta admiterea anterioară. |
+| Refuz | Publică diagnostice și o etapă de admitere eșuată, fără copierea sursei ori a cache-ului de dependențe și fără pornirea Maven. |
+
+```mermaid
+flowchart LR
+    DIFF[Baza Git și diff] -->|inspectează| GATE[Admitere canonică]
+    GATE -->|respinge| STOP[Receipt de admitere eșuată]
+    GATE -->|admite| COPY[Snapshot sau reluare]
+    COPY -->|reverifică| VERIFY[Admitere canonică]
+    VERIFY -->|acceptă| EXEC[Reutilizează sau execută colecțiile afectate]
+    VERIFY -->|respinge| STOP
+```
+
+<details>
+<summary>Legendă: generarea probelor și autorizarea normală rămân distincte</summary>
+
+Inițializarea scrie numai clase temporare ale utilitarului în rădăcina temporară externă configurată și le elimină după fiecare verificare. `test-change-admission.json`, `test-change-admission-recheck.json` și `timing.json` descriu admiterea; execuția testelor și rapoartele sale Extent canonice păstrează propriile receipt-uri. Admiterea planului de generare nu autorizează o rulare normală fără probele verificate necesare.
+
+</details>
+
+Java 21 și dependențele JSON/YAML fixate din cache-ul local sunt necesare inclusiv când compilarea Maven este reutilizată. Imuabilitatea sursei și guvernanța finală rulează și după admiterea timpurie; un receipt nu le dezactivează verificările.
+
+### Generarea și folosirea probei
+
 Păstrați controlul și selecția de teste în commitul revizuit. Scrieți dovada într-un dosar nou, în afara checkout-ului. Lansatorul pregătește o copie izolată și publică dovada numai după ce confirmă că intrările nu s-au schimbat.
 
 ```powershell

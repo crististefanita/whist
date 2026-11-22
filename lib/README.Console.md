@@ -53,3 +53,8 @@ Compilarea fragmentului califică semnătura API pe JAR-ul ales. Verificarea str
 ---
 
 Perechea Console este un binar extern fixat în POM și în registrul de proveniență. Acest ghid verifică numai contractul de ieșire consumat de proiect; atașați versiunea, hash-ul și reproducerea la [feedback-ul local](../docs/feedback/README.md).
+
+<a id="shared-library-source"></a>
+
+> **Sursa bibliotecii:** [Console · ATF J0](https://github.com/crististefanita/atf_j0/blob/HEAD/lib/README.Console.md).
+> POM-ul, proveniența și testele acestui proiect stabilesc versiunea consumată și acceptanța locală.

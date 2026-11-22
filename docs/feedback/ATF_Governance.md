@@ -70,19 +70,11 @@ LangGraph oferă noduri explicite, stare partajată și limite de checkpoint, da
 
 ## Admiterea testChanges înainte de pregătirea colecției
 
-Respingeți probele de control al sursei lipsă sau expirate înainte de copierea cache-urilor, compilare ori lansarea unei colecții lungi. Eșecul târziu de guvernanță protejează corectitudinea, dar consumă inutil pregătirea validată și execuțiile fără legătură.
+[Contractul admiterii timpurii](../governance/ATF_TestChanges.md#admiterea-timpurie-a-controlului-sursei) deține validarea canonică a probelor, admiterea planului de generare și reverificarea după pregătire. Rapoartele originale ale probelor, identitățile Git exacte și guvernanța finală rămân obligatorii; selecția sau reutilizarea compilării nu ocolesc admiterea.
 
-- Descoperiți ID-urile controalelor necesare din diff-ul Git revizuit și validați explicit rădăcina externă a probelor.
-- Folosiți același validator pentru admitere și guvernanța finală: ID-ul, baza, commitul, diff-ul, selectorii pozitivi și negativi și hash-ul raportului original trebuie să corespundă.
-- Generați controalele lipsă folosind compilarea existentă înaintea colecției primare; transmiteți explicit rădăcina rezultată procesului suitei.
-- Acoperiți configurația absentă, alt commit, controlul negativ lipsă, raportul modificat și schimbarea sursei între admitere și execuție. Probele lipsă trebuie să oprească fluxul înainte de Maven; sursele schimbate trebuie să invalideze în continuare admiterea.
-- Măsurați separat pregătirea respinsă și execuția acceptată. Nu înlocuiți raportul original eșuat cu un caz vecin trecut și nu editați un receipt de execuție.
-
-- Faceți baza de revizie un parametru explicit în lansările locale și izolate. Verificați planul controalelor înaintea dependențelor; o bază istorică incompatibilă trebuie respinsă cu același diagnostic înaintea compilării.
-
-Fluxul izolat primește acum explicit baza reviziei. Admiterea probelor de control al sursei lipsă înaintea pregătirii dependențelor rămâne deschisă; alegerea bazei corecte nu închide singură această limită.
-
-- Verificați sintaxa comenzilor de control, inventarul E2E explicit al dosarului activ, linkurile la catalog și limitele editoriale printr-o admitere ieftină înaintea colecției lungi. Păstrați raportul eșuat; reverificarea focalizată nu califică un grup primar eșuat.
+| Prioritate | Lacună distinctă rămasă | Criteriu de închidere |
+|---|---|---|
+| P2 | Metadatele calificării ajung la unele diagnostice numai după pregătirea snapshot-ului. | Validați inventarul E2E al dosarului activ, linkurile catalogului și limitele editoriale printr-o verificare ieftină a metadatelor, înaintea colecției lungi. Păstrați dovezile eșuate și demonstrați că o reverificare focalizată nu poate califica un grup primar eșuat; acest criteriu este distinct de admiterea probelor de control al sursei. |
 
 ## Limitele selecției ATF
 

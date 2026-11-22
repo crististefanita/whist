@@ -7,6 +7,44 @@ Acest registru definește controalele revizuite, baza Git și căile lor exacte.
 ## Controale verificate
 
 <details>
+<summary>Admiterea canonică a modificărilor testelor înaintea pregătirii sursei și Maven</summary>
+
+```yaml
+testChanges:
+  - id: RAG-EARLY-TEST-CHANGE-ADMISSION
+    status: VERIFIED
+    base: 65bb00dbcd555a9d6e9284d3088014e77be06795
+    expires: 2026-12-20
+    reason: Rulează validatorii canonici Git și ai probelor înaintea copierii sursei ori Maven, reverifică după pregătire și separă generarea probelor de autorizarea normală, fără acceptarea dovezilor străine, incomplete sau modificate.
+    proof: 'mvn -o -pl atf-tests -am -Dtest=TestChangeProofComponentTest,QualificationLauncherComponentTest -Dsurefire.failIfNoSpecifiedTests=false test'
+    checks:
+      positive:
+        - atf.tests.governance.source.changes.TestChangeProofComponentTest#admissionUsesTheSameProofVerdictAndDiagnosticsAsFinalGovernance
+        - atf.tests.governance.documentation.release.rag.scope.QualificationLauncherComponentTest#validTestChangeProofPrecedesSourceCopyAndMavenInBothLaunchers
+        - atf.tests.governance.documentation.release.rag.scope.ComponentEvidenceScopeComponentTest#nodeContractTestsKeepReuseClassificationInsideTheRealBuildBoundary
+      negative:
+        - atf.tests.governance.source.changes.TestChangeProofComponentTest#admissionRechecksChangedSourcesAndSeparatesProofGeneration
+        - atf.tests.governance.documentation.release.rag.scope.QualificationLauncherComponentTest#invalidTestChangeProofStopsBothLaunchersBeforeCopyOrMaven
+        - atf.tests.governance.documentation.release.rag.scope.ComponentEvidenceScopeComponentTest#sharedDependenciesAndUnknownInputsCannotReuseTheirConsumers
+    paths:
+      - atf-tests/src/main/java/atf/tests/testchange/TestChangeAdmissionCli.java
+      - atf-tests/src/main/java/atf/tests/testchange/TestChangeReview.java
+      - atf-tests/src/test/java/atf/tests/governance/source/changes/TestChangeAdmissionFixture.java
+      - atf-tests/src/test/java/atf/tests/governance/source/changes/TestChangeProofComponentTest.java
+      - atf-tests/src/test/java/atf/tests/governance/source/changes/TestChangeReviewComponentTest.java
+      - atf-tests/src/test/java/atf/tests/governance/documentation/release/rag/scope/QualificationLauncherComponentTest.java
+      - scripts/AtfTestChangeAdmission.ps1
+      - scripts/AtfStandaloneJava.ps1
+      - scripts/run-atf-governance.ps1
+      - scripts/run-component-suites.ps1
+      - config/atf-component-dependencies.json
+      - atf-tests/tools/release-test-scope.mjs
+      - atf-tests/tools/release-test-scope.test.mjs
+```
+
+</details>
+
+<details>
 <summary>Responsabilitate după dependențe executabile și admiterea conservatoare a cititorilor</summary>
 
 ```yaml
@@ -1776,6 +1814,43 @@ testChanges:
       - scripts/AtfComponentMaven.ps1
       - scripts/AtfComponentMavenReuse.ps1
       - scripts/run-component-suites.ps1
+```
+
+</details>
+
+<details>
+<summary>Navigare către sursa canonică a bibliotecilor</summary>
+
+```yaml
+testChanges:
+  - id: J4-LIBRARY-SOURCE-NOTE-EN-20261122
+    status: VERIFIED
+    base: 65bb00dbcd555a9d6e9284d3088014e77be06795
+    expires: 2026-12-22
+    reason: Permite exclusiv nota cerută către sursa canonică în ghidurile directe ale bibliotecilor, păstrând controale negative pentru alte proiecte, rute greșite, exemple delimitate și alte documente.
+    proof: mvn -B -ntp -pl atf-tests -am "-Dtest=DocumentationPolicyGovernanceTest,DocumentationAnchorGovernanceTest,DocumentationLinkGovernanceTest,DocumentationStyleGovernanceTest,DocumentationProseGovernanceTest,DocumentationReadmeStructureGovernanceTest" "-Datf.governance.testChanges.baseRef=65bb00dbcd555a9d6e9284d3088014e77be06795" "-Dsurefire.failIfNoSpecifiedTests=false" test
+    checks:
+      positive:
+        - atf.tests.governance.documentation.DocumentationPolicyGovernanceTest#canonicalLibrarySourceNotesAreNavigationInBothLanguages
+      negative:
+        - atf.tests.governance.documentation.DocumentationPolicyGovernanceTest#librarySourceNoteCannotHideWrongPathsFencesOrExtraProjectText
+    paths:
+      - atf-tests/src/main/java/atf/tests/documentation/policy/DocumentationContentPolicy.java
+      - atf-tests/src/test/java/atf/tests/governance/documentation/DocumentationPolicyGovernanceTest.java
+  - id: J4-LIBRARY-SOURCE-NOTE-RO-20261122
+    status: VERIFIED
+    base: be23ba5416fe090807e34b73bc8bf3ed8e4f61ca
+    expires: 2026-12-22
+    reason: Permite exclusiv nota cerută către sursa canonică în ghidurile directe ale bibliotecilor, păstrând controale negative pentru alte proiecte, rute greșite, exemple delimitate și alte documente.
+    proof: mvn -B -ntp -pl atf-tests -am "-Dtest=DocumentationPolicyGovernanceTest,DocumentationAnchorGovernanceTest,DocumentationLinkGovernanceTest,DocumentationStyleGovernanceTest,DocumentationProseGovernanceTest,DocumentationReadmeStructureGovernanceTest" "-Datf.governance.testChanges.baseRef=be23ba5416fe090807e34b73bc8bf3ed8e4f61ca" "-Dsurefire.failIfNoSpecifiedTests=false" test
+    checks:
+      positive:
+        - atf.tests.governance.documentation.DocumentationPolicyGovernanceTest#canonicalLibrarySourceNotesAreNavigationInBothLanguages
+      negative:
+        - atf.tests.governance.documentation.DocumentationPolicyGovernanceTest#librarySourceNoteCannotHideWrongPathsFencesOrExtraProjectText
+    paths:
+      - atf-tests/src/main/java/atf/tests/documentation/policy/DocumentationContentPolicy.java
+      - atf-tests/src/test/java/atf/tests/governance/documentation/DocumentationPolicyGovernanceTest.java
 ```
 
 </details>
