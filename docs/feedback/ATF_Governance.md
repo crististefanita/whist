@@ -87,6 +87,10 @@ The isolated workflow now receives the review base explicitly. Admission of unre
 
 The [independent ATF owners](../testing/ATF_Collections.md#independent-atf-component-owners) separate editorial and payload checks from provenance, mocked Android, mocked GitHub, orchestration and reporting. Each primary collection has a positive class inventory, one canonical Extent and its own source-bound receipt.
 
+| Priority | Bounded gap | Closure criterion |
+|---|---|---|
+| P2 | Framework helper and test-source changes still select every ATF owner conservatively. Collection partitioning alone does not prove which code each isolated fixture consumes. | Declare executable transitive dependencies for framework helpers and Java/Node fixtures. Prove that unaffected owners retain their original evidence, changed dependencies invalidate every consumer, and missing or unknown edges fail closed. Measure avoided executions separately from snapshot and compiler admission; do not narrow selection from file extensions or previous green results alone. |
+
 - Markdown-only changes select the documentation owner without replaying independent launcher fixtures. Shared helpers, dependencies and unknown inputs still invalidate their consumers conservatively.
 - Reuse retains original JUnit identities, outcomes, comparisons and report hashes. Historical monolithic reports remain immutable and cannot qualify new partition identities.
 
