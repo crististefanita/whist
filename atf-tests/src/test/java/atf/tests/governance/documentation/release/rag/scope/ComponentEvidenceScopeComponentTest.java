@@ -42,7 +42,8 @@ class ComponentEvidenceScopeComponentTest {
     }
 
     @Test void nodeContractTestsKeepReuseClassificationInsideTheRealBuildBoundary() throws Exception {
-        String output = runContracts(PROCESS_TIMEOUT, "release-test-scope.test.mjs", "github-release-retention.test.mjs");
+        String output = runContracts(PROCESS_TIMEOUT, "release-test-scope.test.mjs", "github-release-retention.test.mjs",
+                "workflow-test-change-admission.test.mjs");
         AuditedAssertions.assertTrue(output.contains("Gradle component checkpoint and audit changes keep qualification offline"),
                 "A change limited to Gradle reporting must select offline qualification.");
         AuditedAssertions.assertTrue(output.contains("a bidding change requires the native bidding and AutoGame selections"),
@@ -59,6 +60,8 @@ class ComponentEvidenceScopeComponentTest {
                 "Qualification-only helpers must not turn a documentation and governance release into seven Android E2E flows.");
         AuditedAssertions.assertTrue(output.contains("Markdown guides embedded in source directories run governance without replaying product suites"),
                 "Documentation placed below a source root must not invalidate the owning product suite or select native flows.");
+        AuditedAssertions.assertTrue(output.contains("hosted source-control rejection prevents Maven preparation without network access"),
+                "The hosted cold bootstrap must admit the source-control plan before preparing the Maven reactor");
     }
 
     @Test void sharedDependenciesAndUnknownInputsCannotReuseTheirConsumers() throws Exception {
