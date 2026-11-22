@@ -52,7 +52,8 @@ test('production menus stay readable and centered in compact and desktop Chromiu
   const copy={home:'Whist',language:'Language',name:'Your name',newGame:'New game',resume:'Resume game',ranking:'Rankings',
     achievements:'Achievements',help:'How to play',setup:'Game settings',start:'Start game',back:'Back',streaks:'Five-hand streaks',rulesAndSchedule:'Rules and schedule',save:'Save',cancel:'Cancel',nameHint:'Maximum 10 characters.',reset:'Reset name',instructionsSubtitle:'How to play',rules:Array.from({length:4},(_,i)=>({title:'Rule '+(i+1),body:'Follow the lead suit. When void, play trump if available. Each bid is an exact contract.'}))};
   const rules={ROMANIAN_1_8_1:{romanian:true}};
-  const configuration={surface:'whist',title:'Whist',fields:setup('ro'),englishFields:setup('en'),copy:{en:{...copy,modeRules:rules},ro:{modeRules:rules,rules:Array.from({length:4},(_,i)=>({title:'Regula '+(i+1),body:'Respectă culoarea cerută. În lipsa ei, joacă atu dacă ai. Licitația este un contract exact.'}))}},autoDelayMillis:0};
+  const palette=[{name:'--whist-paper',color:'#f6f5ed'},{name:'--whist-pine',color:'#1d362b'},{name:'--whist-surface',color:'#fffef8'},{name:'--whist-accent',color:'#306f4e'}];
+  const configuration={surface:'whist',title:'Whist',palette,fields:setup('ro'),englishFields:setup('en'),copy:{en:{...copy,modeRules:rules},ro:{modeRules:rules,rules:Array.from({length:4},(_,i)=>({title:'Regula '+(i+1),body:'Respectă culoarea cerută. În lipsa ei, joacă atu dacă ai. Licitația este un contract exact.'}))}},autoDelayMillis:0};
   const server=http.createServer(async(req,res)=>{
     try{
       const pathname=new URL(req.url,'http://localhost').pathname;
@@ -96,13 +97,15 @@ test('production menus stay readable and centered in compact and desktop Chromiu
           const controls=[...panel.querySelectorAll('button,select,input')].filter(node=>node.getClientRects().length);
           const panelBox=panel.getBoundingClientRect();const modal=panel.matches('dialog');
           return {frame:rect(frame),stage:rect(stage),transform:getComputedStyle(stage).transform,
-            logicalHeight:stage.clientHeight,scale:box.height/stage.clientHeight,scaleX:new DOMMatrixReadOnly(getComputedStyle(stage).transform).a,scaleY:new DOMMatrixReadOnly(getComputedStyle(stage).transform).d,panel:rect(panel),pageHeight:document.documentElement.scrollHeight,stageOverflow:stage.scrollHeight-stage.clientHeight,panelOverflow:panel.scrollHeight-panel.clientHeight,modal,
+            background:getComputedStyle(stage).backgroundColor,foreground:getComputedStyle(stage).color,logicalHeight:stage.clientHeight,scale:box.height/stage.clientHeight,scaleX:new DOMMatrixReadOnly(getComputedStyle(stage).transform).a,scaleY:new DOMMatrixReadOnly(getComputedStyle(stage).transform).d,panel:rect(panel),pageHeight:document.documentElement.scrollHeight,stageOverflow:stage.scrollHeight-stage.clientHeight,panelOverflow:panel.scrollHeight-panel.clientHeight,modal,
             root:parseFloat(getComputedStyle(document.documentElement).fontSize),title:parseFloat(getComputedStyle(panel.querySelector('h1,h2')).fontSize),
             extraWidth:stage.scrollWidth-stage.clientWidth,controls:controls.map(n=>({text:n.textContent,size:parseFloat(getComputedStyle(n).fontSize),
               width:n.getBoundingClientRect().width,height:n.getBoundingClientRect().height,overflow:n.scrollWidth>n.clientWidth+1})),
             reachable:controls.every(n=>{const r=n.getBoundingClientRect();return r.top>=-1&&r.bottom<=innerHeight+1&&r.left>=-1&&r.right<=innerWidth+1;})};
         })()`);
         const expected={height:profile.height,noVerticalScroll:true,proportionalScale:true};
+        assert.equal(measured.background,'rgb(246, 245, 237)','The controlled fixture supplies the native Whist paper palette');
+        assert.equal(measured.foreground,'rgb(29, 54, 43)','The native pine text remains visible on the paper background');
         assert.ok(measured.frame.width<=profile.width+1);assert.ok(Math.abs(measured.frame.height-profile.height)<1);
         assert.ok(Math.abs(measured.frame.left-(profile.width-measured.frame.width)/2)<1);
         assert.ok(measured.pageHeight<=profile.height+1,JSON.stringify(measured));
