@@ -34,3 +34,11 @@ The version manifest binds the APK, signer, source inventory, component receipts
 These stages may overlap with the separate APK build; no total speedup is inferred. The broad ATF owner still includes isolated launcher fixtures that prepare additional workspaces.
 
 [Release catalog](../../README.md) · [Shared testing strategy](../../../docs/testing/README.md)
+
+## Current delivery checks
+
+These publication-phase checks do not increase the primary component totals.
+
+- [Completed downloads](distribution-verification.json) record the received APK and checksum bytes
+- [Current catalog governance](current-governance/component-report.html) checks the published metadata
+- [Runtime source comparison](runtime-source-parity.json) identifies later delivery-only metadata changes

@@ -2,7 +2,7 @@
 
 ## Overview
 
-Published Android maintenance edition; completed-download verification is in progress.
+Published Android maintenance edition; APK and checksum passed direct and authenticated download verification.
 
 [Reports and qualification](reports/README.md)
 

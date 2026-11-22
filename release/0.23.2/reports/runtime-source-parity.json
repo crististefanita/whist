@@ -1,0 +1,32 @@
+{
+  "schemaVersion": 1,
+  "kind": "POST_PUBLICATION_SOURCE_COMPARISON",
+  "status": "PASS",
+  "observedUtc": "2026-11-22T08:54:53.745Z",
+  "apkSourceCommit": "6adb87e7a6bba7e26cebfc0e08a8cf894d46d56a",
+  "observedMainCommit": "dcb270b606863601c14b353bf8087860ace4dfe9",
+  "apkFingerprint": "fe7f357c98719d623f2232f9d86c06c77b923cc1657374ccb413f4a9707b895b",
+  "liveFingerprint": "deb3a1802704042af034bf77f626e3e3aec2122c37257d465e1e59276bbb3cc6",
+  "runtimeInputsUnchanged": true,
+  "changes": [
+    {
+      "path": "README.md",
+      "before": "a593bd584ba37b72298d26e9e5861e7c60f341972720145187cf38da7f46d3bc",
+      "after": "8ef815cd5d924c99ba079c7cae177842454031d9842f71842c3a7a8c51a29b3b",
+      "allowed": true
+    },
+    {
+      "path": "docs/feedback/ATF_Governance.md",
+      "before": "93e4c3d26cc807d3c9811622a448a1edb5e4c24e2f35fec434ad36e51cffc64e",
+      "after": "f4a07a15cb7169678a8d958d8e767c2e0144043da236d99cc369b9dbd0b2679b",
+      "allowed": true
+    },
+    {
+      "path": "docs/feedback/README.md",
+      "before": "b3af164f4cb5954db42980f68189821f71ee66b99c7123fb545d925de1d96db1",
+      "after": "8ea61aa8c26aeb35fd2376095ffd3ae7fb24d9fdedafcf5bbfb19331a49b3ff8",
+      "allowed": true
+    }
+  ],
+  "limits": "Only the public download README, feedback Markdown and the bilingual review record may differ. All remaining inventoried code, build, resource, configuration and library bytes match the APK snapshot."
+}
