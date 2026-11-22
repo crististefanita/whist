@@ -34,7 +34,6 @@ The 1–100 score expresses work priority, not quality or completion percentage.
 | ACH-01 | P1 | 90 | Qualify restoration of Achievements scroll position and selection on the APK, and notification resumption after activity recreation. [Register](ATF_Achievements.md) |
 | AND-03 | P1 | 89 | Qualify API 37, navigation of the system, resumption, enlarged fonts and memory on an identified device. [Register](ATF_Android.md) |
 | RPT-03 | P1 | 88 | Publish large suites within the declared limit of the heap, without repeated copies of HTML and without losing JUnit or comparisons to failure. [Register](ATF_Reporting.md#rpt-bounded-report-heap---safe-completion-for-large-suites) |
-| RAG-22 | P1 | 88 | Split the broad ATF group into disjoint owners; documentation or release-metadata changes must not replay unaffected launcher fixtures. Preserve JUnit identities and Extent parity. [Register](ATF_Governance.md#framework-selection-boundaries) |
 | RAG-18 | P1 | 87 | Admit the Git base and testChanges proofs before collection preparation; missing, stale or foreign evidence must fail before Maven. [Register](ATF_Governance.md#testchanges-admission-before-collection-preparation) |
 | UI-01 | P1 | 86 | Qualify headers, player boxes and notifications on consumer APKs, including Unicode name entry. [Register](ATF_CardUi_Extraction.md#priorities-and-closing-conditions) |
 | UI-02 | P2 | 84 | Qualify enlarged result actions and scrolling on the consumer APKs in RO/EN with enlarged text. [Register](ATF_CardUi_Extraction.md#result-action-acceptance) |

@@ -134,3 +134,43 @@ Collection `documentation` face bilingual aid and score table with engine. [Aid 
 - The report identifies the source inventory and faces JUnit's claims in the same execution.
 
 For device infrastructure and explicit activation of UI flows, use [testarea Android](ATF_Android.md). JVM compiling, construction of an APK and execution on the device are separate checks.
+
+## Independent ATF component owners
+
+The [Maven suite catalog](../../config/atf-test-suites.json) binds each primary selector to a group; the [ATF owner inventory](../../config/atf-component-collections.json) lists its exact leaf classes. A module is a compilation unit, whereas a group owns an independent execution receipt and canonical Extent report. All selected Maven groups share one preparation and compilation.
+
+| Group | Responsibility |
+|---|---|
+| `atf-tests` | Source quality, boundaries and suite ownership |
+| `atf-tests-documentation` | Editorial governance, current guides and release payload integrity |
+| `atf-tests-provenance` | Source attestations, immutable artifact integrity and versions |
+| `atf-tests-android` | Mocked Android preflight and presentation contracts |
+| `atf-tests-github` | Mocked distribution, publication and download contracts |
+| `atf-tests-orchestration` | Launchers, checkpoints and portable execution |
+| `atf-tests-reporting` | Captured comparisons, report publication and learning evidence |
+
+- `run-component-suites.ps1 -Groups` accepts these group IDs independently of their shared Maven module. Each executable class has exactly one primary owner. Focused suites remain diagnostic views of declared primary parents; they never add coverage or replace a failed primary receipt.
+
+- `component-evidence-scope.mjs` compares source inventories. With the same owner descriptor, Markdown-only changes select the documentation owner; bilingual game-rule guides also select the rules collection.
+- Library-guide changes retain their source-integrity dependency. A changed release inventory invalidates the documentation owner. Shared framework code, selector changes and unknown paths conservatively invalidate their required consumers.
+
+- `prepare-component-reuse.mjs` verifies the original source, release snapshot, root run, JUnit identities and report hashes before copying unchanged bytes. The evaluator requires every new ATF owner whenever the candidate source contains the new descriptor, independently of the claimed release version. Historical sources without that descriptor retain the monolithic contract; their reports cannot be relabeled as partition evidence.
+
+```mermaid
+flowchart LR
+    DIFF[Source and release diff] -->|classify changes| OWNER[Qualified owner map]
+    OWNER -->|Markdown or dossier| DOC[Documentation collection]
+    OWNER -->|shared or unknown code| CONSUMERS[Required consumer collections]
+    OWNER -->|unchanged inputs| VERIFY[Verify original receipts and hashes]
+    VERIFY -->|verified bytes| REUSE[Reuse original Extent bytes]
+    DOC -->|new execution| AUDIT[One canonical Extent per owner]
+    CONSUMERS -->|new execution| AUDIT
+    REUSE -->|original evidence| AUDIT
+```
+
+<details>
+<summary>Legend: compilation, execution and reuse remain separate</summary>
+
+One Maven compilation can serve several primary collections. A reused receipt retains its original invocation IDs and provenance; it is not a new execution. After partitioning, the suite-container prefix changes while the Jupiter leaf IDs and outcomes remain comparable. Measure preparation and collection execution separately, and disclose missing or newly added identities when checking parity.
+
+</details>

@@ -56,6 +56,7 @@ public final class ComponentSuiteExecution {
         result.put("outcomes", listener.counts());result.put("coverageErrors", errors);
         result.put("containerFailures", listener.containerFailures());
         result.put("junitIdentitySha256", digest(mapper.writeValueAsBytes(listener.invocations())));
+        result.put("invocations", listener.invocations());
         result.put("provenanceSha256", provenanceFingerprint(provenanceBytes));
         if (Files.exists(canonical)) result.put("reportSha256", digest(Files.readAllBytes(canonical)));
         mapper.writerWithDefaultPrettyPrinter().writeValue(output.resolve("execution.json").toFile(), result);

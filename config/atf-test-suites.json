@@ -48,7 +48,8 @@
       "module": "atf-tests",
       "suite": "atf.tests.suites.AtfComponentSuite",
       "role": "primary",
-      "layer": "component"
+      "layer": "component",
+      "group": "atf-tests"
     },
     {
       "module": "atf-tests",
@@ -61,7 +62,13 @@
       "suite": "atf.tests.governance.AtfRagGovernanceSuite",
       "role": "focused",
       "parents": [
-        "atf.tests.suites.AtfComponentSuite"
+        "atf.tests.suites.AtfComponentSuite",
+        "atf.tests.suites.components.AtfDocumentationComponentSuite",
+        "atf.tests.suites.components.AtfProvenanceComponentSuite",
+        "atf.tests.suites.components.AtfAndroidComponentSuite",
+        "atf.tests.suites.components.AtfGithubComponentSuite",
+        "atf.tests.suites.components.AtfOrchestrationComponentSuite",
+        "atf.tests.suites.components.AtfReportingComponentSuite"
       ]
     },
     {
@@ -101,7 +108,7 @@
       "suite": "atf.tests.reporting.GameReportComponentSuite",
       "role": "focused",
       "parents": [
-        "atf.tests.suites.AtfComponentSuite"
+        "atf.tests.suites.components.AtfReportingComponentSuite"
       ]
     },
     {
@@ -111,8 +118,56 @@
       "parents": [
         "atf.tests.suites.AtfUnitSuite",
         "atf.tests.suites.AtfComponentSuite",
+        "atf.tests.suites.components.AtfDocumentationComponentSuite",
+        "atf.tests.suites.components.AtfProvenanceComponentSuite",
+        "atf.tests.suites.components.AtfAndroidComponentSuite",
+        "atf.tests.suites.components.AtfGithubComponentSuite",
+        "atf.tests.suites.components.AtfOrchestrationComponentSuite",
+        "atf.tests.suites.components.AtfReportingComponentSuite",
         "atf.tests.suites.AtfIntegrationSuite"
       ]
+    },
+    {
+      "module": "atf-tests",
+      "group": "atf-tests-documentation",
+      "suite": "atf.tests.suites.components.AtfDocumentationComponentSuite",
+      "role": "primary",
+      "layer": "component"
+    },
+    {
+      "module": "atf-tests",
+      "group": "atf-tests-provenance",
+      "suite": "atf.tests.suites.components.AtfProvenanceComponentSuite",
+      "role": "primary",
+      "layer": "component"
+    },
+    {
+      "module": "atf-tests",
+      "group": "atf-tests-android",
+      "suite": "atf.tests.suites.components.AtfAndroidComponentSuite",
+      "role": "primary",
+      "layer": "component"
+    },
+    {
+      "module": "atf-tests",
+      "group": "atf-tests-github",
+      "suite": "atf.tests.suites.components.AtfGithubComponentSuite",
+      "role": "primary",
+      "layer": "component"
+    },
+    {
+      "module": "atf-tests",
+      "group": "atf-tests-orchestration",
+      "suite": "atf.tests.suites.components.AtfOrchestrationComponentSuite",
+      "role": "primary",
+      "layer": "component"
+    },
+    {
+      "module": "atf-tests",
+      "group": "atf-tests-reporting",
+      "suite": "atf.tests.suites.components.AtfReportingComponentSuite",
+      "role": "primary",
+      "layer": "component"
     }
   ]
 }

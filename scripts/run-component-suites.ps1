@@ -140,7 +140,7 @@ function Invoke-MavenSelections($selections, $stage, $provenanceFile) {
             return
         }
         foreach ($gate in $selections) {
-            $selection = if ($TestChangeControl) { $TestChangeControl } else { $gate.module }
+            $selection = if ($TestChangeControl) { $TestChangeControl } else { $gate.group }
             $destination = Join-Path $RunRoot $selection
             $arguments = if ($TestChangeControl) {
                 @('atf.tests.execution.components.TestChangeProofExecution', $sourceRoot, $stage, $destination,
@@ -150,13 +150,13 @@ function Invoke-MavenSelections($selections, $stage, $provenanceFile) {
             }
             Push-Location (Join-Path $stage $gate.module)
             try {
-                $exit = Invoke-AtfQualificationPhase $timing ("components.run." + $gate.module) {
-                    & $java @suiteJvm -cp $classpath @arguments *> (Join-Path $RunRoot ($gate.module + '.log'))
+                $exit = Invoke-AtfQualificationPhase $timing ("components.run." + $gate.group) {
+                    & $java @suiteJvm -cp $classpath @arguments *> (Join-Path $RunRoot ($gate.group + '.log'))
                     $LASTEXITCODE
                 } -ExitCode
             } finally { Pop-Location }
             $receipt = Join-Path $destination 'execution.json'
-            $result = [pscustomobject]@{module=$gate.module;suite=$gate.suite;exitCode=$exit;receipt=if(Test-Path -LiteralPath $receipt){Get-Content -LiteralPath $receipt -Raw | ConvertFrom-Json}else{$null}}
+            $result = [pscustomobject]@{module=$gate.group;suite=$gate.suite;exitCode=$exit;receipt=if(Test-Path -LiteralPath $receipt){Get-Content -LiteralPath $receipt -Raw | ConvertFrom-Json}else{$null}}
             if (!$TestChangeControl) { Save-AtfComponentCheckpoint @($result) }
             $result
         }
@@ -200,7 +200,10 @@ try {
         }
     }
     $catalog = Get-Content -LiteralPath (Join-Path $stage 'config/atf-test-suites.json') -Raw | ConvertFrom-Json
-    $primaryComponents = @($catalog.suites | Where-Object {$_.role -eq 'primary' -and $_.layer -eq 'component'})
+    $primaryComponents = @($catalog.suites | Where-Object {$_.role -eq 'primary' -and $_.layer -eq 'component'} | ForEach-Object {
+        if (-not $_.group) { $_ | Add-Member -NotePropertyName group -NotePropertyValue $_.module }
+        $_
+    })
     $collectionProperties = ConvertFrom-StringData (Get-Content -LiteralPath (Join-Path $stage 'config/gradle-app-collections.properties') -Raw)
     $gradleGroups = @($collectionProperties.Values | Sort-Object -Unique | ForEach-Object {
         $suffix = [Globalization.CultureInfo]::InvariantCulture.TextInfo.ToTitleCase($_)
@@ -211,7 +214,7 @@ try {
     $gradleGroups += [pscustomobject]@{group='whist-lab-app-atf-card-table-ui';project='whist-lab-app/atf-card-table-ui';task='testDebugUnitTest';path=$uiTask;selection=$uiTask}
     $rulesTask = ':game-core:releaseRulesComponents'
     $gradleGroups += [pscustomobject]@{group='whist-lab-app-rules';project='whist-lab-app/game-core';task='releaseRulesComponents';path=$rulesTask;selection=$rulesTask}
-    $knownGroups = @($primaryComponents.module) + @($gradleGroups.group)
+    $knownGroups = @($primaryComponents.group) + @($gradleGroups.group)
     if (@($Groups | Where-Object {$_ -cnotin $knownGroups}).Count -or
             @($Groups | Sort-Object -Unique).Count -ne $Groups.Count) {
         throw 'Groups trebuie să conțină numai identificatori distincți din catalogul componentelor.'
@@ -260,7 +263,7 @@ try {
         Write-AtfQualificationDecision $timing ("components.run." + $group.group) 'REUSED' $group.decision
     }
     $groupsToRun = @($selectedGroups | Where-Object {$_ -cnotin @($reused.group)})
-    $mavenSelections = @($primaryComponents | Where-Object {$_.module -cin $groupsToRun})
+    $mavenSelections = @($primaryComponents | Where-Object {$_.group -cin $groupsToRun})
     $gradleSelections = @($gradleGroups | Where-Object {$_.group -cin $groupsToRun})
 
     $gradleBatch = $null

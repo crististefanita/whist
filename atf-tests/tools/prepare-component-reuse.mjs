@@ -1,3 +1,4 @@
+import {releaseSnapshotRequired} from './atf-component-ownership.mjs';
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import {fileURLToPath} from 'node:url';
@@ -48,7 +49,7 @@ export async function prepareComponentReuse(runRoot, previousRoot, groups, {resu
         origins.set(previousOrigin, readOrigin(previous, previousOrigin, resume));
       }
       const origin = await origins.get(previousOrigin);
-      if (group === 'atf-tests' && currentRelease?.sha256 !== origin.releaseInputs?.sha256) {
+      if (releaseSnapshotRequired(group, current) && currentRelease?.sha256 !== origin.releaseInputs?.sha256) {
         throw Error('GOVERNANCE_RELEASE_SNAPSHOT_CHANGED');
       }
       const execution = await strictJson(await regularFile(previous, group + '/execution.json'));

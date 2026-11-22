@@ -1,3 +1,4 @@
+import {atfGroups, atfOwnershipCompatible, hasAtfCollections} from './atf-component-ownership.mjs';
 import {readFileSync} from 'node:fs';
 import path from 'node:path';
 import {fileURLToPath} from 'node:url';
@@ -36,6 +37,7 @@ const appGroups = [...new Set(gradleAppPackages.values())];
 const gradleGroups = [...appGroups, 'whist-lab-app-atf-card-table-ui', 'whist-lab-app-rules'];
 const mavenGroups = ['atf-validation', 'atf-test-android', 'atf-tests'];
 const allGroups = [...mavenGroups, ...gradleGroups];
+const modernGroups = [...new Set([...allGroups, ...atfGroups])];
 const frameworkOnly = file => nonBuildDocumentation(file)
     || file.startsWith('atf-tests/') || file.startsWith('docs/') || file.startsWith('release/')
     || file.startsWith('atf-ui-browser/') || file === '.github/workflows/whist-components.yml'
@@ -105,10 +107,25 @@ function affectedGroups(file) {
 
 export function componentEvidenceScope(group, releaseInputs, executionInputs, {androidVersionMetadataOnly = false} = {}) {
   const changed = changedInputs(releaseInputs, executionInputs);
-  if (changed.length && !allGroups.includes(group)) {
+  const modern = hasAtfCollections(releaseInputs);
+  const knownGroups = modern ? modernGroups : allGroups;
+  if (changed.length && !knownGroups.includes(group)) {
     return {decision: 'RUN', reason: 'UNKNOWN_SUITE_FAIL_CLOSED', changed, affected: changed, affectedGroups: allGroups};
   }
-  const classified = changed.map(file => ({file, groups: affectedGroups(file)}));
+  const compatible = atfOwnershipCompatible(releaseInputs, executionInputs);
+  const classified = changed.map(file => {
+    let groups = affectedGroups(file);
+    if (modern) {
+      // Markdown and dossier bytes have no launcher/runtime dependency. Other code
+      // dependencies remain conservative until a narrower edge is qualified.
+      if (nonBuildDocumentation(file)) groups = /^docs\/game\/ATF_Rules(?:Ro|En)\.md$/.test(file)
+        ? ['atf-tests-documentation', 'whist-lab-app-rules'] : ['atf-tests-documentation'];
+      else if (groups.includes('atf-tests')) groups = [...new Set([...groups, ...atfGroups])];
+      if (/^lib\/README\./.test(file)) groups = [...new Set([...groups, 'atf-tests'])];
+      if (!compatible) groups = [...new Set([...groups, ...atfGroups])];
+    } else if (!compatible) groups = [...new Set([...groups, 'atf-tests'])];
+    return {file, groups};
+  });
   const alwaysEvaluatedRagChecks = [...new Set(classified
     .filter(row => row.file === 'config/documentation-editions.json')
     .map(() => 'DOCUMENTATION_EDITIONS'))].sort();
@@ -116,7 +133,7 @@ export function componentEvidenceScope(group, releaseInputs, executionInputs, {a
       && classified.every(row => row.file === 'whist-lab-app/app/build.gradle' || frameworkOnly(row.file));
   const affected = classified.filter(row => row.groups.includes(group)
       && !(metadataOnlyBuildFile && row.file === 'whist-lab-app/app/build.gradle')).map(row => row.file);
-  const unclassified = classified.filter(row => row.groups.length === allGroups.length);
+  const unclassified = classified.filter(row => knownGroups.every(group => row.groups.includes(group)));
   const decision = affected.length ? 'RUN' : changed.length ? 'REUSE' : 'MATCH';
   const reason = affected.length
       ? unclassified.some(row => affected.includes(row.file)) ? 'UNKNOWN_INPUT_FAIL_CLOSED' : 'OWNED_OR_SHARED_INPUT_CHANGED'

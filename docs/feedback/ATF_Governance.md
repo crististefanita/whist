@@ -91,13 +91,12 @@ The isolated workflow now receives the review base explicitly. Admission of unre
 
 ## Framework selection boundaries
 
-The ATF group combines documentation governance, provenance, launchers, distribution and reporting. A narrow metadata repair therefore invalidates independent fixtures that prepare their own workspaces.
+The [independent ATF owners](../testing/ATF_Collections.md#independent-atf-component-owners) separate editorial and payload checks from provenance, mocked Android, mocked GitHub, orchestration and reporting. Each primary collection has a positive class inventory, one canonical Extent and its own source-bound receipt.
 
-Qualify disjoint owners with declared dependencies and one canonical Extent report each. A focused diagnostic recheck remains separate from promotion of a complete primary collection.
+- Markdown-only changes select the documentation owner without replaying independent launcher fixtures. Shared helpers, dependencies and unknown inputs still invalidate their consumers conservatively.
+- Reuse retains original JUnit identities, outcomes, comparisons and report hashes. Historical monolithic reports remain immutable and cannot qualify new partition identities.
 
-- A documentation-only or release-dossier change selects the affected editorial and payload checks.
-- A shared helper, dependency or unknown path invalidates every required consumer; negative controls must prove that boundary.
-- Reuse preserves JUnit identities and outcomes, original comparisons and report hashes; measure preparation separately from execution.
+Measure snapshot preparation, compilation and execution separately. A focused diagnostic remains distinct from qualification of a complete primary collection; failure recovery within an owner is covered by the open invocation-reconciliation item above.
 
 ## Reporting schema admission
 

@@ -1,3 +1,4 @@
+import {atfCollections, atfComponentGroups, hasAtfCollections, releaseSnapshotRequired} from './atf-component-ownership.mjs';
 import {componentInputMap, digest, inputFingerprint, safeRelative} from './source-input-identity.mjs';
 export {componentInputMap, digest, inputFingerprint} from './source-input-identity.mjs';
 import fs from 'node:fs/promises';
@@ -67,6 +68,16 @@ export function verifyReleaseInputs(origin, document) {
 
 export function verifyComponentExecution(origin, name, execution, tests, reportHash) {
   const receipt = origin.run.results.find(row => row.module === name);
+  if (hasAtfCollections(origin.sourceSet) && name.startsWith('atf-tests')) {
+    const owner = atfCollections.find(row => row.group === name);
+    if (!owner || execution?.suite !== owner.suite || !Array.isArray(execution.invocations)
+        || execution.invocations.length !== tests
+        || new Set(execution.invocations.map(row => row.id)).size !== tests
+        || execution.invocations.some(row => row.outcome !== 'PASS')
+        || execution.junitIdentitySha256 !== digest(JSON.stringify(execution.invocations))) {
+      throw Error('ATF_COLLECTION_IDENTITY_MISMATCH');
+    }
+  }
   const countsPass = execution?.outcomes?.PASS === tests
       && (execution.outcomes?.FAIL ?? 0) === 0 && (execution.outcomes?.ERROR ?? 0) === 0 && (execution.outcomes?.SKIP ?? 0) === 0;
   const receiptPass = Number.isSafeInteger(tests) && tests > 0 && execution?.kind === 'live-source-components' && execution.apkQualification === false
@@ -300,7 +311,7 @@ async function readTestScope(project, source, version, candidateInputs, policy) 
   const buildText = candidateInputs.has(buildPath) && previous.has(buildPath) && candidateInputs.get(buildPath) !== previous.get(buildPath)
     ? await fs.readFile(await regularFile(source, buildPath), 'utf8') : null;
   const metadataOnly = isOnlyAndroidVersionChange(previous, candidateInputs, buildText, baseline.release, version, digest);
-  const groups = componentGroupsRequiredForVersion(policy, 'android', version);
+  const groups = [...new Set([...componentGroupsRequiredForVersion(policy, 'android', version), ...atfComponentGroups(candidateInputs)])];
   if (!REQUIRED_ANDROID_COMPONENT_GROUPS.every(group => groups.includes(group))) throw Error('REQUIRED_COMPONENT_GROUPS_MISSING');
   const visualSources = await readVisualContractSources(project, source, baseline.source.sourceCommit, previous, candidateInputs);
   return {
@@ -844,7 +855,7 @@ export async function evaluateRelease({projectRoot, candidateDir, sourceRoot, pl
       const relative = binding.executionReceiptPattern.replace('{group}', name);
       const execution = (await readPayloadJson(relative)).value;
       verifyComponentExecution(origin, name, execution, group.tests, componentReportHashes.get(name));
-      if (name === 'atf-tests' && testScope?.catalogued === false) {
+      if (releaseSnapshotRequired(name, origin.sourceSet) && testScope?.catalogued === false) {
         await verifyGovernanceReleaseSnapshot(project, origin.releaseInputs);
       }
       const scope = componentEvidenceScope(name, releaseSet, origin.sourceSet,

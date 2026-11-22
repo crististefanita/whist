@@ -1599,3 +1599,43 @@ testChanges:
 ```
 
 </details>
+
+<details>
+<summary>Independent ATF collection ownership and immutable evidence reuse</summary>
+
+```yaml
+testChanges:
+  - id: RAG-ATF-COLLECTION-OWNERS
+    status: VERIFIED
+    base: 2da37aa6d962db58ef9954c5da96f44e09154ab6
+    expires: 2026-12-20
+    reason: Partition positive primary inventories without changing leaf identities; isolate editorial and payload execution, preserve original receipts, and reject historical relabeling, shared or unknown changes and forged suites.
+    proof: 'mvn -o -pl atf-tests -am -Dtest=AtfCollectionOwnershipComponentTest -Dsurefire.failIfNoSpecifiedTests=false test'
+    checks:
+      positive:
+        - atf.tests.governance.suites.AtfCollectionOwnershipComponentTest#positiveInventoriesPartitionEveryAtfComponentWithoutChangingLeafNames
+        - atf.tests.governance.suites.AtfCollectionOwnershipComponentTest#documentationChangesReuseIndependentOriginalReceipts
+      negative:
+        - atf.tests.governance.suites.AtfCollectionOwnershipComponentTest#sharedUnknownAndHistoricalInputsCannotHideAffectedCollections
+    paths:
+      - atf-tests/src/test/java/atf/tests/execution/components/ComponentSuiteExecution.java
+      - atf-tests/src/test/java/atf/tests/governance/suites/AtfCollectionOwnershipComponentTest.java
+      - atf-tests/src/test/java/atf/tests/suites/AtfComponentSuite.java
+      - atf-tests/src/test/java/atf/tests/suites/components/AtfAndroidComponentSuite.java
+      - atf-tests/src/test/java/atf/tests/suites/components/AtfDocumentationComponentSuite.java
+      - atf-tests/src/test/java/atf/tests/suites/components/AtfGithubComponentSuite.java
+      - atf-tests/src/test/java/atf/tests/suites/components/AtfOrchestrationComponentSuite.java
+      - atf-tests/src/test/java/atf/tests/suites/components/AtfProvenanceComponentSuite.java
+      - atf-tests/src/test/java/atf/tests/suites/components/AtfReportingComponentSuite.java
+      - atf-tests/tools/atf-component-ownership.mjs
+      - atf-tests/tools/atf-component-ownership.test.mjs
+      - atf-tests/tools/component-evidence-scope.mjs
+      - atf-tests/tools/evaluate-release-rag.mjs
+      - atf-tests/tools/prepare-component-reuse.mjs
+      - atf-tests/tools/release-test-scope.mjs
+      - config/atf-component-collections.json
+      - config/atf-test-suites.json
+      - scripts/run-component-suites.ps1
+```
+
+</details>
