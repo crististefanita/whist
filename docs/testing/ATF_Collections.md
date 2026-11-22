@@ -266,6 +266,8 @@ Verificarea finală a snapshot-ului poate respinge un agregat chiar dacă au tre
 | Selecția responsabililor | Clasificatorul existent de dependențe compară sursa livrată cu execuția originală. Responsabilii modificați rulează din nou; cei neafectați pot reutiliza numai rapoarte promovate, verificate prin hash și identități JUnit corespunzătoare. Un responsabil eșuat nu poate împrumuta rezultatul altuia. Ghidurile regulilor de joc și ale bibliotecilor păstrează consumatorii suplimentari. |
 | Transport | Planul de reutilizare păstrează agregatul respins original și toate observațiile legate sub identitatea originală de proveniență. Payload-urile release-ului declară aceste fișiere; evaluatorul RAG verifică același contract și expune `readmission` separat de verdictul original. Observațiile istorice lipsă nu se reconstruiesc din mesaje de log. |
 
+Selecția responsabililor folosește întotdeauna diff-ul complet al reviziei livrate, inclusiv editările ulterioare verificării originale a sursei.
+
 ```mermaid
 flowchart LR
     REJECT[Agregat respins] -->|verifică inventarele capturate| CHECK[Derivă editorială numai în checkout]

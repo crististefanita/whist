@@ -75,6 +75,7 @@ LangGraph oferă noduri explicite, stare partajată și limite de checkpoint, da
 | Prioritate | Lacună distinctă rămasă | Criteriu de închidere |
 |---|---|---|
 | P2 | Metadatele calificării ajung la unele diagnostice numai după pregătirea snapshot-ului. | Validați inventarul E2E al dosarului activ, linkurile catalogului și limitele editoriale printr-o verificare ieftină a metadatelor, înaintea colecției lungi. Păstrați dovezile eșuate și demonstrați că o reverificare focalizată nu poate califica un grup primar eșuat; acest criteriu este distinct de admiterea probelor de control al sursei. |
+| P2 | Generarea probelor descoperă selectorii dinamici neacceptați după compilare. | Verificați declarațiile sursă selectate față de forma de invocare statică acceptată de runnerul probelor înainte de Maven. Respingeți declarațiile neacceptate sau ambigue fără pornirea compilării; păstrați descoperirea JUnit de după compilare ca autoritate și adăugați un caz negativ de componentă pentru respingerea timpurie. |
 
 ## Limitele selecției ATF
 
