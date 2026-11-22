@@ -22,15 +22,21 @@ export function fitSeatLines(seats) {
 }
 
 /** Measure the external action line in CSS layout units, including when its real badge is hidden. */
-export function measureSeatActionClearance(seat) {
+export function measureSeatActionClearance(seat, labels) {
   const badge = seat.querySelector(".seat-turn");
   if (!badge) return 0;
   const probe = badge.cloneNode(true);
   probe.hidden = false;
-  probe.textContent = "M";
   probe.style.visibility = "hidden";
   seat.append(probe);
-  try { return Math.max(0, -probe.offsetTop); }
+  try {
+    let clearance=0;
+    for(const label of labels??[badge.textContent||"M"]){
+      probe.textContent=label;
+      clearance=Math.max(clearance,-probe.offsetTop);
+    }
+    return clearance;
+  }
   finally { probe.remove(); }
 }
 

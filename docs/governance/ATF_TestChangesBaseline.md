@@ -1982,6 +1982,7 @@ testChanges:
       positive:
         - atf.tests.governance.source.changes.TestChangeEditorialProofComponentTest#editorialDescendantsPreserveOriginalProofBytesAndExposeProvenance
         - atf.tests.governance.documentation.release.rag.nativeproof.WhistSurfaceAdapterComponentTest#adaptiveWebMenusKeepTextIndependentOfTheUsableViewport
+        - atf.tests.governance.documentation.release.rag.nativeproof.WhistSurfaceAdapterComponentTest#webAndNativePortablePortsKeepMeasuredGeometryFacesAndGesturesAligned
       negative:
         - atf.tests.governance.source.changes.TestChangeEditorialProofComponentTest#executableInputsControlsAndRevertedCodeCannotReuseEditorialProofs
     paths:
@@ -1995,6 +1996,7 @@ testChanges:
       - atf-tests/src/test/java/atf/tests/governance/source/changes/TestChangeAdmissionFixture.java
       - atf-tests/src/test/java/atf/tests/governance/documentation/release/rag/nativeproof/WhistSurfaceAdapterComponentTest.java
       - atf-tests/src/test/java/atf/tests/suites/AtfComponentSuite.java
+      - atf-ui-browser/tests/ro/cardtable/browser/WhistSurfaceContract.java
       - atf-ui-browser/tests/responsive-surface.test.mjs
       - atf-ui-browser/tests/responsive-game.mjs
       - atf-ui-browser/tests/packaged-sanity.mjs

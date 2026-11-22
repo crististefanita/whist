@@ -1,4 +1,4 @@
-import { adaptiveViewport, surfaceTypography, fitTextWidth, isPhone, viewportGeometry, textScale } from "./viewport.mjs?v=0.4";
+import { ADAPTIVE_SURFACE, adaptiveViewport, surfaceTypography, fitTextWidth, isPhone, viewportGeometry, textScale } from "./viewport.mjs?v=0.4";
 import { collect } from "./collection.mjs";
 import { autoGame, waitForDecision } from "./auto-game.mjs";
 import { bindHandFeedback } from "./hand-feedback.mjs";
@@ -6,12 +6,15 @@ import { historyGrid, applyHistoryAppearance } from "./records.mjs?v=0.4";
 import { fitSeatLine, fitSeatLines, retainSeatFrames, measureSeatActionClearance } from "./seat-presentation.mjs";
 import { historyFirst, menuFromEntries } from "./table-menu.mjs?v=0.4";
 import { createProfileDialogs, deviceProfile, dismissGameMenuOnOutsideClick, preferredLanguage, saveLanguage } from "./profile.mjs?v=0.4";
+import { surfaceFitter } from "./surface-fit.mjs?v=0.4";
 
 const stage = document.querySelector("#table");
 const frame = document.querySelector("#frame");
 const viewport = document.querySelector(".viewport");
 const history = document.querySelector("#history");
 let animation;
+let surface;
+let fitKey, fitHeight=ADAPTIVE_SURFACE.height;
 const resize = () => {
   animation?.hideOverlay();
   const visual = window.visualViewport;
@@ -22,8 +25,24 @@ const resize = () => {
   if (width <= 0 || height <= 0) return;
   const phone = isPhone(navigator.userAgent);
   const adaptive = document.documentElement.dataset.surface === "whist" || document.documentElement.dataset.engine === "whist";
-  const result = adaptive ? adaptiveViewport(width, height) : viewportGeometry(width, height, phone);
-  if (adaptive) viewport.style.height = (visual?.height ?? innerHeight) + "px";
+  let result = adaptive ? adaptiveViewport(width, height) : viewportGeometry(width, height, phone);
+  if (adaptive) {
+    const current=stage.querySelector(':scope > .whist-match:not([data-preparing])');
+    const key=current ? [width,height,getComputedStyle(document.documentElement).fontSize,
+      current.querySelector('.whist-progress')?.textContent,current.querySelectorAll('.seat').length].join('|') : null;
+    if(key!==fitKey||!key)fitHeight=ADAPTIVE_SURFACE.height;
+    fitKey=key;
+    stage.style.setProperty('--stage-width',result.width+'px');
+    stage.style.setProperty('--stage-height',result.height+'px');
+    fitHeight=Math.max(fitHeight,stage.scrollHeight);
+    result=adaptiveViewport(width,height,fitHeight);
+  }
+  if (adaptive) {
+    viewport.style.height = (visual?.height ?? innerHeight) + "px";
+    viewport.style.width = (visual?.width ?? innerWidth) + "px";
+    viewport.style.top = (visual?.offsetTop ?? 0) + "px";
+    viewport.style.left = (visual?.offsetLeft ?? 0) + "px";
+  }
   frame.dataset.viewport = phone ? "phone" : "desktop";
   frame.style.width = result.frameWidth + "px";
   frame.style.height = result.frameHeight + "px";
@@ -35,6 +54,12 @@ const resize = () => {
   document.documentElement.style.setProperty("--dialog-width", result.frameWidth + "px");
   document.documentElement.style.setProperty("--dialog-height", result.frameHeight + "px");
   document.documentElement.style.setProperty("--dialog-scale", result.scale);
+  if(adaptive){
+    const bounds=frame.getBoundingClientRect();
+    document.documentElement.style.setProperty('--modal-center-x',(bounds.left+bounds.width/2)+'px');
+    document.documentElement.style.setProperty('--modal-center-y',(bounds.top+bounds.height/2)+'px');
+    surface?.fitDialog(width,height);
+  }
   if (stage.firstElementChild?.matches(".match:not([data-preparing])")) void placeTable();
 };
 resize();
@@ -96,6 +121,7 @@ const playedLayouts = new WeakMap();
 const errorBox = element("p", "", "error");
 errorBox.setAttribute("role", "alert");
 const profileDialogs = createProfileDialogs(element, button, issue, copy);
+surface = surfaceFitter(stage,profileDialogs.dialog,resize);
 const automation = autoGame({
   available: () => !pending && !!stage.querySelector(".whist-match") &&
     state.view?.actions.some(move => move.key === "auto-step"),
@@ -647,7 +673,8 @@ async function placeTable(content = stage.firstElementChild) {
   const seats = [...board.querySelectorAll(".seat")];
   const fan = hand.querySelector(".fan");
   const width = board.clientWidth;
-  const seatWidth = Math.min(116, Math.round(width * (stage.clientHeight < 760 ? 0.25 : 0.29)),
+  const fontScale=textScale(getComputedStyle(document.documentElement).fontSize);
+  const seatWidth = Math.min(116, Math.round(width * (stage.clientHeight < 760*Math.max(1,fontScale) ? 0.25 : 0.29)),
     Math.floor((width - 16) / 3));
   for (const seat of seats) seat.style.width = Math.max(1, seatWidth) + "px";
   fitSeatLines(seats);
@@ -658,8 +685,9 @@ async function placeTable(content = stage.firstElementChild) {
     board.style.minHeight = minHeight;
     const layout = await call("/api/layout", {
       width, height, mode: state.view.header?.mode ?? "", seatHeight: Math.max(...seats.map(seat => seat.offsetHeight)),
-      actorClearance: Math.max(0, ...seats.map(measureSeatActionClearance)),
-      fontScale: textScale(getComputedStyle(document.documentElement).fontSize),
+      actorClearance: Math.max(0, ...seats.map(seat=>measureSeatActionClearance(seat,
+        [copy('bidNow','LICITEAZĂ'),copy('playNow','JOACĂ ACUM'),seat.dataset.actorLabel||'M']))),
+      fontScale,
       bidOptions: stage.dataset.playingSteps && !content.hasAttribute("data-preparing")
         ? 0 : board.querySelectorAll("[data-bid]").length,
       players: seats.length, viewport: stage.clientHeight, handWidth: hand.clientWidth, cards: fan.children.length,
