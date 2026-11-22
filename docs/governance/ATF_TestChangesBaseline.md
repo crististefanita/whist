@@ -21,9 +21,11 @@ testChanges:
       positive:
         - atf.tests.governance.source.changes.TestChangeProofComponentTest#admissionUsesTheSameProofVerdictAndDiagnosticsAsFinalGovernance
         - atf.tests.governance.documentation.release.rag.scope.QualificationLauncherComponentTest#validTestChangeProofPrecedesSourceCopyAndMavenInBothLaunchers
+        - atf.tests.governance.documentation.release.rag.scope.ComponentEvidenceScopeComponentTest#nodeContractTestsKeepReuseClassificationInsideTheRealBuildBoundary
       negative:
         - atf.tests.governance.source.changes.TestChangeProofComponentTest#admissionRechecksChangedSourcesAndSeparatesProofGeneration
         - atf.tests.governance.documentation.release.rag.scope.QualificationLauncherComponentTest#invalidTestChangeProofStopsBothLaunchersBeforeCopyOrMaven
+        - atf.tests.governance.documentation.release.rag.scope.ComponentEvidenceScopeComponentTest#sharedDependenciesAndUnknownInputsCannotReuseTheirConsumers
     paths:
       - atf-tests/src/main/java/atf/tests/testchange/TestChangeAdmissionCli.java
       - atf-tests/src/main/java/atf/tests/testchange/TestChangeReview.java
@@ -36,6 +38,8 @@ testChanges:
       - scripts/run-atf-governance.ps1
       - scripts/run-component-suites.ps1
       - config/atf-component-dependencies.json
+      - atf-tests/tools/release-test-scope.mjs
+      - atf-tests/tools/release-test-scope.test.mjs
 ```
 
 </details>
