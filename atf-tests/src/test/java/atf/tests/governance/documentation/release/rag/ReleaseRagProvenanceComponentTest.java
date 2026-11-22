@@ -61,25 +61,25 @@ class ReleaseRagProvenanceComponentTest {
         AuditedAssertions.assertEquals("FAIL", JSON.readTree(rejected.toFile()).path("status").asText());
     }
 
-    @ParameterizedTest
-    @ExtendWith(GameReportAudit.class)
-    @ValueSource(strings = {"missing-observation", "changed-observation", "changed-check"})
-    void documentationDriftRequiresBoundObservationsInTheReleasePayload(String mutation, ComponentInputs inputs) throws Exception {
-        RagCandidateFixture fixture = create(temporary);
-        Path component = fixture.candidate().resolve("reports/component");
-        RagComponentEvidenceFixture.documentationDrift(component);
-        inputs.add("Controlled mutation", mutation);
-        inputs.add("Original snapshot-check binding", Files.readString(component.resolve("source-snapshot-check.json")));
-        Path observation = component.resolve("observed-live-source.json");
-        if (mutation.equals("missing-observation")) Files.delete(observation);
-        else if (mutation.equals("changed-observation")) Files.writeString(observation, "[]");
-        else Files.writeString(component.resolve("source-snapshot-check.json"), "{}");
-        refreshPayload(fixture.candidate());
-        evaluate(fixture, fixture.output());
-        JsonNode verdict = JSON.readTree(fixture.output().toFile());
-        inputs.add("RAG rejection and payload citations", findCheck(verdict, "COMPONENT_SOURCE_BINDING").toString());
-        AuditedAssertions.assertEquals("BLOCKED", check(verdict, "COMPONENT_SOURCE_BINDING"));
-        AuditedAssertions.assertEquals("INVALID", componentDecision(verdict, "atf-validation"));
+    @Test @ExtendWith(GameReportAudit.class)
+    void documentationDriftRequiresBoundObservationsInTheReleasePayload(ComponentInputs inputs) throws Exception {
+        for (String mutation : List.of("missing-observation", "changed-observation", "changed-check")) {
+            RagCandidateFixture fixture = create(Files.createDirectories(temporary.resolve(mutation)));
+            Path component = fixture.candidate().resolve("reports/component");
+            RagComponentEvidenceFixture.documentationDrift(component);
+            inputs.add("Controlled mutation", mutation);
+            inputs.add("Original snapshot-check binding: " + mutation, Files.readString(component.resolve("source-snapshot-check.json")));
+            Path observation = component.resolve("observed-live-source.json");
+            if (mutation.equals("missing-observation")) Files.delete(observation);
+            else if (mutation.equals("changed-observation")) Files.writeString(observation, "[]");
+            else Files.writeString(component.resolve("source-snapshot-check.json"), "{}");
+            refreshPayload(fixture.candidate());
+            evaluate(fixture, fixture.output());
+            JsonNode verdict = JSON.readTree(fixture.output().toFile());
+            inputs.add("RAG rejection and payload citations: " + mutation, findCheck(verdict, "COMPONENT_SOURCE_BINDING").toString());
+            AuditedAssertions.assertEquals("BLOCKED", check(verdict, "COMPONENT_SOURCE_BINDING"), mutation);
+            AuditedAssertions.assertEquals("INVALID", componentDecision(verdict, "atf-validation"), mutation);
+        }
     }
 
     @Test void aPinnedComponentCandidateProducesCitedHumanReviewWithoutChangingInputsOrCallingE2e() throws Exception {
