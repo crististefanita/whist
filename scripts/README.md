@@ -76,6 +76,10 @@ JVM collections do not require an emulator connection. Java, Maven and Gradle do
 
 - [Shared registry](../docs/learning/ATF_EvaluationRegistry.md) serializes reservations and prevents duplicate evaluations across processes. Diagnostic launchers record learning reuse; a learning run does not qualify a release automatically.
 
+## Maven preparation and snapshot recovery
+
+[Snapshot recovery](AtfComponentResume.ps1) validates the original source and release inventories and writes atomic checkpoints. [Maven admission](AtfComponentMaven.ps1) independently checks the preparation identity, compiled classes, dependency bytes and classpath. The launcher can reuse compilation after an interrupted classpath step; an altered classpath rebuilds only that step, while changed classes or a foreign, malformed or missing receipt require preparation again. Neither helper runs a game or changes a report verdict.
+
 ## Private signing inputs
 
 - [One source policy](AtfSigningSourcePolicy.ps1) admits only public signing metadata and skips private local entries before hashing.

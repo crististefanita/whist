@@ -396,6 +396,7 @@ test('durable Maven preparation keeps compilation when classpath is interrupted 
     "$ErrorActionPreference='Stop'",
     '. (Join-Path $env:ATF_TEST_SCRIPTS AtfQualificationSnapshot.ps1)',
     '. (Join-Path $env:ATF_TEST_SCRIPTS AtfComponentResume.ps1)',
+    '. (Join-Path $env:ATF_TEST_SCRIPTS AtfComponentMaven.ps1)',
     "$repo=Join-Path $Work 'maven-repository'",
     "$classpath=Join-Path $Work 'component-classpath.txt'",
     "if ($Mode -eq 'seal') {",
@@ -418,6 +419,23 @@ test('durable Maven preparation keeps compilation when classpath is interrupted 
   run('seal');
   assert.equal(run('resume'), 'REBUILD_CLASSPATH');
   run('classpath');
+  assert.equal(run('resume'), 'REUSE_ALL');
+  const receiptPath = path.join(root, 'component-maven.json');
+  const receipt = JSON.parse(await fs.readFile(receiptPath, 'utf8'));
+  await fs.writeFile(path.join(root, 'component-classpath.txt'), 'altered classpath');
+  assert.equal(run('resume'), 'REBUILD_CLASSPATH');
+  run('classpath');
+  const sealedReceipt = JSON.parse(await fs.readFile(receiptPath, 'utf8'));
+  for (const changed of [{...receipt, identity: 'foreign-source'}, {...receipt, repo: '../foreign-repository'},
+    {...receipt, schemaVersion: 99}]) {
+    await fs.writeFile(receiptPath, JSON.stringify(changed));
+    assert.equal(run('resume'), 'RECOMPILE');
+  }
+  await fs.writeFile(receiptPath, '{interrupted receipt');
+  assert.equal(run('resume'), 'RECOMPILE');
+  await fs.unlink(receiptPath);
+  assert.equal(run('resume'), 'RECOMPILE');
+  await fs.writeFile(receiptPath, JSON.stringify(sealedReceipt));
   assert.equal(run('resume'), 'REUSE_ALL');
   await fs.writeFile(path.join(root, 'project/demo/target/classes/Probe.class'), 'modified class');
   assert.equal(run('resume'), 'RECOMPILE');

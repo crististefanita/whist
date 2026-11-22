@@ -204,6 +204,10 @@ The APK source snapshot is the reference for comparing suite inputs. RAG verifie
 | `whist-lab-app-atf-card-table-ui` | JVM suite for shared-UI contracts, introduced at `0.20.2`, with a separate Extent report and receipt. |
 | Each selected group | Its own receipt and identical inputs within suite scope. `source-provenance.json` binds original inventory, execution and report. |
 
+### Maven preparation boundaries
+
+[Snapshot recovery](../../scripts/AtfComponentResume.ps1) owns source identity and checkpoint persistence; [Maven admission](../../scripts/AtfComponentMaven.ps1) owns compiled outputs, dependencies and classpath verification. The component launcher composes these checks. A valid compilation survives an interrupted or altered classpath, but changed classes or a foreign, missing or malformed receipt require a new preparation. Tests exercise both decisions without Maven or a device.
+
 ### Snapshot and preflight before Maven
 
 The [component launcher](../../scripts/run-component-suites.ps1) and [governance launcher](../../scripts/run-atf-governance.ps1) use the [same snapshot preparation](../../scripts/AtfQualificationSnapshot.ps1). Maven compiles and checks the same temporary copy. Published-evidence checks read historical Git objects at the specified commit rather than that checkout's live files.

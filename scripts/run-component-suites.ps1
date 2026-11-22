@@ -23,6 +23,7 @@ Assert-AtfComponentJavaEnvironment
 . (Join-Path $PSScriptRoot 'AtfQualificationTiming.ps1')
 . (Join-Path $PSScriptRoot 'AtfTestChangeBatch.ps1')
 . (Join-Path $PSScriptRoot 'AtfComponentResume.ps1')
+. (Join-Path $PSScriptRoot 'AtfComponentMaven.ps1')
 $sourceRoot = [IO.Path]::GetFullPath($SourceRoot)
 $evidenceRoot = if (-not [string]::IsNullOrWhiteSpace($env:WHIST_EVIDENCE_ROOT) -or -not $RunRoot) {
     Ensure-AtfEvidenceRoot $sourceRoot
