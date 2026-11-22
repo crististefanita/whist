@@ -15,13 +15,12 @@ final class DocumentationPathRules {
         int lineNumber = 0;
         for (String line : lines) {
             lineNumber++;
-            if (ABSOLUTE_WINDOWS_PATH.matcher(line).find()) {
-                violations.add(DocumentationGovernanceSupport.violation(
-                        "DOC-PATH-ABSOLUTE", root, path, lineNumber,
-                        "documentation exposes a machine-specific absolute path",
-                        "normative documentation must be relocatable",
-                        "replace the local path with a relative link or a configurable placeholder"));
-            }
+            if (!ABSOLUTE_WINDOWS_PATH.matcher(line).find()) continue;
+            violations.add(DocumentationGovernanceSupport.violation(
+                    "DOC-PATH-ABSOLUTE", root, path, lineNumber,
+                    "documentation exposes a machine-specific absolute path",
+                    "normative documentation must be relocatable",
+                    "replace the local path with a relative link or a configurable placeholder"));
         }
     }
 

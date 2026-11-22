@@ -24,7 +24,7 @@ The project owns Android-boundary and adapter checks. Reusable contracts are req
 | Priority | Owner and gap | Verification level and closure criterion |
 |---|---|---|
 | P2 | Launcher coordination: entry points check preconditions inconsistently. | Controlled components for Java, Maven, Gradle, Node and Python must check required capabilities before costly operations and report missing capabilities with source identity. Distinguish the Python installation alias from an executable interpreter. For the [PowerShell ADB module](../../atf-test-android/tools/AndroidDeviceSetup.psm1), verify availability, refusal, timeout and process state separately from parsing and the Java client. |
-| P2 | Qualification cost: source/release snapshot preparation still copies and hashes retained reports repeatedly. | Reduce repeated snapshot work without weakening input admission. The implemented [compiler and cleanup recovery contracts](../testing/ATF_Collections.md#maven-compiler-reuse) are regression boundaries, not open implementation tasks. Measure source/release inventory and copying separately from compilation and execution; reconcile recorded stage durations with wall time before claiming further savings. |
+| P2 | Qualification cost: source/release snapshot preparation still copies and hashes retained reports repeatedly. | Reduce repeated snapshot work without weakening input admission. The implemented [compiler and cleanup recovery contracts](../testing/ATF_Collections.md#maven-compiler-reuse) are regression boundaries, not open implementation tasks. Measure source/release inventory and copying separately from compilation and execution; reconcile recorded stage durations with wall time before claiming further savings. Time the post-compilation snapshot check before output sealing explicitly rather than leaving it between named phases. |
 | P1 | Failed-test recovery is only selection-level: one failing JUnit invocation invalidates the complete owner-group receipt, so its already passing siblings cannot be reused safely. | Persist every JUnit unique ID, outcome and source/provenance binding. On restart rerun only failed or incomplete identities, then publish a reconciliation Extent linking the original and retry reports. Reject missing, duplicate, foreign or source-changed identities and any failed retry; never promote by editing the original report. |
 
 [Inline-image retention governance](../../atf-tests/src/test/java/atf/tests/governance/documentation/release/ReleaseEvidenceRetentionGovernanceTest.java) separately checks for duplicated PNG files beside HTML. It does not prove data autonomy, image readability or APK integrity; the [adapter criterion](ATF_Reporting.md#rpt-android-html-only---audit-delivery-without-auxiliary-copies) remains separate.
@@ -36,6 +36,7 @@ The [documentation editorial grid](../governance/ATF_Documentation.md#editorial-
 | Priority | Owner and area | Closure criterion |
 |---|---|---|
 | P2 | Distributed library guides: producer-side sample reuse. | [Local example acceptance](../platform/ATF_Integration.md#verification-of-examples-in-guides) separates compilation, execution and verdict. Promote a generic evidence contract in the shared-ownership register and synchronize consumer guides. Producer regression and each consumer's acceptance remain separate. |
+| P2 | English guides: inherited translations still obscure game and qualification terminology. | Review operational terms against public code and the Romanian edition. Require editorial acceptance of purpose, inputs, outcomes and limits for each affected guide before refreshing the bilingual receipt; structural and token checks alone cannot establish meaning. |
 
 ## Download via browser
 
@@ -87,9 +88,7 @@ The isolated workflow now receives the review base explicitly. Admission of unre
 
 The [independent ATF owners](../testing/ATF_Collections.md#independent-atf-component-owners) separate editorial and payload checks from provenance, mocked Android, mocked GitHub, orchestration and reporting. Each primary collection has a positive class inventory, one canonical Extent and its own source-bound receipt.
 
-| Priority | Bounded gap | Closure criterion |
-|---|---|---|
-| P2 | Framework helper and test-source changes still select every ATF owner conservatively. Collection partitioning alone does not prove which code each isolated fixture consumes. | Declare executable transitive dependencies for framework helpers and Java/Node fixtures. Prove that unaffected owners retain their original evidence, changed dependencies invalidate every consumer, and missing or unknown edges fail closed. Measure avoided executions separately from snapshot and compiler admission; do not narrow selection from file extensions or previous green results alone. |
+The [dependency selection contract](../testing/ATF_Collections.md#executable-dependency-selection) derives consumers from current executable references and explicit repository-observer scopes. Reviewed reader bodies and generated providers bound what the analysis can admit. Unknown inputs, missing populations and changed reader contracts retain complete ATF qualification.
 
 - Markdown-only changes select the documentation owner without replaying independent launcher fixtures. Shared helpers, dependencies and unknown inputs still invalidate their consumers conservatively.
 - Reuse retains original JUnit identities, outcomes, comparisons and report hashes. Historical monolithic reports remain immutable and cannot qualify new partition identities.
