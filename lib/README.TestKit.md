@@ -2,20 +2,20 @@
 
 ## Overview
 
-Kit offers annotations, evaluated comparisons and neutral lifecycle. JAR does not start browser, broker or ADB and does not publish Extent alone.
+Kit provides annotations, evaluated comparisons, and a neutral lifecycle. The JAR does not start a browser, broker, or ADB, and does not publish Extent on its own.
 
 | Need | API and limit |
 |---|---|
-| Test level | @ AtfUnitTest, @ AtfComponentTest, @ AtfIntegrationTest, @ AtfE2eTest; classification, without automatic launch. |
-| Auditable comparisons | RecordedAssertions; JUnit's verdict precedes the 240, preview that keeps the Unicode pairs complete. |
-| Existing JUnit Assertions | AuditedAssertions in the adapter scope; diagnosis lazy, identity and original cause. Direct JUnit calls are not automatically captured in the audit. |
-| Complete values | The AssertionValue Display can receive an observer Projection with a role of expected/actual and text drawn up before preview; the consumer holds the retention. |
-| Phases and cleanup | ComponentAuditExtension / ComponentAuditAdapter, TestRunInitialization, FailureAwareCleanup. |
-| Policies and resources | Atf Resolvers * Policy; readResourceUtf8 for classpath/JAR, requiredPath for actual file. |
+| Test level | `@AtfUnitTest`, `@AtfComponentTest`, `@AtfIntegrationTest`, `@AtfE2eTest`; classification only, with no automatic launch. |
+| Auditable comparisons | `RecordedAssertions`; the JUnit verdict precedes the 240-character preview, which preserves complete Unicode pairs. |
+| Existing JUnit assertions | `AuditedAssertions` within the adapter scope; lazy diagnostics, original identity and cause. Direct JUnit calls do not become auditable automatically. |
+| Full values | `AssertionValueDisplay` can receive a `Projection` observer with the expected/actual role and redacted text before preview; the consumer owns retention. |
+| Phases and cleanup | `ComponentAuditExtension` / `ComponentAuditAdapter`, `TestRunInitialization`, `FailureAwareCleanup`. |
+| Policies and resources | `Atf*Policy` resolvers; `readResourceUtf8` for classpath/JAR, `requiredPath` for a real file. |
 
 ## Minimal example
 
-The adapter holds the recorder and publishes the result; a mismatch retains the original JUnit exception:
+The adapter owns the recorder and publishes the result; a mismatch preserves the original JUnit exception:
 
 ```java
 import atf.testkit.assertions.RecordedAssertions;
@@ -27,15 +27,15 @@ public static void verifyState(RecordedAssertions audit, String actual) {
 
 ## Purpose and integration
 
-- Addiction atf.api: atf-test-kit with atf.testkit.version of the project POM. Use the scope test in the product; compile is justified only for the main support of a test module. Do not include Kit in APK/aplicatie.
-- JUnit Jupiter API and Jackson are transitive. Runner declares engine junit-jupiter-engine and its selection; level annotation does not replace @ Test or consumer extension.
-- For Extent: the adapter sends the checks to the AssertionAuditReport; AssertionAuditRun holds the joint session. Kit does not copy the renderer. [Integration Reporting](README.Reporting.md#purpose-and-integration).
-- The Sanitizer is injected via the AssertionValue Display prior to preview. The comparison runs once; the stored values are limited and do not constitute full archive. Pure units keep their own policy.
-- Purposes and resources are per invoicing; close them and keep the original cause. Global policies do not become isolated between external readers through a local lock.
+- Dependency: `atf.api:atf-test-kit` with the `atf.testkit.version` from the project POM. Use test scope in application modules; compile is justified only for main-scope support in a test module. Do not include Kit in an APK/application.
+- JUnit Jupiter API and Jackson are transitive. The runner declares the `junit-jupiter-engine` and its selection; the level annotation does not replace `@Test` or the consumer extension.
+- For Extent: the adapter sends checks to `AssertionAuditReport`; `AssertionAuditRun` owns the shared session. Kit does not copy the renderer. [Reporting integration](README.Reporting.md#purpose-and-integration).
+- Inject the sanitizer through `AssertionValueDisplay` before preview. The comparison runs once; stored values are bounded and are not a complete archive. Pure units keep their own policy.
+- Scopes and resources are per invocation; close them and preserve the original cause. A local lock does not isolate global policies from external readers.
 
 ---
 
-The tests of this project fix the integration used, the lifecycle and the causes of observable failure. Keep for any incompatibility version and hash JAR/POM, minimum configuration and result; local process described in [Guide libraries](README.md#maintenance-and-feedback).
+This project's tests define the integration used, its lifecycle and observable failure causes. For each incompatibility, retain the JAR/POM version and hash, minimal configuration and result; the [library guide](README.md#maintenance-and-feedback) describes the local process.
 
 <a id="shared-library-source"></a>
 

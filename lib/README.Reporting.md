@@ -2,19 +2,19 @@
 
 ## Overview
 
-Reporting publishes the data, comparisons and verdict of the caller in Extent/fallback, without Core or Kit.
+Reporting publishes the caller's data, comparisons, and verdict to Extent/fallback, without Core or Kit.
 
 | Need | API |
 |---|---|
-| Individual rolling / class / suite | `AssertionAuditRun` |
+| Individual/class/suite run | `AssertionAuditRun` |
 | Invocation | `run.open(Identity)` → `AssertionAuditReport` |
 | Ports / fallback | `AtfReportPorts` / `HtmlReportSession` |
-| HTTP observed | `request.execution(ReportExecutionEvidence)`, with `ReportResponse` |
-| Captures | `UiExtentReportSession`; complete PNG |
+| Observed HTTP | `request.execution(ReportExecutionEvidence)`, with `ReportResponse` |
+| Screenshots | `UiExtentReportSession`; full PNG |
 
 ## Minimal example
 
-Individual: `try (var run = open(output)) { publish(run, actual); }`. The suite keeps the run and opens a scenario per invoicing:
+Individual run: `try (var run = open(output)) { publish(run, actual); }`. A suite keeps the run open and opens one scenario per invocation:
 
 ```java
 import atf.reporting.audit.AssertionAuditRun;
@@ -47,35 +47,35 @@ public static void publish(AssertionAuditRun run, String actual) {
 
 ## Purpose and integration
 
-| Owner | Closure and limit |
+| Owner | Closing and boundary |
 |---|---|
-| AssertionAuditRun | He holds the session; close publishes his final HTML. |
-| run.open(identity) | Borrowed session; close close close closing the invoicing scenario. |
-| Constructor AssertionAuditReport(session, ...) | Owns and closes his own session. |
+| `AssertionAuditRun` | Owns the session; closing it publishes the final HTML. |
+| `run.open(identity)` | Borrows the session; closing it closes the invocation's scenario. |
+| `AssertionAuditReport(session, ...)` constructor | Owns and closes its own session. |
 
-- Use the same settings and redactor in the run and renderer. The default preview is **240**, as returned by assertionMaxDisplayCharacters(). Full values come before the preview.
-- The example follows the thrall of the session; the AssertionAuditRun.extent (...) serializes the publication for competing callers.
-- Kit collects the JUnit comparison evaluated once; Reporting publicly. The callier keeps the verdict, cause and timeout through phase (..., timing).
-- Fails indexes the terminal cause in the line ACTION or OBSERVES that failed. Tests also retain the collapsible diagnosis, and independent comparisons remain distinct.
-- The PNG keeps the entire viewport/display; the capture and the zoome belong to the adapter. The same catch at the same step shall retain one single proof and the first caption.
-- After close, the ReportArtifactInspector.inspect (path, profiles) qualifies inventory and Emended resources; diagnosis localalexternal dependencies. The text paths remain valid. The inspector shall be static; the rendering and interactions shall be checked separately in the browser.
-- The browser belongs to the caller: separate the diagnosis from JUnit Discovery of execution, close the context before the browser and keep the original cause to the cleanup.
+- Use the same settings/redactor in the run and renderer; the default preview is **240**, read through `assertionMaxDisplayCharacters()`. Full values precede the preview.
+- The example follows the session thread; `AssertionAuditRun.extent(...)` serializes publication for concurrent callers.
+- Kit collects the JUnit comparison, evaluated once; Reporting publishes it. The caller preserves the verdict, cause, and timing through `phase(..., timing)`.
+- Fails indexes the terminal cause on the failed ACTION or OBSERVE row. The Tests view also retains the collapsible diagnostic, while independent comparisons remain distinct.
+- The PNG retains the full viewport/display; capture and zoom belong to the adapter. Identical screenshots from the same step retain one piece of evidence and the first caption.
+- After close, `ReportArtifactInspector.inspect(path, profile)` qualifies the inventory and embedded resources; diagnostics identify external dependencies. Text paths remain valid. The inspector is static; rendering and interactions are verified separately in a browser.
+- The browser belongs to the caller: separate JUnit discovery diagnostics from execution, close the context before the browser, and preserve the original cause during cleanup.
 
 ## Verification of use
 
-| Example method input | Observed result |
+| Input to the example method | Observable result |
 |---|---|
-| `actual` is `ready`. | The method shall be terminated normally and the HTML file shall be in place after the end of the session. |
-| `actual` differs or is `null`. | The ratio keeps the comparison failed, then the method throws `AssertionError`. |
-| The source of the example is compiled on another JAR. | Any incompatibility of manufacturers or methods shall be detected prior to publication. |
+| `actual` is `ready`. | The method returns normally, and the HTML file exists after the session closes. |
+| `actual` differs or is `null`. | The report retains the failed comparison, then the method throws `AssertionError`. |
+| Compile the example source against another JAR. | Constructor or method incompatibilities are detected before publication. |
 
-The example verifies the use of API and the propagation of the verdict. HTML autonomy, interactive expansion and native captures have their own acceptances; the existence of the file does not demonstrate them itself.
+The example verifies API usage and verdict propagation. HTML autonomy, interactive expansion and native screenshots require their own acceptance; file existence alone does not prove them.
 
-The duration of HTTP comes from `ReportResponse.duration()`; `detail(...)` retains the text of the calleric without converting it into a transport measurement.
+HTTP duration comes from `ReportResponse.duration()`; `detail(...)` preserves the caller's text without turning it into a transport measurement.
 
 ---
 
-The reporting pair is an external binary fixed in the POM and the register of provenance. This guide checks the API consumed and the result of the report in the application; an observed limitation is attached to the version, hash and a reproducible example. [Local procedure](README.md#maintenance-and-feedback)
+The Reporting pair is an external binary pinned in the POM and provenance register. This guide verifies the consumed API and application report result; identify an observed limitation by version, hash and a reproducible example. [Local procedure](README.md#maintenance-and-feedback)
 
 <a id="shared-library-source"></a>
 

@@ -35,15 +35,15 @@ The coordinates select delivery and the physical identity of the binary shall be
 
 ## Verification of examples in guides
 
-[LibraryReadmeExamplesIntegrationTest](../../atf-tests/src/test/java/atf/libraries/LibraryReadmeExamplesIntegrationTest.java) compiles the current Java fragments from the four guides, with the physical JARs from `lib` before the transitive dependencies. The execution has a temporary director of his own and compares observable results; negative controls distinguish the invalid compilation from the success of the example.
+[LibraryReadmeExamplesIntegrationTest](../../atf-tests/src/test/java/atf/libraries/LibraryReadmeExamplesIntegrationTest.java) compiles the current Java fragments from all five library guides, with the physical JARs from `lib` before the transitive dependencies. Each execution owns its temporary directory and compares observable results; negative controls distinguish compiler rejection from a passing example.
 
-If a full temporary copy with JDK 21, modules and the Maven warehouse of its own:
+Run from a complete TMP copy with JDK 21, the required modules and an owned Maven repository:
 
 ```powershell
 mvn -B -pl atf-tests -am '-Dtest=LibraryReadmeExamplesIntegrationTest' '-Dsurefire.failIfNoSpecifiedTests=false' test
 ```
 
-The sample verifies consumer integration and documented fragments; does not change the JAR and does not replace the producer's regression. [Shared owner](../feedback/README.md) keeps packing and synchronizing the guides in the following deliveries.
+The probe verifies consumer integration and documented snippets without changing the JAR. Producer regressions and consumer acceptance remain separate. Route shared packaging and guide updates through [local feedback](../feedback/README.md) and the [library source note](../../lib/README.md#shared-library-source).
 
 ## Concurrent changes
 

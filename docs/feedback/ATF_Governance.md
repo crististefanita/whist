@@ -35,7 +35,6 @@ The [documentation editorial grid](../governance/ATF_Documentation.md#editorial-
 
 | Priority | Owner and area | Closure criterion |
 |---|---|---|
-| P2 | Distributed library guides: producer-side sample reuse. | [Local example acceptance](../platform/ATF_Integration.md#verification-of-examples-in-guides) separates compilation, execution and verdict. Promote a generic evidence contract in the shared-ownership register and synchronize consumer guides. Producer regression and each consumer's acceptance remain separate. |
 | P2 | English guides: inherited translations still obscure game and qualification terminology. | Review operational terms against public code and the Romanian edition. Require editorial acceptance of purpose, inputs, outcomes and limits for each affected guide before refreshing the bilingual receipt; structural and token checks alone cannot establish meaning. |
 
 ## Download via browser
