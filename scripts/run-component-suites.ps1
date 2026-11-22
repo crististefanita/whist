@@ -24,6 +24,8 @@ Assert-AtfComponentJavaEnvironment
 . (Join-Path $PSScriptRoot 'AtfTestChangeBatch.ps1')
 . (Join-Path $PSScriptRoot 'AtfComponentResume.ps1')
 . (Join-Path $PSScriptRoot 'AtfComponentMaven.ps1')
+. (Join-Path $PSScriptRoot 'AtfCompilerIdentity.ps1')
+. (Join-Path $PSScriptRoot 'AtfComponentMavenReuse.ps1')
 $sourceRoot = [IO.Path]::GetFullPath($SourceRoot)
 $evidenceRoot = if (-not [string]::IsNullOrWhiteSpace($env:WHIST_EVIDENCE_ROOT) -or -not $RunRoot) {
     Ensure-AtfEvidenceRoot $sourceRoot
@@ -66,16 +68,27 @@ function Invoke-MavenSelections($selections, $stage, $provenanceFile) {
     $command = Get-Command $Maven -ErrorAction Stop
     $workspace = Split-Path -Parent $stage
     $policy = Get-Content -LiteralPath (Join-Path $stage 'config/atf-governance-policy.json') -Raw | ConvertFrom-Json
-    $identity = Get-AtfInputFingerprint (@($fingerprint,$releaseFingerprint,$command.Source,
-        (Get-FileHash -LiteralPath $java).Hash) -join [char]10)
-    $prepared = Read-AtfPreparedComponentMaven $workspace $identity $policy.mavenModules
+    $compiler = Invoke-AtfQualificationPhase $timing 'components.compiler-identity' {
+        Get-AtfComponentCompilerIdentity (Join-Path $RunRoot 'source-inputs.json') $java $command.Source
+    }
+    $identity = $compiler.identity
+    $prepared = Invoke-AtfQualificationPhase $timing 'components.compiler-admission' {
+        if ($compiler.eligible) {
+            $own = Read-AtfPreparedComponentMaven $workspace $identity $policy.mavenModules
+            if ($own) { $own } else {
+                Read-AtfBorrowedComponentMaven $ReuseFrom $workspace $identity $policy.mavenModules $tempRoot
+            }
+        }
+    }
+    $buildWork = if ($prepared -and $prepared.buildWorkspace) { $prepared.buildWorkspace } else { $workspace }
     Push-Location $stage
     try {
         Assert-AtfQualificationSnapshot $snapshot $stage $sourceRoot
-        $classpathFile = Join-Path $workspace 'component-classpath.txt'
+        $classpathFile = Join-Path $buildWork 'component-classpath.txt'
         if ($prepared) {
             $repository = $prepared.repository
             $mavenReceipt = $prepared.receipt
+            if ($prepared.buildWorkspace) { Write-AtfComponentMavenReference $workspace $prepared $identity }
             foreach ($name in 'maven-cache','maven-compile') {
                 Write-AtfQualificationDecision $timing "components.$name" 'REUSED' 'Verified Maven preparation and classpath.'
             }
@@ -97,9 +110,15 @@ function Invoke-MavenSelections($selections, $stage, $provenanceFile) {
             } -ExitCode
             if ($compileExit -ne 0) { throw "Compilarea a eșuat: $RunRoot/compile.log" }
             Assert-AtfQualificationSnapshot $snapshot $stage $sourceRoot
+            Copy-Item -LiteralPath (Join-Path $RunRoot 'source-inputs.json') -Destination (Join-Path $workspace 'compiler-source-inputs.json')
+            $outputFingerprint = Invoke-AtfQualificationPhase $timing 'components.compiler-output-seal' {
+                Get-AtfComponentMavenFingerprint $workspace $repository $policy.mavenModules
+            }
             $mavenReceipt = [ordered]@{
-                schemaVersion=1;identity=$identity;repo=(Split-Path -Leaf $repository)
-                buildFingerprint=(Get-AtfComponentMavenFingerprint $workspace $repository $policy.mavenModules)
+                schemaVersion=2;identity=$identity;repo=(Split-Path -Leaf $repository)
+                compilerFingerprint=$compiler.compilerFingerprint;toolFingerprint=$compiler.toolFingerprint
+                inputManifestSha256=(Get-FileHash -LiteralPath (Join-Path $workspace 'compiler-source-inputs.json')).Hash.ToLowerInvariant()
+                buildFingerprint=$outputFingerprint
                 classpathSha256=$null
             }
             Write-AtfComponentJson (Join-Path $workspace 'component-maven.json') $mavenReceipt
@@ -116,8 +135,8 @@ function Invoke-MavenSelections($selections, $stage, $provenanceFile) {
             $mavenReceipt.classpathSha256 = (Get-FileHash -LiteralPath $classpathFile).Hash
             Write-AtfComponentJson (Join-Path $workspace 'component-maven.json') $mavenReceipt
         }
-        $entries = @($policy.mavenModules | ForEach-Object { Join-Path $stage "$_/target/test-classes" })
-        $entries += @($policy.mavenModules | ForEach-Object { Join-Path $stage "$_/target/classes" })
+        $entries = @($policy.mavenModules | ForEach-Object { Join-Path $buildWork "project/$_/target/test-classes" })
+        $entries += @($policy.mavenModules | ForEach-Object { Join-Path $buildWork "project/$_/target/classes" })
         $classpath = ($entries + @((Get-Content -LiteralPath $classpathFile -Raw).Trim())) -join [IO.Path]::PathSeparator
         $suiteJvm = @(Get-AtfComponentJvmArguments -InputPartCharacters $InputPartCharacters -SourceRoot $sourceRoot)
         if ($AllTestChangeControls) {
@@ -160,7 +179,10 @@ function Invoke-MavenSelections($selections, $stage, $provenanceFile) {
             if (!$TestChangeControl) { Save-AtfComponentCheckpoint @($result) }
             $result
         }
-    } finally { Pop-Location }
+    } finally {
+        Pop-Location
+        if ($prepared -and $prepared.lease) { $prepared.lease.Dispose() }
+    }
 }
 
 function Read-AtfGradleResults($Selections, [string]$Journal) {

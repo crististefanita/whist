@@ -176,3 +176,35 @@ O singură compilare Maven poate servi mai multe colecții primare. Un receipt r
 </details>
 
 Fixture-urile de guvernanță determină release-ul activ prin `release/index.json` și folosesc același validator al publicării ca livrarea. O versiune istorică eliminată sau o configurație nouă a responsabililor nu trebuie să schimbe implicit precondiția dovedită de un control negativ.
+
+## Reutilizarea compilării Maven
+
+Compilarea și execuția au identități separate. [Inventarul compilatorului](../../atf-tests/tools/component-compiler-inputs.mjs) omite Markdown-ul editorial și înregistrarea reviziei bilingve; Java, POM-urile, payload-urile de resurse, binarele, codul lansatoarelor și intrările necunoscute rămân incluse.
+
+| Limită | Admitere și rezultat |
+|---|---|
+| Cheia compilării | Inventarul sursei needitoriale, binarele JDK, instalarea Maven, setările utilizatorului și opțiunile de mediu acceptate trebuie să corespundă. Parametrii externi necunoscuți dezactivează reutilizarea. |
+| Ieșirea compilată | [Admiterea ieșirii](../../scripts/AtfComponentMaven.ps1) verifică clasele, resursele, octeții dependențelor JAR/POM, inventarul înghețat al intrărilor și destinațiile classpath-ului. Datele lipsă sau alterate selectează pregătirea nouă. |
+| Altă rulare | [Împrumutul](../../scripts/AtfComponentMavenReuse.ps1) determină spațiul original al compilatorului în rădăcina temporară externă configurată și păstrează rezervarea exclusivă pe toată execuția. Nu se copiază depozitul sau arborele claselor. |
+| Snapshot-ul execuției | Snapshot-urile actuale ale sursei și release-ului rămân obligatorii. Reutilizarea compilării nu creditează un test; selecția responsabililor și validarea rapoartelor originale rămân independente. |
+| Durata de viață | Referințele funcționează numai cât supraviețuiește spațiul verificat al compilatorului. Spațiile ocupate, lipsă, indirecte, străine ori vechi declanșează compilarea nouă; rapoartele păstrate se pot reutiliza independent. |
+
+Runnerul înregistrează identitatea compilatorului, admiterea cache-ului și sigilarea ieșirii ca etape de timp distincte. O compilare împrumutată are receipt-ul original și o referință legată prin hash în noul spațiu; proveniența sursei și rapoartele vechi nu se rescriu.
+
+```mermaid
+flowchart LR
+    SOURCE[Snapshot actual al sursei] -->|elimină intrările editoriale| KEY[Cheia compilatorului și uneltelor]
+    KEY -->|verifică octeții și rezervă| CACHE[Spațiul compilat original]
+    KEY -->|lipsă ori incompatibil| BUILD[Pregătire Maven nouă]
+    CACHE -->|oferă clase verificate| RUN[Responsabilul de test selectat]
+    BUILD -->|sigilează ieșirea| RUN
+    SOURCE -->|oferă date actuale de execuție| RUN
+    RUN -->|capturează aserțiuni noi| REPORT[Extent legat de sursa actuală]
+```
+
+<details>
+<summary>Legendă: reutilizarea compilatorului păstrează dovezile independente de execuție</summary>
+
+ReuseFrom poate reutiliza compilarea între snapshot-uri de execuție diferite. ResumeFrom cere în continuare același snapshot complet și spațiul său păstrat. Parametrii de mediu neacceptați nu împrumută ieșiri din cache; generarea întreruptă a classpath-ului se poate relua local din compilarea admisă. Timpul de pregătire și execuția testelor se raportează separat.
+
+</details>
