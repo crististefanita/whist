@@ -2,31 +2,31 @@
 
 ## Overview
 
-The catalog identifies the current Android edition and retains one preceding published edition for provenance.
+The catalog tracks the current Android edition and its immediate predecessor. A release is published only after its APK, source-bound evidence and diff-selected qualification pass the RAG process.
 
 ## Current version
 
-[0.23.0 — contextual Whist update](0.23.0/README.md) is published; its APK and checksum were downloaded and verified. The main README points to the pinned asset.
+[0.23.1 — Android maintenance release](0.23.1/README.md) is qualified and awaiting authenticated GitHub publication.
 
 ## Previous version
 
-[0.22.1 — APK and evidence](0.22.1/README.md) is the immediately preceding published edition.
+[0.23.0 — Android release and evidence](0.23.0/README.md) is the immediately preceding published edition.
 
 ## Available versions
 
 | Version | State | Dossier |
 |---|---|---|
-| 0.23.0 | Published; downloads verified | [APK and evidence](0.23.0/README.md) |
-| 0.22.1 | Previous published edition | [APK and evidence](0.22.1/README.md) |
+| 0.23.1 | Qualified; publication in progress | [APK and evidence](0.23.1/README.md) |
+| 0.23.0 | Previous published edition | [APK and evidence](0.23.0/README.md) |
 
 ## Publication and verification
 
-Preparation, qualification and publication follow the [RAG process](../docs/testing/ATF_ReleaseQualification.md) and [Android guide](../docs/platform/ATF_AndroidDelivery.md). Technical details and hashes belong to the edition manifest.
+Preparation, qualification and publication follow the [RAG process](../docs/testing/ATF_ReleaseQualification.md) and [Android guide](../docs/platform/ATF_AndroidDelivery.md). Technical details and checksums belong in each edition's manifest.
 
 ## Reading the audit
 
-1. Open the current dossier for scope and download.
-2. Follow the Extent index for selections and provenance.
+1. Open the current dossier for scope and download state.
+2. Follow its Extent index for selections, provenance and limits.
 3. Read the manifest for APK identity, qualification and payload inventory.
 
-The [test strategy](../docs/testing/README.md) applies to every edition; its dossier holds the results.
+The [test strategy](../docs/testing/README.md) applies to every edition; its dossier holds the release-specific results.
