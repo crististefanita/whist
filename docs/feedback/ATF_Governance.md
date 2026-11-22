@@ -85,6 +85,10 @@ The [dependency selection contract](../testing/ATF_Collections.md#executable-dep
 - Markdown-only changes select the documentation owner without replaying independent launcher fixtures. Shared helpers, dependencies and unknown inputs still invalidate their consumers conservatively.
 - Reuse retains original JUnit identities, outcomes, comparisons and report hashes. Historical monolithic reports remain immutable and cannot qualify new partition identities.
 
+| Priority | Bounded gap | Closure criterion |
+|---|---|---|
+| P2 | RAG-26: updating one reviewed reader seal invalidates all ATF collections through the global policy identity. | Separate the topology fingerprint from reviewed reader bodies and their consumer scopes. A bounded seal-only update must select its affected owners. Topology changes, unknown scopes, missing seals and unadmitted reader changes retain complete qualification. Cover these boundaries with positive and negative component cases; preserve original evidence identities and expose selection reasons and stage timings. |
+
 Measure snapshot preparation, compilation and execution separately. A focused diagnostic remains distinct from qualification of a complete primary collection; failure recovery within an owner is covered by the open invocation-reconciliation item above.
 
 ## Reporting schema admission
