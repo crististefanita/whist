@@ -206,7 +206,9 @@ The APK source snapshot is the reference for comparing suite inputs. RAG verifie
 
 ### Maven preparation boundaries
 
-[Snapshot recovery](../../scripts/AtfComponentResume.ps1) owns source identity and checkpoint persistence; [Maven admission](../../scripts/AtfComponentMaven.ps1) owns compiled outputs, dependencies and classpath verification. The component launcher composes these checks. A valid compilation survives an interrupted or altered classpath, but changed classes or a foreign, missing or malformed receipt require a new preparation. Tests exercise both decisions without Maven or a device.
+[Snapshot recovery](../../scripts/AtfComponentResume.ps1) owns source identity and checkpoint persistence; [Maven admission](../../scripts/AtfComponentMaven.ps1) owns compiled outputs, dependencies and classpath verification.
+
+The component launcher composes these checks. A valid compilation survives an interrupted or altered classpath, but changed classes or a foreign, missing or malformed receipt require a new preparation. Tests exercise both decisions without Maven or a device.
 
 ### Snapshot and preflight before Maven
 

@@ -87,6 +87,8 @@ Reject missing or stale source-control evidence before copying caches, compiling
 
 The isolated workflow now receives the review base explicitly. Admission of unresolved source-control evidence before dependency preparation remains open; selecting the right base alone does not close that boundary.
 
+- Admit control command syntax, the active dossier's explicit E2E inventory, catalog links and editorial limits through a cheap check before the long collection. Preserve the failed report; a focused recheck does not qualify a failed primary group.
+
 ## Reporting schema admission
 
 The evaluator applies one reporting admission rule before readiness and preserves historical manifests. Accepted schema/report combinations are:

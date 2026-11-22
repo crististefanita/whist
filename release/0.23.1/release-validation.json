@@ -156,7 +156,8 @@
         "report": "reports/component/whist-lab-app-rules/component-report.html",
         "componentEvidenceOrigin": "5d91b7ea9d4fc722a355655ddac2469960c156a16f6611320df0204491836e18"
       }
-    }
+    },
+    "e2eGroups": {}
   },
   "evidenceRetention": {
     "canonicalReport": "reports/component/atf-tests/component-report.html",
@@ -165,12 +166,12 @@
   "integrity": {
     "schemaVersion": 1,
     "kind": "OBSERVED_PAYLOAD_HASHES",
-    "observedUtc": "2026-11-22T07:21:44.145Z",
+    "observedUtc": "2026-11-22T08:10:25.645Z",
     "files": [
       {
         "path": "README.md",
-        "bytes": 658,
-        "sha256": "1fd213191e51248b5172e9b8d0d3c729ead63b51abbc4f040a2a5c5770eaedb7"
+        "bytes": 730,
+        "sha256": "5eb9ee5e942042bb619278515793c7851aeab483cd5039f8545127b69b401f1d"
       },
       {
         "path": "WhistLab-0.23.1.apk",

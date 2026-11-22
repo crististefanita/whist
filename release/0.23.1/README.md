@@ -13,3 +13,5 @@ This Android maintenance edition hardens diff-based qualification and external e
 - Source-bound component and governance qualification passed; one affected group ran and nine unchanged groups reused verified evidence.
 - Native iOS delivery remains parked and is outside the active release gate.
 - GitHub release `v0.23.1` is published. APK and checksum downloads passed anonymous HTTPS and authenticated API verification.
+
+[Project overview](../../README.md) · [Release catalog](../README.md)

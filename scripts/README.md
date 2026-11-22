@@ -78,7 +78,9 @@ JVM collections do not require an emulator connection. Java, Maven and Gradle do
 
 ## Maven preparation and snapshot recovery
 
-[Snapshot recovery](AtfComponentResume.ps1) validates the original source and release inventories and writes atomic checkpoints. [Maven admission](AtfComponentMaven.ps1) independently checks the preparation identity, compiled classes, dependency bytes and classpath. The launcher can reuse compilation after an interrupted classpath step; an altered classpath rebuilds only that step, while changed classes or a foreign, malformed or missing receipt require preparation again. Neither helper runs a game or changes a report verdict.
+[Snapshot recovery](AtfComponentResume.ps1) validates the original source and release inventories and writes atomic checkpoints. [Maven admission](AtfComponentMaven.ps1) independently checks the preparation identity, compiled classes, dependency bytes and classpath.
+
+The launcher can reuse compilation after an interrupted classpath step; an altered classpath rebuilds only that step, while changed classes or a foreign, malformed or missing receipt require preparation again. Neither helper runs a game or changes a report verdict.
 
 ## Private signing inputs
 
