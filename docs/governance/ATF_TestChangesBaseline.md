@@ -1569,3 +1569,33 @@ testChanges:
 ```
 
 </details>
+
+
+<details>
+<summary>Responsabilitatea pregătirii Maven și admiterea reluării</summary>
+
+```yaml
+testChanges:
+  - id: MAVEN-PREPARATION-BOUNDARY
+    status: VERIFIED
+    base: 08d0c425bba7ea9f58b5188612654d6b252a55ba
+    expires: 2026-12-20
+    reason: Separă admiterea outputurilor Maven de recuperarea snapshotului păstrând refuzul classpathurilor alterate, claselor schimbate și chitanțelor străine sau incomplete; păstrează selecția offline.
+    proof: 'scripts/run-component-suites.ps1 -TestChangeControl MAVEN-PREPARATION-BOUNDARY -TestChangeBaseRef 08d0c425bba7ea9f58b5188612654d6b252a55ba'
+    checks:
+      positive:
+        - atf.tests.governance.documentation.release.rag.scope.ComponentEvidenceScopeComponentTest#nodeContractTestsKeepReuseClassificationInsideTheRealBuildBoundary
+      negative:
+        - atf.tests.governance.documentation.release.rag.scope.ComponentEvidenceScopeComponentTest#componentResumeImportsOnlyVerifiedEvidenceFromTheInterruptedSnapshot
+    paths:
+      - atf-tests/src/main/java/atf/tests/testchange/TestChangeReview.java
+      - atf-tests/tools/prepare-component-reuse.test.mjs
+      - atf-tests/tools/release-test-scope.mjs
+      - atf-tests/tools/release-test-scope.test.mjs
+      - scripts/AtfComponentResume.ps1
+      - scripts/AtfComponentMaven.ps1
+      - scripts/run-component-suites.ps1
+      - whist-lab-app/app/build.gradle
+```
+
+</details>
