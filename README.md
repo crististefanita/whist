@@ -2,7 +2,14 @@
 
 ## Overview
 
-Whist Lab combines a local trick-taking game for 3–6 players with an automation test framework (ATF) that verifies the engine, applications and delivery. Android and browser editions are active; the iOS bridge is parked and is outside current release qualification. The lab compares playing policies on controlled deals.
+Whist Lab is a local trick-taking game for 3–6 players and a laboratory for verifying its rules, interfaces and playing policies. Android and browser editions use the same Java engine; the project keeps game correctness, rendered behavior and release qualification as distinct verification responsibilities.
+
+| Area | What it provides |
+|---|---|
+| Game | Legal commands, bidding, tricks, settlement and score history. |
+| Applications | Active Android and Web adapters; the iOS bridge is parked. |
+| Research | Offline policy comparisons on controlled deals, separate from release acceptance. |
+| Evidence | JVM comparisons, platform checks, Extent reports and a versioned release dossier. |
 
 ## Game
 
@@ -11,80 +18,71 @@ Whist Lab combines a local trick-taking game for 3–6 players with an automatio
 
 ## Module map
 
-### From source to release
+### One game, two active interfaces
 
-Gradle builds the APK and runs JVM checks for the game. The Maven reactor adds ATF infrastructure, device scenarios and project governance.
+The engine owns legal play and game state. Platform adapters translate interaction into commands and render the public projection; shared table calculations do not make native and browser rendering identical by themselves.
 
 ```mermaid
+%%{init: {"theme":"neutral","themeVariables":{"fontSize":"15px"},"themeCSS":".edgeLabel, .edgeLabel p { font-size: 12px !important; } .node rect { rx: 6px; ry: 6px; }","flowchart":{"curve":"linear","nodeSpacing":24,"rankSpacing":20,"padding":6},"sequence":{"mirrorActors":false,"messageMargin":24}}}%%
 flowchart LR
-    gradle[Gradle]
-    produs[Android APK]
-    componente[JVM components]
-    maven[Maven ATF]
-    verificari[Audit and E2E]
-    librarii[ATF libraries]
-    rag[RAG qualification]
-    dosar[Release dossier]
-    gradle -->|builds| produs
-    gradle -->|runs| componente
-    maven -->|runs| verificari
-    maven -->|consumes| librarii
-    verificari -->|verifies| produs
-    componente -->|feeds| rag
-    verificari -->|feeds| rag
-    rag -->|qualifies| dosar
+    Android["Android"]
+    Web["Browser"]
+    Engine["game-core<br/>rules and session"]
+    Table["Portable table contracts"]
+    View["Platform rendering"]
+    Android -->|submits commands| Engine
+    Web -->|submits commands| Engine
+    Engine -->|projects public state| View
+    Table -->|adapts measurements| View
 ```
 
 <details>
-<summary>Build and evidence legend</summary>
+<summary>Legend — commands, state and display</summary>
 
-- Gradle includes the Android app, engine and a parked Java bridge for iOS. The active Gradle JVM entry point configures the engine, lab, name policy and test audit. iOS build and simulator qualification are not part of current releases.
-- Maven verifies the project and coordinates Android tests. It consumes Core, Reporting, Console, Mock and Test Kit as JAR/POM pairs. The Gradle audit uses Reporting and Test Kit in its test configurations.
-- Qualification checks the selection, APK and evidence together. The version dossier keeps binary identity, results and download verification. [Qualification guide](docs/testing/ATF_ReleaseQualification.md)
+- The flow describes runtime responsibilities, not build dependencies. The engine validates commands and exposes state; adapters own screen interaction and platform measurements.
+- Android uses the native table UI. The browser runs through a local JVM server or a TeaVM Web Worker; the static edition keeps commands on the device after loading.
+- The portable geometry and typography contracts require separate rendered checks for fonts, insets and touch targets. [Android–Web contract](atf-ui-browser/README.md#what-android-and-web-share)
 
 </details>
 
 ### Engine and platforms
 
-- The engine validates commands, calculates scores and provides state.
-- Android integrates it through a native build.
-- Web calls it through the JVM adapter or compiles it for GitHub Pages.
-- The iOS bridge is parked. [Android–Web path](atf-ui-browser/README.md#what-android-and-web-share)
+This map shows direct native application dependencies. The browser path is described above; the parked bridge remains visible because it is still declared by the default Gradle build.
 
 ```mermaid
+%%{init: {"theme":"neutral","themeVariables":{"fontSize":"15px"},"themeCSS":".edgeLabel, .edgeLabel p { font-size: 12px !important; } .node rect { rx: 6px; ry: 6px; }","flowchart":{"curve":"linear","nodeSpacing":24,"rankSpacing":20,"padding":6},"sequence":{"mirrorActors":false,"messageMargin":24}}}%%
 flowchart LR
-    app[Android app]
-    atf_card_table_ui[Shared Android UI]
-    ios[iOS parked]
-    ios_bridge[Bridge parked]
-    game_core[Java engine]
-    card_table_names[Name policy]
+    app["Android app"]
+    atf_card_table_ui["Shared Android UI"]
+    ios["iOS · parked"]
+    ios_bridge["ios-bridge · parked"]
+    game_core["game-core"]
+    card_table_names["card-table-names"]
     app -->|uses| atf_card_table_ui
     app -->|uses| game_core
     ios -->|uses| ios_bridge
     ios_bridge -->|exposes| game_core
     game_core -->|uses| card_table_names
+    classDef parked fill:#f5f5f5,stroke:#777,stroke-dasharray:4 3
+    class ios,ios_bridge parked
 ```
 
 <details>
-<summary>State ownership legend</summary>
+<summary>Legend — dependency direction and parked scope</summary>
 
-- The engine owns rules, session, score and AI decisions. The AI policy receives its own hand and the table's public information.
-- Android owns screen adaptation, preferences and checkpoints. The shared visual library presents the table and emits interaction intents.
-- The SwiftUI bridge to the translated engine is parked. No IPA build or simulator qualification is part of the active release process. [iOS guide](docs/platform/ATF_iOSDelivery.md)
-- The diagram shows native-build dependencies. The [Web adapter](atf-ui-browser/README.md#web-execution-paths) explains the separate path for the same engine and portable display contracts.
+- Arrows point from consumer to dependency. The module inventory and dependency configurations below are checked against the POMs and Gradle files.
+- `game-core` owns rules, scoring and AI decisions. A playing policy receives its own hand and public table information; offline evaluation belongs to `ai-lab`.
+- Android owns screens, preferences and checkpoints. The parked iOS bridge does not imply an active IPA build or simulator qualification. [Platform scope](docs/platform/ATF_iOSDelivery.md)
 
 </details>
 
-| Area | Modules and responsibilities |
+| Area | Owner and guide |
 |---|---|
-| Engine and research | [`game-core`](whist-lab-app/game-core/README.md) owns the domain. [`card-table-names`](whist-lab-app/card-table-names/README.md) validates and distributes names. [`ai-lab`](whist-lab-app/ai-lab/README.md) evaluates policies offline through the [JVM build](whist-lab-app/algorithm-build/README.md). |
-| Applications | [Android](whist-lab-app/app/src/main/java/ro/whistlab/app/README.md) integrates [`atf-card-table-ui`](whist-lab-app/atf-card-table-ui/README.md). [Browser](atf-ui-browser/README.md) uses the compiled engine. The [iOS bridge](ios/README.md) is parked and is not a supported release target. |
-| ATF infrastructure | [`atf-validation`](atf-validation/README.md) evaluates API responses semantically. [`atf-test-android`](atf-test-android/README.md) runs ADB commands and scenarios. [`atf-tests`](atf-tests/README.md) verifies integration, governance and delivery. |
-| Audit and execution | [`test-audit`](whist-lab-app/test-audit/README.md) captures Gradle comparisons. [`lib`](lib/README.md) keeps libraries with provenance, while [`scripts`](scripts/README.md) prepares isolated runs. |
-| Delivery | The [catalog](release/README.md) identifies the available version and its qualification dossier. |
-
-The declarations below come from [Gradle settings](whist-lab-app/settings.gradle) and the [root POM](pom.xml). Governance compares their inventories, direct dependencies and configurations. [Documentation governance](docs/governance/ATF_Documentation.md#main-readme)
+| Rules and policies | [game-core](whist-lab-app/game-core/README.md) · [card-table-names](whist-lab-app/card-table-names/README.md) · [ai-lab](whist-lab-app/ai-lab/README.md) |
+| Active applications | [Android](whist-lab-app/app/src/main/java/ro/whistlab/app/README.md) · [Shared table UI](whist-lab-app/atf-card-table-ui/README.md) · [Web](atf-ui-browser/README.md) |
+| Validation and device scenarios | [atf-validation](atf-validation/README.md) · [atf-test-android](atf-test-android/README.md) |
+| Verification and audit | [atf-tests](atf-tests/README.md) · [test-audit](whist-lab-app/test-audit/README.md) · [JVM build](whist-lab-app/algorithm-build/README.md) |
+| Execution and delivery | [Scripts](scripts/README.md) · [Release catalog](release/README.md) |
 
 <details>
 <summary>Verified Maven and Gradle declarations</summary>
@@ -115,17 +113,81 @@ The Gradle table describes default-build modules and direct dependencies between
 
 </details>
 
+### From source to release
+
+Build output and acceptance evidence have separate owners. A JVM result establishes the exercised contract; device or browser acceptance requires its own platform observation.
+
+```mermaid
+%%{init: {"theme":"neutral","themeVariables":{"fontSize":"15px"},"themeCSS":".edgeLabel, .edgeLabel p { font-size: 12px !important; } .node rect { rx: 6px; ry: 6px; }","flowchart":{"curve":"linear","nodeSpacing":24,"rankSpacing":20,"padding":6},"sequence":{"mirrorActors":false,"messageMargin":24}}}%%
+flowchart LR
+    Gradle["Gradle"]
+    APK["Android APK"]
+    JVM["JVM components"]
+    Maven["Maven ATF"]
+    Platform["Android · Web<br/>checks"]
+    Evidence["Assertions<br/>and receipts"]
+    Gate["Release<br/>qualification"]
+    Dossier["Version<br/>dossier"]
+    Gradle -->|packages| APK
+    Gradle -->|tests| JVM
+    Maven -->|checks| Evidence
+    JVM -->|comparisons| Evidence
+    APK -->|candidate| Gate
+    Platform -->|observations| Evidence
+    Evidence -->|acceptance| Gate
+    Gate -->|records| Dossier
+```
+
+<details>
+<summary>Legend — what qualification establishes</summary>
+
+- Gradle builds the Android application and runs JVM checks. Maven adds the ATF modules, Android scenarios and project governance; browser probes follow their own adapter guide.
+- Extent records assertions and diagnostics for the selected checks. A component result does not stand in for painted geometry or device behavior.
+- RAG qualification relates the selected checks to source and candidate identity. The dossier retains APK provenance, qualification and download verification; it is the release record rather than a general project overview. [Qualification contract](docs/testing/ATF_ReleaseQualification.md)
+
+</details>
+
 ## Verification and guides
 
-From the repository root, with Java 21, PowerShell 7 and Node.js, the quick collection checks rules and public contexts in a temporary copy. [Prerequisites and collections](docs/testing/ATF_Collections.md)
+From the repository root, use Java 21, PowerShell 7 and Node.js. The quick collection prepares an isolated run and checks rules and public contexts; consult the collection guide before choosing broader regression, device or research work.
 
 ```powershell
 .\scripts\run-whist-collection.ps1 -Collection quick
 ```
 
-| Looking for | Start here |
+### Change, proof and maintenance
+
+```mermaid
+%%{init: {"theme":"neutral","themeVariables":{"fontSize":"15px"},"themeCSS":".edgeLabel, .edgeLabel p { font-size: 12px !important; } .node rect { rx: 6px; ry: 6px; }","flowchart":{"curve":"linear","nodeSpacing":24,"rankSpacing":20,"padding":6},"sequence":{"mirrorActors":false,"messageMargin":24}}}%%
+flowchart LR
+    Change["Changed<br/>contract"]
+    Owner["Owning<br/>module"]
+    Checks["Scoped<br/>checks"]
+    Review["Evidence<br/>review"]
+    Guide["Current<br/>guide"]
+    Feedback["Active<br/>gap"]
+    Change -->|locate| Owner
+    Owner -->|select| Checks
+    Checks -->|inspect| Review
+    Review -->|accepted| Guide
+    Review -->|incomplete| Feedback
+    Feedback -->|correct| Owner
+```
+
+<details>
+<summary>Legend — governance and lasting documentation</summary>
+
+- Governance checks module facts, source/test conventions, documentation structure, links and edition parity. Behavior and platform tests establish their own contracts.
+- Select research collections for policy evidence; compare controlled inputs and declared limits before interpreting strength. Release acceptance remains a separate decision.
+- Update the owner guide when a fix changes a lasting contract. Keep unresolved acceptance criteria in feedback and remove completed-result narration. EN/RO editions preserve paths, commands and diagram topology.
+
+</details>
+
+| Question | Guide |
 |---|---|
-| Testing and governance | [Test strategy](docs/testing/README.md) · [Quality governance](docs/governance/README.md) · [Android checks](docs/testing/ATF_Android.md) |
-| Qualification and publication | [RAG process](docs/testing/ATF_ReleaseQualification.md) · [Android delivery](docs/platform/ATF_AndroidDelivery.md) · [iOS delivery](docs/platform/ATF_iOSDelivery.md) |
-| Game and AI | [Rules and variants](docs/game/README.md) · [Score history](docs/game/ATF_ScoreHistory.md) · [Achievements](docs/game/ATF_Achievements.md) · [AI architecture](docs/ai/README.md) |
-| Documentation and open work | [Guide index](docs/README.md) · [Feedback](docs/feedback/README.md) |
+| Which checks should run? | [Test strategy](docs/testing/README.md) · [Collections](docs/testing/ATF_Collections.md) · [Android](docs/testing/ATF_Android.md) |
+| What protects code and documentation? | [Quality governance](docs/governance/README.md) · [Documentation standard](docs/governance/ATF_Documentation.md) |
+| How are play and policy evaluation defined? | [Rules](docs/game/README.md) · [AI architecture](docs/ai/README.md) |
+| Where are deeper contracts and open gaps? | [Documentation index](docs/README.md) · [Active feedback](docs/feedback/README.md) |
+
+Dependency contracts and provenance are collected in the [local library index](lib/README.md).
