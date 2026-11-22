@@ -1902,10 +1902,10 @@ testChanges:
 testChanges:
   - id: J4-DOC-ANCHORS-EN-20261122
     status: VERIFIED
-    base: beeac3d27509d539f242464e7df3978644ba0a26
+    base: 79434786cdc484924cad429ef8356681be9e596c
     expires: 2026-12-22
     reason: Exclude HTML anchor attributes from language classification while retaining foreign visible labels, adjacent prose, escaped examples and original diagnostic lines.
-    proof: mvn -B -ntp -pl atf-tests -am test "-Dtest=DocumentationLanguageComponentTest,DocumentationPolicyGovernanceTest,DocumentationReadmeStructureGovernanceTest" "-Datf.governance.testChanges.baseRef=beeac3d27509d539f242464e7df3978644ba0a26" "-Dsurefire.failIfNoSpecifiedTests=false"
+    proof: mvn -B -ntp -pl atf-tests -am test "-Dtest=DocumentationLanguageComponentTest,DocumentationPolicyGovernanceTest,DocumentationReadmeStructureGovernanceTest" "-Datf.governance.testChanges.baseRef=79434786cdc484924cad429ef8356681be9e596c" "-Dsurefire.failIfNoSpecifiedTests=false"
     checks:
       positive:
         - atf.tests.governance.documentation.language.DocumentationLanguageComponentTest#anchorAttributesRemainTechnicalDataInBothEditions
@@ -1916,10 +1916,10 @@ testChanges:
       - atf-tests/src/test/java/atf/tests/governance/documentation/language/DocumentationLanguageComponentTest.java
   - id: J4-DOC-ANCHORS-RO-20261122
     status: VERIFIED
-    base: 95af9d324eda91f10e437e1f2ad2110e165f51bb
+    base: b45ef6424a417375fe5cf92ed8e5da1935a392c2
     expires: 2026-12-22
     reason: Exclude HTML anchor attributes from language classification while retaining foreign visible labels, adjacent prose, escaped examples and original diagnostic lines.
-    proof: mvn -B -ntp -pl atf-tests -am test "-Dtest=DocumentationLanguageComponentTest,DocumentationPolicyGovernanceTest,DocumentationReadmeStructureGovernanceTest" "-Datf.governance.testChanges.baseRef=95af9d324eda91f10e437e1f2ad2110e165f51bb" "-Dsurefire.failIfNoSpecifiedTests=false"
+    proof: mvn -B -ntp -pl atf-tests -am test "-Dtest=DocumentationLanguageComponentTest,DocumentationPolicyGovernanceTest,DocumentationReadmeStructureGovernanceTest" "-Datf.governance.testChanges.baseRef=b45ef6424a417375fe5cf92ed8e5da1935a392c2" "-Dsurefire.failIfNoSpecifiedTests=false"
     checks:
       positive:
         - atf.tests.governance.documentation.language.DocumentationLanguageComponentTest#anchorAttributesRemainTechnicalDataInBothEditions
