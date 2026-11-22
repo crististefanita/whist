@@ -2,7 +2,7 @@
 
 ## Pe scurt
 
-Java 21 și Maven; cinci JAR-uri thin, cu tranzitivele din POM. Ghidurile sunt autonome față de sursele producătorului.
+Java 21 și Maven; cinci JAR-uri, cu dependențele tranzitive declarate în POM. Ghidurile sunt autonome față de sursele producătorului.
 
 | Ghid | Artefact, grup `atf.api` | Utilizare |
 |---|---|---|
@@ -30,7 +30,7 @@ Get-ChildItem lib\*.pom | ForEach-Object {
 }
 ```
 
-Declarați, de exemplu, `atf.api:atf-reporting:<versiunea din POM>` în dependențe. Folosiți scope `compile` pentru support în src/main și `test` doar în src/test; Maven rezolvă tranzitivele.
+Declarați, de exemplu, `atf.api:atf-reporting:<versiunea din POM>` în dependențe. Folosiți scope `compile` pentru support în src/main și `test` doar în src/test; Maven rezolvă dependențele tranzitive.
 
 </details>
 
