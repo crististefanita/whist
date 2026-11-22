@@ -134,6 +134,44 @@ test('production menus stay readable and centered in compact and desktop Chromiu
         checks.push({id,name:`${screen} ${language} ${profile.width}×${profile.height} text ${font/16}`,status:'PASS',expected,observed:{version,...measured},images});
       }
     }
+    // Exercise the production dialog factory and fitter with a controlled six-seat score table.
+    // In particular, a legacy 60dvh cap must not introduce an inner scrollbar before fitting.
+    for(const profile of profiles.filter(p=>p.height!==300))for(const language of ['ro','en'])for(const font of [16,20.8]){
+      await send('Emulation.setDeviceMetricsOverride',{...profile,deviceScaleFactor:1});
+      await evaluate(`document.documentElement.style.fontSize='${font}px';document.documentElement.lang='${language}';`);
+      const measured=await evaluate(`(async()=>{
+        const {createProfileDialogs}=await import('./profile.mjs?v=0.4');
+        const {surfaceFitter}=await import('./surface-fit.mjs?v=0.4');
+        const element=(tag,text='',kind='')=>{const n=document.createElement(tag);n.textContent=text;n.className=kind;return n;};
+        const button=(text,action,kind='')=>{const n=element('button',text,kind);n.onclick=action;return n;};
+        const en=document.documentElement.lang==='en';
+        const dialogs=createProfileDialogs(element,button,()=>{},(key,fallback)=>en?({close:'Close',history:'Score history'}[key]??fallback):fallback);
+        const stage=document.querySelector('#table');
+        const fitting=surfaceFitter(stage,dialogs.dialog,()=>fitting.fitDialog(innerWidth,innerHeight));
+        const table=element('table','','whist-score-grid'),head=element('thead'),body=element('tbody');
+        const row=(values,tag)=>{const r=element('tr');for(const value of values)r.append(element(tag,value));return r;};
+        head.append(row(en?['Player','Bid','Won','Points']:['Jucător','Licitat','Levate','Puncte'],'th'));
+        for(let i=0;i<6;i++)body.append(row(['Player '+(i+1),'2','2',String(20+i)],'td'));
+        table.append(head,body);
+        dialogs.liveScore({liveTitle:en?'Match score':'Scorul partidei',summary:en?'Hand 4 / 23':'Mâna 4 / 23',pendingBid:en?'Bids submitted 6/6':'Licitații depuse 6/6'},table,()=>{});
+        await new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve)));
+        const p=dialogs.dialog,r=p.getBoundingClientRect();
+        const result={top:r.top,bottom:r.bottom,pageHeight:document.documentElement.scrollHeight,scroll:p.scrollHeight-p.clientHeight,rows:table.tBodies[0].rows.length,
+          scrollers:[...p.querySelectorAll('*')].filter(n=>n.getClientRects().length&&/auto|scroll/.test(getComputedStyle(n).overflowY)&&n.scrollHeight>n.clientHeight+1).map(n=>({kind:n.className,content:n.scrollHeight,height:n.clientHeight}))};
+        globalThis.disposeScoreFixture=()=>{dialogs.dialog.close();fitting.dispose();dialogs.dialog.remove();};
+        return result;
+      })()`);
+      const id=`LIVE-SCORE-${profile.width}-${profile.height}-${language}-${font}`,images=[];
+      assert.equal(measured.rows,6);assert.ok(measured.top>=-1&&measured.bottom<=profile.height+1,JSON.stringify(measured));
+      assert.ok(measured.pageHeight<=profile.height+1&&measured.scroll<=1&&!measured.scrollers.length,JSON.stringify({profile,language,font,measured}));
+      if(process.env.ATF_COMPONENT_CAPTURE_DIR&&((profile.width===414&&profile.height===896)||profile.height===460)){
+        const file=id+'.png',png=await send('Page.captureScreenshot',{format:'png'});
+        await fs.writeFile(path.join(process.env.ATF_COMPONENT_CAPTURE_DIR,file),Buffer.from(png.data,'base64'));images.push({file,title:id});
+      }
+      checks.push({id,name:`Live score ${language} ${profile.width}×${profile.height} text ${font/16}`,status:'PASS',expected:{rows:6,noVerticalScroll:true},observed:{version,...measured},images});
+      observations.push({profile,language,font,screen:'live-score',version,...measured});
+      await evaluate('disposeScoreFixture();delete globalThis.disposeScoreFixture');
+    }
     await send('Emulation.setDeviceMetricsOverride',{width:414,height:896,mobile:true,deviceScaleFactor:1});
     const keyboard=await evaluate(`(async()=>{
       const original=Object.getOwnPropertyDescriptor(window,'visualViewport');
