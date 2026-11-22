@@ -49,7 +49,10 @@ class TestChangeReviewComponentTest {
         var repo = new TestChangeGitFixture(root);
         var paths = List.of("src/test/resources/README.md", "module/src/test/resources/case.md", "module/src/androidTest/assets/case.md",
                 "module/src/testFixtures/resources/case.md", "module/src/test/java/OtherTest.java",
-                "config/atf-component-collections.json", "atf-tests/tools/atf-component-ownership.mjs");
+                "config/atf-component-collections.json", "atf-tests/tools/atf-component-ownership.mjs",
+                "config/atf-component-dependencies.json", "atf-tests/tools/atf-component-dependencies.mjs",
+                "atf-tests/tools/atf-dependency-references.mjs", "atf-tests/tools/atf-script-references.mjs",
+                "atf-tests/tools/atf-dependency-cli.mjs");
         for (String path : paths) repo.put(path, "controlled payload\n");
         AuditedAssertions.assertEquals(paths.stream().sorted().map(path -> uncovered("A", path, repo.base)).toList(),
                 check(repo).diagnostics(), "Fixture payloads, source code and selector contracts still require review");

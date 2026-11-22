@@ -7,6 +7,39 @@ This register defines reviewed controls, their Git base and exact paths. The [te
 ## Verified controls
 
 <details>
+<summary>Executable dependency ownership and conservative reader admission</summary>
+
+```yaml
+testChanges:
+  - id: RAG-REAL-COMPONENT-DEPENDENCIES
+    status: VERIFIED
+    base: 9a655cff56265ac9609628c4deea1c50965cbcd4
+    expires: 2026-12-20
+    reason: Select real transitive consumers without treating classifier data as imports; require complete source populations, reviewed readers and generated providers, preserving immutable original evidence and conservative fallback for unknown inputs.
+    proof: 'mvn -o -pl atf-tests -am -Dtest=AtfCollectionOwnershipComponentTest -Dsurefire.failIfNoSpecifiedTests=false test'
+    checks:
+      positive:
+        - atf.tests.governance.suites.AtfCollectionOwnershipComponentTest#realDependencyClosuresSelectOnlyTheirConsumers
+      negative:
+        - atf.tests.governance.suites.AtfCollectionOwnershipComponentTest#missingOrUnreviewedDependenciesCannotAuthorizeReuse
+    paths:
+      - atf-tests/src/main/java/atf/tests/testchange/TestChangeReview.java
+      - atf-tests/src/test/java/atf/tests/governance/source/changes/TestChangeReviewComponentTest.java
+      - atf-tests/src/test/java/atf/tests/governance/suites/AtfCollectionOwnershipComponentTest.java
+      - atf-tests/tools/atf-component-dependencies.mjs
+      - atf-tests/tools/atf-component-dependencies.test.mjs
+      - atf-tests/tools/atf-dependency-references.mjs
+      - atf-tests/tools/atf-script-references.mjs
+      - atf-tests/tools/atf-dependency-cli.mjs
+      - atf-tests/tools/component-evidence-scope.mjs
+      - atf-tests/tools/prepare-component-reuse.mjs
+      - atf-tests/tools/release-test-scope.mjs
+      - config/atf-component-dependencies.json
+```
+
+</details>
+
+<details>
 <summary>Governance of the game address on GitHub Pages</summary>
 
 ```yaml

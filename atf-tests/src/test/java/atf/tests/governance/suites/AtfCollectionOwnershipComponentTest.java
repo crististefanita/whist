@@ -14,6 +14,26 @@ import static atf.tests.governance.documentation.release.rag.scope.NodeReleaseCo
 /** Source ownership and executable selection must agree before independent receipts can be reused. */
 @AtfComponentTest
 class AtfCollectionOwnershipComponentTest {
+    @Test void realDependencyClosuresSelectOnlyTheirConsumers() throws Exception {
+        String output = contracts("atf-component-dependencies.test.mjs", "dependency graph selects|shared dependencies|changed import|classifier|live dependency");
+        AuditedAssertions.assertTrue(output.contains("dependency graph selects actual Java, Node and PowerShell consumers"),
+                "Imports, package peers, process inputs and script providers retain every transitive consumer");
+        AuditedAssertions.assertTrue(output.contains("classifier path labels and nested Java type names"),
+                "A test-data path and an unrelated nested type do not become executable dependencies");
+        AuditedAssertions.assertTrue(output.contains("live dependency graph admits the complete catalog"),
+                "The real source population and reader contracts admit the expected documentation-rule owners");
+    }
+
+    @Test void missingOrUnreviewedDependenciesCannotAuthorizeReuse() throws Exception {
+        String output = contracts("atf-component-dependencies.test.mjs", "unknown|missing|opaque|generated");
+        AuditedAssertions.assertTrue(output.contains("unknown, unowned, historical and missing populations fail closed"),
+                "Missing graph admission never reinterprets original collection evidence");
+        AuditedAssertions.assertTrue(output.contains("opaque readers and their callers require reviewed body seals"),
+                "Reader or caller changes require complete qualification before selective reuse");
+        AuditedAssertions.assertTrue(output.contains("generated module providers retain their producer inputs"),
+                "A missing provider is rejected unless the sealed loader declares its producer scope");
+    }
+
     @Test void positiveInventoriesPartitionEveryAtfComponentWithoutChangingLeafNames() throws Exception {
         var root = GovernanceProject.locateProjectRoot();
         var mapper = new ObjectMapper();
@@ -60,8 +80,12 @@ class AtfCollectionOwnershipComponentTest {
     }
 
     private static String contracts(String pattern) throws Exception {
+        return contracts("atf-component-ownership.test.mjs", pattern);
+    }
+
+    private static String contracts(String script, String pattern) throws Exception {
         var root = GovernanceProject.locateProjectRoot();
         return runNode(List.of("node", "--test", "--test-name-pattern", pattern,
-                root.resolve("atf-tests/tools/atf-component-ownership.test.mjs").toString()), root, Duration.ofSeconds(45));
+                root.resolve("atf-tests/tools").resolve(script).toString()), root, Duration.ofSeconds(45));
     }
 }

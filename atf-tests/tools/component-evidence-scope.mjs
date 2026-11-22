@@ -1,4 +1,5 @@
 import {atfGroups, atfOwnershipCompatible, hasAtfCollections} from './atf-component-ownership.mjs';
+import {atfDependencySelection} from './atf-component-dependencies.mjs';
 import {readFileSync} from 'node:fs';
 import path from 'node:path';
 import {fileURLToPath} from 'node:url';
@@ -120,7 +121,12 @@ export function componentEvidenceScope(group, releaseInputs, executionInputs, {a
       // dependencies remain conservative until a narrower edge is qualified.
       if (nonBuildDocumentation(file)) groups = /^docs\/game\/ATF_Rules(?:Ro|En)\.md$/.test(file)
         ? ['atf-tests-documentation', 'whist-lab-app-rules'] : ['atf-tests-documentation'];
-      else if (groups.includes('atf-tests')) groups = [...new Set([...groups, ...atfGroups])];
+      else if (groups.includes('atf-tests')) {
+        const dependency = atfDependencySelection(file, releaseInputs, executionInputs);
+        groups = [...new Set([...groups.filter(group => group !== 'atf-tests'), ...dependency.groups])];
+        if (!compatible) groups = [...new Set([...groups, ...atfGroups])];
+        return {file, groups, dependency};
+      }
       if (/^lib\/README\./.test(file)) groups = [...new Set([...groups, 'atf-tests'])];
       if (!compatible) groups = [...new Set([...groups, ...atfGroups])];
     } else if (!compatible) groups = [...new Set([...groups, 'atf-tests'])];
@@ -139,7 +145,8 @@ export function componentEvidenceScope(group, releaseInputs, executionInputs, {a
       ? unclassified.some(row => affected.includes(row.file)) ? 'UNKNOWN_INPUT_FAIL_CLOSED' : 'OWNED_OR_SHARED_INPUT_CHANGED'
       : alwaysEvaluatedRagChecks.length ? 'RAG_GATE_ONLY'
         : changed.length ? 'OWNED_INPUTS_UNCHANGED' : 'IDENTICAL_INPUTS';
+  const dependencyEvidence = classified.filter(row => row.dependency).map(row => ({path: row.file, ...row.dependency}));
   return {decision, reason, changed, affected,
     affectedGroups: [...new Set(classified.flatMap(row => row.groups))].sort(),
-    alwaysEvaluatedRagChecks};
+    alwaysEvaluatedRagChecks, ...(dependencyEvidence.length ? {dependencyEvidence} : {})};
 }
