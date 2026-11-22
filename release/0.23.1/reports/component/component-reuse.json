@@ -1,0 +1,221 @@
+{
+  "schemaVersion": 2,
+  "comparison": {
+    "baselineRelease": "0.23.0",
+    "androidVersionMetadataOnly": true
+  },
+  "decisions": [
+    {
+      "group": "atf-validation",
+      "decision": "REUSE",
+      "reason": "RAG_GATE_ONLY",
+      "affectedGroups": [
+        "atf-tests",
+        "whist-lab-app-achievements",
+        "whist-lab-app-bidding",
+        "whist-lab-app-commands",
+        "whist-lab-app-display",
+        "whist-lab-app-history"
+      ],
+      "changedInputs": [],
+      "componentEvidenceOrigin": "4b7af0039f21df8a259e9b43bb6c7794d1cdcd9001dc0d3bdc55ede2a49baf67",
+      "tests": 19,
+      "reportSha256": "2948d993e753e0519275be3a67f4091672443b08490f1b5e2f49b987c43c32ad",
+      "executionSha256": "65143ba58c9b6a360b721ffa92d321ece2ca7c23952ebeb640e7d9c38a3ff596"
+    },
+    {
+      "group": "atf-test-android",
+      "decision": "REUSE",
+      "reason": "RAG_GATE_ONLY",
+      "affectedGroups": [
+        "atf-tests",
+        "whist-lab-app-achievements",
+        "whist-lab-app-bidding",
+        "whist-lab-app-commands",
+        "whist-lab-app-display",
+        "whist-lab-app-history"
+      ],
+      "changedInputs": [],
+      "componentEvidenceOrigin": "4b7af0039f21df8a259e9b43bb6c7794d1cdcd9001dc0d3bdc55ede2a49baf67",
+      "tests": 277,
+      "reportSha256": "b926b12ba65649a0db3c57649c3d436cf8c596625ca8d13d7dc6b3b1db59650c",
+      "executionSha256": "a8c75f260f7804bf84eb4b5af32c5567d2f72b9bb4b57c8aa13cb38242d0d6af"
+    },
+    {
+      "group": "atf-tests",
+      "decision": "RUN",
+      "reason": "OWNED_OR_SHARED_INPUT_CHANGED",
+      "affectedGroups": [
+        "atf-tests",
+        "whist-lab-app-achievements",
+        "whist-lab-app-bidding",
+        "whist-lab-app-commands",
+        "whist-lab-app-display",
+        "whist-lab-app-history"
+      ],
+      "changedInputs": [
+        "README.md",
+        "atf-tests/src/main/java/atf/tests/documentation/DocumentationGovernance.java",
+        "atf-tests/src/main/java/atf/tests/documentation/DocumentationInventory.java",
+        "atf-tests/src/main/java/atf/tests/documentation/policy/DocumentationContentPolicy.java",
+        "atf-tests/src/test/java/atf/tests/governance/AtfRagGovernanceSuite.java",
+        "atf-tests/src/test/java/atf/tests/governance/AtfRagGovernanceSuiteContractTest.java",
+        "atf-tests/src/test/java/atf/tests/governance/documentation/DocumentationPolicyGovernanceTest.java",
+        "atf-tests/src/test/java/atf/tests/governance/documentation/release/ReleaseRagPlatformGovernanceTest.java",
+        "atf-tests/src/test/java/atf/tests/governance/documentation/release/rag/RagCandidateFixture.java",
+        "atf-tests/src/test/java/atf/tests/governance/documentation/release/rag/ReleaseRagProvenanceComponentTest.java",
+        "atf-tests/src/test/java/atf/tests/governance/documentation/release/rag/scope/ComponentEvidencePortabilityComponentTest.java",
+        "atf-tests/src/test/java/atf/tests/governance/documentation/release/rag/scope/QualificationLauncherComponentTest.java",
+        "atf-tests/tools/component-evidence-scope.mjs",
+        "atf-tests/tools/evaluate-release-rag.mjs",
+        "atf-tests/tools/prepare-component-reuse.mjs",
+        "atf-tests/tools/prepare-component-reuse.test.mjs",
+        "atf-tests/tools/publish-github-release.test.mjs",
+        "atf-tests/tools/release-test-scope.test.mjs",
+        "config/atf-test-suites.json",
+        "config/release-platform-rag-policy.json",
+        "docs/feedback/ATF_Governance.md",
+        "docs/feedback/README.md",
+        "docs/governance/ATF_TestChanges.md",
+        "docs/platform/ATF_iOSDelivery.md",
+        "docs/testing/ATF_ReleaseQualification.md",
+        "ios/README.md",
+        "scripts/AtfLocalPaths.ps1",
+        "scripts/README.md",
+        "scripts/run-atf-governance.ps1",
+        "scripts/run-component-suites.ps1",
+        "whist-lab-app/README.md",
+        "whist-lab-app/ios-bridge/src/test/README.md"
+      ],
+      "tests": 563,
+      "reportSha256": "ade3e4f6982264fdafbe25909537c7940f391d402c3ec032bf57c9925d08cf09",
+      "executionSha256": "42f625b8d6e2f21e85929709eb93690c345632693397738a2dd984f7974d7ad9"
+    },
+    {
+      "group": "whist-lab-app-bidding",
+      "decision": "REUSE",
+      "reason": "RAG_GATE_ONLY",
+      "affectedGroups": [
+        "atf-tests",
+        "whist-lab-app-achievements",
+        "whist-lab-app-bidding",
+        "whist-lab-app-commands",
+        "whist-lab-app-display",
+        "whist-lab-app-history"
+      ],
+      "changedInputs": [],
+      "componentEvidenceOrigin": "d574157fef0c8745d633f17a3de881e32fc0c311d66db9abdd967c06bf7c04f1",
+      "tests": 255,
+      "reportSha256": "f513b9a74161b58a6dc28fd9dfacaaee0d4d9df89f1fdd340f0dec437e6e4227",
+      "executionSha256": "7bb26496a345243db08d801ad7eec8c085425422254f6d717c22cc301ca048e1"
+    },
+    {
+      "group": "whist-lab-app-commands",
+      "decision": "REUSE",
+      "reason": "RAG_GATE_ONLY",
+      "affectedGroups": [
+        "atf-tests",
+        "whist-lab-app-achievements",
+        "whist-lab-app-bidding",
+        "whist-lab-app-commands",
+        "whist-lab-app-display",
+        "whist-lab-app-history"
+      ],
+      "changedInputs": [],
+      "componentEvidenceOrigin": "d574157fef0c8745d633f17a3de881e32fc0c311d66db9abdd967c06bf7c04f1",
+      "tests": 123,
+      "reportSha256": "6969a436faa3a71c6efad29ee277737b95366d1100dd19505221f22524e71644",
+      "executionSha256": "60962476ae6349e46f7a1b872b3c8367802566669054324d4b01a606d57f3557"
+    },
+    {
+      "group": "whist-lab-app-display",
+      "decision": "REUSE",
+      "reason": "RAG_GATE_ONLY",
+      "affectedGroups": [
+        "atf-tests",
+        "whist-lab-app-achievements",
+        "whist-lab-app-bidding",
+        "whist-lab-app-commands",
+        "whist-lab-app-display",
+        "whist-lab-app-history"
+      ],
+      "changedInputs": [],
+      "componentEvidenceOrigin": "d574157fef0c8745d633f17a3de881e32fc0c311d66db9abdd967c06bf7c04f1",
+      "tests": 107,
+      "reportSha256": "a280c8e272f1e1d7725d4848a0af743f1e94c6b096aff43404d4fdf830ef21a0",
+      "executionSha256": "197d99f82327d4066e1fe20befb913d10ff2153106c35cafe0d02fb93b81d0d3"
+    },
+    {
+      "group": "whist-lab-app-history",
+      "decision": "REUSE",
+      "reason": "RAG_GATE_ONLY",
+      "affectedGroups": [
+        "atf-tests",
+        "whist-lab-app-achievements",
+        "whist-lab-app-bidding",
+        "whist-lab-app-commands",
+        "whist-lab-app-display",
+        "whist-lab-app-history"
+      ],
+      "changedInputs": [],
+      "componentEvidenceOrigin": "d574157fef0c8745d633f17a3de881e32fc0c311d66db9abdd967c06bf7c04f1",
+      "tests": 61,
+      "reportSha256": "4403be45e9c964c2c4c2ced6d1ab763a95073fa9ac5adb9ee783d6937ccf0970",
+      "executionSha256": "f0e23f45def76775b97a5370fd9b996da537a65474d0b209d782122d67b7d779"
+    },
+    {
+      "group": "whist-lab-app-achievements",
+      "decision": "REUSE",
+      "reason": "RAG_GATE_ONLY",
+      "affectedGroups": [
+        "atf-tests",
+        "whist-lab-app-achievements",
+        "whist-lab-app-bidding",
+        "whist-lab-app-commands",
+        "whist-lab-app-display",
+        "whist-lab-app-history"
+      ],
+      "changedInputs": [],
+      "componentEvidenceOrigin": "d574157fef0c8745d633f17a3de881e32fc0c311d66db9abdd967c06bf7c04f1",
+      "tests": 28,
+      "reportSha256": "1af9f2c285dcf42a591e5cfb1bb91541f756a5faa3318cd75a204124db2bb50d",
+      "executionSha256": "70cc0459ced8a5e36c4eb48dd8e5cc9c34464b5297178919914c28a01982b62b"
+    },
+    {
+      "group": "whist-lab-app-atf-card-table-ui",
+      "decision": "REUSE",
+      "reason": "RAG_GATE_ONLY",
+      "affectedGroups": [
+        "atf-tests",
+        "whist-lab-app-achievements",
+        "whist-lab-app-bidding",
+        "whist-lab-app-commands",
+        "whist-lab-app-display",
+        "whist-lab-app-history"
+      ],
+      "changedInputs": [],
+      "componentEvidenceOrigin": "5d91b7ea9d4fc722a355655ddac2469960c156a16f6611320df0204491836e18",
+      "tests": 56,
+      "reportSha256": "237112f9f7c891163f50a9368ddc970a011455b17358fc521832dfd48a457268",
+      "executionSha256": "09cb91cb5754f3161c7654a13cd3648451b0c6657c59d4bded2c97dc1825ec8c"
+    },
+    {
+      "group": "whist-lab-app-rules",
+      "decision": "REUSE",
+      "reason": "RAG_GATE_ONLY",
+      "affectedGroups": [
+        "atf-tests",
+        "whist-lab-app-achievements",
+        "whist-lab-app-bidding",
+        "whist-lab-app-commands",
+        "whist-lab-app-display",
+        "whist-lab-app-history"
+      ],
+      "changedInputs": [],
+      "componentEvidenceOrigin": "5d91b7ea9d4fc722a355655ddac2469960c156a16f6611320df0204491836e18",
+      "tests": 40,
+      "reportSha256": "5a2a9803570ebada25d99e0ad59315adcea28493c1ac3c641d3e72a72761a3e2",
+      "executionSha256": "6815eafb9705fd020234ccaf516ba2817fff5b7028e0a46bcfd67705746cbfc7"
+    }
+  ]
+}

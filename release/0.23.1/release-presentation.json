@@ -1,0 +1,11 @@
+{
+  "version": "0.23.1",
+  "mode": "changes",
+  "previousVersion": "0.23.0",
+  "points": [
+    "Resume qualification from validated evidence and run only the component selection affected by the source diff.",
+    "Reuse the nine unchanged component groups with their source-bound reports and execution receipts.",
+    "Keep native iOS delivery parked; Android remains the active release target."
+  ],
+  "evidenceUrlTemplate": "https://github.com/crististefanita/whist/blob/{evidenceCommit}/release/0.23.1/reports/README.md"
+}

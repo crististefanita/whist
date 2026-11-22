@@ -1,0 +1,33 @@
+{
+  "schemaVersion": 2,
+  "releaseVersion": "0.23.1",
+  "catalogued": false,
+  "channel": "TEST",
+  "changeRisk": "maintenanceOrRefactor",
+  "declaredPlatforms": [
+    "android"
+  ],
+  "componentGroups": [
+    "atf-validation",
+    "atf-test-android",
+    "atf-tests",
+    "whist-lab-app-bidding",
+    "whist-lab-app-commands",
+    "whist-lab-app-display",
+    "whist-lab-app-history",
+    "whist-lab-app-achievements",
+    "whist-lab-app-atf-card-table-ui",
+    "whist-lab-app-rules"
+  ],
+  "userFlowChanged": false,
+  "e2e": {
+    "status": "NOT_RUN",
+    "rationale": "The source diff changes RAG, governance, documentation, and Android version metadata only; no user-flow or visual contract changed, so no Android E2E group is selected."
+  },
+  "scope": {
+    "baselineVersion": "0.23.0",
+    "baselineCommit": "8b8b9d3681b2cdc44ef89d74241dc86cce34669c",
+    "baselineFingerprint": "c813b42301e31857181155f1c37d37826052b2b000b33bb0411eae5f9ae30928",
+    "candidateFingerprint": "230ae412291f005badedb12e699584a764300ef3a999dbf31e54addc7a2bfb62"
+  }
+}
