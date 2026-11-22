@@ -24,10 +24,25 @@ Extend coverage of AI decisions, streaks and playing for zero through component 
 |---|---|---|
 | WEB-15 | Complete adoption of adaptive presentation contracts in remaining consumers. | Repackage runtime and shared tests after source qualification; verify identical package bytes in consumers without changing the Android artifact. The currently qualified package remains immutable. |
 
-## Responsive game surface and menu typography
+## WEB-16 Responsive game surface and menu typography
 
-| ID | Remaining gap | Closure criterion |
-|---|---|---|
-| WEB-16 | The browser shares portable seat and hand geometry, but its outer viewport still starts from a fixed 414 × 896 stage and uniformly scales that whole stage on desktop. Menu typography layers a hardcoded `--whist-text-scale: 1.5` over the root font size, while JavaScript derives a separate text scale for table geometry. That split leaves the menu/font-to-geometry contract implicit: short desktop windows can shrink the menu and game together, while enlarged menu text consumes space without a corresponding responsive layout decision. | Adopt Chess Web's content-first viewport approach without importing Chess-specific UI: measure the usable viewport and safe areas, let the table use available width up to a readable cap, and keep seat anchors stable. Define shared typography roles for menu title, section heading, primary/secondary action and helper text; map them to Android sp and Web rem so browser text zoom changes text independently from board sizing. Compare one identical saved game and the home/setup menus on compact phone, reference phone and desktop, in RO/EN at default and 1.3× text. Confirm the same hierarchy and readable proportions for player names, bids, tricks won, trump, cards in play, hand, actor and score. Record menu font sizes, table bounds, clipping/overflow and scroll behavior beside APK/Web captures in Extent. Use components for the sizing and typography policies; keep only representative rendered checks per viewport class. Do not claim pixel identity between native and browser fonts. |
+**P1 · 88/100 · Open; code-level finding, rendered parity not yet qualified.**
 
-The code-level basis is `viewport.mjs` (`REFERENCE` 414 × 896 and desktop `scale`), `table.mjs` (whole-stage transform), and `table.css` (`--whist-text-scale` and menu rules). Chess Web provides the responsive reference through its fluid `rem` typography, `clamp()` spacing and board limit derived from `100dvh`; preserve Whist's own engine, table semantics, colors and adapter ownership.
+J4 already shares the portable seat and hand calculations. Keep that boundary; the gap is the browser shell, not a reason to duplicate table geometry or pull Chess-specific UI into Whist.
+
+- On phones, `viewportGeometry` uses the supplied CSS viewport. On desktop, it starts with a 414 × 896 reference and applies one scale to the whole stage. This can leave wide screens underused and shrink the menu, labels, table and controls together in a short window. See [viewport policy](../../atf-ui-browser/src/main/web/viewport.mjs) and [stage sizing](../../atf-ui-browser/src/main/web/table.mjs).
+- The Whist surface hardcodes `--whist-text-scale: 1.5`, while `table.mjs` separately reads the root font size for `/api/layout`. The browser therefore has no single explicit contract linking menu roles, browser text zoom and layout measurements. The current 1.5 factor may match a chosen APK profile, but it is not a substitute for testing default and enlarged browser text. See [menu typography and layout](../../atf-ui-browser/src/main/web/table.css).
+
+**Required direction**
+
+1. Replace whole-stage desktop zoom with content-first sizing based on the usable viewport and safe areas. Use available width for the game surface up to a readable maximum; keep seat anchors and table proportions stable as width and height change. Do not fix overflow by shrinking every element or adding isolated breakpoint overrides.
+2. Define explicit typography roles for menu title, section headings, primary and secondary actions, and helper text. Map the roles to Android `sp` and Web `rem`; let browser text zoom affect text without scaling the board or touch targets. Check the actual RO and EN menu copy, not English labels alone.
+3. Preserve the game's information hierarchy across adapters: player names, bids, tricks won, active player, trump, cards played, the human hand and score must remain easy to scan at the same relative prominence. Keep controls reachable and avoid clipping or unnecessary page scroll at supported profiles.
+
+**Closure evidence**
+
+- Component checks cover viewport sizing, typography roles, short/tall windows, long localized labels and 1.0×/1.3× text without requiring an emulator.
+- One identical saved-game checkpoint and the home/setup menus are rendered on the same Android device in APK and Chrome at a compact profile; one desktop browser profile verifies width use and overflow. Include RO/EN and 1.0×/1.3× text in the focused comparison, not a full match on every resolution.
+- Extent captures include viewport dimensions, browser and APK identity, font sizes, key element bounds, overflow/scroll verdicts and the visible game facts. Keep the issue open until the rendered comparison passes; component geometry alone is not visual parity.
+
+Use Chess Web's fluid `rem`, `clamp()` and viewport-derived board limit as the responsive reference. Preserve Whist's own engine, table semantics, colors and adapter ownership. This criterion supplements WEB-07 and WEB-11; those flow and card-glyph checks do not close responsive menu typography or desktop sizing.
