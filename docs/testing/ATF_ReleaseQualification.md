@@ -204,6 +204,10 @@ Snapshot-ul APK este reperul pentru compararea intrărilor fiecărei suite. RAG 
 | `whist-lab-app-atf-card-table-ui` | Suită JVM distinctă pentru contractele bibliotecii grafice comune; introdusă la `0.20.2`, cu Extent și receipt separat. |
 | Fiecare grup selectat | Receipt propriu și intrări identice în perimetrul suitei. `source-provenance.json` păstrează legătura dintre inventarul original, execuție și raport. |
 
+### Limitele pregătirii Maven
+
+[Recuperarea snapshotului](../../scripts/AtfComponentResume.ps1) deține identitatea sursei și persistența checkpointurilor; [admiterea Maven](../../scripts/AtfComponentMaven.ps1) deține verificarea claselor compilate, a dependențelor și a classpathului. Lansatorul componentelor compune aceste verificări. Compilarea validă supraviețuiește unui classpath întrerupt sau alterat, dar clasele schimbate ori chitanțele străine, lipsă sau invalide cer o nouă pregătire. Testele verifică ambele decizii fără Maven sau dispozitiv.
+
 ### Snapshot și preflight înainte de Maven
 
 [Lansatorul de componente](../../scripts/run-component-suites.ps1) și [lansatorul de guvernanță](../../scripts/run-atf-governance.ps1) folosesc [aceeași pregătire](../../scripts/AtfQualificationSnapshot.ps1). Maven compilează și verifică fișierele din aceeași copie temporară. Verificarea probelor publicate citește obiecte Git istorice din checkout-ul indicat, prin commit, fără a citi fișierele live din acesta.
