@@ -85,6 +85,10 @@ LangGraph oferă noduri explicite, stare partajată și limite de checkpoint, da
 - Schimbările numai în Markdown selectează responsabilul documentației fără reluarea fixture-urilor independente ale lansatoarelor. Helper-ele comune, dependențele și intrările necunoscute invalidează în continuare consumatorii în mod conservator.
 - Reutilizarea păstrează identitățile și rezultatele JUnit originale, comparațiile și hash-urile rapoartelor. Rapoartele monolitice istorice rămân imuabile și nu pot califica noile identități ale partițiilor.
 
+| Prioritate | Lipsă delimitată | Criteriu de închidere |
+|---|---|---|
+| P2 | RAG-26: actualizarea unui singur sigiliu de cititor revizuit invalidează toate colecțiile ATF prin identitatea globală a politicii. | Separați amprenta topologiei de corpurile cititorilor revizuiți și de domeniile consumatorilor lor. Actualizarea delimitată doar la un sigiliu trebuie să selecteze responsabilii afectați. Schimbările topologiei, domeniile necunoscute, sigiliile lipsă și modificările neadmise ale cititorilor păstrează calificarea completă. Acoperiți limitele prin cazuri de componentă pozitive și negative; păstrați identitățile probelor originale și expuneți motivele selecției și timpii etapelor. |
+
 Măsurați separat pregătirea snapshot-ului, compilarea și execuția. Diagnosticul focalizat rămâne distinct de calificarea unei colecții primare complete; recuperarea eșecurilor dintr-un responsabil aparține punctului deschis pentru reconcilierea invocărilor de mai sus.
 
 ## Admiterea schemei de raportare
