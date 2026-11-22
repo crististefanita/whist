@@ -210,3 +210,14 @@ flowchart LR
 ReuseFrom can reuse compilation across different execution snapshots. ResumeFrom still requires the same complete snapshot and its retained workspace. Unsupported environment overrides never borrow cached output; interrupted classpath generation can resume locally from admitted compilation. Preparation timing and test execution timing are reported separately.
 
 </details>
+
+### Recovery after scratch cleanup
+
+| Retained input | Recovery boundary |
+|---|---|
+| Original report and execution receipt | Test evidence may be reused only for unchanged owner inputs and verified original bytes. A missing compiler workspace does not invalidate those reports. |
+| Verified compiler workspace | A complete admitted classpath may be borrowed under its lease. An absent classpath preserves compilation only for its owning workspace; a borrower cannot use partial preparation. |
+| Dependency cache | Speeds up fresh preparation but cannot supply a test verdict or qualify compiled output. Keep it separate from disposable snapshots. |
+| No temporary workspace | Start a new run from the checkout and its explicit release inputs. Missing paths select cold preparation; a stale workspace pointer never authorizes reuse. |
+
+The CLI and component adapter share the [temporary-root policy](../../atf-tests/tools/qualification-temp-root.mjs). An explicit scratch root still validates every configured OS temporary directory and physical checkout boundary. Local settings, signing identity and learning data are durable inputs, not build output.

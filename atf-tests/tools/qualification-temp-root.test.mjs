@@ -5,6 +5,7 @@ import os from 'node:os';
 import path from 'node:path';
 import test from 'node:test';
 import {fileURLToPath} from 'node:url';
+import {qualificationTempRoot} from './qualification-temp-root.mjs';
 
 const project = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..');
 const checker = path.join(project, 'atf-tests/tools/qualification-temp-root.mjs');
@@ -48,4 +49,31 @@ test('qualification rejects relative or missing machine paths instead of falling
   const missing = invoke(paths, path.join(paths.root, 'missing'));
   assert.equal(missing.status, 1);
   assert.match(missing.stderr, /QUALIFICATION-TEMP-INVALID: WHIST_QUALIFICATION_TEMP_ROOT/);
+});
+
+test('the reusable temp policy selects the same root without reading process arguments or mutating the environment', async t => {
+  const paths = await directories(t);
+  const environment = Object.freeze({TMP: paths.tmp, TEMP: paths.temp, WHIST_QUALIFICATION_TEMP_ROOT: '  '});
+  assert.equal(qualificationTempRoot(paths.checkout, paths.system, environment), paths.system);
+  assert.equal(qualificationTempRoot(paths.checkout, paths.system,
+    {...environment, WHIST_QUALIFICATION_TEMP_ROOT: paths.explicit}), paths.explicit);
+});
+
+test('an explicit root does not exempt invalid OS locations from the reusable policy', async t => {
+  const paths = await directories(t);
+  for (const name of ['TMP', 'TEMP']) {
+    assert.throws(() => qualificationTempRoot(paths.checkout, paths.system,
+      {WHIST_QUALIFICATION_TEMP_ROOT: paths.explicit, [name]: paths.checkout}),
+    new RegExp('QUALIFICATION-TEMP-IN-CHECKOUT: ' + name));
+  }
+  assert.throws(() => qualificationTempRoot(paths.checkout, path.join(paths.root, 'missing'),
+    {WHIST_QUALIFICATION_TEMP_ROOT: paths.explicit}), /QUALIFICATION-TEMP-INVALID: GetTempPath/);
+});
+
+test('the reusable temp policy rejects a physical checkout behind a directory link', async t => {
+  const paths = await directories(t);
+  const linked = path.join(paths.root, 'linked');
+  await fs.symlink(paths.checkout, linked, process.platform === 'win32' ? 'junction' : 'dir');
+  assert.throws(() => qualificationTempRoot(paths.checkout, paths.system,
+    {WHIST_QUALIFICATION_TEMP_ROOT: linked}), /QUALIFICATION-TEMP-IN-CHECKOUT/);
 });

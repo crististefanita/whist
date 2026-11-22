@@ -40,6 +40,22 @@ function Get-AtfComponentMavenFingerprint([string]$Work, [string]$Repository, [s
     Get-AtfInputFingerprint ($records -join [char]10)
 }
 
+function Test-AtfComponentMavenClasspath([string]$Work, [string]$Repository, $Receipt) {
+    $file = Join-Path $Work 'component-classpath.txt'
+    Assert-AtfCompilerDirectPath $file
+    if (!(Test-Path -LiteralPath $file -PathType Leaf) -or
+            (Get-FileHash -LiteralPath $file).Hash -ine $Receipt.classpathSha256) { return $false }
+    if ($Receipt.schemaVersion -eq 2) {
+        foreach ($entry in (Get-Content -LiteralPath $file -Raw).Trim().Split([IO.Path]::PathSeparator)) {
+            $entry = [IO.Path]::GetFullPath($entry)
+            Assert-AtfCompilerDirectPath $entry
+            if (!$entry.StartsWith($Repository + [IO.Path]::DirectorySeparatorChar,[StringComparison]::OrdinalIgnoreCase) -or
+                    !(Test-Path -LiteralPath $entry -PathType Leaf)) { return $false }
+        }
+    }
+    return $true
+}
+
 function Read-AtfPreparedComponentMaven([string]$Work, [string]$Identity, [string[]]$Modules) {
     $file = Join-Path $Work 'component-maven.json'
     if (!(Test-Path -LiteralPath $file -PathType Leaf)) { return }
@@ -58,18 +74,7 @@ function Read-AtfPreparedComponentMaven([string]$Work, [string]$Identity, [strin
         $repository = Join-Path $Work $receipt.repo
         if (!(Test-Path -LiteralPath $repository -PathType Container) -or
             (Get-AtfComponentMavenFingerprint $Work $repository $Modules) -cne $receipt.buildFingerprint) { return }
-        $classpath = Join-Path $Work 'component-classpath.txt'
-        Assert-AtfCompilerDirectPath $classpath
-        $classpathReady = (Test-Path -LiteralPath $classpath -PathType Leaf) -and
-            (Get-FileHash -LiteralPath $classpath).Hash -ieq $receipt.classpathSha256
-        if ($classpathReady -and $receipt.schemaVersion -eq 2) {
-            foreach ($entry in (Get-Content -LiteralPath $classpath -Raw).Trim().Split([IO.Path]::PathSeparator)) {
-                $entry = [IO.Path]::GetFullPath($entry)
-                Assert-AtfCompilerDirectPath $entry
-                if (!$entry.StartsWith($repository + [IO.Path]::DirectorySeparatorChar,[StringComparison]::OrdinalIgnoreCase) -or
-                        !(Test-Path -LiteralPath $entry -PathType Leaf)) { $classpathReady = $false; break }
-            }
-        }
+        $classpathReady = Test-AtfComponentMavenClasspath $Work $repository $receipt
         [pscustomobject]@{repository=$repository;classpathReady=$classpathReady;receipt=$receipt}
     } catch {
         Write-Verbose "Discarding Maven preparation: $($_.Exception.Message)"

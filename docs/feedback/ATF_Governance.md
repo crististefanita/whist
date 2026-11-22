@@ -24,7 +24,7 @@ The project owns Android-boundary and adapter checks. Reusable contracts are req
 | Priority | Owner and gap | Verification level and closure criterion |
 |---|---|---|
 | P2 | Launcher coordination: entry points check preconditions inconsistently. | Controlled components for Java, Maven, Gradle, Node and Python must check required capabilities before costly operations and report missing capabilities with source identity. Distinguish the Python installation alias from an executable interpreter. For the [PowerShell ADB module](../../atf-test-android/tools/AndroidDeviceSetup.psm1), verify availability, refusal, timeout and process state separately from parsing and the Java client. |
-| P2 | Qualification cost: source/release snapshot preparation still copies and hashes retained reports repeatedly. | [Compiler reuse](../testing/ATF_Collections.md#maven-compiler-reuse) now separates compiler inputs, tool identity, admitted output and current execution data. Keep its negative controls, exclusive lease and cold fallback. Continue measuring source/release inventory and copying separately from compilation and execution; reconcile recorded stage durations with wall time before claiming further savings. |
+| P2 | Qualification cost: source/release snapshot preparation still copies and hashes retained reports repeatedly. | Reduce repeated snapshot work without weakening input admission. The implemented [compiler and cleanup recovery contracts](../testing/ATF_Collections.md#maven-compiler-reuse) are regression boundaries, not open implementation tasks. Measure source/release inventory and copying separately from compilation and execution; reconcile recorded stage durations with wall time before claiming further savings. |
 | P1 | Failed-test recovery is only selection-level: one failing JUnit invocation invalidates the complete owner-group receipt, so its already passing siblings cannot be reused safely. | Persist every JUnit unique ID, outcome and source/provenance binding. On restart rerun only failed or incomplete identities, then publish a reconciliation Extent linking the original and retry reports. Reject missing, duplicate, foreign or source-changed identities and any failed retry; never promote by editing the original report. |
 
 [Inline-image retention governance](../../atf-tests/src/test/java/atf/tests/governance/documentation/release/ReleaseEvidenceRetentionGovernanceTest.java) separately checks for duplicated PNG files beside HTML. It does not prove data autonomy, image readability or APK integrity; the [adapter criterion](ATF_Reporting.md#rpt-android-html-only---audit-delivery-without-auxiliary-copies) remains separate.
@@ -62,12 +62,6 @@ Native source and validator separation belongs to the [qualification contract](.
 The production path remains a deterministic PowerShell stage runner with source-bound Maven/Gradle checkpoints and a read-only Node evaluator. Component tests already cover interruption, changed inputs, partial checkpoints and evidence rejection. [Release qualification](../testing/ATF_ReleaseQualification.md#orchestration-and-the-langgraph-adoption-gate) owns the stable contracts for resume and platform-aware selection.
 
 LangGraph offers explicit nodes, shared state and checkpoint boundaries, but it does not shorten compilation. A failed node can run again from its beginning, so a pilot must prove side-effect idempotency and bind every resume to the original source, command and evidence receipts. See the [official LangGraph workflow guidance](https://docs.langchain.com/oss/javascript/langgraph/thinking-in-langgraph).
-
-| Pilot check | Observed result | Decision |
-|---|---|---|
-| Process restart and selector | Persisted plan resumed with exact selector parity. | Pass |
-| Changed source | Rejected before handoff. | Pass |
-| Side effects and adoption gate | No commands ran; release-level report/JUnit parity and timing remain unmeasured. | Keep LangGraph out of production. |
 
 | Priority | Bounded gap | Closure criterion |
 |---|---|---|
