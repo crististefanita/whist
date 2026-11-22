@@ -7,6 +7,39 @@ Acest registru definește controalele revizuite, baza Git și căile lor exacte.
 ## Controale verificate
 
 <details>
+<summary>Responsabilitate după dependențe executabile și admiterea conservatoare a cititorilor</summary>
+
+```yaml
+testChanges:
+  - id: RAG-REAL-COMPONENT-DEPENDENCIES
+    status: VERIFIED
+    base: 9a655cff56265ac9609628c4deea1c50965cbcd4
+    expires: 2026-12-20
+    reason: Selectează consumatorii tranzitivi reali fără tratarea datelor clasificatorului ca importuri; cere populații complete ale sursei, cititori revizuiți și furnizori generați, păstrând dovezile originale imuabile și selecția conservatoare pentru intrări necunoscute.
+    proof: 'mvn -o -pl atf-tests -am -Dtest=AtfCollectionOwnershipComponentTest -Dsurefire.failIfNoSpecifiedTests=false test'
+    checks:
+      positive:
+        - atf.tests.governance.suites.AtfCollectionOwnershipComponentTest#realDependencyClosuresSelectOnlyTheirConsumers
+      negative:
+        - atf.tests.governance.suites.AtfCollectionOwnershipComponentTest#missingOrUnreviewedDependenciesCannotAuthorizeReuse
+    paths:
+      - atf-tests/src/main/java/atf/tests/testchange/TestChangeReview.java
+      - atf-tests/src/test/java/atf/tests/governance/source/changes/TestChangeReviewComponentTest.java
+      - atf-tests/src/test/java/atf/tests/governance/suites/AtfCollectionOwnershipComponentTest.java
+      - atf-tests/tools/atf-component-dependencies.mjs
+      - atf-tests/tools/atf-component-dependencies.test.mjs
+      - atf-tests/tools/atf-dependency-references.mjs
+      - atf-tests/tools/atf-script-references.mjs
+      - atf-tests/tools/atf-dependency-cli.mjs
+      - atf-tests/tools/component-evidence-scope.mjs
+      - atf-tests/tools/prepare-component-reuse.mjs
+      - atf-tests/tools/release-test-scope.mjs
+      - config/atf-component-dependencies.json
+```
+
+</details>
+
+<details>
 <summary>Guvernanța adresei de joc pe GitHub Pages</summary>
 
 ```yaml
