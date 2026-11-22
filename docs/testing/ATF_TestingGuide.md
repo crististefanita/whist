@@ -90,7 +90,7 @@ Rândurile descriu granițele exercitate și responsabilii executabili. Testele 
 
 | Proprietate | Probă comună de componentă | Acceptare rămasă pe platformă |
 |---|---|---|
-| Așezarea mesei și scalarea | Același cadru logic, regiuni, scară de text și populații legale de jucători/cărți; verifică încadrarea și locurile fixe între faze. | Insets native, viewport/zoom în browser și măsurători ale fontului real. |
+| Așezarea mesei și scalarea | Politici comune de așezare cu regiuni disponibile explicit, scară de text și populații legale de jucători/cărți; verifică încadrarea și locurile fixe între faze. | Insets native, viewport browser adaptiv și măsurători ale fontului real. |
 | Reacția cărții și colectarea | Aceeași secvență de gesturi, carte respinsă/recomandată și cazuri de anulare; timpul controlat verifică ordinea evenimentelor. | Ținte tactile, fețele cărților randate și cadrele intermediare ale animației. |
 | Profilul și partida reluată | Codec real, checkpoint-uri legale ale motorului, anulare, intrări invalide și restaurare idempotentă. | Redeschiderea stocării și callback-uri de ciclu de viață prin controale vizibile. |
 | Licitarea și istoricul scorului | Intrări comune ale regulilor, selecție manuală, totaluri, marcaje de serie și modele localizate. | Confirmarea vizibilă, ultimele rânduri lizibile și controale accesibile. |

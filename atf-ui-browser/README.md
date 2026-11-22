@@ -215,8 +215,8 @@ flowchart LR
 <details>
 <summary>Legendă — măsurători partajate, randări distincte</summary>
 
-- Componentele exercită meniurile reale printr-o graniță HTTP controlată și verifică viewport-uri compacte, desktop, ferestre scunde și text mărit în RO/EN.
-- Proba cu motor real păstrează aceeași mână Whist la schimbarea limbii, textului și dimensiunilor. Captează elementele vizibile, nu un model reconstruit al tablei.
+- O fereastră mai lată oferă spațiu mesei până la limita lizibilă; nu mărește fiecare caracter, țintă tactilă și animație printr-o singură transformare.
+- [Componentele controlate](tests/responsive-surface.test.mjs) randează învelișul de producție printr-un fixture API explicit, cu meniuri localizate și text mărit. [Verificarea jocului real](tests/responsive-game.mjs) folosește aceeași mână servită de JVM pe profilurile browserului și captează măsurători și imagini.
 - Concordanța numerică și capturile browserului nu stabilesc identitatea fonturilor native. [Acceptanța rămasă](../docs/feedback/ATF_UiBrowser.md#web-16-suprafața-de-joc-responsivă-și-tipografia-meniurilor) cere o comparație APK/browser identificată pe același Android; nu se pretinde acceptanță iOS.
 
 </details>
