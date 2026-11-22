@@ -90,6 +90,8 @@ The bootstrap writes only temporary utility classes under the configured externa
 
 Java 21 and the locally cached pinned JSON/YAML parser dependencies are required even when Maven compilation is reused. Source immutability and final governance still run after early admission; a receipt never disables their checks.
 
+The hosted workflow prepares only the pinned JSON/YAML parser inputs from Maven Central over HTTPS, then admits the generation plan before preparing the Maven reactor. Failed parser preparation or plan admission prevents Maven; ordinary qualification still requires the subsequently generated original proofs.
+
 ### Generate and consume proof
 
 Keep the control and its test selection in the reviewed commit. Write proof to a new directory outside the checkout. The launcher prepares an isolated copy and publishes evidence only after confirming that the inputs did not change.

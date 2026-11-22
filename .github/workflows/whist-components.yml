@@ -135,6 +135,36 @@ jobs:
             Where-Object { Test-Path -LiteralPath $_ } | Select-Object -First 1
           if (!$edge) { throw 'Chromium component renderer is missing' }
           "ATF_BROWSER_EXECUTABLE=$edge" >> $env:GITHUB_ENV
+      - name: Admit source-control plan before Maven
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $work = Split-Path -Parent $env:WHIST_PUBLICATION_TEST_ROOT
+          $parserCache = Join-Path $work 'admission-parser-cache'
+          [xml]$pom = Get-Content (Join-Path $env:GITHUB_WORKSPACE 'pom.xml') -Raw
+          $jackson = [string]$pom.project.properties.'jackson.version'
+          if ($jackson -cnotmatch '^\d+\.\d+\.\d+$') { throw 'Missing pinned admission parser version' }
+          function Get-AdmissionParserFile([string]$Relative) {
+            $target = Join-Path $parserCache $Relative
+            if (-not (Test-Path -LiteralPath $target -PathType Leaf)) {
+              $null = New-Item -ItemType Directory -Force (Split-Path -Parent $target)
+              Invoke-WebRequest -Uri ('https://repo.maven.apache.org/maven2/' + $Relative) -OutFile $target
+            }
+            return $target
+          }
+          foreach ($artifact in 'jackson-annotations','jackson-core','jackson-databind') {
+            $null = Get-AdmissionParserFile "com/fasterxml/jackson/core/$artifact/$jackson/$artifact-$jackson.jar"
+          }
+          $yaml = 'jackson-dataformat-yaml'
+          [xml]$yamlPom = Get-Content (Get-AdmissionParserFile "com/fasterxml/jackson/dataformat/$yaml/$jackson/$yaml-$jackson.pom") -Raw
+          $snake = [string]($yamlPom.project.dependencies.dependency | Where-Object { $_.groupId -eq 'org.yaml' -and $_.artifactId -eq 'snakeyaml' }).version
+          if ($snake -cnotmatch '^\d+(?:\.\d+){1,2}$') { throw 'Missing pinned admission YAML dependency' }
+          $null = Get-AdmissionParserFile "com/fasterxml/jackson/dataformat/$yaml/$jackson/$yaml-$jackson.jar"
+          $null = Get-AdmissionParserFile "org/yaml/snakeyaml/$snake/snakeyaml-$snake.jar"
+          . ./scripts/AtfTestChangeAdmission.ps1
+          Invoke-AtfTestChangeAdmission -SourceRoot $env:GITHUB_WORKSPACE -BaseRef $env:ATF_TEST_CHANGE_BASE_REF `
+            -TempRoot $env:WHIST_PUBLICATION_TEST_ROOT -JavaHome $env:JAVA_HOME -MavenCache $parserCache `
+            -GenerateProofs -ReceiptFile (Join-Path $work 'source-plan-admission.json')
       - name: Prepare public Maven dependencies
         shell: pwsh
         run: |
@@ -176,5 +206,6 @@ jobs:
           path: |
             C:/wq/framework/**
             C:/wq/controls/**
+            C:/wq/source-plan-admission.json
             C:/wq/*.log
             C:/wq/restored-inputs.json

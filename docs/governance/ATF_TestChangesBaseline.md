@@ -40,6 +40,9 @@ testChanges:
       - config/atf-component-dependencies.json
       - atf-tests/tools/release-test-scope.mjs
       - atf-tests/tools/release-test-scope.test.mjs
+      - .github/workflows/whist-components.yml
+      - atf-tests/tools/workflow-test-change-admission.test.mjs
+      - atf-tests/src/test/java/atf/tests/governance/documentation/release/rag/scope/ComponentEvidenceScopeComponentTest.java
 ```
 
 </details>
