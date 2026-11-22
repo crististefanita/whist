@@ -1,16 +1,31 @@
 package atf.tests.suites;
 
 import atf.testkit.AtfComponentTest;
-import atf.testkit.scope.TestRunScope;
 import org.junit.platform.suite.api.*;
 
-/** Primary component gate; focused suites are declared separately in the suite catalogue. */
+/** Primary foundation owner; its positive class inventory is governed with the catalog. */
 @Suite
 @SelectPackages({"atf.tests", "atf.libraries"})
-@IncludeClassNamePatterns("^[^$]+$")
+@IncludeClassNamePatterns({
+    "^atf\\.libraries\\.PlatformLibraryIntegrityTest$",
+    "^atf\\.tests\\.contracts\\.HeuristicCatalogContractTest$",
+    "^atf\\.tests\\.governance\\.source\\.AtfSourceQualityGovernanceTest$",
+    "^atf\\.tests\\.governance\\.source\\.ModuleBoundaryGovernanceTest$",
+    "^atf\\.tests\\.governance\\.source\\.PackageCohesionGovernanceTest$",
+    "^atf\\.tests\\.governance\\.source\\.TestLayerSyntaxTest$",
+    "^atf\\.tests\\.governance\\.source\\.android\\.AndroidJavaApiGovernanceTest$",
+    "^atf\\.tests\\.governance\\.source\\.android\\.DebugFixturePackagingGovernanceTest$",
+    "^atf\\.tests\\.governance\\.source\\.changes\\.TestChangeProofComponentTest$",
+    "^atf\\.tests\\.governance\\.source\\.changes\\.TestChangeReviewComponentTest$",
+    "^atf\\.tests\\.governance\\.source\\.game\\.GameSessionBoundaryComponentTest$",
+    "^atf\\.tests\\.governance\\.source\\.gradle\\.GradleAuditGovernanceTest$",
+    "^atf\\.tests\\.governance\\.source\\.workspace\\.WorkspaceHygieneGovernanceTest$",
+    "^atf\\.tests\\.governance\\.suites\\.AtfCollectionOwnershipComponentTest$",
+    "^atf\\.tests\\.governance\\.suites\\.SuiteOwnershipGovernanceTest$"
+})
 @IncludeTags("component")
 @IncludeEngines("junit-jupiter")
-@ConfigurationParameter(key = TestRunScope.CONFIGURATION_PARAMETER, value = "suite")
+@ConfigurationParameter(key = "atf.test.run.scope", value = "suite")
 @ConfigurationParameter(key = "junit.jupiter.execution.parallel.enabled", value = "false")
 @AtfComponentTest
 public class AtfComponentSuite { }

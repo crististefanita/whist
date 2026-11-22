@@ -1,0 +1,151 @@
+{
+  "schemaVersion": 1,
+  "collections": [
+    {
+      "group": "atf-tests",
+      "module": "atf-tests",
+      "suite": "atf.tests.suites.AtfComponentSuite",
+      "owner": "foundation",
+      "releaseSnapshot": false,
+      "classes": [
+        "atf.libraries.PlatformLibraryIntegrityTest",
+        "atf.tests.contracts.HeuristicCatalogContractTest",
+        "atf.tests.governance.source.AtfSourceQualityGovernanceTest",
+        "atf.tests.governance.source.ModuleBoundaryGovernanceTest",
+        "atf.tests.governance.source.PackageCohesionGovernanceTest",
+        "atf.tests.governance.source.TestLayerSyntaxTest",
+        "atf.tests.governance.source.android.AndroidJavaApiGovernanceTest",
+        "atf.tests.governance.source.android.DebugFixturePackagingGovernanceTest",
+        "atf.tests.governance.source.changes.TestChangeProofComponentTest",
+        "atf.tests.governance.source.changes.TestChangeReviewComponentTest",
+        "atf.tests.governance.source.game.GameSessionBoundaryComponentTest",
+        "atf.tests.governance.source.gradle.GradleAuditGovernanceTest",
+        "atf.tests.governance.source.workspace.WorkspaceHygieneGovernanceTest",
+        "atf.tests.governance.suites.AtfCollectionOwnershipComponentTest",
+        "atf.tests.governance.suites.SuiteOwnershipGovernanceTest"
+      ]
+    },
+    {
+      "group": "atf-tests-documentation",
+      "module": "atf-tests",
+      "suite": "atf.tests.suites.components.AtfDocumentationComponentSuite",
+      "owner": "documentation",
+      "releaseSnapshot": true,
+      "classes": [
+        "atf.tests.governance.documentation.DocumentationAnchorGovernanceTest",
+        "atf.tests.governance.documentation.DocumentationArchiveGovernanceTest",
+        "atf.tests.governance.documentation.DocumentationDiagramGovernanceTest",
+        "atf.tests.governance.documentation.DocumentationPolicyGovernanceTest",
+        "atf.tests.governance.documentation.DocumentationProseGovernanceTest",
+        "atf.tests.governance.documentation.DocumentationReadmeStructureGovernanceTest",
+        "atf.tests.governance.documentation.DocumentationStyleGovernanceTest",
+        "atf.tests.governance.documentation.DynamicPathDocumentationArchitectureTest",
+        "atf.tests.governance.documentation.factual.DocumentedModuleMapGovernanceTest",
+        "atf.tests.governance.documentation.feedback.FeedbackIndexGovernanceTest",
+        "atf.tests.governance.documentation.language.DocumentationLanguageComponentTest",
+        "atf.tests.governance.documentation.language.DocumentationTerminologyComponentTest",
+        "atf.tests.governance.documentation.language.DocumentationTerminologyGovernanceTest",
+        "atf.tests.governance.documentation.links.DocumentationLinkGovernanceTest",
+        "atf.tests.governance.documentation.release.ReleaseArtifactLayoutGovernanceTest",
+        "atf.tests.governance.documentation.release.ReleaseEvidenceRetentionGovernanceTest",
+        "atf.tests.governance.documentation.release.ReleaseIntegrityGovernanceTest",
+        "atf.tests.governance.documentation.release.ReleasePresentationGovernanceTest",
+        "atf.tests.governance.documentation.release.ReleaseRagPlatformGovernanceTest",
+        "atf.tests.governance.documentation.release.reporting.ReleaseSuiteReportingGovernanceTest",
+        "atf.tests.governance.documentation.strategy.TestingStrategyGovernanceTest",
+        "atf.tests.governance.source.TestLayerGovernanceTest",
+        "atf.tests.governance.source.changes.TestChangeGovernanceTest",
+        "atf.tests.governance.source.workspace.PrimaryBranchGovernanceTest"
+      ]
+    },
+    {
+      "group": "atf-tests-provenance",
+      "module": "atf-tests",
+      "suite": "atf.tests.suites.components.AtfProvenanceComponentSuite",
+      "owner": "provenance",
+      "releaseSnapshot": false,
+      "classes": [
+        "atf.tests.governance.documentation.release.handoff.ReleaseCommitEvidenceComponentTest",
+        "atf.tests.governance.documentation.release.integrity.ApkIntegrityComponentTest",
+        "atf.tests.governance.documentation.release.integrity.JunitIntegrityComponentTest",
+        "atf.tests.governance.documentation.release.integrity.ManifestIntegrityComponentTest",
+        "atf.tests.governance.documentation.release.integrity.html.HtmlInvocationIntegrityComponentTest",
+        "atf.tests.governance.documentation.release.rag.ReleaseRagProvenanceComponentTest",
+        "atf.tests.governance.documentation.release.rag.nativeproof.NativeSourceProvenanceComponentTest",
+        "atf.tests.governance.documentation.release.rag.scope.VisualContractScopeComponentTest",
+        "atf.tests.governance.documentation.release.versioning.ReleaseVersionComponentTest"
+      ]
+    },
+    {
+      "group": "atf-tests-android",
+      "module": "atf-tests",
+      "suite": "atf.tests.suites.components.AtfAndroidComponentSuite",
+      "owner": "android",
+      "releaseSnapshot": false,
+      "classes": [
+        "atf.tests.governance.documentation.release.rag.ReleaseRagAndroidComponentTest",
+        "atf.tests.governance.documentation.release.rag.nativeproof.SharedPresentationComponentTest",
+        "atf.tests.governance.documentation.release.rag.nativeproof.WhistSurfaceAdapterComponentTest",
+        "atf.tests.governance.documentation.release.rag.scope.AndroidReleasePreflightComponentTest",
+        "atf.tests.governance.documentation.release.rag.scope.AndroidUserOwnershipComponentTest",
+        "atf.tests.governance.uiadapter.SharedMenuHistoryComponentTest"
+      ]
+    },
+    {
+      "group": "atf-tests-github",
+      "module": "atf-tests",
+      "suite": "atf.tests.suites.components.AtfGithubComponentSuite",
+      "owner": "github",
+      "releaseSnapshot": false,
+      "classes": [
+        "atf.tests.governance.documentation.release.download.ApkDownloadComponentTest",
+        "atf.tests.governance.documentation.release.download.DownloadSelectionComponentTest",
+        "atf.tests.governance.documentation.release.rag.ReleaseRagGithubComponentTest",
+        "atf.tests.governance.documentation.release.rag.scope.ReleasePublicationSealComponentTest"
+      ]
+    },
+    {
+      "group": "atf-tests-orchestration",
+      "module": "atf-tests",
+      "suite": "atf.tests.suites.components.AtfOrchestrationComponentSuite",
+      "owner": "orchestration",
+      "releaseSnapshot": false,
+      "classes": [
+        "atf.tests.execution.components.ComponentAggregateAcceptanceTest",
+        "atf.tests.execution.components.ComponentSuiteExecutionComponentTest",
+        "atf.tests.execution.components.TestChangeBatchComponentTest",
+        "atf.tests.execution.jvm.ComponentJvmLauncherComponentTest",
+        "atf.tests.governance.AtfRagGovernanceSuiteContractTest",
+        "atf.tests.governance.documentation.cli.DocumentationGovernanceCliComponentTest",
+        "atf.tests.governance.documentation.release.rag.scope.ComponentEvidencePortabilityComponentTest",
+        "atf.tests.governance.documentation.release.rag.scope.ComponentEvidenceScopeComponentTest",
+        "atf.tests.governance.documentation.release.rag.scope.QualificationLauncherComponentTest",
+        "atf.tests.governance.support.JvmInventoryCliComponentTest",
+        "atf.tests.governance.support.LauncherSourceInventoryComponentTest",
+        "atf.tests.governance.support.SigningSourceIsolationComponentTest",
+        "atf.tests.governance.support.SourceInventoryContractTest"
+      ]
+    },
+    {
+      "group": "atf-tests-reporting",
+      "module": "atf-tests",
+      "suite": "atf.tests.suites.components.AtfReportingComponentSuite",
+      "owner": "reporting",
+      "releaseSnapshot": false,
+      "classes": [
+        "atf.tests.contracts.AndroidInlineScreenshotReportContractTest",
+        "atf.tests.contracts.AndroidPhaseTraceReplayContractTest",
+        "atf.tests.contracts.LegacyUiMediaReportContractTest",
+        "atf.tests.learning.EvidenceSelectionContractTest",
+        "atf.tests.learning.LearningRunReportContractTest",
+        "atf.tests.reporting.GameEvidenceBodiesContractTest",
+        "atf.tests.reporting.GameReportPolicyContractTest",
+        "atf.tests.reporting.GameReportPublicationContractTest",
+        "atf.tests.reporting.GameReportTextAuditContractTest",
+        "atf.tests.reporting.acceptance.NativeModuleResultsComponentTest",
+        "atf.tests.reporting.browser.BrowserExtentPublicationComponentTest",
+        "atf.tests.reporting.text.ReportTextValueMatcherTest"
+      ]
+    }
+  ]
+}

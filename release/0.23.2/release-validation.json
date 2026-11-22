@@ -166,12 +166,12 @@
   "integrity": {
     "schemaVersion": 1,
     "kind": "OBSERVED_PAYLOAD_HASHES",
-    "observedUtc": "2026-11-22T09:00:54.472Z",
+    "observedUtc": "2026-11-22T09:00:53.644Z",
     "files": [
       {
         "path": "README.md",
-        "bytes": 297,
-        "sha256": "d8fcc59c787e6d0425ef741a9fc72b137e71fd2baf384366f935b07c318cb564"
+        "bytes": 264,
+        "sha256": "b1885172352b6b79c70bee6d2f09129591111abcd6af77db79e95bf511c9e0e6"
       },
       {
         "path": "WhistLab-0.23.2.apk",
@@ -190,8 +190,8 @@
       },
       {
         "path": "release-notes.md",
-        "bytes": 498,
-        "sha256": "132602b8cc001f84fb3c0d5969cbc889756632cf972f09db625fda0eed5c1166"
+        "bytes": 446,
+        "sha256": "6b7ebc8db1c58f40e37c3f057a3b4f8a3ce98d16292f48e5b54a0c247fd54542"
       },
       {
         "path": "release-presentation.json",
@@ -200,8 +200,8 @@
       },
       {
         "path": "reports/README.md",
-        "bytes": 3518,
-        "sha256": "5f86c1dce6e5e3d7df32f631d9181ebe3a2a27bcb72a8c0fd33f3e56c3ceb4c6"
+        "bytes": 3119,
+        "sha256": "c20c871a6a2fe228676700f30d40575b77d312d01e415de8dadb358ba9d4c8ba"
       },
       {
         "path": "reports/apk-inputs.json",
@@ -210,8 +210,8 @@
       },
       {
         "path": "reports/component/README.md",
-        "bytes": 2008,
-        "sha256": "f27f5e7286693961f841d47b229c2e34e8ea02e0d71ebf2a84a53c8f07ed558c"
+        "bytes": 1976,
+        "sha256": "cedbe1723124707b040cc45a062315ac446ec4623d9bbe607357776529d2cf9b"
       },
       {
         "path": "reports/component/atf-test-android/component-report.html",

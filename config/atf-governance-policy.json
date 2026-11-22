@@ -110,9 +110,29 @@
     }
   ],
   "productionForbiddenNamespaces": {
-    "atf-ui-browser": ["android", "atf", "org.junit", "ro.whistlab", "ro.rentzlab", "ro.atf.holdem"],
-    "atf-ui-browser/whist": ["android", "atf", "org.junit", "ro.rentzlab", "ro.atf.holdem"],
-    "atf-ui-browser/pages": ["android", "atf", "org.junit", "com.sun.net.httpserver", "ro.rentzlab", "ro.atf.holdem"],
+    "atf-ui-browser": [
+      "android",
+      "atf",
+      "org.junit",
+      "ro.whistlab",
+      "ro.rentzlab",
+      "ro.atf.holdem"
+    ],
+    "atf-ui-browser/whist": [
+      "android",
+      "atf",
+      "org.junit",
+      "ro.rentzlab",
+      "ro.atf.holdem"
+    ],
+    "atf-ui-browser/pages": [
+      "android",
+      "atf",
+      "org.junit",
+      "com.sun.net.httpserver",
+      "ro.rentzlab",
+      "ro.atf.holdem"
+    ],
     "atf-validation": [
       "atf.android",
       "atf.tests",

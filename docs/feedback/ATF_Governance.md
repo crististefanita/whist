@@ -91,13 +91,12 @@ Fluxul izolat primește acum explicit baza reviziei. Admiterea probelor de contr
 
 ## Limitele selecției ATF
 
-Grupul ATF reunește guvernanța documentației, proveniența, lansatoarele, distribuția și raportarea. O corecție restrânsă de metadate invalidează astfel și fixture-uri independente care pregătesc propriile spații de lucru.
+[Responsabilii ATF independenți](../testing/ATF_Collections.md#responsabili-independenți-pentru-componentele-atf) separă verificările editoriale și ale payload-ului de proveniență, Android simulat, GitHub simulat, orchestrare și raportare. Fiecare colecție primară are un inventar pozitiv de clase, un singur Extent canonic și propriul receipt legat de surse.
 
-Calificați responsabili disjuncți, cu dependențe declarate și câte un raport Extent canonic. Controlul focalizat de diagnostic rămâne separat de promovarea unei colecții primare complete.
+- Schimbările numai în Markdown selectează responsabilul documentației fără reluarea fixture-urilor independente ale lansatoarelor. Helper-ele comune, dependențele și intrările necunoscute invalidează în continuare consumatorii în mod conservator.
+- Reutilizarea păstrează identitățile și rezultatele JUnit originale, comparațiile și hash-urile rapoartelor. Rapoartele monolitice istorice rămân imuabile și nu pot califica noile identități ale partițiilor.
 
-- O schimbare numai în documentație sau în dosarul release-ului selectează verificările editoriale și ale payload-ului afectat.
-- Un helper comun, o dependență sau o cale necunoscută invalidează toți consumatorii necesari; controalele negative trebuie să dovedească această limită.
-- Reutilizarea păstrează identitățile și rezultatele JUnit, comparațiile originale și hash-urile rapoartelor; măsurați pregătirea și execuția separat.
+Măsurați separat pregătirea snapshot-ului, compilarea și execuția. Diagnosticul focalizat rămâne distinct de calificarea unei colecții primare complete; recuperarea eșecurilor dintr-un responsabil aparține punctului deschis pentru reconcilierea invocărilor de mai sus.
 
 ## Admiterea schemei de raportare
 

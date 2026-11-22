@@ -134,3 +134,43 @@ Colecția `documentation` confruntă ajutorul bilingv și tabelul de scor cu mot
 - Raportul identifică inventarul sursei și se confruntă cu invocările JUnit în aceeași execuție.
 
 Pentru infrastructura dispozitivului și activarea explicită a fluxurilor UI, folosește [testarea Android](ATF_Android.md). Compilarea JVM, construirea unui APK și executarea pe dispozitiv sunt verificări distincte.
+
+## Responsabili independenți pentru componentele ATF
+
+[Catalogul suitelor Maven](../../config/atf-test-suites.json) leagă fiecare selector primar de un grup; [inventarul responsabililor ATF](../../config/atf-component-collections.json) enumeră clasele sale finale exacte. Un modul este o unitate de compilare, iar un grup deține un receipt de execuție independent și un raport Extent canonic. Toate grupurile Maven selectate împart aceeași pregătire și compilare.
+
+| Grup | Responsabilitate |
+|---|---|
+| `atf-tests` | Calitatea sursei, limite și proprietatea suitelor |
+| `atf-tests-documentation` | Guvernanță editorială, ghiduri actuale și integritatea payload-ului release-ului |
+| `atf-tests-provenance` | Atestări de sursă, integritatea artefactelor imuabile și versiuni |
+| `atf-tests-android` | Preflight Android simulat și contracte de prezentare |
+| `atf-tests-github` | Contracte simulate pentru distribuție, publicare și descărcare |
+| `atf-tests-orchestration` | Lansatoare, checkpoint-uri și execuție portabilă |
+| `atf-tests-reporting` | Comparații capturate, publicarea rapoartelor și dovezi de învățare |
+
+- `run-component-suites.ps1 -Groups` acceptă acești identificatori de grup independent de modulul Maven comun. Fiecare clasă executabilă are exact un responsabil primar. Suitele focalizate rămân perspective de diagnostic ale părinților primari declarați; nu adaugă acoperire și nu înlocuiesc un receipt primar eșuat.
+
+- `component-evidence-scope.mjs` compară inventarele sursei. Cu același descriptor de responsabilitate, schimbările numai în Markdown selectează responsabilul documentației; ghidurile bilingve ale regulilor selectează și colecția regulilor.
+- Schimbările ghidurilor bibliotecilor păstrează dependența de integritatea sursei. Inventarul release-ului schimbat invalidează responsabilul documentației. Codul ATF comun, selectorii schimbați și căile necunoscute invalidează conservator consumatorii necesari.
+
+- `prepare-component-reuse.mjs` verifică sursa originală, snapshot-ul release-ului, rularea rădăcină, identitățile JUnit și hash-urile rapoartelor înaintea copierii octeților neschimbați. Evaluatorul cere fiecare responsabil ATF nou atunci când sursa candidatului conține noul descriptor, indiferent de versiunea de release declarată. Sursele istorice fără descriptor păstrează contractul monolitic; rapoartele lor nu pot fi reetichetate drept dovezi ale partițiilor.
+
+```mermaid
+flowchart LR
+    DIFF[Diff sursă și release] -->|clasifică schimbările| OWNER[Harta responsabililor calificată]
+    OWNER -->|Markdown sau dosar| DOC[Colecția documentației]
+    OWNER -->|cod comun sau necunoscut| CONSUMERS[Colecțiile consumatorilor necesari]
+    OWNER -->|intrări neschimbate| VERIFY[Verifică receipt-uri și hash-uri originale]
+    VERIFY -->|octeți verificați| REUSE[Reutilizează octeții Extent originali]
+    DOC -->|execuție nouă| AUDIT[Un Extent canonic per responsabil]
+    CONSUMERS -->|execuție nouă| AUDIT
+    REUSE -->|dovezi originale| AUDIT
+```
+
+<details>
+<summary>Legendă: compilarea, execuția și reutilizarea rămân separate</summary>
+
+O singură compilare Maven poate servi mai multe colecții primare. Un receipt reutilizat își păstrează identificatorii invocărilor și proveniența originale; nu este o execuție nouă. După partiționare, prefixul containerului de suită se schimbă, iar identificatorii finali Jupiter și rezultatele rămân comparabile. Măsurați separat pregătirea și execuția colecțiilor și declarați identitățile lipsă sau nou adăugate la verificarea parității.
+
+</details>

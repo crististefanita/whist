@@ -186,6 +186,7 @@ function mockGithub(active, previous) {
 
 async function fixture(t) {
   const parent = process.env.WHIST_PUBLICATION_TEST_ROOT || process.env.WHIST_EVIDENCE_ROOT || os.tmpdir();
+  await fs.mkdir(parent, {recursive: true});
   const root = await fs.mkdtemp(path.join(parent, 'github-publication-test-'));
   t.after(() => fs.rm(root, {recursive: true, force: true}));
   const directory = path.join(root, 'journal'), candidateDir = path.join(root, 'candidate');
@@ -213,6 +214,21 @@ async function fixture(t) {
     run: (mode = 'publish', now) => runGithubPublication({mode, candidate, journalDir: directory, token: 'fixture', fetchResponse: remote.fetch, now})
   };
 }
+
+test('publication fixtures create a missing configured evidence root', async t => {
+  const previousRoot = process.env.WHIST_PUBLICATION_TEST_ROOT;
+  const missingRoot = path.join(os.tmpdir(), `whist-missing-evidence-root-${process.pid}-${Date.now()}`);
+  process.env.WHIST_PUBLICATION_TEST_ROOT = missingRoot;
+  t.after(async () => {
+    if (previousRoot === undefined) delete process.env.WHIST_PUBLICATION_TEST_ROOT;
+    else process.env.WHIST_PUBLICATION_TEST_ROOT = previousRoot;
+    await fs.rm(missingRoot, {recursive: true, force: true});
+  });
+
+  const x = await fixture(t);
+  assert.equal(path.dirname(x.root), missingRoot);
+  assert.equal((await fs.stat(missingRoot)).isDirectory(), true);
+});
 
 test('qualification and candidate bytes are verified before publication', async t => {
   const x = await fixture(t);

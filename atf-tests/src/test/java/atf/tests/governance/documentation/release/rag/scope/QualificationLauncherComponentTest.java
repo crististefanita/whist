@@ -100,6 +100,33 @@ class QualificationLauncherComponentTest {
                 output.resolve("source-inputs.json")).exit());
     }
 
+    @Test void aMissingConfiguredEvidenceRootIsReadyBeforeTheMavenChildStarts() throws Exception {
+        Path source = fixture();
+        Path evidenceRoot = scratch.resolve("missing external evidence").resolve("nested");
+        Path output = scratch.resolve("evidence-root-launch");
+        AuditedAssertions.assertFalse(Files.exists(evidenceRoot));
+
+        var run = launch(GOVERNANCE, source, output, "", null, scratch, scratch, null, evidenceRoot);
+
+        AuditedAssertions.assertEquals(0, run.exit(), run.log());
+        AuditedAssertions.assertTrue(Files.isDirectory(evidenceRoot), "The configured root is prepared before Maven starts");
+        AuditedAssertions.assertTrue(Files.isRegularFile(scratch.resolve("maven.entered")), "The mocked Maven child ran");
+        AuditedAssertions.assertEquals("PASS", JSON.readTree(output.resolve("governance-result.json").toFile())
+                .required("status").asText());
+    }
+
+    @Test void anEvidenceRootInsideTheCheckoutStopsBeforeMavenOrStaging() throws Exception {
+        Path source = fixture();
+        Path evidenceRoot = source.resolve("generated-evidence");
+        var run = launch(GOVERNANCE, source, scratch.resolve("blocked-evidence-root"), "", null,
+                scratch, scratch, null, evidenceRoot);
+        AuditedAssertions.assertEquals(1, run.exit(), run.log());
+        AuditedAssertions.assertTrue(run.log().contains("QUALIFICATION-EVIDENCE-IN-CHECKOUT"), run.log());
+        AuditedAssertions.assertFalse(Files.exists(scratch.resolve("maven.entered")), "Rejected roots stop before Maven");
+        AuditedAssertions.assertFalse(Files.exists(evidenceRoot), "Rejected roots are not created");
+        AuditedAssertions.assertFalse(Files.exists(scratch.resolve("blocked-evidence-root")), "No output run is staged");
+    }
+
     @Test void governanceLauncherAllowsTheBoundedRagSuiteAndRejectsUnknownSelectorsBeforeStaging() throws Exception {
         Path source = fixture();
         var selected = launch(GOVERNANCE, source, scratch.resolve("rag-only"), "", null, scratch, scratch,
@@ -233,11 +260,17 @@ class QualificationLauncherComponentTest {
 
     private Run launch(String runner, Path source, Path output, String mutation, Path pinned, Path tmp, Path temp,
                        String governanceSuite) throws Exception {
+        return launch(runner, source, output, mutation, pinned, tmp, temp, governanceSuite, null);
+    }
+
+    private Run launch(String runner, Path source, Path output, String mutation, Path pinned, Path tmp, Path temp,
+                       String governanceSuite, Path evidenceRoot) throws Exception {
         Path tool = scratch.resolve("maven-probe.ps1");
         Files.writeString(tool, """
                 $stage = (Get-Location).Path
                 if ($stage -eq $env:ATF_FIXTURE_SOURCE -or -not ($args -contains "-Datf.governance.root=$stage") -or
                     -not (Test-Path -LiteralPath (Join-Path $stage 'release/index.json'))) { exit 19 }
+                if ($env:ATF_FIXTURE_EVIDENCE_ROOT -and -not (Test-Path -LiteralPath $env:ATF_FIXTURE_EVIDENCE_ROOT -PathType Container)) { exit 20 }
                 [IO.File]::WriteAllText($env:ATF_FIXTURE_ENTERED, $stage)
                 [IO.File]::WriteAllText($env:ATF_FIXTURE_TEMP_ROOTS, ($env:TEMP + [Environment]::NewLine + $env:TMP))
                 if ($env:ATF_FIXTURE_MUTATION -ne 'no-extent') {
@@ -273,6 +306,9 @@ class QualificationLauncherComponentTest {
         environment.put("ATF_FIXTURE_TEMP_ROOTS", scratch.resolve("maven-temp-roots").toString());
         environment.put("ATF_FIXTURE_TEST_SELECTOR", scratch.resolve("maven-test-selector").toString());
         environment.put("ATF_FIXTURE_MUTATION", mutation);
+        if (evidenceRoot != null) environment.put("WHIST_EVIDENCE_ROOT", evidenceRoot.toString());
+        else environment.remove("WHIST_EVIDENCE_ROOT");
+        environment.put("ATF_FIXTURE_EVIDENCE_ROOT", evidenceRoot == null ? "" : evidenceRoot.toString());
         Path log = Files.createTempFile(scratch, "launcher-", ".log");
         var process = builder.redirectErrorStream(true).redirectOutput(log.toFile()).start();
         try {
