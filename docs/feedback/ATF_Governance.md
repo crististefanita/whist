@@ -74,6 +74,7 @@ LangGraph oferă noduri explicite, stare partajată și limite de checkpoint, da
 | Prioritate | Lacună distinctă rămasă | Criteriu de închidere |
 |---|---|---|
 | P2 | Metadatele calificării ajung la unele diagnostice numai după pregătirea snapshot-ului. | Validați inventarul E2E al dosarului activ, linkurile catalogului și limitele editoriale printr-o verificare ieftină a metadatelor, înaintea colecției lungi. Păstrați dovezile eșuate și demonstrați că o reverificare focalizată nu poate califica un grup primar eșuat; acest criteriu este distinct de admiterea probelor de control al sursei. |
+| P2 | RAG-24: un commit editorial concurent invalidează încă probele de control al sursei legate de commit, chiar dacă diff-ul protejat, selectorii și intrările executabile rămân neschimbate. | Definiți o continuare editorială admisă sau o graniță explicită a snapshot-ului. Păstrați proba originală și commitul ei; solicitați intrări executabile, diff Git protejat și populație de selectori neschimbate, cu controale negative pentru cod, metadate, controale sau căi protejate necomise modificate. Separați mecanismul de reutilizarea dovezilor de componentă și păstrați un snapshot curat revizuit pentru calificare. |
 
 ## Limitele selecției ATF
 

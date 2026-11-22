@@ -14,7 +14,7 @@ Contractele stabile aparțin ghidurilor tematice; fiecare criteriu rămâne desc
 | [Jucători AI](ATF_Ai.md) | Inferență, estimări, cost și calificarea politicilor pe date noi. |
 | [Android](ATF_Android.md) | Istoric complet, persistență, geometrie, localizare și accesibilitate. |
 | [Interfață comună](ATF_CardUi_Extraction.md) | Limitele dintre prezentarea reutilizabilă și adaptorul Whist: meniu, profil, masă, istoric și animații. |
-| [Browser](ATF_UiBrowser.md) | Geometria de referință și paritatea cu APK-urile pentru adaptorul comun Edge și Chrome. |
+| [Browser](ATF_UiBrowser.md) | Viewport responsiv, tipografia meniurilor și paritatea cu APK-urile pentru adaptorul comun Edge și Chrome. |
 | [Raportare](ATF_Reporting.md) | Calificarea autonomiei, comparațiilor și consumului de memorie în Extent. |
 | [Guvernanță](ATF_Governance.md) | API reutilizabil, perimetru explicit și coeziunea codului. |
 | [Infrastructură locală](ATF_TestInfrastructure.md) | Concurența Kitului, izolarea configurației și costul validării API. |
@@ -34,8 +34,10 @@ Scorul 1–100 exprimă ordinea recomandată de lucru, nu calitatea sau procentu
 | ACH-01 | P1 | 90 | Califică pe APK restaurarea poziției și selecției din Realizări, apoi reluarea notificărilor după recrearea activității. [Registru](ATF_Achievements.md) |
 | AND-03 | P1 | 89 | Califică API 37, navigarea sistemului, reluarea, fonturile mărite și memoria pe un dispozitiv identificat. [Registru](ATF_Android.md) |
 | RPT-03 | P1 | 88 | Publică suite mari în limita de heap declarată, fără copii repetate ale HTML-ului și fără să piardă JUnit sau comparațiile la eșec. [Registru](ATF_Reporting.md#rpt-bounded-report-heap--finalizare-sigură-pentru-suite-mari) |
+| WEB-16 | P1 | 88 | Înlocuiți zoom-ul întregului cadru desktop cu dimensionarea condusă de conținut și legați rolurile fonturilor din meniuri de scara reală a textului în browser; comparați aceeași stare Whist pe profiluri reprezentative Web/APK. [Registru](ATF_UiBrowser.md#suprafața-de-joc-responsivă-și-tipografia-meniurilor) |
 | UI-01 | P1 | 86 | Califică antetul, chenarele și notificările pe APK-urile consumatorilor și verifică nativ intrarea Unicode a numelui. [Registru](ATF_CardUi_Extraction.md#priorități-și-condiții-de-închidere) |
 | UI-02 | P2 | 84 | Calificați acțiunile de rezultat mărite și derularea pe APK-urile consumatorilor în RO/EN cu text mărit. [Registru](ATF_CardUi_Extraction.md#acceptanța-acțiunilor-de-rezultat) |
+| RAG-24 | P2 | 84 | Admiteți continuarea editorială a probelor de control al sursei fără a modifica commitul original sau a slăbi controalele diff-ului protejat. [Registru](ATF_Governance.md#admiterea-testchanges-înainte-de-pregătirea-colecției) |
 | RAG-21 | P2 | 84 | Pilotul doar de planificare demonstrează reluarea legată de sursă și paritatea selectorului; paritatea completă a rapoartelor/JUnit și pragul de timp rămân deschise. [Registru](ATF_Governance.md#pilot-langgraph-în-umbră) |
 | DOC-02 | P2 | 83 | Revizuiți termenii operaționali EN moșteniți după cod și sensul românesc; cereți acceptanță editorială împreună cu diagnosticele executabile și paritatea edițiilor. [Registru](ATF_Governance.md#îmbunătățirea-ghidurilor-de-orientare) |
 | AI-02 | P2 | 82 | Măsoară ocaziile, conversiile la 500, efectul asupra clasamentului și latența pe loturi noi, cu joc natural separat de prefixul controlat. [Registru](ATF_Ai.md#joc-la-0) |
