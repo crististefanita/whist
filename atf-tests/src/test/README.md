@@ -27,4 +27,6 @@ In his own temporary copy, [module controls](../../README.md#focused-verificatio
 
 A controlled failure qualifies the validator's refusal without becoming a new failure of the application. The component report shall publish the data evaluated; the results of an execution and audit notes shall be the external file or the identified relay, in accordance with the common strategy.
 
+Markdown guides inside source directories remain editorial inputs. Markdown under `src/<set>/resources`, `res` or `assets` remains fixture data and requires the owning test controls.
+
 [Integration module](../../README.md) · [Common strategy](../../../docs/testing/README.md) · [Governance](../../../docs/governance/README.md)
