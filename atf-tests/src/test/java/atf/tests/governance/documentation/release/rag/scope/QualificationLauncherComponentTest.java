@@ -4,6 +4,7 @@ import atf.android.process.CommandProcess;
 import atf.testkit.AtfComponentTest;
 import atf.testkit.assertions.AuditedAssertions;
 import atf.tests.governance.support.GovernanceProject;
+import atf.tests.governance.source.changes.TestChangeAdmissionFixture;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.nio.file.Files;
@@ -31,6 +32,62 @@ class QualificationLauncherComponentTest {
     private static final String COMPONENTS = "run-component-suites.ps1";
 
     @TempDir Path scratch;
+    private String reviewBase;
+    private Path parserCache;
+    private Path proofRoot;
+    private Path launcherScripts;
+    private boolean realAdmission;
+
+    @Test void validTestChangeProofPrecedesSourceCopyAndMavenInBothLaunchers() throws Exception {
+        realAdmission = true;
+        Path source = fixture();
+        proofRoot = scratch.resolve("mocked proof inputs");
+        TestChangeAdmissionFixture.verifiedProof(source, reviewBase, proofRoot,
+                java.time.LocalDate.now(java.time.ZoneOffset.UTC));
+        var governance = launch(GOVERNANCE, source, scratch.resolve("admitted-governance"), "", null);
+        AuditedAssertions.assertEquals(0, governance.exit(), governance.log());
+        AuditedAssertions.assertTrue(Files.isRegularFile(scratch.resolve("maven.entered")), "Maven observes successful second admission");
+        Files.delete(scratch.resolve("maven.entered"));
+        Path components = scratch.resolve("admitted-components");
+        var component = launch(COMPONENTS, source, components, "component-boundary", null);
+        AuditedAssertions.assertEquals(1, component.exit());
+        AuditedAssertions.assertTrue(component.log().contains("Groups trebuie"), component.log());
+        AuditedAssertions.assertTrue(Files.isRegularFile(components.resolve("source-inputs.json")), "Valid proof permits the real snapshot");
+        AuditedAssertions.assertEquals("PASS", JSON.readTree(components.resolve("test-change-admission-recheck.json").toFile())
+                .path("status").asText());
+        AuditedAssertions.assertEquals("ATF_TEST_CHANGE_ADMISSION", JSON.readTree(
+                components.resolve("test-change-admission.json").toFile()).path("kind").asText(),
+                "Admission integration must use the canonical validator, not the neighbouring-component mock");
+        AuditedAssertions.assertFalse(Files.exists(scratch.resolve("maven.entered")), "The deliberate invalid group stops after admission");
+    }
+
+    @Test void invalidTestChangeProofStopsBothLaunchersBeforeCopyOrMaven() throws Exception {
+        realAdmission = true;
+        Path source = fixture();
+        proofRoot = scratch.resolve("mocked proof inputs");
+        Path proof = TestChangeAdmissionFixture.verifiedProof(source, reviewBase, proofRoot,
+                java.time.LocalDate.now(java.time.ZoneOffset.UTC));
+        String base = reviewBase;
+        // Receipt corruption is covered in-process against final governance; these launches prove ordering at the process boundary.
+        for (String defect : List.of("missing-root", "missing-base")) {
+            proofRoot = defect.equals("missing-root") ? null : proof.getParent();
+            reviewBase = defect.equals("missing-base") ? "f".repeat(40) : base;
+            String diagnostic = defect.equals("missing-base") ? "TEST-CHANGE-BASE" : "TEST-CHANGE-PROOF-MISSING";
+            for (String runner : List.of(GOVERNANCE, COMPONENTS)) {
+                Path output = scratch.resolve(defect + "-" + runner);
+                var result = launch(runner, source, output, "", null);
+                AuditedAssertions.assertEquals(1, result.exit(), result.log());
+                AuditedAssertions.assertTrue(result.log().contains(diagnostic), result.log());
+                AuditedAssertions.assertFalse(Files.exists(output.resolve("source-inputs.json")), "Rejected proof stops before source copying");
+                AuditedAssertions.assertFalse(Files.exists(output.resolve("copy-maven-cache.log"))
+                        || Files.exists(output.resolve("copy-cache.log")), "Rejected proof stops before dependency cache copying");
+                AuditedAssertions.assertFalse(Files.exists(scratch.resolve("maven.entered")), "Rejected proof stops before Maven");
+                var phases = JSON.readTree(output.resolve("timing.json").toFile()).path("stages");
+                AuditedAssertions.assertEquals(1, phases.size(), "Only the cheap admission phase may run");
+                AuditedAssertions.assertEquals("FAIL", phases.get(0).path("status").asText());
+            }
+        }
+    }
 
     @ParameterizedTest
     @CsvSource({
@@ -228,6 +285,7 @@ class QualificationLauncherComponentTest {
         Files.copy(real.resolve("config/release-platform-rag-policy.json"), source.resolve("config/release-platform-rag-policy.json"));
         Files.copy(real.resolve("config/gradle-app-collections.properties"), source.resolve("config/gradle-app-collections.properties"));
         Files.copy(real.resolve("config/atf-component-collections.json"), source.resolve("config/atf-component-collections.json"));
+        Files.copy(real.resolve("config/atf-test-suites.json"), source.resolve("config/atf-test-suites.json"));
         // Keep the real runtime module closure; a hand-maintained subset hid later helper imports.
         Path tools = real.resolve("atf-tests/tools");
         try (var entries = Files.list(tools)) {
@@ -248,6 +306,15 @@ class QualificationLauncherComponentTest {
         for (Path file : List.of(apk, checksum)) files.addObject()
                 .put("path", file.getFileName().toString()).put("bytes", Files.size(file)).put("sha256", hash(file));
         JSON.writeValue(source.resolve(RELEASE + "release-validation.json").toFile(), manifest);
+        if (realAdmission) {
+            reviewBase = TestChangeAdmissionFixture.prepareReview(source);
+            parserCache = TestChangeAdmissionFixture.parserCache(scratch.resolve("parser-cache"));
+            launcherScripts = real.resolve("scripts");
+        } else {
+            reviewBase = "a".repeat(40);
+            parserCache = scratch.resolve("unused-cache");
+            launcherScripts = TestChangeAdmissionFixture.mockedLauncherHost(real, scratch.resolve("controlled-launcher-host"));
+        }
         return source;
     }
 
@@ -269,6 +336,9 @@ class QualificationLauncherComponentTest {
         Path tool = scratch.resolve("maven-probe.ps1");
         Files.writeString(tool, """
                 $stage = (Get-Location).Path
+                $admission = Join-Path $env:ATF_FIXTURE_RUN_ROOT 'test-change-admission-recheck.json'
+                if (-not (Test-Path -LiteralPath $admission) -or
+                    (Get-Content -LiteralPath $admission -Raw | ConvertFrom-Json).status -cne 'PASS') { exit 21 }
                 if ($stage -eq $env:ATF_FIXTURE_SOURCE -or -not ($args -contains "-Datf.governance.root=$stage") -or
                     -not (Test-Path -LiteralPath (Join-Path $stage 'release/index.json'))) { exit 19 }
                 if ($env:ATF_FIXTURE_EVIDENCE_ROOT -and -not (Test-Path -LiteralPath $env:ATF_FIXTURE_EVIDENCE_ROOT -PathType Container)) { exit 20 }
@@ -289,9 +359,10 @@ class QualificationLauncherComponentTest {
                 exit 0
                 """);
         var command = new ArrayList<>(List.of("pwsh", "-NoProfile", "-NonInteractive", "-File",
-                GovernanceProject.locateProjectRoot().resolve("scripts").resolve(runner).toString(),
+                launcherScripts.resolve(runner).toString(),
                 "-SourceRoot", source.toString(), "-RunRoot", output.toString(), "-Maven", tool.toString(),
-                "-MavenCache", scratch.resolve("unused-cache").toString()));
+                "-MavenCache", parserCache.toString(), "-TestChangeBaseRef", reviewBase));
+        if (runner.equals(COMPONENTS) && mutation.equals("component-boundary")) command.addAll(List.of("-Groups", "fixture-invalid-group"));
         if (governanceSuite != null) command.addAll(List.of("-GovernanceSuite", governanceSuite));
         if (pinned != null) command.addAll(List.of("-PinnedSourceInputs", pinned.toString()));
         var builder = new ProcessBuilder(command);
@@ -303,6 +374,10 @@ class QualificationLauncherComponentTest {
         environment.put("TEMP", temp.toString());
         environment.put("TMP", tmp.toString());
         environment.put("ATF_FIXTURE_SOURCE", source.toString());
+        environment.put("ATF_FIXTURE_RUN_ROOT", output.toString());
+        environment.remove("ATF_TEST_CHANGE_BASE_REF");
+        environment.remove("ATF_TEST_CHANGE_PROOF_ROOT");
+        if (proofRoot != null) environment.put("ATF_TEST_CHANGE_PROOF_ROOT", proofRoot.toString());
         environment.put("ATF_FIXTURE_ENTERED", scratch.resolve("maven.entered").toString());
         environment.put("ATF_FIXTURE_TEMP_ROOTS", scratch.resolve("maven-temp-roots").toString());
         environment.put("ATF_FIXTURE_TEST_SELECTOR", scratch.resolve("maven-test-selector").toString());

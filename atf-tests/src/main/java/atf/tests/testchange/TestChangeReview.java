@@ -36,6 +36,7 @@ public final class TestChangeReview {
             "atf-tests/tools/android-user-ownership.test.mjs",
             "scripts/export-card-table-ui.ps1",
             "scripts/AtfQualificationSnapshot.ps1", "scripts/AtfTestChangeBatch.ps1", "scripts/AtfComponentJvm.ps1",
+            "scripts/AtfTestChangeAdmission.ps1", "scripts/AtfStandaloneJava.ps1",
             "scripts/AtfComponentResume.ps1", "scripts/AtfComponentMaven.ps1",
             "scripts/AtfCompilerIdentity.ps1", "scripts/AtfComponentMavenReuse.ps1",
             "scripts/Get-AtfSourceInputs.ps1", "scripts/Copy-AtfSourceInputs.ps1", "scripts/AtfSigningSourcePolicy.ps1",

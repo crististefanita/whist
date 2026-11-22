@@ -13,6 +13,7 @@ $ErrorActionPreference = 'Stop'
 . (Join-Path $PSScriptRoot 'AtfLocalPaths.ps1')
 . (Join-Path $PSScriptRoot 'AtfQualificationSnapshot.ps1')
 . (Join-Path $PSScriptRoot 'AtfQualificationTiming.ps1')
+. (Join-Path $PSScriptRoot 'AtfTestChangeAdmission.ps1')
 $sourceRoot = [IO.Path]::GetFullPath($SourceRoot)
 $evidenceRoot = if (-not [string]::IsNullOrWhiteSpace($env:WHIST_EVIDENCE_ROOT) -or [string]::IsNullOrWhiteSpace($RunRoot)) {
     Ensure-AtfEvidenceRoot $sourceRoot
@@ -26,12 +27,24 @@ if ($RunRoot.Equals($sourceRoot, [StringComparison]::OrdinalIgnoreCase) -or
     throw 'Rezultatele trebuie păstrate în afara proiectului.'
 }
 if (Test-Path -LiteralPath $RunRoot) { throw 'Directorul de rezultate trebuie să fie nou.' }
-$work = Join-Path (Get-AtfQualificationTempRoot $sourceRoot) ('atf-quality-' + [guid]::NewGuid().ToString('N'))
-$stage = Join-Path $work 'project'
-New-Item -ItemType Directory -Path $stage, $RunRoot | Out-Null
+$tempRoot = Get-AtfQualificationTempRoot $sourceRoot
+New-Item -ItemType Directory -Path $RunRoot | Out-Null
 $timing = New-AtfQualificationTiming 'governance' (Join-Path $RunRoot 'timing.json')
+function Assert-GovernanceTestChangeAdmission([string]$Receipt) {
+    Invoke-AtfTestChangeAdmission -SourceRoot $sourceRoot -BaseRef $TestChangeBaseRef -TempRoot $tempRoot `
+        -JavaHome $JavaHome -MavenCache $MavenCache -ReceiptFile (Join-Path $RunRoot $Receipt)
+}
+Invoke-AtfQualificationPhase $timing 'governance.test-change-admission' {
+    Assert-GovernanceTestChangeAdmission 'test-change-admission.json'
+}
+$work = Join-Path $tempRoot ('atf-quality-' + [guid]::NewGuid().ToString('N'))
+$stage = Join-Path $work 'project'
+New-Item -ItemType Directory -Path $stage | Out-Null
 $snapshot = Invoke-AtfQualificationPhase $timing 'governance.snapshot-preflight' {
     New-AtfQualificationSnapshot $sourceRoot $stage $RunRoot $PinnedSourceInputs
+}
+Invoke-AtfQualificationPhase $timing 'governance.test-change-recheck' {
+    Assert-GovernanceTestChangeAdmission 'test-change-admission-recheck.json'
 }
 $localRepository = Join-Path $work 'maven-repository'
 $mavenTempRoot = Join-Path $work 'maven-temp'

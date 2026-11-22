@@ -60,6 +60,38 @@ The proof command declares the planned verification and runs separately. [Compon
 
 ## Proof of verified control
 
+### Early source-control admission
+
+Both qualification launchers call the [admission adapter](../../scripts/AtfTestChangeAdmission.ps1) before copying or restoring a source snapshot, copying dependency caches, or starting Maven. A small standalone compiler builds the [CLI](../../atf-tests/src/main/java/atf/tests/testchange/TestChangeAdmissionCli.java) from the current tool sources and reads the pinned parser JARs from `-MavenCache`. The CLI calls the same `TestChangeReview` and `TestChangeProof` validators as final governance.
+
+| Mode | Admission contract |
+|---|---|
+| Normal governance or components | Verify eligible controls and all required original receipts, including ID, Git base, commit, raw diff, positive/negative selectors and HTML SHA-256. |
+| Proof generation | Validate the clean committed diff, current controls and declared positive/negative selectors without requiring the not-yet-generated receipts. Only the explicit control-generation options select this mode. |
+| After snapshot or resume | Recheck the same canonical contract before selecting or preparing executions; changed sources or proof bytes cannot borrow an earlier admission. |
+| Rejection | Publish diagnostics and a failed admission timing phase without copying the source or dependency cache and without starting Maven. |
+
+```mermaid
+flowchart LR
+    DIFF[Git base and diff] -->|inspects| GATE[Canonical admission]
+    GATE -->|rejects| STOP[Failed admission receipt]
+    GATE -->|admits| COPY[Snapshot or resume]
+    COPY -->|rechecks| VERIFY[Canonical admission]
+    VERIFY -->|accepts| EXEC[Reuse or execute affected collections]
+    VERIFY -->|rejects| STOP
+```
+
+<details>
+<summary>Legend: proof generation and normal authorization remain separate</summary>
+
+The bootstrap writes only temporary utility classes under the configured external temporary root and removes them after each check. `test-change-admission.json`, `test-change-admission-recheck.json` and `timing.json` describe admission; test execution and its canonical Extent reports keep their own receipts. Generation-plan admission does not authorize a normal run without the required verified proofs.
+
+</details>
+
+Java 21 and the locally cached pinned JSON/YAML parser dependencies are required even when Maven compilation is reused. Source immutability and final governance still run after early admission; a receipt never disables their checks.
+
+### Generate and consume proof
+
 Keep the control and its test selection in the reviewed commit. Write proof to a new directory outside the checkout. The launcher prepares an isolated copy and publishes evidence only after confirming that the inputs did not change.
 
 ```powershell

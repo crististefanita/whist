@@ -7,6 +7,40 @@ This register defines reviewed controls, their Git base and exact paths. The [te
 ## Verified controls
 
 <details>
+<summary>Canonical test-change admission before source and Maven preparation</summary>
+
+```yaml
+testChanges:
+  - id: RAG-EARLY-TEST-CHANGE-ADMISSION
+    status: VERIFIED
+    base: 65bb00dbcd555a9d6e9284d3088014e77be06795
+    expires: 2026-12-20
+    reason: Run the canonical Git and proof validators before source copying or Maven, recheck after staging, and separate proof generation from normal authorization without accepting foreign, incomplete or altered evidence.
+    proof: 'mvn -o -pl atf-tests -am -Dtest=TestChangeProofComponentTest,QualificationLauncherComponentTest -Dsurefire.failIfNoSpecifiedTests=false test'
+    checks:
+      positive:
+        - atf.tests.governance.source.changes.TestChangeProofComponentTest#admissionUsesTheSameProofVerdictAndDiagnosticsAsFinalGovernance
+        - atf.tests.governance.documentation.release.rag.scope.QualificationLauncherComponentTest#validTestChangeProofPrecedesSourceCopyAndMavenInBothLaunchers
+      negative:
+        - atf.tests.governance.source.changes.TestChangeProofComponentTest#admissionRechecksChangedSourcesAndSeparatesProofGeneration
+        - atf.tests.governance.documentation.release.rag.scope.QualificationLauncherComponentTest#invalidTestChangeProofStopsBothLaunchersBeforeCopyOrMaven
+    paths:
+      - atf-tests/src/main/java/atf/tests/testchange/TestChangeAdmissionCli.java
+      - atf-tests/src/main/java/atf/tests/testchange/TestChangeReview.java
+      - atf-tests/src/test/java/atf/tests/governance/source/changes/TestChangeAdmissionFixture.java
+      - atf-tests/src/test/java/atf/tests/governance/source/changes/TestChangeProofComponentTest.java
+      - atf-tests/src/test/java/atf/tests/governance/source/changes/TestChangeReviewComponentTest.java
+      - atf-tests/src/test/java/atf/tests/governance/documentation/release/rag/scope/QualificationLauncherComponentTest.java
+      - scripts/AtfTestChangeAdmission.ps1
+      - scripts/AtfStandaloneJava.ps1
+      - scripts/run-atf-governance.ps1
+      - scripts/run-component-suites.ps1
+      - config/atf-component-dependencies.json
+```
+
+</details>
+
+<details>
 <summary>Executable dependency ownership and conservative reader admission</summary>
 
 ```yaml
@@ -1776,6 +1810,43 @@ testChanges:
       - scripts/AtfComponentMaven.ps1
       - scripts/AtfComponentMavenReuse.ps1
       - scripts/run-component-suites.ps1
+```
+
+</details>
+
+<details>
+<summary>Canonical library-source navigation</summary>
+
+```yaml
+testChanges:
+  - id: J4-LIBRARY-SOURCE-NOTE-EN-20261122
+    status: VERIFIED
+    base: 65bb00dbcd555a9d6e9284d3088014e77be06795
+    expires: 2026-12-22
+    reason: Allow only the requested canonical source note in direct library guides, retaining negative controls for unrelated projects, wrong routes, fenced examples and other documents.
+    proof: mvn -B -ntp -pl atf-tests -am "-Dtest=DocumentationPolicyGovernanceTest,DocumentationAnchorGovernanceTest,DocumentationLinkGovernanceTest,DocumentationStyleGovernanceTest,DocumentationProseGovernanceTest,DocumentationReadmeStructureGovernanceTest" "-Datf.governance.testChanges.baseRef=65bb00dbcd555a9d6e9284d3088014e77be06795" "-Dsurefire.failIfNoSpecifiedTests=false" test
+    checks:
+      positive:
+        - atf.tests.governance.documentation.DocumentationPolicyGovernanceTest#canonicalLibrarySourceNotesAreNavigationInBothLanguages
+      negative:
+        - atf.tests.governance.documentation.DocumentationPolicyGovernanceTest#librarySourceNoteCannotHideWrongPathsFencesOrExtraProjectText
+    paths:
+      - atf-tests/src/main/java/atf/tests/documentation/policy/DocumentationContentPolicy.java
+      - atf-tests/src/test/java/atf/tests/governance/documentation/DocumentationPolicyGovernanceTest.java
+  - id: J4-LIBRARY-SOURCE-NOTE-RO-20261122
+    status: VERIFIED
+    base: be23ba5416fe090807e34b73bc8bf3ed8e4f61ca
+    expires: 2026-12-22
+    reason: Allow only the requested canonical source note in direct library guides, retaining negative controls for unrelated projects, wrong routes, fenced examples and other documents.
+    proof: mvn -B -ntp -pl atf-tests -am "-Dtest=DocumentationPolicyGovernanceTest,DocumentationAnchorGovernanceTest,DocumentationLinkGovernanceTest,DocumentationStyleGovernanceTest,DocumentationProseGovernanceTest,DocumentationReadmeStructureGovernanceTest" "-Datf.governance.testChanges.baseRef=be23ba5416fe090807e34b73bc8bf3ed8e4f61ca" "-Dsurefire.failIfNoSpecifiedTests=false" test
+    checks:
+      positive:
+        - atf.tests.governance.documentation.DocumentationPolicyGovernanceTest#canonicalLibrarySourceNotesAreNavigationInBothLanguages
+      negative:
+        - atf.tests.governance.documentation.DocumentationPolicyGovernanceTest#librarySourceNoteCannotHideWrongPathsFencesOrExtraProjectText
+    paths:
+      - atf-tests/src/main/java/atf/tests/documentation/policy/DocumentationContentPolicy.java
+      - atf-tests/src/test/java/atf/tests/governance/documentation/DocumentationPolicyGovernanceTest.java
 ```
 
 </details>
