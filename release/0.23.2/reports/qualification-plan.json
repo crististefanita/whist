@@ -1,0 +1,33 @@
+{
+  "schemaVersion": 2,
+  "releaseVersion": "0.23.2",
+  "catalogued": false,
+  "channel": "TEST",
+  "changeRisk": "maintenanceOrRefactor",
+  "declaredPlatforms": [
+    "android"
+  ],
+  "componentGroups": [
+    "atf-validation",
+    "atf-test-android",
+    "atf-tests",
+    "whist-lab-app-bidding",
+    "whist-lab-app-commands",
+    "whist-lab-app-display",
+    "whist-lab-app-history",
+    "whist-lab-app-achievements",
+    "whist-lab-app-atf-card-table-ui",
+    "whist-lab-app-rules"
+  ],
+  "userFlowChanged": false,
+  "e2e": {
+    "status": "NOT_RUN",
+    "rationale": "Only Maven preparation admission, its offline controls, documentation and Android version metadata changed. No native or browser game-flow contract changed; the diff selects no E2E group."
+  },
+  "scope": {
+    "baselineVersion": "0.23.1",
+    "baselineCommit": "9cbd9241a8fe1ee29573ce7c79e3c437961d8ac9",
+    "baselineFingerprint": "230ae412291f005badedb12e699584a764300ef3a999dbf31e54addc7a2bfb62",
+    "candidateFingerprint": "fe7f357c98719d623f2232f9d86c06c77b923cc1657374ccb413f4a9707b895b"
+  }
+}

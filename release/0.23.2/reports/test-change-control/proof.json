@@ -1,0 +1,19 @@
+{
+  "schemaVersion" : 1,
+  "kind" : "ATF_TEST_CHANGE_PROOF",
+  "identity" : {
+    "id" : "MAVEN-PREPARATION-BOUNDARY",
+    "base" : "08d0c425bba7ea9f58b5188612654d6b252a55ba",
+    "commit" : "6adb87e7a6bba7e26cebfc0e08a8cf894d46d56a",
+    "diffSha256" : "51aa27965706d2bb3103a2e0e7d9a3af467fe4a9103eb44b10d65c02d2a28922"
+  },
+  "positive" : [ {
+    "selector" : "atf.tests.governance.documentation.release.rag.scope.ComponentEvidenceScopeComponentTest#nodeContractTestsKeepReuseClassificationInsideTheRealBuildBoundary",
+    "verdict" : "PASS"
+  } ],
+  "negative" : [ {
+    "selector" : "atf.tests.governance.documentation.release.rag.scope.ComponentEvidenceScopeComponentTest#componentResumeImportsOnlyVerifiedEvidenceFromTheInterruptedSnapshot",
+    "verdict" : "PASS"
+  } ],
+  "reportSha256" : "0fd435878106f3831e94d7447b3d5693f79d0846f2bf0532925240d58aec7410"
+}
