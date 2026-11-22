@@ -27,6 +27,34 @@ class TestChangeReviewComponentTest {
     private static final String NEW_TEST = "nested/module/src/test/java/demo/Test nou ș.java";
     private static final String GATE = "config/atf-test-suites.json";
 
+    @Test void sourceReadmesRemainEditorialAcrossGitStates(@TempDir Path root) throws Exception {
+        var repo = new TestChangeGitFixture(root);
+        String changed = "nested/module/src/test/java/demo/README.md";
+        String deleted = "whist-lab-app/app/src/test/README.md";
+        repo.put(changed, "# Original guide\n");
+        repo.put(deleted, "# Removed guide\n");
+        repo.commit("prepare source guides");
+        String base = repo.git("rev-parse", "HEAD");
+        repo.put("atf-tests/src/test/README.md", "# Added guide\n");
+        repo.put("src/test/README.md", "# Root guide\n");
+        repo.put(changed, "# Revised guide\n");
+        repo.git("add", changed);
+        repo.git("rm", deleted);
+        var result = TestChangeReview.inspect(root, base, Map.of(), TODAY);
+        AuditedAssertions.assertEquals(0, result.protectedPaths(), "Source guides select editorial governance, not test-code controls");
+        AuditedAssertions.assertEquals(List.of(), result.diagnostics());
+    }
+
+    @Test void markdownFixturesAndSelectionContractsRemainProtected(@TempDir Path root) throws Exception {
+        var repo = new TestChangeGitFixture(root);
+        var paths = List.of("src/test/resources/README.md", "module/src/test/resources/case.md", "module/src/androidTest/assets/case.md",
+                "module/src/testFixtures/resources/case.md", "module/src/test/java/OtherTest.java",
+                "config/atf-component-collections.json", "atf-tests/tools/atf-component-ownership.mjs");
+        for (String path : paths) repo.put(path, "controlled payload\n");
+        AuditedAssertions.assertEquals(paths.stream().sorted().map(path -> uncovered("A", path, repo.base)).toList(),
+                check(repo).diagnostics(), "Fixture payloads, source code and selector contracts still require review");
+    }
+
     @Test void nativeSourceAdmissionAndAdapterOraclesCannotBypassReview(@TempDir Path root) throws Exception {
         var repo = new TestChangeGitFixture(root);
         var paths = List.of("atf-tests/tools/android-e2e-provenance.mjs", "atf-tests/tools/android-e2e-evidence.mjs",

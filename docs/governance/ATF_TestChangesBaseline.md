@@ -1666,3 +1666,26 @@ testChanges:
 ```
 
 </details>
+
+<details>
+<summary>Ghiduri editoriale în surse și payload-uri de fixture protejate</summary>
+
+```yaml
+testChanges:
+  - id: RAG-NONBUILD-DOCUMENTATION
+    status: VERIFIED
+    base: 2da37aa6d962db58ef9954c5da96f44e09154ab6
+    expires: 2026-12-20
+    reason: Păstrează ghidurile Markdown din rădăcinile sursei ca intrări editoriale, iar payload-urile de resurse, testele executabile și contractele de selecție a colecțiilor își păstrează controalele revizuite în stări Git reale.
+    proof: 'mvn -o -pl atf-tests -am -Dtest=TestChangeReviewComponentTest -Dsurefire.failIfNoSpecifiedTests=false test'
+    checks:
+      positive:
+        - atf.tests.governance.source.changes.TestChangeReviewComponentTest#sourceReadmesRemainEditorialAcrossGitStates
+      negative:
+        - atf.tests.governance.source.changes.TestChangeReviewComponentTest#markdownFixturesAndSelectionContractsRemainProtected
+    paths:
+      - atf-tests/src/main/java/atf/tests/testchange/TestChangeReview.java
+      - atf-tests/src/test/java/atf/tests/governance/source/changes/TestChangeReviewComponentTest.java
+```
+
+</details>
