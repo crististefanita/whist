@@ -156,16 +156,16 @@ Pentru infrastructura dispozitivului și activarea explicită a fluxurilor UI, f
 
 ### Selecția după dependențe executabile
 
-[Politica dependențelor](../../config/atf-component-dependencies.json) și [constructorul grafului](../../atf-tests/tools/atf-component-dependencies.mjs) rafinează responsabilitatea ATF folosind inventarul actual al sursei. Referințele de tip și import Java, importurile executabile Node și intrările proceselor, precum și referințele la module și funcții PowerShell formează muchii tranzitive. Un responsabil este selectat când una dintre clasele sale finale ajunge la intrarea schimbată. Ciclurile păstrează fiecare consumator accesibil.
+[Politica dependențelor](../../config/atf-component-dependencies.json) și [constructorul grafului](../../atf-tests/tools/atf-component-dependencies.mjs) rafinează responsabilitatea ATF folosind inventarul actual al sursei. Referințele de tip și import Java, importurile executabile Node și intrările proceselor, precum și referințele la module și funcții PowerShell formează muchii tranzitive. Un responsabil este selectat când una dintre clasele sale finale ajunge la intrarea schimbată; ciclurile păstrează fiecare consumator accesibil.
 
-Controalele întregului repository au domenii explicite de observare. Importurile generate identifică intrările producătorului lor. Aceste declarații deosebesc un fixture care citește repository-ul live de un ajutor care citește un director injectat. Șirurile cu exemple de căi nu stabilesc, singure, dependențe executabile Node.
+Controalele întregului repository au domenii explicite de observare, iar importurile generate identifică intrările producătorului lor. Aceste declarații deosebesc un fixture care citește repository-ul live de un ajutor care citește un director injectat. Șirurile cu exemple de căi nu stabilesc, singure, dependențe executabile Node.
 
 ```mermaid
 flowchart LR
-    INPUT[Sursa schimbată] --> GRAPH[Graful actual al dependențelor]
+    INPUT[Sursa schimbată] -->|interoghează| GRAPH[Graful actual al dependențelor]
     GRAPH -->|clasă finală accesibilă sau domeniu observat| RUN[Execută responsabilii afectați]
     GRAPH -->|nicio dependență afectată| ADMIT[Verifică dovezile originale]
-    ADMIT --> REUSE[Reutilizează raportul și receipt-ul neschimbate]
+    ADMIT -->|admite octeții verificați| REUSE[Reutilizează raportul și receipt-ul neschimbate]
     GRAPH -->|intrare necunoscută sau nerevizuită| FULL[Execută toți responsabilii ATF]
 ```
 
@@ -176,7 +176,7 @@ Muchiile descriu dependențe executabile la nivel de clasă sau modul, nu urmăr
 
 </details>
 
-Cititorii de fișiere și toți apelanții lor tranzitivi au sigilii revizuite ale corpului sursei. Contractele de citire noi sau schimbate cer o politică revizuită și calificare completă înaintea unei noi restrângeri. Sfârșiturile de linie se normalizează numai pentru aceste sigilii ale checkout-urilor bilingve; manifestele originale ale sursei și dovezile reutilizate păstrează hash-urile octeților exacți. O intrare de cititor schimbată între calificări nu poate reutiliza responsabili neafectați doar fiindcă noul său sigiliu a fost înregistrat.
+Cititorii de fișiere și toți apelanții lor tranzitivi au sigilii revizuite ale corpului sursei. Contractele de citire noi sau schimbate cer o politică revizuită și calificare completă; înregistrarea unui sigiliu nou nu autorizează reutilizarea peste o intrare de cititor schimbată. Sfârșiturile de linie se normalizează numai pentru aceste sigilii ale checkout-urilor bilingve; manifestele originale ale sursei și dovezile reutilizate păstrează hash-urile octeților exacți.
 
 Comanda de propunere, numai pentru citire, folosește un inventar proaspăt al sursei și scrie un fișier nou în afara checkout-ului:
 
@@ -185,7 +185,7 @@ Comanda de propunere, numai pentru citire, folosește un inventar proaspăt al s
 node .\atf-tests\tools\atf-dependency-cli.mjs '<scratch-root>/source-inputs.json' '<scratch-root>/reader-policy-proposal.json'
 ```
 
-Revizuiți domeniile declarate ale cititorilor și furnizorii generați înaintea adoptării politicii propuse. Comanda nu actualizează politica versionată și nu acordă un verdict de calificare. Cititorii sau mecanismele de selecție schimbate cer controalele pozitive și negative revizuite ale modificării testelor. Planul reutilizării înregistrează lanțul de dependențe sau domeniul observatorului care justifică fiecare selecție; admiterea receipt-ului imuabil, a identității JUnit și a raportului Extent rămâne obligatorie.
+Revizuiți domeniile declarate ale cititorilor și furnizorii generați înaintea adoptării politicii propuse. Comanda nu actualizează politica versionată și nu acordă un verdict de calificare; cititorii sau mecanismele de selecție schimbate cer controalele pozitive și negative revizuite ale modificării testelor. Planul reutilizării înregistrează lanțul de dependențe sau domeniul observatorului care justifică fiecare selecție; admiterea receipt-ului imuabil, a identității JUnit și a raportului Extent rămâne obligatorie.
 
 - `prepare-component-reuse.mjs` verifică sursa originală, snapshot-ul release-ului, rularea rădăcină, identitățile JUnit și hash-urile rapoartelor înaintea copierii octeților neschimbați. Evaluatorul cere fiecare responsabil ATF nou atunci când sursa candidatului conține noul descriptor, indiferent de versiunea de release declarată. Sursele istorice fără descriptor păstrează contractul monolitic; rapoartele lor nu pot fi reetichetate drept dovezi ale partițiilor.
 
