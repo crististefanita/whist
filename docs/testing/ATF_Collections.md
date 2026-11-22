@@ -174,3 +174,5 @@ flowchart LR
 O singură compilare Maven poate servi mai multe colecții primare. Un receipt reutilizat își păstrează identificatorii invocărilor și proveniența originale; nu este o execuție nouă. După partiționare, prefixul containerului de suită se schimbă, iar identificatorii finali Jupiter și rezultatele rămân comparabile. Măsurați separat pregătirea și execuția colecțiilor și declarați identitățile lipsă sau nou adăugate la verificarea parității.
 
 </details>
+
+Fixture-urile de guvernanță determină release-ul activ prin `release/index.json` și folosesc același validator al publicării ca livrarea. O versiune istorică eliminată sau o configurație nouă a responsabililor nu trebuie să schimbe implicit precondiția dovedită de un control negativ.

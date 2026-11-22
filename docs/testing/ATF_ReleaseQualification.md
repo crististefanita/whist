@@ -198,7 +198,7 @@ Snapshot-ul APK este reperul pentru compararea intrărilor fiecărei suite. RAG 
 
 | Grup Android | Dovadă necesară |
 | --- | --- |
-| `atf-validation`, `atf-test-android`, `atf-tests` | Fiecare suită Maven primară are HTML Extent canonic și rezultate fără FAIL/ERROR/SKIP. |
+| `atf-validation`, `atf-test-android` și [colecțiile ATF responsabile](ATF_Collections.md#responsabili-independenți-pentru-componentele-atf) | Fiecare suită Maven primară are HTML Extent canonic și rezultate fără FAIL/ERROR/SKIP. |
 | `whist-lab-app-commands`, `whist-lab-app-bidding`, `whist-lab-app-history`, `whist-lab-app-display` | Colecțiile Android de bază au fiecare HTML Extent și receipt proprii. Modificările în sursele compilate împreună cer o rulare nouă. |
 | `whist-lab-app-achievements` | Colecție introdusă prin `introducedComponentGroupsByPlatform`; `sinceReleaseVersion` o face obligatorie de la pragul declarat. Raportul este separat, iar JUnit XML singur nu satisface poarta. |
 | `whist-lab-app-atf-card-table-ui` | Suită JVM distinctă pentru contractele bibliotecii grafice comune; introdusă la `0.20.2`, cu Extent și receipt separat. |
@@ -272,7 +272,8 @@ Fiecare săgeată numește decizia reprezentată. Reutilizarea cere în continua
 |---|---|
 | Pachet de aplicație declarat în `config/gradle-app-collections.properties` | Rulează colecția proprietară și guvernanța framework-ului; celelalte colecții ale aplicației pot fi reutilizate dacă intrările lor corespund. |
 | Nucleu comun al jocului, nume, modulul Android UI, configurația Gradle sau librărie comună | Invalidează fiecare suită care consumă dependența respectivă. |
-| Infrastructură Maven, politica release-ului, ownership-ul suitei sau instrumentele de dovezi | Rulează `atf-tests`; suitele de produs pot fi reutilizate dacă intrările lor nu s-au schimbat. |
+| Infrastructură Maven, politica release-ului, ownership-ul suitei sau instrumentele de dovezi | Rulează [colecțiile ATF responsabile](ATF_Collections.md#responsabili-independenți-pentru-componentele-atf); suitele de produs pot fi reutilizate dacă intrările lor nu s-au schimbat. |
+| Ghiduri schimbate numai în Markdown sau octeți ai dosarului de release | Rulează responsabilul editorial/payload și orice dependență declarată pentru reguli ori ghiduri de bibliotecă; reutilizează ceilalți responsabili după verificarea hash-urilor. |
 | Numai inventarul `config/documentation-editions.json` | Înregistrează `DOCUMENTATION_EDITIONS` ca verificare RAG obligatorie la fiecare evaluare și păstrează dovezile componentelor Maven reutilizabile. Modificările evaluatorului, politicii sau conținutului documentelor păstrează regulile lor de ownership. |
 | Cale nouă, necunoscută sau cu ownership ambiguu | Refuză implicit și rulează toate grupurile de componente. |
 | Numai `versionCode`/`versionName` | Reutilizează dovezile de produs numai când baza publicată este calificată și reconstrucția exactă demonstrează că înlocuirea celor două valori reface hash-ul original al fișierului de build. Guvernanța rulează în continuare. |

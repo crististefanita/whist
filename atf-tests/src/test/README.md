@@ -6,7 +6,7 @@ Modulul verifică integrarea binarelor comune, datele pentru publicare și contr
 
 ## Colecții și responsabilități
 
-[Catalogul](../../../config/atf-test-suites.json) declară intrările primare `AtfUnitSuite`, `AtfComponentSuite` și `AtfIntegrationSuite`. Selecțiile de raportare și guvernanță sunt focalizate, cu părinții expliciți; nu se adună din nou peste inventarul primar.
+[Catalogul](../../../config/atf-test-suites.json) declară intrările unitare și de integrare, plus responsabili primari distincți pentru componente. [Harta responsabililor componentelor](../../../docs/testing/ATF_Collections.md#responsabili-independenți-pentru-componentele-atf) separă structura sursei, documentația, proveniența, Android, GitHub, orchestrarea și raportarea; suitele focalizate declară părinții lor primari.
 
 | Familie | Intrare și limită |
 |---|---|
