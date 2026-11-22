@@ -56,3 +56,8 @@ Adresa `offline.test` este contextul cererii pentru transportul mock. Reușita p
 ---
 
 Perechea Mock este un binar extern fixat în POM și în registrul de proveniență. Testele de aici verifică ruta și fallback-ul folosite de proiect; un defect se raportează cu versiunea, hash-ul, catalogul minim și răspunsul așteptat/observat în [registrul local](../docs/feedback/README.md).
+
+<a id="shared-library-source"></a>
+
+> **Sursa bibliotecii:** [Mock · ATF J0](https://github.com/crististefanita/atf_j0/blob/HEAD/lib/README.Mock.md).
+> POM-ul, proveniența și testele acestui proiect stabilesc versiunea consumată și acceptanța locală.

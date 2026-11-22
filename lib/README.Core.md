@@ -52,3 +52,8 @@ Exemplul construiește date locale; nu execută un apel HTTP. Verificarea transp
 ---
 
 Perechea Core este un binar extern fixat în POM și în registrul de proveniență. Acest ghid deține numai contractul consumat aici; raportați o incompatibilitate cu versiunea, hash-ul, fragmentul minim și rezultatul observat. [Procedura locală](README.md#mentenanță-și-feedback)
+
+<a id="shared-library-source"></a>
+
+> **Sursa bibliotecii:** [Core · ATF J0](https://github.com/crististefanita/atf_j0/blob/HEAD/lib/README.Core.md).
+> POM-ul, proveniența și testele acestui proiect stabilesc versiunea consumată și acceptanța locală.

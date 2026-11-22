@@ -55,3 +55,8 @@ Verificați întâi compilarea pe perechile fizice JAR/POM, apoi comportamentul 
 ## Mentenanță și feedback
 
 Bibliotecile sunt consumate ca perechi versionate JAR/POM; codul lor sursă nu face parte din acest proiect. Păstrați coordonatele și hash-ul exact al perechii, apoi calificați contractul prin compilarea exemplelor și testele locale de integrare. Pentru o limitare observată, atașați perechea, hash-ul, reproducerea și valorile așteptate/observate în [feedback-ul proiectului](../docs/feedback/README.md).
+
+<a id="shared-library-source"></a>
+
+> **Sursa bibliotecilor:** [Catalog · ATF J0](https://github.com/crististefanita/atf_j0/blob/HEAD/lib/README.md).
+> POM-ul, proveniența și testele acestui proiect stabilesc versiunea consumată și acceptanța locală.

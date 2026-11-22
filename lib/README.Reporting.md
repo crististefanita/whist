@@ -76,3 +76,8 @@ Durata HTTP provine din `ReportResponse.duration()`; `detail(...)` păstrează t
 ---
 
 Perechea Reporting este un binar extern fixat în POM și în registrul de proveniență. Acest ghid verifică API-ul consumat și rezultatul raportului în aplicație; o limitare observată se atașează versiunii, hash-ului și unui exemplu reproductibil. [Procedura locală](README.md#mentenanță-și-feedback)
+
+<a id="shared-library-source"></a>
+
+> **Sursa bibliotecii:** [Reporting · ATF J0](https://github.com/crististefanita/atf_j0/blob/HEAD/lib/README.Reporting.md).
+> POM-ul, proveniența și testele acestui proiect stabilesc versiunea consumată și acceptanța locală.
