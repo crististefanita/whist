@@ -218,6 +218,10 @@ class ReleasePresentationGovernanceTest {
         String current = Files.readString(folder.resolve("release-notes.md"));
         String language = atf.tests.documentation.policy.DocumentationContentPolicy.documentationLanguage(root);
         Path receipt = folder.resolve("documentation-provenance.json");
+        if (current.replace("\r\n", "\n").startsWith("# Whist Lab " + edition.version() + "\n")) {
+            assertPublisherNotes(root, current, edition);
+            return;
+        }
         if (!Files.exists(receipt)) {
             AuditedAssertions.assertEquals(List.of(), violations(edition, current, language, true), folder.toString());
             return;
@@ -226,6 +230,29 @@ class ReleasePresentationGovernanceTest {
         String original = ReleaseCommitEvidence.publishedNotes(gitRoot, edition.version(), originalCommit);
         AuditedAssertions.assertEquals(List.of(), violations(edition, original), "Original publication contract: " + folder);
         AuditedAssertions.assertEquals(List.of(), violations(edition, current, language, false), "Translated presentation: " + folder);
+    }
+
+    @Test void currentPublisherNotesUseTheCanonicalValidatorAndRetainTheAuditLink() throws Exception {
+        var root = GovernanceProject.locateProjectRoot();
+        var edition = sample("summary", null);
+        String current = "# Whist Lab 1.2.0\n\nA bounded maintenance release.\n\n## Changes\n\n- One change.\n\n## Audit\n\n[Audit](" + edition.evidence() + ")\n";
+        assertPublisherNotes(root, current, edition);
+        AuditedAssertions.assertThrows(AssertionError.class, () -> assertPublisherNotes(root,
+                current.replace("## Changes", "## Other"), edition));
+        AuditedAssertions.assertThrows(AssertionError.class, () -> assertPublisherNotes(root,
+                current.replace(edition.evidence(), "https://example.invalid/audit"), edition));
+    }
+
+    private static void assertPublisherNotes(Path root, String markdown, Edition edition) throws Exception {
+        String program = "import {validateReleaseNotes} from " + JSON.writeValueAsString(
+                root.resolve("atf-tests/tools/release-notes-layout.mjs").toUri().toString())
+                + "; console.log(JSON.stringify(validateReleaseNotes(process.argv[1])));";
+        String result = atf.tests.governance.documentation.release.rag.scope.NodeReleaseContracts.runNode(
+                List.of("node", "--input-type=module", "-e", program, markdown), root, java.time.Duration.ofSeconds(15));
+        AuditedAssertions.assertEquals(edition.points().size(), JSON.readTree(result).required("changeCount").asInt(),
+                "Current publication preserves the declared change count");
+        AuditedAssertions.assertTrue(markdown.contains("](" + edition.evidence() + ")"),
+                "Current publication retains its commit-bound audit link");
     }
 
     private static List<String> violations(Edition edition, String markdown) {

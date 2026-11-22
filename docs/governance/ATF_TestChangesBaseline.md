@@ -1639,3 +1639,30 @@ testChanges:
 ```
 
 </details>
+
+<details>
+<summary>Current catalog and publication contracts in governance fixtures</summary>
+
+```yaml
+testChanges:
+  - id: RAG-CURRENT-GOVERNANCE-FIXTURES
+    status: VERIFIED
+    base: 2da37aa6d962db58ef9954c5da96f44e09154ab6
+    expires: 2026-12-20
+    reason: Resolve the current report index from the catalog, validate current notes with the publication validator, and copy the declared ownership configuration into isolated launcher fixtures without changing historical dossiers.
+    proof: 'mvn -o -pl atf-tests -am -Dtest=DocumentationPolicyGovernanceTest,ReleasePresentationGovernanceTest,QualificationLauncherComponentTest -Dsurefire.failIfNoSpecifiedTests=false test'
+    checks:
+      positive:
+        - atf.tests.governance.documentation.DocumentationPolicyGovernanceTest#sealedReportIndexesStayOutsideOwnerProseAndLanguageRules
+        - atf.tests.governance.documentation.release.ReleasePresentationGovernanceTest#currentPublisherNotesUseTheCanonicalValidatorAndRetainTheAuditLink
+        - atf.tests.governance.documentation.release.rag.scope.QualificationLauncherComponentTest#governancePassesWithAnIsolatedRootAndThePinnedInputManifest
+      negative:
+        - atf.tests.governance.documentation.release.ReleasePresentationGovernanceTest#missingEvidenceNonBulletProseAndUnrecordedChangesAreRejected
+        - atf.tests.governance.documentation.release.rag.scope.QualificationLauncherComponentTest#checkoutTmpStopsBothLaunchersBeforeStagingOrMaven
+    paths:
+      - atf-tests/src/test/java/atf/tests/governance/documentation/DocumentationPolicyGovernanceTest.java
+      - atf-tests/src/test/java/atf/tests/governance/documentation/release/ReleasePresentationGovernanceTest.java
+      - atf-tests/src/test/java/atf/tests/governance/documentation/release/rag/scope/QualificationLauncherComponentTest.java
+```
+
+</details>

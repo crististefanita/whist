@@ -227,6 +227,7 @@ class QualificationLauncherComponentTest {
         Path real = GovernanceProject.locateProjectRoot();
         Files.copy(real.resolve("config/release-platform-rag-policy.json"), source.resolve("config/release-platform-rag-policy.json"));
         Files.copy(real.resolve("config/gradle-app-collections.properties"), source.resolve("config/gradle-app-collections.properties"));
+        Files.copy(real.resolve("config/atf-component-collections.json"), source.resolve("config/atf-component-collections.json"));
         // Keep the real runtime module closure; a hand-maintained subset hid later helper imports.
         Path tools = real.resolve("atf-tests/tools");
         try (var entries = Files.list(tools)) {
