@@ -189,6 +189,8 @@ Compilarea și execuția au identități separate. [Inventarul compilatorului](.
 | Snapshot-ul execuției | Snapshot-urile actuale ale sursei și release-ului rămân obligatorii. Reutilizarea compilării nu creditează un test; selecția responsabililor și validarea rapoartelor originale rămân independente. |
 | Durata de viață | Referințele funcționează numai cât supraviețuiește spațiul verificat al compilatorului. Spațiile ocupate, lipsă, indirecte, străine ori vechi declanșează compilarea nouă; rapoartele păstrate se pot reutiliza independent. |
 
+- O reluare numai pentru documentație păstrează responsabilul compilării și înregistrează aserțiuni noi pe snapshot-ul actual; după curățarea spațiului, pregătirea reîncepe din sursă.
+
 Runnerul înregistrează identitatea compilatorului, admiterea cache-ului și sigilarea ieșirii ca etape de timp distincte. O compilare împrumutată are receipt-ul original și o referință legată prin hash în noul spațiu; proveniența sursei și rapoartele vechi nu se rescriu.
 
 ```mermaid
