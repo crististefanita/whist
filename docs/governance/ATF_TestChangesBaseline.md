@@ -1785,7 +1785,21 @@ testChanges:
 
 ```yaml
 testChanges:
-  - id: J4-LIBRARY-SOURCE-NOTE-20261122
+  - id: J4-LIBRARY-SOURCE-NOTE-EN-20261122
+    status: VERIFIED
+    base: 65bb00dbcd555a9d6e9284d3088014e77be06795
+    expires: 2026-12-22
+    reason: Permite exclusiv nota cerută către sursa canonică în ghidurile directe ale bibliotecilor, păstrând controale negative pentru alte proiecte, rute greșite, exemple delimitate și alte documente.
+    proof: mvn -B -ntp -pl atf-tests -am "-Dtest=DocumentationPolicyGovernanceTest,DocumentationAnchorGovernanceTest,DocumentationLinkGovernanceTest,DocumentationStyleGovernanceTest,DocumentationProseGovernanceTest,DocumentationReadmeStructureGovernanceTest" "-Datf.governance.testChanges.baseRef=65bb00dbcd555a9d6e9284d3088014e77be06795" "-Dsurefire.failIfNoSpecifiedTests=false" test
+    checks:
+      positive:
+        - atf.tests.governance.documentation.DocumentationPolicyGovernanceTest#canonicalLibrarySourceNotesAreNavigationInBothLanguages
+      negative:
+        - atf.tests.governance.documentation.DocumentationPolicyGovernanceTest#librarySourceNoteCannotHideWrongPathsFencesOrExtraProjectText
+    paths:
+      - atf-tests/src/main/java/atf/tests/documentation/policy/DocumentationContentPolicy.java
+      - atf-tests/src/test/java/atf/tests/governance/documentation/DocumentationPolicyGovernanceTest.java
+  - id: J4-LIBRARY-SOURCE-NOTE-RO-20261122
     status: VERIFIED
     base: be23ba5416fe090807e34b73bc8bf3ed8e4f61ca
     expires: 2026-12-22
