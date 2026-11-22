@@ -244,11 +244,12 @@ class ReleasePresentationGovernanceTest {
     }
 
     private static void assertPublisherNotes(Path root, String markdown, Edition edition) throws Exception {
-        String program = "import {validateReleaseNotes} from " + JSON.writeValueAsString(
-                root.resolve("atf-tests/tools/release-notes-layout.mjs").toUri().toString())
-                + "; console.log(JSON.stringify(validateReleaseNotes(process.argv[1])));";
+        String program = "const {validateReleaseNotes} = await import(process.argv[1]); "
+                + "console.log(JSON.stringify(validateReleaseNotes(process.argv[2])));";
         String result = atf.tests.governance.documentation.release.rag.scope.NodeReleaseContracts.runNode(
-                List.of("node", "--input-type=module", "-e", program, markdown), root, java.time.Duration.ofSeconds(15));
+                List.of("node", "--input-type=module", "-e", program,
+                        root.resolve("atf-tests/tools/release-notes-layout.mjs").toUri().toString(), markdown),
+                root, java.time.Duration.ofSeconds(15));
         AuditedAssertions.assertEquals(edition.points().size(), JSON.readTree(result).required("changeCount").asInt(),
                 "Current publication preserves the declared change count");
         AuditedAssertions.assertTrue(markdown.contains("](" + edition.evidence() + ")"),
