@@ -2,7 +2,14 @@
 
 ## Pe scurt
 
-Proiectul reunește Whist Lab, un joc local de levate pentru 3–6 jucători, și infrastructura ATF care verifică motorul, aplicațiile și livrarea. Edițiile Android și browser sunt active; puntea iOS este pusă în așteptare și nu intră în calificarea release-urilor curente. Laboratorul compară politicile de joc pe distribuiri controlate.
+Whist Lab este un joc local de levate pentru 3–6 jucători și un laborator pentru verificarea regulilor, interfețelor și politicilor sale de joc. Edițiile Android și browser folosesc același motor Java; proiectul păstrează corectitudinea jocului, comportamentul randat și calificarea livrării ca responsabilități de verificare distincte.
+
+| Zonă | Ce oferă |
+|---|---|
+| Joc | Comenzi legale, licitație, levate, calculul punctajului și istoricul scorului. |
+| Aplicații | Adaptoare Android și Web active; puntea iOS este suspendată. |
+| Cercetare | Comparații offline ale politicilor pe distribuiri controlate, separate de acceptanța livrării. |
+| Dovezi | Comparații JVM, verificări de platformă, rapoarte Extent și un dosar de versiune. |
 
 ## Jocul
 
@@ -11,80 +18,71 @@ Proiectul reunește Whist Lab, un joc local de levate pentru 3–6 jucători, ș
 
 ## Harta modulelor
 
-### De la surse la livrare
+### Un joc, două interfețe active
 
-Gradle construiește APK-ul și rulează verificările JVM ale jocului. Reactorul Maven adaugă infrastructura ATF, scenariile pe dispozitiv și guvernanța proiectului.
+Motorul deține jocul legal și starea partidei. Adaptoarele de platformă transformă interacțiunea în comenzi și randează proiecția publică; calculele comune pentru masă nu fac singure randarea nativă și cea din browser identice.
 
 ```mermaid
+%%{init: {"theme":"neutral","themeVariables":{"fontSize":"15px"},"themeCSS":".edgeLabel, .edgeLabel p { font-size: 12px !important; } .node rect { rx: 6px; ry: 6px; }","flowchart":{"curve":"linear","nodeSpacing":24,"rankSpacing":20,"padding":6},"sequence":{"mirrorActors":false,"messageMargin":24}}}%%
 flowchart LR
-    gradle[Gradle]
-    produs[APK Android]
-    componente[Componente JVM]
-    maven[Maven ATF]
-    verificari[Audit și E2E]
-    librarii[Biblioteci ATF]
-    rag[Calificare RAG]
-    dosar[Dosar release]
-    gradle -->|construiește| produs
-    gradle -->|rulează| componente
-    maven -->|rulează| verificari
-    maven -->|consumă| librarii
-    verificari -->|verifică| produs
-    componente -->|furnizează| rag
-    verificari -->|furnizează| rag
-    rag -->|califică| dosar
+    Android["Android"]
+    Web["Browser"]
+    Engine["game-core<br/>reguli și sesiune"]
+    Table["Contracte portabile de masă"]
+    View["Randare pe platformă"]
+    Android -->|transmite comenzi| Engine
+    Web -->|transmite comenzi| Engine
+    Engine -->|proiectează starea publică| View
+    Table -->|adaptează măsurători| View
 ```
 
 <details>
-<summary>Legendă privind buildurile și dovezile</summary>
+<summary>Legendă — comenzi, stare și afișare</summary>
 
-- Gradle include aplicația Android, motorul și o punte Java pentru iOS, pusă în așteptare. Buildul iOS și calificarea pe simulator nu fac parte din release-urile curente. Intrarea Gradle JVM configurează motorul, laboratorul, politica numelor și auditul testelor.
-- Maven verifică proiectul și coordonează testele Android. Consumă Core, Reporting, Console, Mock și Test Kit din perechile JAR/POM. Auditul Gradle folosește Reporting și Test Kit în configurațiile de test.
-- Calificarea confruntă selecția, APK-ul și dovezile. Dosarul versiunii păstrează identitatea binarului, rezultatele și verificarea descărcării. [Ghidul calificării](docs/testing/ATF_ReleaseQualification.md)
+- Fluxul descrie responsabilități la execuție, fără a reprezenta dependențe de build. Motorul validează comenzile și expune starea; adaptoarele dețin interacțiunea cu ecranul și măsurătorile de platformă.
+- Android folosește interfața nativă a mesei. Browserul rulează printr-un server JVM local sau un Web Worker TeaVM; ediția statică păstrează comenzile pe dispozitiv după încărcare.
+- Contractele portabile de geometrie și tipografie cer verificări randate separate pentru fonturi, insets și ținte tactile. [Contractul Android–Web](atf-ui-browser/README.md#what-android-and-web-share)
 
 </details>
 
 ### Motorul și platformele
 
-- Motorul validează comenzile, calculează scorul și furnizează starea.
-- Android îl integrează prin build nativ.
-- Web îl apelează prin adaptorul JVM sau îl compilează pentru GitHub Pages.
-- Puntea iOS este pusă în așteptare. [Traseul Android–Web](atf-ui-browser/README.md#what-android-and-web-share)
+Această hartă arată dependențele directe ale aplicațiilor native. Traseul browserului este descris mai sus; puntea suspendată rămâne vizibilă deoarece este încă declarată în buildul Gradle implicit.
 
 ```mermaid
+%%{init: {"theme":"neutral","themeVariables":{"fontSize":"15px"},"themeCSS":".edgeLabel, .edgeLabel p { font-size: 12px !important; } .node rect { rx: 6px; ry: 6px; }","flowchart":{"curve":"linear","nodeSpacing":24,"rankSpacing":20,"padding":6},"sequence":{"mirrorActors":false,"messageMargin":24}}}%%
 flowchart LR
-    app[Aplicație Android]
-    atf_card_table_ui[UI comun Android]
-    ios[iOS parcat]
-    ios_bridge[Punte parcată]
-    game_core[Motor Java]
-    card_table_names[Politica numelor]
+    app["Android app"]
+    atf_card_table_ui["UI Android comun"]
+    ios["iOS · suspendat"]
+    ios_bridge["ios-bridge · suspendat"]
+    game_core["game-core"]
+    card_table_names["card-table-names"]
     app -->|folosește| atf_card_table_ui
     app -->|folosește| game_core
     ios -->|folosește| ios_bridge
     ios_bridge -->|expune| game_core
     game_core -->|folosește| card_table_names
+    classDef parked fill:#f5f5f5,stroke:#777,stroke-dasharray:4 3
+    class ios,ios_bridge parked
 ```
 
 <details>
-<summary>Legendă privind proprietarii stării</summary>
+<summary>Legendă — direcția dependențelor și scopul suspendat</summary>
 
-- Motorul deține regulile, sesiunea, scorul și deciziile AI. Politica AI primește mâna proprie și informația publică a mesei.
-- Android păstrează adaptarea la ecrane, preferințele și checkpoint-ul. Biblioteca vizuală comună oferă prezentarea mesei și emite intențiile de interacțiune.
-- Puntea SwiftUI către motorul tradus este pusă în așteptare. Procesul activ de release nu include build IPA sau calificare pe simulator. [Ghidul iOS](docs/platform/ATF_iOSDelivery.md)
-- Diagrama arată dependențele buildurilor native. [Adaptorul Web](atf-ui-browser/README.md#web-execution-paths) explică traseul separat al aceluiași motor și al contractelor portabile de afișare.
+- Săgețile pleacă de la consumator spre dependență. Inventarul modulelor și configurațiile dependențelor de mai jos sunt verificate față de POM-uri și fișierele Gradle.
+- `game-core` deține regulile, calculul scorului și deciziile AI. O politică de joc primește mâna proprie și informațiile publice ale mesei; evaluarea offline aparține `ai-lab`.
+- Android deține ecranele, preferințele și checkpointurile. Puntea iOS suspendată nu implică un build IPA activ sau calificarea pe simulator. [Scopul platformei](docs/platform/ATF_iOSDelivery.md)
 
 </details>
 
-| Zonă | Module și responsabilități |
+| Zonă | Responsabil și ghid |
 |---|---|
-| Motor și cercetare | [`game-core`](whist-lab-app/game-core/README.md) deține domeniul. [`card-table-names`](whist-lab-app/card-table-names/README.md) validează și distribuie numele. [`ai-lab`](whist-lab-app/ai-lab/README.md) evaluează politicile offline prin [buildul JVM](whist-lab-app/algorithm-build/README.md). |
-| Aplicații | [Android](whist-lab-app/app/src/main/java/ro/whistlab/app/README.md) integrează [`atf-card-table-ui`](whist-lab-app/atf-card-table-ui/README.md). [Browser](atf-ui-browser/README.md) folosește motorul compilat. [Puntea iOS](ios/README.md) este pusă în așteptare și nu este o țintă de release acceptată. |
-| Infrastructură ATF | [`atf-validation`](atf-validation/README.md) evaluează semantic răspunsuri API. [`atf-test-android`](atf-test-android/README.md) execută comenzi ADB și scenarii. [`atf-tests`](atf-tests/README.md) verifică integrarea, guvernanța și livrarea. |
-| Audit și execuție | [`test-audit`](whist-lab-app/test-audit/README.md) capturează comparațiile Gradle. [`lib`](lib/README.md) păstrează bibliotecile cu proveniență, iar [`scripts`](scripts/README.md) pregătește rulările izolate. |
-| Livrare | [Catalogul](release/README.md) identifică versiunea disponibilă și dosarul de calificare. |
-
-Declarațiile de mai jos provin din [setările Gradle](whist-lab-app/settings.gradle) și [POM-ul rădăcină](pom.xml). Verificarea confruntă inventarele, dependențele directe și configurațiile lor. [Guvernanța documentației](docs/governance/ATF_Documentation.md#main-readme)
+| Reguli și politici | [game-core](whist-lab-app/game-core/README.md) · [card-table-names](whist-lab-app/card-table-names/README.md) · [ai-lab](whist-lab-app/ai-lab/README.md) |
+| Aplicații active | [Android](whist-lab-app/app/src/main/java/ro/whistlab/app/README.md) · [UI comun pentru masă](whist-lab-app/atf-card-table-ui/README.md) · [Web](atf-ui-browser/README.md) |
+| Validare și scenarii pe dispozitiv | [atf-validation](atf-validation/README.md) · [atf-test-android](atf-test-android/README.md) |
+| Verificare și audit | [atf-tests](atf-tests/README.md) · [test-audit](whist-lab-app/test-audit/README.md) · [Build JVM](whist-lab-app/algorithm-build/README.md) |
+| Execuție și livrare | [Scripturi](scripts/README.md) · [Catalogul livrărilor](release/README.md) |
 
 <details>
 <summary>Declarațiile verificate din Maven și Gradle</summary>
@@ -115,17 +113,81 @@ Tabelul Gradle descrie modulele buildului implicit și dependențele directe în
 
 </details>
 
+### De la surse la livrare
+
+Ieșirile buildului și dovezile de acceptanță au responsabili separați. Un rezultat JVM demonstrează contractul exercitat; acceptanța pe dispozitiv sau browser cere propria observație de platformă.
+
+```mermaid
+%%{init: {"theme":"neutral","themeVariables":{"fontSize":"15px"},"themeCSS":".edgeLabel, .edgeLabel p { font-size: 12px !important; } .node rect { rx: 6px; ry: 6px; }","flowchart":{"curve":"linear","nodeSpacing":24,"rankSpacing":20,"padding":6},"sequence":{"mirrorActors":false,"messageMargin":24}}}%%
+flowchart LR
+    Gradle["Gradle"]
+    APK["Android APK"]
+    JVM["Componente JVM"]
+    Maven["Maven ATF"]
+    Platform["Android · Web<br/>verificări"]
+    Evidence["Aserțiuni<br/>și recepții"]
+    Gate["Calificarea<br/>livrării"]
+    Dossier["Dosar de<br/>versiune"]
+    Gradle -->|împachetează| APK
+    Gradle -->|testează| JVM
+    Maven -->|verificări| Evidence
+    JVM -->|comparații| Evidence
+    APK -->|candidat| Gate
+    Platform -->|observații| Evidence
+    Evidence -->|acceptanță| Gate
+    Gate -->|înregistrează| Dossier
+```
+
+<details>
+<summary>Legendă — ce demonstrează calificarea</summary>
+
+- Gradle construiește aplicația Android și rulează verificări JVM. Maven adaugă modulele ATF, scenariile Android și guvernanța proiectului; probele de browser urmează ghidul adaptorului lor.
+- Extent înregistrează aserțiuni și diagnostice pentru verificările selectate. Un rezultat de componentă nu înlocuiește geometria pictată sau comportamentul pe dispozitiv.
+- Calificarea RAG asociază verificările selectate cu identitatea sursei și a candidatului. Dosarul păstrează proveniența APK, calificarea și verificarea descărcării; este evidența versiunii, fără a deveni o prezentare generală a proiectului. [Contract de calificare](docs/testing/ATF_ReleaseQualification.md)
+
+</details>
+
 ## Verificare și ghiduri
 
-Din rădăcină, cu Java 21, PowerShell 7 și Node.js, colecția rapidă verifică regulile și contextele publice într-o copie temporară. [Precondiții și colecții](docs/testing/ATF_Collections.md)
+Din rădăcina repository-ului, folosește Java 21, PowerShell 7 și Node.js. Colecția rapidă pregătește o rulare izolată și verifică reguli și contexte publice; consultă ghidul colecțiilor înainte de a alege regresii mai largi, verificări pe dispozitiv sau cercetare.
 
 ```powershell
 .\scripts\run-whist-collection.ps1 -Collection quick
 ```
 
-| Ce cauți | Unde începi |
+### Schimbare, dovezi și întreținere
+
+```mermaid
+%%{init: {"theme":"neutral","themeVariables":{"fontSize":"15px"},"themeCSS":".edgeLabel, .edgeLabel p { font-size: 12px !important; } .node rect { rx: 6px; ry: 6px; }","flowchart":{"curve":"linear","nodeSpacing":24,"rankSpacing":20,"padding":6},"sequence":{"mirrorActors":false,"messageMargin":24}}}%%
+flowchart LR
+    Change["Contract<br/>schimbat"]
+    Owner["Modul<br/>responsabil"]
+    Checks["Verificări<br/>delimitate"]
+    Review["Revizuire<br/>dovezi"]
+    Guide["Ghid<br/>actual"]
+    Feedback["Lacună<br/>activă"]
+    Change -->|localizează| Owner
+    Owner -->|selectează| Checks
+    Checks -->|inspectează| Review
+    Review -->|acceptat| Guide
+    Review -->|incomplet| Feedback
+    Feedback -->|corectează| Owner
+```
+
+<details>
+<summary>Legendă — guvernanță și documentație durabilă</summary>
+
+- Guvernanța verifică informațiile modulelor, convențiile de cod și teste, structura documentației, linkurile și paritatea edițiilor. Testele de comportament și de platformă își demonstrează propriile contracte.
+- Selectează colecțiile de cercetare pentru dovezi privind politicile; compară intrări controlate și limite declarate înainte de a interpreta forța de joc. Acceptanța livrării rămâne o decizie separată.
+- Actualizează ghidul responsabil când o corecție schimbă un contract durabil. Păstrează criteriile de acceptanță nerezolvate în feedback și elimină narațiunea rezultatelor încheiate. Edițiile EN/RO păstrează căile, comenzile și topologia diagramelor.
+
+</details>
+
+| Întrebare | Ghid |
 |---|---|
-| Testare și guvernanță | [Strategia de testare](docs/testing/README.md) · [Guvernanța calității](docs/governance/README.md) · [Verificările Android](docs/testing/ATF_Android.md) |
-| Calificare și publicare | [Procesul RAG](docs/testing/ATF_ReleaseQualification.md) · [Livrarea Android](docs/platform/ATF_AndroidDelivery.md) · [Livrarea iOS](docs/platform/ATF_iOSDelivery.md) |
-| Joc și AI | [Reguli și variante](docs/game/README.md) · [Istoric](docs/game/ATF_ScoreHistory.md) · [Realizări](docs/game/ATF_Achievements.md) · [Arhitectura AI](docs/ai/README.md) |
-| Documentație și lucrări deschise | [Indexul ghidurilor](docs/README.md) · [Feedback](docs/feedback/README.md) |
+| Ce verificări trebuie rulate? | [Strategia de testare](docs/testing/README.md) · [Colecții](docs/testing/ATF_Collections.md) · [Android](docs/testing/ATF_Android.md) |
+| Ce protejează codul și documentația? | [Guvernanța calității](docs/governance/README.md) · [Standardul documentației](docs/governance/ATF_Documentation.md) |
+| Cum sunt definite jocul și evaluarea politicilor? | [Reguli](docs/game/README.md) · [Arhitectura AI](docs/ai/README.md) |
+| Unde sunt contractele detaliate și lacunele deschise? | [Indexul documentației](docs/README.md) · [Feedback activ](docs/feedback/README.md) |
+
+Contractele dependențelor și proveniența sunt reunite în [indexul local al bibliotecilor](lib/README.md).
