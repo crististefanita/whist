@@ -27,13 +27,13 @@ Motorul deține jocul legal și starea partidei. Adaptoarele de platformă trans
 flowchart LR
     Android["Android"]
     Web["Browser"]
-    Engine["game-core<br/>reguli și sesiune"]
-    Table["Contracte portabile de masă"]
-    View["Randare pe platformă"]
-    Android -->|transmite comenzi| Engine
-    Web -->|transmite comenzi| Engine
-    Engine -->|proiectează starea publică| View
-    Table -->|adaptează măsurători| View
+    Engine["game-core"]
+    Table["Contracte de masă"]
+    View["Randare"]
+    Android -->|comenzi| Engine
+    Web -->|comenzi| Engine
+    Engine -->|proiectează| View
+    Table -->|adaptează| View
 ```
 
 <details>
@@ -55,7 +55,7 @@ flowchart LR
     app["Android app"]
     atf_card_table_ui["UI Android comun"]
     ios["iOS · suspendat"]
-    ios_bridge["ios-bridge · suspendat"]
+    ios_bridge["ios-bridge"]
     game_core["game-core"]
     card_table_names["card-table-names"]
     app -->|folosește| atf_card_table_ui
@@ -124,10 +124,10 @@ flowchart LR
     APK["Android APK"]
     JVM["Componente JVM"]
     Maven["Maven ATF"]
-    Platform["Android · Web<br/>verificări"]
-    Evidence["Aserțiuni<br/>și recepții"]
-    Gate["Calificarea<br/>livrării"]
-    Dossier["Dosar de<br/>versiune"]
+    Platform["Android · Web"]
+    Evidence["Aserțiuni"]
+    Gate["Calificare"]
+    Dossier["Dosar"]
     Gradle -->|împachetează| APK
     Gradle -->|testează| JVM
     Maven -->|verificări| Evidence
@@ -135,7 +135,7 @@ flowchart LR
     APK -->|candidat| Gate
     Platform -->|observații| Evidence
     Evidence -->|acceptanță| Gate
-    Gate -->|înregistrează| Dossier
+    Gate -->|păstrează| Dossier
 ```
 
 <details>
