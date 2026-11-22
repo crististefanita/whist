@@ -44,3 +44,5 @@ The source-diff plan selected one component/governance suite and reused nine unc
 - [APK source inventory](apk-inputs.json)
 - [Pinned qualification plan](qualification-plan.json)
 - Build, signer and identity receipts are in [diagnostics](diagnostics/).
+
+[Release catalog](../../README.md) · [Shared testing strategy](../../../docs/testing/README.md)
