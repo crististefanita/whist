@@ -64,7 +64,7 @@ The proof command declares the planned verification and runs separately. [Compon
 
 ### Editorial continuation of original proofs
 
-An original proof remains bound to the commit, base, diff, selectors and Extent bytes recorded at execution. A later editorial commit does not become a new execution: the [continuation validator](../../atf-tests/src/main/java/atf/tests/testchange/EditorialProofContinuation.java) admits reuse while retaining that original identity.
+An original proof remains bound to the commit, base, diff, selectors and Extent bytes recorded at execution. A later editorial commit does not become a new execution: the [continuation validator](../../atf-tests/src/main/java/atf/tests/testchange/EditorialProofContinuation.java) admits reuse while retaining that original identity. Audit readers display both the original and admitted commits and retain links to the original report.
 
 | Boundary | Required check |
 |---|---|
