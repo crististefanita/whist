@@ -10,6 +10,7 @@ import {readE2eEvidence} from './android-e2e-evidence.mjs';
 import {QualificationTiming} from './release-timing.mjs';
 import {evidenceFreshness} from './release-evidence-freshness.mjs';
 import {componentEvidenceScope} from './component-evidence-scope.mjs';
+import {sourceCheckFiles, verifyDocumentationDrift} from './component-source-check.mjs';
 import {deriveReleaseTestScope, isOnlyAndroidVersionChange} from './release-test-scope.mjs';
 import {readVisualContractSources} from './visual-contract-sources.mjs';
 import {catalogVersions, expectedEdition, githubRetentionPolicy, githubRetentionProblems} from './github-release-retention.mjs';
@@ -35,23 +36,29 @@ function componentGroupsRequiredForVersion(policy, platform, version) {
     .map(item => item.group)])];
 }
 
+function componentRunRows(run) {
+  const results = run?.results;
+  return run?.kind === 'live-source-components' && Array.isArray(results)
+      && results.length > 0 && results.every(row => typeof row?.module === 'string' && Number.isInteger(row.exitCode))
+      && new Set(results.map(row => row.module)).size === results.length;
+}
+
 function stableComponentRun(run) {
   const results = run?.results;
-  if (run?.kind !== 'live-source-components' || run.sourceStable !== true || !Array.isArray(results)
-      || !results.length || !results.every(row => typeof row?.module === 'string' && Number.isInteger(row.exitCode))
-      || new Set(results.map(row => row.module)).size !== results.length) return false;
+  if (!componentRunRows(run) || run.sourceStable !== true) return false;
   return run.status === (results.every(row => row.exitCode === 0) ? 'PASS' : 'FAIL');
 }
 
-export function verifyComponentOrigin(inputs, run, provenance, inputManifest = 'source-inputs.json') {
+export function verifyComponentOrigin(inputs, run, provenance, inputManifest = 'source-inputs.json', sourceCheck) {
   const sourceSet = componentInputMap(inputs.value);
   const matchesInputs = receipt => receipt?.kind === 'live-source-components'
       && receipt.sourceFingerprint === inputs.sha256 && receipt.inputCount === sourceSet.size
       && receipt.inputManifest === inputManifest;
-  if (!matchesInputs(run) || !stableComponentRun(run)
+  if (!matchesInputs(run) || !componentRunRows(run)
       || !matchesInputs(provenance.value) || run.provenanceReceiptSha256 !== provenance.sha256)
     throw Error('Receipt-ul de proveniență sau rularea rădăcină nu corespunde manifestului intrărilor.');
-  return {sourceSet, sourceFingerprint: inputs.sha256, run, provenance};
+  const readmission = stableComponentRun(run) ? null : verifyDocumentationDrift(inputs, run, provenance, sourceCheck);
+  return {sourceSet, sourceFingerprint: inputs.sha256, run, provenance, ...(readmission ? {readmission} : {})};
 }
 
 export function verifyReleaseInputs(origin, document) {
@@ -836,7 +843,10 @@ export async function evaluateRelease({projectRoot, candidateDir, sourceRoot, pl
       const inputs = await readPayloadJson(inputRelative);
       const run = (await readPayloadJson(resolve(binding.runReceipt))).value;
       const provenance = await readPayloadJson(resolve(binding.provenanceReceipt));
-      const origin = verifyComponentOrigin(inputs, run, provenance, path.posix.basename(inputRelative));
+      const sourceCheck = run.sourceStable === false
+        ? await Promise.all(sourceCheckFiles.map(file => readPayloadJson(resolve(path.posix.join(
+          path.posix.dirname(binding.runReceipt), file))))) : undefined;
+      const origin = verifyComponentOrigin(inputs, run, provenance, path.posix.basename(inputRelative), sourceCheck);
       if (origin.provenance.value.releaseInputManifest !== undefined || origin.run.releaseInputManifest !== undefined) {
         const releaseInputs = await readPayloadJson(resolve('reports/component/release-inputs.json'));
         origin.releaseInputs = verifyReleaseInputs(origin, releaseInputs);
@@ -863,6 +873,7 @@ export async function evaluateRelease({projectRoot, candidateDir, sourceRoot, pl
       result.sourceEvidence = {decision: scope.decision, originalSourceFingerprint: origin.sourceFingerprint,
         reason: scope.reason, affectedGroups: scope.affectedGroups,
         changedInputCount: scope.changed.length, affectedInputs: scope.affected.slice(0, 30),
+        ...(origin.readmission ? {readmission: origin.readmission} : {}),
         ...(origin.releaseFingerprint ? {releaseFingerprint: origin.releaseFingerprint} : {})};
       if (scope.decision === 'RUN') {
         result.status = 'BLOCKED';

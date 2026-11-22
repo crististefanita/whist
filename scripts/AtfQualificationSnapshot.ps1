@@ -65,15 +65,19 @@ function Get-AtfInputFingerprint([string]$Json) {
     [Convert]::ToHexString([Security.Cryptography.SHA256]::HashData([Text.Encoding]::UTF8.GetBytes($Json))).ToLowerInvariant()
 }
 
-function Get-AtfSnapshotDifferences($Snapshot, [string]$Stage, [string]$SourceRoot) {
+function Get-AtfSnapshotDifferences($Snapshot, [string]$Stage, [string]$SourceRoot, [string]$CaptureRoot = '') {
+    $differences = [Collections.Generic.List[string]]::new()
+    $observations = [Collections.Generic.List[object]]::new()
     foreach ($location in @(@{name='STAGED';root=$Stage}, @{name='LIVE';root=$SourceRoot})) {
         foreach ($scope in @('SOURCE','RELEASE')) {
             try {
                 $observed = if ($scope -eq 'SOURCE') {
                     @(& (Join-Path $PSScriptRoot 'Get-AtfSourceInputs.ps1') -SourceRoot $location.root)
                 } else { @(Get-AtfReleaseInputs $location.root) }
+                $observedJson = ConvertTo-AtfInputJson $observed
+                $observations.Add(@{path=('observed-' + $location.name.ToLowerInvariant() + '-' + $scope.ToLowerInvariant() + '.json');json=$observedJson})
                 $expected = if ($scope -eq 'SOURCE') { $Snapshot.source } else { $Snapshot.release }
-                if ((ConvertTo-AtfInputJson $observed) -cne $expected) {
+                if ($observedJson -cne $expected) {
                     $before = [Collections.Generic.Dictionary[string,string]]::new([StringComparer]::Ordinal)
                     $after = [Collections.Generic.Dictionary[string,string]]::new([StringComparer]::Ordinal)
                     foreach ($row in ($expected | ConvertFrom-Json)) { $before[$row.path] = $row.sha256 }
@@ -82,12 +86,25 @@ function Get-AtfSnapshotDifferences($Snapshot, [string]$Stage, [string]$SourceRo
                     $paths.UnionWith($before.Keys)
                     $paths.UnionWith($after.Keys)
                     foreach ($path in $paths) {
-                        if ($before[$path] -cne $after[$path]) { "$($location.name)-$($scope): $path" }
+                        if ($before[$path] -cne $after[$path]) { $differences.Add("$($location.name)-$($scope): $path") }
                     }
                 }
-            } catch { "$($location.name)-$($scope): $($_.Exception.Message)" }
+            } catch { $differences.Add("$($location.name)-$($scope): $($_.Exception.Message)") }
         }
     }
+    if ($CaptureRoot -and $differences.Count -and $observations.Count -eq 4) {
+        $captured = @($observations | ForEach-Object {
+            [IO.File]::WriteAllText((Join-Path $CaptureRoot $_.path), $_.json)
+            [ordered]@{path=$_.path;sha256=(Get-AtfInputFingerprint $_.json)}
+        })
+        $receipt = [ordered]@{schemaVersion=1;kind='ATF_COMPONENT_SOURCE_CHECK'
+            expectedSourceSha256=(Get-AtfInputFingerprint $Snapshot.source)
+            expectedReleaseSha256=(Get-AtfInputFingerprint $Snapshot.release)
+            observations=$captured;differences=$differences.ToArray()}
+        [IO.File]::WriteAllText((Join-Path $CaptureRoot 'source-snapshot-check.json'),
+            (($receipt | ConvertTo-Json -Depth 6) + [Environment]::NewLine))
+    }
+    $differences.ToArray()
 }
 
 function Assert-AtfQualificationSnapshot($Snapshot, [string]$Stage, [string]$SourceRoot) {

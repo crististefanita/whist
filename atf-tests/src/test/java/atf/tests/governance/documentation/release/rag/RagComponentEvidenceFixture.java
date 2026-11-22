@@ -61,5 +61,35 @@ final class RagComponentEvidenceFixture {
         return groups;
     }
 
+    /** Controlled source drift for evaluator components; production uses the snapshot checker. */
+    static Path documentationDrift(Path component) throws Exception {
+        var source = JSON.readTree(component.resolve("source-inputs.json").toFile());
+        var release = JSON.readTree(component.resolve("release-inputs.json").toFile());
+        var live = source.deepCopy();
+        ((ObjectNode) live.get(0)).put("sha256", "c".repeat(64));
+        var check = JSON.createObjectNode().put("schemaVersion", 1).put("kind", "ATF_COMPONENT_SOURCE_CHECK")
+                .put("expectedSourceSha256", hash(component.resolve("source-inputs.json")))
+                .put("expectedReleaseSha256", hash(component.resolve("release-inputs.json")));
+        var observations = check.putArray("observations");
+        List<String> names = List.of("observed-staged-source.json", "observed-staged-release.json",
+                "observed-live-source.json", "observed-live-release.json");
+        var values = List.of(source, release, live, release);
+        for (int index = 0; index < names.size(); index++) {
+            Path file = component.resolve(names.get(index));
+            JSON.writeValue(file.toFile(), values.get(index));
+            observations.addObject().put("path", names.get(index)).put("sha256", hash(file));
+        }
+        check.putArray("differences").add("LIVE-SOURCE: README.md");
+        Path file = component.resolve("source-snapshot-check.json");
+        JSON.writeValue(file.toFile(), check);
+        Path aggregate = component.resolve("source-component-run.json");
+        var run = (ObjectNode) JSON.readTree(aggregate.toFile());
+        run.put("sourceStable", false).put("status", "FAIL").put("sourceCheckReceipt", "source-snapshot-check.json")
+                .put("sourceCheckReceiptSha256", hash(file));
+        run.putArray("snapshotDifferences").add("LIVE-SOURCE: README.md");
+        JSON.writeValue(aggregate.toFile(), run);
+        return aggregate;
+    }
+
     private RagComponentEvidenceFixture() { }
 }

@@ -368,7 +368,7 @@ try {
     }
 
     $snapshotDifferences = @(Invoke-AtfQualificationPhase $timing 'components.snapshot-recheck' {
-        Get-AtfSnapshotDifferences $snapshot $stage $sourceRoot | ForEach-Object {
+        Get-AtfSnapshotDifferences $snapshot $stage $sourceRoot -CaptureRoot $RunRoot | ForEach-Object {
             ConvertTo-AtfPortableDiagnostic $_ $sourceRoot $stage $work $RunRoot
         }
     })
@@ -391,6 +391,11 @@ try {
         releaseFingerprint=$releaseFingerprint;releaseInputManifest='release-inputs.json';snapshotDifferences=$snapshotDifferences
         results=$results;reusedGroups=@($reused | ForEach-Object {$_.group});gradleBatch=$gradleBatch
         androidComponentsReceipt=$androidComponentsReceipt
+    }
+    $sourceCheck = Join-Path $RunRoot 'source-snapshot-check.json'
+    if (Test-Path -LiteralPath $sourceCheck -PathType Leaf) {
+        $run.sourceCheckReceipt = 'source-snapshot-check.json'
+        $run.sourceCheckReceiptSha256 = (Get-FileHash -LiteralPath $sourceCheck -Algorithm SHA256).Hash.ToLowerInvariant()
     }
     Write-AtfComponentJson (Join-Path $RunRoot 'source-component-run.json') $run
     $lines = @('# Component reports for the pinned source','','## Overview','','Each newly executed selection has its own Extent report and execution receipt. These results qualify the pinned source; APK qualification and native Android flows have separate evidence.','','| Selection | Execution | Report | Metadata |','|---|---|---|---|')
