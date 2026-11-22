@@ -6,7 +6,7 @@ Catalogul urmărește ediția Android curentă și predecesoarea ei imediată. U
 
 ## Versiunea curentă
 
-[0.23.1 — release Android de mentenanță](0.23.1/README.md) este calificat și așteaptă publicarea autentificată pe GitHub.
+[0.23.1 — release Android de mentenanță](0.23.1/README.md) este publicat; descărcarea directă a APK-ului și checksum-ului a fost verificată.
 
 ## Versiunea anterioară
 
@@ -16,7 +16,7 @@ Catalogul urmărește ediția Android curentă și predecesoarea ei imediată. U
 
 | Versiune | Stare | Dosar |
 |---|---|---|
-| 0.23.1 | Calificat; publicarea este în curs | [APK și dovezi](0.23.1/README.md) |
+| 0.23.1 | Publicat; APK și checksum verificate | [APK și dovezi](0.23.1/README.md) |
 | 0.23.0 | Ediția publicată anterioară | [APK și dovezi](0.23.0/README.md) |
 
 ## Publicare și verificare

@@ -12,4 +12,4 @@ Această ediție Android de mentenanță consolidează calificarea bazată pe di
 
 - Calificarea componentelor și a guvernanței, legată de sursă, a trecut; un grup afectat a rulat, iar nouă grupuri neschimbate au reutilizat dovezi verificate.
 - Livrarea nativă iOS rămâne în așteptare și nu face parte din poarta activă de release.
-- Publicarea autentificată pe GitHub este în așteptare; README-ul proiectului folosește URL-ul rezervat pentru acest activ versionat.
+- Release-ul GitHub `v0.23.1` este publicat. Descărcările APK-ului și checksum-ului au trecut verificarea HTTPS directă și verificarea API autentificată.
