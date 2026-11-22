@@ -64,6 +64,12 @@ The proof command declares the planned verification and runs separately. [Compon
 
 Both qualification launchers call the [admission adapter](../../scripts/AtfTestChangeAdmission.ps1) before copying or restoring a source snapshot, copying dependency caches, or starting Maven. A small standalone compiler builds the [CLI](../../atf-tests/src/main/java/atf/tests/testchange/TestChangeAdmissionCli.java) from the current tool sources and reads the pinned parser JARs from `-MavenCache`. The CLI calls the same `TestChangeReview` and `TestChangeProof` validators as final governance.
 
+| Selector boundary | Admission and authority |
+|---|---|
+| Source eligibility | The [validator](../../atf-tests/src/main/java/atf/tests/testchange/selectors/StaticProofSelectors.java) parses literal Maven roots with the JDK, without application compilation or class loading. Each positive/negative `Class#method` identifies one declared instance `void @Test` method in component scope. Local composed annotations, inherited scope and non-static nested containers resolve from source; parameter injection is allowed, invocation multiplicity is not. |
+| Early rejection | Dynamic factories/templates, repeated or parameterized tests, overloads, duplicate types, unresolved/cyclic annotation composition and ambiguous imports produce `TEST-CHANGE-SELECTOR-*`. Main-source classes and inherited-only methods cannot authorize selectors. Normal verification and proof-generation admission re-evaluate this contract after staging. |
+| Final authority | Source eligibility is conservative and does not replace JUnit discovery of exactly one invocation per selector or the original passing outcomes. Disabled, aborted, missing or failing execution cannot produce a verified proof. [Component cases](../../atf-tests/src/test/java/atf/tests/governance/source/changes/TestChangeSelectorComponentTest.java) cover the static boundary; [launcher checks](../../atf-tests/src/test/java/atf/tests/governance/documentation/release/rag/scope/QualificationLauncherComponentTest.java) prove rejection before copying sources/caches and before Maven. |
+
 | Mode | Admission contract |
 |---|---|
 | Normal governance or components | Verify eligible controls and all required original receipts, including ID, Git base, commit, raw diff, positive/negative selectors and HTML SHA-256. |

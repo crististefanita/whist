@@ -11,7 +11,8 @@ The level expresses the limit checked and the collection selects cases and the c
 
 | Question | Guide |
 |---|---|
-| What do I check unitary, as a component, through integration or butt? | [Architecture and matrix](ATF_Architecture.md) |
+| Which module owns the test, and which level is declared? | [Testing guide and detailed matrix](ATF_TestingGuide.md) |
+| Which boundary belongs at unit, component, integration or E2E level? | [Test architecture](ATF_Architecture.md) |
 | What selection do I run for my change? | [Collections and commands](ATF_Collections.md) |
 | How do I justify an AI decision without real adverse hands? | [Parts and oracles](ATF_AiComponents.md) |
 | How do I transfer lessons to another game or a new product? | [Lessons, mockings and adapters](../learning/ATF_PolicyEvolution.md#lessons-to-other-games-and-products) |

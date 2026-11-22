@@ -31,17 +31,9 @@ The level depends on the actual collaboration required for verification. An arch
 
 An auxiliary function, a data producer, a charger or an oracle is a support. A class executable from a support package declares its own level.
 
-## Maven Executable Matrix
+## Module and level inventory
 
-The table reflects the annotations of executable classes, including compound annotations. "- 'means the absence of a class declared at that level; it does not require the creation of an artificial suite.
-
-| Module | Unit | Component | Integration | E2E | Responsibility |
-|---|---|---|---|---|---|
-| `atf-validation` | Da | Da | — | — | Validation rules and evaluation of public contracts. |
-| `atf-test-android` | Da | Da | Da | Da | Time, simulated ADB, oracles, integration of reporting and real Android trails. |
-| `atf-tests` | Da | Da | Da | — | Adapter contracts, joint binaries and project governance. |
-
-[Math verification](../../atf-tests/src/test/java/atf/tests/governance/source/TestLayerGovernanceTest.java) faces this table with current sources. Each Maven executable class has one of the exact `@AtfUnitTest`, `@AtfComponentTest`, `@AtfIntegrationTest` and `@AtfE2eTest`, directly or through compound annotation.
+The [detailed module × test level matrix](ATF_TestingGuide.md#detailed-module--test-level-matrix) maps Maven declarations, Gradle boundaries, browser adapters and binary consumers. It is the single module-level test inventory. Each executable Maven class declares exactly one of `@AtfUnitTest`, `@AtfComponentTest`, `@AtfIntegrationTest` or `@AtfE2eTest`, directly or through a composed annotation; the source-based governance checks that matrix.
 
 Statements are extracted through JDK parser, independent of indentation and annotation position towards modifiers. Methods belong to the type declaring them, containers `@Nested` be explicit and modules retain the identity of the Maven roots; [syntax contract](../governance/README.md#test-declarations) delimited this inspection by the execution of JUnit.
 

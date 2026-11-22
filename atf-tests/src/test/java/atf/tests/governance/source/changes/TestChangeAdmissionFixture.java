@@ -19,9 +19,19 @@ public final class TestChangeAdmissionFixture {
     public static final String ID = "FIXTURE-EARLY-ADMISSION";
     private static final String POSITIVE = "example.MockBoundary#accepts";
     private static final String NEGATIVE = "example.MockBoundary#rejects";
+    public static final String SELECTOR_SOURCE = "src/test/java/example/MockBoundary.java";
     private TestChangeAdmissionFixture() { }
 
     public static String prepareReview(Path source) throws Exception {
+        write(source, SELECTOR_SOURCE, """
+                package example;
+                import atf.testkit.AtfComponentTest;
+                import org.junit.jupiter.api.Test;
+                @AtfComponentTest class MockBoundary {
+                    @Test void accepts() { }
+                    @Test void rejects() { }
+                }
+                """);
         git(source, "init", "-q", "-b", "main");
         git(source, "config", "user.name", "ATF fixture");
         git(source, "config", "user.email", "fixture@example.invalid");
@@ -49,6 +59,12 @@ public final class TestChangeAdmissionFixture {
                 List.of(new TestChangeProof.Outcome(NEGATIVE, "PASS")), folder);
         Files.move(folder.resolve(TestChangeProof.PENDING), folder.resolve(TestChangeProof.RECEIPT));
         return folder;
+    }
+
+    public static void replaceSelectorSource(Path source, String declaration) throws Exception {
+        write(source, SELECTOR_SOURCE, declaration);
+        git(source, "add", "-A");
+        git(source, "commit", "-qm", "controlled selector mutation");
     }
 
     public static Path parserCache(Path directory) throws Exception {
@@ -106,7 +122,7 @@ public final class TestChangeAdmissionFixture {
         return "```yaml\ntestChanges:\n  - id: " + ID + "\n    status: " + status + "\n    base: " + base
                 + "\n    expires: " + expires + "\n    reason: Isolate source snapshot admission from mocked Maven execution."
                 + "\n    proof: 'mvn -pl atf-tests test'\n    checks:\n      positive: ['" + POSITIVE
-                + "']\n      negative: ['" + NEGATIVE + "']\n    paths: ['pom.xml']\n```\n";
+                + "']\n      negative: ['" + NEGATIVE + "']\n    paths: ['pom.xml', '" + SELECTOR_SOURCE + "']\n```\n";
     }
 
     private static void write(Path root, String file, String text) throws Exception {

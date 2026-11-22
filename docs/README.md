@@ -12,7 +12,7 @@ Each area has one introductory README and supporting guides with explicit owners
 | [Game](game/README.md) | What are the rules, variants, difficulty levels and scoring data? |
 | [AI players](ai/README.md) | How do players turn the information they are allowed to see into a decision? |
 | [Offline learning](learning/README.md) | How do we use the corpus, comparisons and holdout evaluation? |
-| [Testing](testing/README.md) | Which test layer, collection and oracle verify the change? |
+| [Testing](testing/README.md) | Which test layer, collection and oracle verify the change? [Module × level matrix](testing/ATF_TestingGuide.md#detailed-module--test-level-matrix). |
 | [Reporting](reporting/README.md) | How do we retain results and verify that they were published? |
 | [Platform](platform/README.md) | How do we integrate binary libraries and deliver the Android app? |
 | [Governance](governance/README.md) | How do we maintain the quality of code, documentation and changes? |

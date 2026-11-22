@@ -185,7 +185,7 @@ flowchart LR
 
 | Question | Guide |
 |---|---|
-| Which checks should run? | [Test strategy](docs/testing/README.md) · [Collections](docs/testing/ATF_Collections.md) · [Android](docs/testing/ATF_Android.md) |
+| Which checks should run? | [Test strategy](docs/testing/README.md) · [Module × level matrix](docs/testing/ATF_TestingGuide.md#detailed-module--test-level-matrix) · [Collections](docs/testing/ATF_Collections.md) · [Android](docs/testing/ATF_Android.md) |
 | What protects code and documentation? | [Quality governance](docs/governance/README.md) · [Documentation standard](docs/governance/ATF_Documentation.md) |
 | How are play and policy evaluation defined? | [Rules](docs/game/README.md) · [AI architecture](docs/ai/README.md) |
 | Where are deeper contracts and open gaps? | [Documentation index](docs/README.md) · [Active feedback](docs/feedback/README.md) |

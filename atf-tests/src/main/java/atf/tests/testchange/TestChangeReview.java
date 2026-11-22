@@ -3,6 +3,7 @@ package atf.tests.testchange;
 import atf.tests.testchange.GitTestChangeSnapshot.Change;
 import atf.tests.testchange.GitTestChangeSnapshot.Snapshot;
 import atf.tests.testchange.TestChangeControls.Control;
+import atf.tests.testchange.selectors.StaticProofSelectors;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -28,6 +29,7 @@ public final class TestChangeReview {
     private static final Pattern GRADLE = Pattern.compile("^whist-lab-app/(?:.*/)?(?:build|settings)\\.gradle(?:\\.kts)?$");
     private static final Set<String> OUTPUTS = Set.of(".git", "target", "build", ".gradle", "artifacts", "node_modules", "release");
     private static final List<String> GATES = List.of(
+            "atf-tests/src/main/java/atf/tests/jvm/JavaSourceParser.java",
             "atf-tests/src/main/java/atf/tests/documentation/policy/DocumentationContentPolicy.java",
             "config/atf-governance-policy.json", "config/atf-test-suites.json", "config/atf-component-collections.json", "config/gradle-app-collections.properties",
             "config/gradle-audit-collections.properties", "config/test-collections.json", "config/release-platform-rag-policy.json",
@@ -129,11 +131,20 @@ public final class TestChangeReview {
         var diagnostics = new TreeSet<String>();
         var distinct = new HashSet<String>();
         var verified = new TreeMap<String, Control>();
+        var selected = new TreeMap<String, Control>();
         for (Change change : snapshot.changes()) {
             if (!protectedPath(change.path())) continue;
             distinct.add(change.path());
-            String violation = violation(change, controls, snapshot.base(), today, verified);
+            String violation = violation(change, controls, snapshot.base(), today, verified, selected);
             if (violation != null) diagnostics.add(violation);
+        }
+        if (diagnostics.isEmpty()) {
+            var selectors = new TreeSet<String>();
+            for (Control control : selected.values()) if (control.checks() != null) {
+                selectors.addAll(control.checks().positive());
+                selectors.addAll(control.checks().negative());
+            }
+            StaticProofSelectors.validate(snapshot.root(), List.copyOf(selectors));
         }
         return new Review(snapshot, new Result(snapshot.base(), distinct.size(), List.copyOf(diagnostics)), verified);
     }
@@ -154,7 +165,7 @@ public final class TestChangeReview {
     }
 
     private static String violation(Change change, List<Control> controls, String base, LocalDate today,
-                                    Map<String, Control> verified) {
+                                    Map<String, Control> verified, Map<String, Control> selected) {
         String key = change.kind() + " " + change.path();
         if (!TestChangeControls.exactPath(change.path())) return "TEST-CHANGE-PATH: " + key;
         if (!Set.of("A", "M", "D").contains(change.kind())) return "TEST-CHANGE-GIT-STATE: " + key;
@@ -167,6 +178,7 @@ public final class TestChangeReview {
         if (eligible.isEmpty()) return "TEST-CHANGE-DELETE: " + key + " needs allowDelete: true";
         if (eligible.size() > 1) return "TEST-CHANGE-AMBIGUOUS: " + key + " " + ids(eligible);
         Control control = eligible.getFirst();
+        selected.put(control.id(), control);
         if (control.status().equals("VERIFIED")) verified.put(control.id(), control);
         return null;
     }

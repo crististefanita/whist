@@ -32,6 +32,15 @@ final class TestChangeGitFixture {
         put(TEST, "package demo;\nclass Old {}\n");
         put(RESOURCE, "{}\n");
         put("README.md", "# Fixture\n");
+        put("src/test/java/example/component/ValidReviewTest.java", """
+                package example.component;
+                import atf.testkit.AtfComponentTest;
+                import org.junit.jupiter.api.Test;
+                @AtfComponentTest class ValidReviewTest {
+                    @Test void acceptsExactInputs() { }
+                    @Test void rejectsStaleInput() { }
+                }
+                """);
         commit("baseline");
         base = git("rev-parse", "HEAD");
     }

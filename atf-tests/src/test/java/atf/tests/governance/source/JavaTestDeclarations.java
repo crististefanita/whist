@@ -4,23 +4,13 @@ import com.sun.source.tree.ClassTree;
 import com.sun.source.tree.CompilationUnitTree;
 import com.sun.source.tree.MethodTree;
 import com.sun.source.tree.Tree;
-import com.sun.source.util.JavacTask;
-import java.io.IOException;
-import java.net.URI;
+import atf.tests.jvm.JavaSourceParser;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 import javax.lang.model.element.Modifier;
-import javax.tools.Diagnostic;
-import javax.tools.DiagnosticCollector;
-import javax.tools.JavaFileObject;
-import javax.tools.SimpleJavaFileObject;
-import javax.tools.JavaCompiler;
-import javax.tools.StandardJavaFileManager;
-import javax.tools.ToolProvider;
 
 /** Syntax-only JDK parsing; no compilation, annotation processing or application-class loading. */
 final class JavaTestDeclarations {
@@ -56,43 +46,14 @@ final class JavaTestDeclarations {
 
     /** One inspection owns the file manager; each source still gets a fresh task and diagnostics. */
     static final class Parser implements AutoCloseable {
-        private final JavaCompiler compiler;
-        private final StandardJavaFileManager manager;
-        private boolean closed;
-
-        private Parser() {
-            compiler = ToolProvider.getSystemJavaCompiler();
-            if (compiler == null) throw new IllegalStateException("GOV-JDK: source governance requires a full JDK");
-            manager = compiler.getStandardFileManager(null, Locale.ROOT, null);
-        }
+        private final JavaSourceParser parser = new JavaSourceParser();
 
         Unit parse(String source) {
-            if (closed) throw new IllegalStateException("GOV-JAVA-PARSE: parser is closed");
-            var diagnostics = new DiagnosticCollector<JavaFileObject>();
-            var input = new SimpleJavaFileObject(URI.create("string:///Governed.java"), JavaFileObject.Kind.SOURCE) {
-                @Override public CharSequence getCharContent(boolean ignoreEncodingErrors) { return source; }
-            };
-            try {
-                var task = (JavacTask) compiler.getTask(null, manager, diagnostics,
-                        List.of("-proc:none", "--class-path", "", "--processor-path", ""), null, List.of(input));
-                CompilationUnitTree tree = task.parse().iterator().next();
-                var errors = diagnostics.getDiagnostics().stream().filter(value -> value.getKind() == Diagnostic.Kind.ERROR).toList();
-                if (!errors.isEmpty()) {
-                    var first = errors.getFirst();
-                    throw new IllegalArgumentException("GOV-JAVA-SYNTAX: line " + first.getLineNumber()
-                            + ", column " + first.getColumnNumber() + ": " + first.getMessage(Locale.ROOT));
-                }
-                return describe(tree);
-            } catch (IOException failure) {
-                throw new IllegalStateException("GOV-JAVA-PARSE: cannot inspect source", failure);
-            }
+            return describe(parser.parse(source));
         }
 
         @Override public void close() {
-            if (closed) return;
-            closed = true;
-            try { manager.close(); }
-            catch (IOException failure) { throw new IllegalStateException("GOV-JAVA-PARSE: cannot close parser", failure); }
+            parser.close();
         }
     }
 
