@@ -1893,3 +1893,39 @@ testChanges:
 ```
 
 </details>
+
+<details>
+<summary>Selectori statici de probă și matrice de testare legată de surse</summary>
+
+```yaml
+testChanges:
+  - id: RAG-STATIC-SELECTOR-ADMISSION
+    status: VERIFIED
+    base: 79434786cdc484924cad429ef8356681be9e596c
+    expires: 2026-12-22
+    reason: Admit unambiguous static component declarations before copying sources or caches and Maven, retain authoritative JUnit discovery, and govern the module-level testing map against live declarations.
+    proof: 'mvn -o -pl atf-tests -am -Dtest=TestChangeSelectorComponentTest,TestLayerGovernanceTest -Dsurefire.failIfNoSpecifiedTests=false test'
+    checks:
+      positive:
+        - atf.tests.governance.source.changes.TestChangeSelectorComponentTest#staticSourceDeclarationsAdmitWithoutLoadingApplicationClasses
+        - atf.tests.governance.source.TestLayerGovernanceTest#theGuideMapsEveryGovernedSourceModuleWithoutClaimingBinarySourceSuites
+      negative:
+        - atf.tests.governance.source.changes.TestChangeSelectorComponentTest#dynamicAndAmbiguousDeclarationsFailBeforeProofExecution
+        - atf.tests.governance.source.TestLayerGovernanceTest#theGuideCannotHideMissingDuplicateOrIncorrectLevels
+    paths:
+      - atf-tests/src/main/java/atf/tests/jvm/JavaSourceParser.java
+      - atf-tests/src/main/java/atf/tests/testchange/TestChangeReview.java
+      - atf-tests/src/main/java/atf/tests/testchange/selectors/SelectorSources.java
+      - atf-tests/src/main/java/atf/tests/testchange/selectors/StaticProofSelectors.java
+      - atf-tests/src/test/java/atf/tests/governance/source/JavaTestDeclarations.java
+      - atf-tests/src/test/java/atf/tests/governance/source/TestLayerGovernanceTest.java
+      - atf-tests/src/test/java/atf/tests/governance/source/changes/TestChangeAdmissionFixture.java
+      - atf-tests/src/test/java/atf/tests/governance/source/changes/TestChangeGitFixture.java
+      - atf-tests/src/test/java/atf/tests/governance/source/changes/TestChangeSelectorComponentTest.java
+      - atf-tests/src/test/java/atf/tests/governance/documentation/release/rag/scope/QualificationLauncherComponentTest.java
+      - atf-tests/src/test/java/atf/tests/suites/AtfComponentSuite.java
+      - config/atf-component-collections.json
+      - config/atf-component-dependencies.json
+```
+
+</details>

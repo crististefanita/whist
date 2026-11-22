@@ -89,6 +89,30 @@ class QualificationLauncherComponentTest {
         }
     }
 
+    @Test void unsupportedProofSelectorsStopBothLaunchersBeforeCopyCacheOrMaven() throws Exception {
+        realAdmission = true;
+        Path source = fixture();
+        proofRoot = scratch.resolve("mocked proof inputs");
+        TestChangeAdmissionFixture.verifiedProof(source, reviewBase, proofRoot,
+                java.time.LocalDate.now(java.time.ZoneOffset.UTC));
+        String original = Files.readString(source.resolve(TestChangeAdmissionFixture.SELECTOR_SOURCE));
+        for (String diagnostic : List.of("DYNAMIC", "AMBIGUOUS")) {
+            TestChangeAdmissionFixture.replaceSelectorSource(source, diagnostic.equals("DYNAMIC")
+                    ? original.replace("@Test void accepts", "@org.junit.jupiter.api.TestFactory void accepts")
+                    : original.replace("@Test void accepts() { }", "@Test void accepts() { } void accepts(int value) { }"));
+            for (String runner : List.of(GOVERNANCE, COMPONENTS)) {
+                Path output = scratch.resolve(diagnostic + "-" + runner);
+                var result = launch(runner, source, output, "", null);
+                AuditedAssertions.assertEquals(1, result.exit(), result.log());
+                AuditedAssertions.assertTrue(result.log().contains("TEST-CHANGE-SELECTOR-" + diagnostic), result.log());
+                AuditedAssertions.assertFalse(Files.exists(output.resolve("source-inputs.json")), "No source snapshot for a rejected selector");
+                AuditedAssertions.assertFalse(Files.exists(output.resolve("copy-maven-cache.log"))
+                        || Files.exists(output.resolve("copy-cache.log")), "No dependency cache copying for a rejected selector");
+                AuditedAssertions.assertFalse(Files.exists(scratch.resolve("maven.entered")), "No Maven for a rejected selector");
+            }
+        }
+    }
+
     @ParameterizedTest
     @CsvSource({
         "run-atf-governance.ps1, missing-apk, ENOENT",

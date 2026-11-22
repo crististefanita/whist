@@ -31,17 +31,9 @@ Nivelul depinde de colaborarea reală necesară verificării. Un fișier arhivat
 
 O funcție auxiliară, un constructor de date, un încărcător sau un oracol este suport. O clasă executabilă dintr-un pachet de suport își declară propriul nivel.
 
-## Matricea executabilă Maven
+## Inventarul modulelor și nivelurilor
 
-Tabelul reflectă adnotările claselor executabile, inclusiv adnotările compuse. „—” înseamnă absența unei clase declarate la acel nivel; nu impune crearea unei suite artificiale.
-
-| Modul | Unitar | Componentă | Integrare | E2E | Responsabilitate |
-|---|---|---|---|---|---|
-| `atf-validation` | Da | Da | — | — | Reguli de validare și evaluarea contractelor publice. |
-| `atf-test-android` | Da | Da | Da | Da | Timp, ADB simulat, oracole, integrarea raportării și parcursuri Android reale. |
-| `atf-tests` | Da | Da | Da | — | Contractele adaptoarelor, binarele comune și guvernanța proiectului. |
-
-[Verificarea matricei](../../atf-tests/src/test/java/atf/tests/governance/source/TestLayerGovernanceTest.java) confruntă acest tabel cu sursele curente. Fiecare clasă executabilă Maven are exact una dintre `@AtfUnitTest`, `@AtfComponentTest`, `@AtfIntegrationTest` și `@AtfE2eTest`, direct sau printr-o adnotare compusă.
+[Matricea detaliată modul × nivel de testare](ATF_TestingGuide.md#matrice-detaliată-modul--nivel-de-testare) mapează declarațiile Maven, granițele Gradle, adaptoarele browser și consumatorii binarelor. Este unicul inventar al testelor pe module. Fiecare clasă Maven executabilă declară exact una dintre `@AtfUnitTest`, `@AtfComponentTest`, `@AtfIntegrationTest` sau `@AtfE2eTest`, direct sau printr-o adnotare compusă; guvernanța bazată pe surse verifică matricea.
 
 Declarațiile sunt extrase prin parserul JDK, independent de indentare și de poziția adnotării față de modificatori. Metodele aparțin tipului care le declară, containerele `@Nested` au rol explicit, iar modulele păstrează identitatea rădăcinilor Maven; [contractul sintactic](../governance/README.md#declarațiile-testelor) delimitează această inspecție de execuția JUnit.
 

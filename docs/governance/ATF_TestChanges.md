@@ -64,6 +64,12 @@ Comanda de probă declară verificarea planificată și se execută separat. [Te
 
 Ambele lansatoare de calificare apelează [adaptorul de admitere](../../scripts/AtfTestChangeAdmission.ps1) înaintea copierii sau restaurării snapshot-ului sursei, copierii cache-urilor de dependențe ori pornirii Maven. Un compilator autonom restrâns construiește [CLI-ul](../../atf-tests/src/main/java/atf/tests/testchange/TestChangeAdmissionCli.java) din sursele curente ale uneltelor și citește JAR-urile fixate ale parserelor din `-MavenCache`. CLI-ul apelează aceiași validatori `TestChangeReview` și `TestChangeProof` ca guvernanța finală.
 
+| Granița selectorului | Admitere și autoritate |
+|---|---|
+| Eligibilitatea sursei | [Validatorul](../../atf-tests/src/main/java/atf/tests/testchange/selectors/StaticProofSelectors.java) parsează rădăcinile Maven literale cu JDK, fără compilarea aplicației sau încărcarea claselor ei. Fiecare `Class#method` pozitiv/negativ identifică o singură metodă de instanță `void @Test` declarată în perimetrul componentelor. Adnotările locale compuse, perimetrul moștenit și containerele imbricate nestatice se rezolvă din surse; injectarea parametrilor este permisă, multiplicitatea invocărilor nu. |
+| Refuz timpuriu | Fabricile/șabloanele dinamice, testele repetate sau parametrizate, supraîncărcările, tipurile duplicate, compunerea nerezolvată/ciclică a adnotărilor și importurile ambigue produc `TEST-CHANGE-SELECTOR-*`. Clasele din sursele de producție și metodele numai moștenite nu pot autoriza selectori. Verificarea normală și admiterea generării probelor reevaluează contractul după pregătire. |
+| Autoritate finală | Eligibilitatea sursei este conservatoare și nu înlocuiește descoperirea JUnit a exact unei invocări pe selector sau rezultatele originale trecute. Execuția dezactivată, abandonată, lipsă sau eșuată nu poate produce o probă verificată. [Cazurile de componentă](../../atf-tests/src/test/java/atf/tests/governance/source/changes/TestChangeSelectorComponentTest.java) acoperă granița statică; [controalele lansatoarelor](../../atf-tests/src/test/java/atf/tests/governance/documentation/release/rag/scope/QualificationLauncherComponentTest.java) dovedesc refuzul înaintea copierii surselor/cache-urilor și înainte de Maven. |
+
 | Mod | Contractul admiterii |
 |---|---|
 | Guvernanță sau componente normale | Verifică eligibilitatea controalelor și toate receipt-urile originale necesare, inclusiv ID-ul, baza Git, commitul, diff-ul brut, selectorii pozitivi/negativi și SHA-256 al HTML-ului. |

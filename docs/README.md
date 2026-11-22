@@ -12,7 +12,7 @@ Fiecare arie are un singur README de orientare și ghiduri complementare, cu res
 | [Joc](game/README.md) | Care sunt regulile, variantele, nivelurile și datele scorului? |
 | [Jucători AI](ai/README.md) | Cum se transformă informația permisă într-o decizie? |
 | [Învățare offline](learning/README.md) | Cum folosim corpusul, comparațiile și evaluarea rezervată? |
-| [Testare](testing/README.md) | Ce nivel, colecție și oracol verifică schimbarea? |
+| [Testare](testing/README.md) | Ce nivel, colecție și oracol verifică schimbarea? [Matrice modul × nivel](testing/ATF_TestingGuide.md#matrice-detaliată-modul--nivel-de-testare). |
 | [Raportare](reporting/README.md) | Cum păstrăm rezultatele și verificăm publicarea lor? |
 | [Platformă](platform/README.md) | Cum integrăm bibliotecile binare și livrăm aplicația Android? |
 | [Guvernanță](governance/README.md) | Cum menținem calitatea codului, documentelor și schimbărilor? |

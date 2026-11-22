@@ -185,7 +185,7 @@ flowchart LR
 
 | Întrebare | Ghid |
 |---|---|
-| Ce verificări trebuie rulate? | [Strategia de testare](docs/testing/README.md) · [Colecții](docs/testing/ATF_Collections.md) · [Android](docs/testing/ATF_Android.md) |
+| Ce verificări trebuie rulate? | [Strategia de testare](docs/testing/README.md) · [Matrice modul × nivel](docs/testing/ATF_TestingGuide.md#matrice-detaliată-modul--nivel-de-testare) · [Colecții](docs/testing/ATF_Collections.md) · [Android](docs/testing/ATF_Android.md) |
 | Ce protejează codul și documentația? | [Guvernanța calității](docs/governance/README.md) · [Standardul documentației](docs/governance/ATF_Documentation.md) |
 | Cum sunt definite jocul și evaluarea politicilor? | [Reguli](docs/game/README.md) · [Arhitectura AI](docs/ai/README.md) |
 | Unde sunt contractele detaliate și lacunele deschise? | [Indexul documentației](docs/README.md) · [Feedback activ](docs/feedback/README.md) |

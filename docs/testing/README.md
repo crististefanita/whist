@@ -11,7 +11,8 @@ Nivelul exprimă limita verificată, iar colecția selectează cazurile și cost
 
 | Întrebare | Ghid |
 |---|---|
-| Ce verific unitar, ca o componentă, prin integrare sau cap la cap? | [Arhitectură și matrice](ATF_Architecture.md) |
+| Ce modul deține testul și ce nivel este declarat? | [Ghid de testare și matrice detaliată](ATF_TestingGuide.md) |
+| Ce graniță aparține nivelului unitar, de componentă, de integrare sau E2E? | [Arhitectura testelor](ATF_Architecture.md) |
 | Ce selecție rulez pentru schimbarea mea? | [Colecții și comenzi](ATF_Collections.md) |
 | Cum justific o decizie AI fără mâinile adverse reale? | [Componente și oracole](ATF_AiComponents.md) |
 | Cum transfer lecțiile către alt joc sau un produs nou? | [Lecții, mock-uri și adaptoare](../learning/ATF_PolicyEvolution.md#lecții-transferabile-către-alte-jocuri-și-produse) |
