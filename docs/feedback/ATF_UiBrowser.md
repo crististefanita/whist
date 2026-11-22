@@ -28,7 +28,7 @@ Extend coverage of AI decisions, streaks and playing for zero through component 
 
 **P1 · 88/100 · Open; code-level finding, rendered parity not yet qualified.**
 
-J4 already shares the portable seat and hand calculations. Keep that boundary; the gap is the browser shell, not a reason to duplicate table geometry or pull Chess-specific UI into Whist.
+Whist already shares the portable seat and hand calculations. Keep that boundary; the gap is the browser shell, not a reason to duplicate table geometry or pull Chess-specific UI into Whist.
 
 - On phones, `viewportGeometry` uses the supplied CSS viewport. On desktop, it starts with a 414 × 896 reference and applies one scale to the whole stage. This can leave wide screens underused and shrink the menu, labels, table and controls together in a short window. See [viewport policy](../../atf-ui-browser/src/main/web/viewport.mjs) and [stage sizing](../../atf-ui-browser/src/main/web/table.mjs).
 - The Whist surface hardcodes `--whist-text-scale: 1.5`, while `table.mjs` separately reads the root font size for `/api/layout`. The browser therefore has no single explicit contract linking menu roles, browser text zoom and layout measurements. The current 1.5 factor may match a chosen APK profile, but it is not a substitute for testing default and enlarged browser text. See [menu typography and layout](../../atf-ui-browser/src/main/web/table.css).
