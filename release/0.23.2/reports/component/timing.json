@@ -1,0 +1,128 @@
+{
+  "schemaVersion": 1,
+  "kind": "ATF_RELEASE_TIMING",
+  "owner": "components",
+  "stages": [
+    {
+      "stage": "components.snapshot-preflight",
+      "status": "PASS",
+      "startedUtc": "2026-11-22T08:33:58.8865681+00:00",
+      "endedUtc": "2026-11-22T08:34:42.9027130+00:00",
+      "elapsedMs": 53458
+    },
+    {
+      "stage": "components.reuse-check",
+      "status": "PASS",
+      "startedUtc": "2026-11-22T08:34:42.9442937+00:00",
+      "endedUtc": "2026-11-22T08:34:44.1611420+00:00",
+      "elapsedMs": 1274
+    },
+    {
+      "stage": "components.run.atf-validation",
+      "status": "REUSED",
+      "startedUtc": "2026-11-22T08:34:44.1866368+00:00",
+      "endedUtc": "2026-11-22T08:34:44.1866368+00:00",
+      "elapsedMs": 0,
+      "reason": "REUSE"
+    },
+    {
+      "stage": "components.run.atf-test-android",
+      "status": "REUSED",
+      "startedUtc": "2026-11-22T08:34:44.1899100+00:00",
+      "endedUtc": "2026-11-22T08:34:44.1899100+00:00",
+      "elapsedMs": 0,
+      "reason": "REUSE"
+    },
+    {
+      "stage": "components.run.whist-lab-app-achievements",
+      "status": "REUSED",
+      "startedUtc": "2026-11-22T08:34:44.1916252+00:00",
+      "endedUtc": "2026-11-22T08:34:44.1916252+00:00",
+      "elapsedMs": 0,
+      "reason": "REUSE"
+    },
+    {
+      "stage": "components.run.whist-lab-app-bidding",
+      "status": "REUSED",
+      "startedUtc": "2026-11-22T08:34:44.1924238+00:00",
+      "endedUtc": "2026-11-22T08:34:44.1924238+00:00",
+      "elapsedMs": 0,
+      "reason": "REUSE"
+    },
+    {
+      "stage": "components.run.whist-lab-app-commands",
+      "status": "REUSED",
+      "startedUtc": "2026-11-22T08:34:44.1938355+00:00",
+      "endedUtc": "2026-11-22T08:34:44.1938355+00:00",
+      "elapsedMs": 0,
+      "reason": "REUSE"
+    },
+    {
+      "stage": "components.run.whist-lab-app-display",
+      "status": "REUSED",
+      "startedUtc": "2026-11-22T08:34:44.1946278+00:00",
+      "endedUtc": "2026-11-22T08:34:44.1946278+00:00",
+      "elapsedMs": 0,
+      "reason": "REUSE"
+    },
+    {
+      "stage": "components.run.whist-lab-app-history",
+      "status": "REUSED",
+      "startedUtc": "2026-11-22T08:34:44.1956062+00:00",
+      "endedUtc": "2026-11-22T08:34:44.1956062+00:00",
+      "elapsedMs": 0,
+      "reason": "REUSE"
+    },
+    {
+      "stage": "components.run.whist-lab-app-atf-card-table-ui",
+      "status": "REUSED",
+      "startedUtc": "2026-11-22T08:34:44.1965374+00:00",
+      "endedUtc": "2026-11-22T08:34:44.1965374+00:00",
+      "elapsedMs": 0,
+      "reason": "REUSE"
+    },
+    {
+      "stage": "components.run.whist-lab-app-rules",
+      "status": "REUSED",
+      "startedUtc": "2026-11-22T08:34:44.1988525+00:00",
+      "endedUtc": "2026-11-22T08:34:44.1988525+00:00",
+      "elapsedMs": 0,
+      "reason": "REUSE"
+    },
+    {
+      "stage": "components.maven-cache",
+      "status": "PASS",
+      "startedUtc": "2026-11-22T08:34:48.2702900+00:00",
+      "endedUtc": "2026-11-22T08:35:00.2300514+00:00",
+      "elapsedMs": 11181
+    },
+    {
+      "stage": "components.maven-compile",
+      "status": "PASS",
+      "startedUtc": "2026-11-22T08:35:00.2370111+00:00",
+      "endedUtc": "2026-11-22T08:35:38.5154380+00:00",
+      "elapsedMs": 32726
+    },
+    {
+      "stage": "components.maven-classpath",
+      "status": "PASS",
+      "startedUtc": "2026-11-22T08:35:59.3208139+00:00",
+      "endedUtc": "2026-11-22T08:36:08.0101391+00:00",
+      "elapsedMs": 9157
+    },
+    {
+      "stage": "components.run.atf-tests",
+      "status": "PASS",
+      "startedUtc": "2026-11-22T08:36:08.0295113+00:00",
+      "endedUtc": "2026-11-22T08:43:48.4171884+00:00",
+      "elapsedMs": 458606
+    },
+    {
+      "stage": "components.snapshot-recheck",
+      "status": "PASS",
+      "startedUtc": "2026-11-22T08:43:48.4344686+00:00",
+      "endedUtc": "2026-11-22T08:43:51.5729232+00:00",
+      "elapsedMs": 3779
+    }
+  ]
+}

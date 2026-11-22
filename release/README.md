@@ -2,31 +2,31 @@
 
 ## Pe scurt
 
-Catalogul urmărește ediția Android curentă și predecesoarea ei imediată. Un release se publică numai după ce APK-ul, dovezile legate de sursă și calificarea selectată pe baza diff-ului trec procesul RAG.
+Catalogul urmărește ediția Android curentă și predecesoarea imediată. Un release se publică numai după ce APK-ul, dovezile legate de sursă și calificarea selectată prin diff trec procesul RAG.
 
 ## Versiunea curentă
 
-[0.23.1 — release Android de mentenanță](0.23.1/README.md) este publicat; descărcarea directă a APK-ului și checksum-ului a fost verificată.
+[0.23.2 — Release Android de mentenanță](0.23.2/README.md) este publicat; APK-ul și checksum-ul au trecut verificarea descărcării directe.
 
-## Versiunea anterioară
+## Versiunea precedentă
 
-[0.23.0 — release Android și dovezi](0.23.0/README.md) este ediția publicată imediat anterioară.
+[0.23.1 — Release Android și dovezi](0.23.1/README.md) este ediția publicată imediat precedentă.
 
 ## Versiuni disponibile
 
 | Versiune | Stare | Dosar |
 |---|---|---|
-| 0.23.1 | Publicat; APK și checksum verificate | [APK și dovezi](0.23.1/README.md) |
-| 0.23.0 | Ediția publicată anterioară | [APK și dovezi](0.23.0/README.md) |
+| 0.23.2 | Publicat; APK și checksum verificate | [APK și dovezi](0.23.2/README.md) |
+| 0.23.1 | Ediția publicată precedentă | [APK și dovezi](0.23.1/README.md) |
 
 ## Publicare și verificare
 
-Pregătirea, calificarea și publicarea urmează [procesul RAG](../docs/testing/ATF_ReleaseQualification.md) și [ghidul Android](../docs/platform/ATF_AndroidDelivery.md). Detaliile tehnice și checksum-urile apar în manifestul fiecărei ediții.
+Pregătirea, calificarea și publicarea urmează [procesul RAG](../docs/testing/ATF_ReleaseQualification.md) și [ghidul Android](../docs/platform/ATF_AndroidDelivery.md). Detaliile tehnice și checksum-urile aparțin manifestului fiecărei ediții.
 
-## Citirea auditului
+## Parcurgerea auditului
 
-1. Deschideți dosarul curent pentru scop și starea descărcării.
+1. Deschideți dosarul curent pentru domeniu și starea descărcării.
 2. Urmați indexul Extent pentru selecții, proveniență și limite.
-3. Consultați manifestul pentru identitatea APK-ului, calificare și inventarul payload-ului.
+3. Citiți manifestul pentru identitatea APK-ului, calificare și inventarul payload-ului.
 
-[Strategia de testare](../docs/testing/README.md) se aplică fiecărei ediții; dosarul ei conține rezultatele specifice release-ului.
+[Strategia de testare](../docs/testing/README.md) se aplică fiecărei ediții; dosarul ei păstrează rezultatele specifice release-ului.
