@@ -2,7 +2,7 @@
 
 ## Overview
 
-Qualified Android maintenance candidate; publication and download verification are pending.
+Published Android maintenance edition; completed-download verification is in progress.
 
 [Reports and qualification](reports/README.md)
 

@@ -6,7 +6,7 @@ The catalog tracks the current Android edition and its immediate predecessor. A 
 
 ## Current version
 
-[0.23.2 — Android maintenance release](0.23.2/README.md) is qualified; GitHub publication is pending.
+[0.23.2 — Android maintenance release](0.23.2/README.md) is published; completed-download verification is in progress.
 
 ## Previous version
 
@@ -16,7 +16,7 @@ The catalog tracks the current Android edition and its immediate predecessor. A 
 
 | Version | State | Dossier |
 |---|---|---|
-| 0.23.2 | Qualified; publication pending | [APK and evidence](0.23.2/README.md) |
+| 0.23.2 | Published; download verification in progress | [APK and evidence](0.23.2/README.md) |
 | 0.23.1 | Previous published edition | [APK and evidence](0.23.1/README.md) |
 
 ## Publication and verification
