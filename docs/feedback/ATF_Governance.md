@@ -74,6 +74,7 @@ LangGraph oferă noduri explicite, stare partajată și limite de checkpoint, da
 | Prioritate | Lacună distinctă rămasă | Criteriu de închidere |
 |---|---|---|
 | P2 | Metadatele calificării ajung la unele diagnostice numai după pregătirea snapshot-ului. | Validați inventarul E2E al dosarului activ, linkurile catalogului și limitele editoriale printr-o verificare ieftină a metadatelor, înaintea colecției lungi. Păstrați dovezile eșuate și demonstrați că o reverificare focalizată nu poate califica un grup primar eșuat; acest criteriu este distinct de admiterea probelor de control al sursei. |
+| P2 | RAG-25: generarea probelor refuză reutilizarea compilatorului chiar când intrările Maven și ieșirile sigilate rămân neschimbate. | Separați reutilizarea compilării de reutilizarea probelor. Refolosiți numai o identitate admisă și un classpath intact; executați din nou fiecare control pozitiv/negativ selectat. Respingeți intrările compilatorului modificate, clasele alterate și controalele parțiale sau eșuate. Expuneți decizia compilării în receipt-ul etapelor. |
 
 ## Limitele selecției ATF
 
