@@ -29,7 +29,7 @@ public final class TestChangeReview {
     private static final Set<String> OUTPUTS = Set.of(".git", "target", "build", ".gradle", "artifacts", "node_modules", "release");
     private static final List<String> GATES = List.of(
             "atf-tests/src/main/java/atf/tests/documentation/policy/DocumentationContentPolicy.java",
-            "config/atf-governance-policy.json", "config/atf-test-suites.json", "config/gradle-app-collections.properties",
+            "config/atf-governance-policy.json", "config/atf-test-suites.json", "config/atf-component-collections.json", "config/gradle-app-collections.properties",
             "config/gradle-audit-collections.properties", "config/test-collections.json", "config/release-platform-rag-policy.json",
             "scripts/run-atf-governance.ps1", "scripts/run-component-suites.ps1",
             "scripts/AtfLocalPaths.ps1", "scripts/run-documentation-governance.ps1", "scripts/run-jvm-inventory.ps1",
@@ -54,7 +54,7 @@ public final class TestChangeReview {
             "atf-ui-browser/tests/whist-surface-contract.test.mjs",
             "atf-ui-browser/tests/shared-presentation.test.mjs", "atf-ui-browser/tests/trick-playback.mjs",
             "atf-ui-browser/tests/fixtures.mjs",
-            "atf-tests/tools/evaluate-release-rag.mjs");
+            "atf-tests/tools/evaluate-release-rag.mjs", "atf-tests/tools/atf-component-ownership.mjs");
     private static final List<String> GATE_DIRECTORIES = List.of(
             "atf-tests/src/main/java/atf/tests/testchange/", "whist-lab-app/gradle/", ".github/workflows/");
 
@@ -171,7 +171,10 @@ public final class TestChangeReview {
 
     static boolean protectedPath(String path) {
         var source = SOURCE.matcher(path);
-        if (source.matches()) return !generated(source.group(1));
+        if (source.matches()) {
+            boolean editorial = path.endsWith(".md") && !path.matches("(?s)(?:.*/)?src/[^/]+/(?:assets|res|resources)/.*");
+            return !editorial && !generated(source.group(1));
+        }
         if (generated(path)) return false;
         return path.equals("pom.xml") || path.endsWith("/pom.xml") || GRADLE.matcher(path).matches()
                 || GATES.contains(path) || GATE_DIRECTORIES.stream().anyMatch(path::startsWith)

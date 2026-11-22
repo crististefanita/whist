@@ -174,3 +174,5 @@ flowchart LR
 One Maven compilation can serve several primary collections. A reused receipt retains its original invocation IDs and provenance; it is not a new execution. After partitioning, the suite-container prefix changes while the Jupiter leaf IDs and outcomes remain comparable. Measure preparation and collection execution separately, and disclose missing or newly added identities when checking parity.
 
 </details>
+
+Governance fixtures resolve the active release through `release/index.json` and use the same publication validator as delivery. A removed historical version or a new owner configuration must not silently change which precondition a negative control proves.

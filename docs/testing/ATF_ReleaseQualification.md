@@ -198,7 +198,7 @@ The APK source snapshot is the reference for comparing suite inputs. RAG verifie
 
 | Android group | Required evidence |
 | --- | --- |
-| `atf-validation`, `atf-test-android`, `atf-tests` | Each primary Maven suite has canonical Extent HTML and no FAIL, ERROR or SKIP. |
+| `atf-validation`, `atf-test-android` and [ATF owner collections](ATF_Collections.md#independent-atf-component-owners) | Each primary Maven suite has canonical Extent HTML and no FAIL, ERROR or SKIP. |
 | `whist-lab-app-commands`, `whist-lab-app-bidding`, `whist-lab-app-history`, `whist-lab-app-display` | Each base Android collection has its own Extent HTML and receipt. Changes to jointly compiled inputs require reevaluation. |
 | `whist-lab-app-achievements` | The collection introduced by `introducedComponentGroupsByPlatform`; `sinceReleaseVersion` makes it mandatory from the stated threshold. The report is separate, and JUnit XML alone does not satisfy the gate. |
 | `whist-lab-app-atf-card-table-ui` | JVM suite for shared-UI contracts, introduced at `0.20.2`, with a separate Extent report and receipt. |
@@ -272,7 +272,8 @@ Each arrow names the decision it represents. Reuse still requires matching input
 |---|---|
 | App package declared in `config/gradle-app-collections.properties` | Run its owning collection and framework governance; keep other app collections reusable when their inputs match. |
 | Shared game core, names, Android UI module, Gradle configuration or common library | Invalidate every suite that consumes that dependency. |
-| Maven infrastructure, release policy, suite ownership or evidence tooling | Run `atf-tests`; product suites remain eligible for reuse when their inputs are unchanged. |
+| Maven infrastructure, release policy, suite ownership or evidence tooling | Run the [ATF owner collections](ATF_Collections.md#independent-atf-component-owners); product suites remain eligible for reuse when their inputs are unchanged. |
+| Markdown-only guides or release-dossier bytes | Run the editorial/payload owner and any declared rules or library-guide dependency; reuse other owners after hash verification. |
 | `config/documentation-editions.json` inventory only | Record `DOCUMENTATION_EDITIONS` as an always-run RAG check; keep Maven component evidence reusable. Changes to the evaluator, policy or document content retain their existing ownership rules. |
 | New, unknown or ambiguously owned path | Fail closed and run every component group. |
 | `versionCode`/`versionName` only | Reuse product evidence only when the published baseline is qualified and exact reconstruction proves that replacing those two fields restores the original build-file hash. Governance still runs. |

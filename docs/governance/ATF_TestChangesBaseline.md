@@ -1666,3 +1666,26 @@ testChanges:
 ```
 
 </details>
+
+<details>
+<summary>Editorial source guides and protected fixture payloads</summary>
+
+```yaml
+testChanges:
+  - id: RAG-NONBUILD-DOCUMENTATION
+    status: VERIFIED
+    base: 2da37aa6d962db58ef9954c5da96f44e09154ab6
+    expires: 2026-12-20
+    reason: Keep source-root Markdown guides editorial while resource payloads, executable tests and collection selection contracts retain their reviewed controls across real Git states.
+    proof: 'mvn -o -pl atf-tests -am -Dtest=TestChangeReviewComponentTest -Dsurefire.failIfNoSpecifiedTests=false test'
+    checks:
+      positive:
+        - atf.tests.governance.source.changes.TestChangeReviewComponentTest#sourceReadmesRemainEditorialAcrossGitStates
+      negative:
+        - atf.tests.governance.source.changes.TestChangeReviewComponentTest#markdownFixturesAndSelectionContractsRemainProtected
+    paths:
+      - atf-tests/src/main/java/atf/tests/testchange/TestChangeReview.java
+      - atf-tests/src/test/java/atf/tests/governance/source/changes/TestChangeReviewComponentTest.java
+```
+
+</details>

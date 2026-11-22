@@ -20,7 +20,7 @@ test('documentation-only selection runs one primary owner without replaying laun
   assert.deepEqual(scope.requiredE2eGroups, []);
   assert.equal(scope.kind, 'DOCUMENTATION_ONLY');
   assert.deepEqual(atfComponentGroups(baseline), atfGroups);
-  for (const file of ['docs/testing/guide.md', 'whist-lab-app/game-core/src/test/java/README.md']) {
+  for (const file of ['docs/testing/guide.md', 'src/test/README.md', 'whist-lab-app/game-core/src/test/java/README.md']) {
     const edited = new Map([...baseline, [file, 'c'.repeat(64)]]);
     assert.deepEqual(atfGroups.filter(g => componentEvidenceScope(g, edited, baseline).decision === 'RUN'), ['atf-tests-documentation']);
   }
@@ -31,6 +31,14 @@ test('documentation-only selection runs one primary owner without replaying laun
 test('shared code and ownership changes invalidate every ATF consumer', () => {
   for (const file of ['scripts/AtfQualificationSnapshot.ps1', 'atf-tests/src/test/java/atf/tests/governance/support/Probe.java',
     'config/atf-test-suites.json', atfOwnershipPath]) {
+    const edited = new Map([...baseline, [file, 'f'.repeat(64)]]);
+    for (const group of atfGroups) assert.equal(componentEvidenceScope(group, edited, baseline).decision, 'RUN', file + ': ' + group);
+  }
+});
+
+test('shared Markdown fixture payloads keep test consumers active', () => {
+  for (const file of ['src/test/resources/README.md', 'atf-tests/src/test/resources/case.md',
+    'whist-lab-app/game-core/src/test/resources/case.md', 'whist-lab-app/app/src/main/assets/README.md']) {
     const edited = new Map([...baseline, [file, 'f'.repeat(64)]]);
     for (const group of atfGroups) assert.equal(componentEvidenceScope(group, edited, baseline).decision, 'RUN', file + ': ' + group);
   }

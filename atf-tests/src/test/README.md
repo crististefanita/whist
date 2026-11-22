@@ -6,7 +6,7 @@ The module verifies the integration of common binaries, publication data and pro
 
 ## Collections and responsibilities
 
-[Catalog](../../../config/atf-test-suites.json) declares the primary entries `AtfUnitSuite`, `AtfComponentSuite` and `AtfIntegrationSuite`. Reporting and governance selections are focused with explicit parents; they are not again over the primary inventory.
+[Catalog](../../../config/atf-test-suites.json) declares unit and integration entries plus distinct primary component owners. The [component owner map](../../../docs/testing/ATF_Collections.md#independent-atf-component-owners) separates source structure, documentation, provenance, Android, GitHub, orchestration and reporting; focused suites declare their primary parents.
 
 | Family | Entry and limit |
 |---|---|

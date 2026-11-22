@@ -5,9 +5,9 @@ import {fileURLToPath} from 'node:url';
 
 export const nonBuildDocumentation = file => file === 'README.md'
     || (/^(?:docs\/|lib\/README\.)/.test(file) && file.endsWith('.md'))
-    || (file.endsWith('.md') && file.includes('/src/')
-        && !/\/src\/main\/(?:assets|res)\//.test(file))
-    || (!file.includes('/src/') && file.endsWith('/README.md'));
+    || (file.endsWith('.md') && /(?:^|\/)src\//.test(file)
+        && !/(?:^|\/)src\/[^/]+\/(?:assets|res|resources)\//.test(file))
+    || (!/(?:^|\/)src\//.test(file) && file.endsWith('/README.md'));
 
 export function changedInputs(candidate, previous) {
   const paths = new Set([...candidate.keys(), ...previous.keys()]);
