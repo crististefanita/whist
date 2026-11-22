@@ -53,3 +53,8 @@ The compilation of the fragment qualifies API signature on the selected JAR. The
 ---
 
 The Console pair is an external binary fixed in the POM and the home registry. This guide verifies only the output contract consumed by the project; attach the version, hash and reproduction to [Feedback local](../docs/feedback/README.md).
+
+<a id="shared-library-source"></a>
+
+> **Library source:** [Console · ATF J0](https://github.com/crististefanita/atf_j0/blob/HEAD/lib/README.Console.md).
+> This project’s POM, provenance and tests define the consumed version and local acceptance.

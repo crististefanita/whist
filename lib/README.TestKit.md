@@ -36,3 +36,8 @@ public static void verifyState(RecordedAssertions audit, String actual) {
 ---
 
 The tests of this project fix the integration used, the lifecycle and the causes of observable failure. Keep for any incompatibility version and hash JAR/POM, minimum configuration and result; local process described in [Guide libraries](README.md#maintenance-and-feedback).
+
+<a id="shared-library-source"></a>
+
+> **Library source:** [Test Kit · ATF J0](https://github.com/crististefanita/atf_j0/blob/HEAD/lib/README.TestKit.md).
+> This project’s POM, provenance and tests define the consumed version and local acceptance.
