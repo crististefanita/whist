@@ -1,5 +1,6 @@
 # Whist 0.23.1
-This Android maintenance release hardens RAG qualification and external evidence reuse; game rules and user flows are unchanged.
+
+This Android maintenance release resumes qualification from validated evidence and reuses unchanged suites; game rules and user flows are unchanged.
 
 ## Download
 
@@ -14,4 +15,4 @@ This Android maintenance release hardens RAG qualification and external evidence
 
 ## Documentation
 
-- [Qualification and Extent evidence](https://github.com/crististefanita/whist/blob/{evidenceCommit}/release/0.23.1/reports/README.md)
+- [Qualification and Extent evidence](https://github.com/crististefanita/whist/blob/7630b189fecc271d4b50fc818350a94b8fcdfa97/release/0.23.1/reports/README.md)

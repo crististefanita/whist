@@ -1,7 +1,7 @@
 {
   "schemaVersion": 2,
   "publication": {
-    "state": "QUALIFIED",
+    "state": "PUBLISHED",
     "channel": "TEST",
     "repository": "crististefanita/whist",
     "accessMode": "AUTHENTICATED",
@@ -58,6 +58,10 @@
           "signing": {
             "status": "PASS",
             "receipt": "reports/diagnostics/signing-compatibility.json"
+          },
+          "distributionDownload": {
+            "status": "PASS",
+            "receipt": "reports/distribution-verification.json"
           }
         }
       }
@@ -161,12 +165,12 @@
   "integrity": {
     "schemaVersion": 1,
     "kind": "OBSERVED_PAYLOAD_HASHES",
-    "observedUtc": "2026-11-22T06:59:50.406Z",
+    "observedUtc": "2026-11-22T07:16:48.896Z",
     "files": [
       {
         "path": "README.md",
-        "bytes": 636,
-        "sha256": "e9851bc38f47637a80e90cfd5be56961816f9f3ebc1d4fe1980183cb477aa3ee"
+        "bytes": 658,
+        "sha256": "1fd213191e51248b5172e9b8d0d3c729ead63b51abbc4f040a2a5c5770eaedb7"
       },
       {
         "path": "WhistLab-0.23.1.apk",
@@ -179,14 +183,19 @@
         "sha256": "91c274b1c6169098807514c27d1df5817eb98172dc8b0dcefb84881f6538fbe9"
       },
       {
-        "path": "release-notes.template.md",
-        "bytes": 832,
-        "sha256": "58ef673419db4123b0132f89cf42966897a94ee23ed8dba9afffea84c60c218c"
+        "path": "github-release.json",
+        "bytes": 873,
+        "sha256": "4dd41eb31c217074d436d688e8c9d62d855beed699ace0822d05bf2156f88def"
+      },
+      {
+        "path": "release-notes.md",
+        "bytes": 877,
+        "sha256": "2209eb44a601cc0fe9a82ac9b63fcdc149d63a95c17e9c2a5ca6466b22207cfc"
       },
       {
         "path": "release-presentation.json",
-        "bytes": 526,
-        "sha256": "81565be9d829f439a2319915e118409189825cf262f0de3045b1f22a4903a000"
+        "bytes": 542,
+        "sha256": "c18932a1c2638909adeda3972eb29a77d704dbfa57a9d4e5d632f8d325f22378"
       },
       {
         "path": "reports/README.md",
@@ -422,6 +431,11 @@
         "path": "reports/diagnostics/zipalign.log",
         "bytes": 1220,
         "sha256": "1fd15001fd00c4708fb5a091b28b1097b2f0e092a498cd4928df7df173cd6c81"
+      },
+      {
+        "path": "reports/distribution-verification.json",
+        "bytes": 1422,
+        "sha256": "7ebdbb534c84de391a95e7aa1251dd7d19611bb478abf2e2b278c7e50f48e695"
       },
       {
         "path": "reports/qualification-plan.json",
