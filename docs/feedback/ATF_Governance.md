@@ -86,6 +86,10 @@ The [dependency selection contract](../testing/ATF_Collections.md#executable-dep
 
 Measure snapshot preparation, compilation and execution separately. A focused diagnostic remains distinct from qualification of a complete primary collection; failure recovery within an owner is covered by the open invocation-reconciliation item above.
 
+| Priority | Remaining reuse gap | Closure criterion |
+|---|---|---|
+| P2 | Live documentation edits can reject the aggregate after every isolated collection has passed, preventing reuse of otherwise unchanged owners. | Preserve the rejected aggregate. Define and test per-owner readmission against immutable staged inputs, original report hashes and the exact delivered diff. Rerun affected documentation and any changed reader; never turn a failed aggregate into a passing origin by editing its receipt. Until this contract is implemented, retain the conservative rejection. |
+
 ## Reporting schema admission
 
 The evaluator applies one reporting admission rule before readiness and preserves historical manifests. Accepted schema/report combinations are:
