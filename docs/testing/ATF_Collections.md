@@ -156,16 +156,16 @@ The [Maven suite catalog](../../config/atf-test-suites.json) binds each primary 
 
 ### Executable dependency selection
 
-The [dependency policy](../../config/atf-component-dependencies.json) and [graph builder](../../atf-tests/tools/atf-component-dependencies.mjs) refine ATF ownership using the current source inventory. Java type and import references, executable Node imports and process inputs, and PowerShell module and function references form transitive edges. An owner is selected when one of its leaf classes reaches the changed input. Cycles preserve every reachable consumer.
+The [dependency policy](../../config/atf-component-dependencies.json) and [graph builder](../../atf-tests/tools/atf-component-dependencies.mjs) refine ATF ownership using the current source inventory. Java type and import references, executable Node imports and process inputs, and PowerShell module and function references form transitive edges. An owner is selected when one of its leaf classes reaches the changed input; cycles preserve every reachable consumer.
 
-Repository-wide checks have explicit observer scopes. Generated imports name their producer inputs. These declarations distinguish a fixture that reads the live repository from a helper that reads an injected directory. Strings containing example paths do not, by themselves, establish executable Node dependencies.
+Repository-wide checks have explicit observer scopes, and generated imports name their producer inputs. These declarations distinguish a fixture that reads the live repository from a helper that reads an injected directory. Strings containing example paths do not, by themselves, establish executable Node dependencies.
 
 ```mermaid
 flowchart LR
-    INPUT[Changed source] --> GRAPH[Current dependency graph]
+    INPUT[Changed source] -->|queries| GRAPH[Current dependency graph]
     GRAPH -->|reachable leaf or observer scope| RUN[Execute affected owners]
     GRAPH -->|no affected dependency| ADMIT[Verify original evidence]
-    ADMIT --> REUSE[Reuse unchanged report and receipt]
+    ADMIT -->|admits verified bytes| REUSE[Reuse unchanged report and receipt]
     GRAPH -->|unknown or unreviewed input| FULL[Execute all ATF owners]
 ```
 
@@ -176,7 +176,7 @@ Edges describe executable dependencies at class or module granularity, not metho
 
 </details>
 
-File readers and all their transitive callers have reviewed source-body seals. New or changed reader contracts require a reviewed policy and full qualification before narrowing is allowed again. Line endings are normalized only for these bilingual-checkout seals; original source manifests and reused evidence still retain their exact byte hashes. A reader input changed between qualifications cannot reuse unrelated owners merely because its new seal has been recorded.
+File readers and all their transitive callers have reviewed source-body seals. New or changed reader contracts require a reviewed policy and full qualification; recording a new seal does not authorize reuse across a changed reader input. Line endings are normalized only for these bilingual-checkout seals; original source manifests and reused evidence still retain their exact byte hashes.
 
 The read-only proposal command uses a freshly captured source inventory and writes a new file outside the checkout:
 
@@ -185,7 +185,7 @@ The read-only proposal command uses a freshly captured source inventory and writ
 node .\atf-tests\tools\atf-dependency-cli.mjs '<scratch-root>/source-inputs.json' '<scratch-root>/reader-policy-proposal.json'
 ```
 
-Review the declared reader scopes and generated providers before adopting the proposed policy. The command neither updates the checked-in policy nor grants a qualification verdict. Changed readers or selection machinery require the reviewed positive and negative test-change controls. The reuse plan records the dependency chain or observer scope behind each selection; immutable receipt, JUnit identity and Extent admission remain mandatory.
+Review the declared reader scopes and generated providers before adopting the proposed policy. The command neither updates the checked-in policy nor grants a qualification verdict; changed readers or selection machinery require the reviewed positive and negative test-change controls. The reuse plan records the dependency chain or observer scope behind each selection; immutable receipt, JUnit identity and Extent admission remain mandatory.
 
 - `prepare-component-reuse.mjs` verifies the original source, release snapshot, root run, JUnit identities and report hashes before copying unchanged bytes. The evaluator requires every new ATF owner whenever the candidate source contains the new descriptor, independently of the claimed release version. Historical sources without that descriptor retain the monolithic contract; their reports cannot be relabeled as partition evidence.
 
