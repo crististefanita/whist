@@ -268,8 +268,6 @@ Verificarea finală a snapshot-ului poate respinge un agregat chiar dacă au tre
 
 Selecția responsabililor folosește întotdeauna diff-ul complet al reviziei livrate, inclusiv editările ulterioare verificării originale a sursei.
 
-Owner selection always uses the complete delivered diff, including edits made after the original source check.
-
 ```mermaid
 flowchart LR
     REJECT[Agregat respins] -->|verifică inventarele capturate| CHECK[Derivă editorială numai în checkout]
