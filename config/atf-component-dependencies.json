@@ -437,7 +437,7 @@
     "atf-ui-browser/tests/menu-history.test.mjs": "5d8d980a4e3d6981ee3acea48eaf2924c0dcc7c7a9d936e3db62c8c1877bdb38",
     "atf-ui-browser/tests/packaged-sanity.mjs": "b03bce09d23ccd029cb8c73302ad970ffc6df7b6a3d63013c6cee245437b272d",
     "atf-ui-browser/tests/responsive-game.mjs": "8821a8d6e6a852ec3d0a20331bdbd9cadbea0e013c058704340a34aee0dfe6e4",
-    "atf-ui-browser/tests/responsive-surface.test.mjs": "97f2f6382cce1438e28e0ddae658b042f50edb492083979755c2f1d1b5e2990a",
+    "atf-ui-browser/tests/responsive-surface.test.mjs": "b2e5d9ea89ecf8d3b94fb51fd516fe2655225abcb4251d6e97d875389a4ed440",
     "atf-ui-browser/tests/ro/cardtable/browser/WhistSurfaceContract.java": "b8cc53b0ab5186a012d8fd49222c3a7fef5acb1d52e0e2199854e05ab57a6a9a",
     "atf-ui-browser/tests/run-components.mjs": "f7843e0386a7e7b67e049ad2ff3c96b8e822c332a58f623756604806eddd21bc",
     "atf-ui-browser/tests/shared-presentation.test.mjs": "8301cac75568652a635e7ca2d589f63aa9035435342e4f5ce2ac1bb7f154f9a4",
