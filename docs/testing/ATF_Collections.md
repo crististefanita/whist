@@ -176,3 +176,35 @@ One Maven compilation can serve several primary collections. A reused receipt re
 </details>
 
 Governance fixtures resolve the active release through `release/index.json` and use the same publication validator as delivery. A removed historical version or a new owner configuration must not silently change which precondition a negative control proves.
+
+## Maven compiler reuse
+
+Compilation and execution have separate identities. The [compiler inventory](../../atf-tests/tools/component-compiler-inputs.mjs) omits editorial Markdown and the bilingual review record; Java, POMs, resource payloads, binaries, launcher code and unknown inputs remain included.
+
+| Boundary | Admission and outcome |
+|---|---|
+| Compiler key | Non-editorial source inventory, JDK binaries, Maven installation, user settings and supported environment options must match. Unknown external argument overrides disable reuse. |
+| Compiled output | [Output admission](../../scripts/AtfComponentMaven.ps1) verifies classes, resources, dependency JAR/POM bytes, frozen input inventory and classpath destinations. Missing or altered data selects fresh preparation. |
+| Another run | [Borrowing](../../scripts/AtfComponentMavenReuse.ps1) resolves the original compiler workspace inside the configured external temp root and holds its exclusive lease throughout execution. No repository or class tree is copied. |
+| Execution snapshot | The current source and release snapshots remain mandatory. Reusing compilation does not credit a test; owner selection and original report validation remain independent. |
+| Lifetime | References work only while the verified compiler workspace survives. Busy, missing, indirect, foreign or legacy workspaces trigger fresh compilation; retained reports can still be reused independently. |
+
+The runner records compiler identity, cache admission and output sealing as named timing stages. A borrowed build has its original receipt and a hash-bound reference in the new workspace; neither source provenance nor old test reports are rewritten.
+
+```mermaid
+flowchart LR
+    SOURCE[Current source snapshot] -->|remove editorial inputs| KEY[Compiler and tool key]
+    KEY -->|verify bytes and acquire lease| CACHE[Original compiled workspace]
+    KEY -->|missing or incompatible| BUILD[Fresh Maven preparation]
+    CACHE -->|provide verified classes| RUN[Selected test owner]
+    BUILD -->|seal output| RUN
+    SOURCE -->|supply current execution data| RUN
+    RUN -->|capture new assertions| REPORT[Current source-bound Extent]
+```
+
+<details>
+<summary>Legend: compiler reuse preserves independent execution evidence</summary>
+
+ReuseFrom can reuse compilation across different execution snapshots. ResumeFrom still requires the same complete snapshot and its retained workspace. Unsupported environment overrides never borrow cached output; interrupted classpath generation can resume locally from admitted compilation. Preparation timing and test execution timing are reported separately.
+
+</details>

@@ -1689,3 +1689,34 @@ testChanges:
 ```
 
 </details>
+
+<details>
+<summary>Compiler identity and cross-run Maven output admission</summary>
+
+```yaml
+testChanges:
+  - id: RAG-MAVEN-COMPILER-REUSE
+    status: VERIFIED
+    base: d77e2444643082ad481a9d90608e1d78daff9c13
+    expires: 2026-12-20
+    reason: Separate editorial execution data from compilation, validate the toolchain and every cached output under an exclusive lease, and reject altered sources, dependencies, paths and receipts without crediting reused output as executed tests.
+    proof: 'mvn -o -pl atf-tests -am -Dtest=ComponentEvidenceScopeComponentTest -Dsurefire.failIfNoSpecifiedTests=false test'
+    checks:
+      positive:
+        - atf.tests.governance.documentation.release.rag.scope.ComponentEvidenceScopeComponentTest#editorialChangesReuseVerifiedMavenCompilationAndKeepFreshExecutionInputs
+      negative:
+        - atf.tests.governance.documentation.release.rag.scope.ComponentEvidenceScopeComponentTest#compilerInventoriesKeepPayloadsAndRejectInvalidSourceIdentities
+    paths:
+      - atf-tests/src/main/java/atf/tests/testchange/TestChangeReview.java
+      - atf-tests/src/test/java/atf/tests/governance/documentation/release/rag/scope/ComponentEvidenceScopeComponentTest.java
+      - atf-tests/tools/component-compiler-inputs.mjs
+      - atf-tests/tools/component-compiler-inputs.test.mjs
+      - atf-tests/tools/component-maven-reuse.test.mjs
+      - atf-tests/tools/release-test-scope.mjs
+      - scripts/AtfCompilerIdentity.ps1
+      - scripts/AtfComponentMaven.ps1
+      - scripts/AtfComponentMavenReuse.ps1
+      - scripts/run-component-suites.ps1
+```
+
+</details>

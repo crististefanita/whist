@@ -15,6 +15,22 @@ class ComponentEvidenceScopeComponentTest {
     private static final Duration PROCESS_TIMEOUT = Duration.ofSeconds(30);
     private static final Duration PUBLICATION_TIMEOUT = Duration.ofMinutes(2);
 
+    @Test void editorialChangesReuseVerifiedMavenCompilationAndKeepFreshExecutionInputs() throws Exception {
+        String output = runContracts(PUBLICATION_TIMEOUT, "component-compiler-inputs.test.mjs", "component-maven-reuse.test.mjs");
+        AuditedAssertions.assertTrue(output.contains("documentation preserves verified compilation without copying"),
+                "Editorial inputs preserve compiled classes while reports remain bound to the new execution snapshot");
+        AuditedAssertions.assertTrue(output.contains("changed compiler inputs and unverified workspaces reject"),
+                "Source, tool, bytecode, dependency, lock and path admission remain mandatory");
+    }
+
+    @Test void compilerInventoriesKeepPayloadsAndRejectInvalidSourceIdentities() throws Exception {
+        String output = runContracts(PROCESS_TIMEOUT, "component-compiler-inputs.test.mjs");
+        AuditedAssertions.assertTrue(output.contains("retain resource payloads and unknown dependencies"),
+                "Unknown inputs and Markdown fixture data cannot borrow the documentation exemption");
+        AuditedAssertions.assertTrue(output.contains("reject duplicate, indirect and malformed"),
+                "Compiler inventories use the same strict path and hash admission as execution inventories");
+    }
+
     @Test void disposablePackageRegistrationReconcilesObservedBytesAndPreservesTheOriginalCause() throws Exception {
         String output = runContracts(PUBLICATION_TIMEOUT, "android-package-registration.test.mjs", "android-user-readiness.test.mjs", "documentation-editions.test.mjs");
         AuditedAssertions.assertTrue(output.contains("7 controlled package-registration outcomes"),

@@ -37,6 +37,7 @@ public final class TestChangeReview {
             "scripts/export-card-table-ui.ps1",
             "scripts/AtfQualificationSnapshot.ps1", "scripts/AtfTestChangeBatch.ps1", "scripts/AtfComponentJvm.ps1",
             "scripts/AtfComponentResume.ps1", "scripts/AtfComponentMaven.ps1",
+            "scripts/AtfCompilerIdentity.ps1", "scripts/AtfComponentMavenReuse.ps1",
             "scripts/Get-AtfSourceInputs.ps1", "scripts/Copy-AtfSourceInputs.ps1", "scripts/AtfSigningSourcePolicy.ps1",
             "scripts/AtfAndroidUserOwnership.ps1", "scripts/Invoke-AtfAndroidDisposableUser.ps1",
             "atf-tests/src/main/java/atf/tests/documentation/policy/DocumentationTerminologyRules.java",
@@ -54,7 +55,8 @@ public final class TestChangeReview {
             "atf-ui-browser/tests/whist-surface-contract.test.mjs",
             "atf-ui-browser/tests/shared-presentation.test.mjs", "atf-ui-browser/tests/trick-playback.mjs",
             "atf-ui-browser/tests/fixtures.mjs",
-            "atf-tests/tools/evaluate-release-rag.mjs", "atf-tests/tools/atf-component-ownership.mjs");
+            "atf-tests/tools/evaluate-release-rag.mjs", "atf-tests/tools/atf-component-ownership.mjs",
+            "atf-tests/tools/component-compiler-inputs.mjs");
     private static final List<String> GATE_DIRECTORIES = List.of(
             "atf-tests/src/main/java/atf/tests/testchange/", "whist-lab-app/gradle/", ".github/workflows/");
 
