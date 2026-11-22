@@ -7,6 +7,42 @@ Acest registru definește controalele revizuite, baza Git și căile lor exacte.
 ## Controale verificate
 
 <details>
+<summary>Readmiterea pe responsabil după deriva editorială concurentă</summary>
+
+```yaml
+testChanges:
+  - id: RAG-DOCUMENTATION-DRIFT-READMISSION
+    status: VERIFIED
+    base: f6bdc5cc432c167a72486b71b01d9b7d5e06c74b
+    expires: 2026-12-21
+    reason: Preserve rejected aggregates and original reports while readmitting passing owners from bound staged/live observations; rerun changed owners and reject missing, corrupt, non-editorial or failed evidence.
+    proof: 'mvn -o -pl atf-tests -am -Dtest=ComponentEvidenceScopeComponentTest,ReleaseRagProvenanceComponentTest,TestChangeReviewComponentTest -Dsurefire.failIfNoSpecifiedTests=false test'
+    checks:
+      positive:
+        - atf.tests.governance.documentation.release.rag.scope.ComponentEvidenceScopeComponentTest#documentationDriftReadmitsOnlyUnchangedOwnersAndPreservesRejectedEvidence
+        - atf.tests.governance.documentation.release.rag.ReleaseRagProvenanceComponentTest#documentationDriftReadmissionKeepsTheRejectedAggregateAndOriginalReports
+      negative:
+        - atf.tests.governance.documentation.release.rag.ReleaseRagProvenanceComponentTest#documentationDriftRequiresBoundObservationsInTheReleasePayload
+        - atf.tests.governance.source.changes.TestChangeReviewComponentTest#markdownFixturesAndSelectionContractsRemainProtected
+    paths:
+      - atf-tests/src/main/java/atf/tests/testchange/TestChangeReview.java
+      - atf-tests/src/test/java/atf/tests/governance/source/changes/TestChangeReviewComponentTest.java
+      - atf-tests/src/test/java/atf/tests/governance/documentation/release/rag/RagComponentEvidenceFixture.java
+      - atf-tests/src/test/java/atf/tests/governance/documentation/release/rag/ReleaseRagProvenanceComponentTest.java
+      - atf-tests/src/test/java/atf/tests/governance/documentation/release/rag/scope/ComponentEvidenceScopeComponentTest.java
+      - atf-tests/tools/atf-component-ownership.test.mjs
+      - atf-tests/tools/component-source-check.mjs
+      - atf-tests/tools/component-source-check.test.mjs
+      - atf-tests/tools/evaluate-release-rag.mjs
+      - atf-tests/tools/prepare-component-reuse.mjs
+      - scripts/AtfQualificationSnapshot.ps1
+      - scripts/run-component-suites.ps1
+      - config/atf-component-dependencies.json
+```
+
+</details>
+
+<details>
 <summary>Admiterea canonică a modificărilor testelor înaintea pregătirii sursei și Maven</summary>
 
 ```yaml

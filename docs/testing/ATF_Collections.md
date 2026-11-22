@@ -254,3 +254,33 @@ ReuseFrom poate reutiliza compilarea între snapshot-uri de execuție diferite. 
 | Niciun spațiu temporar | Porniți o rulare nouă din checkout și intrările explicite ale release-ului. Căile lipsă selectează pregătirea nouă; un pointer vechi către spațiu nu autorizează reutilizarea. |
 
 CLI-ul și adaptorul de componentă folosesc aceeași [politică a rădăcinilor temporare](../../atf-tests/tools/qualification-temp-root.mjs). O rădăcină explicită de lucru verifică în continuare fiecare director temporar configurat al sistemului și limita fizică a checkout-ului. Setările locale, identitatea de semnare și datele de învățare sunt intrări durabile, nu ieșiri ale compilării.
+
+## Readmiterea după editări concurente ale documentației
+
+Verificarea finală a snapshot-ului poate respinge un agregat chiar dacă au trecut colecțiile sale izolate. Readmiterea păstrează acel `FAIL` original; admite separat fiecare responsabil promovat, pe baza intrărilor livrate. Nu rescrie agregatul, identitățile invocărilor, receipt-urile execuțiilor sau octeții Extent.
+
+| Limită | Dovezi obligatorii și decizie |
+|---|---|
+| Captură | La derivă, runnerul scrie `source-snapshot-check.json` și patru inventare observate: sursă și release din staging/checkout. Agregatul respins leagă verificarea prin SHA-256; verificarea leagă fiecare observație și ambele inventare așteptate. Rulările stabile nu creează aceste fișiere suplimentare. |
+| Execuție originală | Sursa din staging și ambele observații ale release-ului trebuie să coincidă exact cu inventarele originale. Diferențele observate trebuie să fie Markdown editorial recunoscut și să coincidă cu diagnosticele originale. Markdown-ul folosit ca resursă, codul, căile necunoscute, erorile de inventariere și dovezile incomplete ori alterate resping readmiterea. |
+| Selecția responsabililor | Clasificatorul existent de dependențe compară sursa livrată cu execuția originală. Responsabilii modificați rulează din nou; cei neafectați pot reutiliza numai rapoarte promovate, verificate prin hash și identități JUnit corespunzătoare. Un responsabil eșuat nu poate împrumuta rezultatul altuia. Ghidurile regulilor de joc și ale bibliotecilor păstrează consumatorii suplimentari. |
+| Transport | Planul de reutilizare păstrează agregatul respins original și toate observațiile legate sub identitatea originală de proveniență. Payload-urile release-ului declară aceste fișiere; evaluatorul RAG verifică același contract și expune `readmission` separat de verdictul original. Observațiile istorice lipsă nu se reconstruiesc din mesaje de log. |
+
+```mermaid
+flowchart LR
+    REJECT[Agregat respins] -->|verifică inventarele capturate| CHECK[Derivă editorială numai în checkout]
+    CHECK -->|compară intrările livrate| OWNER[Selecția existentă a responsabililor]
+    OWNER -->|responsabil modificat ori eșuat| RUN[Execuție nouă de componentă]
+    OWNER -->|responsabil promovat neschimbat| KEEP[Extent și receipt originale]
+    RUN -->|leagă snapshot-ul actual| FINAL[Verificarea finală a sursei]
+    KEEP -->|păstrează identitatea originală| FINAL
+```
+
+<details>
+<summary>Legendă: readmiterea păstrează execuția respinsă</summary>
+
+Captura observațiilor demonstrează ce s-a schimbat la limita originală. Selecția responsabililor determină apoi ce mai trebuie verificat pe sursa livrată. O rulare nouă trebuie să treacă propria verificare finală a snapshot-ului; readmiterea nu poate ascunde încă o editare concurentă sau califica o colecție eșuată.
+
+</details>
+
+Folosiți `run-component-suites.ps1 -ReuseFrom <rejected-run> -RunRoot <new-external-run>` cu selecțiile `-Groups` necesare, baza Git explicită pentru revizie și căile locale configurate ale uneltelor/cache-ului. `-ResumeFrom` rămâne limitat la snapshot-uri complete identice; editarea documentației cere un snapshot nou. Reutilizarea compilatorului rămâne o decizie independentă, verificată la nivel de octeți.
