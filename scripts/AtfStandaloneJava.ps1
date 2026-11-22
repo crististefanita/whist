@@ -32,7 +32,8 @@ function Get-AtfJvmCompilerClasspath {
 function Invoke-AtfJvmCli {
     param(
         [string]$ToolRoot, [string]$ProjectRoot, [string]$ScratchRoot, [string]$JavaHome,
-        [string]$ClassPath, [string]$MainClass, [string[]]$Arguments, [ref]$Result
+        [string]$ClassPath, [string]$MainClass, [string[]]$Arguments, [ref]$Result,
+        [string[]]$AdditionalSourcePaths = @()
     )
     $parent = (Resolve-Path -LiteralPath $ScratchRoot).ProviderPath
     foreach ($inputRoot in @($ToolRoot, $ProjectRoot)) {
@@ -48,7 +49,8 @@ function Invoke-AtfJvmCli {
     $work = Join-Path $parent ('atf-jvm-cli-' + [guid]::NewGuid().ToString('N'))
     $null = New-Item -ItemType Directory -Path $work
     try {
-        & $compiler '-encoding' 'UTF-8' '--release' '21' '-classpath' $ClassPath '-sourcepath' $source '-d' $work $entry
+        $sourcePath = (@($source) + $AdditionalSourcePaths) -join [IO.Path]::PathSeparator
+        & $compiler '-encoding' 'UTF-8' '--release' '21' '-classpath' $ClassPath '-sourcepath' $sourcePath '-d' $work $entry
         if ($LASTEXITCODE -ne 0) { throw "ATF-COMPILER: javac exited with $LASTEXITCODE" }
         $request = ConvertTo-Json -InputObject (@('--root', $ProjectRoot) + $Arguments) -Compress -EscapeHandling EscapeNonAscii
         $request | & $java '-classpath' ($work + [IO.Path]::PathSeparator + $ClassPath) $MainClass '--stdin'

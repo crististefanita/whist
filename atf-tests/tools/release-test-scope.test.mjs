@@ -126,7 +126,8 @@ test('Gradle component checkpoint and audit changes keep qualification offline',
 
 test('standalone governance launchers rerun only the offline governance component', () => {
   const paths = ['scripts/AtfStandaloneJava.ps1', 'scripts/run-jvm-inventory.ps1',
-    'scripts/run-documentation-governance.ps1', 'scripts/run-atf-governance.ps1', 'scripts/AtfTestChangeBatch.ps1'];
+    'scripts/run-documentation-governance.ps1', 'scripts/run-atf-governance.ps1', 'scripts/AtfTestChangeBatch.ps1',
+    'scripts/AtfTestChangeAdmission.ps1'];
   const candidate = new Map(paths.map(file => [file, 'new']));
   const selection = deriveReleaseTestScope(new Map(), candidate, groups);
   assert.equal(selection.kind, 'MAINTENANCE');

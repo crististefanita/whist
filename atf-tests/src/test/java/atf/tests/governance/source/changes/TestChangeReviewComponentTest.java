@@ -115,10 +115,10 @@ class TestChangeReviewComponentTest {
 
     @Test void theComponentJvmProfileCannotChangeWithoutAReviewedControl(@TempDir Path root) throws Exception {
         var repo = new TestChangeGitFixture(root);
-        String launcher = "scripts/AtfComponentJvm.ps1";
-        repo.put(launcher, "function Get-AtfComponentJvmArguments { '-Datf.test.run.scope=suite' }\n");
-        AuditedAssertions.assertEquals(List.of(uncovered("A", launcher, repo.base)), check(repo).diagnostics());
-        repo.put(FEEDBACK, repo.control("JVM-PROFILE", "ACTIVE", repo.base, VALID, false, launcher));
+        var launchers = List.of("scripts/AtfComponentJvm.ps1", "scripts/AtfStandaloneJava.ps1", "scripts/AtfTestChangeAdmission.ps1");
+        for (String launcher : launchers) repo.put(launcher, "# controlled JVM admission boundary\n");
+        AuditedAssertions.assertEquals(launchers.stream().map(path -> uncovered("A", path, repo.base)).toList(), check(repo).diagnostics());
+        repo.put(FEEDBACK, repo.control("JVM-PROFILE", "ACTIVE", repo.base, VALID, false, launchers.toArray(String[]::new)));
         AuditedAssertions.assertEquals(List.of(), check(repo).diagnostics());
     }
 

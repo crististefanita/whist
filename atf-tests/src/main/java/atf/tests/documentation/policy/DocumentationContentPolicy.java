@@ -6,6 +6,7 @@ import atf.tests.distribution.ReleasePaths;
 import atf.tests.testchange.TestChangeControls;
 import atf.tests.documentation.DocumentationGovernanceSupport.Violation;
 import atf.tests.documentation.DocumentationInventory;
+import atf.tests.documentation.links.MarkdownAnchorIndex;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
 import java.io.IOException;
@@ -71,7 +72,7 @@ public final class DocumentationContentPolicy {
                     "translate the explanations and keep API names intact"));
         }
         String relative = root.relativize(file).toString().replace('\\', '/');
-        String prose = historicalReleaseProse(relative, publicReleaseProse(deploymentProse(source), context.repository(), context.advertised()),
+        String prose = historicalReleaseProse(relative, publicReleaseProse(deploymentProse(librarySourceProse(relative, source)), context.repository(), context.advertised()),
                 context.repository());
         if (PROJECT_IDENTIFIER.matcher(prose).find())
             violations.add(violation("DOC-PROJECT-IDENTIFIER", root, file, 1, "prose contains an external project identifier",
@@ -129,6 +130,30 @@ public final class DocumentationContentPolicy {
     /** Only the identity of a well-formed change control is technical data, not editorial prose. */
     public static String deploymentProse(String source) {
         return TestChangeControls.editorialProse(source);
+    }
+
+    /** Only a marked, canonical library-source note is navigation rather than project prose. */
+    public static String librarySourceProse(String relative, String source) {
+        var guide = Pattern.compile("^lib/(README(?:\\.(?:Core|Reporting|Console|Mock|TestKit))?\\.md)$")
+                .matcher(relative.replace('\\', '/'));
+        if (!guide.matches()) return source;
+        String marker = "<a id=\"shared-library-source\"></a>";
+        var lines = new java.util.ArrayList<>(source.lines().toList());
+        var visible = MarkdownAnchorIndex.withoutFences(lines);
+        if (visible.stream().filter(marker::equals).count() != 1) return source;
+        String file = guide.group(1);
+        boolean catalog = file.equals("README.md");
+        String name = catalog ? "Catalog" : file.substring(7, file.length() - 3).replace("TestKit", "Test Kit");
+        String link = "[" + name + " · ATF J0](https://github.com/crististefanita/atf_j0/blob/HEAD/lib/" + file + ").";
+        String english = "> **" + (catalog ? "Library sources" : "Library source") + ":** " + link;
+        String romanian = "> **" + (catalog ? "Sursa bibliotecilor" : "Sursa bibliotecii") + ":** " + link;
+        int index = visible.indexOf(marker) + 2;
+        if (index < visible.size() && visible.get(index - 1).isBlank()
+                && (visible.get(index).equals(english) || visible.get(index).equals(romanian))) {
+            lines.set(index, "");
+            return String.join("\n", lines);
+        }
+        return source;
     }
 
 

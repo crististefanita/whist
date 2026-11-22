@@ -4,12 +4,16 @@ import atf.testkit.AtfComponentTest;
 import atf.testkit.assertions.AuditedAssertions;
 import atf.tests.testchange.TestChangeProof;
 import atf.tests.testchange.TestChangeReview;
+import atf.tests.testchange.TestChangeAdmissionCli;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
 import java.io.IOException;
+import java.io.ByteArrayOutputStream;
+import java.io.PrintStream;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.LocalDate;
@@ -28,6 +32,65 @@ class TestChangeProofComponentTest {
     private static final String POSITIVE = "example.component.ValidReviewTest#acceptsExactInputs";
     private static final String NEGATIVE = "example.component.ValidReviewTest#rejectsStaleInput";
     private static final ObjectMapper JSON = new ObjectMapper();
+
+    @Test void admissionUsesTheSameProofVerdictAndDiagnosticsAsFinalGovernance(@TempDir Path root) throws Exception {
+        var fixture = fixture(root);
+        AuditedAssertions.assertEquals("PASS", admission(fixture, Map.of(TestChangeProof.ROOT_ENV,
+                fixture.directory().getParent().toString())).path("status").asText());
+        AuditedAssertions.assertEquals(List.of(), fixture.verify().diagnostics());
+        byte[] original = Files.readAllBytes(fixture.directory().resolve(TestChangeProof.RECEIPT));
+        for (String defect : List.of("COMMIT", "NEGATIVE", "REPORT", "MISSING")) {
+            var receipt = (ObjectNode) JSON.readTree(original);
+            Files.writeString(fixture.directory().resolve(TestChangeProof.REPORT), "<html>fixture report</html>");
+            if (defect.equals("COMMIT")) ((ObjectNode) receipt.get("identity")).put("commit", "a".repeat(40));
+            if (defect.equals("NEGATIVE")) receipt.putArray("negative");
+            fixture.write(receipt);
+            if (defect.equals("REPORT")) Files.writeString(fixture.directory().resolve(TestChangeProof.REPORT), "altered");
+            Map<String,String> environment = defect.equals("MISSING") ? Map.of()
+                    : Map.of(TestChangeProof.ROOT_ENV, fixture.directory().getParent().toString());
+            var canonical = AuditedAssertions.assertThrows(IOException.class,
+                    () -> TestChangeReview.verify(fixture.git().root, fixture.git().base, environment, TODAY));
+            var response = admission(fixture, environment);
+            AuditedAssertions.assertEquals("BLOCKED", response.path("status").asText(), defect);
+            AuditedAssertions.assertEquals(canonical.getMessage(), response.path("diagnostics").get(0).asText(), defect);
+        }
+    }
+
+    @Test void admissionRechecksChangedSourcesAndSeparatesProofGeneration(@TempDir Path root) throws Exception {
+        var fixture = fixture(root);
+        Map<String,String> environment = Map.of(TestChangeProof.ROOT_ENV, fixture.directory().getParent().toString());
+        AuditedAssertions.assertEquals("PASS", admission(fixture, environment).path("status").asText());
+        fixture.git().put(RESOURCE, "changed after early admission");
+        var changed = admission(fixture, environment);
+        AuditedAssertions.assertEquals("BLOCKED", changed.path("status").asText());
+        AuditedAssertions.assertTrue(changed.path("diagnostics").get(0).asText().contains("TEST-CHANGE-PROOF-DIRTY"));
+        fixture.git().git("restore", "--", RESOURCE);
+        var bytes = new ByteArrayOutputStream();
+        int exit = TestChangeAdmissionCli.run(new String[]{"--root", fixture.git().root.toString(), "--base",
+                fixture.git().base, "--generate", "--control", ID}, Map.of(), TODAY, new PrintStream(bytes));
+        var generated = JSON.readTree(bytes.toByteArray());
+        AuditedAssertions.assertEquals(0, exit);
+        AuditedAssertions.assertEquals("GENERATE", generated.path("mode").asText());
+        AuditedAssertions.assertEquals(ID, generated.path("controls").get(0).asText());
+        AuditedAssertions.assertEquals("BLOCKED", admission(fixture, Map.of()).path("status").asText(),
+                "Generation admission never becomes authorization for a normal collection");
+        fixture.git().put(BASELINE, verified(fixture.git(), ID, RESOURCE)
+                .replace(TODAY.toString(), TODAY.minusDays(1).toString()));
+        var canonical = TestChangeReview.verify(fixture.git().root, fixture.git().base, environment, TODAY);
+        AuditedAssertions.assertEquals(canonical.diagnostics().getFirst(),
+                admission(fixture, environment).path("diagnostics").get(0).asText());
+        AuditedAssertions.assertTrue(canonical.diagnostics().getFirst().startsWith("TEST-CHANGE-EXPIRED"));
+    }
+
+    private static com.fasterxml.jackson.databind.JsonNode admission(Fixture fixture, Map<String,String> environment) throws Exception {
+        var bytes = new ByteArrayOutputStream();
+        int exit = TestChangeAdmissionCli.run(new String[]{"--root", fixture.git().root.toString(), "--base", fixture.git().base},
+                environment, TODAY, new PrintStream(bytes, true, StandardCharsets.UTF_8));
+        var result = JSON.readTree(bytes.toByteArray());
+        AuditedAssertions.assertEquals(result.path("status").asText().equals("PASS") ? 0 : 2, exit);
+        return result;
+    }
+
 
     @Test void proofMatchesExactGitReviewAndDeclaredCases(@TempDir Path root) throws Exception {
         var fixture = fixture(root);

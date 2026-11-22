@@ -22,6 +22,7 @@ Assert-AtfComponentJavaEnvironment
 . (Join-Path $PSScriptRoot 'AtfQualificationSnapshot.ps1')
 . (Join-Path $PSScriptRoot 'AtfQualificationTiming.ps1')
 . (Join-Path $PSScriptRoot 'AtfTestChangeBatch.ps1')
+. (Join-Path $PSScriptRoot 'AtfTestChangeAdmission.ps1')
 . (Join-Path $PSScriptRoot 'AtfComponentResume.ps1')
 . (Join-Path $PSScriptRoot 'AtfComponentMaven.ps1')
 . (Join-Path $PSScriptRoot 'AtfCompilerIdentity.ps1')
@@ -200,13 +201,21 @@ function Read-AtfGradleResults($Selections, [string]$Journal) {
 }
 
 $tempRoot = Get-AtfQualificationTempRoot $sourceRoot
+New-Item -ItemType Directory -Path $RunRoot | Out-Null
+$timing = New-AtfQualificationTiming 'components' (Join-Path $RunRoot 'timing.json')
+function Assert-ComponentTestChangeAdmission([string]$Receipt) {
+    Invoke-AtfTestChangeAdmission -SourceRoot $sourceRoot -BaseRef $TestChangeBaseRef -TempRoot $tempRoot `
+        -JavaHome $JavaHome -MavenCache $MavenCache -ReceiptFile (Join-Path $RunRoot $Receipt) `
+        -GenerateProofs:([bool]($TestChangeControl -or $AllTestChangeControls)) -Control $TestChangeControl
+}
+Invoke-AtfQualificationPhase $timing 'components.test-change-admission' {
+    Assert-ComponentTestChangeAdmission 'test-change-admission.json'
+}
 $work = if ($ResumeFrom) { Get-AtfResumeComponentWorkspace $ResumeFrom $tempRoot } else {
     (New-Item -ItemType Directory -Path (Join-Path $tempRoot ('whist-component-suites-' + [guid]::NewGuid().ToString('N')))).FullName
 }
 $workspaceLock = Open-AtfQualificationWorkspace $work
 try {
-    New-Item -ItemType Directory -Path $RunRoot | Out-Null
-    $timing = New-AtfQualificationTiming 'components' (Join-Path $RunRoot 'timing.json')
     $stage = Join-Path $work 'project'
     if ($ResumeFrom) {
         $snapshot = Invoke-AtfQualificationPhase $timing 'components.resume-validation' {
@@ -220,6 +229,9 @@ try {
         $snapshot = Invoke-AtfQualificationPhase $timing 'components.snapshot-preflight' {
             New-AtfQualificationSnapshot $sourceRoot $stage $RunRoot $PinnedSourceInputs
         }
+    }
+    Invoke-AtfQualificationPhase $timing 'components.test-change-recheck' {
+        Assert-ComponentTestChangeAdmission 'test-change-admission-recheck.json'
     }
     $catalog = Get-Content -LiteralPath (Join-Path $stage 'config/atf-test-suites.json') -Raw | ConvertFrom-Json
     $primaryComponents = @($catalog.suites | Where-Object {$_.role -eq 'primary' -and $_.layer -eq 'component'} | ForEach-Object {
