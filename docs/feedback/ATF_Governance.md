@@ -36,6 +36,7 @@ Grila editorială din [contractul documentației](../governance/ATF_Documentatio
 | Prioritate | Responsabil și suprafață | Criteriu de închidere |
 |---|---|---|
 | P2 | Ghiduri EN: traducerile moștenite încă fac neclare noțiunile jocului și calificării. | Revizuiți termenii operaționali după codul public și ediția românească. Cereți acceptanță editorială pentru scopul, intrările, rezultatele și limitele fiecărui ghid afectat înaintea reînnoirii receipt-ului bilingv; structura și verificarea termenilor, singure, nu pot dovedi sensul. |
+| P3 | Politica de limbă a documentației tratează ID-urile ancorelor HTML ca proză: un ID englez de prezentare în RO și un ID român de joc în EN produc constatări false de limbă. | Inspectează proza vizibilă înaintea clasificării limbii; acceptă identificatorii de ancoră netraduși și păstrează probe negative pentru explicații efectiv în altă limbă. |
 
 ## Descărcarea prin browser
 
