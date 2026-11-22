@@ -75,7 +75,7 @@ flowchart LR
 |---|---|
 | [Contractul jocului](src/main/java/ro/cardtable/browser/BrowserGame.java) | Publică locurile, cărțile permise, comenzile legale și punctajele. Validarea rămâne în motorul fiecărui joc. |
 | [Serverul](src/main/java/ro/cardtable/browser/BrowserServer.java) | Servește resursele din aceeași origine. Izolează partidele pe filă, validează reviziile și respinge comenzile repetate. |
-| [Geometria](src/main/java/ro/cardtable/browser/BrowserGeometry.java) | Aplică planul Java folosit în Android pentru locuri și evantai. Whist folosește viewport-ul CSS disponibil fără scalarea scenei; adaptorul cadrului de referință rămâne disponibil consumatorilor existenți. |
+| [Geometria](src/main/java/ro/cardtable/browser/BrowserGeometry.java) | Aplică planul Java folosit în Android pentru locuri și evantai. Whist măsoară viewport-ul util, aplică încadrarea proporțională după înălțime și păstrează geometria nativă; consumatorii existenți își păstrează adaptorul anterior. |
 | [Adaptorul Whist](whist/src/main/java/ro/whistlab/browser/WhistBrowser.java) | Folosește distribuirea, politicile AI și decontarea din motor. Recomandarea vine din aceeași selecție umană ca pe Android. |
 
 ## Whist pe GitHub Pages
@@ -193,35 +193,42 @@ Contractul publicat anterior păstrează pe desktop cadrul logic de 414 × 896, 
 
 ## Suprafața Whist adaptivă
 
-[Adaptorul viewport-ului](src/main/web/viewport.mjs) separă spațiul disponibil, tipografia și geometria existentă a mesei. Whist folosește pixeli CSS fără transformarea întregii scene; Android își păstrează randarea nativă și politicile bazate pe sp.
+[Politica viewport-ului](src/main/web/viewport.mjs) și [adaptorul DOM](src/main/web/surface-fit.mjs) încadrează întreaga prezentare în înălțimea utilă. Etichetele, chenarele, cărțile și comenzile păstrează proporții coerente. Android își păstrează randarea nativă; ambele adaptoare folosesc aceleași politici logice ale mesei și cărților.
 
 | Responsabilitate | Contract |
 |---|---|
-| Spațiul disponibil | Măsoară viewport-ul vizual după padding-ul zonelor sigure. Centrează o suprafață lată de cel mult 768 pixeli CSS și folosește înălțimea disponibilă; tastatura și ferestrele scunde păstrează controalele lizibile prin derulare locală. |
-| Rolurile meniului | Titlul, secțiunea, acțiunea, selecția și textul ajutător folosesc valori rem explicite. Păstrează ierarhia implicită aprobată; mărirea textului rădăcină se aplică o singură dată și nu devine scară a scenei. |
-| Adaptarea mesei | Portul Java existent primește lățimea, înălțimea și scara fontului rădăcină măsurate. Politicile locurilor, cărților, actorului și animațiilor își păstrează responsabilii comuni. |
-| Schimbarea textului | O sondă de un rem observă modificarea fontului rădăcină chiar când fereastra nu se redimensionează. |
-| Compatibilitate | Consumatorii existenți pot păstra `viewportGeometry`; Whist adoptă `adaptiveViewport`. Arhivele exportate anterior rămân imuabile. |
+| Spațiul disponibil | Măsoară lățimea, înălțimea, deplasările și zonele sigure ale viewport-ului vizual. Referința de masă de 896 unități folosește o lățime logică între 320 și 768; o singură încadrare proporțională respectă ambele limite fizice și centrează rezultatul. |
+| Rolurile textului | Titlul, secțiunea, acțiunea, selecția și textul ajutător folosesc valori rem explicite. Mărirea textului rădăcină este distinctă de încadrarea ulterioară a prezentării; etichetele și chenarele împart această încadrare. |
+| Suprafețe cu înălțime fixă | Licitarea, jocul, meniurile și dialogurile fără istoric încap fără derulare verticală a paginii sau panoului. Măsoară conținutul real înaintea încadrării; ascunderea unei bare de derulare nu dovedește încadrarea conținutului. |
+| Conținut lung | Regulile, grupele de realizări și clasamentele folosesc pagini limitate cu navigare vizibilă. Nodurile originale, progresul, ID-urile și acțiunile rămân intacte; formularele păstrează împreună toate câmpurile. Numai istoricul scorului păstrează derularea verticală internă. |
+| Adaptarea mesei | Portul Java primește regiunile logice măsurate și scara textului. Rezervă banda măsurată a etichetelor de licitare/joc deasupra fiecărui chenar, inclusiv a etichetelor ascunse, înaintea poziționării celulelor în stil nativ. |
+| Faze stabile | Păstrează înălțimea necesară a mesei pentru aceeași mână, același viewport și aceeași scară de text. Selecția licitației, turele și colectarea nu trebuie să redimensioneze chenarele. Suprapunerile colectării și bifarea AutoGame nu solicită o nouă încadrare. |
+| Tastatură și ciclu de viață | Urmărește deplasările viewport-ului vizual când tastatura deplasează pagina. Observă schimbările textului rădăcină; grupează callback-urile și deconectează observatorii la eliberarea adaptorului. |
+| Compatibilitate | Whist adoptă suprafața încadrată. Consumatorii existenți și exporturile imuabile păstrează adaptorul admis până la calificarea unui pachet nou de execuție/teste. |
 
 ```mermaid
 flowchart LR
-    Viewport[Viewport vizual și zone sigure] -->|pixeli CSS| Frame[Suprafață nescalată]
-    Font[Fontul rădăcină] -->|roluri rem| Menu[Meniuri lizibile]
-    Font -->|scara fontului| Port[Portul Java al mesei]
-    Frame -->|dimensiuni măsurate| Port
-    Port -->|geometrie existentă| Table[Locuri și cărți]
+    Viewport[Viewport vizual și zone sigure] -->|înălțime și lățime disponibile| Fit[Încadrare proporțională]
+    Font[Preferința textului rădăcină] -->|roluri rem| Measure[Conținut măsurat]
+    Pages[Pagini limitate ale conținutului] -->|conținut vizibil complet| Measure
+    Measure -->|înălțime necesară| Fit
+    Native[Geometrie nativă comună] -->|celule și benzi de acțiune| Scene[Masă logică]
+    Scene -->|regiuni măsurate| Fit
+    Fit -->|o singură scară| Surface[Suprafață cu înălțime fixă]
 ```
 
 <details>
-<summary>Legendă — măsurători partajate, randări distincte</summary>
+<summary>Legendă — încadrare măsurată și acceptanță nativă independentă</summary>
 
-- O fereastră mai lată oferă spațiu mesei până la limita lizibilă; nu mărește fiecare caracter, țintă tactilă și animație printr-o singură transformare.
-- [Componentele controlate](tests/responsive-surface.test.mjs) randează învelișul de producție printr-un fixture API explicit, cu meniuri localizate și text mărit. [Verificarea jocului real](tests/responsive-game.mjs) folosește aceeași mână servită de JVM pe profilurile browserului și captează măsurători și imagini.
-- Concordanța numerică și capturile browserului nu stabilesc identitatea fonturilor native. [Acceptanța rămasă](../docs/feedback/ATF_UiBrowser.md#web-16-suprafața-de-joc-responsivă-și-tipografia-meniurilor) cere o comparație APK/browser identificată pe același Android; nu se pretinde acceptanță iOS.
+- [Componentele controlate](tests/responsive-surface.test.mjs) exercită învelișul de producție, meniurile localizate, paginarea, formularul profilului, textul mărit și un viewport deplasat de tastatură. Intrările negative și izolarea colectării/ciclului de viață rămân granițe de componentă.
+- [Verificarea jocului real](tests/responsive-game.mjs) folosește motorul JVM pentru variantele de joc și păstrează aceeași mână la schimbarea viewport-ului, limbii și textului. Verifică banda rezervată acțiunii, chenarele stabile între faze și accesul la evantai prin navigarea orizontală nativă.
+- Concordanța logică și capturile browserului nu stabilesc identitatea fonturilor native. [Acceptanța rămasă](../docs/feedback/ATF_UiBrowser.md#web-16-suprafața-de-joc-responsivă-și-tipografia-meniurilor) compară un APK identificat și Chrome pe același Android; iOS este în afara acestei calificări.
 
 </details>
 
-Transmite classpath-ul JVM produs de `Start-WhistBrowser.ps1 -BuildOnly`, un dosar nou extern de dovezi și, opțional, un executabil Chromium către `tests/responsive-game.mjs`. Dovezile browserului consemnează versiunea, viewport-ul, limba, fontul rădăcină, cărțile vizibile, geometria și capturile scenariului; [publicatorul](tests/Publish-BrowserExtent.ps1) include imaginile în raportul Extent standard în engleză.
+Transmite classpath-ul JVM produs de `Start-WhistBrowser.ps1 -BuildOnly`, un dosar nou extern de dovezi și, opțional, un executabil Chromium către `tests/responsive-game.mjs`. Dovezile consemnează viewport-ul, browserul, limba, textul, limitele și faptele jocului; [publicatorul](tests/Publish-BrowserExtent.ps1) include capturile în Extent standard în engleză. Navigarea orizontală a mâinii păstrează contractul APK pentru mâini dense; este distinctă de derularea verticală a paginii.
+
+### Împachetare și adaptoare portabile
 
 ```powershell
 .\atf-ui-browser\Package-CardTableBrowser.ps1 -WorkRoot $WorkRoot -Version $BrowserLibraryVersion
@@ -239,7 +246,7 @@ Whist folosește aceeași politică nativă a mesei prin [WhistBoardAdapter](whi
 | Frontieră de componentă | Contract verificat |
 |---|---|
 | Geometria mesei | Toate modurile, 3–6 locuri, lățimi compacte și mari, 1–17 cărți și text mărit; licitarea și jocul păstrează aceleași ancore ale jucătorilor. |
-| Adaptarea unităților | Normalizarea densității Android la coordonatele logice Web. Limita de rotunjire ține cont de conversiile repetate ale dimensiunilor și de plasarea întreagă în fiecare renderer; la densitate unitară, coordonatele trebuie să coincidă exact. Whist furnizează dimensiunile utile; scalarea desktop anterioară rămâne în adaptorul său. |
+| Adaptarea unităților | Normalizarea densității Android la coordonatele logice Web. Limita de rotunjire ține cont de conversiile repetate ale dimensiunilor și de plasarea întreagă în fiecare renderer; la densitate unitară, coordonatele trebuie să coincidă exact. Whist furnizează regiunile logice înaintea încadrării proporționale după înălțime; scalarea desktop anterioară rămâne în adaptorul său. |
 | Prezentarea cărților | Cele 52 de combinații rang/culoare păstrează marcajele, rolul culorii și proporțiile prin adaptoarele reale ale mâinii. |
 | Interacțiune | Scenariul comun verifică refuzul, evidențierile legale, expirarea întârziată și o singură depunere acceptată; cadrele colectării sunt comparate prin ambele adaptoare. |
 | Limita acceptanței | Componentele execută cod portabil de producție, nu View-uri Android sau rasterizarea fonturilor din browser. Acceptanța vizuală pe același dispozitiv rămâne separată. |
@@ -278,7 +285,7 @@ node .\atf-ui-browser\pages\verify-card-adapter.mjs $Site $AdapterEvidence
 .\atf-ui-browser\tests\Publish-BrowserExtent.ps1 -EvidenceRoot $EvidenceRoot -MavenClasspathFile $MavenClasspath
 ```
 
-- `-Check viewport` rulează contractul focalizat de redimensionare în Edge sau Chrome pentru telefon portret/landscape și ferestre desktop limitate de înălțime sau lățime, inclusiv înguste.
+- `-Check viewport` verifică referința cadrului din pachetele exportate în Edge sau Chrome. Sursa Whist încadrată curentă folosește `tests/responsive-surface.test.mjs` și `tests/responsive-game.mjs` pentru viewport, meniuri și masă.
 - Proba așteaptă conținutul paginii și evenimentul de redimensionare, apoi verifică cadrul logic, transformarea CSS și centrarea.
 - JAR-ul comun include contractul Node independent pentru telefon, desktop, redimensionare monotonă, dimensiuni nevalide și depășirea ambelor axe.
 
@@ -300,13 +307,13 @@ Chenarul de atu încarcă local un subset Noto Sans Symbols 2 cu cele patru simb
 |---|---|
 | Măsurare | Shell-ul transmite `actorClearance` pentru eticheta aflată deasupra chenarului. |
 | Probă DOM | Nod invizibil, măsurat în unități CSS și eliminat imediat; scalarea scenei nu schimbă rezerva. |
-| Adaptor | Poate exclude rezerva din banda densă fără să mute locurile comune. |
+| Adaptor | Respectă celula nativă: adaugă banda etichetei independentă de fază la înălțimea măsurată, apoi plasează chenarul vizibil sub bandă. Centrul și celelalte chenare rămân disjuncte față de etichetă. |
 | Compatibilitate | Jocurile care nu consumă parametrul păstrează geometria existentă. |
 | Componente | Etichetă vizibilă sau ascunsă, înălțimi diferite și eliminarea probei. |
 
 ### Textul scorului și verificările comune de redare
 
-- `ScoreTypography` deține dimensiunile logice ale punctajului. Android folosește sp, iar adaptorul Whist Web exportă aceleași roluri ca rem la o rădăcină de 16 px. Scorul nu moștenește dimensiunile rolurilor meniului; mărirea accesibilă a textului se aplică o singură dată. Consumatorii anteriori își păstrează scalarea viewport-ului.
+- `ScoreTypography` deține dimensiunile logice ale punctajului. Android folosește sp, iar adaptorul Whist Web exportă aceleași roluri ca rem la o rădăcină de 16 px. Scorul nu moștenește dimensiunile rolurilor meniului; mărirea textului rădăcină și încadrarea coerentă a suprafeței se aplică fiecare o singură dată. Consumatorii anteriori își păstrează politica viewport-ului.
 - O zonă derulabilă, accesibilă prin focus, cu minime de coloană determinate de text, păstrează coloanele mărite accesibile în ferestre înguste. Dimensiunile native ale scorului și calculul jocului se păstrează.
 
 - Testele comune execută constructorul Web și colectarea reale, cu DOM și ceas controlate. Actorul este semnalizat înaintea cărții; fețele măsurate își păstrează originea, dimensiunile și destinația până la terminarea colectării.
@@ -320,7 +327,7 @@ Chenarul de atu încarcă local un subset Noto Sans Symbols 2 cu cele patru simb
 Acțiunile scorului au roluri comune dedicate: acțiunile principale folosesc 24 de unități logice, iar cele secundare 21, cu 50% peste rolurile vechi 16/14. Android consumă sp, iar Web rem; mărirea accesibilă se aplică o singură dată.
 
 - Adaptorul nativ folosește `ScreenViews.scoreActionButton` sau `addScoreAction`. Etichetele împachetate folosesc înălțimea conținutului, cu țintă tactilă minimă de 48 de unități; controalele discrete cu înălțime fixă rămân separate.
-- Adaptorul Web folosește aceleași tokenuri `ScoreTypography` exportate. Ferestrele înguste împart etichetele complete pe rânduri și derulează pagina scorului; Whist folosește spațiul real al viewport-ului fără transformarea scenei.
+- Adaptorul Web folosește aceleași tokenuri `ScoreTypography` exportate. Whist încadrează pagina completă a scorului în înălțimea utilă, inclusiv acțiunile localizate mărite. Numai istoricul scorului păstrează derularea verticală internă.
 - Coloanele numerice, celulele istoricului, rangurile cărților, dialogurile generice și celelalte meniuri își păstrează rolurile. Adaptoarele jocurilor dețin textele localizate, valorile confirmate și callback-urile.
 - Testele consumatorilor execută rendererul livrat și compară rolurile reale din AAR/JAR. Acoperiți RO/EN, ferestre scunde, text mărit, acțiuni accesibile, ordinea neschimbată a callback-urilor și respingerea stilurilor vechi sau scalate dublu.
 

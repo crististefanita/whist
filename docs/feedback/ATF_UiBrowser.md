@@ -26,23 +26,25 @@ Deciziile AI, seriile și Jocul la 0 se extind prin componente cu oracol de dome
 
 ## WEB-16 Suprafața de joc responsivă și tipografia meniurilor
 
-**P1 · 88/100 · Implementarea sursei calificată offline; acceptanța APK/browser pe același dispozitiv rămâne deschisă.**
+**P1 · 88/100 · Implementarea încadrării și contractele portabile sunt disponibile; acceptanța APK/browser pe același dispozitiv rămâne deschisă.**
 
-Whist partajează deja calculele portabile ale locurilor și mâinii. Păstrați această graniță; lacuna aparține învelișului browserului, nu justifică duplicarea geometriei mesei sau importarea interfeței specifice Chess în Whist.
+Whist partajează politicile native ale locurilor, cărților și animațiilor. Păstrați această graniță și calificați independent randările fizice.
 
-- Whist adoptă acum dimensionarea după viewport-ul util, fără transformarea întregii scene, cu lățime maximă lizibilă centrată și derulare locală a meniurilor în ferestre scunde. Pachetul publicat imuabil și consumatorii existenți păstrează adaptorul cadrului de referință până la o livrare calificată separat. Vezi [politica viewport-ului](../../atf-ui-browser/src/main/web/viewport.mjs) și [dimensionarea cadrului](../../atf-ui-browser/src/main/web/table.mjs).
-- Rolurile tipografice explicite ale meniurilor înlocuiesc multiplicatorul global implicit. Schimbarea textului rădăcină declanșează măsurarea geometriei prin același adaptor; masa primește dimensiunile sale utile reale. [Tipografia meniurilor și geometria](../../atf-ui-browser/src/main/web/table.css) păstrează ierarhia implicită aprobată fără scalarea întregii scene.
+- [Politica viewport-ului](../../atf-ui-browser/src/main/web/viewport.mjs) derivă o singură încadrare proporțională din înălțimea, lățimea și conținutul logic necesar. [Adaptorul DOM](../../atf-ui-browser/src/main/web/surface-fit.mjs) încadrează meniurile și dialogurile, paginează conținutul lung și urmărește deplasările tastaturii. Pachetele publicate rămân imuabile.
+- Rolurile tipografice explicite și [componentele native/Web](../../atf-ui-browser/tests/ro/cardtable/browser/WhistSurfaceContract.java) guvernează chenarele, cărțile, comenzile și banda rezervată etichetei acțiunii. Suprapunerile colectării și schimbările AutoGame nu trebuie să declanșeze callback-uri de încadrare.
 
 **Direcția necesară**
 
-1. Păstrați dimensionarea condusă de conținut, zonele sigure și geometria comună a locurilor/cărților. Nu reintroduceți micșorarea întregii scene ori ajustări izolate la praguri de rezoluție pentru a ascunde depășirile.
-2. Păstrați rolurile tipografice explicite și mărirea independentă a textului. Politicile native `sp` ale APK-ului rămân autoritatea comparației deschise; componentele browserului singure nu dovedesc echivalența fonturilor native.
-3. Păstrați ierarhia informației între adaptoare: numele, licitațiile, levatele câștigate, jucătorul activ, atuul, cărțile jucate, mâna umană și scorul trebuie să rămână ușor de parcurs, cu aceeași proeminență relativă. Controalele rămân accesibile, fără decupare sau derulare inutilă a paginii pe profilurile acceptate.
+1. Păstrați o singură încadrare măsurată după înălțime prin adaptor. Folosiți geometria logică și rolurile tipografice înaintea încadrării proporționale; evitați constantele independente pe rezoluții sau decuparea conținutului pentru a ascunde depășirile.
+2. Licitarea, jocul, meniurile și fiecare dialog fără istoric încap în înălțimea utilă fără derulare verticală. Regulile, grupele de realizări și clasamentele folosesc pagini limitate; istoricul scorului este singura excepție cu derulare verticală internă. Păstrați textul complet, câmpurile, navigarea și alegerile manuale.
+3. Păstrați chenarele fixe între licitare, joc și colectare. Etichetele localizate ale turei stau deasupra chenarelor în benzi rezervate ambelor faze. Oh Hell, Reverse Oh Hell și variantele descrescătoare la trei jucători nu trebuie să intersecteze etichete, butoane de licitație, alte chenare sau mâna umană.
+4. Păstrați gestul orizontal nativ pentru mâinile dense. Verificați accesul la prima/ultima carte, fără a forța toate cele 17 cărți într-un viewport îngust prin reducerea indicilor.
 
 **Dovezi de închidere**
 
-- [Componentele](../../atf-ui-browser/tests/responsive-surface.test.mjs) acoperă dimensionarea viewport-ului, rolurile tipografice, ferestrele scunde/înalte, etichetele localizate lungi și textul 1.0×/1.3× fără emulator. Granița HTTP este un fixture controlat. [Verificările browserului cu motor real](../../atf-ui-browser/tests/responsive-game.mjs) păstrează aceeași mână Whist la redimensionare și schimbarea limbii; niciuna dintre suite nu pretinde acceptanță nativă APK.
-- Același checkpoint de partidă salvată și meniurile principal/configurare sunt randate pe același Android în APK și Chrome la un profil compact; un profil browser desktop verifică utilizarea lățimii și depășirile. Includeți RO/EN și text 1.0×/1.3× în comparația focalizată, fără o partidă completă la fiecare rezoluție.
-- Capturile Extent includ dimensiunile viewport-ului, identitatea browserului și APK-ului, fonturile, limitele elementelor principale, verdictele de depășire/derulare și faptele vizibile ale jocului. Păstrați problema deschisă până trece comparația randată; geometria de componentă singură nu este paritate vizuală.
+- [Componentele](../../atf-ui-browser/tests/responsive-surface.test.mjs) acoperă meniuri/dialoguri cu înălțime fixă, paginare, izolarea callback-urilor, etichete localizate și text 1.0×/1.3× printr-o graniță HTTP controlată. [Verificările cu motor real](../../atf-ui-browser/tests/responsive-game.mjs) păstrează aceeași mână la redimensionare și schimbarea limbii; niciuna dintre suite nu pretinde acceptanță nativă APK.
+- Înregistrați intervalele de derulare și toate limitele vizibile ale paginii/panoului. Includeți profiluri compacte și desktop, etichete la trei jucători și mâini dense. Barele ascunse sau o singură imagine cu o carte nu stabilesc acest contract.
+- Randați același checkpoint și meniurile principal/configurare în APK și Chrome pe același Android. Comparați un profil compact, RO/EN și text normal/mărit; adăugați un profil browser desktop fără repetarea partidelor complete la fiecare dimensiune.
+- Extent include viewport-ul, densitatea, identitatea browserului/APK-ului, fonturile, limitele, verdictele derulării și faptele vizibile ale jocului, cu capturi inline. Păstrați acceptanța nativă deschisă până trece comparația fizică.
 
-Folosiți ca referință responsivă tipografia fluidă `rem`, `clamp()` și limita tablei derivată din viewport din Chess Web. Păstrați motorul, semantica mesei, culorile și responsabilitatea adaptoarelor Whist. Criteriul completează WEB-07 și WEB-11; verificările fluxurilor și glifelor cărților nu închid tipografia responsivă a meniurilor sau dimensionarea pe desktop.
+Folosiți tipografia explicită și limitele derivate din viewport din Chess Web ca referințe de proiectare, păstrând motorul și responsabilitatea adaptoarelor Whist. WEB-07 și WEB-11 rămân criterii distincte de flux și glife.
