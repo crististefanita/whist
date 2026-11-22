@@ -1,4 +1,4 @@
-# Whist Lab - Android and iOS
+# Whist Lab Application Builds
 
 ## Overview
 
@@ -9,7 +9,7 @@ Android and browser release scope.
 
 ## Usage
 
-The configuration allows the choice of variant, a table of 3–6 players and Normal level or Hard.
+The configuration selects a variant, 3–6 players and Normal or Hard difficulty.
 
 Select English or Romanian through the interface. The selection persists across launches, and the rules and hand schedule are available from `Rules & schedule` in the selected language.
 
@@ -40,19 +40,20 @@ Automation only affects bidding and play in the active hand. It does not change 
 ## Flow and responsibilities
 
 ```mermaid
+%%{init: {"themeVariables":{"fontSize":"15px"},"themeCSS":".edgeLabel, .edgeLabel p { font-size: 12px !important; } .node rect { rx: 6px; ry: 6px; }","flowchart":{"curve":"linear","nodeSpacing":24,"rankSpacing":22,"padding":6},"sequence":{"mirrorActors":false,"messageMargin":24,"wrap":true}}}%%
 flowchart LR
-UI[Android active; SwiftUI parked] -->|sends commands| SESSION[GameSession]
-SESSION -->|produce| VIEW[State captured]
+UI["Android active;<br/>SwiftUI parked"] -->|sends commands| SESSION["GameSession"]
+SESSION -->|produce| VIEW["State captured"]
 VIEW -->|feeds| UI
-SESSION -->|calls for decisions| AI[AiPolicy]
-STORE[Local save] -->|restore| SESSION
-IOS[J2ObjC] -->|translate the common engine| SESSION
+SESSION -->|calls for decisions| AI["AiPolicy"]
+STORE["Local save"] -->|restore| SESSION
+IOS["J2ObjC"] -->|translate the common<br/>engine| SESSION
 ```
 
 <details>
 <summary>Legend and limits</summary>
 
-GameSession validates the controls prior to the change of status; UIU returns the captured status. Persistence only restores the information available in saving scheme.
+GameSession validates the controls before changing state; the UI renders the captured state. Persistence restores only information available in the save schema.
 
 </details>
 
@@ -60,13 +61,13 @@ GameSession validates the controls prior to the change of status; UIU returns th
 
 | Component | Responsibility |
 |---|---|
-| [game-core](game-core/README.md) | Rules, session, score, rescue and application AI policy; JVM tests. |
+| [game-core](game-core/README.md) | Rules, session, scoring, persistence and application AI policy; JVM tests. |
 | [atf-card-table-ui](atf-card-table-ui/README.md) | Reusable Android Core: menu/profile, widgets, cards, theme and hand geometry; without game engine or ATF libraries. |
-| [card-table-names](card-table-names/README.md) | Java's common policy for the distribution of names in place and validation of human name. |
+| [card-table-names](card-table-names/README.md) | Shared Java policy for seat-name assignment and human-name validation. |
 | [app](app/src/main/java/ro/whistlab/app/) | Android activity, table configuration, game presentation and local persistence. |
 | [ai-lab](ai-lab/README.md) | JVM module of independent player, tools and experiments offline; consumed only on testing. |
-| [test-audit](test-audit/README.md) | JVM fixtures for component capture and verification; excluded from application runtimeter. |
-| [algorithm-build](algorithm-build/README.md) | JVM exclusive Gradle input without configuration of Android application. |
+| [test-audit](test-audit/README.md) | JVM fixtures for component capture and verification; excluded from application runtime. |
+| [algorithm-build](algorithm-build/README.md) | JVM-only Gradle entry without Android application configuration. |
 | [iOS](../ios/README.md) | Parked SwiftUI adapter and shared-engine bridge; outside active release qualification. |
 | [atf-test-android](../atf-test-android/README.md) | Android verification components and scenarios explicitly activated. |
 
@@ -96,17 +97,17 @@ Android SDK declared in configuration; APK is produced in `app/build/outputs/apk
 `--offline` refuses dependencies that are not already in cache.
 
 From the root of the project, [Collections launcher](../scripts/run-whist-collection.ps1)
-create his own temporary copy and accept explicit selections such as `quick`,
+creates its own temporary copy and accepts explicit selections such as `quick`,
 `regression`, `context` and `documentation`:
 
 ```powershell
 .\scripts\run-whist-collection.ps1 -Collection quick
 ```
 
-Component tests, offline tournaments and Android scenarios are selections
-Distinguishing number of the country which has granted authorisation. External experimental candidates do not change the active application by
-Their mere existence. Access to a device and installation of an APK are steps
-Separate, activate explicitly.
+Component tests, offline tournaments and Android scenarios have
+distinct selections and activation. An external experimental candidate does not change the active application
+merely by existing. Device access and APK installation are separate steps
+that require explicit activation.
 
 Current contracts and mechanisms are in [Documentation](../docs/).
 
@@ -116,7 +117,7 @@ Current contracts and mechanisms are in [Documentation](../docs/).
 
 | Surface | Input |
 |---|---|
-| New profile and compatible rescue | The configuration, score, restoration, AI projections and aid RO/EN use the same rules identity; the historical profile explicitly retains its values. |
+| New profile and compatible restoration | The configuration, score, restoration, AI projections and aid RO/EN use the same rules identity; the historical profile explicitly retains its values. |
 | Guide and interface | Labels and access to the history of all places follow the current texts and commands; the complete procedures belong to the responsible guides. |
 
-[Rules and score](../docs/game/README.md) holds the contract of the product and [Android qualifications](../docs/feedback/ATF_Android.md) keeps the criteria still open.
+[Rules and score](../docs/game/README.md) owns the product contract and [Android qualifications](../docs/feedback/ATF_Android.md) keeps the criteria still open.

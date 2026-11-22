@@ -23,10 +23,11 @@ Launchers locate the project from their script path and prepare isolated working
 ## Responsibilities
 
 ```mermaid
+%%{init: {"themeVariables":{"fontSize":"15px"},"themeCSS":".edgeLabel, .edgeLabel p { font-size: 12px !important; } .node rect { rx: 6px; ry: 6px; }","flowchart":{"curve":"linear","nodeSpacing":24,"rankSpacing":22,"padding":6},"sequence":{"mirrorActors":false,"messageMargin":24,"wrap":true}}}%%
 flowchart LR
-    RUN[Launcher] -->|select| MODULE[Owning module]
-    MODULE -->|execute| CHECK[Verification]
-    CHECK -->|keep| OUT[External result]
+    RUN["Launcher"] -->|select| MODULE["Owning module"]
+    MODULE -->|execute| CHECK["Verification"]
+    CHECK -->|keep| OUT["External result"]
 ```
 
 <details>

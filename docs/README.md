@@ -5,6 +5,25 @@
 The documentation explains the rules, the architecture of the AI players and how we develop and verify them.
 Each area has one introductory README and supporting guides with explicit owners and sources.
 
+
+```mermaid
+%%{init: {"themeVariables":{"fontSize":"15px"},"themeCSS":".edgeLabel, .edgeLabel p { font-size: 12px !important; } .node rect { rx: 6px; ry: 6px; }","flowchart":{"curve":"linear","nodeSpacing":24,"rankSpacing":22,"padding":6},"sequence":{"mirrorActors":false,"messageMargin":24,"wrap":true}}}%%
+flowchart LR
+    Question["Question or change"] -->|routes| Game["Game and engine"]
+    Question -->|routes| AI["AI and learning"]
+    Question -->|routes| Platform["Platform and<br/>release"]
+    Game -->|verify through| Proof["Tests and reporting"]
+    AI -->|verify through| Proof
+    Platform -->|verify through| Proof
+```
+
+<details>
+<summary>Legend — ownership and verification boundary</summary>
+
+This is a reading map, not a build graph. Choose the area that owns the contract, inspect its code and use the test and evidence layer that observes the change; governance and feedback maintain the resulting contract and remaining gaps.
+
+</details>
+
 ## Documentation areas
 
 | Area | Main question |

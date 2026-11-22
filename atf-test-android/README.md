@@ -4,23 +4,24 @@
 
 The module brings together the ADB adapter, the capture and timing of Android, reusable audits and the Whist Lab scenarios. Local components and flows on the device have explicit selections; each check distinguishes command, observation and independent comparison.
 
-The infrastructure has the execution and the capture and the scenario has the meaning of the action and the expected outcome. The construction of the APK, installation and acceptance of the interaction have separate contracts.
+Infrastructure owns execution and capture; the scenario owns action meaning and expected outcomes. APK build, installation and interaction acceptance have separate contracts.
 
 ## Flow and responsibilities
 
 ```mermaid
+%%{init: {"themeVariables":{"fontSize":"15px"},"themeCSS":".edgeLabel, .edgeLabel p { font-size: 12px !important; } .node rect { rx: 6px; ry: 6px; }","flowchart":{"curve":"linear","nodeSpacing":24,"rankSpacing":22,"padding":6},"sequence":{"mirrorActors":false,"messageMargin":24,"wrap":true}}}%%
 flowchart LR
-    SCENARIO[Scenario] -->|sends| DRIVER[UI adapter]
-    DRIVER -->|run through| ADB[AdbClient]
-    DRIVER -->|capture| TRACE[Observation and time]
-    ORACLE[Independent oracle] -->|compare| TRACE
-    TRACE -->|feeds| PUBLISH[Consumer publication]
+    SCENARIO["Scenario"] -->|sends| DRIVER["UI adapter"]
+    DRIVER -->|runs through| ADB["AdbClient"]
+    DRIVER -->|captures| TRACE["Observation and<br/>time"]
+    ORACLE["Independent oracle"] -->|compares| TRACE
+    TRACE -->|feeds| PUBLISH["Consumer<br/>publication"]
 ```
 
 <details>
 <summary>Legend: infrastructure and domain</summary>
 
-ADB adaptor retains the result of the demarcated command. The UI adapter interprets the observed state and the oracle checks the ownership of the scenario; the common library receives the printed publication data.
+The ADB adapter retains each bounded command’s result. The UI adapter interprets observed state, the oracle checks the scenario’s property, and Reporting receives typed publication data.
 
 </details>
 
@@ -30,7 +31,7 @@ ADB adaptor retains the result of the demarcated command. The UI adapter interpr
 |---|---|
 | [AdbClient](src/main/java/atf/android/AdbClient.java) | Explicit device, maximum duration, text or binary outputs. |
 | [TableViewportAudit](src/main/java/atf/android/whist/evidence/TableViewportAudit.java) | Compare one observation of the table; E2E and components use the same oracle, with real or simulated data. |
-| [Catch](src/main/java/atf/android/evidence/AndroidScreenshotEvidence.java) and [timing](src/main/java/atf/android/evidence/timing/) | Original PNG, monotonous clock, intervals and serialization. |
+| [Capture](src/main/java/atf/android/evidence/AndroidScreenshotEvidence.java) and [timing](src/main/java/atf/android/evidence/timing/) | Original PNG, monotonic clock, intervals and serialization. |
 | [audits Whist](src/main/java/atf/android/whist/evidence/) | Pure checks and publication of the external index. |
 | [Screenplays and oracles](src/test/java/atf/android/e2e/) | Navigation, state extraction, actors and game comparisons. |
 | [Interpretation of the hierarchy](src/test/java/atf/android/e2e/driver/hierarchy/) | `HierarchyDocument` decodes XML and coordinates; `CardLabelText` keeps the card notation, and `CardHierarchy` interprets the accessible hand, edge and legality. |
@@ -41,16 +42,16 @@ ADB adaptor retains the result of the demarcated command. The UI adapter interpr
 ## Running contract checks
 
 - Each command has identified device and maximum duration; the success of the transport and semantic transition have distinct verdicts.
-- The XML interpretation receives one observation and does not order the device. The Decodator refuses statements `DOCTYPE`; generic and card selectors use the same node model and normalization.
+- The XML interpretation receives one observation and does not order the device. The decoder rejects `DOCTYPE` declarations; generic and card selectors use the same node model and normalization.
 - The full PNG and the hierarchy belong to the same checkpoint checked.
-- UIAutomator logic points are mapped at the PNG raster observed prior to pixel comparisons. [DisplayRaster](src/main/java/atf/android/evidence/DisplayRaster.java) requires exact active physical or logical dimensions, without tolerance for cutting or arbitrary scaling.
+- UIAutomator logical coordinates are mapped at the PNG raster observed prior to pixel comparisons. [DisplayRaster](src/main/java/atf/android/evidence/DisplayRaster.java) requires exact active physical or logical dimensions, without tolerance for cropping or arbitrary scaling.
 - The phase clock starts before the first action and keeps the partial intervals at failure.
 - The execution, capture, log and publication shall keep separate time axes.
 - The index and results shall be written externally; [contract of publication](../docs/reporting/ATF_Handoff.md) defines their identity and acceptance.
 
 ## Verification without device
 
-With his own temporary copy, with his own Pome, libraries and a Maven warehouse:
+From an isolated copy with the project POM, selected libraries and a dedicated Maven cache:
 
 ```powershell
 mvn -B -pl atf-test-android -am '-Dtest=AndroidUnitSuite,AndroidComponentSuite' '-Dsurefire.failIfNoSpecifiedTests=false' '-Datf.android.enabled=false' test
@@ -59,10 +60,10 @@ mvn -B -pl atf-test-android -am '-Dtest=AndroidUnitSuite,AndroidComponentSuite' 
 | Collection | Contract verified |
 |---|---|
 | [AndroidComponentSuite](src/test/java/atf/android/suites/AndroidComponentSuite.java) | All Maven components of the adapter with controlled observations and without device. |
-| [AndroidUiFlowTimingComponentSuite](src/test/java/atf/android/e2e/support/AndroidUiFlowTimingComponentSuite.java) | Temporisation of flow through components. |
+| [AndroidUiFlowTimingComponentSuite](src/test/java/atf/android/e2e/support/AndroidUiFlowTimingComponentSuite.java) | Flow timing through component checks. |
 | [AndroidDisplayComponentSuite](src/test/java/atf/android/suites/AndroidDisplayComponentSuite.java) | Profiles, parsing, geometry and synthetic raster; Maven profile `display-components` excludes the compilation of AI algorithms. |
 
-Option `-ComponentsOnly` The launcher selects the display collection without the device. [Display Component Guide](../docs/testing/ATF_DisplayComponents.md) define simulated inputs, controlled defects and verification limits.
+The launcher’s `-ComponentsOnly` option selects the display collection without the device. The [display-component guide](../docs/testing/ATF_DisplayComponents.md) defines simulated inputs, controlled defects and verification limits.
 
 ## Android flows
 
@@ -150,18 +151,18 @@ holds the transfer of the hierarchy and PNG, retesting and closing the range
 measured. A hierarchy left over from another screen or prior PNG cannot demonstrate
 success of current catch; interruption retains the cause and marking of the wire.
 
-[AdbClient](src/main/java/atf/android/AdbClient.java) delegates [execution of the process](src/main/java/atf/android/process/CommandProcess.java) with a single monotonous term for starting, finishing and drainage exits. The interruption shall retain the wire marking and the reading errors shall not be converted into success.
+[AdbClient](src/main/java/atf/android/AdbClient.java) delegates [execution of the process](src/main/java/atf/android/process/CommandProcess.java) with a single monotonous term for starting, finishing and drainage exits. The interruption shall retain the wire marking and the reading errors must not be converted into success.
 
-- Native blocking operations use daemon wires independent of virtual thread planner.
+- Native blocking operations use daemon threads independently of the virtual-thread scheduler.
 - The wait shall observe both flows so that one locked exit does not conceal the error of the other; an error already observed takes precedence over the generic expiry diagnosis.
 
-Transport components use controlled local processes. [Acceptance of Android](../docs/testing/ATF_Android.md) checks the behaviour on the device separately; publication of a valid catch has its own contract.
+Transport components use controlled local processes. [Acceptance of Android](../docs/testing/ATF_Android.md) checks the behaviour on the device separately; publication of a valid capture has its own contract.
 
-- The failure requires that the process and the observed offspring be stopped while the parent is active.
+- The failure requires that the process and the observed descendants be stopped while the parent is active.
 - Flow closure does not block the caller; a process created after the start-up is cleaned when it becomes available.
 - The errors in cleaning are added to the original cause; a descendant removed before it can be observed has no identity guaranteed by API Java.
 
-Memory budgets for text and binary stay [Open adaptor criterion](../docs/feedback/ATF_Android.md). [Package responsibilities](../docs/governance/ATF_Packages.md) hold the rules for extracting mechanisms without changing the identity and order of scenarios.
+Memory budgets for text and binary stay [Open adapter criterion](../docs/feedback/ATF_Android.md). [Package responsibilities](../docs/governance/ATF_Packages.md) hold the rules for extracting mechanisms without changing the identity and order of scenarios.
 
 </details>
 

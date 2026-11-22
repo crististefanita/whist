@@ -2,67 +2,68 @@
 
 ## Overview
 
-The module shall assess response contracts and produce comparisons and independent disclosure decisions. Transport provides the answer; the rules set expectations and the outcome policy interprets the comparisons assessed.
+The module evaluates response contracts and produces comparisons and renderer-independent verdicts. Transport supplies the response, rules define expectations, and the outcome policy interprets evaluated comparisons.
 
-Full values decide the verdict. The projection for publication and limitation of preview shall take place after evaluation, with the maintenance of the cause and the comparative values.
+Complete values determine the verdict. Publication and preview limits apply after evaluation, preserving the cause and compared values.
 
 ## Responsibilities
 
 ```mermaid
+%%{init: {"themeVariables":{"fontSize":"15px"},"themeCSS":".edgeLabel, .edgeLabel p { font-size: 12px !important; } .node rect { rx: 6px; ry: 6px; }","flowchart":{"curve":"linear","nodeSpacing":24,"rankSpacing":22,"padding":6},"sequence":{"mirrorActors":false,"messageMargin":24,"wrap":true}}}%%
 flowchart LR
-    BODY[API reply] -->|feeds| CONTEXT[Background assessment]
-    RULES[Contract] -->|declares rules| EVAL[Evaluator]
-    CONTEXT -->|provide values| EVAL
-    EVAL -->|produce| RESULT[Comparison and verdict]
+    BODY["API response"] -->|feeds| CONTEXT["Evaluation context"]
+    RULES["Contract"] -->|declares rules| EVAL["Evaluator"]
+    CONTEXT -->|provides values| EVAL
+    EVAL -->|produces| RESULT["Comparison and<br/>verdict"]
 ```
 
 <details>
 <summary>Legend: local context and unique evaluation</summary>
 
-[ContractEvaluation](src/main/java/atf/validation/contract/ContractEvaluation.java) leaves the JSON body under the first rule that requires it and reuses the document only in the current assessment. Header rules can function separately; publication consumes the captured result without repeating the assessment after the text is shortened.
+[ContractEvaluation](src/main/java/atf/validation/contract/ContractEvaluation.java) parses the JSON body lazily at the first rule that needs it and reuses that document only within the current evaluation. Header rules work independently; publication consumes the captured result without reevaluating shortened text.
 
 </details>
 
 ## JSON contracts
 
-- The invalid path, absence and present value are distinct; `null` explicitly present.
+- Invalid paths, absence and present values are distinct; an explicit `null` is present.
 - Simple paths and JSON Pointer have an explicit subset; general selections, filters and recursive search are denied.
-- The scheme shall be checked for a preliminary period, including in branches not touched by the court; the unknown keywords shall be refused.
-- The assessment of a scheme shall have its own compiled deviations and regular expressions; the same expression shall be reused for repetitive values without common cache between applications or after file modification.
+- Schema prevalidation includes branches not reached by the instance; unknown keywords are rejected.
+- Each schema evaluation owns its compiled traversal and regular expressions; repeated values reuse the expression within that evaluation, without a shared cache across evaluations or file changes.
 - Strict policy is failing and warning policy retains negative comparisons and status `WARNING`.
 
 <details>
-<summary>Subset of the scheme and sources of contract</summary>
+<summary>Schema subset and contract sources</summary>
 
 | Surface | Meaning |
 |---|---|
-| Scheme | Object or Boolean; pre-validation independent of court. |
+| Schema | Object or boolean; prevalidation is independent of the instance. |
 | Types and values | `type`, `enum`, exact value equality and numerical comparisons; `integer` accepts a total numerical value. |
-| Objects | `required`, `properties` and `additionalProperties` Boolean or scheme. |
-| arrays | `items` Boolean or schematic, `minItems` and `maxItems`. |
-| Rings | Limits in Unicode code points and valid Java regular expressions. |
+| Objects | `required`, `properties` and `additionalProperties` boolean or schema. |
+| arrays | `items` boolean or schema, `minItems` and `maxItems`. |
+| Strings | Limits in Unicode code points and valid Java regular expressions. |
 | Numbers | `minimum` and `maximum` inclusive, by `BigDecimal`. |
 | Metadata | `$schema` accepts the 2020-12 Draft Identifier; the other permitted metadata are annotations. |
 | Rejections | Key and unsupported forms including `const`, `$ref` and `format`. |
 
-[JsonSchemaCapabilities](src/main/java/atf/validation/contract/schema/JsonSchemaCapabilities.java) defines the vocabulary and accepted forms and [JsonSchemaValidator](src/main/java/atf/validation/contract/JsonSchemaValidator.java) assesses the court. The accepted URIO is `https://json-schema.org/draft/2020-12/schema`; the module implements the declared subset with explicit refusal outside it.
+[JsonSchemaCapabilities](src/main/java/atf/validation/contract/schema/JsonSchemaCapabilities.java) defines the vocabulary and accepted forms and [JsonSchemaValidator](src/main/java/atf/validation/contract/JsonSchemaValidator.java) evaluates the instance. The accepted URI is `https://json-schema.org/draft/2020-12/schema`; the module implements the declared subset with explicit refusal outside it.
 
-[JsonPathSupport](src/main/java/atf/validation/contract/JsonPathSupport.java) holds the solution of the paths. The scalar rules refuse objects and paintings as scalar values, instead of turning them into an empty string.
+[JsonPathSupport](src/main/java/atf/validation/contract/JsonPathSupport.java) resolves paths. Scalar rules reject objects and arrays rather than converting them to empty strings.
 
 </details>
 
 ## Type of content and common parser
 
-`contentTypeJson()` delegates the classification of the concrete type to `MediaTypes.isJson` of Core. The header classification and syntactic validity of the body shall be checked separately.
+`contentTypeJson()` delegates the classification of the concrete type to `MediaTypes.isJson` of Core. Header classification and body syntax are checked separately.
 
-- The type and subtype ignore the differences in capitals, and the subtypes with suffix `+json` use the common vocabulary.
-- Absent type, general selection and type lists are refused; parameters do not convert `text/plain` into JSON.
+- Type and subtype comparisons ignore case, and the subtypes with suffix `+json` use the common vocabulary.
+- Missing types, wildcards and type lists are rejected; parameters do not convert `text/plain` into JSON.
 - `contentTypeContains` maintains the literal comparison of compatibility.
 - [JsonDocument](src/main/java/atf/validation/contract/json/JsonDocument.java) uses the full parser of Core, with the refusal of duplicate keys and the content after the root.
 
 ## Levels and verification
 
-With his own temporary copy, with his own Pome, libraries and a Maven warehouse:
+From an isolated copy with the project POM, selected libraries and a dedicated Maven cache:
 
 ```powershell
 mvn -B -pl atf-validation -am test
@@ -78,11 +79,11 @@ mvn -B -pl atf-validation -am test
 
 ## Cost and limits
 
-The JSON sub-set is explicit and refuses unsupported construction. The following qualification shall delimit the cost of prevalidation and evaluation on large, deep or repetitive structures.
+The JSON subset explicitly rejects unsupported constructs. Further qualification must bound prevalidation and evaluation cost for large, deep or repetitive structures.
 
-- [Validation feedback](../docs/feedback/ATF_TestInfrastructure.md#cost-of-validating-api) is qualified for volume and depth budgets. The re-use of expressions in the same assessment shall preserve prevalidation, regex Java semantics, the paths and order of deviations; the components shall also verify the independence of successive assessments.
+- [Validation feedback](../docs/feedback/ATF_TestInfrastructure.md#cost-of-validating-api) tracks volume and depth budgets. Evaluation-local expression reuse must preserve prevalidation, Java regex semantics, paths and violation order; components also verify independence between successive evaluations.
 
-- The result of the performance and identity of the entries shall be kept externally. Optimization shall be accepted by semantic parity and measurement, with publication separate from the assessment of the full values.
+- Keep measurements and input identities externally. Accept optimizations through semantic parity and measurement, keeping publication separate from complete-value evaluation.
 
 ## Test catalogue
 

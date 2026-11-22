@@ -4,6 +4,23 @@
 
 These Node.js tools belong to the reporting consumer and to the delivery governance. They validate the identity of the captured records, select full claims and record the integrity of the fixed file without recalculating the outcome of the game.
 
+
+```mermaid
+%%{init: {"themeVariables":{"fontSize":"15px"},"themeCSS":".edgeLabel, .edgeLabel p { font-size: 12px !important; } .node rect { rx: 6px; ry: 6px; }","flowchart":{"curve":"linear","nodeSpacing":24,"rankSpacing":22,"padding":6},"sequence":{"mirrorActors":false,"messageMargin":24,"wrap":true}}}%%
+flowchart LR
+    Source["Source snapshot"] -->|selects| Plan["Qualification plan"]
+    Plan -->|declares checks| Evaluate["RAG evaluator"]
+    Receipts["Candidate and<br/>receipts"] -->|reconciles| Evaluate
+    Evaluate -->|writes| Verdict["READY / BLOCKED"]
+```
+
+<details>
+<summary>Legend — ownership and verification boundary</summary>
+
+The selector derives required checks from identified inputs; the evaluator reconciles the plan, source, candidate and collected evidence. It writes a decision for review, rather than executing a missing Android journey or granting publication authority. The commands below retain separate input and output locations.
+
+</details>
+
 ## Contract and verification
 
 [whist-report-input.mjs](whist-report-input.mjs) has the selection and inventory of the native population. [Its tests](whist-report-input.test.mjs) checks duplicate identities, contradictory sources, omissions and the preservation of declared failures.
@@ -28,9 +45,9 @@ node atf-tests/tools/record-release-integrity.mjs
 
 ## Candidate RAG evaluation
 
-[Selector](plan-release-tests.mjs) compare the inventory fixed with the last relevant published source in the catalogue. Generate the plane fields v2 and the E2E groups required before the build. [Evaluator](evaluate-release-rag.mjs) recalculate the selection and confront the plan, the manifest, payload and the APK snapshots. [Selection command](../../docs/testing/ATF_ReleaseQualification.md#selection-of-diff-tests)
+The [selector](plan-release-tests.mjs) compares the pinned inventory with the last relevant published source in the catalog. It generates the selection plan and required E2E groups before the build; the [evaluator](evaluate-release-rag.mjs) recomputes selection and reconciles the plan, manifest, payload and APK snapshot. [Selection command](../../docs/testing/ATF_ReleaseQualification.md#selection-of-diff-tests)
 
-- [Scope suite](component-evidence-scope.mjs) determines when an execution can be reused. For Gradle collections, the documentation and entries exclusively of Maven or Android E2E do not invalidate the proof of the application; sources, compilation configuration, dependencies and unknown pathways require new selection. [Preparation of evidence](prepare-component-reuse.mjs) and the evaluator use the same checks for receipts and hashes. The component launcher shall use this training on request.
+- [Scope suite](component-evidence-scope.mjs) determines when an execution can be reused. For Gradle collections, the documentation and entries exclusively of Maven or Android E2E do not invalidate the proof of the application; sources, compilation configuration, dependencies and unknown pathways require new selection. [Preparation of evidence](prepare-component-reuse.mjs) and the evaluator use the same checks for receipts and hashes. The component launcher uses this preparation when requested.
 - The version policy sets out Maven and Gradle mandatory groups. Each group has its own Extent and Receipt.
 
 ```powershell
@@ -43,21 +60,21 @@ node .\atf-tests\tools\evaluate-release-rag.mjs `
   --output $VerdictFile
 ```
 
-The verdict is JSON with citations by way, SHA-256 and JSON Pointer/line. Include bytes plan in Base64 UTF- 8 to `qualificationPlan.contentBase64`; hash retains the identity of the plan and allows revision without an external temporary copy. The only writing is `$VerdictFile`, except for all entries.
+The JSON verdict cites paths, SHA-256 and JSON Pointer/line. It embeds UTF-8 plan bytes as Base64 in `qualificationPlan.contentBase64`; the hash preserves plan identity for review without another temporary copy. The only write is `$VerdictFile`, outside all inputs.
 
 - Code `0` means `READY_FOR_HUMAN_REVIEW`; `2` means `BLOCKED`; `1` indicates invalid entry or invocation.
-- Before the human revision are asked for hashrelated receipts for components, build APK, identity and signature.
-- The published status also requires a receipt for discharge into the declared access mode. For GitHub, the retention of the two editions, including tags and assets.[Collection command](../../docs/testing/ATF_ReleaseQualification.md#retention-on-github-after-publication)
-- [Length of the track](prepare-android-e2e.mjs) and the evaluator use the same checks for HTML, PNG and receipts. [Import](apply-android-e2e.mjs) brings new proof in the fixed candidate. [The contract of the launcher](../../docs/testing/ATF_ReleaseQualification.md#starting-and-resuming-a-game-on-the-signed-apk)
-- E2E not executed remains `NOT_RUN`; changing a user stream requires E2E Extent groups past.
+- Human review requires hash-bound receipts for components, APK build, identity and signing.
+- The published status also requires a a download receipt in the declared access mode. For GitHub, the retention of the two editions, including tags and assets. [Collection command](../../docs/testing/ATF_ReleaseQualification.md#retention-on-github-after-publication)
+- [Per-flow plan](prepare-android-e2e.mjs) and the evaluator use the same checks for HTML, PNG and receipts. [Import](apply-android-e2e.mjs) imports new evidence into the pinned candidate. [The contract of the launcher](../../docs/testing/ATF_ReleaseQualification.md#starting-and-resuming-a-game-on-the-signed-apk)
+- Unexecuted E2E remains `NOT_RUN`; changing a user flow requires passing E2E Extent groups.
 
-The evaluator confronts the complete inventory of snapshots with the manifest. The operator review checks the Git index, the promotion tree and publication. The contract and the oracles are described in the [the transmission qualification](../../docs/testing/ATF_ReleaseQualification.md) and [evaluator's regression](../../docs/testing/ATF_ReleaseQualification.md#evaluator-regression-tests).
+The evaluator reconciles the complete snapshot inventory with the manifest. Operator review checks the Git index, promotion tree and publication; the contract and oracles are in [release qualification](../../docs/testing/ATF_ReleaseQualification.md) and [evaluator's regression](../../docs/testing/ATF_ReleaseQualification.md#evaluator-regression-tests).
 
 [Integration module](../README.md) · [AI lab](../../whist-lab-app/ai-lab/README.md)
 
 ## Measurement and reproduction
 
 - [Chronology](assemble-release-timeline.mjs) combines process receipts and keeps the overlapping intervals. [Qualification procedure](../../docs/testing/ATF_ReleaseQualification.md#qualification-timeline)
-- [Verifier Git](verify-release-git-snapshot.mjs) confronts inventory and bytes, including EOL, and checks the payload published prior to cleaning. [Withdrawal contract](../../docs/platform/ATF_ReleaseRetention.md#local-cleaning-after-delivery)
+- [Git verifier](verify-release-git-snapshot.mjs) compares inventory and bytes, including EOL, and checks the payload published prior to cleaning. [Withdrawal contract](../../docs/platform/ATF_ReleaseRetention.md#local-cleaning-after-delivery)
 
-- For a separate checkout, option `--local-release` synchronise only the current edition after the check of the verdict, tag and payload in Git. [Synchronisation procedure](../../docs/platform/ATF_ReleaseRetention.md#synchronisation-of-local-file-with-current-version)
+- For a separate checkout, option `--local-release` synchronizes only the current edition after the check of the verdict, tag and payload in Git. [Synchronisation procedure](../../docs/platform/ATF_ReleaseRetention.md#synchronisation-of-local-file-with-current-version)

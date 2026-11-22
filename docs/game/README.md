@@ -2,7 +2,7 @@
 
 ## Overview
 
-Each variant has its own contract for package, program, trump, bidding and score. The similarity of the game name does not allow the implicit transfer of a rule between profiles.
+Each variant defines its deck, hand schedule, trump, bidding and scoring contract. A similar game name does not authorize transferring rules between profiles.
 
 ## Complementary guides
 
@@ -17,32 +17,33 @@ Each variant has its own contract for package, program, trump, bidding and score
 ## Responsibilities
 
 ```mermaid
+%%{init: {"themeVariables":{"fontSize":"15px"},"themeCSS":".edgeLabel, .edgeLabel p { font-size: 12px !important; } .node rect { rx: 6px; ry: 6px; }","flowchart":{"curve":"linear","nodeSpacing":24,"rankSpacing":22,"padding":6},"sequence":{"mirrorActors":false,"messageMargin":24,"wrap":true}}}%%
 flowchart LR
-    MODE[GameMode] -->|select| RULES[GameRules]
-    CONFIG[GameConfig] -->|configure| RULES
-    RULES -->|validates| SESSION[GameSession]
-    RULES -->|provide rules| HELP[HowToPlay RO/EN]
-    ORACLE[Separate oracle] -->|checks| SESSION
+    MODE["GameMode"] -->|selects| RULES["GameRules"]
+    CONFIG["GameConfig"] -->|configures| RULES
+    RULES -->|validates| SESSION["GameSession"]
+    RULES -->|provides rules| HELP["HowToPlay RO/EN"]
+    ORACLE["Separate oracle"] -->|checks| SESSION
 ```
 
 <details>
 <summary>Legend: same variant in the game and verification</summary>
 
-The configuration shall determine the rules applicable prior to distribution. The aid and tests use the identity of the variant, and the oracle checks the rules and scores by independent implementation.
+Configuration selects the rules before dealing. Help and tests use the same variant identity; an independent implementation checks rules and scoring.
 
 </details>
 
 ## Romanian Profile Contract
 
-| Aspect | All right |
+| Aspect | Rule |
 |---|---|
-| Deck | Reduced deck by number of players, with high ranks defined by GameRules. |
-| Program | Sequence determined by variant and number of seats; extreme blocks follow profile program. |
+| Deck | A reduced deck based on player count, with high ranks defined by GameRules. |
+| Program | A schedule determined by variant and seat count; endpoint blocks follow that profile. |
 | Bidding | Contract in the legal range; the last offer cannot equalize the amount with the size of the hand. |
-| Suit | The colour follow-up is mandatory when it exists in the hand. |
-| Trump | In the absence of colour, cutting is mandatory if there is an asset; overcoating is not mandatory. |
-| trick | Win the highest asset or rank of the required color; the winner leads. |
-| Score and series | The points for the contract, misconduct and series are defined in the table below. |
+| Suit | Follow the led suit when holding it. |
+| Trump | When void in the led suit, play a trump if available; overtrumping is not mandatory. |
+| trick | The highest trump wins, otherwise the highest card of the led suit; the winner leads. |
+| Score and series | Contract, deviation and streak points are defined in the table below. |
 | Playing for zero | Default check option in both Romanian variants. After the last hand, each total exactly 0 is displayed and ranked as 500. The history of hands retains the calculated total. |
 
 ## Score and series
@@ -56,24 +57,24 @@ The configuration shall determine the rules applicable prior to distribution. Th
 | Bonus and penalty with option 10 | 10, -10 | 10, -10 |
 | Series penalty in the historical asymmetric profile | -5 | -5 |
 
-On a card, a result of the same type keeps the series. The opposite result interrupts the series. The payment of a series resets the meter.
+At one card, a result of the same kind preserves the streak. The opposite result interrupts it, and a streak payout resets the counter.
 
-[Test factual](../../whist-lab-app/game-core/src/test/java/ro/whistlab/core/rules/documentation/DocumentedScoringComponentTest.java) confronts the table with the engine formulae and checks the refusal of the wrong statements.
+[Factual test](../../whist-lab-app/game-core/src/test/java/ro/whistlab/core/rules/documentation/DocumentedScoringComponentTest.java) compares the table with engine formulas and rejects incorrect claims.
 
 ## Principles of implementation
 
 - [GameMode](../../whist-lab-app/game-core/src/main/java/ro/whistlab/core/rules/GameMode.java) identifies the profile.
 - [GameConfig](../../whist-lab-app/game-core/src/main/java/ro/whistlab/core/config/GameConfig.java) validates the configuration and migration of compatible values.
-- [GameRules](../../whist-lab-app/game-core/src/main/java/ro/whistlab/core/rules/GameRules.java) holds the package, program, legal actions and winner.
-- [RomanianScoring](../../whist-lab-app/game-core/src/main/java/ro/whistlab/core/rules/RomanianScoring.java) holds the score and series.
-- [HowToPlay](../../whist-lab-app/game-core/src/main/java/ro/whistlab/core/rules/HowToPlay.java) produces aid in Romanian and English.
+- [GameRules](../../whist-lab-app/game-core/src/main/java/ro/whistlab/core/rules/GameRules.java) owns the deck, schedule, legal actions and trick winner.
+- [RomanianScoring](../../whist-lab-app/game-core/src/main/java/ro/whistlab/core/rules/RomanianScoring.java) owns scoring and streaks.
+- [HowToPlay](../../whist-lab-app/game-core/src/main/java/ro/whistlab/core/rules/HowToPlay.java) produces Romanian and English help.
 
 ## Governance of changes in rules
 
 1. Identify the exact variant and condition prior to the change.
-2. Formula her rule and borders through independent components.
+2. Express the rule and its boundaries through independent components.
 3. Check the transitions, score and restoration of the session.
-4. Update aid RO/EN and affected manifestations.
+4. Update RO/EN help and affected manifests.
 5. Check Android integration separately through explicitly activated scenarios.
 
 [Rule engine](../../whist-lab-app/game-core/README.md) · [RO rules](https://github.com/crististefanita/whist/blob/main_RO/docs/game/ATF_RulesRo.md) · [Rules EN](ATF_RulesEn.md) · [Collections](../testing/ATF_Collections.md)

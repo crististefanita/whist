@@ -17,7 +17,7 @@
 | [screens](src/main/java/ro/cardtable/ui/screens/ScreenViews.java) | Shared factories for pages, text, buttons and dropdowns; the app supplies dropdown labels and window protection. |
 | [menu](src/main/java/ro/cardtable/ui/menu/HomeMenuContent.java) | Item order, labels, tags, resume state and callbacks; dropdowns preserve both locales and attach listeners after initialization. |
 | [profile](src/main/java/ro/cardtable/ui/profile/NameEdit.java) | The dialog accepts the game's input policy. Normalization, persistence and the original failure cause belong to the consumer. |
-| [cards](src/main/java/ro/cardtable/ui/cards/CardFace.java) | Rank and suit identity, proportions and cream/gold highlighting. The game provides the visible face and decides when to mark it. |
+| [cards](src/main/java/ro/cardtable/ui/cards/CardFace.java) | Rank and suit identity, proportions and cream/gold highlighting. The game supplies the visible face and decides when it is marked. |
 | [hand](src/main/java/ro/cardtable/ui/hand/HandLayoutMetrics.java) | Hand layout, scrolling and gestures. Adapters retain feedback duration, lift timing and gesture revisions through [HandInput](src/main/java/ro/cardtable/ui/hand/HandInput.java). |
 | [seat](src/main/java/ro/cardtable/ui/seat/SeatContent.java) | Names, ordered facts and the active player come from the game; labels fit the measured seat width and frame reservations stay fixed across phases. |
 | [table](src/main/java/ro/cardtable/ui/table/android/BoardLayout.java) | Occupied regions, visual orders, viewport and central band measured between places. The Android Adapter applies common geometry. |
@@ -34,17 +34,18 @@ The game owns table composition, rules, history, winner selection and collection
 `CardTableTheme` defines six Android table attributes; Whist keeps `AppTheme` as an alias. Consumers adopt the theme explicitly in their manifests. Accepting the AAR and compiling it does not establish pixel parity or native focus behaviour.
 
 ```mermaid
+%%{init: {"themeVariables":{"fontSize":"15px"},"themeCSS":".edgeLabel, .edgeLabel p { font-size: 12px !important; } .node rect { rx: 6px; ry: 6px; }","flowchart":{"curve":"linear","nodeSpacing":24,"rankSpacing":22,"padding":6},"sequence":{"mirrorActors":false,"messageMargin":24,"wrap":true}}}%%
 flowchart LR
-    GAME[Game Adapter] -->|projects visible data into| MODEL[UI content]
-    MODEL -->|feeds| VIEW[Common widgets]
+    GAME["Game Adapter"] -->|projects visible data<br/>into| MODEL["UI content"]
+    MODEL -->|feeds| VIEW["Common widgets"]
     VIEW -->|issues intentions| GAME
-    POLICY[Local texts and policies] -->|configure| VIEW
+    POLICY["Local texts and<br/>policies"] -->|configure| VIEW
 ```
 
 <details>
 <summary>Legend: Common components and owner of the match</summary>
 
-Projections don't calculate rules. The application validates the order, retains the preferences and manages the lifecycle; the library returns the data allowed and sends the associated callback to the control.
+Projections do not calculate game rules. The application validates commands, retains preferences and owns lifecycle; the library renders permitted data and emits the control’s callback.
 
 </details>
 
@@ -52,8 +53,8 @@ Projections don't calculate rules. The application validates the order, retains 
 
 - The application consumes the module through `implementation project(':atf-card-table-ui')`.
 - `WhistMenuContent` designs the actual text; `MenuScreens` keeps the game navigation, configuration and instructions.
-- `PlayerSettingsDialog` provides the Whist measurement of length after NFC and rescue callback. The common dialogue applies the filter to the field.
-- The existing facades for geometry, theme and drawing delegated to joint implementation, keeping the types used by the application and its tests. `WhistCardFace` projects the domain card before the drawing.
+- `PlayerSettingsDialog` supplies Whist’s NFC-aware length measurement and save callback. The common dialogue applies the filter to the field.
+- Existing geometry, theme and drawing facades delegate to the shared implementation, keeping the types used by the application and its tests. `WhistCardFace` projects the domain card before the drawing.
 
 The facades are compatibility adapters with a single implementation of the algorithm in the library. Their removal requires explicit migration of callers and the preservation of the inventory of tests.
 

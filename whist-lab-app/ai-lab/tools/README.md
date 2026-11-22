@@ -4,16 +4,17 @@
 
 The Node.js tools belong to JVM `ai-lab` module and check offline learning data or mechanisms. They keep the actor's observation, complete data of the oracle and evaluation results separately.
 
-The implementation and tests of each mechanism shall be together, grouped in responsibility. Gradle `:ai-lab:testTools`'s pregnancy runs local tests; experiments on external corpus are activated separately.
+The implementation and tests of each mechanism shall be together, grouped in responsibility. The Gradle `:ai-lab:testTools` task runs local tests; experiments on external corpus are activated separately.
 
 ## Data flow
 
 ```mermaid
+%%{init: {"themeVariables":{"fontSize":"15px"},"themeCSS":".edgeLabel, .edgeLabel p { font-size: 12px !important; } .node rect { rx: 6px; ry: 6px; }","flowchart":{"curve":"linear","nodeSpacing":24,"rankSpacing":22,"padding":6},"sequence":{"mirrorActors":false,"messageMargin":24,"wrap":true}}}%%
 flowchart LR
-    GAMES[Declared games] -->|validate by| CORPUS[Corpus]
-    CORPUS -->|feeds| ANALYSIS[Diagnostic]
-    ANALYSIS -->|proposes| MODEL[Candidate model]
-    MODEL -->|qualifies as| GATE[Protocol offline]
+    GAMES["Declared games"] -->|validate by| CORPUS["Corpus"]
+    CORPUS -->|feeds| ANALYSIS["Diagnostic"]
+    ANALYSIS -->|proposes| MODEL["Candidate model"]
+    MODEL -->|qualifies as| GATE["Protocol offline"]
 ```
 
 <details>
@@ -25,10 +26,10 @@ The validator shall verify the rules and the score before interpreting the resul
 
 ## Organization
 
-| Director | Responsibility |
+| Directory | Responsibility |
 |---|---|
-| [corpus](corpus/) | Party scheme, curator, active body analysis and examples extraction. |
-| [patterns](patterns/) | Description of the fees and descriptive calibrations on development data. |
+| [corpus](corpus/) | Game schema, curation, active-corpus analysis and example extraction. |
+| [patterns](patterns/) | Honor descriptions and descriptive calibration on development data. |
 | [bidding](bidding/) | Features, bidding models, controlled generation and Java pattern identified. |
 | [learning](learning/) | Composition of the lots and evaluation of protocols or arena. |
 | [diagnostics](diagnostics/) | Divergence, contextual pressure and finite responses. |
@@ -37,10 +38,10 @@ The validator shall verify the rules and the score before interpreting the resul
 
 [Validator of candidate base](qualification/WhistCandidateSource.psm1) retains the complete inventory of sources and the final copy verification. [The contract of the manifest](../../../docs/testing/ATF_Collections.md#full-identity-of-candidate-base) holds migration, canonical hash and the boundary between base and candidate; its components use temporary directories built without archived games.
 
-[Exposure registry](qualification/whist-evaluation-registry.mjs) coordinates the batches between the corpuss and restores the resumption as known exposure. [Register contract](../../../docs/learning/ATF_EvaluationRegistry.md) defines identity, import of history, blocking and recovery after interruption.
+The [exposure registry](qualification/whist-evaluation-registry.mjs) coordinates evaluation ranges across corpora and treats resumption as known exposure. [Register contract](../../../docs/learning/ATF_EvaluationRegistry.md) defines identity, import of history, blocking and recovery after interruption.
 
 - **Generic mechanism:** [intersection of the intervals](qualification/half-open-interval.mjs) is pure and receives full semi-open intervals.
-- **Field Adapter:** Whist keeps distribution space, seedness validation and persistence; [transferable lessons](../../../docs/learning/ATF_PolicyEvolution.md#lessons-to-other-games-and-products) explain this border.
+- **Field Adapter:** Whist keeps distribution space, seed validation and persistence; [transferable lessons](../../../docs/learning/ATF_PolicyEvolution.md#lessons-to-other-games-and-products) explain this border.
 
 ## Verification
 
@@ -50,16 +51,16 @@ From the `whist-lab-app` directory of a full temporary copy of the project, with
 .\gradlew.bat -p algorithm-build :ai-lab:testTools --offline --no-daemon
 ```
 
-- **Solving: ** Gradle executes Node from the root of the project copy. The imports and resources of the tools shall be resolved against the file which holds them; the entries of the CLL and external destinations shall be declared by the caller.
-- **Local data:** tests [corpus](corpus/whist-corpus.test.mjs) and [curator](corpus/whist-active-corpus.test.mjs) use [matches constructed](testing/legal-game-fixture.mjs), with distribution, bids, legal game and score calculated separately from the validator. Temporary files belong to the test. `--offline` ask for separate available Gradle dependencies.
+- **Resolution:** Gradle executes Node from the root of the project copy. The imports and resources of the tools shall be resolved against the file which holds them; CLI inputs and external destinations shall be declared by the caller.
+- **Local data:** tests [corpus](corpus/whist-corpus.test.mjs) and [curator](corpus/whist-active-corpus.test.mjs) use [matches constructed](testing/legal-game-fixture.mjs), with distribution, bids, legal game and score calculated separately from the validator. Temporary files belong to the test. `--offline` requires the Gradle dependencies to be available separately.
 - **Reproduction: ** Semantic identities of the records shall be kept when physically moving the source. The old captures shall be reproduced from their identified copy and the external directories shall not be rewritten by this organization.
 
 [Module AI](../README.md) · [Protocol](../../../docs/learning/README.md) · [Collections](../../../docs/testing/ATF_Collections.md)
 
 ## Limits and qualification
 
-The built data qualify his mechanism and refusals; there are no new games to demonstrate strategic progress. The archive's playbook uses separate entry from the [contract of the body](../../../docs/learning/ATF_Corpus.md#usage), with file and SHA-256 declared. No archive shall be selected by default in the components.
+Constructed data qualifies the mechanism and its refusals; it is not new match evidence of playing-strength improvement. The archive's playbook uses separate entry from the [corpus contract](../../../docs/learning/ATF_Corpus.md#usage), with file and SHA-256 declared. No archive shall be selected by default in the components.
 
-Qualification of gear by volume and interruption remains monitored in [Laboratory feedback](../../../docs/feedback/ATF_Ai.md#autonomous-laboratory-verification).
+Tool qualification for volume and interruption remains monitored in [Laboratory feedback](../../../docs/feedback/ATF_Ai.md#autonomous-laboratory-verification).
 
-[Protocol](../../../docs/learning/README.md) holds the display of lots and promotion. The notes and results of an assessment shall remain external; the exposure register shall not automatically certify the other tools.
+[Protocol](../../../docs/learning/README.md) owns evaluation-set exposure and promotion. The notes and results of an assessment shall remain external; the exposure register shall not automatically certify the other tools.

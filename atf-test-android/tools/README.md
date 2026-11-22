@@ -2,7 +2,7 @@
 
 ## Overview
 
-Tools belong to Android infrastructure. PowerShell module checks ADB transport, and Python tools consume explicitly captured data. The player checks the rules; the teaching links the results descriptor and keeps external pointeres on purpose.
+Tools belong to Android infrastructure. PowerShell module checks ADB transport, and Python tools consume explicitly captured data. The player checks the rules; the teaching links the results descriptor and keeps external pointers on purpose.
 
 ## Responsibilities
 
@@ -27,8 +27,8 @@ From the root of the project, with a real available Python 3 interpreter:
 python -m unittest discover -s atf-test-android/tools -p test_whist_ui_handoff.py
 ```
 
-Python imports are solved between files of the same directory. The results and pointeres are external to the project; a republican republics the identity of the original execution.
+Python imports resolve between files of the same directory. Results and pointers remain external; republishing preserves original execution identity.
 
-The ADB connection can change the transport; it runs in the Android stream holding the reservation and configuration. [Qualification of launchers](../../docs/feedback/ATF_Governance.md#qualification-of-claims-and-launchers) keeps the conditions of the prior check and diagnosis separate from the Python samples.
+The ADB connection can change the transport; it runs within the Android workflow that owns device reservation and configuration. [Qualification of launchers](../../docs/feedback/ATF_Governance.md#qualification-of-claims-and-launchers) keeps the conditions of the prior check and diagnosis separate from the Python samples.
 
-[Teaching results](../../docs/reporting/ATF_Handoff.md) · [Publication audit](../../docs/reporting/ATF_Audit.md) · [Module Android](../README.md)
+[Result handoff](../../docs/reporting/ATF_Handoff.md) · [Publication audit](../../docs/reporting/ATF_Audit.md) · [Module Android](../README.md)

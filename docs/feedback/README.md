@@ -47,11 +47,12 @@ The 1–100 score expresses work priority, not quality or completion percentage.
 ## Change ownership
 
 ```mermaid
+%%{init: {"themeVariables":{"fontSize":"15px"},"themeCSS":".edgeLabel, .edgeLabel p { font-size: 12px !important; } .node rect { rx: 6px; ry: 6px; }","flowchart":{"curve":"linear","nodeSpacing":24,"rankSpacing":22,"padding":6},"sequence":{"mirrorActors":false,"messageMargin":24,"wrap":true}}}%%
 flowchart LR
-    ISSUE[Locked gap] -->|assigns| OWNER[Owner]
-    OWNER -->|define| CRITERION[Criterion and level]
-    CRITERION -->|checks| CHECK[Reproducible result]
-    CHECK -->|promote the rule in| CONTRACT[Owning document]
+    ISSUE["Locked gap"] -->|assigns| OWNER["Owner"]
+    OWNER -->|define| CRITERION["Criterion and level"]
+    CRITERION -->|checks| CHECK["Reproducible result"]
+    CHECK -->|promote the rule in| CONTRACT["Owning document"]
 ```
 
 <details>

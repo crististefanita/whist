@@ -2,25 +2,26 @@
 
 ## Overview
 
-This Gradle input builds JVM modules without configuration of Android application. [settings.gradle](settings.gradle) includes `game-core`, `ai-lab` and fixtures `test-audit`; each module has its sources, dependencies and checks.
+This Gradle entry builds JVM modules without configuring the Android application. [settings.gradle](settings.gradle) declares `game-core`, `ai-lab`, `card-table-names` and `test-audit`; each module owns its sources, dependencies and checks.
 
-The audited testing requires JDK 21, the Gradle project launcher and the JVM dependencies in cache. The engine keeps Java target declared in mode; test libraries do not enter the Android runtime. Option `--offline` refuses missing dependencies; Android SDK is not required for this entry.
+The audited testing requires JDK 21, the Gradle project launcher and the JVM dependencies in cache. The engine keeps its declared Java target; test libraries do not enter the Android runtime. Option `--offline` refuses missing dependencies; Android SDK is not required for this entry.
 
 ## Flow and responsibilities
 
 ```mermaid
+%%{init: {"themeVariables":{"fontSize":"15px"},"themeCSS":".edgeLabel, .edgeLabel p { font-size: 12px !important; } .node rect { rx: 6px; ry: 6px; }","flowchart":{"curve":"linear","nodeSpacing":24,"rankSpacing":22,"padding":6},"sequence":{"mirrorActors":false,"messageMargin":24,"wrap":true}}}%%
 flowchart LR
-    RUN[Collections Launcher] -->|isolate| COPY[Temporary Copy]
-    COPY -->|configure| BUILD[JVM entry point]
-    BUILD -->|include| CORE[game-core]
-    BUILD -->|include| LAB[ai-lab]
-    CORE -->|produce| RESULT[Audited comparisons]
+    RUN["Collections<br/>Launcher"] -->|isolate| COPY["Temporary Copy"]
+    COPY -->|configure| BUILD["JVM entry point"]
+    BUILD -->|include| CORE["game-core"]
+    BUILD -->|include| LAB["ai-lab"]
+    CORE -->|produce| RESULT["Audited comparisons"]
 ```
 
 <details>
 <summary>Legend: one engine source</summary>
 
-JVM input uses neighbouring projects. `game-core` consumes `ai-lab` only through test dependence; independent sources compile in their module, and the collector of collections prepares isolation and archiving results.
+The JVM entry uses neighboring projects. `game-core` consumes `ai-lab` through a test dependency; independent sources compile in their own module, and the collection launcher owns isolation and result archiving.
 
 </details>
 
@@ -44,22 +45,22 @@ From the `whist-lab-app` directory of a full temporary copy of the project:
 
 The chosen task shall determine the limit of verification:
 
-| Gum-core load | Contract |
+| game-core task | Contract |
 |---|---|
 | `quickRegressionTest` | Focused selection of rules and contexts, defined in Gradle. |
 | `regressionTest` | Delegation task `test`, with its explicit exclusions. |
 | `contextRegressionTest` | Contextual regressions with independent legal witnesses. |
 | `documentationTest` | The contract of game aid and the texts of the rules. |
-| `tasks --all` | Facts inventory configured; does not perform game checks. |
+| `tasks --all` | Lists configured tasks without executing game checks. |
 
 [game-core/build.gradle](../game-core/build.gradle) is the source of actual selections. Tournaments, error mining and research components have distinct tasks and explicit activation.
 
 ## Outputs and concurrency
 
-- The native XMLs and construction files appear in `game-core/build` of the temporary copy.
+- JUnit XML and build outputs appear in `game-core/build` of the temporary copy.
 - [Component audit](../../docs/testing/ATF_GradleComponents.md) produces a canonical HTML per selection and temporarily confronts the claims with XMLs without counting them twice.
 - `whist.componentEvidence` may select an external directory for captures of component; the identity of the captures shall be kept without overwriting.
 - The two Gradle entries of the application use the same project directories included; competing executions require separate copies.
-- The result identifies the sources and the execution selection; Android acceptance and skill of the game force have separate criteria.
+- The result identifies the sources and the execution selection; Android acceptance and playing-strength measurement have separate criteria.
 
-[Engine](../game-core/README.md) · [Testarea](../../docs/testing/README.md) · [Learning offline](../../docs/learning/README.md)
+[Engine](../game-core/README.md) · [Testing](../../docs/testing/README.md) · [Learning offline](../../docs/learning/README.md)
