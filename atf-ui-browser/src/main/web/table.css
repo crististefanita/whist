@@ -293,6 +293,7 @@ thead, tr:nth-child(even) { background: #e8efe4; }
 [data-surface="whist"] select { font-size: var(--menu-selection-size, 1.125rem); }
 [data-surface="whist"] select :is(option, optgroup) { font-size: inherit; }
 [data-surface="whist"] .surface-paged { max-height: none; overflow: visible; }
+[data-surface="whist"] .player-dialog .live-score-table { max-height: none; overflow: visible; }
 [data-surface="whist"] .surface-paged > [hidden], .surface-pages[hidden] { display: none !important; }
 .surface-pages { display: flex; align-items: center; justify-content: space-between; gap: .5rem; flex: none; }
 .surface-pages button { min-height: 3rem; }
