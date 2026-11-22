@@ -1,6 +1,8 @@
 package atf.tests.governance.documentation.release.rag;
 
 import atf.testkit.AtfComponentTest;
+import atf.android.evidence.component.ComponentInputs;
+import atf.tests.reporting.GameReportAudit;
 import atf.testkit.assertions.AuditedAssertions;
 import atf.tests.governance.support.GovernanceProject;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -12,6 +14,7 @@ import java.util.Base64;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.api.io.TempDir;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
@@ -33,6 +36,51 @@ import static atf.tests.governance.documentation.release.rag.RagEvaluatorProbe.f
 @AtfComponentTest
 class ReleaseRagProvenanceComponentTest {
     @TempDir Path temporary;
+
+    @Test @ExtendWith(GameReportAudit.class)
+    void documentationDriftReadmissionKeepsTheRejectedAggregateAndOriginalReports(ComponentInputs inputs) throws Exception {
+        RagCandidateFixture fixture = create(temporary);
+        Path component = fixture.candidate().resolve("reports/component");
+        Path rejected = RagComponentEvidenceFixture.documentationDrift(component);
+        byte[] original = Files.readAllBytes(rejected);
+        inputs.add("Original rejected aggregate", new String(original, StandardCharsets.UTF_8));
+        inputs.add("Bound snapshot observations", Files.readString(component.resolve("source-snapshot-check.json")));
+        String reportHash = hash(component.resolve("atf-validation/component-report.html"));
+        refreshPayload(fixture.candidate());
+        evaluate(fixture, fixture.output());
+        JsonNode verdict = JSON.readTree(fixture.output().toFile());
+        inputs.add("RAG component-source verdict", findCheck(verdict, "COMPONENT_SOURCE_BINDING").toString());
+        AuditedAssertions.assertEquals("PASS", check(verdict, "COMPONENT_SOURCE_BINDING"),
+                details(verdict, "COMPONENT_SOURCE_BINDING").toString());
+        for (JsonNode group : verdict.path("componentGroups")) {
+            AuditedAssertions.assertEquals("FAIL", group.path("sourceEvidence").path("readmission").path("rejectedRunStatus").asText());
+        }
+        AuditedAssertions.assertEquals(Base64.getEncoder().encodeToString(original),
+                Base64.getEncoder().encodeToString(Files.readAllBytes(rejected)), "Evaluation does not rewrite a rejected receipt");
+        AuditedAssertions.assertEquals(reportHash, hash(component.resolve("atf-validation/component-report.html")));
+        AuditedAssertions.assertEquals("FAIL", JSON.readTree(rejected.toFile()).path("status").asText());
+    }
+
+    @ParameterizedTest
+    @ExtendWith(GameReportAudit.class)
+    @ValueSource(strings = {"missing-observation", "changed-observation", "changed-check"})
+    void documentationDriftRequiresBoundObservationsInTheReleasePayload(String mutation, ComponentInputs inputs) throws Exception {
+        RagCandidateFixture fixture = create(temporary);
+        Path component = fixture.candidate().resolve("reports/component");
+        RagComponentEvidenceFixture.documentationDrift(component);
+        inputs.add("Controlled mutation", mutation);
+        inputs.add("Original snapshot-check binding", Files.readString(component.resolve("source-snapshot-check.json")));
+        Path observation = component.resolve("observed-live-source.json");
+        if (mutation.equals("missing-observation")) Files.delete(observation);
+        else if (mutation.equals("changed-observation")) Files.writeString(observation, "[]");
+        else Files.writeString(component.resolve("source-snapshot-check.json"), "{}");
+        refreshPayload(fixture.candidate());
+        evaluate(fixture, fixture.output());
+        JsonNode verdict = JSON.readTree(fixture.output().toFile());
+        inputs.add("RAG rejection and payload citations", findCheck(verdict, "COMPONENT_SOURCE_BINDING").toString());
+        AuditedAssertions.assertEquals("BLOCKED", check(verdict, "COMPONENT_SOURCE_BINDING"));
+        AuditedAssertions.assertEquals("INVALID", componentDecision(verdict, "atf-validation"));
+    }
 
     @Test void aPinnedComponentCandidateProducesCitedHumanReviewWithoutChangingInputsOrCallingE2e() throws Exception {
         RagCandidateFixture fixture = create(temporary);

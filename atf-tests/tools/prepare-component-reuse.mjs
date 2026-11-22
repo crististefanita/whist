@@ -3,6 +3,7 @@ import fs from 'node:fs/promises';
 import path from 'node:path';
 import {fileURLToPath} from 'node:url';
 import {componentEvidenceScope} from './component-evidence-scope.mjs';
+import {sourceCheckFiles} from './component-source-check.mjs';
 import {
   componentInputMap, digest, inlinePngCount, regularFile, strictJson, verifyComponentExecution, verifyComponentOrigin, verifyReleaseInputs
 } from './evaluate-release-rag.mjs';
@@ -61,6 +62,7 @@ export async function prepareComponentReuse(runRoot, previousRoot, groups, {resu
       const decision = {group, decision: scope.decision, reason: scope.reason,
         affectedGroups: scope.affectedGroups, changedInputs: scope.changed, affectedInputs: scope.affected,
         alwaysEvaluatedRagChecks: scope.alwaysEvaluatedRagChecks,
+        ...(origin.readmission ? {readmission: origin.readmission} : {}),
         ...(scope.dependencyEvidence ? {dependencyEvidence: scope.dependencyEvidence} : {})};
       if (scope.decision === 'RUN') {
         decisions.push(decision);
@@ -76,7 +78,7 @@ export async function prepareComponentReuse(runRoot, previousRoot, groups, {resu
     if (!published.has(id)) {
       const originDir = path.join(target, 'snapshots', id);
       await fs.mkdir(originDir, {recursive: true});
-      for (const [index, name] of originFiles.entries()) {
+      for (const [index, name] of origin.fileNames.entries()) {
         await fs.writeFile(path.join(originDir, name), origin.files[index].bytes, {flag: 'wx'});
       }
       if (origin.releaseInputs) await fs.writeFile(path.join(originDir, releaseInputs), origin.releaseInputs.bytes, {flag: 'wx'});
@@ -163,12 +165,19 @@ async function readOrigin(root, id, resume) {
   }));
   const [inputs, provenance, run] = files;
   if (id !== undefined && id !== provenance.sha256) throw Error('INVALID_PREVIOUS_ORIGIN_HASH');
-  const origin = verifyComponentOrigin(inputs, run.value, provenance);
+  const sourceCheck = run.value.sourceStable === false
+    ? await Promise.all(sourceCheckFiles.map(file => strictJsonAt(root, prefix + file))) : undefined;
+  const origin = verifyComponentOrigin(inputs, run.value, provenance, inputManifest, sourceCheck);
   const release = await readReleaseInputs(root, prefix);
   if (release || provenance.value.releaseInputManifest !== undefined || run.value.releaseInputManifest !== undefined) {
     verifyReleaseInputs(origin, release);
   }
-  return {...origin, files, releaseInputs: release};
+  return {...origin, files: [...files, ...(sourceCheck ?? [])],
+    fileNames: [...originFiles, ...(sourceCheck ? sourceCheckFiles : [])], releaseInputs: release};
+}
+
+async function strictJsonAt(root, relative) {
+  return strictJson(await regularFile(root, relative));
 }
 
 async function readReleaseInputs(root, prefix) {

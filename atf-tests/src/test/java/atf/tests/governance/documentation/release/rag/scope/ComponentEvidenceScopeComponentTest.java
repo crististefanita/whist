@@ -1,12 +1,15 @@
 package atf.tests.governance.documentation.release.rag.scope;
 
 import atf.testkit.AtfComponentTest;
+import atf.android.evidence.component.ComponentInputs;
+import atf.tests.reporting.GameReportAudit;
 import atf.testkit.assertions.AuditedAssertions;
 import atf.tests.governance.support.GovernanceProject;
 import java.nio.file.Path;
 import java.time.Duration;
 import java.util.List;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 import static atf.tests.governance.documentation.release.rag.scope.NodeReleaseContracts.*;
 
@@ -14,6 +17,21 @@ import static atf.tests.governance.documentation.release.rag.scope.NodeReleaseCo
 class ComponentEvidenceScopeComponentTest {
     private static final Duration PROCESS_TIMEOUT = Duration.ofSeconds(30);
     private static final Duration PUBLICATION_TIMEOUT = Duration.ofMinutes(2);
+
+    @Test @ExtendWith(GameReportAudit.class)
+    void documentationDriftReadmitsOnlyUnchangedOwnersAndPreservesRejectedEvidence(ComponentInputs inputs) throws Exception {
+        String output = runContracts(PUBLICATION_TIMEOUT,
+                value -> inputs.add("Original owner decisions, snapshot capture and rejection outcomes", value),
+                "atf-component-ownership.test.mjs", "component-source-check.test.mjs");
+        AuditedAssertions.assertTrue(output.contains("documentation drift readmits six unchanged owners"),
+                "Only unaffected owners retain byte-identical original reports; the rejected aggregate remains FAIL");
+        AuditedAssertions.assertTrue(output.contains("the real snapshot checker captures rejected observations"),
+                "The real PowerShell checker binds staged and live inventories without source copying or Maven");
+        AuditedAssertions.assertTrue(output.contains("documentation drift rejects resource-markdown"),
+                "Runtime Markdown payloads cannot borrow the editorial exemption");
+        AuditedAssertions.assertTrue(output.contains("documentation drift cannot rescue a failed sibling"),
+                "Failed owners, altered reports and later code changes remain ineligible for reuse");
+    }
 
     @Test void editorialChangesReuseVerifiedMavenCompilationAndKeepFreshExecutionInputs() throws Exception {
         String output = runContracts(PUBLICATION_TIMEOUT, "component-compiler-inputs.test.mjs", "component-maven-reuse.test.mjs");

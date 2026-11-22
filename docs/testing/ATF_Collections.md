@@ -254,3 +254,33 @@ ReuseFrom can reuse compilation across different execution snapshots. ResumeFrom
 | No temporary workspace | Start a new run from the checkout and its explicit release inputs. Missing paths select cold preparation; a stale workspace pointer never authorizes reuse. |
 
 The CLI and component adapter share the [temporary-root policy](../../atf-tests/tools/qualification-temp-root.mjs). An explicit scratch root still validates every configured OS temporary directory and physical checkout boundary. Local settings, signing identity and learning data are durable inputs, not build output.
+
+## Readmission after concurrent documentation edits
+
+A final snapshot check can reject an aggregate even when its isolated collections passed. Readmission retains that original `FAIL`; it admits each passing owner separately against the delivered inputs. It never rewrites the aggregate, invocation identities, execution receipts or Extent bytes.
+
+| Boundary | Required evidence and decision |
+|---|---|
+| Capture | On drift, the runner writes `source-snapshot-check.json` and four observed inventories: staged/live source and staged/live release. The rejected aggregate binds the check by SHA-256; the check binds every observation and both expected inventories. Stable runs do not create these extra files. |
+| Original execution | Staged source and both release observations must match the original inventories exactly. Observed differences must be recognized editorial Markdown and must equal the original diagnostics. Resource Markdown, code, unknown paths, inventory errors and incomplete or altered evidence reject readmission. |
+| Owner selection | The existing dependency classifier compares the delivered source with the original execution. Changed owners run again; unaffected owners may reuse only passing, hash-verified reports with matching JUnit identities. A failed sibling cannot borrow another owner's result. Game-rule guides and library guides retain their additional consumers. |
+| Transport | The reuse plan carries the original rejected aggregate and all bound observations under its original provenance identity. Release payloads declare these files; the RAG evaluator verifies the same contract and exposes `readmission` separately from the original verdict. Missing historical observations cannot be reconstructed from log messages. |
+
+```mermaid
+flowchart LR
+    REJECT[Rejected aggregate] -->|verify captured inventories| CHECK[Documentation-only live drift]
+    CHECK -->|compare delivered inputs| OWNER[Existing owner selection]
+    OWNER -->|changed or failed owner| RUN[Fresh component execution]
+    OWNER -->|unchanged passing owner| KEEP[Original Extent and receipt]
+    RUN -->|bind current snapshot| FINAL[Final source check]
+    KEEP -->|retain original identity| FINAL
+```
+
+<details>
+<summary>Legend: readmission preserves the rejected execution</summary>
+
+The observation capture proves what changed at the original boundary. Owner selection then determines what the delivered source still needs. A new run must pass its own final snapshot check; readmission cannot hide another concurrent edit or qualify a failed collection.
+
+</details>
+
+Use `run-component-suites.ps1 -ReuseFrom <rejected-run> -RunRoot <new-external-run>` with the required `-Groups`, explicit Git review base and configured local tool/cache paths. `-ResumeFrom` remains restricted to identical complete snapshots; documentation edits require a new snapshot. Compiler reuse remains an independent byte-verified decision.

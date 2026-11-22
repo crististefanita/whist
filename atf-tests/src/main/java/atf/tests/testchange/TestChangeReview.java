@@ -44,7 +44,7 @@ public final class TestChangeReview {
             "atf-tests/src/main/java/atf/tests/documentation/policy/DocumentationTerminologyRules.java",
             "atf-tests/src/main/java/atf/tests/documentation/DocumentationGovernance.java",
             "atf-tests/tools/release-test-scope.mjs", "atf-tests/tools/component-evidence-scope.mjs",
-            "atf-tests/tools/prepare-component-reuse.mjs", "atf-tests/tools/qualification-temp-root.mjs",
+            "atf-tests/tools/prepare-component-reuse.mjs", "atf-tests/tools/component-source-check.mjs", "atf-tests/tools/qualification-temp-root.mjs",
             "atf-tests/tools/release-version.mjs",
             "atf-tests/tools/visual-change-contracts.mjs", "atf-tests/tools/visual-contract-sources.mjs",
             "atf-tests/tools/github-retention-seal.mjs", "atf-tests/tools/collect-github-release-retention.mjs",

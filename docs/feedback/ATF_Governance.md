@@ -36,6 +36,7 @@ The [documentation editorial grid](../governance/ATF_Documentation.md#editorial-
 | Priority | Owner and area | Closure criterion |
 |---|---|---|
 | P2 | English guides: inherited translations still obscure game and qualification terminology. | Review operational terms against public code and the Romanian edition. Require editorial acceptance of purpose, inputs, outcomes and limits for each affected guide before refreshing the bilingual receipt; structural and token checks alone cannot establish meaning. |
+| P3 | Documentation language policy treats HTML anchor IDs as prose: an English overview ID in RO and a Romanian game ID in EN produce false language findings. | Inspect visible prose before language classification; accept untranslated anchor identifiers and retain negatives for genuinely foreign explanatory text. |
 
 ## Download via browser
 
@@ -85,10 +86,6 @@ The [dependency selection contract](../testing/ATF_Collections.md#executable-dep
 - Reuse retains original JUnit identities, outcomes, comparisons and report hashes. Historical monolithic reports remain immutable and cannot qualify new partition identities.
 
 Measure snapshot preparation, compilation and execution separately. A focused diagnostic remains distinct from qualification of a complete primary collection; failure recovery within an owner is covered by the open invocation-reconciliation item above.
-
-| Priority | Remaining reuse gap | Closure criterion |
-|---|---|---|
-| P2 | Live documentation edits can reject the aggregate after every isolated collection has passed, preventing reuse of otherwise unchanged owners. | Preserve the rejected aggregate. Define and test per-owner readmission against immutable staged inputs, original report hashes and the exact delivered diff. Rerun affected documentation and any changed reader; never turn a failed aggregate into a passing origin by editing its receipt. Until this contract is implemented, retain the conservative rejection. |
 
 ## Reporting schema admission
 
