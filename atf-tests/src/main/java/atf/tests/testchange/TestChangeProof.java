@@ -29,7 +29,7 @@ public final class TestChangeProof {
 
     private TestChangeProof() { }
 
-    static void verify(Plan plan, Path reviewRoot, Path proofRoot) throws IOException {
+    static Continuation verify(Plan plan, Path reviewRoot, Path proofRoot) throws IOException, InterruptedException {
         if (proofRoot == null) throw failure("MISSING", plan.identity().id() + " requires " + ROOT_ENV);
         Path root = proofRoot.toRealPath();
         if (root.startsWith(reviewRoot) || !Files.isDirectory(root))
@@ -38,26 +38,28 @@ public final class TestChangeProof {
         if (!Files.isDirectory(directory, LinkOption.NOFOLLOW_LINKS) || !directory.toRealPath().equals(directory))
             throw failure("MISSING", plan.identity().id() + " evidence directory");
         Receipt receipt = JSON.readValue(file(directory, RECEIPT).toFile(), Receipt.class);
-        verifyReceipt(plan, receipt);
+        boolean exact = plan.identity().commit().equals(receipt.identity().commit());
+        verifyReceipt(plan, receipt, exact);
         if (!digest(Files.readAllBytes(file(directory, REPORT))).equals(receipt.reportSha256()))
             throw failure("REPORT", plan.identity().id() + " Extent SHA-256 differs");
+        return exact ? null : EditorialProofContinuation.verify(reviewRoot, plan.identity(), receipt.identity());
     }
 
     public static void stage(Plan plan, List<Outcome> positive, List<Outcome> negative, Path folder) throws IOException {
         var receipt = new Receipt(1, KIND, plan.identity(), positive, negative,
                 digest(Files.readAllBytes(file(folder, REPORT))));
-        verifyReceipt(plan, receipt);
+        verifyReceipt(plan, receipt, true);
         JSON.writerWithDefaultPrettyPrinter().writeValue(folder.resolve(PENDING).toFile(), receipt);
     }
 
-    private static void verifyReceipt(Plan plan, Receipt receipt) throws IOException {
+    private static void verifyReceipt(Plan plan, Receipt receipt, boolean exact) throws IOException {
         if (receipt.schemaVersion() != 1 || !KIND.equals(receipt.kind())) throw failure("SCHEMA", plan.identity().id());
         var wanted = plan.identity();
         var observed = receipt.identity();
         if (!wanted.id().equals(observed.id())) throw failure("ID", wanted.id());
         if (!wanted.base().equals(observed.base())) throw failure("BASE", wanted.id());
-        if (!wanted.commit().equals(observed.commit())) throw failure("COMMIT", wanted.id());
-        if (!wanted.diffSha256().equals(observed.diffSha256())) throw failure("DIFF", wanted.id());
+        if (exact && !wanted.commit().equals(observed.commit())) throw failure("COMMIT", wanted.id());
+        if (exact && !wanted.diffSha256().equals(observed.diffSha256())) throw failure("DIFF", wanted.id());
         verifyCases(plan.checks().negative(), receipt.negative(), "NEGATIVE", wanted.id());
         verifyCases(plan.checks().positive(), receipt.positive(), "POSITIVE", wanted.id());
     }
@@ -94,6 +96,8 @@ public final class TestChangeProof {
     public record Plan(Identity identity, TestChangeProofChecks checks) { }
     public record Identity(String id, String base, String commit, String diffSha256) { }
     public record Outcome(String selector, String verdict) { }
+    public record Continuation(String id, String originalCommit, String admittedCommit,
+                               String protectedDiffSha256, List<String> editorialPaths) { }
     private record Receipt(int schemaVersion, String kind, Identity identity,
                            List<Outcome> positive, List<Outcome> negative, String reportSha256) { }
 }

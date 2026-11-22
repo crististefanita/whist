@@ -90,7 +90,7 @@ The [binary library index](../../lib/README.md) owns versions and provenance. Sh
 
 | Property | Common component proof | Remaining platform acceptance |
 |---|---|---|
-| Table placement and scaling | Same logical frame, regions, text scale and legal player/card populations; verify containment and fixed seats across phases. | Native insets, browser viewport/zoom and actual font measurements. |
+| Table placement and scaling | Shared placement policies with explicit available regions, text scale and legal player/card populations; verify containment and fixed seats across phases. | Native insets, adaptive browser viewport and actual font measurements. |
 | Card feedback and collection | Same gesture sequence, rejected/recommended card and cancellation cases; controlled time verifies event order. | Touch targets, rendered card faces and intermediate animation frames. |
 | Profile and resumed game | Real codec, legal engine checkpoints, cancellation, invalid inputs and idempotent restoration. | Storage reopening and platform lifecycle callbacks through visible controls. |
 | Bidding and score history | Shared rule inputs, manual selection, total score, series markers and localized models. | The visible confirmation, readable final rows and accessible controls. |
@@ -104,6 +104,7 @@ Use the [adapter contract](ATF_DisplayComponents.md) to identify the same cases 
 3. Require one unambiguous declared instance `void @Test` method in component scope. Dynamic factories/templates, parameterized/repeated tests, overloads and unresolved annotation composition are not static proof selectors. See [selector admission](../governance/ATF_TestChanges.md#early-source-control-admission).
 4. Compile once for the required controls, then reconcile actual JUnit discovery and outcomes with each declared selector. Source eligibility does not authorize missing, skipped or failing invocations.
 5. Reuse only admitted evidence for unchanged owners. Reassess documentation-only drift against both snapshots; retain a failed aggregate and its original cause.
+   Original source-control proofs may continue across admitted editorial commits without changing their execution identity; current documentation governance still runs. [Proof continuation](../governance/ATF_TestChanges.md#editorial-continuation-of-original-proofs)
 6. Execute missing or invalidated owners, publish their comparisons and let the read-only RAG evaluator decide whether the required population is qualified.
 
 Primary suites own disjoint populations. Focused selections retain their primary parents; running a case through both entry points does not create two unique cases. The [suite catalog](../../config/atf-test-suites.json) and [component-owner inventory](../../config/atf-component-collections.json) are executable inputs, not historical result lists.

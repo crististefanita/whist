@@ -56,7 +56,7 @@ final class GitTestChangeSnapshot {
         return new Snapshot(root, base, head, List.copyOf(changes), List.copyOf(documents), ignoredProtected);
     }
 
-    private static String commit(Path root, String ref) throws IOException, InterruptedException {
+    static String commit(Path root, String ref) throws IOException, InterruptedException {
         var result = git(root, "rev-parse", "--verify", "--end-of-options", ref + "^{commit}");
         String value = new String(result.stdout(), StandardCharsets.UTF_8).strip();
         if (result.exitCode() != 0 || !TestChangeControls.commitId(value))
@@ -76,20 +76,20 @@ final class GitTestChangeSnapshot {
         return changes;
     }
 
-    private static List<String> fields(String data) throws IOException {
+    static List<String> fields(String data) throws IOException {
         if (data.isEmpty()) return List.of();
         if (!data.endsWith("\u0000")) throw new IOException("TEST-CHANGE-GIT: truncated NUL-delimited output");
         return List.of(data.substring(0, data.length() - 1).split("\u0000", -1));
     }
 
-    private static String output(Path root, String... args) throws IOException, InterruptedException {
+    static String output(Path root, String... args) throws IOException, InterruptedException {
         var result = git(root, args);
         if (result.exitCode() != 0)
             throw new IOException("TEST-CHANGE-GIT: " + args[0] + " exited " + result.exitCode() + ": " + result.stderr().strip());
         return StandardCharsets.UTF_8.newDecoder().decode(java.nio.ByteBuffer.wrap(result.stdout())).toString();
     }
 
-    private static CommandProcess.Output git(Path root, String... args) throws IOException, InterruptedException {
+    static CommandProcess.Output git(Path root, String... args) throws IOException, InterruptedException {
         var command = new ArrayList<>(List.of("git", "--no-replace-objects", "--no-lazy-fetch", "-C", root.toString()));
         command.addAll(List.of(args));
         return CommandProcess.execute(command, ENV, Duration.ofSeconds(30), false);
@@ -101,10 +101,12 @@ final class GitTestChangeSnapshot {
                 || !snapshot.head().equals(commit(root, "HEAD"))) {
             throw new IOException("TEST-CHANGE-PROOF-DIRTY: evidence requires the clean reviewed commit");
         }
-        var diff = git(root, "diff", "--raw", "-z", "--no-abbrev", "--no-renames", "--no-ext-diff",
-                "--no-textconv", "--ignore-submodules=none", snapshot.base(), snapshot.head(), "--");
-        if (diff.exitCode() != 0) throw new IOException("TEST-CHANGE-PROOF-DIFF: " + diff.stderr().strip());
-        return TestChangeProof.digest(diff.stdout());
+        return TestChangeProof.digest(rawDiff(root, snapshot.base(), snapshot.head()).getBytes(StandardCharsets.UTF_8));
+    }
+
+    static String rawDiff(Path root, String base, String head) throws IOException, InterruptedException {
+        return output(root, "diff", "--raw", "-z", "--no-abbrev", "--no-renames", "--no-ext-diff",
+                "--no-textconv", "--ignore-submodules=none", base, head, "--");
     }
 
     record Change(String kind, String path) { }

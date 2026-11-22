@@ -131,7 +131,7 @@ public final class TestChangeAdmissionFixture {
         Files.writeString(target, text);
     }
 
-    private static String git(Path source, String... arguments) throws Exception {
+    static String git(Path source, String... arguments) throws Exception {
         var command = new ArrayList<>(List.of("git", "-C", source.toString()));
         command.addAll(List.of(arguments));
         var result = CommandProcess.execute(command, Map.of("GIT_TERMINAL_PROMPT", "0"), Duration.ofSeconds(30), false);

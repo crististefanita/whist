@@ -22,4 +22,13 @@ class WhistSurfaceAdapterComponentTest {
                 value -> inputs.add("Original Web/native adapter observations", value));
         assertTrue(output.contains("Whist adapter observations:"), output);
     }
+
+    @Test void adaptiveWebMenusKeepTextIndependentOfTheUsableViewport(ComponentInputs inputs) throws Exception {
+        var root = GovernanceProject.locateProjectRoot();
+        String output = NodeReleaseContracts.runNode(List.of("node", "--test",
+                root.resolve("atf-ui-browser/tests/responsive-surface.test.mjs").toString()), root, Duration.ofSeconds(120),
+                value -> inputs.add("Actual Chromium menus with a controlled API boundary", value));
+        assertTrue(output.contains("Adaptive policy observations:"), "Model boundaries and invalid dimensions are exercised");
+        assertTrue(output.contains("Responsive renderer observations:"), "Actual renderer measurements accompany the comparisons");
+    }
 }

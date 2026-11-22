@@ -75,7 +75,7 @@ flowchart LR
 |---|---|
 | [The game contract](src/main/java/ro/cardtable/browser/BrowserGame.java) | Publishes seats, permitted cards, legal commands and scores. Each game engine owns validation. |
 | [Server](src/main/java/ro/cardtable/browser/BrowserServer.java) | Serves same-origin resources, isolates matches by tab, validates revisions and rejects repeated commands. |
-| [Geometry](src/main/java/ro/cardtable/browser/BrowserGeometry.java) | Apply the Java plan used in Android for seats and fans. The phone frame uses the CSS viewport 1:1. On desktop, the useful height sets uniform scale when width permits; a readable floor is kept only when both axes allow it; narrow windows otherwise fit both axes without overflow. |
+| [Geometry](src/main/java/ro/cardtable/browser/BrowserGeometry.java) | Apply the Java plan used in Android for seats and fans. Whist uses the available CSS viewport without scene scaling; the legacy reference-frame adapter remains available to existing consumers. |
 | [Adapter Whist](whist/src/main/java/ro/whistlab/browser/WhistBrowser.java) | Uses dealing, AI policies and engine settlement. Recommendations use the same human-player selection as Android. |
 
 ## Whist on GitHub Pages
@@ -189,7 +189,39 @@ The adjacent `browser-build.json` binds this release to its source commit, input
 - Shared tests: [Card Table Browser tests 0.5](lib/atf-ui-browser-0.5-tests.jar) · [SHA-256](lib/atf-ui-browser-0.5-tests.jar.sha256)
 - Provenance: [browser-build.json](lib/browser-build.json)
 
-The viewport contract preserves a 414 × 896 logical frame on desktop, scales uniformly to fit the usable browser height and width, and retains a 0.68 readability floor only when both dimensions permit it. Phone browsers use their CSS viewport 1:1. Consumers must adopt the runtime and test archive from the same receipt and verify their bytes.
+The published legacy viewport contract preserves a 414 × 896 logical frame on desktop, scales uniformly to fit usable height and width, and retains a 0.68 readability floor only when both dimensions permit it. Whist's current source opts into the adaptive surface below; the immutable published package and existing consumers retain their admitted contract until a new package is qualified. Consumers adopt the runtime and test archive from the same receipt and verify their bytes.
+
+## Adaptive Whist surface
+
+The [viewport adapter](src/main/web/viewport.mjs) separates available space, typography and the existing table geometry. Whist uses CSS pixels without a whole-stage transform; Android continues to own its native rendering and sp-based policies.
+
+| Responsibility | Current contract |
+|---|---|
+| Available space | Measure the visual viewport after safe-area padding. Center a surface up to 768 CSS pixels wide and use the available height; keyboard-height and short windows retain readable controls through local scrolling. |
+| Menu roles | Title, section, action, selection and helper roles use explicit rem values. Preserve their approved default hierarchy; root text enlargement applies once and does not become a scene scale. |
+| Table adaptation | The existing Java port receives measured width, height and root font scale. Seat, card, actor and animation policies keep their shared owners. |
+| Text changes | A rem-sized observation probe triggers remeasurement when text preferences change independently of window dimensions. |
+| Compatibility | Existing consumers may keep `viewportGeometry`; Whist opts into `adaptiveViewport`. Exported legacy archives remain immutable. |
+
+```mermaid
+flowchart LR
+    Viewport[Visual viewport and safe areas] -->|CSS pixels| Frame[Unscaled surface]
+    Font[User root font] -->|rem roles| Menu[Readable menus]
+    Font -->|font scale| Port[Java table port]
+    Frame -->|measured dimensions| Port
+    Port -->|shared geometry| Table[Seats and cards]
+```
+
+<details>
+<summary>Legend — layout, text and remaining native acceptance</summary>
+
+- A wider window provides table space up to the readable cap; it does not enlarge every character, touch target and animation by one transform.
+- [Controlled components](tests/responsive-surface.test.mjs) render the production shell against an explicit API fixture, with localized menus and enlarged text. [Real-game verification](tests/responsive-game.mjs) uses one JVM-backed hand across browser profiles and captures measurements and images.
+- Numeric agreement and browser captures do not establish native font identity. The [remaining acceptance](../docs/feedback/ATF_UiBrowser.md#web-16-responsive-game-surface-and-menu-typography) requires an identified APK/browser comparison on the same Android; no iOS acceptance is claimed.
+
+</details>
+
+Pass the JVM classpath produced by `Start-WhistBrowser.ps1 -BuildOnly`, a new external evidence directory and optionally a Chromium executable to `tests/responsive-game.mjs`. Browser evidence records version, viewport, language, root font, visible card facts, geometry and scenario-owned captures; the [publisher](tests/Publish-BrowserExtent.ps1) embeds images in the standard English Extent report.
 
 ```powershell
 .\atf-ui-browser\Package-CardTableBrowser.ps1 -WorkRoot $WorkRoot -Version $BrowserLibraryVersion
@@ -207,7 +239,7 @@ Whist uses the same native table policy through [WhistBoardAdapter](whist/src/ma
 | Component boundary | Checked contract |
 |---|---|
 | Table geometry | All modes, 3–6 seats, compact and wide widths, 1–17 cards and enlarged text; bidding and play retain identical seat anchors. |
-| Unit adaptation | Normalize Android density to Web logical coordinates. The rounding bound accounts for repeated dimension conversions and integer placement in each renderer; unit-density coordinates must match exactly. Desktop zoom remains in the viewport adapter. |
+| Unit adaptation | Normalize Android density to Web logical coordinates. The rounding bound accounts for repeated dimension conversions and integer placement in each renderer; unit-density coordinates must match exactly. Whist supplies usable viewport dimensions; legacy desktop scaling remains in its own adapter. |
 | Card presentation | All 52 rank/suit combinations retain visible marks, color role and proportional sizing through the actual hand adapters. |
 | Interaction | The shared gesture fixture checks rejection, legal highlights, stale expiry and one accepted deposit; collection keyframes are compared through both adapters. |
 | Acceptance limit | These components execute portable production code, not Android Views or browser font rasterization. Same-device visual acceptance remains separate. |
@@ -226,7 +258,7 @@ The table menu exposes score history directly in Whist and Rentz through the com
 - After opponents move, the visible board retains its geometry until the next state is laid out. The component fixture delays measurement just before the player's turn returns. The trump tile retains its position and colours during manual play, AutoGame and collection.
 - Player frames retain the same coordinates during bidding, play and collection. The component fixture compares every frame in one-card hands with five and six players, during manual play and AutoGame.
 - The symbols of the cards use the same face ink in hand, on the table and when collecting. The theme provides the colors, and the Web adapter requires the rendering of symbols as text.
-- In Whist Web, bid summaries use 90% of the enlarged row font size, and dropdowns use 75% of the label font size. The check at 360 and 414 px measures the Normal/Hard selector on the same row as its Romanian label.
+- In Whist Web, explicit bid-summary and selection roles preserve the approved 90% and 75% proportions respectively. The check at 360 and 414 px measures the Normal/Hard selector on the same row as its Romanian label.
 - The viewport contract compares phone portrait/landscape, desktop height-limited and width-limited sizes, monotonic scale, narrow-window fallback, and invalid measurements. The browser check reads the actual frame after resize and confirms its centering and scale from the useful viewport.
 
 Use `-BuildOnly` with the three launchers and pass the returned classpaths to the component suite. JVM processes serve the adapters on loopback; the suite sends HTTP requests and checks public state. `$EvidenceRoot` identifies an existing external directory dedicated to the run.
@@ -274,7 +306,7 @@ The trump tile loads a local subset of Noto Sans Symbols 2 containing the four s
 
 ### Score text and shared playback checks
 
-- `ScoreTypography` owns the logical score sizes. Android uses sp and the Whist Web adapter exports the same roles as rem at a 16 px root. The score does not inherit the separate 1.5 menu scale; accessibility text enlargement and desktop viewport scaling each apply once.
+- `ScoreTypography` owns the logical score sizes. Android uses sp and the Whist Web adapter exports the same roles as rem at a 16 px root. The score does not inherit menu-role sizes; accessibility text enlargement applies once. Legacy consumers retain their own viewport scaling.
 - A focusable scroll region with intrinsic column minima keeps enlarged score columns accessible in narrow windows. Native score sizes and game scoring are preserved.
 
 - The shared tests execute the real Web constructor and collection code with a controlled DOM and clock. Actor cues precede cards; measured faces retain their origins, dimensions and destination until collection finishes.
@@ -288,7 +320,7 @@ The trump tile loads a local subset of Noto Sans Symbols 2 containing the four s
 Score actions have dedicated shared roles: primary actions use 24 logical units and secondary actions use 21, a 50% increase over the legacy 16/14 roles. Android consumes sp and Web consumes rem; user accessibility scaling applies once.
 
 - The native adapter uses `ScreenViews.scoreActionButton` or `addScoreAction`. Wrapped labels use content height with a minimum 48-unit touch target; fixed-height quiet controls remain separate.
-- The Web adapter uses the same exported `ScoreTypography` tokens. Narrow windows wrap complete labels and scroll the score page; desktop scaling belongs to the shared viewport contract.
+- The Web adapter uses the same exported `ScoreTypography` tokens. Narrow windows wrap complete labels and scroll the score page; Whist uses actual viewport space without a scene transform.
 - Numeric columns, history cells, card ranks, generic dialogs and other menus keep their own roles. Game adapters own localized captions, confirmed values and callbacks.
 - Consumer tests execute the delivered renderer and compare the actual AAR/JAR roles. Cover RO/EN, short windows, enlarged text, reachable actions, unchanged callback order and rejection of stale or double-scaled styles.
 

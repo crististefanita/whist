@@ -1966,3 +1966,40 @@ testChanges:
 ```
 
 </details>
+
+<details>
+<summary>Editorial proof continuation and adaptive browser admission</summary>
+
+```yaml
+testChanges:
+  - id: RAG-EDITORIAL-PROOF-CONTINUATION
+    status: VERIFIED
+    base: eab1603b30fa40c026bcc86ce1220854d8b91761
+    expires: 2026-12-22
+    reason: Preserve original proof identity across verified linear editorial descendants, reject executable or control changes, and keep the adaptive browser component entry points under explicit source review.
+    proof: 'mvn -o -pl atf-tests -am -Dtest=TestChangeEditorialProofComponentTest,WhistSurfaceAdapterComponentTest -Dsurefire.failIfNoSpecifiedTests=false test'
+    checks:
+      positive:
+        - atf.tests.governance.source.changes.TestChangeEditorialProofComponentTest#editorialDescendantsPreserveOriginalProofBytesAndExposeProvenance
+        - atf.tests.governance.documentation.release.rag.nativeproof.WhistSurfaceAdapterComponentTest#adaptiveWebMenusKeepTextIndependentOfTheUsableViewport
+      negative:
+        - atf.tests.governance.source.changes.TestChangeEditorialProofComponentTest#executableInputsControlsAndRevertedCodeCannotReuseEditorialProofs
+    paths:
+      - atf-tests/src/main/java/atf/tests/testchange/EditorialProofContinuation.java
+      - atf-tests/src/main/java/atf/tests/testchange/GitTestChangeSnapshot.java
+      - atf-tests/src/main/java/atf/tests/testchange/TestChangeAdmissionCli.java
+      - atf-tests/src/main/java/atf/tests/testchange/TestChangeControls.java
+      - atf-tests/src/main/java/atf/tests/testchange/TestChangeProof.java
+      - atf-tests/src/main/java/atf/tests/testchange/TestChangeReview.java
+      - atf-tests/src/test/java/atf/tests/governance/source/changes/TestChangeEditorialProofComponentTest.java
+      - atf-tests/src/test/java/atf/tests/governance/source/changes/TestChangeAdmissionFixture.java
+      - atf-tests/src/test/java/atf/tests/governance/documentation/release/rag/nativeproof/WhistSurfaceAdapterComponentTest.java
+      - atf-tests/src/test/java/atf/tests/suites/AtfComponentSuite.java
+      - atf-ui-browser/tests/responsive-surface.test.mjs
+      - atf-ui-browser/tests/responsive-game.mjs
+      - atf-ui-browser/tests/packaged-sanity.mjs
+      - config/atf-component-collections.json
+      - config/atf-component-dependencies.json
+```
+
+</details>

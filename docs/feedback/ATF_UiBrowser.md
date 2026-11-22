@@ -26,22 +26,22 @@ Extend coverage of AI decisions, streaks and playing for zero through component 
 
 ## WEB-16 Responsive game surface and menu typography
 
-**P1 · 88/100 · Open; code-level finding, rendered parity not yet qualified.**
+**P1 · 88/100 · Source implementation qualified offline; same-device APK/browser acceptance remains open.**
 
 Whist already shares the portable seat and hand calculations. Keep that boundary; the gap is the browser shell, not a reason to duplicate table geometry or pull Chess-specific UI into Whist.
 
-- On phones, `viewportGeometry` uses the supplied CSS viewport. On desktop, it starts with a 414 × 896 reference and applies one scale to the whole stage. This can leave wide screens underused and shrink the menu, labels, table and controls together in a short window. See [viewport policy](../../atf-ui-browser/src/main/web/viewport.mjs) and [stage sizing](../../atf-ui-browser/src/main/web/table.mjs).
-- The Whist surface hardcodes `--whist-text-scale: 1.5`, while `table.mjs` separately reads the root font size for `/api/layout`. The browser therefore has no single explicit contract linking menu roles, browser text zoom and layout measurements. The current 1.5 factor may match a chosen APK profile, but it is not a substitute for testing default and enlarged browser text. See [menu typography and layout](../../atf-ui-browser/src/main/web/table.css).
+- Whist now opts into usable-viewport sizing with no whole-stage transform, a centered readable width limit and local menu scrolling in short windows. The immutable published package and existing consumers retain the legacy reference-frame adapter until a separately qualified delivery. See [viewport policy](../../atf-ui-browser/src/main/web/viewport.mjs) and [stage sizing](../../atf-ui-browser/src/main/web/table.mjs).
+- Explicit menu typography roles replace the implicit global multiplier. Root text changes trigger layout measurement through the same adapter; the table receives its actual usable dimensions. [Menu typography and layout](../../atf-ui-browser/src/main/web/table.css) preserve the approved default hierarchy without scaling the entire scene.
 
 **Required direction**
 
-1. Replace whole-stage desktop zoom with content-first sizing based on the usable viewport and safe areas. Use available width for the game surface up to a readable maximum; keep seat anchors and table proportions stable as width and height change. Do not fix overflow by shrinking every element or adding isolated breakpoint overrides.
-2. Define explicit typography roles for menu title, section headings, primary and secondary actions, and helper text. Map the roles to Android `sp` and Web `rem`; let browser text zoom affect text without scaling the board or touch targets. Check the actual RO and EN menu copy, not English labels alone.
+1. Preserve content-first sizing, safe areas and the shared seat/card geometry. Do not reintroduce whole-stage shrinkage or isolated breakpoint overrides to conceal overflow.
+2. Keep explicit typography roles and independent text enlargement. The APK's native `sp` policies remain authoritative for the pending comparison; browser components alone do not prove native font equivalence.
 3. Preserve the game's information hierarchy across adapters: player names, bids, tricks won, active player, trump, cards played, the human hand and score must remain easy to scan at the same relative prominence. Keep controls reachable and avoid clipping or unnecessary page scroll at supported profiles.
 
 **Closure evidence**
 
-- Component checks cover viewport sizing, typography roles, short/tall windows, long localized labels and 1.0×/1.3× text without requiring an emulator.
+- [Component checks](../../atf-ui-browser/tests/responsive-surface.test.mjs) cover viewport sizing, typography roles, short/tall windows, long localized labels and 1.0×/1.3× text without requiring an emulator. Their HTTP boundary is a controlled fixture. [Real-engine browser checks](../../atf-ui-browser/tests/responsive-game.mjs) keep the same Whist hand across resizing and language changes; neither suite claims native APK acceptance.
 - One identical saved-game checkpoint and the home/setup menus are rendered on the same Android device in APK and Chrome at a compact profile; one desktop browser profile verifies width use and overflow. Include RO/EN and 1.0×/1.3× text in the focused comparison, not a full match on every resolution.
 - Extent captures include viewport dimensions, browser and APK identity, font sizes, key element bounds, overflow/scroll verdicts and the visible game facts. Keep the issue open until the rendered comparison passes; component geometry alone is not visual parity.
 

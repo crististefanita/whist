@@ -66,6 +66,15 @@ public final class TestChangeControls {
         return List.copyOf(result);
     }
 
+    static List<JsonNode> proofMetadata(String markdown) throws IOException {
+        var result = new ArrayList<JsonNode>();
+        var fences = FENCE.matcher(markdown);
+        while (fences.find()) if (CONTROL_KEY.matcher(fences.group(1)).find()) result.add(block(fences.group(1)));
+        if (CONTROL_KEY.matcher(FENCE.matcher(markdown).replaceAll("")).find())
+            throw new IOException("TEST-CHANGE-SCHEMA: use a closed yaml fence");
+        return List.copyOf(result);
+    }
+
     private static JsonNode block(String yaml) throws IOException {
         try {
             JsonNode root = YAML.readTree(yaml);

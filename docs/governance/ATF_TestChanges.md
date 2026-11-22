@@ -60,6 +60,40 @@ The proof command declares the planned verification and runs separately. [Compon
 
 ## Proof of verified control
 
+<a id="editorial-continuation-of-original-proofs"></a>
+
+### Editorial continuation of original proofs
+
+An original proof remains bound to the commit, base, diff, selectors and Extent bytes recorded at execution. A later editorial commit does not become a new execution: the [continuation validator](../../atf-tests/src/main/java/atf/tests/testchange/EditorialProofContinuation.java) admits reuse while retaining that original identity.
+
+| Boundary | Required check |
+|---|---|
+| History | The original commit exists locally and is an ancestor through at most 256 consecutive single-parent editorial commits. Merges or unrelated histories require new proofs. |
+| Executable inputs | Every intervening commit changes only non-build Markdown or `config/documentation-editions.json`. Source code, resources, packaged game-rule documents and other configuration remain unchanged, including changes later reverted. |
+| Protected diff | Recompute the original full raw Git diff from its recorded base and verify its hash. The protected raw diff, including Git blob identities and modes, must equal the current protected diff from that same base. |
+| Controls | `testChanges` metadata in each changed document remains semantically unchanged, including reasons, commands, paths and positive/negative selectors. Current authorization and expiry still apply. |
+| Files and outcomes | Documents are regular non-executable Git blobs. Original cases must still be exactly the declared passing population, and the original HTML hash must match. A dirty checkout remains blocked. |
+| Provenance | The admission receipt exposes `continuations`: original commit, admitted commit, protected-diff hash and editorial paths. Neither the original receipt nor Extent is rewritten. |
+
+```mermaid
+flowchart LR
+    Proof[Original proof] -->|hash and cases| Identity[Original identity]
+    Head[Current commit] -->|Git history| Scope[Editorial boundary]
+    Identity -->|same protected diff| Reuse[Admit original proof]
+    Scope -->|unchanged executable inputs| Reuse
+    Scope -->|source or control changed| Regenerate[Generate new proof]
+    Reuse -->|current documents| Docs[Fresh documentation governance]
+```
+
+<details>
+<summary>Legend — retained execution and current documentation</summary>
+
+- Proof reuse authorizes the unchanged source-control contract; it does not qualify changed documentation or add executed test cases.
+- Keep `ATF_TEST_CHANGE_PROOF_ROOT` pointed at the original bundle and use the normal collection launcher with `-ReuseFrom`. Unchanged Maven outputs remain independently admissible; do not invoke `-AllTestChangeControls` when all required original proofs are admitted.
+- A new control, executable input, unsupported history or failed original outcome requires proof generation. [Component cases](../../atf-tests/src/test/java/atf/tests/governance/source/changes/TestChangeEditorialProofComponentTest.java) exercise real Git histories and explicitly mocked proof-boundary inputs.
+
+</details>
+
 ### Early source-control admission
 
 Both qualification launchers call the [admission adapter](../../scripts/AtfTestChangeAdmission.ps1) before copying or restoring a source snapshot, copying dependency caches, or starting Maven. A small standalone compiler builds the [CLI](../../atf-tests/src/main/java/atf/tests/testchange/TestChangeAdmissionCli.java) from the current tool sources and reads the pinned parser JARs from `-MavenCache`. The CLI calls the same `TestChangeReview` and `TestChangeProof` validators as final governance.
@@ -115,10 +149,10 @@ $env:ATF_TEST_CHANGE_PROOF_ROOT = Join-Path $runRoot 'proofs'
 | Identity | The receipt binds the control ID, base SHA, reviewed commit SHA and raw Git diff SHA-256, including blobs and file modes. |
 | Diff batch | One compilation feeds all required `VERIFIED` controls. Each control has its own JVM, log and HTML report. Publish `proofs` only after every control passes and the source and selection are reconfirmed. |
 | Execution | The launcher runs exactly the declared selectors and reconciles invocations with Extent. The receipt and HTML are stored together under the control ID. |
-| Verification | A different commit, diff or control, missing selectors, or an HTML hash mismatch blocks `VERIFIED` authorization. A changed checkout requires a new candidate. |
+| Verification | A changed executable input, protected diff or control, missing selectors, or an HTML hash mismatch blocks `VERIFIED` authorization. Only an admitted editorial descendant can reuse an original commit's proof. |
 | History | Keep prior controls in the register. A `VERIFIED` control applies only when its selection and proof match the reviewed diff. |
 
-On failure or source change, inspect the per-control logs and the `proofs.pending` diagnostic directory. For a focused run, `-TestChangeControl` stores the receipt under `<RunRoot>/<ID>`. Reuse that receipt and report only for the same commit and diff.
+On failure or source change, inspect the per-control logs and the `proofs.pending` diagnostic directory. For a focused run, `-TestChangeControl` stores the receipt under `<RunRoot>/<ID>`. Reuse that receipt and report for the original commit and diff, or for a verified editorial continuation that preserves their identity.
 
 ## Transferring ownership of a check
 

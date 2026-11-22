@@ -92,6 +92,10 @@ try {
     const motion = await verifyMotion(url, setup);
     const { fitTextWidth } = await loadAdapter(url, "viewport.mjs");
     const viewportModule = await loadAdapter(url, "viewport.mjs");
+    if (viewportModule.adaptiveViewport) {
+      const asset = await fetch(new URL('seat-presentation.mjs', url));
+      assert.equal(asset.status, 200, 'The current shell must serve its seat-presentation dependency');
+    }
     const viewport = verifyViewportContract(viewportModule);
     const trumpText = await verifyTrumpTextFit(fitTextWidth);
     const before = await request("/api/state");
@@ -135,7 +139,10 @@ try {
         }))`);
         assert.ok(dropdowns.length > 0);
         const selectorScale = setup.surface === "whist" ? .75 : 1;
-        assert.ok(dropdowns.every(select => Math.abs(select.font - selectorScale * select.inheritedFont) < .01),
+        const roleSize = viewportModule.surfaceTypography?.()['--menu-selection-size'];
+        const rootSize = await evaluate('parseFloat(getComputedStyle(document.documentElement).fontSize)');
+        assert.ok(dropdowns.every(select => Math.abs(select.font - (setup.surface === 'whist' && roleSize
+          ? Number.parseFloat(roleSize) * rootSize : selectorScale * select.inheritedFont)) < .01),
           "The dropdown size must follow the selected presentation surface");
         await evaluate("document.querySelector('.setup form').requestSubmit()");
         await until(() => evaluate("!!document.querySelector('#table[aria-busy=false] .board[data-layout=ready] .seat')"));

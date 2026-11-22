@@ -74,7 +74,6 @@ The [early-admission contract](../governance/ATF_TestChanges.md#early-source-con
 | Priority | Separate remaining gap | Closure criterion |
 |---|---|---|
 | P2 | Qualification metadata still reaches some diagnostics only after snapshot preparation. | Admit the active dossier's E2E inventory, catalog links and editorial limits through a cheap metadata check before the long collection. Preserve failed evidence and prove that a focused recheck cannot qualify a failed primary group; this is separate from source-control proof admission. |
-| P2 | RAG-24: a concurrent editorial commit still invalidates commit-bound source-control proofs, even when the protected diff, selectors and executable inputs are unchanged. | Define an admitted editorial continuation or an explicit snapshot boundary. Preserve the original proof and its commit; require unchanged executable inputs, protected Git diff and selector population, with negative controls for changed code, metadata, controls or dirty protected paths. Keep this separate from component-evidence reuse and retain a clean reviewed snapshot for qualification. |
 
 ## Framework selection boundaries
 
