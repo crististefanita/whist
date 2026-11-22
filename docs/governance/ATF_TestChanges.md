@@ -64,7 +64,7 @@ Comanda de probă declară verificarea planificată și se execută separat. [Te
 
 ### Continuarea editorială a probelor originale
 
-O probă originală rămâne legată de commitul, baza, diff-ul, selectorii și octeții Extent înregistrați la execuție. Un commit editorial ulterior nu devine o execuție nouă: [validatorul continuării](../../atf-tests/src/main/java/atf/tests/testchange/EditorialProofContinuation.java) admite reutilizarea păstrând identitatea originală.
+O probă originală rămâne legată de commitul, baza, diff-ul, selectorii și octeții Extent înregistrați la execuție. Un commit editorial ulterior nu devine o execuție nouă: [validatorul continuării](../../atf-tests/src/main/java/atf/tests/testchange/EditorialProofContinuation.java) admite reutilizarea păstrând identitatea originală. Cititorii auditului afișează atât commitul original, cât și cel admis și păstrează legăturile către raportul original.
 
 | Graniță | Verificare necesară |
 |---|---|
