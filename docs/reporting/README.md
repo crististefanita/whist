@@ -7,12 +7,13 @@ Consumatorul Whist Lab deține selecția testelor, semantica jocului și datele 
 ## Fluxul publicării
 
 ```mermaid
+%%{init: {"themeVariables":{"fontSize":"15px"},"themeCSS":".edgeLabel, .edgeLabel p { font-size: 12px !important; } .node rect { rx: 6px; ry: 6px; }","flowchart":{"curve":"linear","nodeSpacing":24,"rankSpacing":22,"padding":6},"sequence":{"mirrorActors":false,"messageMargin":24,"wrap":true}}}%%
 flowchart LR
-TEST[Test executat] -->|capturează| RECEIPT[Înregistrări de execuție]
-SELECT[Politică de selecție] -->|alege invocări| RECEIPT
-RECEIPT -->|compune| CONSUMER[Publicator Whist]
-CONSUMER -->|apelează API| LIB[Bibliotecă de raportare]
-LIB -->|produce| HTML[HTML autonom]
+TEST["Test executat"] -->|capturează| RECEIPT["Înregistrări de<br/>execuție"]
+SELECT["Politică de<br/>selecție"] -->|alege invocări| RECEIPT
+RECEIPT -->|compune| CONSUMER["Publicator Whist"]
+CONSUMER -->|apelează API| LIB["Bibliotecă de<br/>raportare"]
+LIB -->|produce| HTML["HTML autonom"]
 ```
 
 <details>

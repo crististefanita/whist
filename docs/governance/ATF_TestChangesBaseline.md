@@ -1929,3 +1929,40 @@ testChanges:
 ```
 
 </details>
+
+<details>
+<summary>Limba documentației — metadatele ancorelor și proza vizibilă</summary>
+
+```yaml
+testChanges:
+  - id: J4-DOC-ANCHORS-EN-20261122
+    status: VERIFIED
+    base: 79434786cdc484924cad429ef8356681be9e596c
+    expires: 2026-12-22
+    reason: Exclude atributele ancorelor HTML din clasificarea limbii, păstrând verificarea etichetelor vizibile, prozei adiacente, exemplelor escapate și liniilor diagnostice originale.
+    proof: mvn -B -ntp -pl atf-tests -am test "-Dtest=DocumentationLanguageComponentTest,DocumentationPolicyGovernanceTest,DocumentationReadmeStructureGovernanceTest" "-Datf.governance.testChanges.baseRef=79434786cdc484924cad429ef8356681be9e596c" "-Dsurefire.failIfNoSpecifiedTests=false"
+    checks:
+      positive:
+        - atf.tests.governance.documentation.language.DocumentationLanguageComponentTest#anchorAttributesRemainTechnicalDataInBothEditions
+      negative:
+        - atf.tests.governance.documentation.language.DocumentationLanguageComponentTest#anchorMarkupCannotHideForeignVisibleTextOrItsLine
+    paths:
+      - atf-tests/src/main/java/atf/tests/documentation/policy/DocumentationLanguageRules.java
+      - atf-tests/src/test/java/atf/tests/governance/documentation/language/DocumentationLanguageComponentTest.java
+  - id: J4-DOC-ANCHORS-RO-20261122
+    status: VERIFIED
+    base: b45ef6424a417375fe5cf92ed8e5da1935a392c2
+    expires: 2026-12-22
+    reason: Exclude atributele ancorelor HTML din clasificarea limbii, păstrând verificarea etichetelor vizibile, prozei adiacente, exemplelor escapate și liniilor diagnostice originale.
+    proof: mvn -B -ntp -pl atf-tests -am test "-Dtest=DocumentationLanguageComponentTest,DocumentationPolicyGovernanceTest,DocumentationReadmeStructureGovernanceTest" "-Datf.governance.testChanges.baseRef=b45ef6424a417375fe5cf92ed8e5da1935a392c2" "-Dsurefire.failIfNoSpecifiedTests=false"
+    checks:
+      positive:
+        - atf.tests.governance.documentation.language.DocumentationLanguageComponentTest#anchorAttributesRemainTechnicalDataInBothEditions
+      negative:
+        - atf.tests.governance.documentation.language.DocumentationLanguageComponentTest#anchorMarkupCannotHideForeignVisibleTextOrItsLine
+    paths:
+      - atf-tests/src/main/java/atf/tests/documentation/policy/DocumentationLanguageRules.java
+      - atf-tests/src/test/java/atf/tests/governance/documentation/language/DocumentationLanguageComponentTest.java
+```
+
+</details>

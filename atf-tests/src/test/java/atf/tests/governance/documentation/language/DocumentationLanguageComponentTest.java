@@ -8,6 +8,27 @@ import java.util.List;
 
 @AtfComponentTest
 class DocumentationLanguageComponentTest {
+    @Test void anchorAttributesRemainTechnicalDataInBothEditions() {
+        for (String anchor : List.of("<a id=\"jocul-și-regulile\"></a>",
+                "<A name='jocul' title='Overview'></A>", "<a id=overview></a>",
+                "<a href=\"guide.md?before=after&title=>\" id='Overview'></a>")) {
+            AuditedAssertions.assertEquals(0, DocumentationLanguageRules.firstForeignLine(anchor, "en"), anchor);
+            AuditedAssertions.assertEquals(0, DocumentationLanguageRules.firstForeignLine(anchor, "ro"), anchor);
+        }
+    }
+
+    @Test void anchorMarkupCannotHideForeignVisibleTextOrItsLine() {
+        for (String foreign : List.of("<a id=\"overview\">Regulile jocului</a>",
+                "<a href='guide.md'>Verificare și publicare</a>", "<a id='safe'></a>Verificare")) {
+            AuditedAssertions.assertEquals(2,
+                    DocumentationLanguageRules.firstForeignLine("# Guide\n" + foreign, "en"), foreign);
+        }
+        AuditedAssertions.assertEquals(2, DocumentationLanguageRules.firstForeignLine(
+                "# Ghid\n<a id='pe-scurt'>Overview</a>", "ro"));
+        AuditedAssertions.assertEquals(1, DocumentationLanguageRules.firstForeignLine(
+                "&lt;a id=Overview&gt;", "ro"));
+    }
+
     @Test void englishBranchRejectsShortForeignLabelsAndDiagramCaptions() {
         for (String prose : List.of("| Intrare | Contract |", "[Contractul bibliotecii](docs/guide.md)", "Modelul and snapshot-urile",
                 "## Pe scurt", "```mermaid\nflowchart LR\n A[Scenariu] -->|trimite| B[Output]\n```",

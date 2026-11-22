@@ -22,11 +22,12 @@ Whist folosește motorul Java și contractele portabile ale mesei atât în APK,
 Cele două interfețe împart regulile jocului și calculele portabile ale mesei. Fiecare adaptor măsoară și desenează cu instrumentele platformei sale.
 
 ```mermaid
+%%{init: {"themeVariables":{"fontSize":"15px"},"themeCSS":".edgeLabel, .edgeLabel p { font-size: 12px !important; } .node rect { rx: 6px; ry: 6px; }","flowchart":{"curve":"linear","nodeSpacing":24,"rankSpacing":22,"padding":6},"sequence":{"mirrorActors":false,"messageMargin":24,"wrap":true}}}%%
 flowchart LR
-    Android[Interfață Android]
-    Web[Interfață Web]
-    Engine[Motor Whist]
-    Table[Modelul mesei]
+    Android["Interfață Android"]
+    Web["Interfață Web"]
+    Engine["Motor Whist"]
+    Table["Modelul mesei"]
     Android -->|comandă| Engine
     Web -->|comandă| Engine
     Android -->|aplică| Table
@@ -47,12 +48,13 @@ flowchart LR
 ## Traseele de execuție Web
 
 ```mermaid
+%%{init: {"themeVariables":{"fontSize":"15px"},"themeCSS":".edgeLabel, .edgeLabel p { font-size: 12px !important; } .node rect { rx: 6px; ry: 6px; }","flowchart":{"curve":"linear","nodeSpacing":24,"rankSpacing":22,"padding":6},"sequence":{"mirrorActors":false,"messageMargin":24,"wrap":true}}}%%
 flowchart LR
-    Page[Masă în browser]
-    Http[Server JVM]
-    Worker[Web Worker]
-    Adapter[Adaptor Whist]
-    Engine[Motor Java]
+    Page["Masă în browser"]
+    Http["Server JVM"]
+    Worker["Web Worker"]
+    Adapter["Adaptor Whist"]
+    Engine["Motor Java"]
     Page -->|trimite prin| Http
     Page -->|trimite prin| Worker
     Http -->|apelează| Adapter
@@ -156,12 +158,13 @@ Pentru un telefon conectat la rețeaua de test, `-ListenAddress $LocalLanAddress
 Whist construiește Web și APK din surse. Biblioteca pentru celelalte jocuri se exportă în două formate, cu verificări proprii la fiecare consumator.
 
 ```mermaid
+%%{init: {"themeVariables":{"fontSize":"15px"},"themeCSS":".edgeLabel, .edgeLabel p { font-size: 12px !important; } .node rect { rx: 6px; ry: 6px; }","flowchart":{"curve":"linear","nodeSpacing":24,"rankSpacing":22,"padding":6},"sequence":{"mirrorActors":false,"messageMargin":24,"wrap":true}}}%%
 flowchart LR
-    Shared[Calcule portabile]
-    Native[View-uri Android]
-    Browser[Server și DOM]
-    Aar[AAR Android]
-    Jar[JAR Web]
+    Shared["Calcule portabile"]
+    Native["View-uri Android"]
+    Browser["Server și DOM"]
+    Aar["AAR Android"]
+    Jar["JAR Web"]
     Native -->|include în| Aar
     Shared -->|intră în| Aar
     Shared -->|intră în| Jar
@@ -304,14 +307,15 @@ Coordonatele UI comune noi folosesc versiuni 0.x cu două segmente. Coordonatele
 ### Contract comun, adaptoare separate pe platformă
 
 ```mermaid
+%%{init: {"themeVariables":{"fontSize":"15px"},"themeCSS":".edgeLabel, .edgeLabel p { font-size: 12px !important; } .node rect { rx: 6px; ry: 6px; }","flowchart":{"curve":"linear","nodeSpacing":24,"rankSpacing":22,"padding":6},"sequence":{"mirrorActors":false,"messageMargin":24,"wrap":true}}}%%
 flowchart LR
-    Game[Proiecția jocului] -->|definește| Plan[Contractul meniului și istoricului]
-    Plan -->|leagă acțiunile și densitatea| Android[Adaptor Android]
-    Plan -->|leagă acțiunile și unitățile CSS| Web[Adaptor pentru navigator]
-    Tests[Contracte portabile de componentă] -->|verifică aceleași intrări| Android
-    Tests -->|verifică aceleași intrări| Web
-    Android -->|afișează| Native[Widgeturi native]
-    Web -->|afișează| DOM[DOM-ul navigatorului]
+    Game["Proiecția jocului"] -->|definește| Plan["Contractul meniului<br/>și istoricului"]
+    Plan -->|leagă acțiunile și<br/>densitatea| Android["Adaptor Android"]
+    Plan -->|leagă acțiunile și<br/>unitățile CSS| Web["Adaptor pentru<br/>navigator"]
+    Tests["Contracte portabile<br/>de componentă"] -->|verifică aceleași<br/>intrări| Android
+    Tests -->|verifică aceleași<br/>intrări| Web
+    Android -->|afișează| Native["Widgeturi native"]
+    Web -->|afișează| DOM["DOM-ul<br/>navigatorului"]
 ```
 
 <details>

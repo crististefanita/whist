@@ -30,6 +30,8 @@ public final class DocumentationLanguageRules {
             "\\b(the|this|these|that|with|without|and|must|should|their|each|after|before|from|where|when|which|remain|remains)\\b",
             Pattern.CASE_INSENSITIVE);
     private static final Pattern FENCE = Pattern.compile("^\\s*(`{3,}|~{3,})(.*)$");
+    private static final Pattern ANCHOR_TAG = Pattern.compile(
+            "(?i)</?a\\b(?:\"[^\"\\r\\n]*\"|'[^'\\r\\n]*'|[^'\">\\r\\n])*>");
     private static final Pattern ROMANIAN_ENDING = Pattern.compile(
             "\\b(?![A-Za-z]*(?:ful|soul|haul)\\b)[\\p{L}]{3,}(?:ului|urilor|urile|ele|ul)\\b"
             + "|\\b[\\p{L}][\\p{L}\\p{N}-]*-(?:ul|ului|urile|urilor|uri)\\b");
@@ -59,7 +61,7 @@ public final class DocumentationLanguageRules {
                     line = line.replaceFirst("^\\s*(?:-\\s+)?reason:\\s*", "");
                 else continue;
             }
-            String visible = line.replaceAll("`+[^`]*`+", "")
+            String visible = ANCHOR_TAG.matcher(line.replaceAll("`+[^`]*`+", "")).replaceAll("")
                     .replaceAll("\\]\\((?:[^()]|\\([^)]*\\))*\\)", "]")
                     .replaceAll("https?://\\S+", "");
             if (marker != null && diagram) {

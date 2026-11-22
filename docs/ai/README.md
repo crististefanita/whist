@@ -19,10 +19,11 @@ Pentru traseul complet, începeți cu [modul în care construim și îmbunătă�
 ## Decizia din timpul jocului
 
 ```mermaid
+%%{init: {"themeVariables":{"fontSize":"15px"},"themeCSS":".edgeLabel, .edgeLabel p { font-size: 12px !important; } .node rect { rx: 6px; ry: 6px; }","flowchart":{"curve":"linear","nodeSpacing":24,"rankSpacing":22,"padding":6},"sequence":{"mirrorActors":false,"messageMargin":24,"wrap":true}}}%%
 flowchart LR
-    STATE[Stare de joc] -->|proiectează| OBS[Observație proprie/publică]
-    OBS -->|alimentează| POLICY[Politică acceptată]
-    POLICY -->|propune| ACTION[Acțiune]
+    STATE["Stare de joc"] -->|proiectează| OBS["Observație<br/>proprie/publică"]
+    OBS -->|alimentează| POLICY["Politică acceptată"]
+    POLICY -->|propune| ACTION["Acțiune"]
     ACTION -->|validează și aplică| STATE
 ```
 
@@ -63,12 +64,13 @@ Catalogul de tipare rămâne un instrument de cercetare. [Ghidul onorurilor](ATF
 ## Interpretarea adversarilor
 
 ```mermaid
+%%{init: {"themeVariables":{"fontSize":"15px"},"themeCSS":".edgeLabel, .edgeLabel p { font-size: 12px !important; } .node rect { rx: 6px; ry: 6px; }","flowchart":{"curve":"linear","nodeSpacing":24,"rankSpacing":22,"padding":6},"sequence":{"mirrorActors":false,"messageMargin":24,"wrap":true}}}%%
 flowchart LR
-    PUBLIC[Istoric public] -->|deduce legal| VOID[Restricții certe]
-    PUBLIC -->|sugerează| MODEL[Ipoteze de comportament]
-    VOID -->|elimină lumi| WORLDS[Lumi compatibile]
+    PUBLIC["Istoric public"] -->|deduce legal| VOID["Restricții certe"]
+    PUBLIC -->|sugerează| MODEL["Ipoteze de<br/>comportament"]
+    VOID -->|elimină lumi| WORLDS["Lumi compatibile"]
     MODEL -->|poate pondera| WORLDS
-    WORLDS -->|alimentează| PLAN[Estimarea continuărilor]
+    WORLDS -->|alimentează| PLAN["Estimarea<br/>continuărilor"]
 ```
 
 <details>

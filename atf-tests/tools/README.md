@@ -4,6 +4,23 @@
 
 Aceste unelte Node.js aparțin consumatorului raportării și guvernanței livrării. Ele validează identitatea înregistrărilor capturate, selectează invocări întregi și înregistrează integritatea dosarului fixat, fără a recalcula rezultatul jocului.
 
+
+```mermaid
+%%{init: {"themeVariables":{"fontSize":"15px"},"themeCSS":".edgeLabel, .edgeLabel p { font-size: 12px !important; } .node rect { rx: 6px; ry: 6px; }","flowchart":{"curve":"linear","nodeSpacing":24,"rankSpacing":22,"padding":6},"sequence":{"mirrorActors":false,"messageMargin":24,"wrap":true}}}%%
+flowchart LR
+    Source["Snapshot de surse"] -->|selectează| Plan["Plan de calificare"]
+    Plan -->|declară verificări| Evaluate["Evaluator RAG"]
+    Receipts["Candidat și<br/>recepții"] -->|reconciliază| Evaluate
+    Evaluate -->|scrie| Verdict["READY / BLOCKED"]
+```
+
+<details>
+<summary>Legendă — responsabilitate și limita verificării</summary>
+
+Selectorul determină verificările necesare din intrări identificate; evaluatorul reconciliază planul, sursa, candidatul și dovezile colectate. Scrie o decizie pentru revizuire, fără a executa un scenariu Android lipsă sau a acorda autoritate de publicare. Comenzile de mai jos păstrează locații separate pentru intrări și ieșire.
+
+</details>
+
 ## Contract și verificare
 
 [whist-report-input.mjs](whist-report-input.mjs) deține selecția și inventarul populației native. [Testele sale](whist-report-input.test.mjs) verifică identități duplicate, surse contradictorii, omisiuni și păstrarea eșecurilor declarate.
@@ -28,7 +45,7 @@ node atf-tests/tools/record-release-integrity.mjs
 
 ## Evaluarea RAG a candidatului
 
-[Selectorul](plan-release-tests.mjs) compară inventarul fixat cu ultima sursă publicată relevantă din catalog. Generează câmpurile planului v2 și grupurile E2E cerute înainte de build. [Evaluatorul](evaluate-release-rag.mjs) recalculează selecția și confruntă planul, manifestul, payload-ul și snapshot-ul APK. [Comanda de selecție](../../docs/testing/ATF_ReleaseQualification.md#selecția-testelor-din-diff)
+[Selectorul](plan-release-tests.mjs) compară inventarul fixat cu ultima sursă publicată relevantă din catalog. Generează planul de selecție și grupurile E2E cerute înainte de build. [Evaluatorul](evaluate-release-rag.mjs) recalculează selecția și confruntă planul, manifestul, payload-ul și snapshot-ul APK. [Comanda de selecție](../../docs/testing/ATF_ReleaseQualification.md#selecția-testelor-din-diff)
 
 - [Perimetrul suitei](component-evidence-scope.mjs) stabilește când se poate reutiliza o execuție. Pentru colecțiile Gradle, documentația și intrările exclusiv Maven ori Android E2E nu invalidează dovada aplicației; sursele, configurația de compilare, dependențele și căile necunoscute cer selecție nouă. [Pregătirea dovezilor](prepare-component-reuse.mjs) și evaluatorul folosesc aceleași verificări pentru receipt-uri și hash-uri. Lansatorul componentelor folosește această pregătire la cerere.
 - Politica pe versiuni stabilește grupurile Maven și Gradle obligatorii. Fiecare grup are propriul Extent și receipt.

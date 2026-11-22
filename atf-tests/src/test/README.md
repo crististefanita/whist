@@ -4,6 +4,23 @@
 
 Modulul verifică integrarea binarelor comune, datele pentru publicare și contractele proiectului. [Strategia comună](../../../docs/testing/README.md) definește nivelurile; aici se aleg intrările și se interpretează limitele lor.
 
+
+```mermaid
+%%{init: {"themeVariables":{"fontSize":"15px"},"themeCSS":".edgeLabel, .edgeLabel p { font-size: 12px !important; } .node rect { rx: 6px; ry: 6px; }","flowchart":{"curve":"linear","nodeSpacing":24,"rankSpacing":22,"padding":6},"sequence":{"mirrorActors":false,"messageMargin":24,"wrap":true}}}%%
+flowchart LR
+    Witness["Fixture valid"] -->|schimbă o condiție| Negative["Intrare negativă"]
+    Negative -->|exercită| Guard["Garda testată"]
+    Guard -->|trebuie să respingă| Refusal["Refuz așteptat"]
+    Refusal -->|verifică contractul| Test["Verdict de<br/>componentă"]
+```
+
+<details>
+<summary>Legendă — responsabilitate și limita verificării</summary>
+
+Un control negativ trecut demonstrează refuzul cerut al gărzii; nu transformă un eșec al aplicației în PASS. Martorul valid inițial, condiția schimbată, diagnosticul observat și aserțiunea rămân atribuibile aceluiași test. Publicarea și acceptanța raportului randat au verificări proprii.
+
+</details>
+
 ## Colecții și responsabilități
 
 [Catalogul](../../../config/atf-test-suites.json) declară intrările unitare și de integrare, plus responsabili primari distincți pentru componente. [Harta responsabililor componentelor](../../../docs/testing/ATF_Collections.md#responsabili-independenți-pentru-componentele-atf) separă structura sursei, documentația, proveniența, Android, GitHub, orchestrarea și raportarea; suitele focalizate declară părinții lor primari.

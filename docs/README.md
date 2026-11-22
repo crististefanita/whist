@@ -5,6 +5,25 @@
 Documentația explică regulile jocului, arhitectura jucătorilor și mecanismele prin care îi dezvoltăm și verificăm.
 Fiecare arie are un singur README de orientare și ghiduri complementare, cu responsabilități și surse explicite.
 
+
+```mermaid
+%%{init: {"themeVariables":{"fontSize":"15px"},"themeCSS":".edgeLabel, .edgeLabel p { font-size: 12px !important; } .node rect { rx: 6px; ry: 6px; }","flowchart":{"curve":"linear","nodeSpacing":24,"rankSpacing":22,"padding":6},"sequence":{"mirrorActors":false,"messageMargin":24,"wrap":true}}}%%
+flowchart LR
+    Question["Întrebare sau<br/>schimbare"] -->|trimite| Game["Joc și motor"]
+    Question -->|trimite| AI["AI și învățare"]
+    Question -->|trimite| Platform["Platformă și<br/>livrare"]
+    Game -->|verifică prin| Proof["Teste și raportare"]
+    AI -->|verifică prin| Proof
+    Platform -->|verifică prin| Proof
+```
+
+<details>
+<summary>Legendă — responsabilitate și limita verificării</summary>
+
+Aceasta este o hartă de lectură, fără a reprezenta dependențe de build. Alege aria care deține contractul, inspectează codul său și folosește nivelul de test și dovezi care observă schimbarea; guvernanța și feedback-ul mențin contractul rezultat și lacunele rămase.
+
+</details>
+
 ## Arii de documentație
 
 | Arie | Întrebarea principală |

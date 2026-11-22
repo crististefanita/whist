@@ -9,11 +9,12 @@ Biblioteca comună deține prezentarea HTML și se consumă prin API-ul configur
 ## Flux și responsabilități
 
 ```mermaid
+%%{init: {"themeVariables":{"fontSize":"15px"},"themeCSS":".edgeLabel, .edgeLabel p { font-size: 12px !important; } .node rect { rx: 6px; ry: 6px; }","flowchart":{"curve":"linear","nodeSpacing":24,"rankSpacing":22,"padding":6},"sequence":{"mirrorActors":false,"messageMargin":24,"wrap":true}}}%%
 flowchart LR
-    INPUT[Invocări capturate] -->|alimentează| POLICY[Politică de selecție]
-    POLICY -->|transmite integral| DATA[Date pentru publicare]
-    DATA -->|publică prin API| HTML[Raport HTML]
-    AUDIT[Audit independent] -->|confruntă cu intrarea| HTML
+    INPUT["Invocări capturate"] -->|alimentează| POLICY["Politică de<br/>selecție"]
+    POLICY -->|transmite integral| DATA["Date pentru<br/>publicare"]
+    DATA -->|publică prin API| HTML["Raport HTML"]
+    AUDIT["Audit independent"] -->|confruntă cu intrarea| HTML
 ```
 
 <details>

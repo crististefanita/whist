@@ -7,11 +7,12 @@ Colecția produce imagini JVM din proiecția și geometria aplicației, cu fontu
 ## Fluxul probei
 
 ```mermaid
+%%{init: {"themeVariables":{"fontSize":"15px"},"themeCSS":".edgeLabel, .edgeLabel p { font-size: 12px !important; } .node rect { rx: 6px; ry: 6px; }","flowchart":{"curve":"linear","nodeSpacing":24,"rankSpacing":22,"padding":6},"sequence":{"mirrorActors":false,"messageMargin":24,"wrap":true}}}%%
 flowchart LR
-    STATE[Partidă legală] -->|proiectează| TABLE[Tabelul istoricului]
-    TABLE -->|randează| PNG[PNG controlat]
-    PNG -->|confruntă| ORACLE[Valori și pixeli]
-    STORE[Checkpoint JSON] -->|restaurează| STATE
+    STATE["Partidă legală"] -->|proiectează| TABLE["Tabelul istoricului"]
+    TABLE -->|randează| PNG["PNG controlat"]
+    PNG -->|confruntă| ORACLE["Valori și pixeli"]
+    STORE["Checkpoint JSON"] -->|restaurează| STATE
 ```
 
 <details>

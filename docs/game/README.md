@@ -17,12 +17,13 @@ Fiecare variantă are propriul contract pentru pachet, program, atu, licitare ș
 ## Responsabilități
 
 ```mermaid
+%%{init: {"themeVariables":{"fontSize":"15px"},"themeCSS":".edgeLabel, .edgeLabel p { font-size: 12px !important; } .node rect { rx: 6px; ry: 6px; }","flowchart":{"curve":"linear","nodeSpacing":24,"rankSpacing":22,"padding":6},"sequence":{"mirrorActors":false,"messageMargin":24,"wrap":true}}}%%
 flowchart LR
-    MODE[GameMode] -->|selectează| RULES[GameRules]
-    CONFIG[GameConfig] -->|configurează| RULES
-    RULES -->|validează| SESSION[GameSession]
-    RULES -->|furnizează reguli| HELP[HowToPlay RO/EN]
-    ORACLE[Oracol separat] -->|verifică| SESSION
+    MODE["GameMode"] -->|selectează| RULES["GameRules"]
+    CONFIG["GameConfig"] -->|configurează| RULES
+    RULES -->|validează| SESSION["GameSession"]
+    RULES -->|furnizează reguli| HELP["HowToPlay RO/EN"]
+    ORACLE["Oracol separat"] -->|verifică| SESSION
 ```
 
 <details>

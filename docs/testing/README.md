@@ -27,11 +27,12 @@ Nivelul exprimă limita verificată, iar colecția selectează cazurile și cost
 ## De la proprietate la rezultat
 
 ```mermaid
+%%{init: {"themeVariables":{"fontSize":"15px"},"themeCSS":".edgeLabel, .edgeLabel p { font-size: 12px !important; } .node rect { rx: 6px; ry: 6px; }","flowchart":{"curve":"linear","nodeSpacing":24,"rankSpacing":22,"padding":6},"sequence":{"mirrorActors":false,"messageMargin":24,"wrap":true}}}%%
 flowchart LR
-    CONTRACT[Proprietate] -->|delimitează| LEVEL[Nivel minim]
-    LEVEL -->|selectează| SUITE[Cazuri și resurse]
-    SUITE -->|confruntă prin| ORACLE[Oracol independent]
-    ORACLE -->|justifică| RESULT[Rezultat și limite]
+    CONTRACT["Proprietate"] -->|delimitează| LEVEL["Nivel minim"]
+    LEVEL -->|selectează| SUITE["Cazuri și resurse"]
+    SUITE -->|confruntă prin| ORACLE["Oracol independent"]
+    ORACLE -->|justifică| RESULT["Rezultat și limite"]
 ```
 
 <details>
