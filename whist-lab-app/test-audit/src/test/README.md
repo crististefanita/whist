@@ -9,4 +9,4 @@ The tests shall verify the binding of each claim to its inputs and comparisons, 
 | bridge Gradle | Identities of the appeals, entries and results caught may be confronted with independent expectations. |
 | Matrix | Aggregation keeps the area evaluated and makes the first non-match visible. |
 
-Pregnancy `:test-audit:test` Check the adapter on JVM. [Plugins](../testFixtures/README.md)
+task `:test-audit:test` Check the adapter on JVM. [Plugins](../testFixtures/README.md)

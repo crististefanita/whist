@@ -73,6 +73,7 @@ Verify the map against the [Maven reactor](../../pom.xml), [Gradle modules](../.
 
 - All Markdown documents use English on `main` and Romanian with diacritics on `main_RO`, at matching paths. Stable filenames and API identifiers retain their spelling. Keep heading levels, table shapes, diagram topology, link destinations and commands synchronized.
 - The titles, tables, diagrams and foldable summaries shall use the language of the document.
+- Language checks classify visible prose; Markdown destinations, inline code and HTML anchor attributes remain technical data. Text inside or beside an anchor is still checked, and escaped markup remains visible prose.
 - API identifiers, the quoted commands and labels shall be kept in accurate form.
 - Use one main title, an `Overview` section in English or `Pe scurt` in Romanian, progressive headings and lists marked with `-`.
 - A visible paragraph has at most three sentences; use a structure that makes responsibilities and comparisons easy to scan.

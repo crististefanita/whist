@@ -2,7 +2,24 @@
 
 ## Overview
 
-The module verifies the integration of common binaries, publication data and project contracts. [Common strategy](../../../docs/testing/README.md) defines the levels; here are chosen entries and their limits.
+The module verifies the integration of common binaries, publication data and project contracts. [Common strategy](../../../docs/testing/README.md) defines the levels; this guide defines entry points and their limits.
+
+
+```mermaid
+%%{init: {"themeVariables":{"fontSize":"15px"},"themeCSS":".edgeLabel, .edgeLabel p { font-size: 12px !important; } .node rect { rx: 6px; ry: 6px; }","flowchart":{"curve":"linear","nodeSpacing":24,"rankSpacing":22,"padding":6},"sequence":{"mirrorActors":false,"messageMargin":24,"wrap":true}}}%%
+flowchart LR
+    Witness["Valid fixture"] -->|changes one condition| Negative["Negative input"]
+    Negative -->|exercises| Guard["Guard under test"]
+    Guard -->|must reject| Refusal["Expected refusal"]
+    Refusal -->|asserts contract| Test["Component verdict"]
+```
+
+<details>
+<summary>Legend — ownership and verification boundary</summary>
+
+A passing negative control establishes the guard’s specified refusal; it does not convert an application failure into PASS. The original valid witness, changed condition, observed diagnostic and assertion remain attributable to the same test. Publication and rendered-report acceptance have their own checks.
+
+</details>
 
 ## Collections and responsibilities
 
@@ -12,20 +29,20 @@ The module verifies the integration of common binaries, publication data and pro
 |---|---|
 | Publication Whist | [GameReportComponentSuite](java/atf/tests/reporting/GameReportComponentSuite.java) is a focused selection for the policy and data captured on the physical JAR. |
 | Governance | [AtfQualityGovernanceSuite](java/atf/tests/governance/AtfQualityGovernanceSuite.java) reads the code, documents and contracts of binary; Android is not running. |
-| Integrity release | [ReleaseIntegrityGovernanceTest](java/atf/tests/governance/documentation/release/ReleaseIntegrityGovernanceTest.java) checks the real folder; [checks small](java/atf/tests/governance/documentation/release/integrity/) injects defects in temporary fixtures. |
+| Integrity release | [ReleaseIntegrityGovernanceTest](java/atf/tests/governance/documentation/release/ReleaseIntegrityGovernanceTest.java) checks the real folder; [focused checks](java/atf/tests/governance/documentation/release/integrity/) injects defects in temporary fixtures. |
 | hygiene workspace | [WorkspaceHygieneGovernanceTest](java/atf/tests/governance/source/workspace/WorkspaceHygieneGovernanceTest.java) detects temporary directories and files generated in the root without erasing anything. |
 
 ## How to pick evidence
 
-- Pure policies are checked unitary, with valid and invalid neighbours.
+- Pure policies use unit checks, with valid and invalid neighbours.
 - Components exercise files, serialization, publication or actual JUnit cycle on controlled data.
 - Binary integration verifies the physical surface and examples of guides; the identity of the library does not qualify for Android interaction.
 
-In his own temporary copy, [module controls](../../README.md#focused-verification) choose the suites. The governance launcher shall maintain the inventory and refuse to assign the result to sources exchanged in parallel.
+From an isolated copy, [module controls](../../README.md#focused-verification) choose the suites. The governance launcher shall maintain the inventory and refuse to assign the result to sources exchanged in parallel.
 
 ## Reading of the result
 
-A controlled failure qualifies the validator's refusal without becoming a new failure of the application. The component report shall publish the data evaluated; the results of an execution and audit notes shall be the external file or the identified relay, in accordance with the common strategy.
+A controlled failure qualifies the validator's refusal without becoming a new failure of the application. The component report shall publish the data evaluated; the results of an execution and audit notes belong in the external store or identified release dossier, in accordance with the common strategy.
 
 Markdown guides inside source directories remain editorial inputs. Markdown under `src/<set>/resources`, `res` or `assets` remains fixture data and requires the owning test controls.
 

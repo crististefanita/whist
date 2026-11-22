@@ -8,20 +8,21 @@ This package composes the Android interface and transmits the user's intentions 
 
 ## Common visual core
 
-[Library atf-card-table-ui](../../../../../../../atf-card-table-ui/README.md) has widgets, starting menu, name dialogue, theme, card drawing and hand geometry. `WhistMenuContent` and `WhistCardFace` project game data; existing facades retain the callers and identity of the Whist components.
+[Shared UI library](../../../../../../../atf-card-table-ui/README.md) has widgets, starting menu, name dialogue, theme, card drawing and hand geometry. `WhistMenuContent` and `WhistCardFace` project game data; existing facades retain the callers and identity of the Whist components.
 
-The complete table and `GameTablePanel` keep Whist, while `WindowContent` remains the window policy injected into the common builders. The game configuration, name rules, preferences, history and session services remain with their owners.
+The complete table and `GameTablePanel` remain in Whist, while `WindowContent` remains the window policy injected into the common builders. The game configuration, name rules, preferences, history and session services remain with their owners.
 
 ## Flow and responsibilities
 
 ```mermaid
+%%{init: {"themeVariables":{"fontSize":"15px"},"themeCSS":".edgeLabel, .edgeLabel p { font-size: 12px !important; } .node rect { rx: 6px; ry: 6px; }","flowchart":{"curve":"linear","nodeSpacing":24,"rankSpacing":22,"padding":6},"sequence":{"mirrorActors":false,"messageMargin":24,"wrap":true}}}%%
 flowchart LR
-    SESSION[Session] -->|exposes| STATE[State captured]
-    STATE -->|feeds| UI[Android presentation]
-    UI -->|collect| INTENT[Player's intention]
+    SESSION["Session"] -->|exposes| STATE["State captured"]
+    STATE -->|feeds| UI["Android<br/>presentation"]
+    UI -->|collects| INTENT["Player's intention"]
     INTENT -->|is validated by| SESSION
-    WINDOW[Window] -->|exclude bars and clippings| SPACE[Usable viewport]
-    SPACE -->|compress| UI
+    WINDOW["Window"] -->|excludes system insets| SPACE["Usable viewport"]
+    SPACE -->|fits| UI
 ```
 
 <details>
@@ -29,15 +30,15 @@ flowchart LR
 
 [MainActivity](MainActivity.java) links the session commands and restores the screens. [GameTablePanel](table/GameTablePanel.java) builds the table and geometry components delimit the regions; the change in the available space keeps the cards and the result calculated by the engine.
 
-The window excludes system bars and cutting before setting. This protection and measurement of useful view port belong to the system. [WindowContent](window/WindowContent.java).
+The window excludes system bars and cutouts before layout. Native inset handling and usable-viewport measurement belong to [WindowContent](window/WindowContent.java).
 
 </details>
 
 ## Back navigation
 
-| Area | Liability and source |
+| Area | Responsibility and source |
 |---|---|
-| Rates and screens | [AppNavigation](navigation/AppNavigation.java) manages the current route and dialogues; [screens](screens/) composes the pages and [ScreenViews](screens/ScreenViews.java) builds common widgets. |
+| Routes and screens | [AppNavigation](navigation/AppNavigation.java) manages the current route and dialogues; [screens](screens/) composes the pages and [ScreenViews](screens/ScreenViews.java) builds common widgets. |
 | Change of window | [PresentationRefresh](presentation/PresentationRefresh.java) groups the recovery requests and invalidate the callbacks of a replaced presentation; the coordinator reads the current geometry on delivery. |
 | Android Window | [WindowContent](window/WindowContent.java) applies native protection and measures useful space; [WindowPadding](window/WindowPadding.java) retains the immutable base. |
 | Table and bidding | [GameBoardLayout](table/GameBoardLayout.java), [TableGeometry](table/TableGeometry.java) and [BidGridMetrics](bidding/BidGridMetrics.java) measure the places and the central region. |
@@ -122,13 +123,14 @@ Geometric components check calculated relationships. Physical capture and intera
 Screen builders receive explicit observations and actions without the ownership of the session or of the AI executor. [MatchSetup](screens/MatchSetup.java) keeps the configuration choices without altering a match started.
 
 ```mermaid
+%%{init: {"themeVariables":{"fontSize":"15px"},"themeCSS":".edgeLabel, .edgeLabel p { font-size: 12px !important; } .node rect { rx: 6px; ry: 6px; }","flowchart":{"curve":"linear","nodeSpacing":24,"rankSpacing":22,"padding":6},"sequence":{"mirrorActors":false,"messageMargin":24,"wrap":true}}}%%
 flowchart LR
-    INTENT[Intent] -->|pick destination| NAV[Navigation]
-    NAV -->|select| SCREEN[Screen Builder]
-    SCREEN -->|compose with| VIEWS[Shared controls]
-    SCREEN -->|send the action| OWNER[Session owner]
-    DIALOG[Current dialog] -->|suspend| AI[Automation]
-    NAV -->|invalidate when changing route| DIALOG
+    INTENT["Intent"] -->|pick destination| NAV["Navigation"]
+    NAV -->|select| SCREEN["Screen Builder"]
+    SCREEN -->|compose with| VIEWS["Shared controls"]
+    SCREEN -->|send the action| OWNER["Session owner"]
+    DIALOG["Current dialog"] -->|suspend| AI["Automation"]
+    NAV -->|invalidate when<br/>changing route| DIALOG
 ```
 
 <details>
@@ -177,14 +179,15 @@ Upon resumption after the trial has been terminated, a checkpoint at the end of 
 The command only changes the field once. Persistence and continuation consume accepted mutation; a later failure does not turn it into an bid or invalid card.
 
 ```mermaid
+%%{init: {"themeVariables":{"fontSize":"15px"},"themeCSS":".edgeLabel, .edgeLabel p { font-size: 12px !important; } .node rect { rx: 6px; ry: 6px; }","flowchart":{"curve":"linear","nodeSpacing":24,"rankSpacing":22,"padding":6},"sequence":{"mirrorActors":false,"messageMargin":24,"wrap":true}}}%%
 flowchart LR
-    INTENT[Intent] -->|execute| COMMAND[Engine control]
-    COMMAND -->|refuse| REJECT[Existing message]
-    COMMAND -->|accept| LOCAL[Selection or reshuffle]
-    LOCAL -->|saves| CHECKPOINT[Checkpoint]
-    CHECKPOINT -->|allows| RANK[Eligible leaderboard]
-    RANK -->|Next| EXPORT[Export replay]
-    EXPORT -->|continue| NEXT[Next State]
+    INTENT["Intent"] -->|execute| COMMAND["Engine control"]
+    COMMAND -->|refuse| REJECT["Existing message"]
+    COMMAND -->|accept| LOCAL["Selection or<br/>reshuffle"]
+    LOCAL -->|saves| CHECKPOINT["Checkpoint"]
+    CHECKPOINT -->|allows| RANK["Eligible<br/>leaderboard"]
+    RANK -->|Next| EXPORT["Export replay"]
+    EXPORT -->|continue| NEXT["Next State"]
 ```
 
 <details>
@@ -228,12 +231,13 @@ For man, [HumanBidSelection](bidding/HumanBidSelection.java) receives only the o
 [Bidding matrix](../../../../../test/java/ro/whistlab/app/bidding/HumanBidMatrixComponentTest.java) check 1–8 cards, 3–6 players and each position in the bidding order. [Resumption components](../../../../../test/java/ro/whistlab/app/bidding/HumanBidResumeComponentTest.java) using the real JSON codecon and controlled events; does not qualify for Android storage, recreation of activity or native interaction.
 
 ```mermaid
+%%{init: {"themeVariables":{"fontSize":"15px"},"themeCSS":".edgeLabel, .edgeLabel p { font-size: 12px !important; } .node rect { rx: 6px; ry: 6px; }","flowchart":{"curve":"linear","nodeSpacing":24,"rankSpacing":22,"padding":6},"sequence":{"mirrorActors":false,"messageMargin":24,"wrap":true}}}%%
 flowchart LR
-    OWNER[Session thread] -->|capture| SNAP[Immutable state]
-    SNAP -->|calculate in| WORKER[Executor AI]
-    WORKER -->|Hand over result| QUEUE[Owner queue]
-    QUEUE -->|verify identity and status| APPLY[Single application]
-    STOP[Stopping or navigating] -->|invalidate generation| QUEUE
+    OWNER["Session thread"] -->|capture| SNAP["Immutable state"]
+    SNAP -->|calculate in| WORKER["Executor AI"]
+    WORKER -->|Hand over result| QUEUE["Owner queue"]
+    QUEUE -->|verify identity and<br/>status| APPLY["Single application"]
+    STOP["Stopping or<br/>navigating"] -->|invalidate generation| QUEUE
 ```
 
 <details>

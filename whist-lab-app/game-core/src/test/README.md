@@ -12,8 +12,8 @@ The tests check the rules, sessions and policies of the observation allowed to t
 | Session and restoration | Orders, unique hand advancement, historical and refusal of inconsistent states. |
 | A.I. policy | The actor's observation, legality, necessity and justified choices in controlled areas. |
 | Playing for zero | The final score in both Romanian variants, the transition of AI to exact zero and the maintenance of the usual strategy when second place remains possible. |
-| Research | Experimental interference and sequelae, separated from the implicit regression. |
-| Offline evaluation | Rolls, sources and lots identified; strategic progress has its own protocol and reserved data. |
+| Research | Experimental interventions and continuations, separated from the implicit regression. |
+| Offline evaluation | Identified roles, sources and evaluation sets; strategic progress has its own protocol and reserved data. |
 
 ## Choice of execution
 
@@ -23,20 +23,20 @@ A small regression fixes the rule and the distinct defect without running the en
 
 ## Outcome interpretation
 
-The fairness of a rule, the cost of a decision and the superiority of policy are different qualifications. [Learning protocol](../../../../docs/learning/README.md) maintains the provenance, selection and promotion criteria; a rollout or a finite certificate does not guarantee each game's winning.
+Rule correctness, decision cost and policy improvement are distinct qualifications. [Learning protocol](../../../../docs/learning/README.md) maintains the provenance, selection and promotion criteria; a rollout or a finite certificate does not guarantee each game's winning.
 
 ## Game evaluation at 0
 
-Pregnancy `:game-core:zeroMatchPairedTest` explicitly runs full games on JVM. The pair shall retain the seats, series, distribution, order of hands and the trunks, with the rule disabled and activated.
+The `:game-core:zeroMatchPairedTest` task explicitly runs complete games on the JVM. Each pair retains seats, streak settings, deals, hand order and seeds, with the rule disabled and enabled.
 
-| Parameter Gradle | Rol |
+| Parameter Gradle | Role |
 |---|---|
-| `whist.zero.firstSeed`, `whist.zero.repeats` | The deterministic range of distributions for each combination of variant and number of places. |
+| `whist.zero.firstSeed`, `whist.zero.repeats` | The deterministic range of distributions for each combination of variant and seat count. |
 | `whist.zero.pressure` | Choose the controlled prefix lot, where a place receives legal adverse bids before the last five hands. Natural and controlled lots shall be interpreted separately. |
 | `whist.zero.allHard` | Pick a natural lot with Hard at all places. The option is used separately from the controlled prefix. |
 | `whist.zero.output`, `whist.zero.reference` | Write the JSON pairs into a new folder and face control with the frozen reference when available. |
 | `whist.auditOutput`, `whist.auditSource` | Extent destination and identification of the execution source. |
 
-The JSON retains public moves, scores, zero choices and distribution prints. The final comparison separates the development and reserved intervals.
+The JSON retains public moves, scores, zero choices and deal fingerprints. The final comparison separates the development and reserved intervals.
 
 [Engine](../../README.md) · [Common strategy](../../../../docs/testing/README.md) · [Design of AI components](../../../../docs/testing/ATF_AiComponents.md)

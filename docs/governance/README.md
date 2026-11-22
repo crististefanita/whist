@@ -13,18 +13,19 @@ Governance converts the principles of structure into local executable checks. Th
 ## Perimeter and responsibilities
 
 ```mermaid
+%%{init: {"themeVariables":{"fontSize":"15px"},"themeCSS":".edgeLabel, .edgeLabel p { font-size: 12px !important; } .node rect { rx: 6px; ry: 6px; }","flowchart":{"curve":"linear","nodeSpacing":24,"rankSpacing":22,"padding":6},"sequence":{"mirrorActors":false,"messageMargin":24,"wrap":true}}}%%
 flowchart LR
-    POLICY[Explicit policy] -->|delimited| INVENTORY[Source inventory]
-    INVENTORY -->|feeds| GUARDS[Checks]
-    DOCS[Current documentation] -->|feeds| GUARDS
-    GUARDS -->|locate| FINDING[Explanatory deviation]
-    FINDING -->|requires| REVIEW[Correction and revision]
+    POLICY["Explicit policy"] -->|delimited| INVENTORY["Source inventory"]
+    INVENTORY -->|feeds| GUARDS["Checks"]
+    DOCS["Current<br/>documentation"] -->|feeds| GUARDS
+    GUARDS -->|locate| FINDING["Explanatory<br/>deviation"]
+    FINDING -->|requires| REVIEW["Correction and<br/>revision"]
 ```
 
 <details>
 <summary>Legend: a result has a perimeter</summary>
 
-The inventory includes the declared Maven roots and additional JVM roots in policy. Documentary validators inspect all the Readmees and Markdown files in docs, excluding the directories generated.
+The inventory includes declared Maven roots and additional JVM roots from policy. Documentation validators inspect owner READMEs and Markdown guides, excluding generated directories.
 
 </details>
 
@@ -34,9 +35,9 @@ The inventory includes the declared Maven roots and additional JVM roots in poli
 |---|---|
 | Maven | The declared root and the responsible POM are kept together, including for nested modules; the metadata are not rebuilt from the first segments of the path. |
 | Other roots | The module and path are explicit and `test` is Boolean; the root remains in its module. |
-| Property | A file has one person and one set of sources; overlaps are denied without any deduction that would conceal ambiguity. |
+| Ownership | Each file has one owner and source set; overlaps are denied without any deduction that would conceal ambiguity. |
 
-[Inventory contracts](../../atf-tests/src/test/java/atf/tests/governance/support/SourceInventoryContractTest.java) checks both the valid source and the configurations that would lose the identity or change the owner.
+[Inventory contracts](../../atf-tests/src/test/java/atf/tests/governance/support/SourceInventoryContractTest.java) check both the valid source and the configurations that would lose the identity or change the owner.
 
 ## JVM Inventory via CLI
 
@@ -50,13 +51,13 @@ PowerShell 7, JDK 21 and local cache Jackson are required.
 
 | Entry or verdict | Contract |
 |---|---|
-| Maven | `mavenModules` coincides with reactor modules and discovered POMS. An implicit missing root can be omitted. An explicitly configured root must exist. |
-| Grades and other sets | `additionalSourceRoots` declares the module, the canonical relative path and role `test`. Roots outside the module and overlaps are refused even when the directories are empty. |
+| Maven | `mavenModules` coincides with reactor modules and discovered POMs. An implicit missing root can be omitted. An explicitly configured root must exist. |
+| Gradle and other source sets | `additionalSourceRoots` declares the module, the canonical relative path and role `test`. Roots outside the module and overlaps are refused even when the directories are empty. |
 | Exceptions | `reviewedPackages` requires the exact inventory, motive and action. `productionBoundaryAdapters` requires the exact production file, the prohibited reason and the permitted references that still exist. |
 | Output `0` or `2` | JSON with scheme version, modules, roots, roles, number of files and packages, declared and diagnosed exceptions. `0` indicates success and `2` indicates deviations in the complete inventory. |
-| Exit `1` | The entrance or the perimeter is invalid. The detail is written on the stadr. |
+| Exit `1` | Input or scope is invalid; details go to stderr. |
 
-The Client and the Suite apply the same rules of route of the package, imports, cohesion and dependencies. [Component samples](../../atf-tests/src/test/java/atf/tests/governance/support/JvmInventoryCliComponentTest.java) checks inventory and diagnostics on a separate project. Reactor compiling, test stratification and documentary governance have their own checks.
+The CLI and suite apply the same package-path, import, cohesion and dependency rules. [Component samples](../../atf-tests/src/test/java/atf/tests/governance/support/JvmInventoryCliComponentTest.java) checks inventory and diagnostics on a separate project. Reactor compiling, test stratification and documentary governance have their own checks.
 
 ## Executable rules
 
@@ -76,7 +77,7 @@ The policy does not allow automatic threshold increase or the generation of dero
 
 [Parser syntactic](../../atf-tests/src/test/java/atf/tests/governance/source/JavaTestDeclarations.java) uses active JDK in memory without class generation or annotation processing. [Layer rules](../../atf-tests/src/test/java/atf/tests/governance/source/TestLayerRules.java) consumes this structure and keeps separate the solution of compound annotations.
 
-An inspection shall hold and close its own JDK file manager, reused between the sources of the same inspection. Each source has a new pregnancy and diagnosis; a syntax error does not contaminate the following source, and the closed context cannot be used any longer.
+Each inspection owns and closes its JDK file manager, reusing it across sources in that inspection. Each source has a fresh parse task and diagnostic collector; a syntax error does not contaminate the following source, and the closed context cannot be used any longer.
 
 | Border | Contract |
 |---|---|
@@ -84,7 +85,7 @@ An inspection shall hold and close its own JDK file manager, reused between the 
 | Declared execution | Type methods and containers `@Nested` identify execution; an inner class used as fixture does not automatically label the outside. |
 | graph annotations | Explicit or wildcard imports, actual declarations and bounded cycles; ambiguities are denied. |
 | Sources invalid | A syntax error produces a diagnostic with line and column without accepted empty inventory. |
-| Limit | The inspection shall not load the types of the application, shall not execute JUnit or substitute for complete compilation or resolution of the legacy. |
+| Limit | Inspection does not load application types or execute JUnit; it does not replace full compilation or inherited-method resolution. |
 
 [Syntax components](../../atf-tests/src/test/java/atf/tests/governance/source/TestLayerSyntaxTest.java) verify rejected syntax and valid neighbouring cases, including Java examples in strings that should not be treated as declarations.
 
@@ -92,7 +93,7 @@ An inspection shall hold and close its own JDK file manager, reused between the 
 
 For a file or full documentary inventory, use [Documentation Client](ATF_Documentation.md#documentation-governance-cli). It tests the same editorial rules as the suite.
 
-To verify the published evidence, use a checkout Git with the commits items indicated in the release notes. The suite reads those local objects, and a missing object causes error.
+To verify the published evidence, use a checkout Git with the commit objects identified in the release notes. The suite reads those local objects, and a missing object causes error.
 
 From the root of the project:
 
@@ -102,7 +103,7 @@ From the root of the project:
 
 The launcher compiles and checks the same temporary copy. [Qualification preflight](../testing/ATF_ReleaseQualification.md#snapshot-and-preflight-before-maven) confronts the artifacts and locks the sources and release folder separately. The changes in checkout or copy invalidate the result.
 
-The Maven running warehouse is the same as the temporary copy. The existing cache can initialize dependencies through `-MavenCache`; installing libraries in `lib` does not replace files used by other processes.
+The run uses a Maven cache owned by its temporary workspace. The existing cache can initialize dependencies through `-MavenCache`; installing libraries in `lib` does not replace files used by other processes.
 
 For a working copy already prepared, with the required libraries and modules:
 
@@ -110,14 +111,14 @@ For a working copy already prepared, with the required libraries and modules:
 mvn -B '-Dmaven.repo.local=<depozit-Maven-propriu>' -pl atf-tests -am '-Dtest=AtfQualityGovernanceSuite' '-Dsurefire.failIfNoSpecifiedTests=false' test
 ```
 
-`atf.governance.root` select the copy checked. `atf.governance.gitRoot` indicate the checkout used for [test diff. of test](ATF_TestChanges.md#checking-the-git-diff) and for historical objects of published evidence.
+`atf.governance.root` selects the inspected copy; `atf.governance.gitRoot` identifies the checkout used for [test-change diff review](ATF_TestChanges.md#checking-the-git-diff) and for historical objects of published evidence.
 
 ## Evidence and limits
 
 - The native result keeps the class, rule and localised deviation.
 - Negative evidence checks for an injection defect and acceptance of the healthy document next door.
 - The inventory of sources does not ignore a valid package called `target` inside a compiled root.
-- [Root hygiene](../../atf-tests/src/test/java/atf/tests/governance/source/workspace/WorkspaceHygieneGovernanceTest.java) refuses unrecognized directories, flattened local temporary paths and lost compiled files. Checking is only readers; cleaning requires inventory and resolved targets in the designated perimeter.
+- [Root hygiene](../../atf-tests/src/test/java/atf/tests/governance/source/workspace/WorkspaceHygieneGovernanceTest.java) refuses unrecognized directories, flattened local temporary paths and lost compiled files. Inspection is read-only; cleanup requires an inventory and resolved targets within the designated scope.
 - [Single Strategy](../../atf-tests/src/test/java/atf/tests/governance/documentation/strategy/TestingStrategyGovernanceTest.java) keeps a regulatory owner, generic guides without results and an explanatory catalogue for each of the declared test roots.
 - Documentary verification does not certify the game algorithm, Android rendering or compatibility of all libraries.
 - Binary qualification remains the distinct contract of [integration of libraries](../platform/ATF_Integration.md).

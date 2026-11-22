@@ -4,9 +4,9 @@
 
 The laboratory qualifies the independent player and the offline evaluation mechanisms. [Common strategy](../../../../docs/testing/README.md) has the level of verification; integration with the engine and research on the corpus have separate fields.
 
-## Borders and inputs
+## Boundaries and inputs
 
-| Border | Responsible verification |
+| Boundary | Responsible verification |
 |---|---|
 | Local Java contract | Types, states and inputs legally generated, without dependence on game archives. |
 | Tools Node.js | Corpus, reservation, selection and composition, with controlled fixtures near the responsible tool. |
@@ -15,8 +15,8 @@ The laboratory qualifies the independent player and the offline evaluation mecha
 
 ## Execution and interpretation
 
-[Gradle](../../build.gradle) be in charge `check` and local entrances, and [Laboratory guide](../../README.md) describe the preconditions. [Tools](../../tools/README.md) have their own contracts and tests; experiments kept separately do not fall into active policy.
+[Gradle](../../build.gradle) owns `check` and local entry points; the [laboratory guide](../../README.md) defines prerequisites. [Tools](../../tools/README.md) have their own contracts and tests; experiments kept separately do not fall into active policy.
 
-A local sample validates the contract exercised without demonstrating the superiority of the player. The reserved body and assessment shall be explicitly selected, with the identity and exposure of the data retained.
+A local sample validates the contract exercised without demonstrating the superiority of the player. Select the corpus and held-out evaluation explicitly, with the identity and exposure of the data retained.
 
 [AI lab](../../README.md) · [Common strategy](../../../../docs/testing/README.md) · [Protocol offline](../../../../docs/learning/README.md)

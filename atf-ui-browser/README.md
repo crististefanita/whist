@@ -19,14 +19,15 @@ Whist uses the Java engine and portable table contracts in both APK and browser.
 | Trick continuity | Native-style tables attach controls only for visible actions. Automatic-only and action-free states create no empty sibling or extra flex gap; real bidding controls and legacy prompts remain visible. |
 | Component boundary | Checks execute the delivered constructor and adapters. Native raster and painted geometry have separate platform acceptance. |
 
-The two interfaces share game rules and table portable calculations. Each adapter measures and draws with the tools of its platform.
+The two interfaces share game rules and portable table calculations. Each adapter measures and draws with the tools of its platform.
 
 ```mermaid
+%%{init: {"themeVariables":{"fontSize":"15px"},"themeCSS":".edgeLabel, .edgeLabel p { font-size: 12px !important; } .node rect { rx: 6px; ry: 6px; }","flowchart":{"curve":"linear","nodeSpacing":24,"rankSpacing":22,"padding":6},"sequence":{"mirrorActors":false,"messageMargin":24,"wrap":true}}}%%
 flowchart LR
-    Android[Android interface]
-    Web[Web Interface]
-    Engine[Whist engine]
-    Table[Table model]
+    Android["Android interface"]
+    Web["Web interface"]
+    Engine["Whist engine"]
+    Table["Table model"]
     Android -->|command| Engine
     Web -->|command| Engine
     Android -->|apply| Table
@@ -36,7 +37,7 @@ flowchart LR
 <details>
 <summary>Legend on rules, geometry and rendering</summary>
 
-- The engine validates the bids and the cards, settles the score and sets the actor. Adaptors publish the visible table status and player options.
+- The engine validates the bids and the cards, settles the score and sets the actor. Adapters publish visible table state and available player actions.
 - The table model includes geometry, fan, card appearance and timing. Android applies it through Views, and Web through font measurements and DOM elements.
 - Typography and system insets shall be measured separately. Samples with the same inputs check the formulae, and the APK-browser comparison on the device measures the rendered result. [Display components](../docs/testing/ATF_DisplayComponents.md)
 
@@ -47,45 +48,46 @@ flowchart LR
 ## Web execution paths
 
 ```mermaid
+%%{init: {"themeVariables":{"fontSize":"15px"},"themeCSS":".edgeLabel, .edgeLabel p { font-size: 12px !important; } .node rect { rx: 6px; ry: 6px; }","flowchart":{"curve":"linear","nodeSpacing":24,"rankSpacing":22,"padding":6},"sequence":{"mirrorActors":false,"messageMargin":24,"wrap":true}}}%%
 flowchart LR
-    Page[Table in browser]
-    Http[Server JVM]
-    Worker[Web Worker]
-    Adapter[Adaptor Whist]
-    Engine[Java engine]
-    Page -->|send through| Http
+    Page["Table in browser"]
+    Http["JVM server"]
+    Worker["Web Worker"]
+    Adapter["Whist adapter"]
+    Engine["Java engine"]
+    Page -->|dispatches through| Http
     Page -->|send through| Worker
     Http -->|calls| Adapter
     Worker -->|calls| Adapter
-    Adapter -->|run into| Engine
+    Adapter -->|executes| Engine
 ```
 
 <details>
 <summary>Legend on the route of controls and local data</summary>
 
-- JVM server runs the game in local process and serves Web resources. The session of the match belongs to the server and remains associated with the tab.
+- JVM server runs the game in local process and serves Web resources. The server owns each match session and associates it with its browser tab.
 - The static site loads the adapter and engine compiled into JavaScript. The messages to Web Worker remain on the device. Local transport keeps the profile and checkpoint through browser storage.
-- The diagram follows the command. The answer returns the revision, legal options and public status on the same route. [Transport of the static edition](pages/web/local-transport.mjs)
+- The diagram follows a command; its response returns the revision, legal options and public state through the same transport. [Transport of the static edition](pages/web/local-transport.mjs)
 
 </details>
 
 | Layer | Responsibility |
 |---|---|
-| [The game contract](src/main/java/ro/cardtable/browser/BrowserGame.java) | Publish the places, the cards allowed, the legal orders and scores. Validation remains in the engine of each game. |
-| [Server](src/main/java/ro/cardtable/browser/BrowserServer.java) | Serves the resources of the same origin. Isolate the games on the tab, validate the revisions and reject repeated commands. |
+| [The game contract](src/main/java/ro/cardtable/browser/BrowserGame.java) | Publishes seats, permitted cards, legal commands and scores. Each game engine owns validation. |
+| [Server](src/main/java/ro/cardtable/browser/BrowserServer.java) | Serves same-origin resources, isolates matches by tab, validates revisions and rejects repeated commands. |
 | [Geometry](src/main/java/ro/cardtable/browser/BrowserGeometry.java) | Apply the Java plan used in Android for seats and fans. The phone frame uses the CSS viewport 1:1. On desktop, the useful height sets uniform scale when width permits; a readable floor is kept only when both axes allow it; narrow windows otherwise fit both axes without overflow. |
-| [Adapter Whist](whist/src/main/java/ro/whistlab/browser/WhistBrowser.java) | Use distribution, AI policies and engine settlement. The recommendation comes from the same human selection as on Android. |
+| [Adapter Whist](whist/src/main/java/ro/whistlab/browser/WhistBrowser.java) | Uses dealing, AI policies and engine settlement. Recommendations use the same human-player selection as Android. |
 
 ## Whist on GitHub Pages
 
 The static edition distributes the Java engine compiled with TeaVM in a Web Worker. The table sends the same commands and reads the same public projection through local messages. After loading resources, bidding, AutoGame and settlement shall not make requests to an API.
 
-| Contract taken out of Android | Application in browser |
+| Contract shared with Android | Application in browser |
 |---|---|
-| [Header typography](../whist-lab-app/app/src/main/java/ro/whistlab/app/theme/GameHeaderTypography.java) and [palette](../whist-lab-app/atf-card-table-ui/src/main/java/ro/cardtable/ui/theme/TableColors.java) | The adapter transmits the text's roles and colors. The order applies to the header, menu and table. |
+| [Header typography](../whist-lab-app/app/src/main/java/ro/whistlab/app/theme/GameHeaderTypography.java) and [palette](../whist-lab-app/atf-card-table-ui/src/main/java/ro/cardtable/ui/theme/TableColors.java) | The adapter transmits the text's roles and colors. The contract applies to the header, menu and table. |
 | [Table reservation](../whist-lab-app/app/src/main/java/ro/whistlab/app/table/TableLayoutMetrics.java) | Measure the window and keep the same centre reserved for all hands of the variant. |
-| [Bidding checks](../whist-lab-app/app/src/main/java/ro/whistlab/app/bidding/BidGridMetrics.java) | The figure and confirmation shall keep the tactile target of 48 logical units. The outline is withdrawn inside, and the number of columns and removable row come from APK policy. |
-| [The pace of the moves](../whist-lab-app/atf-card-table-ui/src/main/java/ro/cardtable/ui/turn/TurnPacing.java) | Each automatic card appears after the delay defined by APK. The adapter plays the actor, card and collection in order produced by the engine. |
+| [Bidding controls](../whist-lab-app/app/src/main/java/ro/whistlab/app/bidding/BidGridMetrics.java) | The bid value and confirmation retain a touch target of 48 logical units. Outlines are inset; column count and the dismissible row follow APK policy. |
+| [Move pacing](../whist-lab-app/atf-card-table-ui/src/main/java/ro/cardtable/ui/turn/TurnPacing.java) | Each automatic card appears after the delay defined by APK. The adapter plays the actor, card and collection in order produced by the engine. |
 
 [Table contract](../whist-lab-app/atf-card-table-ui/src/main/java/ro/cardtable/ui/table/TableGeometry.java) receives the measured dimensions and phase reservation. Android applies the rectangle in the ViewGroup, and the web applies it in the DOM.
 [Collection curve](../whist-lab-app/atf-card-table-ui/src/main/java/ro/cardtable/ui/animation/TrickCollectionMotion.java) assesses progress on Android and provides web-based frames that the browser interpolates.
@@ -94,20 +96,20 @@ The static edition distributes the Java engine compiled with TeaVM in a Web Work
 |---|---|
 | Language | The Romanian or English option is saved in the browser. The menu, rules, table status and achievements use the texts of the APK. |
 | Profiles, Achievements and Rankings | The browser saves the name, progress and leaderboards in the same local record as the game. The leaderboards use the top, the filter by configuration and the AI and Example markings in the APK. |
-| Match | The menu allows for the resumption after reopening. The browser saves the checkpoint at each accepted command and uses the same validation as the APK. |
+| Match | The menu allows for the resuming after reopening. The browser saves the checkpoint at each accepted command and uses the same validation as the APK. |
 | Site data | Wiping the site storage or changing the browser starts a new profile. If storage is disabled, the session uses the memory of the tab. |
 
 - [Checkpoint codec](../whist-lab-app/app/src/main/java/ro/whistlab/app/persistence/GameCheckpointCodec.java) restores distribution, tricks and history at the last accepted command. The identity of the match remains stable and prevents duplication of results. A damaged checkpoint can be removed independently of profile and progress.
-- Web Locks serializes the writings between compatible tabs. A tab with an outdated revision reloads the checkpoint before its next command. If the browser refuses writing, the game can continue in memory and display the storage error.
-- The history displays all hands and total after each hand in column P. A red diagonal marks the missed bid. In column P, a box marks the serial bonus, and a red box marks the penalty.
+- Web Locks serializes writes between supporting tabs. A tab with an outdated revision reloads the checkpoint before its next command. If the browser refuses writing, the game can continue in memory and display the storage error.
+- The history displays all hands and total after each hand in column P. A red diagonal marks the missed bid. In column P, a box marks the streak bonus, and a red box marks the penalty.
 - Settings use [Same default values as APK](../whist-lab-app/app/src/main/java/ro/whistlab/app/screens/MatchSetup.java). The change of language keeps the options on the screen, and the rules dialogue shows the schedule of the option for the selected number of players.
-- In the game menu, the current score opens up the history when there are hands closed. At the last score, **Play again** retains the configuration and replaces the local game with a new distribution and identifier.
+- In the game menu, the current score opens up the history when there are completed hands. At the last score, **Play again** retains the configuration and replaces the local game with a new deal and identifier.
 - Player boxes display the name, bid and tricks won from the APK projection. The gold tag shows the playable cards. The total appears in score and history.
-- [Hand adapter](src/main/java/ro/cardtable/browser/BrowserHandAdapter.java) sends gestures to the common model used in the APK. The refusal highlights the pressed card and legal options for 1.100 ms. When choosing a legal card, the deposit follows the raise of 150 ms. API projects the same curve and layers of the fan as in APK.
-- The face of the Whist takes the mark from the Android hand. The rank and symbol in the corner, the central symbol and the inverted corner shall be proportionately scaled in the trick. Collection copies face off the table. Accessible text includes the player and the card.
-- The main menu of Whist takes over the dedication from the location used on Android. The site uses the same photo, copied to the building from the application's resources.
-- [The contract of the trump box](../whist-lab-app/atf-card-table-ui/src/main/java/ro/cardtable/ui/table/trump/TrumpTileMetrics.java) provides the basic dimensions and typography. Android measures with native font, and Web with Canvas. [Same cases of classification](../whist-lab-app/app/src/test/resources/whist-trump-text-fit.tsv) checks both adapters.
-- The collection shall apply the time-setting in the common module. The complete trick and the winner's current trick count are in the collection event. The hand is reviewed immediately after deposit, and the stable table contains the cards in the current trick. Resize can remove the temporary drawing, and the next card will respect the already scheduled range.
+- [Hand adapter](src/main/java/ro/cardtable/browser/BrowserHandAdapter.java) sends gestures to the common model used in the APK. The refusal highlights the pressed card and legal options for 1,100 ms. When choosing a legal card, the play follows a 150 ms card lift. The adapter projects the same fan curve and layers as the APK.
+- Whist card faces use the Android hand design. The rank and symbol in the corner, the central symbol and the inverted corner shall be proportionately scaled in the trick. Collection animates copies of the card faces away from the table. Accessible text includes the player and the card.
+- Whist’s main menu uses the Android locale’s dedication and the same photo, copied from application resources during the build.
+- [The contract of the trump box](../whist-lab-app/atf-card-table-ui/src/main/java/ro/cardtable/ui/table/trump/TrumpTileMetrics.java) provides the basic dimensions and typography. Android measures with native font, and Web with Canvas. [Shared text-fit cases](../whist-lab-app/app/src/test/resources/whist-trump-text-fit.tsv) checks both adapters.
+- The collection shall apply the time-setting in the common module. The complete trick and the winner's current trick count are in the collection event. The hand is laid out again immediately after a card is played, and the stable table contains the cards in the current trick. Resize can remove the temporary drawing, and the next card retains its scheduled delay.
 - AutoGame is activated for current hand. Deselecting it cancels the next automated decision for the player. Accepted moves finish and the menus and dialogues shall suspend the following decision for as long as they are open. The score or return to the main menu turn off the tick.
 
 - The build requires PowerShell 7, JDK 21, Maven and the environment of generating the catalogue. `$WorkRoot` and `$EvidenceRoot` indicate external directories.
@@ -156,12 +158,13 @@ For a phone connected to the test network, `-ListenAddress $LocalLanAddress` sel
 Whist builds Web and APK from sources. The library for other games is exported in two formats with own checks on each consumer.
 
 ```mermaid
+%%{init: {"themeVariables":{"fontSize":"15px"},"themeCSS":".edgeLabel, .edgeLabel p { font-size: 12px !important; } .node rect { rx: 6px; ry: 6px; }","flowchart":{"curve":"linear","nodeSpacing":24,"rankSpacing":22,"padding":6},"sequence":{"mirrorActors":false,"messageMargin":24,"wrap":true}}}%%
 flowchart LR
-    Shared[Portable calculations]
-    Native[Android Views]
-    Browser[Server and DOM]
-    Aar[AAR Android]
-    Jar[JAR Web]
+    Shared["Portable<br/>calculations"]
+    Native["Android Views"]
+    Browser["Server and DOM"]
+    Aar["AAR Android"]
+    Jar["JAR Web"]
     Native -->|include in| Aar
     Shared -->|enter| Aar
     Shared -->|enter| Jar
@@ -304,14 +307,15 @@ New shared UI coordinates use two-part 0.x versions. Existing three-part coordin
 ### Shared contract, separate platform adapters
 
 ```mermaid
+%%{init: {"themeVariables":{"fontSize":"15px"},"themeCSS":".edgeLabel, .edgeLabel p { font-size: 12px !important; } .node rect { rx: 6px; ry: 6px; }","flowchart":{"curve":"linear","nodeSpacing":24,"rankSpacing":22,"padding":6},"sequence":{"mirrorActors":false,"messageMargin":24,"wrap":true}}}%%
 flowchart LR
-    Game[Game projection] -->|defines| Plan[Menu and history contract]
-    Plan -->|binds callbacks and density| Android[Android adapter]
-    Plan -->|binds callbacks and CSS units| Web[Browser adapter]
-    Tests[Portable component contracts] -->|checks the same inputs| Android
+    Game["Game projection"] -->|defines| Plan["Menu and history<br/>contract"]
+    Plan -->|binds callbacks and<br/>density| Android["Android adapter"]
+    Plan -->|binds callbacks and<br/>CSS units| Web["Browser adapter"]
+    Tests["Portable component<br/>contracts"] -->|checks the same inputs| Android
     Tests -->|checks the same inputs| Web
-    Android -->|renders| Native[Native widgets]
-    Web -->|renders| DOM[Browser DOM]
+    Android -->|renders| Native["Native widgets"]
+    Web -->|renders| DOM["Browser DOM"]
 ```
 
 <details>

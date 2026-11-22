@@ -7,11 +7,12 @@ The collection produces JVM images from the application projection and geometry,
 ## Test flow
 
 ```mermaid
+%%{init: {"themeVariables":{"fontSize":"15px"},"themeCSS":".edgeLabel, .edgeLabel p { font-size: 12px !important; } .node rect { rx: 6px; ry: 6px; }","flowchart":{"curve":"linear","nodeSpacing":24,"rankSpacing":22,"padding":6},"sequence":{"mirrorActors":false,"messageMargin":24,"wrap":true}}}%%
 flowchart LR
-    STATE[Legal game] -->|design| TABLE[Score history table]
-    TABLE -->|renders| PNG[Controlled PNG]
-    PNG -->|compares| ORACLE[Values and pixels]
-    STORE[Checkpoint JSON] -->|restore| STATE
+    STATE["Legal game"] -->|design| TABLE["Score history table"]
+    TABLE -->|renders| PNG["Controlled PNG"]
+    PNG -->|compares| ORACLE["Values and pixels"]
+    STORE["Checkpoint JSON"] -->|restore| STATE
 ```
 
 <details>

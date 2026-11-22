@@ -2,37 +2,38 @@
 
 ## Overview
 
-JVM module exclusively for test fixtures. JUnit Bridge 4 captures the actual context and comparisons through the joint and public kit through the physical reporting library. The application and the graphical AARs do not depend on this variant.
+This JVM module supplies test fixtures only. Its JUnit 4 bridge captures actual context and comparisons through Test Kit and publishes through the physical Reporting artifact; application and UI AAR runtimes do not depend on it.
 
 ## Selection flow
 
 ```mermaid
+%%{init: {"themeVariables":{"fontSize":"15px"},"themeCSS":".edgeLabel, .edgeLabel p { font-size: 12px !important; } .node rect { rx: 6px; ry: 6px; }","flowchart":{"curve":"linear","nodeSpacing":24,"rankSpacing":22,"padding":6},"sequence":{"mirrorActors":false,"messageMargin":24,"wrap":true}}}%%
 flowchart LR
-    CASE[Case and fixture] -->|capture before comparison| INPUT[Actual context]
-    INPUT -->|evaluate through Kit| CHECK[Expected and actual]
-    CHECK -->|publishing by Reporting| HTML[Canonical HTML]
-    XML[Temporary JUnit output] -->|checks identities and verdicts| VERIFY[Acceptance of selection]
+    CASE["Case and fixture"] -->|capture before<br/>comparison| INPUT["Actual context"]
+    INPUT -->|evaluate through Kit| CHECK["Expected and actual"]
+    CHECK -->|publishing by Reporting| HTML["Canonical HTML"]
+    XML["Temporary JUnit<br/>output"] -->|checks identities and<br/>verdicts| VERIFY["Acceptance of<br/>selection"]
     HTML -->|re-reads bodies| VERIFY
 ```
 
 <details>
 <summary>Legend: execution and publication</summary>
 
-A JUnit rule holds the claim, including fixtures before/after. The duration of this statement shall be measured prior to publication. Gradle temporarily retains the XMLs for independent counting; delivery retains an HTML for each selection after accurate confrontation.
+A JUnit rule owns the invocation, including before/after fixtures, and measures duration before publication. Gradle temporarily retains XML for independent counting; delivery retains one HTML per selection after reconciliation.
 
 </details>
 
 ## Contracts
 
 - The context shall be captured at execution before the first comparison, including parametric values and local fixtures. Source code does not replace the observed values.
-- JUnit 4 keeps runners and parametrizations; the deck adapts the order of the assertions message to Kit.
-- The lack of context, lack of comparison, omission of an appeal, duplication or divergent verdict prevents acceptance.
+- JUnit 4 keeps runners and parametrizations; the bridge adapts assertion-message order to Kit.
+- The lack of context, lack of comparison, a missing invocation, duplication or divergent verdict prevents acceptance.
 - The declared rasters are PNG inline, labelled as JVM fixture. No Android captures.
-- The catalogue classifies units, components, governance and learning; learning selections remain eighty-in.
-- One worker and one HTML per task avoid unqualified competition; the closureur and final check belong to the selection.
+- The catalogue classifies units, components, governance and learning; learning selections remain opt-in.
+- One worker and one HTML per task avoid unqualified competition; closure and final validation belong to the selection.
 
 ## Running tests
 
-Gradle test task automatically applies the deck. `whist.auditOutput` chooses the report director and `whist.auditSource` fixes the identity of the source inventory for qualification. The final check confronts HTML with the original JUNIT and the library inspector; the mere existence of the file is not acceptable.
+Gradle test tasks apply the bridge automatically. `whist.auditOutput` chooses the report directory and `whist.auditSource` fixes the identity of the source inventory for qualification. The final check compares HTML with original JUnit and the library inspector; the mere existence of the file is not acceptable.
 
-The versions of the kit and the reporting are read from `atf.testkit.version` and `atf.reporting.version` of the root POM. The configuration refuses local pairs JAR/POM absent or with divergent coordinates; does not duplicate versions and does not choose Routing by lexical sorting in the Gradle building.
+The versions of the kit and the reporting are read from `atf.testkit.version` and `atf.reporting.version` of the root POM. The configuration refuses local pairs JAR/POM absent or with divergent coordinates; does not duplicate versions and does not select Reporting by lexical sorting in the Gradle build.

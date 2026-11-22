@@ -2,9 +2,9 @@
 
 ## Overview
 
-This JVM module brings together the independent player, offline tools and AI experiments. The main sources of the player are left without imports from the engine, Android or ATF; the experiments have explicit activation and do not enter the main artifact.
+This JVM module brings together the independent player, offline tools and AI experiments. Player production sources have no engine, Android or ATF imports; the experiments have explicit activation and do not enter the main artifact.
 
-[game-core/build.gradle](../game-core/build.gradle) consummate the module by `testImplementation project(":ai-lab")`. [POM Android](../../atf-test-android/pom.xml) compile the same sources only for Maven acceptance; the application is not dependent on the laboratory in the APK.
+[game-core/build.gradle](../game-core/build.gradle) consumes the module through `testImplementation project(":ai-lab")`. [Android test POM](../../atf-test-android/pom.xml) compiles the same sources only for Maven acceptance; the application is not dependent on the laboratory in the APK.
 
 ## Module organisation
 
@@ -18,49 +18,50 @@ This JVM module brings together the independent player, offline tools and AI exp
 
 ## Input and information available
 
-[IndependentPlayer.Position](src/main/java/ro/whistlab/coach/IndependentPlayer.java) contains own hand and public works: the number of cards left, contracts, tricks, totals, series, cards played, current trick and the card turned.
+[IndependentPlayer.Position](src/main/java/ro/whistlab/coach/IndependentPlayer.java) contains the actor’s hand and public facts: the number of cards left, contracts, tricks, totals, series, cards played, current trick and the card turned.
 
-There is no field for the actual hands of the opponents or the initialization value of the division. Adaptors must build this projection before calling the AIO. In Android tests, this limit is applied by [WhistChallenger](../../atf-test-android/src/test/java/atf/android/e2e/player/WhistChallenger.java).
+There is no field for the actual hands of the opponents or the deal seed. Adapters build this projection before calling the AI. In Android tests, this limit is applied by [WhistChallenger](../../atf-test-android/src/test/java/atf/android/e2e/player/WhistChallenger.java).
 
-Numerical cards use `13 × suit + rank - 2`, with the order of colors failing,
-Cup, clubs, diamonds. Color tracking rule, mandatory trump, winner
-and the score is implemented separately from `game-core`.
+Numeric cards use `13 × suit + rank - 2`, with suits ordered spades,
+hearts, clubs and diamonds. Following suit, mandatory trumping, trick winners
+and scoring are implemented independently of `game-core`.
 
 ## Flow and responsibilities
 
 ```mermaid
+%%{init: {"themeVariables":{"fontSize":"15px"},"themeCSS":".edgeLabel, .edgeLabel p { font-size: 12px !important; } .node rect { rx: 6px; ry: 6px; }","flowchart":{"curve":"linear","nodeSpacing":24,"rankSpacing":22,"padding":6},"sequence":{"mirrorActors":false,"messageMargin":24,"wrap":true}}}%%
 flowchart LR
-OBS[Private and public observation] -->|compress| WORLDS[Feasible worlds]
-WORLDS -->|feeds| PLAN[RolloutPlanner]
-PLAN -->|proposes| MOVE[Legal action]
-WORLDS -->|allows verification| CERT[ContractGuarantee]
+OBS["Private and public<br/>observation"] -->|compress| WORLDS["Feasible worlds"]
+WORLDS -->|feeds| PLAN["RolloutPlanner"]
+PLAN -->|proposes| MOVE["Legal action"]
+WORLDS -->|allows verification| CERT["ContractGuarantee"]
 CERT -->|can replace| MOVE
 ```
 
 <details>
 <summary>Legend and limits</summary>
 
-Worlds are assumptions compatible with public information. Certification may replace the proposal only in the area completely listed; budget exhaustion shall be kept as a reserve. The independent player remains a test medium separate from the application policy.
+Worlds are hypotheses compatible with public information. A certificate may replace the proposal only within a fully enumerated domain; budget exhaustion retains the fallback proposal. The independent player remains a verification tool separate from application policy.
 
 </details>
 
 ## Active source policy
 
-Bidding compares the points of contracts on the same hypothetical worlds; the game
-compare points of legal cards with points of the strongest right opponent
-criteria for departmental. Budgets and the exception for the rear of a card shall be
-read from the methods `bid` and `card` of the active source. That's utility in
-points, not a certificate that the chosen bid will be conducted.
+Bidding compares contract points on the same hypothetical worlds; card play
+compares legal-card points, using the strongest opponent’s points
+as a tie-breaker. Read budgets and the one-card posterior exception
+from the active source’s `bid` and `card` methods. This is utility in
+points, not a guarantee that the chosen contract will be made.
 
 | Mechanism | Contract and limit |
 |---|---|
-| [IndependentDeals](src/main/java/ro/whistlab/coach/IndependentDeals.java) | Distributions respect public cards, the return card, the need and the colors shown as depleted; the feasible reserve option retains the same restrictions. |
+| [IndependentDeals](src/main/java/ro/whistlab/coach/IndependentDeals.java) | Deals respect public cards, the turned card, remaining need and suits proven void; the feasible fallback keeps the same constraints. |
 | [IndependentContinuations](src/main/java/ro/whistlab/coach/IndependentContinuations.java) | It advances the hypothetical world, tricks and scores. Simulation of decision and exhaustive diagnosis are distinct entries; diagnosis does not replace active policy. |
-| [RolloutPlanner](src/main/java/ro/whistlab/coach/RolloutPlanner.java) | Models the continuation of a hypothesis; actual adverse hands do not enter the API of the decision. [Frozen references](../game-core/src/test/java/ro/whistlab/coach/baseline) remain separate in the engine tests. |
-| [ContractGuarantee](src/main/java/ro/whistlab/coach/ContractGuarantee.java) | It can replace the proposal only for the complete universe and legal continuity in the allowed finite domain; incomplete listing or depleted budget retains the initial proposal. |
+| [RolloutPlanner](src/main/java/ro/whistlab/coach/RolloutPlanner.java) | Models the continuation of a hypothesis; opponents’ actual hands do not enter the decision API. [Frozen references](../game-core/src/test/java/ro/whistlab/coach/baseline) remain separate in the engine tests. |
+| [ContractGuarantee](src/main/java/ro/whistlab/coach/ContractGuarantee.java) | It can replace the proposal only for the complete universe and legal continuity in the allowed finite domain; incomplete enumeration or an exhausted budget preserves the initial proposal. |
 
 Reproducibility concerns the same full input; invariance to change
-The common scores are not assumed. Mechanisms don't certify a perfect player.
+common scores is not assumed. These mechanisms do not certify a perfect player.
 
 ## Verification and experiments
 
@@ -89,10 +90,10 @@ Keep learning cases, small regressions, candidate's source and new evaluation ga
 
 | Surface | Contract and limit |
 |---|---|
-| Java | [Local contracts](src/test/java/ro/whistlab/coach/IndependentPlayerContractTest.java) checks the observation, legality, determinism, cancellation and budgets. The engine, Android and ATF are missing from the test leaderboard; comparisons in `game-core` remain integration. |
+| Java | [Local contracts](src/test/java/ro/whistlab/coach/IndependentPlayerContractTest.java) checks the observation, legality, determinism, cancellation and budgets. Engine, Android and ATF dependencies are absent from the local test classpath; comparisons in `game-core` remain integration. |
 | Tools Node | `check` include `testTools`; [the legal game builder](tools/testing/legal-game-fixture.mjs) replace the default entries in the archive. The card, bid, levitated and score mutations check the validator's refusals. |
 | Archive | `replayArchive` requires file and SHA-256 explicit; check bytes prior to parting and rules. It's not the dependency of `check`. |
-| Data exposure | [Shared registry](../../docs/learning/ATF_EvaluationRegistry.md) coordinates reservations between the corpuss and keeps reuse as known exposure. |
+| Data exposure | [Shared registry](../../docs/learning/ATF_EvaluationRegistry.md) coordinates reservations between the corpora and keeps reuse as known exposure. |
 
 The promotion remains conditional on progress on new games and the identity of all sources; a successful local verification closes only her contract. [Learning protocol](../../docs/learning/README.md) holds the procedure and [Feedback AI](../../docs/feedback/ATF_Ai.md) centralises the work still open.
 
@@ -100,7 +101,7 @@ The promotion remains conditional on progress on new games and the identity of a
 
 - The interruption shall retain the marking and discard `CancellationException`; `WORK_LIMIT` shall abandon the decision by a separate exception.
 - Closure of context eliminates the limit for subsequent calls.
-- [Cost qualification](../../docs/ai/ATF_CostQualification.md) separates this control from the evidence budget and strategic force.
+- [Cost qualification](../../docs/ai/ATF_CostQualification.md) separates this control from the evidence budget and playing strength.
 
 ## Test catalogue
 

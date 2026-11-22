@@ -5,15 +5,16 @@
 The game projects confirmed visible values; the library renders them. Column labels, score signs, player order, row identities and details actions remain consumer inputs. The widgets never calculate points or decide a winner.
 
 ```mermaid
+%%{init: {"themeVariables":{"fontSize":"15px"},"themeCSS":".edgeLabel, .edgeLabel p { font-size: 12px !important; } .node rect { rx: 6px; ry: 6px; }","flowchart":{"curve":"linear","nodeSpacing":24,"rankSpacing":22,"padding":6},"sequence":{"mirrorActors":false,"messageMargin":24,"wrap":true}}}%%
 flowchart LR
-    GAME[Confirmed game state] -->|supplies visible values| ADAPTER[Game content adapter]
-    ADAPTER -->|builds rows| TABLE[ScoreTableContent]
-    ADAPTER -->|builds history| HISTORY[HistoryContent]
-    TABLE -->|supplies rows to| ANDROID[ScoreTableView]
-    HISTORY -->|supplies groups to| SCROLL[ScoreHistoryView]
-    TABLE -->|supplies rows to| WEB[Browser projection]
+    GAME["Confirmed game<br/>state"] -->|supplies visible values| ADAPTER["Game content<br/>adapter"]
+    ADAPTER -->|builds rows| TABLE["ScoreTableContent"]
+    ADAPTER -->|builds history| HISTORY["HistoryContent"]
+    TABLE -->|supplies rows to| ANDROID["ScoreTableView"]
+    HISTORY -->|supplies groups to| SCROLL["ScoreHistoryView"]
+    TABLE -->|supplies rows to| WEB["Browser projection"]
     HISTORY -->|supplies groups to| WEB
-    SCROLL -->|opens details by row identity through| ADAPTER
+    SCROLL -->|opens details by row<br/>identity through| ADAPTER
 ```
 
 <details>
