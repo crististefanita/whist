@@ -75,6 +75,7 @@ The [early-admission contract](../governance/ATF_TestChanges.md#early-source-con
 | Priority | Separate remaining gap | Closure criterion |
 |---|---|---|
 | P2 | Qualification metadata still reaches some diagnostics only after snapshot preparation. | Admit the active dossier's E2E inventory, catalog links and editorial limits through a cheap metadata check before the long collection. Preserve failed evidence and prove that a focused recheck cannot qualify a failed primary group; this is separate from source-control proof admission. |
+| P2 | Proof generation discovers unsupported dynamic selectors after compilation. | Check selected source declarations for the proof runner's supported static invocation shape before Maven. Reject unsupported or ambiguous declarations without launching compilation; retain authoritative post-compile JUnit discovery and add a negative component case for the early rejection. |
 
 ## Framework selection boundaries
 

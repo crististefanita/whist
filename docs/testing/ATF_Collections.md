@@ -266,6 +266,8 @@ A final snapshot check can reject an aggregate even when its isolated collection
 | Owner selection | The existing dependency classifier compares the delivered source with the original execution. Changed owners run again; unaffected owners may reuse only passing, hash-verified reports with matching JUnit identities. A failed sibling cannot borrow another owner's result. Game-rule guides and library guides retain their additional consumers. |
 | Transport | The reuse plan carries the original rejected aggregate and all bound observations under its original provenance identity. Release payloads declare these files; the RAG evaluator verifies the same contract and exposes `readmission` separately from the original verdict. Missing historical observations cannot be reconstructed from log messages. |
 
+Owner selection always uses the complete delivered diff, including edits made after the original source check.
+
 ```mermaid
 flowchart LR
     REJECT[Rejected aggregate] -->|verify captured inventories| CHECK[Documentation-only live drift]
