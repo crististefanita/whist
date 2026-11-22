@@ -49,12 +49,13 @@ Fiecare candidat reprezintă o modificare identificată a licitării sau a alege
 [Procedura de evoluție](ATF_PolicyEvolution.md) deține pașii și criteriile de ieșire. Această hartă orientează lectura; arena, componentele și colecțiile dețin contractele specializate.
 
 ```mermaid
+%%{init: {"themeVariables":{"fontSize":"15px"},"themeCSS":".edgeLabel, .edgeLabel p { font-size: 12px !important; } .node rect { rx: 6px; ry: 6px; }","flowchart":{"curve":"linear","nodeSpacing":24,"rankSpacing":22,"padding":6},"sequence":{"mirrorActors":false,"messageMargin":24,"wrap":true}}}%%
 flowchart LR
-    DIAG[Diagnostic de dezvoltare] -->|formulează| RULE[Regulă generală]
-    RULE -->|verifică| TEST[Componentă independentă]
-    TEST -->|califică| FREEZE[Candidat înghețat]
-    FREEZE -->|compară| HELD[Lot rezervat]
-    HELD -->|informează| REVIEW[Revizie de promovare]
+    DIAG["Diagnostic de<br/>dezvoltare"] -->|formulează| RULE["Regulă generală"]
+    RULE -->|verifică| TEST["Componentă<br/>independentă"]
+    TEST -->|califică| FREEZE["Candidat înghețat"]
+    FREEZE -->|compară| HELD["Lot rezervat"]
+    HELD -->|informează| REVIEW["Revizie de<br/>promovare"]
 ```
 
 <details>

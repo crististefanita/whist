@@ -47,11 +47,12 @@ Scorul 1–100 exprimă ordinea recomandată de lucru, nu calitatea sau procentu
 ## Responsabilitatea schimbării
 
 ```mermaid
+%%{init: {"themeVariables":{"fontSize":"15px"},"themeCSS":".edgeLabel, .edgeLabel p { font-size: 12px !important; } .node rect { rx: 6px; ry: 6px; }","flowchart":{"curve":"linear","nodeSpacing":24,"rankSpacing":22,"padding":6},"sequence":{"mirrorActors":false,"messageMargin":24,"wrap":true}}}%%
 flowchart LR
-    ISSUE[Lacună identificată] -->|atribuie| OWNER[Responsabil]
-    OWNER -->|definește| CRITERION[Criteriu și nivel]
-    CRITERION -->|verifică| CHECK[Rezultat reproductibil]
-    CHECK -->|promovează regula în| CONTRACT[Documentul responsabil]
+    ISSUE["Lacună identificată"] -->|atribuie| OWNER["Responsabil"]
+    OWNER -->|definește| CRITERION["Criteriu și nivel"]
+    CRITERION -->|verifică| CHECK["Rezultat<br/>reproductibil"]
+    CHECK -->|promovează regula în| CONTRACT["Documentul<br/>responsabil"]
 ```
 
 <details>

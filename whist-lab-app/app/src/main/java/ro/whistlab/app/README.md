@@ -15,12 +15,13 @@ Masa completă și `GameTablePanel` păstrează compoziția Whist, iar `WindowCo
 ## Flux și responsabilități
 
 ```mermaid
+%%{init: {"themeVariables":{"fontSize":"15px"},"themeCSS":".edgeLabel, .edgeLabel p { font-size: 12px !important; } .node rect { rx: 6px; ry: 6px; }","flowchart":{"curve":"linear","nodeSpacing":24,"rankSpacing":22,"padding":6},"sequence":{"mirrorActors":false,"messageMargin":24,"wrap":true}}}%%
 flowchart LR
-    SESSION[Sesiune] -->|expune| STATE[Stare capturată]
-    STATE -->|alimentează| UI[Prezentare Android]
-    UI -->|colectează| INTENT[Intenția jucătorului]
+    SESSION["Sesiune"] -->|expune| STATE["Stare capturată"]
+    STATE -->|alimentează| UI["Prezentare Android"]
+    UI -->|colectează| INTENT["Intenția<br/>jucătorului"]
     INTENT -->|este validată de| SESSION
-    WINDOW[Fereastră] -->|exclude barele și decupajul| SPACE[Viewport util]
+    WINDOW["Fereastră"] -->|exclude barele și<br/>decupajul| SPACE["Viewport util"]
     SPACE -->|constrânge| UI
 ```
 
@@ -122,13 +123,14 @@ Componentele geometrice verifică relații calculate. Captura fizică și intera
 Constructorii ecranelor primesc observații și acțiuni explicite, fără proprietatea sesiunii sau a executorului AI. [MatchSetup](screens/MatchSetup.java) păstrează alegerile configurării fără să modifice o partidă începută.
 
 ```mermaid
+%%{init: {"themeVariables":{"fontSize":"15px"},"themeCSS":".edgeLabel, .edgeLabel p { font-size: 12px !important; } .node rect { rx: 6px; ry: 6px; }","flowchart":{"curve":"linear","nodeSpacing":24,"rankSpacing":22,"padding":6},"sequence":{"mirrorActors":false,"messageMargin":24,"wrap":true}}}%%
 flowchart LR
-    INTENT[Intenție] -->|alege destinația| NAV[Navigare]
-    NAV -->|selectează| SCREEN[Constructor de ecran]
-    SCREEN -->|compune cu| VIEWS[Controale comune]
-    SCREEN -->|trimite acțiunea| OWNER[Proprietarul sesiunii]
-    DIALOG[Dialog curent] -->|suspendă| AI[Automatizare]
-    NAV -->|invalidează la schimbarea rutei| DIALOG
+    INTENT["Intenție"] -->|alege destinația| NAV["Navigare"]
+    NAV -->|selectează| SCREEN["Constructor de<br/>ecran"]
+    SCREEN -->|compune cu| VIEWS["Controale comune"]
+    SCREEN -->|trimite acțiunea| OWNER["Proprietarul<br/>sesiunii"]
+    DIALOG["Dialog curent"] -->|suspendă| AI["Automatizare"]
+    NAV -->|invalidează la<br/>schimbarea rutei| DIALOG
 ```
 
 <details>
@@ -177,14 +179,15 @@ La reluarea după oprirea procesului, un checkpoint aflat la final de levată pr
 Comanda modifică domeniul o singură dată. Salvarea și continuarea consumă mutația acceptată; un eșec ulterior nu o transformă în licitație sau carte invalidă.
 
 ```mermaid
+%%{init: {"themeVariables":{"fontSize":"15px"},"themeCSS":".edgeLabel, .edgeLabel p { font-size: 12px !important; } .node rect { rx: 6px; ry: 6px; }","flowchart":{"curve":"linear","nodeSpacing":24,"rankSpacing":22,"padding":6},"sequence":{"mirrorActors":false,"messageMargin":24,"wrap":true}}}%%
 flowchart LR
-    INTENT[Intenție] -->|execută| COMMAND[Comandă în motor]
-    COMMAND -->|refuză| REJECT[Mesaj existent]
-    COMMAND -->|acceptă| LOCAL[Selecție sau replay]
-    LOCAL -->|salvează| CHECKPOINT[Checkpoint]
-    CHECKPOINT -->|permite| RANK[Clasament eligibil]
-    RANK -->|urmează| EXPORT[Export replay]
-    EXPORT -->|continuă| NEXT[Stare următoare]
+    INTENT["Intenție"] -->|execută| COMMAND["Comandă în motor"]
+    COMMAND -->|refuză| REJECT["Mesaj existent"]
+    COMMAND -->|acceptă| LOCAL["Selecție sau replay"]
+    LOCAL -->|salvează| CHECKPOINT["Checkpoint"]
+    CHECKPOINT -->|permite| RANK["Clasament eligibil"]
+    RANK -->|urmează| EXPORT["Export replay"]
+    EXPORT -->|continuă| NEXT["Stare următoare"]
 ```
 
 <details>
@@ -228,12 +231,13 @@ Pentru om, [HumanBidSelection](bidding/HumanBidSelection.java) primește numai o
 [Matricea licitației](../../../../../test/java/ro/whistlab/app/bidding/HumanBidMatrixComponentTest.java) verifică 1–8 cărți, 3–6 jucători și fiecare poziție în ordinea licitării. [Componentele reluării](../../../../../test/java/ro/whistlab/app/bidding/HumanBidResumeComponentTest.java) folosesc codec-ul JSON real și evenimente controlate; nu califică stocarea Android, recrearea activității sau interacțiunea nativă.
 
 ```mermaid
+%%{init: {"themeVariables":{"fontSize":"15px"},"themeCSS":".edgeLabel, .edgeLabel p { font-size: 12px !important; } .node rect { rx: 6px; ry: 6px; }","flowchart":{"curve":"linear","nodeSpacing":24,"rankSpacing":22,"padding":6},"sequence":{"mirrorActors":false,"messageMargin":24,"wrap":true}}}%%
 flowchart LR
-    OWNER[Firul sesiunii] -->|capturează| SNAP[Stare imutabilă]
-    SNAP -->|calculează în| WORKER[Executor AI]
-    WORKER -->|predă rezultatul| QUEUE[Coada proprietarului]
-    QUEUE -->|verifică identitatea și starea| APPLY[Aplicare unică]
-    STOP[Oprire sau navigare] -->|invalidează generația| QUEUE
+    OWNER["Firul sesiunii"] -->|capturează| SNAP["Stare imutabilă"]
+    SNAP -->|calculează în| WORKER["Executor AI"]
+    WORKER -->|predă rezultatul| QUEUE["Coada<br/>proprietarului"]
+    QUEUE -->|verifică identitatea<br/>și starea| APPLY["Aplicare unică"]
+    STOP["Oprire sau navigare"] -->|invalidează generația| QUEUE
 ```
 
 <details>

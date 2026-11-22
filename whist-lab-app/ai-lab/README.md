@@ -29,11 +29,12 @@ cupă, treflă, caro. Regula de urmărire a culorii, atuul obligatoriu, câștig
 ## Flux și responsabilități
 
 ```mermaid
+%%{init: {"themeVariables":{"fontSize":"15px"},"themeCSS":".edgeLabel, .edgeLabel p { font-size: 12px !important; } .node rect { rx: 6px; ry: 6px; }","flowchart":{"curve":"linear","nodeSpacing":24,"rankSpacing":22,"padding":6},"sequence":{"mirrorActors":false,"messageMargin":24,"wrap":true}}}%%
 flowchart LR
-OBS[Observație proprie/publică] -->|constrânge| WORLDS[Lumi fezabile]
-WORLDS -->|alimentează| PLAN[RolloutPlanner]
-PLAN -->|propune| MOVE[Acțiune legală]
-WORLDS -->|permite verificare| CERT[ContractGuarantee]
+OBS["Observație<br/>proprie/publică"] -->|constrânge| WORLDS["Lumi fezabile"]
+WORLDS -->|alimentează| PLAN["RolloutPlanner"]
+PLAN -->|propune| MOVE["Acțiune legală"]
+WORLDS -->|permite verificare| CERT["ContractGuarantee"]
 CERT -->|poate înlocui| MOVE
 ```
 

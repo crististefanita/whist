@@ -1,4 +1,4 @@
-# Whist Lab — Android și iOS
+# Construirea aplicației Whist Lab
 
 ## Pe scurt
 
@@ -40,13 +40,14 @@ Automatizarea afectează numai tura de licitare și turele de joc ale mâinii ac
 ## Flux și responsabilități
 
 ```mermaid
+%%{init: {"themeVariables":{"fontSize":"15px"},"themeCSS":".edgeLabel, .edgeLabel p { font-size: 12px !important; } .node rect { rx: 6px; ry: 6px; }","flowchart":{"curve":"linear","nodeSpacing":24,"rankSpacing":22,"padding":6},"sequence":{"mirrorActors":false,"messageMargin":24,"wrap":true}}}%%
 flowchart LR
-UI[Android activ; SwiftUI în așteptare] -->|trimite comenzi| SESSION[GameSession]
-SESSION -->|produce| VIEW[Stare capturată]
+UI["Android activ;<br/>SwiftUI în<br/>așteptare"] -->|trimite comenzi| SESSION["GameSession"]
+SESSION -->|produce| VIEW["Stare capturată"]
 VIEW -->|alimentează| UI
-SESSION -->|solicită decizii| AI[AiPolicy]
-STORE[Salvare locală] -->|restaurează| SESSION
-IOS[J2ObjC] -->|traduce motorul comun| SESSION
+SESSION -->|solicită decizii| AI["AiPolicy"]
+STORE["Salvare locală"] -->|restaurează| SESSION
+IOS["J2ObjC"] -->|traduce motorul comun| SESSION
 ```
 
 <details>

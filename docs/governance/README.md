@@ -13,12 +13,13 @@ Guvernanța transformă principiile de structură în verificări executabile lo
 ## Perimetru și responsabilități
 
 ```mermaid
+%%{init: {"themeVariables":{"fontSize":"15px"},"themeCSS":".edgeLabel, .edgeLabel p { font-size: 12px !important; } .node rect { rx: 6px; ry: 6px; }","flowchart":{"curve":"linear","nodeSpacing":24,"rankSpacing":22,"padding":6},"sequence":{"mirrorActors":false,"messageMargin":24,"wrap":true}}}%%
 flowchart LR
-    POLICY[Politică explicită] -->|delimitează| INVENTORY[Inventar de surse]
-    INVENTORY -->|alimentează| GUARDS[Verificări]
-    DOCS[Documente curente] -->|alimentează| GUARDS
-    GUARDS -->|localizează| FINDING[Abatere explicabilă]
-    FINDING -->|cere| REVIEW[Corecție și revizie]
+    POLICY["Politică explicită"] -->|delimitează| INVENTORY["Inventar de surse"]
+    INVENTORY -->|alimentează| GUARDS["Verificări"]
+    DOCS["Documente curente"] -->|alimentează| GUARDS
+    GUARDS -->|localizează| FINDING["Abatere explicabilă"]
+    FINDING -->|cere| REVIEW["Corecție și revizie"]
 ```
 
 <details>

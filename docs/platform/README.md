@@ -14,12 +14,13 @@ Proiectul consumă Core, Reporting, Console, Mock și Test Kit ca perechi JAR/PO
 ## Responsabilități
 
 ```mermaid
+%%{init: {"themeVariables":{"fontSize":"15px"},"themeCSS":".edgeLabel, .edgeLabel p { font-size: 12px !important; } .node rect { rx: 6px; ry: 6px; }","flowchart":{"curve":"linear","nodeSpacing":24,"rankSpacing":22,"padding":6},"sequence":{"mirrorActors":false,"messageMargin":24,"wrap":true}}}%%
 flowchart LR
-    PRODUCER[Producător] -->|împachetează| PAIR[JAR și POM]
-    PAIR -->|identifică| LIB[Bibliotecă locală]
-    LIB -->|expune| API[Contract public]
-    ADAPTER[Adaptor Android] -->|consumă| API
-    CHECK[Acceptanță locală] -->|verifică| LIB
+    PRODUCER["Producător"] -->|împachetează| PAIR["JAR și POM"]
+    PAIR -->|identifică| LIB["Bibliotecă locală"]
+    LIB -->|expune| API["Contract public"]
+    ADAPTER["Adaptor Android"] -->|consumă| API
+    CHECK["Acceptanță locală"] -->|verifică| LIB
 ```
 
 <details>

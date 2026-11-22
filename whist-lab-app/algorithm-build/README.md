@@ -2,19 +2,20 @@
 
 ## Pe scurt
 
-Această intrare Gradle construiește modulele JVM fără configurarea aplicației Android. [settings.gradle](settings.gradle) include `game-core`, `ai-lab` și fixture-urile `test-audit`; fiecare modul deține sursele, dependențele și verificările sale.
+Această intrare Gradle construiește modulele JVM fără configurarea aplicației Android. [settings.gradle](settings.gradle) include `game-core`, `ai-lab`, `card-table-names` și fixture-urile `test-audit`; fiecare modul deține sursele, dependențele și verificările sale.
 
 Testarea auditată cere JDK 21, lansatorul Gradle al proiectului și dependențele JVM în cache. Motorul păstrează ținta Java declarată în modul; bibliotecile de testare nu intră în runtime-ul Android. Opțiunea `--offline` refuză dependențele lipsă; SDK-ul Android nu este necesar acestei intrări.
 
 ## Flux și responsabilități
 
 ```mermaid
+%%{init: {"themeVariables":{"fontSize":"15px"},"themeCSS":".edgeLabel, .edgeLabel p { font-size: 12px !important; } .node rect { rx: 6px; ry: 6px; }","flowchart":{"curve":"linear","nodeSpacing":24,"rankSpacing":22,"padding":6},"sequence":{"mirrorActors":false,"messageMargin":24,"wrap":true}}}%%
 flowchart LR
-    RUN[Lansator colecții] -->|izolează| COPY[Copie temporară]
-    COPY -->|configurează| BUILD[Intrare JVM]
-    BUILD -->|include| CORE[game-core]
-    BUILD -->|include| LAB[ai-lab]
-    CORE -->|produce| RESULT[Comparații auditate]
+    RUN["Lansator colecții"] -->|izolează| COPY["Copie temporară"]
+    COPY -->|configurează| BUILD["Intrare JVM"]
+    BUILD -->|include| CORE["game-core"]
+    BUILD -->|include| LAB["ai-lab"]
+    CORE -->|produce| RESULT["Comparații auditate"]
 ```
 
 <details>

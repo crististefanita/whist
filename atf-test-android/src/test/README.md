@@ -19,11 +19,12 @@ Acest catalog explică intrările JUnit ale adaptorului Android. [Strategia comu
 ## Fluxul verificării
 
 ```mermaid
+%%{init: {"themeVariables":{"fontSize":"15px"},"themeCSS":".edgeLabel, .edgeLabel p { font-size: 12px !important; } .node rect { rx: 6px; ry: 6px; }","flowchart":{"curve":"linear","nodeSpacing":24,"rankSpacing":22,"padding":6},"sequence":{"mirrorActors":false,"messageMargin":24,"wrap":true}}}%%
 flowchart LR
-    SELECT[Selecție declarată] -->|controlează| INPUT[Proces sau stare]
-    INPUT -->|produce| OBS[Observație]
-    EXPECT[Așteptare independentă] -->|confruntă| OBS
-    OBS -->|alimentează| REPORT[Raportul selecției]
+    SELECT["Selecție declarată"] -->|controlează| INPUT["Proces sau stare"]
+    INPUT -->|produce| OBS["Observație"]
+    EXPECT["Așteptare<br/>independentă"] -->|confruntă| OBS
+    OBS -->|alimentează| REPORT["Raportul selecției"]
 ```
 
 <details>

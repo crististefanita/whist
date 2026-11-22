@@ -10,6 +10,23 @@
 | Matrice | Valori de licitație, lățimi și scări de font; textul numeric are cerneală neutră pentru a nu putea substitui marcajul în verificarea pixelilor. |
 | Dovadă | Fiecare caz publică intrarea, derularea Android, numărul de pixeli, verdictul și PNG-ul nativ base64. Aceste cazuri nu sunt invocări JUnit și nu măresc totalul testelor JVM. |
 
+
+```mermaid
+%%{init: {"themeVariables":{"fontSize":"15px"},"themeCSS":".edgeLabel, .edgeLabel p { font-size: 12px !important; } .node rect { rx: 6px; ry: 6px; }","flowchart":{"curve":"linear","nodeSpacing":24,"rankSpacing":22,"padding":6},"sequence":{"mirrorActors":false,"messageMargin":24,"wrap":true}}}%%
+flowchart LR
+    Fixture["Valori controlate"] -->|asociază| View["View-uri de<br/>producție"]
+    View -->|măsoară și poziționează| Android["FrameLayout"]
+    Android -->|desenează prin părinte| Raster["PNG"]
+    Raster -->|compară cerneala| Assert["Aserțiuni native"]
+```
+
+<details>
+<summary>Legendă — responsabilitate și limita verificării</summary>
+
+Instrumentarea folosește layout Android real și desenarea prin părinte a view-urilor de producție. Fixture-ul controlat distinge cerneala marcajului de textul numeric; PNG-ul și numărul pixelilor aparțin acelui caz nativ. Nu execută o partidă completă și nu adaugă o invocare JUnit JVM.
+
+</details>
+
 ## Execuție
 
 Construiți într-un workspace extern identificat, cu SDK-ul și cheia de dezvoltare existente:

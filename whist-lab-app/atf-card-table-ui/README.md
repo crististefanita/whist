@@ -34,11 +34,12 @@ Aplicația deține compoziția mesei, regulile, istoricul, câștigătorul și m
 `CardTableTheme` păstrează cele șase atribute Android ale reperului; `AppTheme` Whist este aliasul acestei resurse. Consumatorul o adoptă explicit în manifest; admiterea AAR-ului și build-ul nu declară comparație de pixeli sau focus Android.
 
 ```mermaid
+%%{init: {"themeVariables":{"fontSize":"15px"},"themeCSS":".edgeLabel, .edgeLabel p { font-size: 12px !important; } .node rect { rx: 6px; ry: 6px; }","flowchart":{"curve":"linear","nodeSpacing":24,"rankSpacing":22,"padding":6},"sequence":{"mirrorActors":false,"messageMargin":24,"wrap":true}}}%%
 flowchart LR
-    GAME[Adaptorul jocului] -->|proiectează date vizibile| MODEL[Conținut UI]
-    MODEL -->|alimentează| VIEW[Widgeturi comune]
+    GAME["Adaptorul jocului"] -->|proiectează date<br/>vizibile| MODEL["Conținut UI"]
+    MODEL -->|alimentează| VIEW["Widgeturi comune"]
     VIEW -->|emite intenții| GAME
-    POLICY[Texte și politici locale] -->|configurează| VIEW
+    POLICY["Texte și politici<br/>locale"] -->|configurează| VIEW
 ```
 
 <details>

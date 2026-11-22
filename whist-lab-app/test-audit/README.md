@@ -7,11 +7,12 @@ Modul JVM exclusiv pentru fixture-uri de testare. Puntea JUnit 4 capturează con
 ## Fluxul unei selecții
 
 ```mermaid
+%%{init: {"themeVariables":{"fontSize":"15px"},"themeCSS":".edgeLabel, .edgeLabel p { font-size: 12px !important; } .node rect { rx: 6px; ry: 6px; }","flowchart":{"curve":"linear","nodeSpacing":24,"rankSpacing":22,"padding":6},"sequence":{"mirrorActors":false,"messageMargin":24,"wrap":true}}}%%
 flowchart LR
-    CASE[Caz și fixture] -->|capturează înainte de comparații| INPUT[Context efectiv]
-    INPUT -->|evaluează prin Kit| CHECK[Expected și actual]
-    CHECK -->|publică prin Reporting| HTML[HTML canonic]
-    XML[JUnit temporar] -->|confruntă identități și verdicturi| VERIFY[Acceptanța selecției]
+    CASE["Caz și fixture"] -->|capturează înainte de<br/>comparații| INPUT["Context efectiv"]
+    INPUT -->|evaluează prin Kit| CHECK["Expected și actual"]
+    CHECK -->|publică prin Reporting| HTML["HTML canonic"]
+    XML["JUnit temporar"] -->|confruntă identități<br/>și verdicturi| VERIFY["Acceptanța<br/>selecției"]
     HTML -->|recitește corpurile| VERIFY
 ```
 

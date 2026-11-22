@@ -9,11 +9,12 @@ Valorile integrale decid verdictul. Proiecția pentru publicare și limitarea pr
 ## Responsabilități
 
 ```mermaid
+%%{init: {"themeVariables":{"fontSize":"15px"},"themeCSS":".edgeLabel, .edgeLabel p { font-size: 12px !important; } .node rect { rx: 6px; ry: 6px; }","flowchart":{"curve":"linear","nodeSpacing":24,"rankSpacing":22,"padding":6},"sequence":{"mirrorActors":false,"messageMargin":24,"wrap":true}}}%%
 flowchart LR
-    BODY[Răspuns API] -->|alimentează| CONTEXT[Context evaluare]
-    RULES[Contract] -->|declară reguli| EVAL[Evaluator]
+    BODY["Răspuns API"] -->|alimentează| CONTEXT["Context evaluare"]
+    RULES["Contract"] -->|declară reguli| EVAL["Evaluator"]
     CONTEXT -->|furnizează valori| EVAL
-    EVAL -->|produce| RESULT[Comparații și verdict]
+    EVAL -->|produce| RESULT["Comparații și<br/>verdict"]
 ```
 
 <details>

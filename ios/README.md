@@ -4,6 +4,22 @@
 
 Ținta nativă iOS este separată de APK-ul Android și necesită calificare pe Xcode și simulator înainte de distribuire.
 
+
+```mermaid
+%%{init: {"themeVariables":{"fontSize":"15px"},"themeCSS":".edgeLabel, .edgeLabel p { font-size: 12px !important; } .node rect { rx: 6px; ry: 6px; }","flowchart":{"curve":"linear","nodeSpacing":24,"rankSpacing":22,"padding":6},"sequence":{"mirrorActors":false,"messageMargin":24,"wrap":true}}}%%
+flowchart LR
+    Java["Motor Java și punte"] -->|traduce| ObjC["J2ObjC"]
+    ObjC -->|leagă în| Swift["SwiftUI"]
+    JVM["Verificări JVM ale<br/>punții"] -->|verifică contractul<br/>Java| Java
+```
+
+<details>
+<summary>Legendă — responsabilitate și limita verificării</summary>
+
+Traseul traducerii native este suspendat. Verificările JVM ale punții exercită contractul Java; nu demonstrează execuție pe simulator, build IPA sau distribuție iOS. Reia calificarea nativă numai față de un toolchain Apple și un scop de platformă revizuite explicit.
+
+</details>
+
 ## Stare
 
 Ținta nativă iOS este pusă în așteptare. Proiectul păstrează un adaptor SwiftUI și o

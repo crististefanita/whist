@@ -9,12 +9,13 @@ Infrastructura deține execuția și captura, iar scenariul deține sensul acți
 ## Flux și responsabilități
 
 ```mermaid
+%%{init: {"themeVariables":{"fontSize":"15px"},"themeCSS":".edgeLabel, .edgeLabel p { font-size: 12px !important; } .node rect { rx: 6px; ry: 6px; }","flowchart":{"curve":"linear","nodeSpacing":24,"rankSpacing":22,"padding":6},"sequence":{"mirrorActors":false,"messageMargin":24,"wrap":true}}}%%
 flowchart LR
-    SCENARIO[Scenariu] -->|trimite| DRIVER[Adaptor UI]
-    DRIVER -->|execută prin| ADB[AdbClient]
-    DRIVER -->|capturează| TRACE[Observație și timp]
-    ORACLE[Oracol independent] -->|compară| TRACE
-    TRACE -->|alimentează| PUBLISH[Publicare consumator]
+    SCENARIO["Scenariu"] -->|trimite| DRIVER["Adaptor UI"]
+    DRIVER -->|execută prin| ADB["AdbClient"]
+    DRIVER -->|capturează| TRACE["Observație și timp"]
+    ORACLE["Oracol independent"] -->|compară| TRACE
+    TRACE -->|alimentează| PUBLISH["Publicare<br/>consumator"]
 ```
 
 <details>

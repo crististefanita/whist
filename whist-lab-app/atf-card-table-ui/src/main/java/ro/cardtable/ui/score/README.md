@@ -5,15 +5,16 @@
 Jocul proiectează valorile vizibile confirmate; biblioteca le afișează. Etichetele coloanelor, semnele scorurilor, ordinea jucătorilor, identitățile rândurilor și acțiunile detaliilor rămân intrări ale consumatorului. Widgeturile nu calculează puncte și nu decid câștigătorul.
 
 ```mermaid
+%%{init: {"themeVariables":{"fontSize":"15px"},"themeCSS":".edgeLabel, .edgeLabel p { font-size: 12px !important; } .node rect { rx: 6px; ry: 6px; }","flowchart":{"curve":"linear","nodeSpacing":24,"rankSpacing":22,"padding":6},"sequence":{"mirrorActors":false,"messageMargin":24,"wrap":true}}}%%
 flowchart LR
-    GAME[Stare confirmată a jocului] -->|furnizează valori vizibile| ADAPTER[Adaptorul conținutului de joc]
-    ADAPTER -->|construiește rânduri| TABLE[ScoreTableContent]
-    ADAPTER -->|construiește istoricul| HISTORY[HistoryContent]
-    TABLE -->|furnizează rânduri către| ANDROID[ScoreTableView]
-    HISTORY -->|furnizează grupuri către| SCROLL[ScoreHistoryView]
-    TABLE -->|furnizează rânduri către| WEB[Proiecția browserului]
-    HISTORY -->|furnizează grupuri către| WEB
-    SCROLL -->|deschide detalii după identitatea rândului prin| ADAPTER
+    GAME["Stare confirmată a<br/>jocului"] -->|furnizează valori<br/>vizibile| ADAPTER["Adaptorul<br/>conținutului de joc"]
+    ADAPTER -->|construiește rânduri| TABLE["ScoreTableContent"]
+    ADAPTER -->|construiește istoricul| HISTORY["HistoryContent"]
+    TABLE -->|furnizează rânduri<br/>către| ANDROID["ScoreTableView"]
+    HISTORY -->|furnizează grupuri<br/>către| SCROLL["ScoreHistoryView"]
+    TABLE -->|furnizează rânduri<br/>către| WEB["Proiecția<br/>browserului"]
+    HISTORY -->|furnizează grupuri<br/>către| WEB
+    SCROLL -->|deschide detalii după<br/>identitatea rândului<br/>prin| ADAPTER
 ```
 
 <details>

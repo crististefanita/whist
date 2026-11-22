@@ -11,11 +11,12 @@ Testele verifică domeniul prin proprietăți și oracole independente. [Intrare
 ## Fluxul domeniului
 
 ```mermaid
+%%{init: {"themeVariables":{"fontSize":"15px"},"themeCSS":".edgeLabel, .edgeLabel p { font-size: 12px !important; } .node rect { rx: 6px; ry: 6px; }","flowchart":{"curve":"linear","nodeSpacing":24,"rankSpacing":22,"padding":6},"sequence":{"mirrorActors":false,"messageMargin":24,"wrap":true}}}%%
 flowchart LR
-    CMD[Comandă] -->|validează| SESSION[GameSession]
-    SESSION -->|aplică| RULES[GameRules]
-    SESSION -->|proiectează prin adaptor| OBS[Observație permisă]
-    OBS -->|alimentează| POLICY[Politică AI]
+    CMD["Comandă"] -->|validează| SESSION["GameSession"]
+    SESSION -->|aplică| RULES["GameRules"]
+    SESSION -->|proiectează prin<br/>adaptor| OBS["Observație permisă"]
+    OBS -->|alimentează| POLICY["Politică AI"]
     POLICY -->|propune| CMD
 ```
 
