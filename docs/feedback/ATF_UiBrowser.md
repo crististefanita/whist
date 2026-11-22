@@ -28,7 +28,7 @@ Deciziile AI, seriile și Jocul la 0 se extind prin componente cu oracol de dome
 
 **P1 · 88/100 · Deschis; constatare din cod, paritatea randată nu este încă calificată.**
 
-J4 partajează deja calculele portabile ale locurilor și mâinii. Păstrați această graniță; lacuna aparține învelișului browserului, nu justifică duplicarea geometriei mesei sau importarea interfeței specifice Chess în Whist.
+Whist partajează deja calculele portabile ale locurilor și mâinii. Păstrați această graniță; lacuna aparține învelișului browserului, nu justifică duplicarea geometriei mesei sau importarea interfeței specifice Chess în Whist.
 
 - Pe telefoane, `viewportGeometry` folosește viewport-ul CSS primit. Pe desktop pornește de la referința 414 × 896 și aplică o singură scară întregului cadru. Astfel, ecranele late pot rămâne insuficient utilizate, iar într-o fereastră scundă meniul, etichetele, masa și controalele se pot micșora împreună. Vezi [politica viewport-ului](../../atf-ui-browser/src/main/web/viewport.mjs) și [dimensionarea cadrului](../../atf-ui-browser/src/main/web/table.mjs).
 - Suprafața Whist fixează `--whist-text-scale: 1.5`, iar `table.mjs` citește separat fontul rădăcină pentru `/api/layout`. Browserul nu are, așadar, un contract explicit unic între rolurile meniurilor, zoom-ul textului și măsurătorile geometriei. Factorul 1.5 poate corespunde unui profil APK ales, dar nu înlocuiește testarea textului normal și mărit în browser. Vezi [tipografia meniurilor și geometria](../../atf-ui-browser/src/main/web/table.css).
