@@ -27,13 +27,13 @@ The engine owns legal play and game state. Platform adapters translate interacti
 flowchart LR
     Android["Android"]
     Web["Browser"]
-    Engine["game-core<br/>rules and session"]
-    Table["Portable table contracts"]
+    Engine["game-core"]
+    Table["Table contracts"]
     View["Platform rendering"]
-    Android -->|submits commands| Engine
-    Web -->|submits commands| Engine
-    Engine -->|projects public state| View
-    Table -->|adapts measurements| View
+    Android -->|commands| Engine
+    Web -->|commands| Engine
+    Engine -->|projects| View
+    Table -->|adapts| View
 ```
 
 <details>
@@ -55,7 +55,7 @@ flowchart LR
     app["Android app"]
     atf_card_table_ui["Shared Android UI"]
     ios["iOS · parked"]
-    ios_bridge["ios-bridge · parked"]
+    ios_bridge["ios-bridge"]
     game_core["game-core"]
     card_table_names["card-table-names"]
     app -->|uses| atf_card_table_ui
@@ -124,10 +124,10 @@ flowchart LR
     APK["Android APK"]
     JVM["JVM components"]
     Maven["Maven ATF"]
-    Platform["Android · Web<br/>checks"]
-    Evidence["Assertions<br/>and receipts"]
-    Gate["Release<br/>qualification"]
-    Dossier["Version<br/>dossier"]
+    Platform["Android · Web"]
+    Evidence["Assertions"]
+    Gate["Qualification"]
+    Dossier["Dossier"]
     Gradle -->|packages| APK
     Gradle -->|tests| JVM
     Maven -->|checks| Evidence
