@@ -54,7 +54,9 @@ class DocumentationPolicyGovernanceTest {
 
     @Test void sealedReportIndexesStayOutsideOwnerProseAndLanguageRules() throws Exception {
         var root = GovernanceProject.locateProjectRoot();
-        String reportIndex = "release/0.23.0/reports/component/README.md";
+        String version = new com.fasterxml.jackson.databind.ObjectMapper().readTree(
+                root.resolve("release/index.json").toFile()).required("currentVersion").asText();
+        String reportIndex = "release/" + version + "/reports/component/README.md";
         var file = root.resolve(reportIndex);
         AuditedAssertions.assertTrue(DocumentationInventory.isReleaseReportIndex(root, file));
         var result = DocumentationGovernance.scanFile(root, reportIndex,
