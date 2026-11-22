@@ -105,6 +105,17 @@ if(!$Negative) {
  $null=New-Item -ItemType Directory $foreign
  $null=New-Item -ItemType Junction -Path $file -Target $foreign
  try { Expect ($null -eq (Borrow)) 'indirect class directory accepted' } finally { [IO.Directory]::Delete($file) }
+ Remove-Item -LiteralPath $classpath
+ $partial=Read-AtfPreparedComponentMaven $build $compiler.identity @('demo')
+ Expect ($null -ne $partial -and !$partial.classpathReady) 'missing classpath must preserve owned compilation only'
+ Expect ($null -eq (Borrow)) 'incomplete classpath must not be borrowed'
+ Write-Fixture $classpath $jar
+ $restored=Borrow
+ Expect ($null -ne $restored) 'restored classpath must admit the original compilation again'
+ $restored.lease.Dispose()
+ Write-AtfComponentJson (Join-Path $previous 'component-workspace.json') @{schemaVersion=1;path=(Join-Path $Root ('whist-component-suites-'+('d'*32)))}
+ Expect ($null -eq (Borrow)) 'cleaned compiler workspace must trigger cold preparation'
+ Write-AtfComponentJson (Join-Path $previous 'component-workspace.json') @{schemaVersion=1;path=$build}
  Remove-Item -LiteralPath $class
  Expect ($null -eq (Borrow)) 'missing bytecode accepted'
  $outcomes.Add('changed sources, tools, outputs, foreign receipts, classpaths, locks and links are rejected')

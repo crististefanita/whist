@@ -1,5 +1,6 @@
 import {lstatSync, realpathSync, statSync} from 'node:fs';
 import path from 'node:path';
+import {fileURLToPath} from 'node:url';
 
 function physicalDirectory(directory, name) {
   try {
@@ -31,12 +32,11 @@ function requireExternal(directory, source, name) {
   }
 }
 
-try {
-  const [source, systemTemp] = process.argv.slice(2);
+export function qualificationTempRoot(source, systemTemp, environment = process.env) {
   const physicalSource = physicalDirectory(source, 'SourceRoot');
-  const configured = process.env.WHIST_QUALIFICATION_TEMP_ROOT?.trim();
-  const locations = [['WHIST_QUALIFICATION_TEMP_ROOT', configured], ['TMP', process.env.TMP],
-    ['TEMP', process.env.TEMP], ['GetTempPath', systemTemp]];
+  const configured = environment.WHIST_QUALIFICATION_TEMP_ROOT?.trim();
+  const locations = [['WHIST_QUALIFICATION_TEMP_ROOT', configured], ['TMP', environment.TMP],
+    ['TEMP', environment.TEMP], ['GetTempPath', systemTemp]];
   let workRoot;
   for (const [name, directory] of locations) {
     if (name !== 'GetTempPath' && !directory?.trim()) continue;
@@ -46,8 +46,15 @@ try {
     if (name === 'GetTempPath' && !configured) workRoot = physical;
     if (name === 'WHIST_QUALIFICATION_TEMP_ROOT' && configured) workRoot = physical;
   }
-  process.stdout.write(workRoot);
-} catch (error) {
-  process.stderr.write(error.message + '\n');
-  process.exitCode = 1;
+  return workRoot;
+}
+
+if (process.argv[1] && fileURLToPath(import.meta.url) === process.argv[1]) {
+  try {
+    const [source, systemTemp] = process.argv.slice(2);
+    process.stdout.write(qualificationTempRoot(source, systemTemp));
+  } catch (error) {
+    process.stderr.write(error.message + '\n');
+    process.exitCode = 1;
+  }
 }

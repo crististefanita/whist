@@ -87,6 +87,12 @@ class ComponentEvidenceScopeComponentTest {
                 "Other Android build-file changes select the affected app collections.");
         AuditedAssertions.assertTrue(output.contains("an explicit qualification temp root selects that machine path while validating OS temp variables too"),
                 "External staging roots are configurable and still validated before work begins.");
+        AuditedAssertions.assertTrue(output.contains("the reusable temp policy selects the same root without reading process arguments"),
+                "The CLI and component adapter use one environment-isolated directory policy.");
+        AuditedAssertions.assertTrue(output.contains("an explicit root does not exempt invalid OS locations"),
+                "Selecting a scratch root cannot bypass the operating-system temp preflight.");
+        AuditedAssertions.assertTrue(output.contains("the reusable temp policy rejects a physical checkout behind a directory link"),
+                "Physical checkout boundaries remain mandatory for the component adapter.");
     }
 
     @Test void githubPublicationResumesByIdAndVerifiesDownloadsBeforeRotation() throws Exception {

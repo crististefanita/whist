@@ -31,6 +31,32 @@ testChanges:
 </details>
 
 <details>
+<summary>Pregătirea offline și recuperarea după curățarea fișierelor temporare</summary>
+
+```yaml
+testChanges:
+  - id: RAG-OFFLINE-CLEAN-RESTART
+    status: VERIFIED
+    base: b179972ff1e9c16e6b7ae52dff0077993bb8623b
+    expires: 2026-12-20
+    reason: Separă politica rădăcinilor temporare de CLI și admiterea classpath-ului de verificarea ieșirii compilate, păstrând pregătirea nouă după curățare și respingând pregătirea parțială, indirectă sau străină fără slăbirea verificării probelor originale.
+    proof: 'mvn -o -pl atf-tests -am -Dtest=ComponentEvidenceScopeComponentTest -Dsurefire.failIfNoSpecifiedTests=false test'
+    checks:
+      positive:
+        - atf.tests.governance.documentation.release.rag.scope.ComponentEvidenceScopeComponentTest#editorialChangesReuseVerifiedMavenCompilationAndKeepFreshExecutionInputs
+      negative:
+        - atf.tests.governance.documentation.release.rag.scope.ComponentEvidenceScopeComponentTest#componentResumeImportsOnlyVerifiedEvidenceFromTheInterruptedSnapshot
+    paths:
+      - scripts/AtfComponentMaven.ps1
+      - atf-tests/tools/qualification-temp-root.mjs
+      - atf-tests/tools/qualification-temp-root.test.mjs
+      - atf-tests/tools/component-maven-reuse.test.mjs
+      - atf-tests/src/test/java/atf/tests/governance/documentation/release/rag/scope/ComponentEvidenceScopeComponentTest.java
+```
+
+</details>
+
+<details>
 <summary>Reutilizarea componentelor după ownership, versificarea patch și căi portabile de calificare</summary>
 
 ```yaml

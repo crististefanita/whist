@@ -210,3 +210,14 @@ flowchart LR
 ReuseFrom poate reutiliza compilarea între snapshot-uri de execuție diferite. ResumeFrom cere în continuare același snapshot complet și spațiul său păstrat. Parametrii de mediu neacceptați nu împrumută ieșiri din cache; generarea întreruptă a classpath-ului se poate relua local din compilarea admisă. Timpul de pregătire și execuția testelor se raportează separat.
 
 </details>
+
+### Recuperarea după curățarea fișierelor temporare
+
+| Intrare păstrată | Limita recuperării |
+|---|---|
+| Raportul original și receipt-ul execuției | Dovezile testelor se reutilizează numai pentru intrări neschimbate ale responsabilului și octeți originali verificați. Lipsa spațiului compilatorului nu invalidează aceste rapoarte. |
+| Spațiul verificat al compilatorului | Un classpath complet admis poate fi împrumutat sub rezervare. Lipsa classpath-ului păstrează compilarea numai pentru spațiul care o deține; consumatorul nu poate împrumuta pregătire parțială. |
+| Cache-ul dependențelor | Accelerează pregătirea nouă, dar nu poate furniza verdictul unui test sau califica ieșirea compilată. Păstrați-l separat de snapshot-urile temporare. |
+| Niciun spațiu temporar | Porniți o rulare nouă din checkout și intrările explicite ale release-ului. Căile lipsă selectează pregătirea nouă; un pointer vechi către spațiu nu autorizează reutilizarea. |
+
+CLI-ul și adaptorul de componentă folosesc aceeași [politică a rădăcinilor temporare](../../atf-tests/tools/qualification-temp-root.mjs). O rădăcină explicită de lucru verifică în continuare fiecare director temporar configurat al sistemului și limita fizică a checkout-ului. Setările locale, identitatea de semnare și datele de învățare sunt intrări durabile, nu ieșiri ale compilării.
