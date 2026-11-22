@@ -86,6 +86,10 @@ LangGraph oferă noduri explicite, stare partajată și limite de checkpoint, da
 
 Măsurați separat pregătirea snapshot-ului, compilarea și execuția. Diagnosticul focalizat rămâne distinct de calificarea unei colecții primare complete; recuperarea eșecurilor dintr-un responsabil aparține punctului deschis pentru reconcilierea invocărilor de mai sus.
 
+| Prioritate | Limită de reutilizare rămasă | Criteriu de închidere |
+|---|---|---|
+| P2 | Editarea documentației în checkout poate respinge agregatul după ce toate colecțiile izolate au trecut, împiedicând reutilizarea responsabililor neschimbați. | Păstrați agregatul respins. Definiți și testați readmiterea pe responsabil folosind intrările imuabile din staging, hash-urile rapoartelor originale și diff-ul exact livrat. Reluați documentația afectată și orice cititor modificat; nu transformați un agregat eșuat într-o origine acceptată prin editarea receipt-ului. Până la implementarea contractului, păstrați respingerea conservatoare. |
+
 ## Admiterea schemei de raportare
 
 Evaluatorul aplică acum aceeași regulă de admitere a raportării înainte de verdict și păstrează manifestele istorice neschimbate. Combinațiile de scheme și rapoarte acceptate sunt:
