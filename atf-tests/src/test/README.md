@@ -27,4 +27,6 @@ Dintr-o copie temporară proprie, [comenzile modulului](../../README.md#verifica
 
 Un eșec controlat califică refuzul validatorului, fără a deveni un eșec nou al aplicației. Raportul componentei publică datele evaluate; rezultatele unei execuții și notele auditului aparțin dosarului extern sau release-ului identificat, conform strategiei comune.
 
+Ghidurile Markdown din directoarele de surse rămân intrări editoriale. Markdown din `src/<set>/resources`, `res` ori `assets` rămâne date de fixture și cere controalele testelor proprietare.
+
 [Modulul de integrare](../../README.md) · [Strategia comună](../../../docs/testing/README.md) · [Guvernanță](../../../docs/governance/README.md)
