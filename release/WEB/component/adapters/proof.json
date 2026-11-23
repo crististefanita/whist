@@ -1,0 +1,46 @@
+{
+  "schemaVersion" : 1,
+  "kind" : "ATF_TEST_CHANGE_PROOF",
+  "identity" : {
+    "id" : "UI-THREE-MODULES",
+    "base" : "79056231f4264770968f7876ce7ac1704d2c8de9",
+    "commit" : "87f47c290559a512a594f3b85e1384e66e8ae59d",
+    "diffSha256" : "fc94b1d27d2b208ca397536292a2869d0b78eb9cc93a5c619755013afc50f346"
+  },
+  "positive" : [ {
+    "selector" : "atf.tests.governance.documentation.release.rag.nativeproof.WhistSurfaceAdapterComponentTest#everySeatAndLegalDealShareOneNativeWebPhaseContract",
+    "verdict" : "PASS"
+  }, {
+    "selector" : "atf.tests.governance.documentation.release.rag.nativeproof.WhistSurfaceAdapterComponentTest#portableMenuRolesPreserveBothAdapterBaselines",
+    "verdict" : "PASS"
+  }, {
+    "selector" : "atf.tests.governance.documentation.factual.DocumentedModuleMapGovernanceTest#rootMapMatchesTheBuildDeclarations",
+    "verdict" : "PASS"
+  }, {
+    "selector" : "atf.tests.governance.source.gradle.GradleAuditGovernanceTest#everyGradleTestClassHasOneExplicitLayerAndAnAuditedBase",
+    "verdict" : "PASS"
+  }, {
+    "selector" : "atf.tests.governance.documentation.release.rag.nativeproof.NativeSourceProvenanceComponentTest#presentationOwnersSelectOnlyAffectedCollections",
+    "verdict" : "PASS"
+  }, {
+    "selector" : "atf.tests.governance.source.changes.TestChangeReviewComponentTest#fullDiffSeesCommittedStagedUnstagedUntrackedAndIgnoredTestPaths",
+    "verdict" : "PASS"
+  } ],
+  "negative" : [ {
+    "selector" : "atf.tests.governance.documentation.release.rag.nativeproof.WhistSurfaceAdapterComponentTest#sharedPhaseOracleRejectsEveryDisplacedOrMissingSeat",
+    "verdict" : "PASS"
+  }, {
+    "selector" : "atf.tests.governance.documentation.release.rag.nativeproof.WhistSurfaceAdapterComponentTest#minimalFlowsReconcileHandsAndRejectMatricesOrExcessiveCaptures",
+    "verdict" : "PASS"
+  }, {
+    "selector" : "atf.tests.reporting.browser.BrowserExtentPublicationComponentTest#passingTableFlowsCannotUnderstateTheirHandOrCaptureBudget",
+    "verdict" : "PASS"
+  }, {
+    "selector" : "atf.tests.governance.source.changes.TestChangeReviewComponentTest#markdownFixturesAndSelectionContractsRemainProtected",
+    "verdict" : "PASS"
+  }, {
+    "selector" : "atf.tests.governance.documentation.factual.DocumentedModuleMapGovernanceTest#explicitModuleLocationsRejectDuplicateAndEscapingAliases",
+    "verdict" : "PASS"
+  } ],
+  "reportSha256" : "7efa7fc021df7da5d49f2c28d2375e97fd8d4cf11b9e512fdc8d1c409fa3c09e"
+}

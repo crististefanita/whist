@@ -1,13 +1,7 @@
-# Referințe cu scop explicit
+# Referință de publicare delimitată
 
 ## Pe scurt
 
-Rezultatele de referință explică acoperirea anterioară și limitele sale. Nu sunt obligații E2E curente suplimentare și nu sunt reluate doar pentru schimbarea organizării dosarului.
+[Dovada livrării publice precedente](../e2e/oh-hell/delivery.json) și [snapshot-ul execuției](../e2e/oh-hell/runtime-snapshot.json) identifică revizia publică 0.11. Nu califică noua execuție locală 0.12. Rapoartele E2E lungi înlocuite rămân recuperabile din Git, fără mărirea dosarului curent.
 
 [Înapoi la index](../README.md)
-
-| Raport | Verdict original | Proveniență |
-|---|---|---|
-| [Referința parcursului românesc anterior](romanian/extent.html) | `PASS` · `REFERENCE` | `91716314` |
-
-HTML-ul păstrează datele complete și capturile inline aferente. Inventarul și hash-urile sunt în [manifest](../index.json); verificarea lor nu reexecută testele.

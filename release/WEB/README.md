@@ -2,24 +2,22 @@
 
 ## Pe scurt
 
-Index portabil pentru artefactele Whist Web. Dovezile originale rămân autonome; toate legăturile către rapoarte sunt relative și funcționează după copierea întregului dosar.
+Index portabil de suite cu legături relative și HTML original imuabil. Domeniul curent: componente legate de sursă și un flux scurt în browserul local. Acceptarea publicării statice și a widgeturilor native rămâne deschisă; revizia publică precedentă are propria dovadă păstrată.
 
-**Stare: calificat în browser.** Revizia publicată 0.11 corespunde resurselor executate, conform regulilor explicite de comparare din confirmarea livrării. Comparația fizică APK/Chrome rămâne deschisă.
-
-## Cum se citește
+## Parcurs de lectură
 
 ```mermaid
 flowchart LR
-    SOURCE["Sursă identificată"] -->|verifică prin| COMPONENT["Componente fără poze"]
-    COMPONENT -->|completează cu| FLOW["Un flux E2E ilustrat"]
-    FLOW -->|indexează în| DOSSIER["Dosar Web portabil"]
-    REJECTED["Verdict respins original"] -->|explică regresia din| COMPONENT
+    GAME["Adaptorul jocului"] -->|proiectează prin| CORE["Componentele nucleului portabil"]
+    CORE -->|partajează contracte cu| ADAPTERS["Adaptoarele Android și Web"]
+    ADAPTERS -->|conectează prin| SANITY["Sanity în browser de două mâini"]
+    SANITY -->|indexează în| AUDIT["Dosar de suite cu legături relative"]
 ```
 
 <details>
-<summary>Legendă: niveluri și limite</summary>
+<summary>Legendă: limitele dovezilor</summary>
 
-Componentele dețin combinațiile de dimensiuni, text, ancore și ordinea evenimentelor. E2E-ul păstrează puține parcursuri relevante, cu pași înainte/după și poze; un raport de referință nu devine calificare curentă prin copiere.
+Componentele dețin combinațiile și cazurile negative deliberate, fără poze. Unitățile prealabile nu au Extent. E2E-ul scurt ilustrează acțiuni și observații reale; planurile logice egale nu dovedesc fonturile desenate nativ.
 
 </details>
 
@@ -27,39 +25,36 @@ Componentele dețin combinațiile de dimensiuni, text, ancore și ordinea evenim
 
 | Raport | Verdict original | Rol | Revizia validatorului |
 |---|---|---|---|
-| [Treceri ilustrate la cinci/șase jucători](e2e/table-handoffs/extent.html) | `PASS` | `PRIMARY` | `9b57a75b` |
-| [Componente APK/Web comune pentru fiecare loc](component/phases/component-report.html) | `PASS` | `PRIMARY` | `9b57a75b` |
-| [Guvernanță curentă pentru responsabilități și sursă](governance/current/component-report.html) | `PASS` | `PRIMARY` | `9b57a75b` |
-| [Guvernanța planului și documentației](governance/documentation-plan/component-report.html) | `PASS` | `PRIMARY` | `82780f0d` |
-| [Integrarea JVM Android a contractului](component/apk-policy/component-report.html) | `PASS` | `REFERENCE` | `9b57a75b` |
-| [Referință anterioară la patru jucători](e2e/oh-hell/extent.html) | `PASS` | `REFERENCE` | `91716314` |
-| [Componente curente pentru treceri și dosar](component/handoff/component-report.html) | `PASS` | `REUSED` | `9a5b49b8` |
-| [Contractele intrărilor raportului și urmelor](component/reporting/component-report.html) | `PASS` | `REUSED` | `91716314` |
-| [Geometria comună și matricile controlate](component/native-ports/component-report.html) | `PASS` | `REUSED` | `9ec0b560` |
-| [Referința de guvernanță ATF](governance/atf/component-report.html) | `PASS` | `REFERENCE` | `9cc19f7f` |
-| [Referința parcursului românesc anterior](reference/romanian/extent.html) | `PASS` | `REFERENCE` | `91716314` |
-| [Deplasarea originală la trecerea AI–om](diagnostics/anchor-before/extent.html) | `FAIL` | `REJECTED` | `91716314` |
+| [Sanity Web de două mâini](e2e/table-sanity/extent.html) | `PASS` | `PRIMARY` | `87f47c29` |
+| [Contractele comune ale adaptoarelor](component/adapters/component-report.html) | `PASS` | `PRIMARY` | `87f47c29` |
+| [Componentele nucleului portabil](component/core/component-report.html) | `PASS` | `PRIMARY` | `87f47c29` |
+| [Intrările de audit ale matricelor focalizate](component/matrix/component-report.html) | `PASS` | `PRIMARY` | `87f47c29` |
+| [Controlul de guvernanță reluat](governance/resume/component-report.html) | `PASS` | `PRIMARY` | `838afaca` |
+| [Lotul inițial cu eșec parțial](diagnostics/initial-governance/component-report.html) | `FAIL` | `REJECTED` | `87f47c29` |
 
 ## Categorii
 
-- [Componente](component/README.md): precondiții, date controlate, comparații și cazuri negative, fără poze ale produsului.
-- [E2E](e2e/README.md): acțiuni și observații ordonate, aserțiuni individuale și capturi inline.
-- [Guvernanță](governance/README.md): contracte de sursă, documentație și inventar.
-- [Referințe](reference/README.md): acoperire anterioară cu limite explicite.
-- [Diagnostice](diagnostics/README.md): probe respinse păstrate integral.
+- [Componente](component/README.md): intrări controlate, comparații și cazuri negative
+- [E2E](e2e/README.md): pași ordonați, aserțiuni și patru capturi inline
+- [Guvernanță](governance/README.md): verdicte originale, reluare focalizată și revizuirea rapoartelor
+- [Referințe](reference/README.md): livrarea publică precedentă, cu domeniu explicit
+- [Diagnostic](diagnostics/README.md): eșecul original păstrat
 
-## Politica selecției suitelor
+## Selecție și limite
 
-[Contractul testării](../../docs/testing/ATF_TableContinuity.md) cere componente fără poze și E2E minim de navigare, cu cel mult două mâini per joc. [Planul de migrare](../../docs/feedback/ATF_CardUi_Extraction.md#ui-three-module-plan) păstrează explicit impunerea bugetului ca lucru deschis; actualizarea documentației nu adaugă rulări UI sau calificare APK.
+- [Matricea modul × nivel](../../docs/testing/ATF_TestingGuide.md) identifică proprietarii executabili.
+- [Continuitatea](../../docs/testing/ATF_TableContinuity.md) plasează combinațiile de rezoluție, text, actor și câștigător în componente.
+- E2E-ul verifică două mâini de o carte, manual și apoi AutoGame, într-un singur viewport lizibil de 1664×916.
+- Nu se declară un APK nou sau o execuție UI nativă.
 
 ## Integritate și întreținere
 
-- [Verificarea livrării](e2e/oh-hell/delivery.json) identifică sursa publicată și resursele deja testate; nu reprezintă o nouă rulare E2E.
+[Manifestul](index.json) leagă octeții exacți, SHA-256, sursa și domeniul. [Execuția nucleului](component/core/execution.json) reconciliază 50 de invocări de componentă; [metadatele unitare](component/core/unit-execution.json) consemnează trei unități izolate fără păstrarea XML-ului sau crearea Extent. [Inventarul original al sursei](component/core/source-provenance.json) păstrează manifestele relative ale intrărilor.
 
-[Manifestul](index.json) păstrează mărimea, SHA-256, rolul și proveniența fiecărui raport. Nu păstrăm PNG-uri duplicate, XML-uri JUnit ori build-uri în acest dosar; rapoartele conțin imaginile inline.
+[Revizuirea interactivă a rapoartelor](governance/browser-review/execution.json) a observat graficele standard `Overview`, fără galerie în `Overview`, componente fără poze și pașii ordonați și capturile E2E. [Livrarea publică precedentă](e2e/oh-hell/delivery.json) rămâne o referință la revizia 0.11, nu dovada execuției locale 0.12.
 
 ```powershell
 node .\atf-tests\tools\web-release-dossier.mjs $ProjectRoot
 ```
 
-Actualizați dosarul după calificarea și verificarea publicării Web; păstrați octeții și verdictele originale când mutați un raport. Documentația urmează limba ramurii, iar HTML-urile originale rămân identice. [Catalog Android](../README.md) · [Strategia de testare](../../docs/testing/README.md)
+Înlocuiește rezultatele depășite numai după păstrarea unei selecții noi legate de sursă. Păstrează eșecurile și reutilizarea explicită; nu redenumi un raport precedent drept rulare nouă. [Catalog Android](../README.md) · [Strategia de testare](../../docs/testing/README.md)

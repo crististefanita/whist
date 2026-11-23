@@ -1,13 +1,7 @@
-# Dovezi respinse păstrate
+# Verdictul original respins
 
 ## Pe scurt
 
-Dovezile respinse își păstrează verdictul și scopul originale. Explică defectul și cerința regresiei; sunt excluse din calificarea curentă reușită.
+[Lotul original de guvernanță](initial-governance/component-report.html) păstrează 62 de teste: 61 reușite și unul eșuat cu `TEST-CHANGE-PROOF-DIRTY`. [Selecția](initial-governance/selection.json) și [execuția](initial-governance/execution.json) explică domeniul și decizia explicită de reutilizare. Raportul rămâne respins; [controlul corectat](../governance/resume/component-report.html) este o execuție separată.
 
 [Înapoi la index](../README.md)
-
-| Raport | Verdict original | Proveniență |
-|---|---|---|
-| [Deplasarea originală la trecerea AI–om](anchor-before/extent.html) | `FAIL` · `REJECTED` | `91716314` |
-
-HTML-ul păstrează datele complete și capturile inline aferente. Inventarul și hash-urile sunt în [manifest](../index.json); verificarea lor nu reexecută testele.

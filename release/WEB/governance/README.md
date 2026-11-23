@@ -1,21 +1,13 @@
-# Dovezi de guvernanță
+# Dovezile de guvernanță
 
 ## Pe scurt
 
-Păstrați identitatea originală a sursei și populația fiecărui raport. Un raport califică instantaneul declarat; copierea octeților și hash-urile corecte nu califică singure surse schimbate ulterior.
+Păstrează verdictele originale și reia numai limita corectată. [Lotul inițial](../diagnostics/initial-governance/component-report.html) are 61 de rezultate reușite și un eșec de admitere pentru checkout modificat. Rezultatele reușite se reutilizează; HTML-ul său nu este redenumit verde.
 
-[Înapoi la index](../README.md)
+- După comiterea celor trei ghiduri editoriale, [singurul control eșuat](resume/component-report.html) a trecut.
+- [Dovada sa](resume/execution.json) păstrează separat revizia documentației evaluate și revizia compilatorului original.
+- [Proba implementării](../component/adapters/proof.json) rămâne legată de baza și diff-ul sursei originale.
 
-| Raport | Verdict original | Proveniență |
-|---|---|---|
-| [Referința de guvernanță ATF](atf/component-report.html) | `PASS` · `REFERENCE` | `9cc19f7f` |
+[Revizuirea interactivă](browser-review/execution.json) a verificat `Overview` standard în Edge headless real: grafice, fără galerie injectată, fără capturi la componente și cei 14 pași, 140 de aserțiuni și patru poze E2E. Este o revizuire a raportului, nu încă un E2E de produs.
 
-HTML-ul păstrează datele complete și capturile inline aferente. Inventarul și hash-urile sunt în [manifest](../index.json); verificarea lor nu reexecută testele.
-
-- [Guvernanță curentă pentru responsabilități și sursă](current/component-report.html)
-
-## Selecția documentației și a planului
-
-[Suita Extent focalizată](documentation-plan/component-report.html) păstrează opt controale documentare trecute. [Selecția și refolosirea compilării](documentation-plan/execution.json) identifică exact clasele și commiturile; arhitectura în trei module rămâne planificată.
-
-[Măsurarea intrării raportului](documentation-plan/footprint.json) separă payload-ul PNG din HTML-ul original. Observația justifică scurtarea selecției UI, fără modificarea JAR-ului Reporting și fără noi rulări E2E.
+[Înapoi la index](../README.md) · [Contractul de guvernanță](../../../docs/governance/README.md)

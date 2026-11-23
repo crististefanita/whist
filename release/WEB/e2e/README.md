@@ -1,27 +1,18 @@
-# Parcursuri ilustrate ale mesei
+# Sanity ilustrat minimal
 
 ## Pe scurt
 
-Puține parcursuri la un singur viewport lizibil: o referință istorică la patru locuri și două parcursuri curente la cinci/șase locuri. Componentele comune dețin combinațiile de rezoluție, text, distribuire și actori.
-
-## Contractul comun al auditului
+Un parcurs în browserul local, un singur viewport lizibil de 1664×916, două mâini de o carte. Prima mână este manuală; a doua folosește AutoGame. Selecția verifică legăturile și continuitatea mesei, nu fiecare rezoluție sau o partidă completă.
 
 <!-- table-audit-contract: TABLE-PHASE-CONTINUITY -->
 
-| Locuri | Componente APK/Web | E2E Web | E2E APK instalat |
-|---|---|---|---|
-| 3 | [Contractul comun](../component/phases/component-report.html) | Neselectat în această iterație | Neexecutat |
-| 4 | [Contractul comun](../component/phases/component-report.html) | [Referință anterioară cu trei mâini](oh-hell/extent.html) | Neexecutat |
-| 5 | [Contractul comun](../component/phases/component-report.html) | [Parcurs curent](table-handoffs/extent.html) · 10/9 cărți | Neexecutat |
-| 6 | [Contractul comun](../component/phases/component-report.html) | [Parcurs curent](table-handoffs/extent.html) · 8/7 cărți | Neexecutat |
+| Limită | Dovadă |
+|---|---|
+| Combinațiile comune pentru 3–6 locuri | [Oracol de componentă](../component/adapters/component-report.html), fără poze |
+| Sanity desenat pentru patru locuri | [Extent](table-sanity/extent.html): 14 pași ordonați, 140 de aserțiuni și patru capturi inline |
+| Execuție și selecție | [Dovada execuției](table-sanity/execution.json), server JVM local |
+| APK instalat | Neexecutat; dovezile release-ului Android existent rămân separate |
 
-Fiecare depunere și colectare observată păstrează pașii Given/When/Then, datele originale înainte/după și aserțiunile individuale. Pozele inline aparțin momentelor capturate; datele geometrice nu sunt prezentate drept imagini reconstruite.
+Admiterea respinge planurile lungi înaintea pornirii browserului; publicarea reconciliază mâinile și capturile reale. [Indexul testelor Web](../../../atf-ui-browser/tests/README.md) și [indexul APK](../../../atf-test-android/src/test/java/atf/android/e2e/display/README.md) partajează rolurile de audit; adaptoarele semantice pereche și controlul capturilor la publicarea APK rămân feedback explicit.
 
-## Indexuri și limite
-
-- [Index Web](../../../atf-ui-browser/tests/README.md) și [index APK](../../../atf-test-android/src/test/java/atf/android/e2e/display/README.md) urmează aceleași niveluri și roluri de audit
-- [Integrarea JVM Android](../component/apk-policy/component-report.html) execută contractul aplicației fără emulator sau capturi native
-- [Catalog Android](../../README.md) păstrează dovezile release-urilor; comparația fizică APK/Chrome rămâne deschisă
-- [Înapoi la dosar](../README.md) · [Manifest și proveniență](../index.json)
-
-Politica următoarei selecții este E2E minim de navigare, cu cel mult două mâini scurte per joc și puține capturi relevante. Referința cu trei mâini își păstrează rezultatul original; nu satisface bugetul curent.
+[Înapoi la dosar](../README.md) · [Manifest](../index.json)

@@ -1,20 +1,15 @@
-# Contracte de componentă
+# Contractele componentelor
 
 ## Pe scurt
 
-Intrările controlate și simulările dețin combinațiile de ancore, dimensiuni, text și callback-uri întârziate. Rapoartele conțin aserțiuni și observații originale fără poze ale produsului.
+Contractele portabile comune preiau combinațiile. Suitele Extent păstrează precondițiile, comparațiile evaluate așteptat/obținut și cazurile negative fără poze de produs.
 
-[Înapoi la index](../README.md)
+| Suită | Selecție și domeniu |
+|---|---|
+| [Contractele adaptoarelor](adapters/component-report.html) | Unsprezece controale pozitive/negative; fiecare distribuire legală și loc prin același oracol logic APK/Web. [Proba originală](adapters/proof.json) |
+| [Nucleul portabil](core/component-report.html) | Cincizeci de invocări de componentă, cu SDK absent deliberat. [Execuție](core/execution.json) |
+| [Regresia intrărilor matricelor](matrix/component-report.html) | Două metode afectate; bucle complete păstrate, comparațiile reușite agregate per invariantă. |
 
-| Raport | Verdict original | Proveniență |
-|---|---|---|
-| [Contractele intrărilor raportului și urmelor](reporting/component-report.html) | `PASS` · `REUSED` | `91716314` |
-| [Geometria comună și matricile controlate](native-ports/component-report.html) | `PASS` · `REUSED` | `9ec0b560` |
+[Trei unități izolate](core/unit-execution.json) rulează ca precondiție fără Extent. Numerele selecțiilor suprapuse nu se însumează drept acoperire distinctă. Cele opt controale separate ale adaptorului nativ au trecut extern; aceste rapoarte nu declară desenare nativă sau un APK nou instalat.
 
-HTML-ul păstrează datele complete și capturile inline aferente. Inventarul și hash-urile sunt în [manifest](../index.json); verificarea lor nu reexecută testele.
-
-- [Componente curente pentru treceri și dosar](handoff/component-report.html)
-
-- [Componente APK/Web comune pentru fiecare loc](phases/component-report.html)
-
-- [Integrarea JVM Android a contractului](apk-policy/component-report.html)
+[Înapoi la index](../README.md) · [Matricea modul × nivel](../../../docs/testing/ATF_TestingGuide.md)
