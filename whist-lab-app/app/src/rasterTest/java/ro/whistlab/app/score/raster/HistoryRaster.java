@@ -10,7 +10,7 @@ import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.util.List;
 import ro.whistlab.app.score.award.SeriesPointsFrame;
-import ro.whistlab.app.score.HistoryTypography;
+import ro.whistlab.app.score.layout.HistoryTypography;
 import ro.whistlab.app.score.layout.BidStrikeGeometry;
 
 /** Controlled JVM raster of the production projection and geometry, with host fonts rather than Android fonts. */

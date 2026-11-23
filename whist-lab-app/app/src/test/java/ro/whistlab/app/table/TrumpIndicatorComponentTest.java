@@ -116,7 +116,8 @@ public final class TrumpIndicatorComponentTest extends atf.gradle.audit.GradleAu
                         var turned = withTrump(base, trump, card);
                         matrixChecks.equal("copy.trumpIndicatorValue(turned) must equal card.shortLabel()", card.shortLabel(), copy.trumpIndicatorValue(turned));
                         matrixChecks.equal("copy.trumpAccessibility(turned).endsWith(copy.cardLabel(card)) must hold", true, copy.trumpAccessibility(turned).endsWith(copy.cardLabel(card)));
-                        assertNotEquals("copy.trumpAccessibility(turned) must differ from copy.trumpAccessibility(suitOnly)", copy.trumpAccessibility(suitOnly), copy.trumpAccessibility(turned));
+                        matrixChecks.equal("Turned-card and suit-only descriptions differ", false,
+                                copy.trumpAccessibility(suitOnly).equals(copy.trumpAccessibility(turned)));
                     }
                 }
             }

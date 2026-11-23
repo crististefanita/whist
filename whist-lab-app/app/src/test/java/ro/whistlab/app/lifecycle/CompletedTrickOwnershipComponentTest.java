@@ -30,7 +30,7 @@ public class CompletedTrickOwnershipComponentTest extends atf.gradle.audit.Gradl
 
             matrixChecks.at(CapturedValue.text(new Object[]{"Fixture before first assertion", "before", before, "count", count, "display", display, "game", game, "pause", pause, "winner", winner}));
             matrixChecks.equal("display.active() must hold", true, display.active());
-            matrixChecks.equal("display.remainingMillis() must equal 1500", 1500, display.remainingMillis());
+            matrixChecks.equal("display.remainingMillis() must equal 1500", 1500L, display.remainingMillis());
             matrixChecks.equal("display.cards().size() must equal count", count, display.cards().size());
             matrixChecks.equal("before.lastTrickWinnerSeat() must equal winner", winner, before.lastTrickWinnerSeat());
             matrixChecks.equal("display.cards() must equal before.lastTrick()", before.lastTrick(), display.cards());

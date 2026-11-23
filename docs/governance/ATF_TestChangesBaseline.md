@@ -2692,6 +2692,8 @@ testChanges:
       - config/atf-component-dependencies.json
       - scripts/run-component-suites.ps1
       - whist-lab-app/app/build.gradle
+      - whist-lab-app/app/src/rasterTest/java/ro/whistlab/app/score/raster/HistoryRaster.java
+      - whist-lab-app/app/src/rasterTest/java/ro/whistlab/app/score/raster/HistoryViewportRaster.java
       - whist-lab-app/app/src/rasterTest/java/ro/whistlab/app/score/raster/HistoryRasterAudit.java
       - whist-lab-app/app/src/rasterTest/java/ro/whistlab/app/score/raster/ScoreHistoryCumulativeComponentTest.java
       - whist-lab-app/app/src/rasterTest/java/ro/whistlab/app/score/raster/ScoreHistoryPhoneRasterComponentTest.java

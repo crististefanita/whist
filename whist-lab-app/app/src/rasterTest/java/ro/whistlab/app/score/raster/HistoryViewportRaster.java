@@ -8,7 +8,7 @@ import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
 import ro.whistlab.app.score.HistoryRasterProjection;
-import ro.whistlab.app.score.HistoryTypography;
+import ro.whistlab.app.score.layout.HistoryTypography;
 import ro.whistlab.app.score.layout.HistoryViewport;
 
 /** Controlled host-font composition of the production width/height policies; not an Android screenshot. */
