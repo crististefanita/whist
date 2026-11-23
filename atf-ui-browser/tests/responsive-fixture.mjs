@@ -29,7 +29,7 @@ export function scoreProjection(players,language){
 export async function rendererFixture(t){
   const work=await fs.mkdtemp(path.join(os.tmpdir(),'whist-responsive-'));
   t.after(()=>fs.rm(work,{recursive:true,force:true,maxRetries:15,retryDelay:200}));
-  const web=fileURLToPath(new URL('../src/main/web/',import.meta.url));
+  const web=process.env.ATF_BROWSER_WEB_ROOT??fileURLToPath(new URL('../src/main/web/',import.meta.url));
   const catalogue={summary:'Progress',groups:Array.from({length:3},(_,i)=>({heading:'Group '+(i+1),goals:Array.from({length:5},(_,j)=>({marker:'○',title:'Exact contract '+(j+1),level:'Normal',progress:'0 / 5',description:'Win the declared tricks without receiving duplicate credit.'}))}))};
   const reply={revision:1,view:null,collections:[],profile:{name:'Player',savedName:true,catalogue}};
   const rankings={preferred:'romanian',boards:[{key:'romanian',label:'Romanian Whist',entries:Array.from({length:20},(_,i)=>({label:'Player '+(i+1),score:100-i}))}]};

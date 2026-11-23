@@ -40,7 +40,6 @@ The 1–100 score expresses work priority, not quality or completion percentage.
 | RAG-26 | P2 | 85 | Scope reviewed reader-seal updates to their affected owners, retaining complete qualification for topology changes and unknown inputs. [Register](ATF_Governance.md#framework-selection-boundaries) |
 | UI-02 | P2 | 84 | Qualify enlarged result actions and scrolling on the consumer APKs in RO/EN with enlarged text. [Register](ATF_CardUi_Extraction.md#result-action-acceptance) |
 | RAG-21 | P2 | 84 | The plan-only pilot proves source-bound restart and selector parity; full report/JUnit parity and the recovery-time gate remain open. [Register](ATF_Governance.md#langgraph-shadow-pilot) |
-| WEB-17 | P2 | 83 | Preserve AutoGame selection during a committed manual transition, with controlled transport, cancellation and ordering cases. [Register](ATF_UiBrowser.md#web-17-autogame-during-an-in-flight-manual-move) |
 | DOC-02 | P2 | 83 | Review inherited English operational terms against code and Romanian meaning; require editorial acceptance as well as executable diagnostics and edition parity. [Register](ATF_Governance.md#improving-guidance-guides) |
 | AI-02 | P2 | 82 | Measure opportunities, conversions to 500, ranking impact and latency on new batches; separate natural play from controlled prefixes. [Register](ATF_Ai.md#playing-for-zero) |
 | WEB-07 | P2 | 79 | Qualify settings, resume, Play again and history in APK and Chrome on the same Android in RO/EN and with increased text. [Register](ATF_UiBrowser.md#qualification-on-the-same-device) |

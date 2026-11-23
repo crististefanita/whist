@@ -2038,3 +2038,35 @@ testChanges:
 ```
 
 </details>
+
+<details>
+<summary>Mounted table continuity and shared browser qualification</summary>
+
+```yaml
+testChanges:
+  - id: WEB-MOUNTED-PACKAGE
+    status: VERIFIED
+    base: c4e49a7e3ec248678c5a0fc93fc417fd2f9a869f
+    expires: 2026-12-23
+    reason: Verify mounted board continuity, pending AutoGame intent, ranking spacing and available-height fitting, and portable exports of the same shared components.
+    proof: 'mvn -o -pl atf-tests -am -Dtest=WhistSurfaceAdapterComponentTest -Dsurefire.failIfNoSpecifiedTests=false test'
+    checks:
+      positive:
+        - atf.tests.governance.documentation.release.rag.nativeproof.WhistSurfaceAdapterComponentTest#adaptiveWebMenusKeepTextIndependentOfTheUsableViewport
+        - atf.tests.governance.documentation.release.rag.nativeproof.WhistSurfaceAdapterComponentTest#webAndNativePortablePortsKeepMeasuredGeometryFacesAndGesturesAligned
+      negative:
+        - atf.tests.governance.documentation.release.rag.nativeproof.WhistSurfaceAdapterComponentTest#surfaceLifecycleRejectsInvalidPagesAndCallbacksAfterDisposal
+    paths:
+      - atf-tests/src/test/java/atf/tests/governance/documentation/release/rag/nativeproof/WhistSurfaceAdapterComponentTest.java
+      - atf-ui-browser/Package-CardTableBrowser.ps1
+      - atf-ui-browser/tests/automation-handoff.test.mjs
+      - atf-ui-browser/tests/packaged-sanity.mjs
+      - atf-ui-browser/tests/responsive-fixture.mjs
+      - atf-ui-browser/tests/responsive-surface.test.mjs
+      - atf-ui-browser/tests/seat-paint.test.mjs
+      - atf-ui-browser/tests/surface-lifecycle.test.mjs
+      - atf-ui-browser/tests/turn-continuity.mjs
+      - config/atf-component-dependencies.json
+```
+
+</details>

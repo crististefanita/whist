@@ -51,11 +51,3 @@ Whist shares native seat, card and animation policies. Preserve that boundary an
 - Treat a partial native instrumentation run as incomplete when any widget reports an error, even if its assertion-failure count is zero. Identify the APK/test artifact before attributing its results to current source.
 
 Use Chess Web's explicit typography and viewport-derived limits as design references, retaining Whist's own engine and adapter ownership. WEB-07 and WEB-11 remain separate flow and glyph criteria.
-
-## WEB-17 AutoGame during an in-flight manual move
-
-**P2 · 83/100 · Preserve automation intent while a committed move is being presented.**
-
-- A checkbox can be selected after the hand display updates but before the manual command finishes. The selection can then clear without advancing; activation after the command becomes idle works. The pending availability gate in [the shell](../../atf-ui-browser/src/main/web/table.mjs) is the leading cause to verify, separately from typography and viewport fitting.
-- Treat temporary command ownership as a wait or pause, not a completed hand. Preserve a submitted move, reject concurrent commands and let deselection prevent the next automatic decision.
-- Close with controlled-transport component cases for selection during playback/collection, cancellation, errors and command ordering. Retain the initial failed outcome when a stable-state continuation passes; qualify native/Web behavior independently.

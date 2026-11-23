@@ -2,8 +2,10 @@ import assert from 'node:assert/strict';
 import test from 'node:test';
 import fs from 'node:fs/promises';
 import path from 'node:path';
-import {adaptiveViewport, surfaceTypography, MENU_TYPOGRAPHY, ADAPTIVE_SURFACE, viewportGeometry} from '../src/main/web/viewport.mjs';
-import {boundedPages} from '../src/main/web/surface-fit.mjs';
+import {fileURLToPath,pathToFileURL} from 'node:url';
+const web=process.env.ATF_BROWSER_WEB_ROOT??fileURLToPath(new URL('../src/main/web/',import.meta.url));
+const {adaptiveViewport, surfaceTypography, MENU_TYPOGRAPHY, ADAPTIVE_SURFACE, viewportGeometry}=await import(pathToFileURL(path.join(web,'viewport.mjs')));
+const {boundedPages}=await import(pathToFileURL(path.join(web,'surface-fit.mjs')));
 import {withBrowser, until} from './fixtures.mjs';
 
 import {rendererFixture} from './responsive-fixture.mjs';
@@ -94,6 +96,19 @@ test('production menus stay readable and centered in compact and desktop Chromiu
         assert.ok(measured.extraWidth<=1,JSON.stringify(measured));
         assert.equal(measured.reachable,true,JSON.stringify({profile,language,font,screen,measured}));
         assert.ok(measured.controls.every(n=>!n.overflow),JSON.stringify({screen,measured}));
+        if(screen==='rankings'){
+          const inspectSpacing=()=>evaluate(`(()=>{const p=document.querySelector('.game-rankings .rankings > p'),select=document.querySelector('.ranking-options select'),panel=document.querySelector('.game-rankings');const scale=panel.getBoundingClientRect().height/panel.offsetHeight;return {gap:(select.getBoundingClientRect().top-p.getBoundingClientRect().bottom)/scale,margin:parseFloat(getComputedStyle(p).marginBottom)};})()`);
+          const spacing=await inspectSpacing();
+          const verifyGap=value=>assert.ok(value.gap>=font*.74&&value.margin>=font*.74,'Ranking summary must leave a rem-sized gap before its first dropdown: '+JSON.stringify(value));
+          verifyGap(spacing);assert.ok(Math.abs(measured.panel.height-profile.height)<1,'Rankings use the available window height without scrolling');
+          if(profile.width===320&&language==='ro'&&font===16){
+            await evaluate("document.querySelector('.game-rankings .rankings > p').style.marginBottom='0px'");
+            const gap=await inspectSpacing();
+            assert.throws(()=>verifyGap(gap),/Ranking summary/);
+            await evaluate("document.querySelector('.game-rankings .rankings > p').style.removeProperty('margin-bottom')");
+          }
+          measured.rankingSpacing=spacing;
+        }
         const id=`RESPONSIVE-${profile.width}-${profile.height}-${language}-${font}-${screen}`;
         const images=[];
         if(process.env.ATF_COMPONENT_CAPTURE_DIR&&(profile.width===414&&profile.height===896||profile.width===1280&&['home','setup'].includes(screen))){
@@ -138,8 +153,8 @@ test('production menus stay readable and centered in compact and desktop Chromiu
       await send('Emulation.setDeviceMetricsOverride',{...profile,deviceScaleFactor:1});
       await evaluate(`document.documentElement.style.fontSize='${font}px';document.documentElement.lang='${language}';`);
       const measured=await evaluate(`(async()=>{
-        const {createProfileDialogs}=await import('./profile.mjs?v=0.6');
-        const {surfaceFitter}=await import('./surface-fit.mjs?v=0.6');
+        const {createProfileDialogs}=await import('./profile.mjs?v=0.7');
+        const {surfaceFitter}=await import('./surface-fit.mjs?v=0.7');
         const element=(tag,text='',kind='')=>{const n=document.createElement(tag);n.textContent=text;n.className=kind;return n;};
         const button=(text,action,kind='')=>{const n=element('button',text,kind);n.onclick=action;return n;};
         const en=document.documentElement.lang==='en';
@@ -185,7 +200,7 @@ test('production menus stay readable and centered in compact and desktop Chromiu
     assert.ok(keyboard.dialog.top>=179&&keyboard.dialog.bottom<=481,'The modal follows the visual viewport rather than the layout viewport');
     console.log('Visual viewport observations: '+JSON.stringify(keyboard));
     const isolation=await evaluate(`(async()=>{
-      const {surfaceFitter}=await import('./surface-fit.mjs?v=0.6');
+      const {surfaceFitter}=await import('./surface-fit.mjs?v=0.7');
       const stage=document.createElement('main'),modal=document.createElement('dialog');
       stage.style.cssText='position:fixed;visibility:hidden;width:100px;height:100px';
       let root=document.createElement('section');root.className='whist-match';stage.append(root);document.body.append(stage,modal);

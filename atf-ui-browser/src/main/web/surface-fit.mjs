@@ -1,4 +1,4 @@
-import {adaptiveViewport} from './viewport.mjs?v=0.6';
+import {adaptiveViewport} from './viewport.mjs?v=0.7';
 
 /** Read-only collections use pages; interactive forms keep all their fields together. */
 export function boundedPages(host, groups) {
@@ -63,7 +63,7 @@ export function surfaceFitter(stage,profileDialog,resize) {
     let natural;
     try { natural=profileDialog.scrollHeight+2; }
     finally { profileDialog.style.removeProperty('height'); }
-    const needed=Math.max(natural,profileDialog.matches('.achievement-catalogue')?scene.height:0);
+    const needed=Math.max(natural,profileDialog.matches('.achievement-catalogue,.game-rankings')?scene.height:0);
     profileDialog.style.setProperty('--modal-height',needed+'px');
     profileDialog.style.setProperty('--modal-scale',Math.min(scene.scale,height/needed));
   }

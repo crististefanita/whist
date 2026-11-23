@@ -19,10 +19,12 @@ class WhistSurfaceAdapterComponentTest {
         var root = GovernanceProject.locateProjectRoot();
         String output = NodeReleaseContracts.runNode(List.of("node", "--test",
                 "--test-concurrency=1", root.resolve("atf-ui-browser/tests/whist-surface-contract.test.mjs").toString(),
-                root.resolve("atf-ui-browser/tests/seat-paint.test.mjs").toString()), root, Duration.ofSeconds(160),
+                root.resolve("atf-ui-browser/tests/seat-paint.test.mjs").toString(),
+                root.resolve("atf-ui-browser/tests/automation-handoff.test.mjs").toString()), root, Duration.ofSeconds(160),
                 value -> inputs.add("Original Web/native adapter observations", value));
         assertTrue(output.contains("Whist adapter observations:"), output);
         assertTrue(output.contains("Seat paint observations:"), "Native-style frames and fitted row identities survive actor handoffs");
+        assertTrue(output.contains("AutoGame handoff observations:"), "Production command ownership preserves automation intent without duplicate decisions");
     }
 
     @Test void adaptiveWebMenusKeepTextIndependentOfTheUsableViewport(ComponentInputs inputs) throws Exception {
