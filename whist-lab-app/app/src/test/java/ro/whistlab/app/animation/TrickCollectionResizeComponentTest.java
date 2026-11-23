@@ -93,7 +93,7 @@ public class TrickCollectionResizeComponentTest extends atf.gradle.audit.GradleA
             matrixChecks.equal("h.queue.size() must equal 1", 1, h.queue.size());
             h.drain();
             matrixChecks.equal("h.surfaces.size() must equal 2", 2, h.surfaces.size());
-            matrixChecks.equal("h.display.remainingMillis() must equal 300", 300, h.display.remainingMillis());
+            matrixChecks.equal("h.display.remainingMillis() must equal 300", 300L, h.display.remainingMillis());
             matrixChecks.within("Numeric boundary: .4f", .4f, h.surface().timing.startFraction(), .00001f);
             var current = h.surface();
             int freshDraws = current.draws.size();
@@ -105,7 +105,7 @@ public class TrickCollectionResizeComponentTest extends atf.gradle.audit.GradleA
             matrixChecks.equal("current.released must equal 0", 0, current.released);
             current.frame.accept(1f);
             current.finished.run();
-            assertTarget(current, h.viewport, winner, count);
+            assertTarget(current, h.viewport, winner, count, matrixChecks);
             matrixChecks.equal("h.game.saveState() must equal before", before, h.game.saveState());
         }
         assertEquals("The original matrix population remains complete", 316L, matrixChecks.checkedPairs());
@@ -229,13 +229,14 @@ public class TrickCollectionResizeComponentTest extends atf.gradle.audit.GradleA
         }
     }
 
-    private static void assertTarget(ControlledCollectionSurface surface, Viewport viewport, int winner, int count) {
+    private static void assertTarget(ControlledCollectionSurface surface, Viewport viewport, int winner, int count,
+                                     ExhaustiveMatrixChecks matrixChecks) {
         var frames = surface.draws.get(surface.draws.size() - 1);
         var target = viewport.target(winner);
-        assertEquals("frames.size() must equal count", count, frames.size());
+        matrixChecks.equal("Collected frame count", count, frames.size());
         for (int card = 0; card < count; card++) {
-            assertEquals(target.x(), surface.geometry.cards().get(card).x() + frames.get(card).translationX(), .001f);
-            assertEquals(target.y(), surface.geometry.cards().get(card).y() + frames.get(card).translationY(), .001f);
+            matrixChecks.within("Collected card X", target.x(), surface.geometry.cards().get(card).x() + frames.get(card).translationX(), .001f);
+            matrixChecks.within("Collected card Y", target.y(), surface.geometry.cards().get(card).y() + frames.get(card).translationY(), .001f);
         }
     }
 
