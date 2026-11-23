@@ -15,6 +15,8 @@ import ro.cardtable.ui.table.PlayedCardMetrics;
 public interface BrowserGame {
     String title();
     default String surface() { return "table"; }
+    /** Native frame measurements are adapter-owned; existing games retain their raw seat geometry. */
+    default boolean usesMeasuredSeatFrames() { return false; }
     default List<Token> palette() { return List.of(); }
     default BoardProfile boardProfile(String mode, int players, int width, int bidOptions,
             TableViewportPolicy viewport, float fontScale) {

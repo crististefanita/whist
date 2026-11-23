@@ -15,7 +15,7 @@ Whist uses the Java engine and portable table contracts in both APK and browser.
 | Actor label | An optional consumer-owned `actorLabel` preserves the visible game action, including the human seat. Hidden headings are excluded before layout. |
 | Seat text | `SeatTypography` supplies roles; measured text fits horizontally without changing row height. |
 | Score text | `ScoreTypography` supplies logical sizes to native sp and Web rem adapters; accessibility scaling applies once. |
-| Frame identity | Prepared redraws keep the visible view, board and compatible seats mounted. Rows, fitted ink and numeric nodes retain identity; changed attributes and text update in place. Incompatible tables mount fresh content. |
+| Frame identity | Prepared redraws keep the view, board, header, trump and compatible seat rows mounted. Interactive controls receive fresh callbacks, open menus remain open, and an unchanged hand retains its horizontal scroll; incompatible tables mount fresh content. |
 | Trick continuity | Native-style tables attach controls only for visible actions. Automatic-only and action-free states create no empty sibling or extra flex gap; real bidding controls and legacy prompts remain visible. |
 | Component boundary | Checks execute the delivered constructor and adapters. Native raster and painted geometry have separate platform acceptance. |
 
@@ -189,7 +189,9 @@ The adjacent `browser-build.json` binds this release to its source commit, input
 - Shared tests: [Card Table Browser tests 0.5](lib/atf-ui-browser-0.5-tests.jar) · [SHA-256](lib/atf-ui-browser-0.5-tests.jar.sha256)
 - Provenance: [browser-build.json](lib/browser-build.json)
 
-The published legacy viewport contract preserves a 414 × 896 logical frame on desktop, scales uniformly to fit usable height and width, and retains a 0.68 readability floor only when both dimensions permit it. Whist's current source opts into the adaptive surface below; the immutable published package and existing consumers retain their admitted contract until a new package is qualified. Consumers adopt the runtime and test archive from the same receipt and verify their bytes.
+The admitted package retains the legacy viewport API with a 414 × 896 logical desktop frame and bounded readability floor. Whist's current source uses the adaptive contract below; existing consumers retain their pin until a new export is qualified. Package identity never implies acceptance of a game's native renderer.
+
+The source packaging plan exports pagination, mounted-board continuity, automation ownership, delayed layout and responsive-dialog components. For a matching export, extract resources and tests externally and set `ATF_BROWSER_WEB_ROOT` and `ATF_BROWSER_RUNTIME_JAR` before running Node. `ATF_COMPONENT_CAPTURE_DIR` collects comparisons and photographs; consumer engine and adapter checks remain separate.
 
 ## Adaptive Whist surface
 
@@ -200,9 +202,10 @@ The [viewport policy](src/main/web/viewport.mjs) and [DOM adapter](src/main/web/
 | Available space | Measure visual-viewport width, height, offsets and safe areas. Phones use their actual useful CSS dimensions as logical native units. Desktop uses the native-calibrated 393 × 626 reference, centered with one scale constrained by both window height and width. Content measurement can extend the required logical height before fitting. |
 | Text roles | Native menu title, section, action, selection and helper roles map 25/13/16/14/14 sp to rem at a 16 px root. Dropdown options inherit their control's size. Root text enlargement is distinct from the subsequent scene fit; names, bids, tricks, cards and frames all share that fit. |
 | Fixed-height surfaces | Bidding, play, menus and non-history dialogs fit without vertical page or panel scrolling. Short dialogs retain native content height and scene zoom; achievement catalogues and rankings use the available height. Ranking summaries reserve a 0.75 rem gap before their first dropdown. Measure content before fitting; hiding a scrollbar does not prove that content fits. |
-| Long content | Rules, achievement groups and rankings use bounded pages with visible navigation. Original nodes, progress, IDs and handlers remain intact; forms retain all fields together. Score history alone retains internal vertical scrolling. |
+| Long content | Rules, achievement groups and rankings use bounded pages; Previous/Next navigate and Close dismisses the reader. Original nodes, progress, IDs and handlers remain intact; forms retain all fields together. Score history alone retains internal vertical scrolling. |
 | Table adaptation | The Java port receives logical measured regions and text scale. Measure intrinsic seat content independently of the previous assigned height; shared PlayerSeatMetrics retains the native heading reserve and frame expansion. Reserve the measured bidding/playing label band above every frame, including hidden labels, before positioning the cells. The actual logical height selects the native compact policy. |
 | Stable phases | Keep the required table height for the same hand, viewport and text scale. Bid selection, player turns and collection must not resize the seat frames. Collection overlays and AutoGame toggles do not request a new fit. |
+| Geometry ownership | Whist explicitly enables `usesMeasuredSeatFrames`; borrowing its visual theme does not select this policy. Other adapters retain raw seat geometry and own the reservation of their action-label band. |
 | Paging controls | Navigation inherits explicit surface colors, including disabled states. Compact outlines sit inside 48-unit touch regions and remain clear of the complete localized label. |
 | Keyboard and lifecycle | Follow visual-viewport offsets when the keyboard pans the page. Observe root text changes; coalesce callbacks and disconnect observers when the adapter is disposed. |
 | Compatibility | Whist opts into the fitted surface. Existing consumers and immutable exports retain their admitted adapter until a new runtime/test package is qualified. |
@@ -225,6 +228,7 @@ flowchart LR
 - [Typography components](tests/score-typography.test.mjs) compare dropdown labels/options, score headings, values and dialog roles while preserving supplied cells and command bindings. [Lifecycle components](tests/surface-lifecycle.test.mjs) reject stale paging, observer and animation callbacks after disposal.
 - [Paint continuity components](tests/seat-paint.test.mjs) preserve mounted views, boards, rows and ink through changed facts and actors. They reject identical-looking replacement rows, detect unmounts and redundant style writes, and check fresh-table fallbacks. Supplied rectangles isolate the DOM contract; native geometry and real-game sampling remain separate checks.
 - [Automation ownership components](tests/automation-handoff.test.mjs) run the production command owner and gate with controlled transport and presentation. Cover selection while busy, deselection, overlapping dialogs, rejected commands and rapid toggles; a negative control rejects the former gate that ignored pending commands.
+- [Layout delivery components](tests/layout-delivery.test.mjs) execute production placement with delayed and reordered replies. Old replies and errors cannot overwrite committed frame/card geometry; navigation and a new commit invalidate pending measurements.
 - [Real-game verification](tests/responsive-game.mjs) uses the JVM engine across the game variants and retains the identical hand while changing viewport, language and text. It checks the reserved action band, phase-stable frames and access to the native horizontal hand fan.
 - Logical agreement and browser captures do not establish native font identity. The [remaining acceptance](../docs/feedback/ATF_UiBrowser.md#web-16-responsive-game-surface-and-menu-typography) compares an identified APK and Chrome on the same Android; iOS is outside this qualification.
 

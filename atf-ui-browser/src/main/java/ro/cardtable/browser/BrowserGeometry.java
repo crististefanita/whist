@@ -19,7 +19,8 @@ final class BrowserGeometry {
         int width = number(inputs, "width", 1, 1200);
         int height = number(inputs, "height", 1, 2400);
         int seatHeight = number(inputs, "seatHeight", 1, 240);
-        int actorClearance = inputs.containsKey("actorClearance") ? number(inputs, "actorClearance", 0, 120) : 0;
+        int measuredClearance = inputs.containsKey("actorClearance") ? number(inputs, "actorClearance", 0, 120) : 0;
+        int actorClearance = game.usesMeasuredSeatFrames() ? measuredClearance : 0;
         int viewport = number(inputs, "viewport", 1, 2400);
         int players = number(inputs, "players", 2, 6);
         int cards = number(inputs, "cards", 0, 17);
@@ -45,7 +46,8 @@ final class BrowserGeometry {
                 int name = number(inputs,"seatNameHeight",1,120);
                 int heading = policy.isCompact() ? PlayerSeatMetrics.COMPACT_NAME_REGION_DP
                         : name + PlayerSeatMetrics.ROOMY_HEADING_RESERVE_DP;
-                seatHeight = PlayerSeatMetrics.frameHeightPx(PlayerSeatMetrics.referenceFrameHeightPx(natural,name,heading));
+                if (game.usesMeasuredSeatFrames())
+                    seatHeight = PlayerSeatMetrics.frameHeightPx(PlayerSeatMetrics.referenceFrameHeightPx(natural,name,heading));
             }
             var spec = new TableGeometry.BoardSpec(players, TableSizing.seatWidthDp(width, policy.isCompact()),
                     seatHeight + actorClearance, center, policy.regionGapDp(), policy.minimumBoardHeightDp(),

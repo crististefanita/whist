@@ -99,6 +99,7 @@ test('production menus stay readable and centered in compact and desktop Chromiu
         if(screen==='rankings'){
           const inspectSpacing=()=>evaluate(`(()=>{const p=document.querySelector('.game-rankings .rankings > p'),select=document.querySelector('.ranking-options select'),panel=document.querySelector('.game-rankings');const scale=panel.getBoundingClientRect().height/panel.offsetHeight;return {gap:(select.getBoundingClientRect().top-p.getBoundingClientRect().bottom)/scale,margin:parseFloat(getComputedStyle(p).marginBottom)};})()`);
           const spacing=await inspectSpacing();
+          assert.ok((await evaluate("document.querySelector('.game-rankings .rankings > p').textContent")).length>20,'Measure the real wrapped explanatory text, not an empty paragraph');
           const verifyGap=value=>assert.ok(value.gap>=font*.74&&value.margin>=font*.74,'Ranking summary must leave a rem-sized gap before its first dropdown: '+JSON.stringify(value));
           verifyGap(spacing);assert.ok(Math.abs(measured.panel.height-profile.height)<1,'Rankings use the available window height without scrolling');
           if(profile.width===320&&language==='ro'&&font===16){
@@ -117,6 +118,8 @@ test('production menus stay readable and centered in compact and desktop Chromiu
           await fs.writeFile(path.join(process.env.ATF_COMPONENT_CAPTURE_DIR,file),Buffer.from(png.data,'base64'));images.push({title:id,file});
         }
         if(['achievements','rankings','help'].includes(screen)){
+          const close=await evaluate('document.querySelector('+JSON.stringify(selector)+').querySelector(":scope > button").textContent');
+          assert.equal(close,language==='en'?'Close':'Închide','Close is distinct from the Previous page command');
           const paging=()=>evaluate(`(()=>{const panel=document.querySelector(${JSON.stringify(selector)});let paper=panel;while(paper&&getComputedStyle(paper).backgroundColor==='rgba(0, 0, 0, 0)')paper=paper.parentElement;return [...panel.querySelectorAll('.surface-pages button')].map(n=>{
             const style=getComputedStyle(n),face=getComputedStyle(n,'::before'),range=document.createRange();range.selectNodeContents(n);const ink=range.getBoundingClientRect(),rect=n.getBoundingClientRect(),scale=rect.height/n.offsetHeight;
             return {text:n.textContent,disabled:n.disabled,ink:style.color,fill:face.content==='none'?style.backgroundColor:face.backgroundColor,paper:paper?getComputedStyle(paper).backgroundColor:'rgb(255, 255, 255)',opacity:Number(style.opacity),targetHeight:n.offsetHeight,targetWidth:n.offsetWidth,face:face.content,
@@ -139,10 +142,17 @@ test('production menus stay readable and centered in compact and desktop Chromiu
           await evaluate("document.querySelector("+JSON.stringify(selector)+").querySelector('.surface-pages button:last-child').click()");
           assert.ok((await evaluate("document.querySelector("+JSON.stringify(selector)+").querySelector('.surface-pages output').textContent")).startsWith('2 / '));
           const next=await paging();verify(next);assert.equal(next[0].disabled,false);
-          measured.paging={first,next};
+          await evaluate("document.querySelector("+JSON.stringify(selector)+").querySelector('.surface-pages button:first-child').click()");
+          assert.ok((await evaluate("document.querySelector("+JSON.stringify(selector)+").querySelector('.surface-pages output').textContent")).startsWith('1 / '),'Previous changes the page without dismissing the reader');
+          measured.paging={first,next,close};
         }
-        if(measured.modal)await evaluate("document.querySelector('dialog[open]').close()");
-        if(screen==='help')await evaluate("document.querySelector('.whist-help > button').click()");
+        if(['achievements','rankings','help'].includes(screen)){
+          await evaluate("document.querySelector("+JSON.stringify(selector)+").querySelector(':scope > button').click()");
+          const dismissed=measured.modal?selector+'[open]':selector;
+          await until(()=>evaluate('!document.querySelector('+JSON.stringify(dismissed)+')'));
+          assert.equal(await evaluate('!!document.querySelector("dialog[open]")'),false,'Close dismisses the reader rather than changing its page');
+          assert.equal(await evaluate('!!document.querySelector(".whist-home")'),true,'Close returns to the underlying menu');
+        }else if(measured.modal)await evaluate("document.querySelector('dialog[open]').close()");
         observations.push({profile,language,font,screen,version,...measured});
         checks.push({id,name:`${screen} ${language} ${profile.width}×${profile.height} text ${font/16}`,status:'PASS',expected,observed:{version,...measured},images});
       }
@@ -153,8 +163,8 @@ test('production menus stay readable and centered in compact and desktop Chromiu
       await send('Emulation.setDeviceMetricsOverride',{...profile,deviceScaleFactor:1});
       await evaluate(`document.documentElement.style.fontSize='${font}px';document.documentElement.lang='${language}';`);
       const measured=await evaluate(`(async()=>{
-        const {createProfileDialogs}=await import('./profile.mjs?v=0.7');
-        const {surfaceFitter}=await import('./surface-fit.mjs?v=0.7');
+        const {createProfileDialogs}=await import('./profile.mjs?v=0.8');
+        const {surfaceFitter}=await import('./surface-fit.mjs?v=0.8');
         const element=(tag,text='',kind='')=>{const n=document.createElement(tag);n.textContent=text;n.className=kind;return n;};
         const button=(text,action,kind='')=>{const n=element('button',text,kind);n.onclick=action;return n;};
         const en=document.documentElement.lang==='en';
@@ -200,7 +210,7 @@ test('production menus stay readable and centered in compact and desktop Chromiu
     assert.ok(keyboard.dialog.top>=179&&keyboard.dialog.bottom<=481,'The modal follows the visual viewport rather than the layout viewport');
     console.log('Visual viewport observations: '+JSON.stringify(keyboard));
     const isolation=await evaluate(`(async()=>{
-      const {surfaceFitter}=await import('./surface-fit.mjs?v=0.7');
+      const {surfaceFitter}=await import('./surface-fit.mjs?v=0.8');
       const stage=document.createElement('main'),modal=document.createElement('dialog');
       stage.style.cssText='position:fixed;visibility:hidden;width:100px;height:100px';
       let root=document.createElement('section');root.className='whist-match';stage.append(root);document.body.append(stage,modal);
