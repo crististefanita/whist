@@ -6,6 +6,7 @@ import ro.cardtable.ui.table.TableGeometry;
 import ro.cardtable.ui.table.TableSizing;
 import ro.cardtable.ui.table.TableViewportPolicy;
 import ro.cardtable.ui.table.PlayedCardMetrics;
+import ro.cardtable.ui.seat.PlayerSeatMetrics;
 
 /** The DOM supplies measurements. The same pure geometry lays out Android and browser tables. */
 final class BrowserGeometry {
@@ -39,6 +40,13 @@ final class BrowserGeometry {
             var center = profile.center();
             played = profile.playedCards();
             bids = profile.bids();
+            if (inputs.containsKey("seatNaturalHeight")) {
+                int natural = number(inputs,"seatNaturalHeight",1,240);
+                int name = number(inputs,"seatNameHeight",1,120);
+                int heading = policy.isCompact() ? PlayerSeatMetrics.COMPACT_NAME_REGION_DP
+                        : name + PlayerSeatMetrics.ROOMY_HEADING_RESERVE_DP;
+                seatHeight = PlayerSeatMetrics.frameHeightPx(PlayerSeatMetrics.referenceFrameHeightPx(natural,name,heading));
+            }
             var spec = new TableGeometry.BoardSpec(players, TableSizing.seatWidthDp(width, policy.isCompact()),
                     seatHeight + actorClearance, center, policy.regionGapDp(), policy.minimumBoardHeightDp(),
                     profile.handClearance(), true);

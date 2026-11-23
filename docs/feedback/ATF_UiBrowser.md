@@ -26,7 +26,7 @@ Extend coverage of AI decisions, streaks and playing for zero through component 
 
 ## WEB-16 Responsive game surface and menu typography
 
-**P1 · 88/100 · Height-fit implementation and portable contracts available; same-device APK/browser acceptance remains open.**
+**P1 · 88/100 · Native-calibrated proportional fitting and portable contracts available; same-device APK/browser acceptance remains open.**
 
 Whist shares native seat, card and animation policies. Preserve that boundary and qualify the physical renderers independently.
 
@@ -35,7 +35,7 @@ Whist shares native seat, card and animation policies. Preserve that boundary an
 
 **Required direction**
 
-1. Preserve one measured height-led fit through the adapter. Use logical geometry and typography roles before applying the proportional fit; avoid unrelated breakpoint constants or clipping content to hide overflow.
+1. Preserve the APK's proportions through one measured fit of the complete scene, including text inside seats, cards, header, help, dropdowns and score tables. Normalize native pixels by density and system insets. Phones use actual useful CSS dimensions; desktop magnifies a native-calibrated reference. Avoid independent font increases, unrelated breakpoint constants or clipping content to hide overflow.
 2. Bidding, play, menus and every non-history dialog fit usable height without vertical scrolling. Rules, achievement groups and rankings use bounded pages; score history is the sole internal vertical-scroll exception. Preserve complete text, input fields, navigation and manual choices.
 3. Keep frames fixed between bidding, play and collection. Localized play labels sit above their frames in bands reserved for both phase labels. Three-player Oh Hell, Reverse Oh Hell and descending variants must not intersect labels, bid buttons, other frames or the human hand.
 4. Retain the native horizontal hand gesture for dense cards. Test first/last-card access rather than forcing all 17 cards into a narrow viewport by reducing their indices.
@@ -44,7 +44,9 @@ Whist shares native seat, card and animation policies. Preserve that boundary an
 
 - [Components](../../atf-ui-browser/tests/responsive-surface.test.mjs) cover fixed-height menus/dialogs, paging, callback isolation, localized labels and 1.0×/1.3× text through a controlled HTTP boundary. [Real-engine checks](../../atf-ui-browser/tests/responsive-game.mjs) retain the same hand across resizing and language changes; neither suite claims native APK acceptance.
 - Record page/panel scroll ranges and all visible bounds. Include compact and desktop profiles, three-player labels and dense hands. Hidden scrollbars or a single one-card picture cannot establish this contract.
+- Compare intrinsic seat measurements and native heading/frame reserves, not only rectangles produced from identical injected heights. Verify dropdown options inherit the selected-value role and score columns preserve bid, won tricks, hand delta and cumulative total with balanced native typography. Dialog fitting must not apply text scale twice.
 - Render the same saved checkpoint and home/setup menus in APK and Chrome on one Android device. Compare a compact profile, RO/EN and normal/enlarged text; add a desktop browser profile without repeating complete matches at every size.
 - Extent includes viewport, density, browser/APK identity, text sizes, bounds, scroll verdicts and visible game facts, with inline captures. Keep native acceptance open until the physical comparison passes.
+- Treat a partial native instrumentation run as incomplete when any widget reports an error, even if its assertion-failure count is zero. Identify the APK/test artifact before attributing its results to current source.
 
 Use Chess Web's explicit typography and viewport-derived limits as design references, retaining Whist's own engine and adapter ownership. WEB-07 and WEB-11 remain separate flow and glyph criteria.

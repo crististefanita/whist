@@ -1983,8 +1983,10 @@ testChanges:
         - atf.tests.governance.source.changes.TestChangeEditorialProofComponentTest#editorialDescendantsPreserveOriginalProofBytesAndExposeProvenance
         - atf.tests.governance.documentation.release.rag.nativeproof.WhistSurfaceAdapterComponentTest#adaptiveWebMenusKeepTextIndependentOfTheUsableViewport
         - atf.tests.governance.documentation.release.rag.nativeproof.WhistSurfaceAdapterComponentTest#webAndNativePortablePortsKeepMeasuredGeometryFacesAndGesturesAligned
+        - atf.tests.governance.documentation.release.rag.nativeproof.WhistSurfaceAdapterComponentTest#dropdownAndScoreTypographyPreserveNativeFactsAndCommandBindings
       negative:
         - atf.tests.governance.source.changes.TestChangeEditorialProofComponentTest#executableInputsControlsAndRevertedCodeCannotReuseEditorialProofs
+        - atf.tests.governance.documentation.release.rag.nativeproof.WhistSurfaceAdapterComponentTest#surfaceLifecycleRejectsInvalidPagesAndCallbacksAfterDisposal
     paths:
       - atf-tests/src/main/java/atf/tests/testchange/EditorialProofContinuation.java
       - atf-tests/src/main/java/atf/tests/testchange/GitTestChangeSnapshot.java
@@ -1998,6 +2000,10 @@ testChanges:
       - atf-tests/src/test/java/atf/tests/suites/AtfComponentSuite.java
       - atf-ui-browser/tests/ro/cardtable/browser/WhistSurfaceContract.java
       - atf-ui-browser/tests/responsive-surface.test.mjs
+      - atf-ui-browser/tests/responsive-fixture.mjs
+      - atf-ui-browser/tests/whist-surface-contract.test.mjs
+      - atf-ui-browser/tests/score-typography.test.mjs
+      - atf-ui-browser/tests/surface-lifecycle.test.mjs
       - atf-ui-browser/tests/responsive-game.mjs
       - atf-ui-browser/tests/packaged-sanity.mjs
       - config/atf-component-collections.json

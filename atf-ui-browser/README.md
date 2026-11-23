@@ -197,11 +197,11 @@ The [viewport policy](src/main/web/viewport.mjs) and [DOM adapter](src/main/web/
 
 | Responsibility | Contract |
 |---|---|
-| Available space | Measure visual-viewport width, height, offsets and safe areas. A 896-unit table reference uses a logical width between 320 and 768; one proportional fit respects both physical limits and centers the result. |
-| Text roles | Menu title, section, action, selection and helper roles use explicit rem values. Root text enlargement is distinct from the subsequent presentation fit; labels and frames share that fit. |
+| Available space | Measure visual-viewport width, height, offsets and safe areas. Phones use their actual useful CSS dimensions as logical native units. Desktop uses the native-calibrated 393 × 626 reference, centered with one scale constrained by both window height and width. Content measurement can extend the required logical height before fitting. |
+| Text roles | Native menu title, section, action, selection and helper roles map 25/13/16/14/14 sp to rem at a 16 px root. Dropdown options inherit their control's size. Root text enlargement is distinct from the subsequent scene fit; names, bids, tricks, cards and frames all share that fit. |
 | Fixed-height surfaces | Bidding, play, menus and non-history dialogs fit without vertical page or panel scrolling. Measure actual content before fitting; hiding a scrollbar does not prove that content fits. |
 | Long content | Rules, achievement groups and rankings use bounded pages with visible navigation. Original nodes, progress, IDs and handlers remain intact; forms retain all fields together. Score history alone retains internal vertical scrolling. |
-| Table adaptation | The Java port receives logical measured regions and text scale. Reserve the measured bidding/playing action-label band above every frame, including hidden labels, before positioning the native-style cells. |
+| Table adaptation | The Java port receives logical measured regions and text scale. Measure intrinsic seat content independently of the previous assigned height; shared PlayerSeatMetrics retains the native heading reserve and frame expansion. Reserve the measured bidding/playing label band above every frame, including hidden labels, before positioning the cells. The actual logical height selects the native compact policy. |
 | Stable phases | Keep the required table height for the same hand, viewport and text scale. Bid selection, player turns and collection must not resize the seat frames. Collection overlays and AutoGame toggles do not request a new fit. |
 | Keyboard and lifecycle | Follow visual-viewport offsets when the keyboard pans the page. Observe root text changes; coalesce callbacks and disconnect observers when the adapter is disposed. |
 | Compatibility | Whist opts into the fitted surface. Existing consumers and immutable exports retain their admitted adapter until a new runtime/test package is qualified. |
@@ -221,10 +221,15 @@ flowchart LR
 <summary>Legend — measured fit and independent native acceptance</summary>
 
 - [Controlled components](tests/responsive-surface.test.mjs) exercise the production shell, localized menus, paging, profile form, text enlargement and a panned keyboard viewport. Negative inputs and collection/lifecycle isolation remain component boundaries.
+- [Typography components](tests/score-typography.test.mjs) compare dropdown labels/options, score headings, values and dialog roles while preserving supplied cells and command bindings. [Lifecycle components](tests/surface-lifecycle.test.mjs) reject stale paging, observer and animation callbacks after disposal.
 - [Real-game verification](tests/responsive-game.mjs) uses the JVM engine across the game variants and retains the identical hand while changing viewport, language and text. It checks the reserved action band, phase-stable frames and access to the native horizontal hand fan.
 - Logical agreement and browser captures do not establish native font identity. The [remaining acceptance](../docs/feedback/ATF_UiBrowser.md#web-16-responsive-game-surface-and-menu-typography) compares an identified APK and Chrome on the same Android; iOS is outside this qualification.
 
 </details>
+
+- The presentation scale is `min(usableHeight / requiredHeight, usableWidth / logicalWidth)`. Apply it once to the scene rather than enlarging individual labels independently. Modal text uses the same logical roles before its own single fit.
+- On phones, CSS pixels are logical units; Android reference measurements first exclude system bars and divide physical pixels by density. Do not substitute screenshot pixels or browser device-pixel ratio for logical geometry.
+- Whist bundles the regular and bold Roboto faces used by the Android reference so Windows does not substitute Segoe UI. Font completion requests a fresh geometry measurement; local JVM routes and Pages serve these assets. [Roboto notice](src/main/web/Roboto-NOTICE.txt) accompanies the fonts.
 
 Pass the JVM classpath produced by `Start-WhistBrowser.ps1 -BuildOnly`, a new external evidence directory and optionally a Chromium executable to `tests/responsive-game.mjs`. Evidence records viewport, browser, language, text, bounds and game facts; the [publisher](tests/Publish-BrowserExtent.ps1) embeds captures in standard English Extent. Horizontal hand navigation preserves the APK contract for dense hands; it is distinct from vertical page scrolling.
 

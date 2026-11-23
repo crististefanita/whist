@@ -1,12 +1,12 @@
-import { ADAPTIVE_SURFACE, adaptiveViewport, surfaceTypography, fitTextWidth, isPhone, viewportGeometry, textScale } from "./viewport.mjs?v=0.4";
+import { ADAPTIVE_SURFACE, adaptiveViewport, surfaceTypography, fitTextWidth, isPhone, viewportGeometry, textScale } from "./viewport.mjs?v=0.5";
 import { collect } from "./collection.mjs";
 import { autoGame, waitForDecision } from "./auto-game.mjs";
 import { bindHandFeedback } from "./hand-feedback.mjs";
-import { historyGrid, applyHistoryAppearance } from "./records.mjs?v=0.4";
-import { fitSeatLine, fitSeatLines, retainSeatFrames, measureSeatActionClearance } from "./seat-presentation.mjs";
-import { historyFirst, menuFromEntries } from "./table-menu.mjs?v=0.4";
-import { createProfileDialogs, deviceProfile, dismissGameMenuOnOutsideClick, preferredLanguage, saveLanguage } from "./profile.mjs?v=0.4";
-import { surfaceFitter } from "./surface-fit.mjs?v=0.4";
+import { historyGrid, applyHistoryAppearance } from "./records.mjs?v=0.5";
+import { fitSeatLine, fitSeatLines, retainSeatFrames, measureSeatActionClearance, measureNativeSeat } from "./seat-presentation.mjs?v=0.5";
+import { historyFirst, menuFromEntries } from "./table-menu.mjs?v=0.5";
+import { createProfileDialogs, deviceProfile, dismissGameMenuOnOutsideClick, preferredLanguage, saveLanguage } from "./profile.mjs?v=0.5";
+import { surfaceFitter } from "./surface-fit.mjs?v=0.5";
 
 const stage = document.querySelector("#table");
 const frame = document.querySelector("#frame");
@@ -25,17 +25,18 @@ const resize = () => {
   if (width <= 0 || height <= 0) return;
   const phone = isPhone(navigator.userAgent);
   const adaptive = document.documentElement.dataset.surface === "whist" || document.documentElement.dataset.engine === "whist";
-  let result = adaptive ? adaptiveViewport(width, height) : viewportGeometry(width, height, phone);
+  const baseHeight=phone?height:ADAPTIVE_SURFACE.height;
+  let result = adaptive ? adaptiveViewport(width, height,baseHeight,phone) : viewportGeometry(width, height, phone);
   if (adaptive) {
     const current=stage.querySelector(':scope > .whist-match:not([data-preparing])');
     const key=current ? [width,height,getComputedStyle(document.documentElement).fontSize,
       current.querySelector('.whist-progress')?.textContent,current.querySelectorAll('.seat').length].join('|') : null;
-    if(key!==fitKey||!key)fitHeight=ADAPTIVE_SURFACE.height;
+    if(key!==fitKey||!key)fitHeight=baseHeight;
     fitKey=key;
     stage.style.setProperty('--stage-width',result.width+'px');
     stage.style.setProperty('--stage-height',result.height+'px');
     fitHeight=Math.max(fitHeight,stage.scrollHeight);
-    result=adaptiveViewport(width,height,fitHeight);
+    result=adaptiveViewport(width,height,fitHeight,phone);
   }
   if (adaptive) {
     viewport.style.height = (visual?.height ?? innerHeight) + "px";
@@ -58,13 +59,14 @@ const resize = () => {
     const bounds=frame.getBoundingClientRect();
     document.documentElement.style.setProperty('--modal-center-x',(bounds.left+bounds.width/2)+'px');
     document.documentElement.style.setProperty('--modal-center-y',(bounds.top+bounds.height/2)+'px');
-    surface?.fitDialog(width,height);
+    surface?.fitDialog(width,height,phone);
   }
   if (stage.firstElementChild?.matches(".match:not([data-preparing])")) void placeTable();
 };
 resize();
 window.addEventListener("resize", resize);
 window.visualViewport?.addEventListener("resize", resize);
+document.fonts?.addEventListener("loadingdone", resize);
 // Observe rem itself: changing browser text preferences need not change the window dimensions.
 const textProbe = document.createElement("span");
 textProbe.setAttribute("aria-hidden", "true");
@@ -674,10 +676,12 @@ async function placeTable(content = stage.firstElementChild) {
   const fan = hand.querySelector(".fan");
   const width = board.clientWidth;
   const fontScale=textScale(getComputedStyle(document.documentElement).fontSize);
+  content.classList.toggle('compact-table',stage.clientHeight<760*Math.max(1,fontScale));
   const seatWidth = Math.min(116, Math.round(width * (stage.clientHeight < 760*Math.max(1,fontScale) ? 0.25 : 0.29)),
     Math.floor((width - 16) / 3));
   for (const seat of seats) seat.style.width = Math.max(1, seatWidth) + "px";
   fitSeatLines(seats);
+  const intrinsic=state.view.header?seats.map(measureNativeSeat):[];
   try {
     const minHeight = board.style.minHeight;
     board.style.minHeight = "";
@@ -687,6 +691,7 @@ async function placeTable(content = stage.firstElementChild) {
       width, height, mode: state.view.header?.mode ?? "", seatHeight: Math.max(...seats.map(seat => seat.offsetHeight)),
       actorClearance: Math.max(0, ...seats.map(seat=>measureSeatActionClearance(seat,
         [copy('bidNow','LICITEAZĂ'),copy('playNow','JOACĂ ACUM'),seat.dataset.actorLabel||'M']))),
+      ...(intrinsic.length&&{seatNaturalHeight:Math.max(...intrinsic.map(n=>n.bodyHeight)),seatNameHeight:Math.max(...intrinsic.map(n=>n.nameHeight))}),
       fontScale,
       bidOptions: stage.dataset.playingSteps && !content.hasAttribute("data-preparing")
         ? 0 : board.querySelectorAll("[data-bid]").length,
