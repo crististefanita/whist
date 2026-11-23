@@ -15,7 +15,8 @@ Whist folosește motorul Java și contractele portabile ale mesei atât în APK,
 | Eticheta actorului | Un `actorLabel` opțional, furnizat de consumator, păstrează acțiunea vizibilă a jocului, inclusiv la locul uman. Antetele ascunse sunt excluse înainte de layout. |
 | Textul locului | `SeatTypography` furnizează rolurile; textul măsurat se încadrează orizontal fără schimbarea înălțimii rândului. |
 | Textul scorului | `ScoreTypography` transmite dimensiuni logice adaptoarelor sp native și rem Web; mărirea accesibilă se aplică o singură dată. |
-| Identitatea chenarului | Reafișările pregătite păstrează montate vederea, tabla, antetul, atuul și rândurile compatibile. Controalele interactive primesc acțiuni actuale, meniurile deschise rămân deschise, iar o mână neschimbată păstrează derularea orizontală; mesele incompatibile montează conținut nou. |
+| Identitatea chenarului | Reafișările pregătite păstrează montate vederea, tabla, antetul, atuul, rândurile compatibile și fețele depuse. O mână delegată neschimbată păstrează evantaiul, nodurile cărților și derularea; mesele incompatibile și mâinile schimbate montează conținut nou. |
+| Responsabilitatea intrării | Adaptorul eliberează responsabilul mâinii anterioare înaintea pregătirii vederii și leagă un singur responsabil de evantaiul confirmat. Răspunsurile și ridicările eliberate nu pot desena sau trimite comenzi; anularea obișnuită păstrează utilizabil ascultătorul curent. Acțiunile actuale ale meniului păstrează starea deschisă. |
 | Continuitatea levatei | Mesele native atașează controale doar pentru acțiuni vizibile. Stările fără acțiuni sau doar automate nu creează vecini goi ori spațiu flex suplimentar; licitarea reală și mesajele vechi rămân vizibile. |
 | Limita componentelor | Probele execută constructorul și adaptoarele livrate. Rasterul nativ și geometria pictată au acceptanță separată pe platformă. |
 
@@ -226,11 +227,35 @@ flowchart LR
 
 - [Componentele controlate](tests/responsive-surface.test.mjs) exercită învelișul de producție, meniurile localizate, paginarea, formularul profilului, textul mărit și un viewport deplasat de tastatură. Intrările negative și izolarea colectării/ciclului de viață rămân granițe de componentă.
 - [Componentele tipografice](tests/score-typography.test.mjs) compară etichetele/opțiunile listelor, antetele scorului, valorile și rolurile dialogurilor, păstrând celulele furnizate și legăturile comenzilor. [Componentele ciclului de viață](tests/surface-lifecycle.test.mjs) resping callback-urile vechi de paginare, observare și animație după eliberare.
-- [Componentele continuității desenării](tests/seat-paint.test.mjs) păstrează montate vederile, tablele, rândurile și textul la schimbarea valorilor și actorilor. Resping rândurile înlocuite cu unele aparent identice, detectează demontările și rescrierea inutilă a stilurilor și verifică montarea meselor incompatibile. Dreptunghiurile furnizate izolează contractul DOM; geometria nativă și probele cu joc real rămân verificări separate.
+- [Componentele continuității desenării](tests/seat-paint.test.mjs) păstrează montate vederile, tablele, rândurile, fețele mâinii și cărțile depuse la schimbarea valorilor și actorilor. Resping rândurile înlocuite cu unele aparent identice, detectează demontările și rescrierea inutilă a stilurilor și verifică mâinile schimbate și acțiunile vechi. Dreptunghiurile furnizate izolează contractul DOM; geometria nativă și probele cu joc real rămân verificări separate.
+- [Componentele ciclului de viață al mâinii](tests/hand-lifecycle.test.mjs) controlează răspunsurile în curs, ridicările terminate și eliberarea pe un evantai păstrat. Un responsabil nou primește un singur click; cel abandonat nu poate desena, trimite comenzi sau păstra un ascultător. [Revizia resurselor](tests/asset-revision.test.mjs) rulează separat de geometria nativă, pentru ca punctul de intrare să nu încarce un adaptor al mâinii învechit.
 - [Componentele ocupării automatizării](tests/automation-handoff.test.mjs) execută responsabilul de comandă și condiția de disponibilitate din producție cu transport și prezentare controlate. Acoperă selecția în timpul ocupării, debifarea, dialogurile suprapuse, comenzile respinse și comutările rapide; un control negativ respinge vechea condiție care ignora comenzile în curs.
-- [Componentele livrării geometriei](tests/layout-delivery.test.mjs) execută poziționarea de producție cu răspunsuri întârziate și reordonate. Răspunsurile și erorile vechi nu pot suprascrie geometria confirmată a chenarelor/cărților; navigarea și o confirmare nouă invalidează măsurătorile în curs.
+- [Componentele livrării geometriei](tests/layout-delivery.test.mjs) preiau responsabilitatea înaintea așteptării fonturilor și execută poziționarea de producție cu răspunsuri întârziate și reordonate. Continuările fonturilor expirate nu pot măsura, stiliza sau solicita geometrie; răspunsurile și erorile vechi nu pot suprascrie poziții mai noi. Navigarea și o confirmare nouă invalidează măsurătorile în curs.
 - [Verificarea jocului real](tests/responsive-game.mjs) folosește motorul JVM pentru variantele de joc și păstrează aceeași mână la schimbarea viewport-ului, limbii și textului. Verifică banda rezervată acțiunii, chenarele stabile între faze și accesul la evantai prin navigarea orizontală nativă.
 - Concordanța logică și capturile browserului nu stabilesc identitatea fonturilor native. [Acceptanța rămasă](../docs/feedback/ATF_UiBrowser.md#web-16-suprafața-de-joc-responsivă-și-tipografia-meniurilor) compară un APK identificat și Chrome pe același Android; iOS este în afara acestei calificări.
+
+</details>
+
+```mermaid
+sequenceDiagram
+    participant Adapter as Adaptorul jocului
+    participant Input as Responsabilul intrării mâinii
+    participant Layout as Geometria măsurată
+    participant View as Masa montată
+    Adapter->>Input: Eliberează responsabilul anterior
+    Adapter->>Layout: Pregătește vederea și fixează generația
+    Layout-->>Adapter: Răspunde numai cât generația este actuală
+    Adapter->>View: Confirmă chenarele și fețele compatibile păstrate
+    Adapter->>Input: Leagă o singură dată evantaiul confirmat
+    Input-->>Adapter: Trimite numai revizia actuală
+```
+
+<details>
+<summary>Legendă: afișaj păstrat și responsabilitate înlocuibilă a comenzilor</summary>
+
+- Identitatea afișajului și responsabilitatea intrării au cicluri de viață separate: nodurile stabile nu păstrează acțiuni vechi ale comenzilor.
+- `retainHand` este explicit deoarece cărțile anterioare pot deține ascultători direcți. O compoziție schimbată primește o mână nouă.
+- Continuările fonturilor și transportului validează aceeași generație înaintea aplicării geometriei.
 
 </details>
 

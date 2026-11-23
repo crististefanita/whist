@@ -10,6 +10,7 @@ export function bindHandFeedback(fan, { timing, request, active, play, failed })
   let queue = Promise.resolve();
   let expiry;
   let lift;
+  let disposed = false;
 
   const paint = () => {
     const suggestions = new Set(feedback.suggestions);
@@ -31,7 +32,7 @@ export function bindHandFeedback(fan, { timing, request, active, play, failed })
 
   function dispatch(operation, card, expires) {
     const owner = generation;
-    const current = () => owner === generation && active();
+    const current = () => !disposed && owner === generation && active();
     queue = queue.then(async () => {
       if (!current()) return;
       const result = await request({ operation, card: card?.dataset.face ?? "",
@@ -66,9 +67,15 @@ export function bindHandFeedback(fan, { timing, request, active, play, failed })
     });
   }
 
-  fan.addEventListener("click", event => {
+  const click = event => {
     const card = event.target.closest("button[data-face]");
     if (card && !card.disabled) dispatch("tap", card);
-  });
-  return { cancel };
+  };
+  fan.addEventListener("click", click);
+  return { cancel, dispose() {
+    if (disposed) return;
+    disposed = true;
+    cancel();
+    fan.removeEventListener("click", click);
+  } };
 }

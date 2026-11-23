@@ -33,40 +33,51 @@ test('native-style seat rows retain their DOM and supplied rectangles through ac
             if(seat===step%players)n.setAttribute('aria-current','true');
           }
           fitSeatLines(board.children);const center=document.createElement('div');center.className='center';board.append(center);
+          const played=document.createElement('div');played.className='cards-on-table';center.append(played);
+          for(let i=0;i<(step===3?0:step);i++){
+            const tile=document.createElement('div'),face=document.createElement('span');tile.className='played-card';tile.dataset.seat=String(i);
+            face.className='card';face.dataset.face=['Q♦','J♣'][i];tile.append(face);played.append(tile);
+          }
+          if(!step){const controls=document.createElement('div');controls.className='controls';controls.append(document.createElement('button'));center.append(controls);}
           const hand=document.createElement('div'),fan=document.createElement('div');hand.className='hand';hand.style.cssText='width:100px;height:40px;overflow:auto';fan.style.cssText='width:300px;height:40px';
           for(const face of ['A♠','K♥']){const card=document.createElement('span');card.className='card';card.dataset.face=face;fan.append(card);}hand.append(fan);view.append(hand);return view;
         };
         let current=make(0),frames=[...current.querySelectorAll('.seat')];
         const original=current,board=current.querySelector('.board'),header=current.querySelector('header'),title=header.querySelector('h1'),trump=header.querySelector('.whist-trump');
+        const originalHand=current.querySelector('.hand'),originalFan=originalHand.firstChild,originalFaces=[...originalFan.children],publicCards=current.querySelector('.cards-on-table');
+        let placed=new Map();
         header.querySelector('details').open=true;current.querySelector('.hand').scrollLeft=40;
         const refs=frames.map(n=>({frame:n,parent:n.parentNode,rows:[...n.children],ink:[...n.querySelectorAll('.seat-line-ink')],numbers:[...n.querySelectorAll('b')],rectangle:box(n)}));
         let styleChanges=0,unmounts=0;const observer=new MutationObserver(records=>{
           styleChanges+=records.filter(r=>r.attributeName==='style').length;
-          for(const r of records)for(const n of r.removedNodes)if(n===original||n===board||n===header||refs.some(ref=>ref.frame===n))unmounts++;
+          for(const r of records)for(const n of r.removedNodes)if(n===original||n===board||n===header||n===originalHand||n===originalFan||originalFaces.includes(n)||refs.some(ref=>ref.frame===n))unmounts++;
         });
         frames.forEach(n=>observer.observe(n,{attributes:true}));
         observer.observe(host,{childList:true});observer.observe(original,{childList:true});observer.observe(board,{childList:true});
+        observer.observe(originalHand,{childList:true,subtree:true});
         const verify=()=>{
           const actual=[...current.querySelectorAll('.seat')];
-          return current===original&&current.querySelector('header')===header&&header.querySelector('h1')===title&&header.querySelector('.whist-trump')===trump&&current.querySelector('.hand').scrollLeft===40&&current.querySelector('.board')===board&&actual.every((n,i)=>n===refs[i].frame&&n.parentNode===refs[i].parent&&[...n.children].every((r,j)=>r===refs[i].rows[j])&&
+          return current===original&&current.querySelector('.hand')===originalHand&&originalHand.firstChild===originalFan&&[...originalFan.children].every((n,i)=>n===originalFaces[i])&&current.querySelector('.cards-on-table')===publicCards&&current.querySelector('header')===header&&header.querySelector('h1')===title&&header.querySelector('.whist-trump')===trump&&current.querySelector('.hand').scrollLeft===40&&current.querySelector('.board')===board&&actual.every((n,i)=>n===refs[i].frame&&n.parentNode===refs[i].parent&&[...n.children].every((r,j)=>r===refs[i].rows[j])&&
             [...n.querySelectorAll('.seat-line-ink')].every((r,j)=>r===refs[i].ink[j])&&
             [...n.querySelectorAll('b')].every((r,j)=>r===refs[i].numbers[j])&&JSON.stringify(box(n))===JSON.stringify(refs[i].rectangle));
         };
         for(const step of [1,2,3]){
           for(const n of frames)updateSeatFact(n.querySelector('.seat-won'),(language==='ro'?'Levate: ':'Won: ')+step);
           const next=make(step),wanted=[...next.querySelectorAll('.seat')].map(n=>n.textContent);
-          current=commitTableView(host,next);frames=[...current.querySelectorAll('.seat')];
+          current=commitTableView(host,next,{retainHand:true});frames=[...current.querySelectorAll('.seat')];
           if(!verify())throw Error('An unchanged seat rectangle or fitted row was replaced');
           if(JSON.stringify(frames.map(n=>n.textContent))!==JSON.stringify(wanted))throw Error('Retained text became stale');
           if(frames.some((n,i)=>n.hasAttribute('aria-current')!==(i===step%players)))throw Error('Retained actor accessibility became stale');
           if(!header.querySelector('details').open)throw Error('An open navigation menu was closed during presentation');
           header.querySelector('button').click();if(handled!==step)throw Error('A retained menu used stale game facts');
+          for(const tile of publicCards.children){const id=tile.dataset.seat,old=placed.get(id);if(old&&(old!==tile||old.firstChild!==tile.firstChild))throw Error('An unchanged played card was remounted');}
+          placed=new Map([...publicCards.children].map(node=>[node.dataset.seat,node]));
           await Promise.resolve();
         }
         if(styleChanges||unmounts)throw Error('Unchanged frame styles were rewritten or the visible board was unmounted');
         // The oracle must detect a fresh row even when its text and rectangle are identical.
         const row=frames[0].firstChild;row.replaceWith(row.cloneNode(true));negativeRejected ||= !verify();
-        observer.disconnect();host.remove();observations.push({players,width,font,language,transitions:3,frameStyleRewrites:styleChanges,visibleUnmounts:unmounts,retainedRows:true});
+        observer.disconnect();host.remove();observations.push({players,width,font,language,transitions:3,frameStyleRewrites:styleChanges,visibleUnmounts:unmounts,retainedRows:true,retainedHand:true,retainedPublicFaces:true});
       }
       let fallbacks=0;
       for(const defect of ['no-visible-table','different-seats','missing-center']){
@@ -77,9 +88,22 @@ test('native-style seat rows retain their DOM and supplied rectangles through ac
         if(commitTableView(stage,next)!==next||stage.firstElementChild!==next||old.isConnected)throw Error('An incompatible scene must mount its fresh table');
         stage.remove();fallbacks++;
       }
-      return {observations,negativeRejected,fallbacks,boundary:'Real DOM/CSS and production seat adapter with supplied stable rectangles; game legality and native raster are separate contracts'};
+      let handBoundaries=0;
+      for(const retainHand of [false,true]){
+        const host=document.createElement('main');document.body.append(host);
+        const make=(face,step)=>{const view=document.createElement('section');view.className='match';const board=document.createElement('div');board.className='board';
+          for(let i=0;i<3;i++){const seat=document.createElement('div');seat.className='seat';seat.dataset.seat=String(i);board.append(seat);}
+          const center=document.createElement('div');center.className='center';board.append(center);const hand=document.createElement('div'),fan=document.createElement('div'),button=document.createElement('button');hand.className='hand';fan.className='fan';button.className='card';button.dataset.face=face;button.onclick=()=>button.dataset.handled=String(step);fan.append(button);hand.append(fan);view.append(board,hand);return view;};
+        const old=make('A♠',0);host.append(old);const before=old.querySelector('.hand');
+        const fresh=make(retainHand?'K♥':'A♠',1),next=commitTableView(host,fresh,{retainHand});
+        if(next.querySelector('.hand')===before)throw Error('Changed hands and nondelegated legacy controls must get fresh bindings');
+        const button=next.querySelector('button');button.click();if(button.dataset.handled!=='1')throw Error('The new hand lost its current callback');
+        host.remove();handBoundaries++;
+      }
+      return {observations,negativeRejected,fallbacks,handBoundaries,boundary:'Real DOM/CSS and production seat adapter with supplied stable rectangles; game legality and native raster are separate contracts'};
     })()`);
     assert.equal(observed.observations.length,48);assert.equal(observed.negativeRejected,true);assert.equal(observed.fallbacks,3);
+    assert.equal(observed.handBoundaries,2);
     console.log('Seat paint observations: '+JSON.stringify(observed));
   });
 });

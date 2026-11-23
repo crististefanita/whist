@@ -163,8 +163,8 @@ test('production menus stay readable and centered in compact and desktop Chromiu
       await send('Emulation.setDeviceMetricsOverride',{...profile,deviceScaleFactor:1});
       await evaluate(`document.documentElement.style.fontSize='${font}px';document.documentElement.lang='${language}';`);
       const measured=await evaluate(`(async()=>{
-        const {createProfileDialogs}=await import('./profile.mjs?v=0.8');
-        const {surfaceFitter}=await import('./surface-fit.mjs?v=0.8');
+        const {createProfileDialogs}=await import('./profile.mjs?v=0.9');
+        const {surfaceFitter}=await import('./surface-fit.mjs?v=0.9');
         const element=(tag,text='',kind='')=>{const n=document.createElement(tag);n.textContent=text;n.className=kind;return n;};
         const button=(text,action,kind='')=>{const n=element('button',text,kind);n.onclick=action;return n;};
         const en=document.documentElement.lang==='en';
@@ -210,7 +210,7 @@ test('production menus stay readable and centered in compact and desktop Chromiu
     assert.ok(keyboard.dialog.top>=179&&keyboard.dialog.bottom<=481,'The modal follows the visual viewport rather than the layout viewport');
     console.log('Visual viewport observations: '+JSON.stringify(keyboard));
     const isolation=await evaluate(`(async()=>{
-      const {surfaceFitter}=await import('./surface-fit.mjs?v=0.8');
+      const {surfaceFitter}=await import('./surface-fit.mjs?v=0.9');
       const stage=document.createElement('main'),modal=document.createElement('dialog');
       stage.style.cssText='position:fixed;visibility:hidden;width:100px;height:100px';
       let root=document.createElement('section');root.className='whist-match';stage.append(root);document.body.append(stage,modal);

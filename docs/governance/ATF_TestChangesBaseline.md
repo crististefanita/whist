@@ -2102,3 +2102,34 @@ testChanges:
 ```
 
 </details>
+
+<details>
+<summary>Cărți montate și responsabilitatea intrării la schimbarea fazelor</summary>
+
+```yaml
+testChanges:
+  - id: WEB-CARD-OWNERSHIP
+    status: VERIFIED
+    base: 06383795adfecdc8189cdcf000412d0403fbd207
+    expires: 2026-12-23
+    reason: Retain compatible hand and deposited faces, rebind exactly one delegated owner, invalidate font continuations before geometry and separate source-cache checks from native policy compilation.
+    proof: 'mvn -o -pl atf-tests -am -Dtest=WhistSurfaceAdapterComponentTest -Dsurefire.failIfNoSpecifiedTests=false test'
+    checks:
+      positive:
+        - atf.tests.governance.documentation.release.rag.nativeproof.WhistSurfaceAdapterComponentTest#mountedCardsAndLayoutOwnersSurvivePhaseAndActorChanges
+      negative:
+        - atf.tests.governance.documentation.release.rag.nativeproof.WhistSurfaceAdapterComponentTest#surfaceLifecycleRejectsInvalidPagesAndCallbacksAfterDisposal
+    paths:
+      - atf-tests/src/test/java/atf/tests/governance/documentation/release/rag/nativeproof/WhistSurfaceAdapterComponentTest.java
+      - atf-ui-browser/Package-CardTableBrowser.ps1
+      - atf-ui-browser/tests/asset-revision.test.mjs
+      - atf-ui-browser/tests/hand-lifecycle.test.mjs
+      - atf-ui-browser/tests/layout-delivery.test.mjs
+      - atf-ui-browser/tests/responsive-surface.test.mjs
+      - atf-ui-browser/tests/seat-paint.test.mjs
+      - atf-ui-browser/tests/turn-continuity.mjs
+      - atf-ui-browser/tests/whist-surface-contract.test.mjs
+      - config/atf-component-dependencies.json
+```
+
+</details>

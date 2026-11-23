@@ -1,12 +1,12 @@
-import { ADAPTIVE_SURFACE, adaptiveViewport, surfaceTypography, fitTextWidth, isPhone, viewportGeometry, textScale } from "./viewport.mjs?v=0.8";
+import { ADAPTIVE_SURFACE, adaptiveViewport, surfaceTypography, fitTextWidth, isPhone, viewportGeometry, textScale } from "./viewport.mjs?v=0.9";
 import { collect } from "./collection.mjs";
 import { autoGame, waitForDecision } from "./auto-game.mjs";
-import { bindHandFeedback } from "./hand-feedback.mjs";
-import { historyGrid, applyHistoryAppearance } from "./records.mjs?v=0.8";
-import { fitSeatLines, commitTableView, updateSeatFact, measureSeatActionClearance, measureNativeSeat } from "./seat-presentation.mjs?v=0.8";
-import { historyFirst, menuFromEntries } from "./table-menu.mjs?v=0.8";
-import { createProfileDialogs, deviceProfile, dismissGameMenuOnOutsideClick, preferredLanguage, saveLanguage } from "./profile.mjs?v=0.8";
-import { surfaceFitter } from "./surface-fit.mjs?v=0.8";
+import { bindHandFeedback } from "./hand-feedback.mjs?v=0.9";
+import { historyGrid, applyHistoryAppearance } from "./records.mjs?v=0.9";
+import { fitSeatLines, commitTableView, updateSeatFact, measureSeatActionClearance, measureNativeSeat } from "./seat-presentation.mjs?v=0.9";
+import { historyFirst, menuFromEntries } from "./table-menu.mjs?v=0.9";
+import { createProfileDialogs, deviceProfile, dismissGameMenuOnOutsideClick, preferredLanguage, saveLanguage } from "./profile.mjs?v=0.9";
+import { surfaceFitter } from "./surface-fit.mjs?v=0.9";
 
 const stage = document.querySelector("#table");
 const frame = document.querySelector("#frame");
@@ -295,7 +295,7 @@ async function showRankings() {
 }
 
 function menu() {
-  handFeedback?.cancel();
+  handFeedback?.dispose();
   automation.set(false);
   if (setup.surface === "whist") {
     const home = element("section", "", "whist-home");
@@ -656,11 +656,12 @@ function fitBidSummary(summary) {
   }
 }
 
-async function fitTrumpText(content) {
+async function fitTrumpText(content, current = () => true) {
   const tile = content.querySelector(".whist-trump");
   if (!tile) return;
   trumpFont ??= document.fonts.load("20px CardTableSuits", "♠♣♥♦").catch(() => []);
   await trumpFont;
+  if (!current()) return;
   const style = getComputedStyle(tile);
   const width = tile.clientWidth - parseFloat(style.paddingLeft) - parseFloat(style.paddingRight);
   for (const line of tile.children) fitHeaderText(line, width);
@@ -670,10 +671,12 @@ async function placeTable(content = stage.firstElementChild) {
   const board = content?.querySelector(".board");
   const hand = content?.querySelector(".hand");
   if (!board || !hand) return;
-  await fitTrumpText(content);
-  fitBidSummary(content.querySelector(".whist-bids"));
   const request = {};
   layoutRequests.set(board, request);
+  const current = () => layoutRequests.get(board) === request && board.isConnected;
+  await fitTrumpText(content, current);
+  if (!current()) return;
+  fitBidSummary(content.querySelector(".whist-bids"));
   const seats = [...board.querySelectorAll(".seat")];
   const fan = hand.querySelector(".fan");
   const width = board.clientWidth;
@@ -866,7 +869,7 @@ function markSeat(node, active, bidding, actorLabel) {
 
 async function render() {
   stage.querySelector(":scope > [data-preparing]")?.remove();
-  handFeedback?.cancel();
+  handFeedback?.dispose();
   handFeedback = undefined;
   if (!state.view) {
     menu();
@@ -929,27 +932,6 @@ async function render() {
   const timing = setup.handMotion;
   const acceptsFeedback = !!match.header && !!timing && match.hand.some(face => face.action);
   for (const face of match.hand) fan.append(card(face, true, acceptsFeedback));
-  if (acceptsFeedback) {
-    const revision = state.revision;
-    handFeedback = bindHandFeedback(fan, {
-      timing,
-      request: fields => call("/api/hand-feedback", { ...fields, revision }),
-      active: () => fan.isConnected && revision === state.revision && !pending && !automation.selected() && !dialogBlocksPlay(),
-      play: action,
-      failed: async error => {
-        if (error.status === 409) {
-          try {
-            state = await call("/api/state");
-            await render();
-          } catch (reload) {
-            errorBox.textContent = reload.message;
-            return;
-          }
-        }
-        errorBox.textContent = error.message;
-      }
-    });
-  }
   hand.append(fan);
 
   content.append(heading, board);
@@ -969,8 +951,25 @@ async function render() {
   delete content.dataset.preparing;
   content.inert = false;
   content.append(errorBox);
-  const committed=commitTableView(stage,content);
+  const playedLayout=playedLayouts.get(content.querySelector('.cards-on-table'));
+  const committed=commitTableView(stage,content,{retainHand:!!match.header&&!!timing});
+  playedLayouts.set(committed.querySelector('.cards-on-table'),playedLayout);
   layoutRequests.set(committed.querySelector(':scope > .board'),{});
+  if (acceptsFeedback) {
+    const liveFan=committed.querySelector('.hand > .fan'),revision=state.revision;
+    handFeedback=bindHandFeedback(liveFan,{
+      timing,request:fields=>call('/api/hand-feedback',{...fields,revision}),
+      active:()=>liveFan.isConnected&&revision===state.revision&&!pending&&!automation.selected()&&!dialogBlocksPlay(),
+      play:action,
+      failed:async error=>{
+        if(error.status===409){
+          try{state=await call('/api/state');await render();}
+          catch(reload){errorBox.textContent=reload.message;return;}
+        }
+        errorBox.textContent=error.message;
+      }
+    });
+  }
   refreshAutomationGate();
 }
 
