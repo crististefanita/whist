@@ -1,13 +1,25 @@
-# Parcurs ilustrat în navigator
+# Parcursuri ilustrate ale mesei
 
 ## Pe scurt
 
-Un singur flux Oh Hell reprezentativ folosește patru jucători și o singură fereastră desktop de 1664 × 916. Urmăriți pașii mâinii, depunerii, rândului uman și colectării; fiecare aserțiune păstrează limitele așteptate și observate.
+Puține parcursuri la un singur viewport lizibil: patru locuri refolosite și două parcursuri curente la cinci/șase locuri. Componentele comune dețin combinațiile de rezoluție, text, distribuire și actori.
 
-[Înapoi la index](../README.md)
+## Contractul comun al auditului
 
-| Raport | Verdict original | Proveniență |
-|---|---|---|
-| [Trecerile curente ilustrate](oh-hell/extent.html) | `PASS` · `PRIMARY` | `91716314` |
+<!-- table-audit-contract: TABLE-PHASE-CONTINUITY -->
 
-HTML-ul păstrează datele complete și capturile inline aferente. Inventarul și hash-urile sunt în [manifest](../index.json); verificarea lor nu reexecută testele.
+| Locuri | Componente APK/Web | E2E Web | E2E APK instalat |
+|---|---|---|---|
+| 3 | [Contractul comun](../component/phases/component-report.html) | Neselectat în această iterație | Neexecutat |
+| 4 | [Contractul comun](../component/phases/component-report.html) | [Parcurs refolosit](oh-hell/extent.html) | Neexecutat |
+| 5 | [Contractul comun](../component/phases/component-report.html) | [Parcurs curent](table-handoffs/extent.html) · 10/9 cărți | Neexecutat |
+| 6 | [Contractul comun](../component/phases/component-report.html) | [Parcurs curent](table-handoffs/extent.html) · 8/7 cărți | Neexecutat |
+
+Fiecare depunere și colectare observată păstrează pașii Given/When/Then, datele originale înainte/după și aserțiunile individuale. Pozele inline aparțin momentelor capturate; datele geometrice nu sunt prezentate drept imagini reconstruite.
+
+## Indexuri și limite
+
+- [Index Web](../../../atf-ui-browser/tests/README.md) și [index APK](../../../atf-test-android/src/test/java/atf/android/e2e/display/README.md) urmează aceleași niveluri și roluri de audit
+- [Integrarea JVM Android](../component/apk-policy/component-report.html) execută contractul aplicației fără emulator sau capturi native
+- [Catalog Android](../../README.md) păstrează dovezile release-urilor; comparația fizică APK/Chrome rămâne deschisă
+- [Înapoi la dosar](../README.md) · [Manifest și proveniență](../index.json)

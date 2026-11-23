@@ -27,9 +27,12 @@ Componentele dețin combinațiile de dimensiuni, text, ancore și ordinea evenim
 
 | Raport | Verdict original | Rol | Revizia validatorului |
 |---|---|---|---|
-| [Trecerile curente ilustrate](e2e/oh-hell/extent.html) | `PASS` | `PRIMARY` | `91716314` |
-| [Componente curente pentru treceri și dosar](component/handoff/component-report.html) | `PASS` | `PRIMARY` | `9a5b49b8` |
-| [Guvernanță curentă pentru responsabilități și sursă](governance/current/component-report.html) | `PASS` | `PRIMARY` | `9a5b49b8` |
+| [Treceri ilustrate la cinci/șase jucători](e2e/table-handoffs/extent.html) | `PASS` | `PRIMARY` | `9b57a75b` |
+| [Componente APK/Web comune pentru fiecare loc](component/phases/component-report.html) | `PASS` | `PRIMARY` | `9b57a75b` |
+| [Guvernanță curentă pentru responsabilități și sursă](governance/current/component-report.html) | `PASS` | `PRIMARY` | `9b57a75b` |
+| [Integrarea JVM Android a contractului](component/apk-policy/component-report.html) | `PASS` | `REFERENCE` | `9b57a75b` |
+| [Trecerile curente ilustrate](e2e/oh-hell/extent.html) | `PASS` | `REUSED` | `91716314` |
+| [Componente curente pentru treceri și dosar](component/handoff/component-report.html) | `PASS` | `REUSED` | `9a5b49b8` |
 | [Contractele intrărilor raportului și urmelor](component/reporting/component-report.html) | `PASS` | `REUSED` | `91716314` |
 | [Geometria comună și matricile controlate](component/native-ports/component-report.html) | `PASS` | `REUSED` | `9ec0b560` |
 | [Referința de guvernanță ATF](governance/atf/component-report.html) | `PASS` | `REFERENCE` | `9cc19f7f` |

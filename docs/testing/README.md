@@ -22,6 +22,7 @@ Nivelul exprimă limita verificată, iar colecția selectează cazurile și cost
 | În ce ordine pregătesc testele și dovezile unui release? | [Calificare pas cu pas](ATF_ReleaseQualification.md) |
 | Ce pot verifica despre display fără emulator? | [Componente display](ATF_DisplayComponents.md) |
 | Cum verific jocul, geometria și gesturile în browser? | [Componentele adaptorului și Playwright](../../atf-ui-browser/README.md#verificare) |
+| Cum refolosesc APK și Web aserțiunile fazelor pentru fiecare loc? | [Continuitatea comună a mesei](ATF_TableContinuity.md) |
 | Cum auditez componentele Gradle fără raportări paralele? | [Captură și colecții Gradle](ATF_GradleComponents.md) |
 
 ## De la proprietate la rezultat

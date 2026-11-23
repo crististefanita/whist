@@ -14,3 +14,7 @@ Intrările controlate și simulările dețin combinațiile de ancore, dimensiuni
 HTML-ul păstrează datele complete și capturile inline aferente. Inventarul și hash-urile sunt în [manifest](../index.json); verificarea lor nu reexecută testele.
 
 - [Componente curente pentru treceri și dosar](handoff/component-report.html)
+
+- [Componente APK/Web comune pentru fiecare loc](phases/component-report.html)
+
+- [Integrarea JVM Android a contractului](apk-policy/component-report.html)
