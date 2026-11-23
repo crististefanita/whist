@@ -1,7 +1,13 @@
-# Original rejected outcome
+# Rejected mobile diagnostic
 
 ## Overview
 
-[The original governance batch](initial-governance/component-report.html) retains 62 tests: 61 passed and one failed with `TEST-CHANGE-PROOF-DIRTY`. [Selection](initial-governance/selection.json) and [execution](initial-governance/execution.json) explain its scope and the explicit reuse decision. The report stays rejected; [the corrected control](../governance/resume/component-report.html) is a separate execution.
+The original public-page observation reproduced fractional CSS height crossing an integer parser. It remains a rejected diagnostic and is not counted as passing qualification.
 
-[Back to the index](../README.md)
+## Original cause
+
+[Captured original error and viewport](mobile-height.json)
+
+## Recovery
+
+The corrected public flow and source-bound component regression are indexed separately; old reports from unrelated investigations are not carried into this dossier.

@@ -1,0 +1,28 @@
+{
+  "schemaVersion" : 1,
+  "kind" : "ATF_TEST_CHANGE_PROOF",
+  "identity" : {
+    "id" : "WHIST-024-MOBILE-GEOMETRY-ADMISSION",
+    "base" : "b4da7a1f867f77b857a07ad17fd35c961f174aef",
+    "commit" : "57fda70cae8f28a26a052f0bca0eca686d9e71e4",
+    "diffSha256" : "23398ac17b983c41b6788a6c99b6a9abbb459f1dc8f5fb1fe3d3b8786149da26"
+  },
+  "positive" : [ {
+    "selector" : "atf.tests.governance.documentation.release.rag.nativeproof.WhistSurfaceAdapterComponentTest#preparedAndLiveSeatsShareIntrinsicHeightWithoutBottomAnchorStretch",
+    "verdict" : "PASS"
+  }, {
+    "selector" : "atf.tests.governance.documentation.release.ReleaseRagPlatformGovernanceTest#everyDeclaredApplicationAndSharedUiCollectionIsIncludedInReleaseExtentAndRag",
+    "verdict" : "PASS"
+  }, {
+    "selector" : "atf.tests.governance.documentation.release.rag.nativeproof.NativeSourceProvenanceComponentTest#immutableRuntimeEvidenceSurvivesValidatorMaintenanceButRejectsChangedInputs",
+    "verdict" : "PASS"
+  }, {
+    "selector" : "atf.tests.governance.documentation.release.rag.scope.VisualContractScopeComponentTest#theRealPlannerBindsPinnedBytesAndKeepsUnavailableProofsConservative",
+    "verdict" : "PASS"
+  } ],
+  "negative" : [ {
+    "selector" : "atf.tests.governance.documentation.release.rag.scope.VisualContractScopeComponentTest#unprovenContractsKeepEveryNativeFlow",
+    "verdict" : "PASS"
+  } ],
+  "reportSha256" : "237377267443c0cf9ab49ac7a7b4cf7c5618b2b4c6dab8b51d3b84a960a357a5"
+}

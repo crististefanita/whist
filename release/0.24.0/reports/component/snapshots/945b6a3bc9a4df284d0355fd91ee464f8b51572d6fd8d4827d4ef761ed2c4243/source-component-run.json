@@ -1,0 +1,49 @@
+{
+  "schemaVersion": 1,
+  "kind": "live-source-components",
+  "apkQualification": false,
+  "sourceFingerprint": "e084c42106f72d312da25258bfacd214d8ed9d9b743aeb9f346dfa4731dc13f8",
+  "provenanceReceiptSha256": "945b6a3bc9a4df284d0355fd91ee464f8b51572d6fd8d4827d4ef761ed2c4243",
+  "inputManifest": "source-inputs.json",
+  "sourceStable": true,
+  "status": "PASS",
+  "stage": "isolated-staging-copy",
+  "inputCount": 1441,
+  "releaseFingerprint": "b2a40bbb1adf62143dabf0824bb627533b8304b73bb596c768b8edb8f2364dee",
+  "releaseInputManifest": "release-inputs.json",
+  "snapshotDifferences": [],
+  "results": [
+    {
+      "module": "whist-lab-app-card-table-core",
+      "suite": ":card-table-core:test",
+      "exitCode": 0,
+      "receipt": {
+        "schemaVersion": 1,
+        "kind": "live-source-components",
+        "apkQualification": false,
+        "selection": ":card-table-core:test",
+        "tests": 50,
+        "outcomes": {
+          "PASS": 50,
+          "ERROR": 0,
+          "SKIP": 0,
+          "FAIL": 0
+        },
+        "coverageErrors": [],
+        "containerFailures": [],
+        "provenanceSha256": "945b6a3bc9a4df284d0355fd91ee464f8b51572d6fd8d4827d4ef761ed2c4243",
+        "reportSha256": "439cb679ad75bc5e4805973bb976dfe85258adaa46c32a0114e237044f08de3e"
+      }
+    }
+  ],
+  "reusedGroups": [],
+  "gradleBatch": {
+    "tasks": [
+      ":card-table-core:test"
+    ],
+    "exitCode": 0,
+    "elapsedSeconds": 44.903,
+    "log": "gradle-components.log"
+  },
+  "androidComponentsReceipt": "source-component-run.json"
+}

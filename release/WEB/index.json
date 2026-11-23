@@ -4,9 +4,9 @@
   "state": "OPEN",
   "publication": {
     "url": "https://crististefanita.github.io/whist/",
-    "sourceCommit": "9a5b49b82d3fb9b3ad7d5815ff213a8305bb5eb8",
-    "cacheRevision": "0.11",
-    "receipt": "e2e/oh-hell/delivery.json"
+    "sourceCommit": "57fda70cae8f28a26a052f0bca0eca686d9e71e4",
+    "cacheRevision": "0.13",
+    "receipt": "e2e/table-sanity/delivery.json"
   },
   "reports": [
     {
@@ -15,13 +15,13 @@
       "path": "e2e/table-sanity/extent.html",
       "role": "PRIMARY",
       "result": "PASS",
-      "validatorCommit": "87f47c290559a512a594f3b85e1384e66e8ae59d",
-      "scope": "Local JVM game, headless muted Edge, 1664×916, four players: two one-card hands, manual then AutoGame. Fourteen ordered steps and 140 comparisons; four actual inline captures. No public-static or installed-APK qualification.",
+      "validatorCommit": "57fda70cae8f28a26a052f0bca0eca686d9e71e4",
+      "scope": "Public static TeaVM, mobile emulation at 393×819 with page scale 1.25 and RO: two one-card hands, manual then AutoGame, with no visible geometry error. Positions use the observed visible-viewport origin; not native Android Chrome.",
       "counts": {
         "flows": 1,
         "hands": 2,
-        "steps": 14,
-        "assertions": 140,
+        "steps": 16,
+        "assertions": 142,
         "captures": 4
       }
     },
@@ -59,7 +59,7 @@
       "id": "matrix-audit-inputs",
       "category": "component",
       "path": "component/matrix/component-report.html",
-      "role": "PRIMARY",
+      "role": "SUPPLEMENTAL",
       "result": "PASS",
       "validatorCommit": "87f47c290559a512a594f3b85e1384e66e8ae59d",
       "scope": "Focused rerun of the two matrix methods whose audit inputs changed. Full loops and invariants retained; successful comparisons aggregate per invariant and first mismatch retains contextual inputs. Live-checkout diagnostic, not an installed APK.",
@@ -68,29 +68,18 @@
       }
     },
     {
-      "id": "governance-resumed-control",
+      "id": "mobile-geometry-admission",
       "category": "governance",
-      "path": "governance/resume/component-report.html",
+      "path": "governance/current/component-report.html",
+      "proof": "governance/current/proof.json",
       "role": "PRIMARY",
       "result": "PASS",
-      "validatorCommit": "838afacaae98f10e19523f87ddbd3a5fe95a1b71",
-      "scope": "Only the failed dirty-checkout admission control rerun after the editorial guides were committed. Original eleven-selector proof and 61 unaffected passing governance outcomes are reused, without rewriting the initial batch verdict.",
+      "validatorCommit": "57fda70cae8f28a26a052f0bca0eca686d9e71e4",
+      "scope": "Five audited source-admission controls include 48 fractional-height combinations, invalid dimensions, native-build verification-only reuse, mandatory Core ownership and active/historical visual source contracts. No product screenshots.",
       "counts": {
-        "methods": 1
-      }
-    },
-    {
-      "id": "original-governance-batch",
-      "category": "diagnostics",
-      "path": "diagnostics/initial-governance/component-report.html",
-      "role": "REJECTED",
-      "result": "FAIL",
-      "validatorCommit": "87f47c290559a512a594f3b85e1384e66e8ae59d",
-      "scope": "Original batch: 61 PASS and one TEST-CHANGE-PROOF-DIRTY failure while three editorial guides were uncommitted. Preserve original report and verdict; the corrected one-control execution is indexed separately.",
-      "counts": {
-        "tests": 62,
-        "passed": 61,
-        "failed": 1
+        "methods": 5,
+        "fractionalCombinations": 48,
+        "captures": 0
       }
     }
   ],
@@ -141,66 +130,59 @@
       "sha256": "86591a553871376fc3ca7867924e64043b6b9366ffe91170d8180aa94690682f"
     },
     {
-      "path": "diagnostics/initial-governance/component-report.html",
-      "bytes": 3928609,
-      "sha256": "ae8dbd58afa90b909c7c13d8d6d5819b6487993d3187dcb7157b25dbff81f2e1"
+      "path": "diagnostics/mobile-height.json",
+      "bytes": 1029,
+      "sha256": "e99196aad0684aef971a14c894e07936860717c66e28074a7fec6880262c79af"
     },
     {
-      "path": "diagnostics/initial-governance/execution.json",
-      "bytes": 702,
-      "sha256": "660616d72742444e31bf9b753c21be28dc29dadb1605b01fa76e2d645fdba0c2"
-    },
-    {
-      "path": "diagnostics/initial-governance/selection.json",
-      "bytes": 3058,
-      "sha256": "6aab98fe7c745ebcc093c4e406bdd0596837896df60aecd19894139ecfd19f5e"
-    },
-    {
-      "path": "e2e/oh-hell/delivery.json",
-      "bytes": 8318,
-      "sha256": "18299bebde5d1bbd13d04dbe7df179882e8387ccb7e7ecd2dc1f7bf17365d780"
-    },
-    {
-      "path": "e2e/oh-hell/runtime-snapshot.json",
-      "bytes": 3296,
-      "sha256": "7f041e58a94e0a9d98c35aa56eca365a2fd17c153d7a2e5b7cdd76a4f8c8435f"
+      "path": "e2e/table-sanity/delivery.json",
+      "bytes": 767,
+      "sha256": "180d605971ef46aa80d9ac341ac0b51225f590b39268401ac85f93b111e58fed"
     },
     {
       "path": "e2e/table-sanity/execution.json",
-      "bytes": 281,
-      "sha256": "77b3ec3b9117eb731d0995fdf96f5aa74342675eaf3d5c331b8e96a2474cbdce"
+      "bytes": 207933,
+      "sha256": "e6115f4f8fffca7e414e0e4d28bda352352f97547b471c0e997a68fecf1e16b0"
     },
     {
       "path": "e2e/table-sanity/extent.html",
-      "bytes": 2916451,
-      "sha256": "384f71ee7a43e046f8160d325e13939b3992b14abb8338fccd771ee867a8d653"
+      "bytes": 2859102,
+      "sha256": "8ad2a8ebe3d5236e2463a3243c06c837b3ecc81d6621c315b4ae69a66053c46d"
     },
     {
-      "path": "governance/browser-review/execution.json",
-      "bytes": 826,
-      "sha256": "e949646aebe8348d49dd79bcfd9a980d69b0fd852906a8e145af64fa3df1d96a"
+      "path": "governance/current/component-report.html",
+      "bytes": 2884735,
+      "sha256": "237377267443c0cf9ab49ac7a7b4cf7c5618b2b4c6dab8b51d3b84a960a357a5"
     },
     {
-      "path": "governance/resume/component-report.html",
-      "bytes": 2419269,
-      "sha256": "35a6275a30b59a3441371ba900a244ceee15e7e879b4d8810622bee1b56bdb0d"
+      "path": "governance/current/proof.json",
+      "bytes": 1497,
+      "sha256": "7e812d0ba3d318d891fac02e9481deea8c2484e1d25a03c9fe2d65c40416521b"
     },
     {
-      "path": "governance/resume/execution.json",
-      "bytes": 543,
-      "sha256": "5777665c7661e1842d5e390008983b31348151523bf7af383d7af551c9d1b6d8"
+      "path": "governance/current/report-review.json",
+      "bytes": 597,
+      "sha256": "f67d6c76821a814f97a7d8669252206b22d7343acb31be91faad19783dab56b7"
+    },
+    {
+      "path": "governance/current/source-inputs.json",
+      "bytes": 232255,
+      "sha256": "a65ac0d9157ac1ecfa33dbd812c193fb8e8b1f5f7a549c8039d87e7bdb14fbb6"
+    },
+    {
+      "path": "governance/current/source-provenance.json",
+      "bytes": 1259,
+      "sha256": "a764205a91bfa16ec01225a8df79eecc01cffa2f0bf01572df90eb2889ceb33b"
     }
   ],
   "executedRuntime": {
-    "target": "local JVM server",
-    "sourceCommit": "87f47c290559a512a594f3b85e1384e66e8ae59d",
-    "cacheRevision": "0.12"
+    "target": "public compiled TeaVM in desktop Edge mobile emulation",
+    "sourceCommit": "57fda70cae8f28a26a052f0bca0eca686d9e71e4",
+    "cacheRevision": "0.13"
   },
   "qualification": {
-    "validatorSourceCommit": "87f47c290559a512a594f3b85e1384e66e8ae59d",
-    "documentationCommit": "838afacaae98f10e19523f87ddbd3a5fe95a1b71",
     "contract": "TABLE-PHASE-CONTINUITY",
-    "nativeWidgetE2e": "NOT_RUN",
-    "boundary": "Current local browser sanity and source-bound components. Previous public 0.11 receipt retained only as a reference; refreshed public-static/native acceptance remains open."
+    "pairedNativeWidgetE2e": "NOT_RUN",
+    "boundary": "Public browser and source-bound components pass their stated scopes; physical same-device Android Chrome acceptance remains open."
   }
 }

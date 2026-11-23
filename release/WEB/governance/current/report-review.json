@@ -1,0 +1,26 @@
+{
+  "status": "PASS",
+  "browser": "Headless Edge; muted by fixture",
+  "reports": [
+    {
+      "file": "mobile-public-final/extent-browser.html",
+      "kind": "e2e",
+      "hash": "#dashboard-view",
+      "charts": 4,
+      "overviewMedia": 0,
+      "steps": 16,
+      "assertions": 142,
+      "captures": 4
+    },
+    {
+      "file": "corrective-admission/WHIST-024-MOBILE-GEOMETRY-ADMISSION/component-report.html",
+      "kind": "component",
+      "hash": "#dashboard-view",
+      "charts": 4,
+      "overviewMedia": 0,
+      "steps": 0,
+      "assertions": 5,
+      "captures": 0
+    }
+  ]
+}
