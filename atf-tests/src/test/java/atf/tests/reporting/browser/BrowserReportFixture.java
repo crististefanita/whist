@@ -67,6 +67,30 @@ final class BrowserReportFixture {
         json.writeValue(root.resolve("browser-checks.json").toFile(), cases);
     }
 
+    static com.fasterxml.jackson.databind.node.ObjectNode steps(Path root) throws Exception {
+        write(root);
+        var json = new ObjectMapper();
+        var test = json.createObjectNode().put("id", "ORDERED-FLOW").put("name", "Observed four-player flow").put("status", "PASS");
+        test.put("expected", "Stable frames and old table faces").put("observed", "Captured before and after each deposit");
+        var steps = test.putArray("steps");
+        for (int i = 0; i < 2; i++) {
+            var step = steps.addObject().put("id", "DEPOSIT-" + (i + 1)).put("name", i == 0 ? "Human deposits A♠" : "AI deposits K♥")
+                    .put("keyword", i == 0 ? "WHEN" : "THEN").put("source", i == 0 ? "ACTION" : "OBSERVE")
+                    .put("url", "https://example.invalid/whist/").put("action", i == 0 ? "Click the legal A♠" : "Observe the AI deposit")
+                    .put("durationMillis", 37).put("status", "PASS");
+            step.putObject("before").put("identity", "BEFORE_DEPOSIT_" + i).putArray("frame").add(10).add(20).add(50).add(70);
+            step.putObject("after").put("identity", "AFTER_DEPOSIT_" + i).putArray("frame").add(10).add(20).add(50).add(70);
+            step.putArray("assertions").addObject().put("name", "FRAME_ASSERTION_" + i).put("expected", "< 0.02 CSS px").put("observed", 0).put("passed", true);
+            step.putArray("images").addObject().put("file", i == 0 ? "first.png" : "second.png").put("title", "DEPOSIT_CAPTURE_" + i);
+        }
+        json.writeValue(root.resolve("browser-ui-checks.json").toFile(), java.util.List.of(test));
+        return test;
+    }
+
+    static void writeSteps(Path root, com.fasterxml.jackson.databind.node.ObjectNode test) throws Exception {
+        new ObjectMapper().writeValue(root.resolve("browser-ui-checks.json").toFile(), java.util.List.of(test));
+    }
+
     static String payload(Path image) throws Exception { return Base64.getEncoder().encodeToString(Files.readAllBytes(image)); }
     private static Map<String, String> image(String file, String title) { return Map.of("file", file, "title", title); }
     private static void png(Path file, int color) throws Exception {

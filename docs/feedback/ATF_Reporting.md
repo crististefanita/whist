@@ -81,3 +81,5 @@ Measurement justifies investigating the reduction of redundancy; it does not pro
 ## Remaining producer qualification
 
 For each remaining producer, include the standard `Overview` and English narration in the standalone-HTML acceptance. Keep original application-language evidence intact, preserve case-owned inline PNGs and refuse missing or misassigned frames. The browser publisher contract belongs to the focused reporting component suite; it does not imply acceptance of unrelated producers or alter sealed release evidence.
+
+For every remaining producer, illustrated game flows require ordered before/after checkpoints and explicit assertion rows rather than a single aggregate PASS. Inspect the actual flow, its final step and image ownership in standalone HTML, alongside rejection of incomplete or contradictory inputs. Historical aggregate reports retain their original scope and are not evidence of absent per-action observations; the qualified browser mechanism belongs in the [publication contract](../reporting/ATF_Audit.md#qualification-of-a-producer).
