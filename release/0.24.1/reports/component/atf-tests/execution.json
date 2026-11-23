@@ -1,0 +1,304 @@
+{
+  "schemaVersion" : 1,
+  "kind" : "live-source-components",
+  "apkQualification" : false,
+  "suite" : "atf.tests.suites.AtfComponentSuite",
+  "tests" : 96,
+  "outcomes" : {
+    "PASS" : 96
+  },
+  "coverageErrors" : [ ],
+  "containerFailures" : [ ],
+  "junitIdentitySha256" : "a6b3e8d3a8ac9f5e416ecb04348b5e9b2d4eafac27042385c89d40f92ec68fc0",
+  "invocations" : [ {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.AtfComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.source.android.DebugFixturePackagingGovernanceTest]/[method:productionCoordinatorDelegatesAndVariantSourcesRemainSeparated()]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.AtfComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.source.android.DebugFixturePackagingGovernanceTest]/[method:policyRejectsFixtureKeysInCoordinatorOrReleaseImplementation()]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.AtfComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.source.changes.TestChangeSelectorComponentTest]/[method:componentScopeFollowsLocalCompositionInheritanceAndNestedContainers()]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.AtfComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.source.changes.TestChangeSelectorComponentTest]/[method:importsOpaqueCompositionAndSyntaxErrorsFailClosed()]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.AtfComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.source.changes.TestChangeSelectorComponentTest]/[method:admissionAndFinalReviewShareSelectorDiagnosticsAndRecheckChangedSource()]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.AtfComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.source.changes.TestChangeSelectorComponentTest]/[method:unsupportedShapesCannotBorrowAnInheritedOrMainSourceMethod()]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.AtfComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.source.changes.TestChangeSelectorComponentTest]/[method:staticSourceDeclarationsAdmitWithoutLoadingApplicationClasses(atf.android.evidence.component.ComponentInputs)]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.AtfComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.source.changes.TestChangeSelectorComponentTest]/[method:dynamicAndAmbiguousDeclarationsFailBeforeProofExecution(atf.android.evidence.component.ComponentInputs)]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.AtfComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.contracts.HeuristicCatalogContractTest]/[method:generatedYamlSeparatesGuaranteedRulesAndConditionalNonAdditiveHints()]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.AtfComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.contracts.HeuristicCatalogContractTest]/[method:unvalidatedContextWeightsCannotSilentlyBecomeRuntimeProbabilities()]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.AtfComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.source.TestLayerSyntaxTest]/[method:qualifiedAndInlineMethodAnnotationsIdentifyAnExecutableClass()]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.AtfComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.source.TestLayerSyntaxTest]/[method:wildcardImportsResolveOnlyAnUnambiguousComposedAnnotation()]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.AtfComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.source.TestLayerSyntaxTest]/[method:annotationDiscoveryIgnoresExamplesAndKeepsTheRealDeclaration(java.nio.file.Path)]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.AtfComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.source.TestLayerSyntaxTest]/[method:annotationsBetweenModifiersBelongToTheDeclaredType()]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.AtfComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.source.TestLayerSyntaxTest]/[method:parserOwnershipSurvivesASyntaxErrorAndEndsAtClose()]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.AtfComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.source.TestLayerSyntaxTest]/[method:everyTopLevelExecutableKeepsItsOwnLayer()]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.AtfComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.source.TestLayerSyntaxTest]/[method:fixtureMethodsCannotTurnAnEnclosingHelperIntoAnExecutable()]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.AtfComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.source.TestLayerSyntaxTest]/[method:syntaxErrorsCannotBecomeSuccessfulEmptyDiscovery()]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.AtfComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.source.TestLayerSyntaxTest]/[method:anIdentifierContainingInterfaceIsStillAConcreteClass()]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.AtfComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.source.workspace.WorkspaceHygieneGovernanceTest]/[method:declaredNestedModulesAndTheirSourcePackagesKeepTheirIdentity()]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.AtfComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.source.workspace.WorkspaceHygieneGovernanceTest]/[method:projectRootContainsOnlyRegisteredOwnersAndKnownToolState()]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.AtfComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.source.workspace.WorkspaceHygieneGovernanceTest]/[method:registeringAFlattenedTemporaryPathDoesNotMakeItASourceOwner()]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.AtfComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.source.workspace.WorkspaceHygieneGovernanceTest]/[method:nativePlatformAndWorkflowDirectoriesHaveExplicitRootOwners()]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.AtfComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.source.game.GameSessionBoundaryComponentTest]/[method:resumesBiddingPlayingAndScoreAndAdvancesTheSameMatch()]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.AtfComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.source.game.GameSessionBoundaryComponentTest]/[method:illegalCommandsAndCorruptCheckpointsAreRefused()]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.AtfComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.source.AtfSourceQualityGovernanceTest]/[method:lexicalGuardFindsRealViolationsAndIgnoresExamples()]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.AtfComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.source.AtfSourceQualityGovernanceTest]/[method:sourcesRespectPackagePathsImportsAndProductionBoundaries()]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.AtfComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.suites.AtfCollectionOwnershipComponentTest]/[method:documentationChangesReuseIndependentOriginalReceipts()]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.AtfComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.suites.AtfCollectionOwnershipComponentTest]/[method:missingOrUnreviewedDependenciesCannotAuthorizeReuse()]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.AtfComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.suites.AtfCollectionOwnershipComponentTest]/[method:positiveInventoriesPartitionEveryAtfComponentWithoutChangingLeafNames()]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.AtfComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.suites.AtfCollectionOwnershipComponentTest]/[method:sharedUnknownAndHistoricalInputsCannotHideAffectedCollections()]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.AtfComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.suites.AtfCollectionOwnershipComponentTest]/[method:realDependencyClosuresSelectOnlyTheirConsumers()]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.AtfComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.source.gradle.GradleAuditGovernanceTest]/[method:productTestsDoNotKeepRawJUnitAssertionsBesideTheAuditFacade()]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.AtfComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.source.gradle.GradleAuditGovernanceTest]/[method:thePureJvmEntryUsesTheSameAuditWithoutConfiguringAndroid()]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.AtfComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.source.gradle.GradleAuditGovernanceTest]/[method:everyGradleTestClassHasOneExplicitLayerAndAnAuditedBase()]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.AtfComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.source.gradle.GradleAuditGovernanceTest]/[method:everyApplicationPackageHasExactlyOneNonemptyPrimaryCollection()]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.AtfComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.source.gradle.GradleAuditGovernanceTest]/[method:coreBatchPolicyDetectsTheOldHeapOverrideAndEarlyExit()]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.AtfComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.source.gradle.GradleAuditGovernanceTest]/[method:auditDependenciesRemainTestOnlyAndTheInventoryGateIsMandatory()]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.AtfComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.source.gradle.GradleAuditGovernanceTest]/[method:inventoryRecognizesExplicitAndWildcardJUnit4ImportsWithoutTreatingJupiterAsJUnit4()]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.AtfComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.source.gradle.GradleAuditGovernanceTest]/[method:coreBatchesHaveOneDeclaredBudgetAndSeparatePolicyExperiments()]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.AtfComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.source.PackageCohesionGovernanceTest]/[method:currentProjectUsesNoCohesionExceptions()]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.AtfComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.source.PackageCohesionGovernanceTest]/[method:unreviewedPackagePassesAtEightFilesAndRejectsTheNinth()]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.AtfComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.source.PackageCohesionGovernanceTest]/[method:anExceptionCannotHideGrowthReplacementOrAStalePackage()]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.AtfComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.suites.SuiteOwnershipGovernanceTest]/[method:focusedSubsetDoesNotCountTwiceButCannotEscapeItsParent()]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.AtfComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.suites.SuiteOwnershipGovernanceTest]/[method:focusedChannelFilteringCannotRemoveOrReplaceAPrimaryOwner()]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.AtfComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.suites.SuiteOwnershipGovernanceTest]/[method:selectorParsingUsesOnlyTheOwnerAndResolvesImportsAndNamedValues()]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.AtfComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.suites.SuiteOwnershipGovernanceTest]/[method:newOmittedClassOverlapWrongLayerAndHiddenSelectionAreRejected()]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.AtfComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.suites.SuiteOwnershipGovernanceTest]/[method:packageScanningCannotIndependentlyLaunchNegativeNestedFixtures()]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.AtfComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.suites.SuiteOwnershipGovernanceTest]/[method:everyMavenExecutableHasOnePrimaryOwnerAndEveryFocusedGateIsDeclared()]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.AtfComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.source.ModuleBoundaryGovernanceTest]/[method:theReactorAndBinaryBoundaryMatchTheDeclaredAndroidPerimeter()]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.AtfComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.source.changes.TestChangeEditorialProofComponentTest]/[method:executableInputsControlsAndRevertedCodeCannotReuseEditorialProofs(atf.android.evidence.component.ComponentInputs)]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.AtfComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.source.changes.TestChangeEditorialProofComponentTest]/[method:dirtyInputsExecutableModesAndTamperedOriginalEvidenceRemainBlocked()]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.AtfComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.source.changes.TestChangeEditorialProofComponentTest]/[method:editorialDescendantsPreserveOriginalProofBytesAndExposeProvenance(atf.android.evidence.component.ComponentInputs)]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.AtfComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.source.changes.TestChangeEditorialProofComponentTest]/[method:unrelatedAndMergedHistoriesDoNotAcquireOriginalProofProvenance()]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.AtfComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.source.changes.TestChangeProofComponentTest]/[method:admissionRechecksChangedSourcesAndSeparatesProofGeneration(java.nio.file.Path)]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.AtfComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.source.changes.TestChangeProofComponentTest]/[method:proofMatchesExactGitReviewAndDeclaredCases(java.nio.file.Path)]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.AtfComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.source.changes.TestChangeProofComponentTest]/[method:requiredProofsIncludeEveryVerifiedControlOfTheCommittedDiff(java.nio.file.Path)]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.AtfComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.source.changes.TestChangeProofComponentTest]/[method:admissionUsesTheSameProofVerdictAndDiagnosticsAsFinalGovernance(java.nio.file.Path)]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.AtfComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.source.changes.TestChangeProofComponentTest]/[method:proofRequiresTheSameIdentityAndReportBytes(java.nio.file.Path)]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.AtfComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.source.changes.TestChangeProofComponentTest]/[method:verifiedControlNeedsProofAndCleanCommittedInputs(java.nio.file.Path)]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.AtfComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.source.changes.TestChangeProofComponentTest]/[method:proofWithoutPassingNegativeControlIsRefused(java.nio.file.Path)]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.AtfComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.source.changes.TestChangeProofComponentTest]/[method:proofFromAnotherCommitCannotBeReused(java.nio.file.Path)]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.AtfComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.source.changes.TestChangeReviewComponentTest]/[method:markdownFixturesAndSelectionContractsRemainProtected(java.nio.file.Path)]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.AtfComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.source.changes.TestChangeReviewComponentTest]/[method:reviewRefMustExistAndBeAnAncestorAndCiNeedsAnEarlierBase(java.nio.file.Path)]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.AtfComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.source.changes.TestChangeReviewComponentTest]/[method:currentDayIsInclusiveButExpiredClosedAndWrongBaseCannotCoverAGate(java.nio.file.Path)]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.AtfComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.source.changes.TestChangeReviewComponentTest]/[method:theSigningExportPolicyRequiresAnExplicitReview(java.nio.file.Path)]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.AtfComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.source.changes.TestChangeReviewComponentTest]/[method:visualScopeProofsCannotChangeWithoutReview(java.nio.file.Path)]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.AtfComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.source.changes.TestChangeReviewComponentTest]/[method:userRecoveryAndEnglishVocabularyRequireReviewedControls(java.nio.file.Path)]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.AtfComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.source.changes.TestChangeReviewComponentTest]/[method:theComponentJvmProfileCannotChangeWithoutAReviewedControl(java.nio.file.Path)]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.AtfComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.source.changes.TestChangeReviewComponentTest]/[method:publicationSealAndReconstructionRequireReviewedControls(java.nio.file.Path)]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.AtfComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.source.changes.TestChangeReviewComponentTest]/[method:fullDiffSeesCommittedStagedUnstagedUntrackedAndIgnoredTestPaths(java.nio.file.Path)]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.AtfComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.source.changes.TestChangeReviewComponentTest]/[method:sourceReadmesRemainEditorialAcrossGitStates(java.nio.file.Path)]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.AtfComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.source.changes.TestChangeReviewComponentTest]/[method:rejectsMalformedMisplacedRepeatedAndIgnoredControlDocuments(java.nio.file.Path)]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.AtfComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.source.changes.TestChangeReviewComponentTest]/[method:stagedDeletionCannotBeHiddenByRestoringTheWorkingFile(java.nio.file.Path)]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.AtfComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.source.changes.TestChangeReviewComponentTest]/[method:nativeSourceAdmissionAndAdapterOraclesCannotBypassReview(java.nio.file.Path)]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.AtfComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.source.android.AndroidJavaApiGovernanceTest]/[method:fluentTerminalsAreRejectedAcrossWhitespaceAndLineBreaks()]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.AtfComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.source.android.AndroidJavaApiGovernanceTest]/[method:androidProductionAvoidsTheJava16StreamTerminal()]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.AtfComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.source.android.AndroidJavaApiGovernanceTest]/[method:newerCollectionFactoriesAreDesugaredForTheDeclaredMinimumSdk()]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.AtfComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.source.android.AndroidJavaApiGovernanceTest]/[method:supportedCollectorsAndTextMentioningTheMethodRemainValid()]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.AtfComponentSuite]/[engine:junit-jupiter]/[class:atf.libraries.PlatformLibraryIntegrityTest]/[method:gradleAuditFixturesFollowThePomSelectedTestKitPair()]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.AtfComponentSuite]/[engine:junit-jupiter]/[class:atf.libraries.PlatformLibraryIntegrityTest]/[method:consumerCannotBecomeTheLibrarySourceOrFeedbackOwner()]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.AtfComponentSuite]/[engine:junit-jupiter]/[class:atf.libraries.PlatformLibraryIntegrityTest]/[method:rejectsChangedJarPomAndParallelSourceWithoutSuppressingTheOriginalFailure()]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.AtfComponentSuite]/[engine:junit-jupiter]/[class:atf.libraries.PlatformLibraryIntegrityTest]/[method:rejectsUntrustedNativeCatalogAndEmbeddedPomEvenWhenOuterHashesAreUpdated()]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.AtfComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.source.workspace.WorkspaceHygieneGovernanceTest]/[test-template:evenAnEmptyUnregisteredOrTemporaryDirectoryIsReported(java.lang.String)]/[test-template-invocation:#1]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.AtfComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.source.workspace.WorkspaceHygieneGovernanceTest]/[test-template:evenAnEmptyUnregisteredOrTemporaryDirectoryIsReported(java.lang.String)]/[test-template-invocation:#2]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.AtfComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.source.workspace.WorkspaceHygieneGovernanceTest]/[test-template:evenAnEmptyUnregisteredOrTemporaryDirectoryIsReported(java.lang.String)]/[test-template-invocation:#3]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.AtfComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.source.workspace.WorkspaceHygieneGovernanceTest]/[test-template:evenAnEmptyUnregisteredOrTemporaryDirectoryIsReported(java.lang.String)]/[test-template-invocation:#4]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.AtfComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.source.workspace.WorkspaceHygieneGovernanceTest]/[test-template:evenAnEmptyUnregisteredOrTemporaryDirectoryIsReported(java.lang.String)]/[test-template-invocation:#5]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.AtfComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.source.workspace.WorkspaceHygieneGovernanceTest]/[test-template:evenAnEmptyUnregisteredOrTemporaryDirectoryIsReported(java.lang.String)]/[test-template-invocation:#6]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.AtfComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.source.workspace.WorkspaceHygieneGovernanceTest]/[test-template:generatedRootFilesAreReportedWithoutDeletingThem(java.lang.String)]/[test-template-invocation:#1]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.AtfComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.source.workspace.WorkspaceHygieneGovernanceTest]/[test-template:generatedRootFilesAreReportedWithoutDeletingThem(java.lang.String)]/[test-template-invocation:#2]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.AtfComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.source.workspace.WorkspaceHygieneGovernanceTest]/[test-template:generatedRootFilesAreReportedWithoutDeletingThem(java.lang.String)]/[test-template-invocation:#3]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.AtfComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.source.workspace.WorkspaceHygieneGovernanceTest]/[test-template:generatedRootFilesAreReportedWithoutDeletingThem(java.lang.String)]/[test-template-invocation:#4]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.AtfComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.source.workspace.WorkspaceHygieneGovernanceTest]/[test-template:generatedRootFilesAreReportedWithoutDeletingThem(java.lang.String)]/[test-template-invocation:#5]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.AtfComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.source.workspace.WorkspaceHygieneGovernanceTest]/[test-template:generatedRootFilesAreReportedWithoutDeletingThem(java.lang.String)]/[test-template-invocation:#6]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.AtfComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.source.workspace.WorkspaceHygieneGovernanceTest]/[test-template:generatedRootFilesAreReportedWithoutDeletingThem(java.lang.String)]/[test-template-invocation:#7]",
+    "outcome" : "PASS"
+  } ],
+  "provenanceSha256" : "8ddf588d304b3c671048c3d773bcbfb385ee1a36f7c707c453ac2b656fd22aa7",
+  "reportSha256" : "d0b39dfd80e77dd9b4976e166341cf6a4883b608381306c466d8ec35f6deb7fe"
+}

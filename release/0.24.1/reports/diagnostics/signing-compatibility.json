@@ -1,0 +1,14 @@
+{
+  "status": "PASS",
+  "result": "PASS",
+  "upgradeCompatibility": "PASS",
+  "previousVersion": "0.24.0",
+  "previousVersionCode": 50,
+  "candidateVersion": "0.24.1",
+  "candidateVersionCode": 51,
+  "certificateSha256": "b80c45a9b52ef0c83dcb929ba4aeb8775c836e5e6d587324d7ec725c079fb4c3",
+  "previousCertificateSha256": "b80c45a9b52ef0c83dcb929ba4aeb8775c836e5e6d587324d7ec725c079fb4c3",
+  "upgradeKeyMatches": true,
+  "apkSha256": "04153bf584b3adc65beeaff7fd9079a44e38bb68f5df48b576d8d3684debf0f4",
+  "previousApkSha256": "d9ab907dc55494e744519b344eb3a367b05401f6f9c12a82af2e393dbe00a578"
+}
