@@ -42,7 +42,8 @@ function classify(file, metadataOnly, hasRulesComponents) {
     if (pattern.test(projected)) return {rule, e2eGroups};
   }
   if (nonProduct.test(file) || testConfiguration.test(file) || testLaunchers.test(file)
-      || file === android + 'gradle/component-audit.gradle' || isStandaloneGovernanceLauncher(file)) {
+      || file === android + 'gradle/component-audit.gradle'
+      || file === android + 'gradle/app-component-collections.gradle' || isStandaloneGovernanceLauncher(file)) {
     return {rule: 'non-runtime', e2eGroups: []};
   }
   return {rule: 'unclassified-or-shared-runtime', e2eGroups: allFlows};

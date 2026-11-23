@@ -1,5 +1,9 @@
 package ro.whistlab.app.bidding;
 
+import atf.gradle.audit.input.CapturedValue;
+
+import atf.gradle.audit.matrix.ExhaustiveMatrixChecks;
+
 import static atf.gradle.audit.assertions.GradleAssertions.*;
 
 import org.junit.Test;
@@ -8,19 +12,21 @@ import ro.whistlab.core.rules.HowToPlay;
 
 public final class AutoGameBidActionComponentTest extends atf.gradle.audit.GradleAuditedTest {
     @Test public void bidChoicesAndSubmissionReserveOnlyTheirRowsAtEveryWidth() {
+        var matrixChecks = new ExhaustiveMatrixChecks();
+        atf.gradle.audit.GradleInputs.fixture("Exhaustive matrix scope", "scenario", "bidChoicesAndSubmissionReserveOnlyTheirRowsAtEveryWidth", "expected pairs", 300);
         int[] widths = {280, 313, 353, 560, 760};
         int[] options = {1, 3, 9, 14, 18};
         float[] fontScales = {1f, 1.3f, 1.5f, 2f};
         for (int width : widths) for (float scale : fontScales) for (int count : options) {
             var layout = BidGridMetrics.actionLayout(count, width, scale);
-            atf.gradle.audit.GradleInputs.fixture("Centered bid controls",
-                    "available width", width, "font scale", scale, "bid options", count, "layout", layout);
-            assertEquals("The submit target follows the bid-choice rows", BidGridMetrics.SUBMIT_TARGET_DP
-                            + 50 * BidGridMetrics.rowCount(count, width),
-                    layout.centerHeightDp());
-            assertTrue("The submit target fits inside the board center", layout.centerWidthDp() >= 119);
-            assertTrue("The board center stays inside the table", layout.centerWidthDp() <= width);
+            matrixChecks.at(CapturedValue.text(new Object[]{"Centered bid controls", "available width", width, "font scale", scale, "bid options", count, "layout", layout}));
+            matrixChecks.equal("The submit target follows the bid-choice rows", BidGridMetrics.SUBMIT_TARGET_DP
+                            + 50 * BidGridMetrics.rowCount(count, width), layout.centerHeightDp());
+            matrixChecks.equal("The submit target fits inside the board center", true, layout.centerWidthDp() >= 119);
+            matrixChecks.equal("The board center stays inside the table", true, layout.centerWidthDp() <= width);
         }
+        assertEquals("The original matrix population remains complete", 300L, matrixChecks.checkedPairs());
+        matrixChecks.publish();
     }
 
     @Test public void theOutlineShrinksByFifteenPercentWithoutChangingTextOrTouchTarget() {

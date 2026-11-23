@@ -1,5 +1,9 @@
 package ro.whistlab.app.table;
 
+import atf.gradle.audit.input.CapturedValue;
+
+import atf.gradle.audit.matrix.ExhaustiveMatrixChecks;
+
 import static atf.gradle.audit.assertions.GradleAssertions.*;
 
 import java.util.Map;
@@ -93,6 +97,8 @@ public final class TrumpIndicatorComponentTest extends atf.gradle.audit.GradleAu
     }
 
     @Test public void everyModeUsesOneSuitOrTurnedCardValueInBothLanguages() {
+        var matrixChecks = new ExhaustiveMatrixChecks();
+        atf.gradle.audit.GradleInputs.fixture("Exhaustive matrix scope", "scenario", "everyModeUsesOneSuitOrTurnedCardValueInBothLanguages", "expected pairs", 960);
         for (GameMode mode : GameMode.values()) {
             var base = GameSession.newGame(atf.gradle.audit.GradleInputs.created("Game configuration before creation", new GameConfig(4, mode, AiDifficulty.NORMAL, 417))).snapshot();
             for (HowToPlay.Language language : HowToPlay.Language.values()) {
@@ -102,19 +108,21 @@ public final class TrumpIndicatorComponentTest extends atf.gradle.audit.GradleAu
                     var suit = trump.suit().orElseThrow();
                     var suitOnly = withTrump(base, trump, null);
 
-                    atf.gradle.audit.GradleInputs.fixture("Fixture before first assertion", "base", base, "copy", copy, "language", language, "mode", mode, "suit", suit, "suitOnly", suitOnly, "trump", trump);
-                    assertEquals(mode + " " + language, suit.symbol(), copy.trumpIndicatorValue(suitOnly));
-                    assertTrue("copy.trumpAccessibility(suitOnly).contains(copy.suitName(suit)) must hold", copy.trumpAccessibility(suitOnly).contains(copy.suitName(suit)));
+                    matrixChecks.at(CapturedValue.text(new Object[]{"Fixture before first assertion", "base", base, "copy", copy, "language", language, "mode", mode, "suit", suit, "suitOnly", suitOnly, "trump", trump}));
+                    matrixChecks.within("Numeric boundary: mode + \" \" + language", mode + " " + language, suit.symbol(), copy.trumpIndicatorValue(suitOnly));
+                    matrixChecks.equal("copy.trumpAccessibility(suitOnly).contains(copy.suitName(suit)) must hold", true, copy.trumpAccessibility(suitOnly).contains(copy.suitName(suit)));
                     for (int rank : new int[]{7, 10, 11, 12, 13, 14}) {
                         var card = new Card(suit, rank);
                         var turned = withTrump(base, trump, card);
-                        assertEquals("copy.trumpIndicatorValue(turned) must equal card.shortLabel()", card.shortLabel(), copy.trumpIndicatorValue(turned));
-                        assertTrue("copy.trumpAccessibility(turned).endsWith(copy.cardLabel(card)) must hold", copy.trumpAccessibility(turned).endsWith(copy.cardLabel(card)));
+                        matrixChecks.equal("copy.trumpIndicatorValue(turned) must equal card.shortLabel()", card.shortLabel(), copy.trumpIndicatorValue(turned));
+                        matrixChecks.equal("copy.trumpAccessibility(turned).endsWith(copy.cardLabel(card)) must hold", true, copy.trumpAccessibility(turned).endsWith(copy.cardLabel(card)));
                         assertNotEquals("copy.trumpAccessibility(turned) must differ from copy.trumpAccessibility(suitOnly)", copy.trumpAccessibility(suitOnly), copy.trumpAccessibility(turned));
                     }
                 }
             }
         }
+        assertEquals("The original matrix population remains complete", 960L, matrixChecks.checkedPairs());
+        matrixChecks.publish();
     }
 
     @Test public void noTrumpHasAnExplicitLocalizedValueInsteadOfAnExtraStatusRow() {

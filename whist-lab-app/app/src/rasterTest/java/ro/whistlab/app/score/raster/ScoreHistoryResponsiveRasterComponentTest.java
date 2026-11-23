@@ -1,5 +1,9 @@
 package ro.whistlab.app.score.raster;
 
+import atf.gradle.audit.input.CapturedValue;
+
+import atf.gradle.audit.matrix.ExhaustiveMatrixChecks;
+
 import static atf.gradle.audit.assertions.GradleAssertions.*;
 import java.awt.image.BufferedImage;
 import java.nio.file.Files;
@@ -13,40 +17,47 @@ import ro.whistlab.core.rules.HowToPlay;
 
 public final class ScoreHistoryResponsiveRasterComponentTest extends atf.gradle.audit.GradleAuditedTest {
     @Test public void viewportsFillTheirWindowKeepTheLegendVisibleAndRetainEverySeat() throws Exception {
-        int[][] profiles = {{320,568,1,24,32}, {678,1536,2,48,96}, {1080,2400,3,72,144},
-                {1536,678,2,48,72}, {1600,2560,2,48,96}};
-        for (int players = 3; players <= 6; players++) {
-            var game = AwardRasterFixture.create(players, AwardRasterFixture.Pattern.BONUS_AND_PENALTY);
-            for (var language : HowToPlay.Language.values()) for (float scale : new float[]{1, 1.5f}) {
-                var copy = new WhistUiText(language);
-                for (int[] profile : profiles) {
-                    var source = HistoryRasterProjection.all(game.snapshot(), game.scoreHistory(), language, profile[2], scale);
-                    var result = HistoryViewportRaster.render(source, profile[0], profile[1], profile[3], profile[4],
-                            copy.scoreHistory(), copy.historyLegend(), copy.close());
-                    var viewport = result.viewport();
+        String lastRasterContext = "Raster fixture not evaluated";
+        try {
+            int[][] profiles = {{320,568,1,24,32}, {678,1536,2,48,96}, {1080,2400,3,72,144},
+                    {1536,678,2,48,72}, {1600,2560,2,48,96}};
+            for (int players = 3; players <= 6; players++) {
+                var game = AwardRasterFixture.create(players, AwardRasterFixture.Pattern.BONUS_AND_PENALTY);
+                for (var language : HowToPlay.Language.values()) for (float scale : new float[]{1, 1.5f}) {
+                    var copy = new WhistUiText(language);
+                    for (int[] profile : profiles) {
+                        var source = HistoryRasterProjection.all(game.snapshot(), game.scoreHistory(), language, profile[2], scale);
+                        var result = HistoryViewportRaster.render(source, profile[0], profile[1], profile[3], profile[4],
+                                copy.scoreHistory(), copy.historyLegend(), copy.close());
+                        var viewport = result.viewport();
 
-                    atf.gradle.audit.GradleInputs.fixture("Fixture before first assertion", "copy", copy, "game", game, "language", language, "players", players, "profile", profile, "profiles", profiles, "result", result, "scale", scale, "source", source, "viewport", viewport);
-                    assertTrue("result.dialog().contains(viewport) must hold", result.dialog().contains(viewport));
-                    assertTrue("The body must hold complete rows", result.bodyHeight() >= source.fonts().rowHeight());
-                    var end = HistoryViewportRaster.render(source, profile[0], profile[1], profile[3], profile[4],
-                            copy.scoreHistory(), copy.historyLegend(), copy.close(), true);
-                    assertTrue("The complete legend is reachable", end.dialog().contains(end.legend()));
-                    assertEquals("No fixed-height gap remains above Close", end.closeTop(), end.legend().y + end.legend().height);
-                    if (result.wholeScroll()) {
-                        assertTrue("result.maximumScroll() > 0 must hold", result.maximumScroll() > 0);
-                        assertTrue("result.viewport().height >= 3 * source.fonts().rowHeight() must hold", result.viewport().height >= 3 * source.fonts().rowHeight());
-                    } else assertTrue("result.dialog().contains(result.legend()) must hold", result.dialog().contains(result.legend()));
-                    assertEquals("result.table().players().size() must equal players", players, result.table().players().size());
-                    assertEquals("result.table().grid().width(players) must equal Math.max(viewport.width, source.grid().width(players))", Math.max(viewport.width, source.grid().width(players)), result.table().grid().width(players));
-                    if (source.grid().width(players) <= viewport.width)
-                        assertEquals("Header background reaches the right table edge", 0xffdfeada,
-                                result.image().getRGB(viewport.x + viewport.width - 1, viewport.y + 1));
-                    if ((players == 4 && profile[0] == 678) || (players == 6 && profile[0] == 1536))
-                        publish("history-" + profile[0] + "x" + profile[1] + "-" + players + "p-" + language + "-" + scale, result.image());
-                    if (players == 6 && profile[0] == 1536 && result.wholeScroll())
-                        publish("history-" + profile[0] + "x" + profile[1] + "-" + players + "p-" + language + "-" + scale + "-end", end.image());
+                        lastRasterContext = CapturedValue.text(new Object[]{"Fixture before first assertion", "copy", copy, "game", game, "language", language, "players", players, "profile", profile, "profiles", profiles, "result", result, "scale", scale, "source", source, "viewport", viewport});
+                        atf.gradle.audit.GradleInputs.fixture("Fixture before first assertion", "language", language, "players", players, "profile", profile, "profiles", profiles, "scale", scale, "viewport", viewport, "fixture contract", "Controlled JVM projection; full immutable context retained on first failure");
+                        assertTrue("result.dialog().contains(viewport) must hold", result.dialog().contains(viewport));
+                        assertTrue("The body must hold complete rows", result.bodyHeight() >= source.fonts().rowHeight());
+                        var end = HistoryViewportRaster.render(source, profile[0], profile[1], profile[3], profile[4],
+                                copy.scoreHistory(), copy.historyLegend(), copy.close(), true);
+                        assertTrue("The complete legend is reachable", end.dialog().contains(end.legend()));
+                        assertEquals("No fixed-height gap remains above Close", end.closeTop(), end.legend().y + end.legend().height);
+                        if (result.wholeScroll()) {
+                            assertTrue("result.maximumScroll() > 0 must hold", result.maximumScroll() > 0);
+                            assertTrue("result.viewport().height >= 3 * source.fonts().rowHeight() must hold", result.viewport().height >= 3 * source.fonts().rowHeight());
+                        } else assertTrue("result.dialog().contains(result.legend()) must hold", result.dialog().contains(result.legend()));
+                        assertEquals("result.table().players().size() must equal players", players, result.table().players().size());
+                        assertEquals("result.table().grid().width(players) must equal Math.max(viewport.width, source.grid().width(players))", Math.max(viewport.width, source.grid().width(players)), result.table().grid().width(players));
+                        if (source.grid().width(players) <= viewport.width)
+                            assertEquals("Header background reaches the right table edge", 0xffdfeada,
+                                    result.image().getRGB(viewport.x + viewport.width - 1, viewport.y + 1));
+                        if ((players == 4 && profile[0] == 678) || (players == 6 && profile[0] == 1536))
+                            publish("history-" + profile[0] + "x" + profile[1] + "-" + players + "p-" + language + "-" + scale, result.image());
+                        if (players == 6 && profile[0] == 1536 && result.wholeScroll())
+                            publish("history-" + profile[0] + "x" + profile[1] + "-" + players + "p-" + language + "-" + scale + "-end", end.image());
+                    }
                 }
             }
+        } catch (Exception | AssertionError failure) {
+            atf.gradle.audit.GradleInputs.note("Full first raster failure context", lastRasterContext);
+            throw failure;
         }
     }
 
@@ -55,7 +66,7 @@ public final class ScoreHistoryResponsiveRasterComponentTest extends atf.gradle.
                 "missed seats", "every seat at each table", "languages", HowToPlay.Language.values(),
                 "font scales", new float[]{1, 1.5f}, "density", 2, "fit width", 600,
                 "bid variants", new String[]{"original", "zero"});
-        var checks = new atf.gradle.audit.matrix.ExhaustiveMatrixChecks();
+        var checks = new ExhaustiveMatrixChecks();
         int rasters = 0;
         for (int players = 3; players <= 6; players++) {
             for (int missedSeat = 0; missedSeat < players; missedSeat++) {
@@ -85,7 +96,7 @@ public final class ScoreHistoryResponsiveRasterComponentTest extends atf.gradle.
     }
 
     private static void verifyStrikes(HistoryRaster.Spec spec, BufferedImage before, BufferedImage after,
-                                      atf.gradle.audit.matrix.ExhaustiveMatrixChecks checks, String location) {
+                                      ExhaustiveMatrixChecks checks, String location) {
         int rowHeight = spec.fonts().rowHeight(), seats = spec.players().size();
         int[][] count = new int[spec.rows().size()][seats];
         long[][] leftY = new long[count.length][seats], rightY = new long[count.length][seats];

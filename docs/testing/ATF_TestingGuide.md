@@ -126,7 +126,7 @@ Suitele primare dețin populații disjuncte. Selecțiile focalizate își păstr
 Configurează [rădăcinile externe pentru dovezi și fișiere temporare](../../scripts/README.md) înainte de lansare. Rezultatele build-ului, profilurile de test și snapshot-urile intermediare rămân în afara checkout-ului; folosește setări locale mașinii în locul căilor fixe. [Colecțiile și comenzile](ATF_Collections.md) enumeră lansatoarele acceptate și selecția pe responsabil.
 
 - Porțile de componentă și E2E publică rapoarte Extent canonice separate, în engleză, prin biblioteca de raportare. Capturează intrările, comparațiile așteptat/obținut, cauzele originale și identitățile invocărilor în timpul execuției.
-- Imaginile Base64 inline aparțin unei observații reale raster sau în browser. O verificare numerică de geometrie este raportată ca aserțiune de componentă, fără inventarea unei capturi.
+- Imaginile Base64 inline aparțin observațiilor E2E focalizate. Oracolele de geometrie și raster JVM publică precondițiile și comparațiile fără imagini; unitarele izolate nu au raport Extent.
 - Rezultatele JUnit reconciliază populația executată. Republicarea sau reluarea unui jurnal arhivat nu califică o interacțiune nouă.
 - Păstrează numerele concrete, hash-urile, timpii, eșecurile și deciziile de reutilizare în auditul extern. Ghidurile generice descriu mecanisme și rămân valabile pentru release-uri viitoare.
 

@@ -1,5 +1,9 @@
 package ro.whistlab.app.animation;
 
+import atf.gradle.audit.input.CapturedValue;
+
+import atf.gradle.audit.matrix.ExhaustiveMatrixChecks;
+
 import ro.cardtable.ui.animation.TrickCollectionMotion;
 
 import static atf.gradle.audit.assertions.GradleAssertions.*;
@@ -30,18 +34,24 @@ public class TrickCollectionMotionComponentTest extends atf.gradle.audit.GradleA
     }
 
     @Test public void noLayoutDelayOrResumeCanExtendTheOriginalDeadline() {
+        var matrixChecks = new ExhaustiveMatrixChecks();
+        atf.gradle.audit.GradleInputs.fixture("Exhaustive matrix scope", "scenario", "noLayoutDelayOrResumeCanExtendTheOriginalDeadline", "expected pairs", 8967);
         for (long remaining = 0; remaining <= 1500; remaining += 25)
             for (long delay = 0; delay <= 1800; delay += 37) {
                 var timing = TrickCollectionMotion.timing(remaining, delay);
 
-                atf.gradle.audit.GradleInputs.fixture("Fixture before first assertion", "delay", delay, "remaining", remaining, "timing", timing);
-                assertEquals("timing.delayMillis() + timing.durationMillis() must equal Math.max(0, remaining - delay)", Math.max(0, remaining - delay), timing.delayMillis() + timing.durationMillis());
-                assertTrue("timing.durationMillis() >= 0 && timing.durationMillis() <= 500 must hold", timing.durationMillis() >= 0 && timing.durationMillis() <= 500);
-                assertTrue("timing.startFraction() >= 0 && timing.startFraction() <= 1 must hold", timing.startFraction() >= 0 && timing.startFraction() <= 1);
+                matrixChecks.at(CapturedValue.text(new Object[]{"Fixture before first assertion", "delay", delay, "remaining", remaining, "timing", timing}));
+                matrixChecks.equal("timing.delayMillis() + timing.durationMillis() must equal Math.max(0, remaining - delay)", Math.max(0, remaining - delay), timing.delayMillis() + timing.durationMillis());
+                matrixChecks.equal("timing.durationMillis() >= 0 && timing.durationMillis() <= 500 must hold", true, timing.durationMillis() >= 0 && timing.durationMillis() <= 500);
+                matrixChecks.equal("timing.startFraction() >= 0 && timing.startFraction() <= 1 must hold", true, timing.startFraction() >= 0 && timing.startFraction() <= 1);
             }
+        assertEquals("The original matrix population remains complete", 8967L, matrixChecks.checkedPairs());
+        matrixChecks.publish();
     }
 
     @Test public void everyCardConvergesOnEveryWinningSeatAtThreeToSixPlaces() {
+        var matrixChecks = new ExhaustiveMatrixChecks();
+        atf.gradle.audit.GradleInputs.fixture("Exhaustive matrix scope", "scenario", "everyCardConvergesOnEveryWinningSeatAtThreeToSixPlaces", "expected pairs", 1290);
         for (int players = 3; players <= 6; players++) for (float density : new float[]{1, 1.5f, 3})
             for (int winner = 0; winner < players; winner++) for (int card = 0; card < players; card++) {
                 var source = new TrickCollectionMotion.Point((80 + card * 45) * density, 350 * density);
@@ -49,17 +59,21 @@ public class TrickCollectionMotionComponentTest extends atf.gradle.audit.GradleA
                         (winner == 0 ? 600 : 80) * density);
                 var first = TrickCollectionMotion.frame(source, target, 0);
 
-                atf.gradle.audit.GradleInputs.fixture("Fixture before first assertion", "card", card, "density", density, "first", first, "players", players, "source", source, "target", target, "winner", winner);
-                assertEquals("first must equal new TrickCollectionMotion.Frame(0, 0, 1, 1)", new TrickCollectionMotion.Frame(0, 0, 1, 1), first);
+                matrixChecks.at(CapturedValue.text(new Object[]{"Fixture before first assertion", "card", card, "density", density, "first", first, "players", players, "source", source, "target", target, "winner", winner}));
+                matrixChecks.equal("first must equal new TrickCollectionMotion.Frame(0, 0, 1, 1)", new TrickCollectionMotion.Frame(0, 0, 1, 1), first);
                 var last = TrickCollectionMotion.frame(source, target, 1);
-                assertEquals(target.x(), source.x() + last.translationX(), .001f);
-                assertEquals(target.y(), source.y() + last.translationY(), .001f);
-                assertEquals(.18f, last.scale(), .00001f);
-                assertEquals(0, last.alpha(), 0);
+                matrixChecks.within("Numeric boundary: target.x()", target.x(), source.x() + last.translationX(), .001f);
+                matrixChecks.within("Numeric boundary: target.y()", target.y(), source.y() + last.translationY(), .001f);
+                matrixChecks.within("Numeric boundary: .18f", .18f, last.scale(), .00001f);
+                matrixChecks.within("Numeric boundary: 0", 0, last.alpha(), 0);
             }
+        assertEquals("The original matrix population remains complete", 1290L, matrixChecks.checkedPairs());
+        matrixChecks.publish();
     }
 
     @Test public void motionNeverOvershootsAndFadesOnlyNearTheDestination() {
+        var matrixChecks = new ExhaustiveMatrixChecks();
+        atf.gradle.audit.GradleInputs.fixture("Exhaustive matrix scope", "scenario", "motionNeverOvershootsAndFadesOnlyNearTheDestination", "expected pairs", 2058);
         var source = new TrickCollectionMotion.Point(200, 300);
         for (var target : new TrickCollectionMotion.Point[]{new TrickCollectionMotion.Point(10, 50),
                 new TrickCollectionMotion.Point(400, 600), source}) {
@@ -69,19 +83,21 @@ public class TrickCollectionMotionComponentTest extends atf.gradle.audit.GradleA
                 var frame = TrickCollectionMotion.frame(source, target, step / 100f);
                 float x = source.x() + frame.translationX(), y = source.y() + frame.translationY();
 
-                atf.gradle.audit.GradleInputs.fixture("Fixture before first assertion", "frame", frame, "previousDistance", previousDistance, "previousScale", previousScale, "source", source, "step", step, "target", target, "x", x, "y", y);
-                assertTrue("x >= Math.min(source.x(), target.x()) && x <= Math.max(source.x(), target.x()) must hold", x >= Math.min(source.x(), target.x()) && x <= Math.max(source.x(), target.x()));
-                assertTrue("y >= Math.min(source.y(), target.y()) && y <= Math.max(source.y(), target.y()) must hold", y >= Math.min(source.y(), target.y()) && y <= Math.max(source.y(), target.y()));
+                matrixChecks.at(CapturedValue.text(new Object[]{"Fixture before first assertion", "frame", frame, "previousDistance", previousDistance, "previousScale", previousScale, "source", source, "step", step, "target", target, "x", x, "y", y}));
+                matrixChecks.equal("x >= Math.min(source.x(), target.x()) && x <= Math.max(source.x(), target.x()) must hold", true, x >= Math.min(source.x(), target.x()) && x <= Math.max(source.x(), target.x()));
+                matrixChecks.equal("y >= Math.min(source.y(), target.y()) && y <= Math.max(source.y(), target.y()) must hold", true, y >= Math.min(source.y(), target.y()) && y <= Math.max(source.y(), target.y()));
                 float distance = (target.x() - x) * (target.x() - x) + (target.y() - y) * (target.y() - y);
-                assertTrue("distance <= previousDistance must hold", distance <= previousDistance);
-                assertTrue("frame.scale() <= previousScale must hold", frame.scale() <= previousScale);
-                assertTrue("frame.scale() >= 0.17999F && frame.scale() <= 1 must hold", frame.scale() >= .17999f && frame.scale() <= 1);
-                assertTrue("frame.alpha() >= 0 && frame.alpha() <= 1 must hold", frame.alpha() >= 0 && frame.alpha() <= 1);
-                if (step < 80) assertEquals(1, frame.alpha(), 0);
+                matrixChecks.equal("distance <= previousDistance must hold", true, distance <= previousDistance);
+                matrixChecks.equal("frame.scale() <= previousScale must hold", true, frame.scale() <= previousScale);
+                matrixChecks.equal("frame.scale() >= 0.17999F && frame.scale() <= 1 must hold", true, frame.scale() >= .17999f && frame.scale() <= 1);
+                matrixChecks.equal("frame.alpha() >= 0 && frame.alpha() <= 1 must hold", true, frame.alpha() >= 0 && frame.alpha() <= 1);
+                if (step < 80) matrixChecks.within("Numeric boundary: 1", 1, frame.alpha(), 0);
                 previousDistance = distance;
                 previousScale = frame.scale();
             }
         }
+        assertEquals("The original matrix population remains complete", 2058L, matrixChecks.checkedPairs());
+        matrixChecks.publish();
     }
 
     @Test public void fractionsOutsideTheWindowClampToTheVisibleOrCollectedEndpoint() {

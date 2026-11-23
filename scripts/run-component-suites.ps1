@@ -4,6 +4,7 @@ param(
     [string]$SourceRoot = (Split-Path -Parent $PSScriptRoot),
     [string[]]$Groups = @(),
     [string]$ReuseFrom = '',
+    [string]$CompilerReuseFrom = '',
     [string]$ResumeFrom = '',
     [string]$PinnedSourceInputs = '',
     [string]$JavaHome = $env:JAVA_HOME,
@@ -43,7 +44,7 @@ if ($TestChangeControl -or $AllTestChangeControls) {
     if (($TestChangeControl -and ($AllTestChangeControls -or $TestChangeControl -cnotmatch '^[A-Z][A-Z0-9-]{3,79}$')) -or
             !$TestChangeBaseRef -or $ReuseFrom -or
             @($Groups | Where-Object { $_ -cne 'atf-tests' }).Count) {
-        throw 'Proba testChanges cere fie un ID, fie toate controalele, baza Git și selecția offline atf-tests fără reutilizare.'
+        throw 'Proba testChanges cere fie un ID, fie toate controalele, baza Git și selecția offline atf-tests fără reutilizarea rapoartelor.'
     }
     $Groups = @('atf-tests')
     $proofCommit = & git --no-replace-objects -C $sourceRoot rev-parse --verify HEAD
@@ -77,7 +78,8 @@ function Invoke-MavenSelections($selections, $stage, $provenanceFile) {
         if ($compiler.eligible) {
             $own = Read-AtfPreparedComponentMaven $workspace $identity $policy.mavenModules
             if ($own) { $own } else {
-                Read-AtfBorrowedComponentMaven $ReuseFrom $workspace $identity $policy.mavenModules $tempRoot
+                $compilerSource = if ($CompilerReuseFrom) { $CompilerReuseFrom } else { $ReuseFrom }
+                Read-AtfBorrowedComponentMaven $compilerSource $workspace $identity $policy.mavenModules $tempRoot
             }
         }
     }

@@ -18,7 +18,7 @@ Gradle separă unitarele izolate, componentele auditate și observațiile opțio
 
 Directorul fizic al proiectului Android rămâne `atf-card-table-ui`; identitatea Gradle este `card-table-android`. Core deține clasele portabile și fixture-urile neutre de testare. Web depinde de core; launcherul construiește JAR-uri de module din rădăcini complete de surse, fără liste individuale de surse comune.
 
-[Catalogul aplicației](../../config/gradle-app-collections.properties) atribuie fiecare pachet unei singure colecții primare: `testDebugCommandsComponents`, `testDebugBiddingComponents`, `testDebugHistoryComponents`, `testDebugDisplayComponents` sau `testDebugAchievementsComponents`. Taskul original `testDebugUnitTest` deleagă către acestea fără să execute o populație duplicată.
+[Catalogul aplicației](../../config/gradle-app-collections.properties) atribuie fiecare pachet unei singure colecții primare: `testDebugCommandsComponents`, `testDebugBiddingComponents`, `testDebugHistoryComponents`, `testDebugDisplayComponents` sau `testDebugAchievementsComponents`. Taskul original `testDebugUnitTest` deleagă către acestea fără să execute o populație duplicată. Responsabilul istoricului include atât testele modelului, cât și întreaga populație `src/rasterTest`; `historyRasterTest` deleagă către el. O singură recipisă Extent acoperă contractele stării și desenării JVM fără o a doua execuție raster.
 
 ## Captura contextului
 
@@ -84,3 +84,7 @@ Partidele offline complete și verificările combinatorii ale regulilor aparțin
 Folosiți un director extern pentru build și cache. `whist.auditOutput` selectează locul dovezilor, iar `whist.auditSource` identifică contextul sursei. Grupați taskurile afectate într-o singură invocare Gradle și păstrați checkpointuri la nivel de task.
 
 [Strategia de testare](README.md) · [Matrice modul × nivel](ATF_TestingGuide.md) · [Continuitatea comună a mesei](ATF_TableContinuity.md) · [Suite Web curente](../../release/WEB/README.md)
+
+## Intrări limitate pentru matrice
+
+Matricele reușite agregă comparațiile pe invariantă. Păstrați fiecare buclă originală, identitatea cazului și oracolul independent; verificați separat populația planificată. Înghețați contextul mutabil înaintea evaluării și publicați-l complet la prima abatere. Matricele de înregistrări, geometrie fină, animație și pixeli rămân componente, fără imagini de produs sau ale desenărilor sintetice; verificările pixelilor se execută în continuare pe rastere în memorie sau trecute prin fișier. Unitarele izolate păstrează diagnosticele JUnit fără Extent.

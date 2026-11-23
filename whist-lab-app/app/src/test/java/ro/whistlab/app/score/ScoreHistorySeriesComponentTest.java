@@ -1,5 +1,7 @@
 package ro.whistlab.app.score;
 
+import atf.gradle.audit.input.CapturedValue;
+
 import static atf.gradle.audit.assertions.GradleAssertions.*;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -19,6 +21,8 @@ import ro.whistlab.core.session.GameSession;
 
 public final class ScoreHistorySeriesComponentTest extends atf.gradle.audit.GradleAuditedTest {
     @Test public void completeMatchesRetainEverySeatsTotalsAndBothSeriesPaymentsAcrossJsonRestarts() throws Exception {
+        var matrixChecks = new ExhaustiveMatrixChecks();
+        atf.gradle.audit.GradleInputs.fixture("Exhaustive matrix scope", "scenario", "completeMatchesRetainEverySeatsTotalsAndBothSeriesPaymentsAcrossJsonRestarts", "expected pairs", 704);
         for (var mode : List.of(GameMode.ROMANIAN_WHIST, GameMode.LONG_ROMANIAN))
             for (int seats = 3; seats <= 6; seats++) for (int bonus : List.of(5, 10)) for (int penalty : List.of(5, 10))
                 for (int missed = 0; missed < seats; missed++) {
@@ -26,14 +30,15 @@ public final class ScoreHistorySeriesComponentTest extends atf.gradle.audit.Grad
                     var ledger = match(mode, seats, bonus, penalty, true, hand -> victim);
                     for (int seat = 0; seat < seats; seat++) {
 
-                        atf.gradle.audit.GradleInputs.fixture("Fixture before first assertion", "bonus", bonus, "ledger", ledger, "missed", missed, "mode", mode, "penalty", penalty, "seat", seat, "seats", seats, "victim", victim);
-                        assertTrue("Every seat must exercise its configured payment", seat == victim
+                        matrixChecks.at(CapturedValue.text(new Object[]{"Fixture before first assertion", "bonus", bonus, "ledger", ledger, "missed", missed, "mode", mode, "penalty", penalty, "seat", seat, "seats", seats, "victim", victim}));
+                        matrixChecks.equal("Every seat must exercise its configured payment", true, seat == victim
                                 ? ledger.negative[seat] > 0 : ledger.positive[seat] > 0);
                     }
                     if (mode == GameMode.LONG_ROMANIAN && seats == 4)
-                        assertTrue("The final hand must include both bonus and penalty rectangles",
-                                ledger.rows.get(ledger.rows.size() - 1).series().stream().allMatch(value -> value != 0));
+                        matrixChecks.equal("The final hand must include both bonus and penalty rectangles", true, ledger.rows.get(ledger.rows.size() - 1).series().stream().allMatch(value -> value != 0));
                 }
+        assertEquals("The original matrix population remains complete", 704L, matrixChecks.checkedPairs());
+        matrixChecks.publish();
     }
 
     @Test public void changingContractsClearOppositeStreaksAndOneCardHandsCannotPayASeries() throws Exception {
@@ -100,6 +105,11 @@ public final class ScoreHistorySeriesComponentTest extends atf.gradle.audit.Grad
 
     private static void verify(GameSession game, Ledger ledger, ExhaustiveMatrixChecks checks) {
         var before = game.saveState();
+        long started = checks.checkedPairs();
+        int hands = ro.whistlab.core.rules.GameRules.handSizes(game.config().mode(), ledger.total.length).size();
+        long awards = ledger.rows.stream().flatMap(row -> row.series().stream()).filter(value -> value != 0).count();
+        long expectedPairs = 2 * (1 + ledger.total.length * (5L * ledger.rows.size()
+                + 2L * (hands - ledger.rows.size()) + 2) + awards) + 1;
         for (var language : HowToPlay.Language.values()) {
             var copy = new WhistUiText(language);
             var table = ScoreHistoryTable.forMatch(game.snapshot(), game.scoreHistory(), copy);
@@ -130,6 +140,8 @@ public final class ScoreHistorySeriesComponentTest extends atf.gradle.audit.Grad
         }
         checks.at("render is read-only");
         checks.equal("render preserves complete game state", before, game.saveState());
+        checks.equal("Both languages retain every planned row, seat, series label and read-only check",
+                expectedPairs, checks.checkedPairs() - started);
     }
 
     private record Expected(List<Integer> totals, List<Integer> delta, List<Integer> bids,

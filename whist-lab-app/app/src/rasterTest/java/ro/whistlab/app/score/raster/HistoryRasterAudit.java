@@ -1,5 +1,9 @@
 package ro.whistlab.app.score.raster;
 
+import atf.gradle.audit.input.CapturedValue;
+
+import atf.gradle.audit.matrix.ExhaustiveMatrixChecks;
+
 import static atf.gradle.audit.assertions.GradleAssertions.*;
 import java.awt.image.BufferedImage;
 
@@ -39,20 +43,27 @@ public final class HistoryRasterAudit {
         }
         String[] contracts = {"Headers remain unchanged", "Every changed pixel stays inside Points", "Ordinary cells remain unchanged",
                 "Series adjustment selects the correct ink", "Rectangle ink stays on the perimeter"};
-        atf.gradle.audit.GradleInputs.fixture("Exhaustively decoded raster context", "specification", spec,
-                "width", widthPixels, "height", heightPixels, "first violating coordinates", first);
-        for (int i = 0; i < contracts.length; i++) assertEquals(contracts[i] + "; first violation=" + first[i], 0, violations[i]);
+        var checks = new ExhaustiveMatrixChecks();
+        long awards = spec.rows().stream().flatMap(row -> row.cells().stream()).filter(cell -> cell.series() != 0).count();
+        long expectedPairs = contracts.length + (long) spec.rows().size() * spec.players().size() + 4 * awards;
+        atf.gradle.audit.GradleInputs.fixture("Exhaustive raster domain", "width", widthPixels, "height", heightPixels,
+                "rows", spec.rows().size(), "players", spec.players().size(), "awarded cells", awards, "expected pairs", expectedPairs);
+        checks.at(CapturedValue.text(new Object[]{"specification", spec,
+                "first violating coordinates", first}));
+        for (int i = 0; i < contracts.length; i++) checks.equal(contracts[i] + "; first violation=" + first[i], 0, violations[i]);
         for (int row = 0; row < spec.rows().size(); row++) for (int seat = 0; seat < spec.players().size(); seat++) {
             int series = spec.rows().get(row).cells().get(seat).series();
-            if (series == 0) { assertEquals("changed[row][seat] must equal 0", 0, changed[row][seat]); continue; }
-            assertTrue("Awarded Points rectangle must be visible", changed[row][seat] > 0);
+            if (series == 0) { checks.equal("changed[row][seat] must equal 0", 0, changed[row][seat]); continue; }
+            checks.equal("Awarded Points rectangle must be visible", true, changed[row][seat] > 0);
             int left = spec.grid().pointsLeft(seat), top = (row + 2) * rowHeight + (rowHeight - frameHeight) / 2;
             int width = spec.grid().points(), ink = series < 0 ? 0xff97462e : 0xff29362e;
-            assertTrue("Top edge missing", edge(after, ink, left, top, width, unit + 1) >= width - 2 * unit);
-            assertTrue("Bottom edge missing", edge(after, ink, left, top + frameHeight - unit - 1, width, unit + 1) >= width - 2 * unit);
-            assertTrue("Left edge missing", edge(after, ink, left, top, unit + 1, frameHeight) >= frameHeight - 2 * unit);
-            assertTrue("Right edge missing", edge(after, ink, left + width - unit - 1, top, unit + 1, frameHeight) >= frameHeight - 2 * unit);
+            checks.equal("Top edge remains visible", true, edge(after, ink, left, top, width, unit + 1) >= width - 2 * unit);
+            checks.equal("Bottom edge remains visible", true, edge(after, ink, left, top + frameHeight - unit - 1, width, unit + 1) >= width - 2 * unit);
+            checks.equal("Left edge remains visible", true, edge(after, ink, left, top, unit + 1, frameHeight) >= frameHeight - 2 * unit);
+            checks.equal("Right edge remains visible", true, edge(after, ink, left + width - unit - 1, top, unit + 1, frameHeight) >= frameHeight - 2 * unit);
         }
+        assertEquals("All original raster contracts and cell edges remain covered", expectedPairs, checks.checkedPairs());
+        checks.publish();
     }
 
     public static void identicalPixels(String context, BufferedImage before, BufferedImage after) {

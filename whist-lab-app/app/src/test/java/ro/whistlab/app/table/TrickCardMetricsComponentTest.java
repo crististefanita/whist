@@ -1,5 +1,9 @@
 package ro.whistlab.app.table;
 
+import atf.gradle.audit.input.CapturedValue;
+
+import atf.gradle.audit.matrix.ExhaustiveMatrixChecks;
+
 import static atf.gradle.audit.assertions.GradleAssertions.assertEquals;
 import static atf.gradle.audit.assertions.GradleAssertions.assertFalse;
 import static atf.gradle.audit.assertions.GradleAssertions.assertThrows;
@@ -9,6 +13,8 @@ import org.junit.Test;
 
 public final class TrickCardMetricsComponentTest extends atf.gradle.audit.GradleAuditedTest {
     @Test public void threeToSixPlayersKeepTheSamePortraitFacesIncludingTheFivePlayerRegression() {
+        var matrixChecks = new ExhaustiveMatrixChecks();
+        atf.gradle.audit.GradleInputs.fixture("Exhaustive matrix scope", "scenario", "threeToSixPlayersKeepTheSamePortraitFacesIncludingTheFivePlayerRegression", "expected pairs", 1537);
         for (int width : new int[]{240, 280, 313, 353, 560, 760}) {
             for (int height : new int[]{569, 600, 760, 818}) {
                 for (float scale : new float[]{1f, 1.3f, 1.5f, 2f}) {
@@ -17,37 +23,39 @@ public final class TrickCardMetricsComponentTest extends atf.gradle.audit.Gradle
                     for (int players = 3; players <= 6; players++) {
                         var layout = TrickCardMetrics.forTable(players, width, scale, viewport);
 
-                        atf.gradle.audit.GradleInputs.fixture("Fixture before first assertion", "height", height, "layout", layout, "players", players, "reference", reference, "scale", scale, "viewport", viewport, "width", width);
-                        assertEquals("Changing seats cannot resize the played faces", reference.cardWidthDp(), layout.cardWidthDp());
-                        assertEquals("layout.cardHeightDp() must equal reference.cardHeightDp()", reference.cardHeightDp(), layout.cardHeightDp());
-                        assertTrue("Played faces remain portrait, including at five seats", layout.cardWidthDp() * 4 <= layout.cardHeightDp() * 3);
-                        assertEquals("layout.cardWidthDp() must equal Math.round(layout.cardHeightDp() * 5.0F / 7)", Math.round(layout.cardHeightDp()*5f/7),layout.cardWidthDp());
+                        matrixChecks.at(CapturedValue.text(new Object[]{"Fixture before first assertion", "height", height, "layout", layout, "players", players, "reference", reference, "scale", scale, "viewport", viewport, "width", width}));
+                        matrixChecks.equal("Changing seats cannot resize the played faces", reference.cardWidthDp(), layout.cardWidthDp());
+                        matrixChecks.equal("layout.cardHeightDp() must equal reference.cardHeightDp()", reference.cardHeightDp(), layout.cardHeightDp());
+                        matrixChecks.equal("Played faces remain portrait, including at five seats", true, layout.cardWidthDp() * 4 <= layout.cardHeightDp() * 3);
+                        matrixChecks.equal("layout.cardWidthDp() must equal Math.round(layout.cardHeightDp() * 5.0F / 7)", Math.round(layout.cardHeightDp()*5f/7), layout.cardWidthDp());
                     }
                 }
             }
         }
-        assertEquals("TrickCardMetrics.forTable(5, 353).cardWidthDp() must equal 50", 50, TrickCardMetrics.forTable(5, 353).cardWidthDp());
+        matrixChecks.equal("TrickCardMetrics.forTable(5, 353).cardWidthDp() must equal 50", 50, TrickCardMetrics.forTable(5, 353).cardWidthDp());
+        assertEquals("The original matrix population remains complete", 1537L, matrixChecks.checkedPairs());
+        matrixChecks.publish();
     }
 
     @Test public void shorterCardFacesKeepSeatAnchorsAndAvoidSeatsAcrossWidthsAndTextScales() {
+        var matrixChecks = new ExhaustiveMatrixChecks();
+        atf.gradle.audit.GradleInputs.fixture("Exhaustive matrix scope", "scenario", "shorterCardFacesKeepSeatAnchorsAndAvoidSeatsAcrossWidthsAndTextScales", "expected pairs", 3780);
         for (int width : new int[]{240, 280, 313, 353, 560, 760}) {
             for (int players = 3; players <= 6; players++) {
                 for (float fontScale : new float[]{1f, 1.3f, 1.5f}) {
                     TrickCardMetrics.Layout layout = TrickCardMetrics.forTable(players, width, fontScale);
                     int expectedRows = players == 4 ? 3 : 2;
 
-                    atf.gradle.audit.GradleInputs.fixture("Fixture before first assertion", "expectedRows", expectedRows, "fontScale", fontScale, "layout", layout, "players", players, "width", width);
-                    assertEquals("Played-card faces retain the requested reduced height",
-                            70, layout.cardHeightDp());
-                    assertTrue("layout.cardWidthDp() >= TrickCardMetrics.MIN_CARD_WIDTH_DP must hold", layout.cardWidthDp() >= TrickCardMetrics.MIN_CARD_WIDTH_DP);
-                    assertTrue("layout.cardWidthDp() <= TrickCardMetrics.MAX_CARD_WIDTH_DP must hold", layout.cardWidthDp() <= TrickCardMetrics.MAX_CARD_WIDTH_DP);
-                    assertEquals("layout.centerWidthDp() must equal width", width, layout.centerWidthDp());
-                    assertTrue("layout.safeCenterWidthDp() <= width must hold", layout.safeCenterWidthDp() <= width);
-                    assertEquals("layout.rows() must equal expectedRows", expectedRows, layout.rows());
-                    assertEquals("layout.centerHeightDp() must equal layout.rows() * (layout.cardHeightDp() + layout.playerLabelHeightDp() + layout.itemVerticalPaddingDp())", layout.rows() * (layout.cardHeightDp() + layout.playerLabelHeightDp()
-                                    + layout.itemVerticalPaddingDp()),
-                            layout.centerHeightDp());
-                    assertTrue("layout.playerLabelHeightDp() >= Math.ceil(TrickCardMetrics.PLAYER_LABEL_HEIGHT_DP * fontScale) must hold", layout.playerLabelHeightDp()
+                    matrixChecks.at(CapturedValue.text(new Object[]{"Fixture before first assertion", "expectedRows", expectedRows, "fontScale", fontScale, "layout", layout, "players", players, "width", width}));
+                    matrixChecks.equal("Played-card faces retain the requested reduced height", 70, layout.cardHeightDp());
+                    matrixChecks.equal("layout.cardWidthDp() >= TrickCardMetrics.MIN_CARD_WIDTH_DP must hold", true, layout.cardWidthDp() >= TrickCardMetrics.MIN_CARD_WIDTH_DP);
+                    matrixChecks.equal("layout.cardWidthDp() <= TrickCardMetrics.MAX_CARD_WIDTH_DP must hold", true, layout.cardWidthDp() <= TrickCardMetrics.MAX_CARD_WIDTH_DP);
+                    matrixChecks.equal("layout.centerWidthDp() must equal width", width, layout.centerWidthDp());
+                    matrixChecks.equal("layout.safeCenterWidthDp() <= width must hold", true, layout.safeCenterWidthDp() <= width);
+                    matrixChecks.equal("layout.rows() must equal expectedRows", expectedRows, layout.rows());
+                    matrixChecks.equal("layout.centerHeightDp() must equal layout.rows() * (layout.cardHeightDp() + layout.playerLabelHeightDp() + layout.itemVerticalPaddingDp())", layout.rows() * (layout.cardHeightDp() + layout.playerLabelHeightDp()
+                                    + layout.itemVerticalPaddingDp()), layout.centerHeightDp());
+                    matrixChecks.equal("layout.playerLabelHeightDp() >= Math.ceil(TrickCardMetrics.PLAYER_LABEL_HEIGHT_DP * fontScale) must hold", true, layout.playerLabelHeightDp()
                             >= Math.ceil(TrickCardMetrics.PLAYER_LABEL_HEIGHT_DP * fontScale));
 
                     int seatHeight = ro.whistlab.app.seat.PlayerSeatMetrics.arrange(
@@ -63,18 +71,17 @@ public final class TrickCardMetricsComponentTest extends atf.gradle.audit.Gradle
                     var seats = plan.seats();
                     for (int first = 0; first < layout.slots().size(); first++) {
                         TrickCardMetrics.Slot slot = layout.slotForSeat(first);
-                        assertEquals("slot.seat() must equal first", first, slot.seat());
-                        assertTrue("slot.row() >= 0 && slot.row() < layout.rows() must hold", slot.row() >= 0 && slot.row() < layout.rows());
-                        assertTrue("slot.leftDp() >= 0 must hold", slot.leftDp() >= 0);
-                        assertTrue("slot.leftDp() + layout.cardWidthDp() <= width must hold", slot.leftDp() + layout.cardWidthDp() <= width);
+                        matrixChecks.equal("slot.seat() must equal first", first, slot.seat());
+                        matrixChecks.equal("slot.row() >= 0 && slot.row() < layout.rows() must hold", true, slot.row() >= 0 && slot.row() < layout.rows());
+                        matrixChecks.equal("slot.leftDp() >= 0 must hold", true, slot.leftDp() >= 0);
+                        matrixChecks.equal("slot.leftDp() + layout.cardWidthDp() <= width must hold", true, slot.leftDp() + layout.cardWidthDp() <= width);
                         TableGeometry.Rect cardAndLabel = new TableGeometry.Rect(slot.leftDp(),
                                 plan.center().top() + slot.row() * layout.cellHeightDp(),
                                 slot.leftDp() + layout.cardWidthDp(),
                                 plan.center().top() + (slot.row() + 1) * layout.cellHeightDp());
                         for (TableGeometry.Rect seat : seats) {
-                            assertFalse("Played card or player label covers a seat at " + width
-                                            + " dp, " + players + " players, font " + fontScale,
-                                    cardAndLabel.overlaps(seat));
+                            matrixChecks.equal("Played card or player label covers a seat at " + width
+                                            + " dp, " + players + " players, font " + fontScale, false, cardAndLabel.overlaps(seat));
                         }
                         for (int second = first + 1; second < layout.slots().size(); second++) {
                             TrickCardMetrics.Slot other = layout.slotForSeat(second);
@@ -83,18 +90,17 @@ public final class TrickCardMetricsComponentTest extends atf.gradle.audit.Gradle
                                     plan.center().top() + other.row() * layout.cellHeightDp(),
                                     other.leftDp() + layout.cardWidthDp(),
                                     plan.center().top() + (other.row() + 1) * layout.cellHeightDp());
-                            assertFalse("Two cards share a slot at " + width + " dp, players="
-                                            + players + ", seats=" + first + "/" + second,
-                                    cardAndLabel.overlaps(otherCard));
+                            matrixChecks.equal("Two cards share a slot at " + width + " dp, players="
+                                            + players + ", seats=" + first + "/" + second, false, cardAndLabel.overlaps(otherCard));
                         }
                     }
-                    assertEquals("layout.slotForSeat(0).row() must equal layout.rows() - 1", layout.rows() - 1, layout.slotForSeat(0).row());
-                    assertEquals("The player's card remains centered at the bottom",
-                            (width - layout.cardWidthDp()) / 2,
-                            layout.slotForSeat(0).leftDp(), 1);
+                    matrixChecks.equal("layout.slotForSeat(0).row() must equal layout.rows() - 1", layout.rows() - 1, layout.slotForSeat(0).row());
+                    matrixChecks.within("The player's card remains centered at the bottom", (width - layout.cardWidthDp()) / 2, layout.slotForSeat(0).leftDp(), 1);
                 }
             }
         }
+        assertEquals("The original matrix population remains complete", 3780L, matrixChecks.checkedPairs());
+        matrixChecks.publish();
     }
 
     @Test public void fourPlayersFormAStableCrossAroundTheHumanBottomSeat() {

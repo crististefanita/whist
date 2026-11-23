@@ -1,5 +1,9 @@
 package ro.whistlab.app.table;
 
+import atf.gradle.audit.input.CapturedValue;
+
+import atf.gradle.audit.matrix.ExhaustiveMatrixChecks;
+
 import ro.whistlab.app.bidding.BidGridMetrics;
 import ro.whistlab.app.hand.HandLayoutMetrics;
 
@@ -37,7 +41,7 @@ public class TableViewportPolicyTest extends atf.gradle.audit.GradleAuditedTest 
     }
 
     @Test public void tallerFramesAndLowerCompositionKeepEveryRegionInsideTheBoard() {
-        var checks = new atf.gradle.audit.matrix.ExhaustiveMatrixChecks();
+        var checks = new ExhaustiveMatrixChecks();
         atf.gradle.audit.GradleInputs.fixture("Table containment matrix", "widthsDp", new int[]{280, 313, 353, 560, 760},
                 "players", "3–6", "naturalHeights", new int[]{48, 62, 82, 110, 156},
                 "extraHeights", new int[]{0, 80, 240}, "expectedPairs", 6250);
@@ -129,6 +133,8 @@ public class TableViewportPolicyTest extends atf.gradle.audit.GradleAuditedTest 
     }
 
     @Test public void compactHandTrickAndEverySeatFitOneViewportWithoutIntersections() {
+        var matrixChecks = new ExhaustiveMatrixChecks();
+        atf.gradle.audit.GradleInputs.fixture("Exhaustive matrix scope", "scenario", "compactHandTrickAndEverySeatFitOneViewportWithoutIntersections", "expected pairs", 606);
         var viewport = new TableViewportPolicy(497);
         int availableBoard = 497 - 4 - 60 - 2 * viewport.outerVerticalPaddingDp()
                 - HandLayoutMetrics.reservedHandHeightDp();
@@ -140,8 +146,8 @@ public class TableViewportPolicyTest extends atf.gradle.audit.GradleAuditedTest 
             int minimum = TableGeometry.minimumHeight(
                     players, seatHeight, trick.centerHeightDp(), viewport.regionGapDp());
 
-            atf.gradle.audit.GradleInputs.fixture("Fixture before first assertion", "availableBoard", availableBoard, "minimum", minimum, "players", players, "reference", reference, "seatHeight", seatHeight, "seatWidth", seatWidth, "trick", trick, "viewport", viewport, "width", width);
-            assertTrue("The whole table must fit a 497 dp viewport: " + players + " players", minimum <= availableBoard);
+            matrixChecks.at(CapturedValue.text(new Object[]{"Fixture before first assertion", "availableBoard", availableBoard, "minimum", minimum, "players", players, "reference", reference, "seatHeight", seatHeight, "seatWidth", seatWidth, "trick", trick, "viewport", viewport, "width", width}));
+            matrixChecks.equal("The whole table must fit a 497 dp viewport: " + players + " players", true, minimum <= availableBoard);
             var plan = TableGeometry.arrangeDisplay(width, availableBoard, players, seatWidth, seatHeight,
                     trick.safeCenterWidthDp(), trick.centerHeightDp(), viewport.regionGapDp(), true,
                     TableGeometry.CenterAlignment.BALANCED);
@@ -153,15 +159,16 @@ public class TableViewportPolicyTest extends atf.gradle.audit.GradleAuditedTest 
             }
             for (int first = 0; first < occupied.size(); first++) {
                 var box = occupied.get(first);
-                assertTrue("box.top() >= 0 && box.bottom() <= availableBoard must hold", box.top() >= 0 && box.bottom() <= availableBoard);
+                matrixChecks.equal("box.top() >= 0 && box.bottom() <= availableBoard must hold", true, box.top() >= 0 && box.bottom() <= availableBoard);
                 for (int second = first + 1; second < occupied.size(); second++) {
-                    assertFalse("Compact regions intersect at " + width + " dp, " + players + " players",
-                            box.overlaps(occupied.get(second)));
+                    matrixChecks.equal("Compact regions intersect at " + width + " dp, " + players + " players", false, box.overlaps(occupied.get(second)));
                 }
             }
-            assertEquals("trick.cardHeightDp() must equal 64", 64, trick.cardHeightDp());
-            assertEquals("Names remain in the seat frames and accessible card descriptions", 0, trick.playerLabelHeightDp());
+            matrixChecks.equal("trick.cardHeightDp() must equal 64", 64, trick.cardHeightDp());
+            matrixChecks.equal("Names remain in the seat frames and accessible card descriptions", 0, trick.playerLabelHeightDp());
         }
+        assertEquals("The original matrix population remains complete", 606L, matrixChecks.checkedPairs());
+        matrixChecks.publish();
     }
 
     @Test public void bidZoneUsesTheLowerPartOfTheAvailableSafeBand() {

@@ -1,5 +1,9 @@
 package ro.whistlab.app.animation;
 
+import atf.gradle.audit.input.CapturedValue;
+
+import atf.gradle.audit.matrix.ExhaustiveMatrixChecks;
+
 import ro.cardtable.ui.animation.CollectionTarget;
 
 import static atf.gradle.audit.assertions.GradleAssertions.*;
@@ -12,6 +16,8 @@ import ro.whistlab.core.session.GamePhase;
 
 public class TrickCollectionRequestComponentTest extends atf.gradle.audit.GradleAuditedTest {
     @Test public void everySeatCanCollectACompleteRomanianTrickWithOrWithoutATrumpWinner() {
+        var matrixChecks = new ExhaustiveMatrixChecks();
+        atf.gradle.audit.GradleInputs.fixture("Exhaustive matrix scope", "scenario", "everySeatCanCollectACompleteRomanianTrickWithOrWithoutATrumpWinner", "expected pairs", 144);
         for (int count = 3; count <= 6; count++) for (int winner = 0; winner < count; winner++)
             for (boolean trump : new boolean[]{false, true}) {
                 var game = CollectionFixtures.completed(count, winner, 2, trump);
@@ -19,14 +25,16 @@ public class TrickCollectionRequestComponentTest extends atf.gradle.audit.Gradle
                 var request = TrickCollectionRequest.from(before, before.lastTrick()).orElseThrow();
                 String context = "players=" + count + ", winner=" + winner + ", trump=" + trump;
 
-                atf.gradle.audit.GradleInputs.fixture("Fixture before first assertion", "before", before, "context", context, "count", count, "game", game, "request", request, "trump", trump, "winner", winner);
-                assertEquals(context, winner, request.winner());
-                assertEquals(context, winner, GameRules.winningSeat(before.lastTrick(), before.trump()));
+                matrixChecks.at(CapturedValue.text(new Object[]{"Fixture before first assertion", "before", before, "context", context, "count", count, "game", game, "request", request, "trump", trump, "winner", winner}));
+                matrixChecks.within("Numeric boundary: context", context, winner, request.winner());
+                matrixChecks.within("Numeric boundary: context", context, winner, GameRules.winningSeat(before.lastTrick(), before.trump()));
                 var order = new ArrayList<Integer>();
                 for (int step = 1; step <= count; step++) order.add((winner + step) % count);
-                assertEquals(context, order, request.seats());
-                assertEquals("game.snapshot() must equal before", before, game.snapshot());
+                matrixChecks.within("Numeric boundary: context", context, order, request.seats());
+                matrixChecks.equal("game.snapshot() must equal before", before, game.snapshot());
             }
+        assertEquals("The original matrix population remains complete", 144L, matrixChecks.checkedPairs());
+        matrixChecks.publish();
     }
 
     @Test public void theActualLastMatchTrickRemainsEligibleAtEveryTableSize() {

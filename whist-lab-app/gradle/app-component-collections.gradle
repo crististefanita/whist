@@ -17,6 +17,16 @@ afterEvaluate {
             def base = original.get()
             testClassesDirs = base.testClassesDirs
             classpath = base.classpath
+            if (collection == 'history') {
+                def rasterCompile = tasks.named('compileHistoryRasterTestJava', JavaCompile)
+                dependsOn rasterCompile
+                def rasterClasses = rasterCompile.flatMap { it.destinationDirectory }
+                testClassesDirs = files(base.testClassesDirs, rasterClasses)
+                classpath = files(rasterClasses, base.classpath)
+                providers.gradleProperty('whist.historyRasterOutput').orNull?.with {
+                    systemProperty 'whist.historyRasterOutput', rootProject.file(it).absolutePath
+                }
+            }
             useJUnit()
             packages.findAll { key, value -> value == collection }.keySet().sort().each { prefix ->
                 include "ro/whistlab/app/${prefix}/**"
@@ -35,6 +45,11 @@ afterEvaluate {
         enabled = false
         dependsOn collections
         description = 'Intrare agregată: execută colecțiile JVM primare; nu repetă testele și raportarea.'
+    }
+    tasks.named('historyRasterTest', Test).configure {
+        enabled = false
+        dependsOn 'testDebugHistoryComponents'
+        description = 'Compatibility entry: history owns model and raster components in one audited execution.'
     }
 
     tasks.register('testDebugAchievementCalibration', Test) {

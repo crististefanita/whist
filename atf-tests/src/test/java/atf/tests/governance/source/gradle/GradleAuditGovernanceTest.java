@@ -129,5 +129,9 @@ public final class GradleAuditGovernanceTest {
                 "Every primary collection has a valid stable identifier");
         String build = Files.readString(root.resolve("whist-lab-app/gradle/app-component-collections.gradle"));
         assertTrue(build.contains("enabled = false") && build.contains("dependsOn collections"), "The original task delegates and does not execute a duplicate population");
+        assertTrue(build.contains("if (collection == 'history')") && build.contains("files(base.testClassesDirs, rasterClasses)")
+                && build.contains("files(rasterClasses, base.classpath)"), "History owns both state and rendered JVM components");
+        assertTrue(build.contains("tasks.named('historyRasterTest', Test).configure")
+                && build.contains("dependsOn 'testDebugHistoryComponents'"), "Raster compatibility must delegate to its primary owner");
     }
 }

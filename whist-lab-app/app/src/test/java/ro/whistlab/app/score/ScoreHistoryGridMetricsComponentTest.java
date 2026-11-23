@@ -1,11 +1,17 @@
 package ro.whistlab.app.score;
 
+import atf.gradle.audit.input.CapturedValue;
+
+import atf.gradle.audit.matrix.ExhaustiveMatrixChecks;
+
 import static atf.gradle.audit.assertions.GradleAssertions.*;
 import org.junit.Test;
 import ro.whistlab.app.score.layout.BidStrikeGeometry;
 
 public final class ScoreHistoryGridMetricsComponentTest extends atf.gradle.audit.GradleAuditedTest {
     @Test public void playerHeadersAndSubcolumnsAlignWithoutClippingAtFractionalDensities() {
+        var matrixChecks = new ExhaustiveMatrixChecks();
+        atf.gradle.audit.GradleInputs.fixture("Exhaustive matrix scope", "scenario", "playerHeadersAndSubcolumnsAlignWithoutClippingAtFractionalDensities", "expected pairs", 182);
         for (int players = 3; players <= 6; players++) {
             for (float density : new float[]{1f, 1.5f, 2f, 2.25f, 2.625f, 2.75f, 3.5f}) {
                 var grid = ScoreHistoryGridMetrics.forDensity(players, density);
@@ -14,13 +20,15 @@ public final class ScoreHistoryGridMetricsComponentTest extends atf.gradle.audit
                     header += grid.separatorWidthPx() + grid.playerWidthPx();
                     cells += grid.separatorWidthPx() + grid.bidWidthPx() + grid.pointsWidthPx();
 
-                    atf.gradle.audit.GradleInputs.fixture("Fixture before first assertion", "cells", cells, "density", density, "grid", grid, "header", header, "players", players, "seat", seat);
-                    assertEquals("Player boundary at density " + density, header, cells);
+                    matrixChecks.at(CapturedValue.text(new Object[]{"Fixture before first assertion", "cells", cells, "density", density, "grid", grid, "header", header, "players", players, "seat", seat}));
+                    matrixChecks.equal("Player boundary at density " + density, header, cells);
                 }
-                assertEquals("cells + 2 * grid.outerPaddingPx() must equal grid.tableWidthPx()", grid.tableWidthPx(), cells + 2 * grid.outerPaddingPx());
-                assertEquals("grid.separatorWidthPx() must equal Math.round(2.1F * density)", Math.round(2.1f * density), grid.separatorWidthPx());
+                matrixChecks.equal("cells + 2 * grid.outerPaddingPx() must equal grid.tableWidthPx()", grid.tableWidthPx(), cells + 2 * grid.outerPaddingPx());
+                matrixChecks.equal("grid.separatorWidthPx() must equal Math.round(2.1F * density)", Math.round(2.1f * density), grid.separatorWidthPx());
             }
         }
+        assertEquals("The original matrix population remains complete", 182L, matrixChecks.checkedPairs());
+        matrixChecks.publish();
     }
 
     @Test public void fractionalDensityKeepsTheExtraSubcolumnPixelRatherThanClippingIt() {
@@ -63,6 +71,8 @@ public final class ScoreHistoryGridMetricsComponentTest extends atf.gradle.audit
     }
 
     @Test public void diagonalStrikeCrossesZeroAndTwoDigitBidsWithoutEnteringTheirNeighbours() {
+        var matrixChecks = new ExhaustiveMatrixChecks();
+        atf.gradle.audit.GradleInputs.fixture("Exhaustive matrix scope", "scenario", "diagonalStrikeCrossesZeroAndTwoDigitBidsWithoutEnteringTheirNeighbours", "expected pairs", 163);
         for (float density : new float[]{1, 1.5f, 2.625f, 2.75f, 3.5f}) {
             for (float scale : new float[]{1, 1.15f, 1.3f, 1.5f}) {
                 for (int digits : new int[]{1, 2}) {
@@ -71,17 +81,19 @@ public final class ScoreHistoryGridMetricsComponentTest extends atf.gradle.audit
                     float left = (width - glyphWidth) / 2;
                     var line = BidStrikeGeometry.across(left, 4, left + glyphWidth, 4 + 12 * density * scale, width, density);
 
-                    atf.gradle.audit.GradleInputs.fixture("Fixture before first assertion", "density", density, "digits", digits, "glyphWidth", glyphWidth, "left", left, "line", line, "scale", scale, "width", width);
-                    assertTrue("line.left() <= left && line.right() >= left + glyphWidth must hold", line.left() <= left && line.right() >= left + glyphWidth);
-                    assertTrue("line.left() >= density && line.right() <= width - density must hold", line.left() >= density && line.right() <= width - density);
-                    assertTrue("line.bottom() > line.top() must hold", line.bottom() > line.top());
-                    assertTrue("line.top() > 4 && line.bottom() < 4 + 12 * density * scale must hold", line.top() > 4 && line.bottom() < 4 + 12 * density * scale);
+                    matrixChecks.at(CapturedValue.text(new Object[]{"Fixture before first assertion", "density", density, "digits", digits, "glyphWidth", glyphWidth, "left", left, "line", line, "scale", scale, "width", width}));
+                    matrixChecks.equal("line.left() <= left && line.right() >= left + glyphWidth must hold", true, line.left() <= left && line.right() >= left + glyphWidth);
+                    matrixChecks.equal("line.left() >= density && line.right() <= width - density must hold", true, line.left() >= density && line.right() <= width - density);
+                    matrixChecks.equal("line.bottom() > line.top() must hold", true, line.bottom() > line.top());
+                    matrixChecks.equal("line.top() > 4 && line.bottom() < 4 + 12 * density * scale must hold", true, line.top() > 4 && line.bottom() < 4 + 12 * density * scale);
                 }
             }
         }
         assertThrows("The operation rejects its input with IllegalArgumentException.class", IllegalArgumentException.class, () -> BidStrikeGeometry.across(5, 0, 4, 8, 20, 1));
         assertThrows("The operation rejects its input with IllegalArgumentException.class", IllegalArgumentException.class, () -> BidStrikeGeometry.across(0, 0, 4, 8, 2, 1));
         assertThrows("The operation rejects its input with IllegalArgumentException.class", IllegalArgumentException.class, () -> BidStrikeGeometry.across(0, 0, Float.NaN, 8, 20, 1));
+        assertEquals("The original matrix population remains complete", 163L, matrixChecks.checkedPairs());
+        matrixChecks.publish();
     }
 
     @Test public void visibleLabelsContainOnlyCardsWhileRepeatedHandsKeepDistinctIdentities() {
@@ -117,7 +129,7 @@ public final class ScoreHistoryGridMetricsComponentTest extends atf.gradle.audit
     }
 
     @Test public void spareWidthIsSharedByColumnsAndEveryHeaderKeepsItsBodyBoundary() {
-        var checks = new atf.gradle.audit.matrix.ExhaustiveMatrixChecks();
+        var checks = new ExhaustiveMatrixChecks();
         atf.gradle.audit.GradleInputs.fixture("Score-history width matrix", "players", "3–6",
                 "densities", new float[]{1, 1.5f, 2, 2.625f, 3.5f}, "fontScales", new float[]{1, 1.3f, 1.5f},
                 "viewportWidthsPx", new int[]{240, 320, 480, 644, 720, 1080, 1460, 2400}, "expectedPairs", 5520);
@@ -170,14 +182,18 @@ public final class ScoreHistoryGridMetricsComponentTest extends atf.gradle.audit
     }
 
     @Test public void pixelRemaindersCannotCreateAnEmptyStripOrAnOverflow() {
+        var matrixChecks = new ExhaustiveMatrixChecks();
+        atf.gradle.audit.GradleInputs.fixture("Exhaustive matrix scope", "scenario", "pixelRemaindersCannotCreateAnEmptyStripOrAnOverflow", "expected pairs", 408);
         for (int seats = 3; seats <= 6; seats++) {
             var minimum = ScoreHistoryGridMetrics.forDensity(seats, 1);
             for (int width = minimum.tableWidthPx(); width < minimum.tableWidthPx() + 100; width++)
                 {
-atf.gradle.audit.GradleInputs.fixture("Fixture before first assertion", "minimum", minimum, "seats", seats, "width", width);
-assertEquals("minimum.fitViewport(width).tableWidthPx() must equal width", width, minimum.fitViewport(width).tableWidthPx()); }
-            assertEquals("minimum.fitViewport(Integer.MAX_VALUE).tableWidthPx() must equal Integer.MAX_VALUE", Integer.MAX_VALUE, minimum.fitViewport(Integer.MAX_VALUE).tableWidthPx());
+matrixChecks.at(CapturedValue.text(new Object[]{"Fixture before first assertion", "minimum", minimum, "seats", seats, "width", width}));
+matrixChecks.equal("minimum.fitViewport(width).tableWidthPx() must equal width", width, minimum.fitViewport(width).tableWidthPx()); }
+            matrixChecks.equal("minimum.fitViewport(Integer.MAX_VALUE).tableWidthPx() must equal Integer.MAX_VALUE", Integer.MAX_VALUE, minimum.fitViewport(Integer.MAX_VALUE).tableWidthPx());
             assertThrows("The operation rejects its input with IllegalArgumentException.class", IllegalArgumentException.class, () -> minimum.fitViewport(-1));
         }
+        assertEquals("The original matrix population remains complete", 408L, matrixChecks.checkedPairs());
+        matrixChecks.publish();
     }
 }

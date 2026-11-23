@@ -71,6 +71,7 @@ function affectedGroups(file) {
       || file.startsWith('lib/')) return allGroups;
 
   if (file === 'config/gradle-app-collections.properties') return [...appGroups, 'atf-tests'];
+  if (file === 'whist-lab-app/gradle/app-component-collections.gradle') return [...appGroups, 'atf-tests'];
   if (file === 'config/gradle-audit-collections.properties' || /^config\/gradle-[^/]+\.properties$/.test(file)
       || file.startsWith('whist-lab-app/gradle/') || file.startsWith('whist-lab-app/gradle/wrapper/')
       || ['whist-lab-app/build.gradle', 'whist-lab-app/settings.gradle', 'whist-lab-app/gradle.properties'].includes(file)
