@@ -69,7 +69,7 @@ function Read-AtfPreparedComponentMaven([string]$Work, [string]$Identity, [strin
             Assert-AtfCompilerDirectPath $manifest
             if ($receipt.identity -cne (Get-AtfInputFingerprint ($receipt.compilerFingerprint + ':' + $receipt.toolFingerprint)) -or
                     (Get-FileHash -LiteralPath $manifest).Hash.ToLowerInvariant() -cne $receipt.inputManifestSha256 -or
-                    (Get-AtfCompilerInputs $manifest).fingerprint -cne $receipt.compilerFingerprint) { return }
+                    (Get-AtfCompilerInputs $manifest (Join-Path $Work 'project')).fingerprint -cne $receipt.compilerFingerprint) { return }
         }
         $repository = Join-Path $Work $receipt.repo
         if (!(Test-Path -LiteralPath $repository -PathType Container) -or

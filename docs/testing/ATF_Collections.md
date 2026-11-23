@@ -212,24 +212,27 @@ Fixture-urile de guvernanță determină release-ul activ prin `release/index.js
 
 ## Reutilizarea compilării Maven
 
-Compilarea și execuția au identități separate. [Inventarul compilatorului](../../atf-tests/tools/component-compiler-inputs.mjs) omite Markdown-ul editorial și înregistrarea reviziei bilingve; Java, POM-urile, payload-urile de resurse, binarele, codul lansatoarelor și intrările necunoscute rămân incluse.
+Compilarea și execuția au identități separate. [Inventarul compilatorului](../../atf-tests/tools/component-compiler-inputs.mjs) omite Markdown-ul editorial, revizia bilingvă și sursele Java de test admise ca exclusive Gradle. Inventarul execuției rămâne complet.
 
 | Limită | Admitere și rezultat |
 |---|---|
 | Cheia compilării | Inventarul sursei needitoriale, binarele JDK, instalarea Maven, setările utilizatorului și opțiunile de mediu acceptate trebuie să corespundă. Parametrii externi necunoscuți dezactivează reutilizarea. |
+| Perimetru Maven | [Admiterea rețetei](../../scripts/AtfCompilerIdentity.ps1) leagă octeții politicii și POM-urilor, inclusiv rădăcinile literale, adăugirile build-helper și resursele profilurilor. Numai Java dintr-o rădăcină suplimentară declarată de test, în afara tuturor rădăcinilor Maven de compilare/resurse, poate ieși din cheia compilării. |
+| Graniță conservatoare | Furnizorii comuni, resursele, POM-urile, binarele, lansatoarele și fișierele necunoscute rămân incluse. Pluginurile, extensiile, reactoarele imbricate sau rădăcinile nerezolvate nesuportate păstrează cheia needitorială completă; rețetele nelegate de inventar sau indirecte sunt respinse. |
 | Ieșirea compilată | [Admiterea ieșirii](../../scripts/AtfComponentMaven.ps1) verifică clasele, resursele, octeții dependențelor JAR/POM, inventarul înghețat al intrărilor și destinațiile classpath-ului. Datele lipsă sau alterate selectează pregătirea nouă. |
 | Altă rulare | [Împrumutul](../../scripts/AtfComponentMavenReuse.ps1) determină spațiul original al compilatorului în rădăcina temporară externă configurată și păstrează rezervarea exclusivă pe toată execuția. Nu se copiază depozitul sau arborele claselor. |
 | Generarea probelor | `-CompilerReuseFrom <compiler-run>` poate împrumuta compilarea admisă la generarea unui control sau a lotului. Fiecare control selectat rulează din nou; nicio probă sau raport nu se împrumută. Execuția eșuată ori incompletă nu promovează o probă. `-ReuseFrom` rămâne interzis la generarea probelor. |
 | Snapshot-ul execuției | Snapshot-urile actuale ale sursei și release-ului rămân obligatorii. Reutilizarea compilării nu creditează un test; selecția responsabililor și validarea rapoartelor originale rămân independente. |
 | Durata de viață | Referințele funcționează numai cât supraviețuiește spațiul verificat al compilatorului. Spațiile ocupate, lipsă, indirecte, străine ori vechi declanșează compilarea nouă; rapoartele păstrate se pot reutiliza independent. |
 
-- O reluare numai pentru documentație păstrează responsabilul compilării și înregistrează aserțiuni noi pe snapshot-ul actual; după curățarea spațiului, pregătirea reîncepe din sursă.
+- Modificările de documentație și de teste exclusive Gradle admise pot păstra compilatorul Maven, iar responsabilul afectat rulează pe snapshot-ul actual. Sigiliile octeților și rezervările spațiului rămân obligatorii; după curățare, pregătirea reîncepe din sursă.
 
 Runnerul înregistrează identitatea compilatorului, admiterea cache-ului și sigilarea ieșirii ca etape de timp distincte. O compilare împrumutată are receipt-ul original și o referință legată prin hash în noul spațiu; proveniența sursei și rapoartele vechi nu se rescriu.
 
 ```mermaid
 flowchart LR
-    SOURCE[Snapshot actual al sursei] -->|elimină intrările editoriale| KEY[Cheia compilatorului și uneltelor]
+    SOURCE[Snapshot actual al sursei] -->|admite perimetrul Maven| FILTER[Păstrează dependențele compilării]
+    FILTER -->|elimină numai intrări admise| KEY[Cheia compilatorului și uneltelor]
     KEY -->|verifică octeții și rezervă| CACHE[Spațiul compilat original]
     KEY -->|lipsă ori incompatibil| BUILD[Pregătire Maven nouă]
     CACHE -->|oferă clase verificate| RUN[Responsabilul de test selectat]

@@ -7,6 +7,40 @@ Acest registru definește controalele revizuite, baza Git și căile lor exacte.
 ## Controale verificate
 
 <details>
+<summary>Responsabilitatea compilării Maven și execuție nouă</summary>
+
+```yaml
+testChanges:
+  - id: RAG-MAVEN-INPUT-OWNERSHIP
+    status: VERIFIED
+    base: 2ca72d50c35d15375b294cce8aa502dc18feb4fd
+    expires: 2026-12-24
+    reason: Leagă rețetele literale Maven și build-helper înainte să excludă Java de test exclusiv Gradle înregistrată din cheia compilării. Păstrează resursele, intrările necunoscute, snapshoturile complete ale execuției și sigiliile ieșirilor. Rulează controale noi pe snapshoturi Gradle modificate cu compilator reutilizat; respinge rețete și ieșiri nesuportate, străine, indirecte sau corupte.
+    proof: 'mvn -o -pl atf-tests -am -Dtest=ComponentEvidenceScopeComponentTest -Dsurefire.failIfNoSpecifiedTests=false test'
+    checks:
+      positive:
+        - atf.tests.governance.documentation.release.rag.scope.ComponentEvidenceScopeComponentTest#literalMavenRootsKeepSharedProvidersAndRejectUnknownOrUnboundRecipes
+        - atf.tests.governance.documentation.release.rag.scope.ComponentEvidenceScopeComponentTest#gradleOnlyChangesReuseCompilationWithoutReusingControlVerdicts
+        - atf.tests.governance.documentation.release.rag.scope.ComponentEvidenceScopeComponentTest#editorialChangesReuseVerifiedMavenCompilationAndKeepFreshExecutionInputs
+        - atf.tests.governance.suites.AtfCollectionOwnershipComponentTest#realDependencyClosuresSelectOnlyTheirConsumers
+      negative:
+        - atf.tests.governance.documentation.release.rag.scope.ComponentEvidenceScopeComponentTest#tamperedCompilerCannotQualifyProofGeneration
+        - atf.tests.governance.suites.AtfCollectionOwnershipComponentTest#missingOrUnreviewedDependenciesCannotAuthorizeReuse
+    paths:
+      - scripts/AtfCompilerIdentity.ps1
+      - scripts/AtfComponentMaven.ps1
+      - scripts/run-component-suites.ps1
+      - atf-tests/tools/component-compiler-inputs.mjs
+      - atf-tests/tools/component-compiler-inputs.test.mjs
+      - atf-tests/tools/component-compiler-scope.test.mjs
+      - atf-tests/tools/component-proof-compiler-reuse.test.mjs
+      - atf-tests/src/test/java/atf/tests/governance/documentation/release/rag/scope/ComponentEvidenceScopeComponentTest.java
+      - config/atf-component-dependencies.json
+```
+
+</details>
+
+<details>
 <summary>Unitare de politici comune și admiterea gazdei statice</summary>
 
 ```yaml

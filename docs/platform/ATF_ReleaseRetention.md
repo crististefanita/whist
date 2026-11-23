@@ -157,6 +157,8 @@ Reluați verificarea cu `--recipe $GitProof` și o ieșire nouă dacă a fost fo
 
 Livrarea este completă numai când proiecția locală `release/` conține cea mai nouă ediție publicată din catalogul canonic.
 
+Directorul `release/` versionat în proiect este catalogul canonic cu două versiuni. Proiecția de mai jos, cu o singură versiune, este un director separat de livrare `--local-release`; nu reduce catalogul versionat la o versiune.
+
 | Locație sau control | Stare cerută |
 |---|---|
 | Proiecția locală | Exact o versiune, selectată de catalogul canonic publicat. |

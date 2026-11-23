@@ -71,7 +71,7 @@ function Invoke-MavenSelections($selections, $stage, $provenanceFile) {
     $workspace = Split-Path -Parent $stage
     $policy = Get-Content -LiteralPath (Join-Path $stage 'config/atf-governance-policy.json') -Raw | ConvertFrom-Json
     $compiler = Invoke-AtfQualificationPhase $timing 'components.compiler-identity' {
-        Get-AtfComponentCompilerIdentity (Join-Path $RunRoot 'source-inputs.json') $java $command.Source
+        Get-AtfComponentCompilerIdentity (Join-Path $RunRoot 'source-inputs.json') $java $command.Source $stage
     }
     $identity = $compiler.identity
     $prepared = Invoke-AtfQualificationPhase $timing 'components.compiler-admission' {

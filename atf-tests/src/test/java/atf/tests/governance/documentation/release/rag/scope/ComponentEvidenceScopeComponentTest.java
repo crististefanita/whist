@@ -42,6 +42,20 @@ class ComponentEvidenceScopeComponentTest {
     }
 
     @Test @ExtendWith(GameReportAudit.class)
+    void literalMavenRootsKeepSharedProvidersAndRejectUnknownOrUnboundRecipes(ComponentInputs inputs) throws Exception {
+        var root = GovernanceProject.locateProjectRoot();
+        String output = runNode(List.of("node", "--test", root.resolve("atf-tests/tools/component-compiler-scope.test.mjs").toString()),
+                root, Duration.ofSeconds(100), value -> inputs.add("Literal POM, build-helper, profile resource and recipe rejection observations", value));
+        AuditedAssertions.assertTrue(output.contains("Literal Maven compiler scope observations:"), "Compiled providers and resources remain in the key");
+        AuditedAssertions.assertTrue(output.contains("Compiler scope rejection observations:"), "Unknown recipes fall back; unbound and indirect recipes are rejected");
+    }
+
+    @Test @ExtendWith(GameReportAudit.class)
+    void gradleOnlyChangesReuseCompilationWithoutReusingControlVerdicts(ComponentInputs inputs) throws Exception {
+        proofCompilerContract("isolated Gradle", inputs);
+    }
+
+    @Test @ExtendWith(GameReportAudit.class)
     void borrowedCompilerDoesNotCacheControlExecution(ComponentInputs inputs) throws Exception {
         proofCompilerContract("keeps every control", inputs);
     }
