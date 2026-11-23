@@ -48,6 +48,17 @@ final class ReleaseArtifactCatalog {
         require(Files.isRegularFile(root.resolve("README.md")), "README", root);
         Set<String> expected = new HashSet<>(names);
         expected.addAll(Set.of("README.md", "index.json"));
+        if (index.has("webDossier")) {
+            require("WEB/index.json".equals(index.get("webDossier").asText()), "WEB-REGISTRATION", root);
+            Path web = root.resolve("WEB");
+            require(Files.isDirectory(web) && !Files.isSymbolicLink(web)
+                    && web.toRealPath().getParent().equals(root.toRealPath()), "WEB-FOLDER", web);
+            require(Files.isRegularFile(web.resolve("README.md")) && Files.isRegularFile(web.resolve("index.json")), "WEB-REQUIRED", web);
+            var dossier = JSON.readTree(web.resolve("index.json").toFile());
+            require(dossier.path("schemaVersion").asInt() == 1
+                    && "WHIST_WEB_TEST_DOSSIER".equals(dossier.path("kind").asText()), "WEB-SCHEMA", web);
+            expected.add("WEB");
+        }
         var candidateVersion = index.path("candidateVersion");
         if (!candidateVersion.isMissingNode()) {
             String version = candidateVersion.asText();
