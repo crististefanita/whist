@@ -1,4 +1,4 @@
-# Whist 0.24.0
+# Whist Lab 0.24.0
 
 Whist 0.24.0 separă contractele portabile de prezentare de adaptoarele Android și Web și corectează parsarea viewport-ului mobil fracționar.
 

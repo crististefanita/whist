@@ -67,3 +67,5 @@ Toate selecțiile native folosesc Android API 28 la 1080×1920, densitate 440. C
 [Sursă curentă](apk-inputs.json) · [Execuție de componentă](component/source-component-run.json) · [Decizii de reutilizare](component/component-reuse.json) · [Echivalența build-ului APK](diagnostics/apk-build-equivalence.json) · [Plan de calificare](qualification-plan.json)
 
 APK-ul a fost construit înaintea mentenanței limitate la verificări. Octeții și intrările build-ului nativ rămân identice; validatorul curent admite independent snapshot-urile execuțiilor originale. Emularea Web nu închide acceptanța Chrome Android pe același dispozitiv.
+
+[Catalogul versiunilor](../../README.md) · [Strategia de testare](../../../docs/testing/README.md)

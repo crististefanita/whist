@@ -313,7 +313,7 @@
   "integrity": {
     "schemaVersion": 1,
     "kind": "OBSERVED_PAYLOAD_HASHES",
-    "observedUtc": "2026-11-23T17:36:42.337Z",
+    "observedUtc": "2026-11-23T19:00:53.702Z",
     "files": [
       {
         "path": "README.md",
@@ -337,8 +337,8 @@
       },
       {
         "path": "release-notes.md",
-        "bytes": 917,
-        "sha256": "3a3b148a20511141ef5a3562ad0276c9574b390084436486ceebfa21eac866d8"
+        "bytes": 921,
+        "sha256": "7d85d0fb6b1fa5487283984197c92a7e3368d73300e2b9864d0cfb6ae8fb82b2"
       },
       {
         "path": "release-presentation.json",
@@ -347,8 +347,8 @@
       },
       {
         "path": "reports/README.md",
-        "bytes": 4672,
-        "sha256": "f82c3dba1e1e0c8b87a448b6f72f0484404508ff8aee6d4a98c443cce83f862f"
+        "bytes": 4773,
+        "sha256": "54a311ae7d7855e4f332d543394aa9069621ed0c346a398eba24a1101a1dc499"
       },
       {
         "path": "reports/apk-inputs.json",
