@@ -1,0 +1,135 @@
+To honour the JVM settings for this build a single-use Daemon process will be forked. For more on this, please refer to https://docs.gradle.org/9.6.1/userguide/gradle_daemon.html#sec:disabling_the_daemon in the Gradle documentation.
+Daemon will be stopped at the end of the build 
+> Task :card-table-core:compileJava
+> Task :card-table-names:compileJava
+> Task :game-core:compileJava
+> Task :whist-presentation:generateWhistAchievementCatalog
+> Task :whist-presentation:compileJava
+> Task :whist-presentation:processResources NO-SOURCE
+> Task :whist-presentation:classes
+> Task :whist-presentation:jar
+> Task :game-core:processResources NO-SOURCE
+> Task :game-core:classes
+> Task :game-core:jar
+> Task :card-table-names:processResources NO-SOURCE
+> Task :card-table-names:classes
+> Task :card-table-names:jar
+> Task :card-table-core:processResources NO-SOURCE
+> Task :card-table-core:classes
+> Task :card-table-core:jar
+> Task :app:preBuild UP-TO-DATE
+> Task :app:preReleaseBuild UP-TO-DATE
+> Task :app:mergeReleaseJniLibFolders
+> Task :card-table-android:preBuild UP-TO-DATE
+> Task :card-table-android:preReleaseBuild UP-TO-DATE
+> Task :card-table-android:mergeReleaseJniLibFolders
+> Task :card-table-android:mergeReleaseNativeLibs NO-SOURCE
+> Task :card-table-android:copyReleaseJniLibsProjectOnly
+> Task :app:mergeReleaseNativeLibs NO-SOURCE
+> Task :app:stripReleaseDebugSymbols NO-SOURCE
+> Task :app:extractReleaseNativeSymbolTables NO-SOURCE
+> Task :app:mergeReleaseNativeDebugMetadata NO-SOURCE
+> Task :card-table-android:prepareReleaseArtProfile
+> Task :app:mergeReleaseArtProfile
+> Task :app:expandReleaseL8ArtProfileWildcards
+> Task :card-table-android:generateReleaseResources
+> Task :card-table-android:packageReleaseResources
+> Task :card-table-android:processReleaseNavigationResources
+> Task :card-table-android:parseReleaseLocalResources
+> Task :card-table-android:generateReleaseRFile
+> Task :card-table-android:compileReleaseKotlin NO-SOURCE
+> Task :card-table-android:javaPreCompileRelease
+
+> Task :card-table-android:compileReleaseJavaWithJavac
+Note: Some input files use or override a deprecated API.
+Note: Recompile with -Xlint:deprecation for details.
+
+> Task :app:checkReleaseDuplicateClasses
+> Task :app:generateReleaseBuildConfig
+> Task :app:generateReleaseResources
+> Task :app:packageReleaseResources
+> Task :card-table-android:bundleLibRuntimeToDirRelease
+> Task :app:processReleaseNavigationResources
+> Task :app:parseReleaseLocalResources
+> Task :app:generateReleaseRFile
+> Task :card-table-android:bundleLibCompileToJarRelease
+> Task :app:compileReleaseKotlin NO-SOURCE
+> Task :app:javaPreCompileRelease
+
+> Task :app:compileReleaseJavaWithJavac
+Note: Some input files use or override a deprecated API.
+Note: Recompile with -Xlint:deprecation for details.
+
+> Task :card-table-android:writeReleaseAarMetadata
+> Task :app:mapReleaseSourceSetPaths
+> Task :app:checkReleaseAarMetadata
+> Task :app:compileReleaseNavigationResources
+> Task :app:createReleaseCompatibleScreenManifests
+> Task :app:extractDeepLinksRelease
+> Task :card-table-android:extractDeepLinksRelease
+> Task :card-table-android:processReleaseManifest
+> Task :app:processReleaseMainManifest
+> Task :app:mergeReleaseResources
+> Task :app:processReleaseManifest
+> Task :card-table-android:mapReleaseSourceSetPaths
+> Task :card-table-android:compileReleaseLibraryResources
+> Task :app:processReleaseManifestForPackage
+> Task :app:desugarReleaseFileDependencies
+> Task :app:mergeReleaseStartupProfile
+> Task :app:processReleaseResources
+> Task :app:mergeExtDexRelease
+> Task :app:dexBuilderRelease
+> Task :card-table-android:bundleLibRuntimeToJarRelease
+> Task :app:mergeDexRelease
+> Task :app:mergeReleaseGlobalSynthetics
+> Task :app:generateReleaseAssets UP-TO-DATE
+> Task :card-table-android:generateReleaseAssets UP-TO-DATE
+> Task :card-table-android:mergeReleaseAssets
+> Task :app:mergeReleaseAssets
+> Task :app:compressReleaseAssets
+> Task :app:extractReleaseVersionControlInfo
+> Task :app:extractProguardFiles
+> Task :card-table-android:compressReleaseJavaRes NO-SOURCE
+> Task :card-table-android:createFullJarRelease
+> Task :card-table-android:extractProguardFiles
+> Task :card-table-android:generateReleaseLintModel
+> Task :card-table-android:prepareLintJarForPublish
+> Task :app:generateReleaseLintVitalReportModel
+> Task :card-table-android:checkReleaseAarMetadata
+> Task :card-table-android:extractDeepLinksForAarRelease
+> Task :card-table-android:extractReleaseAnnotations
+> Task :card-table-android:mergeReleaseGeneratedProguardFiles
+> Task :card-table-android:mergeReleaseConsumerProguardFiles
+> Task :card-table-android:mergeReleaseJavaResource
+> Task :card-table-android:syncReleaseLibJars
+> Task :card-table-android:bundleReleaseLocalLintAar
+> Task :app:l8DexDesugarLibRelease
+> Task :app:compileReleaseArtProfile
+> Task :card-table-android:writeReleaseLintModelMetadata
+> Task :card-table-android:generateReleaseLintVitalModel
+> Task :app:compressReleaseJavaRes NO-SOURCE
+> Task :app:mergeReleaseJavaResource
+> Task :app:optimizeReleaseResources
+> Task :app:collectReleaseDependencies
+> Task :app:sdkReleaseDependencyData
+> Task :app:writeReleaseAppMetadata
+> Task :app:writeReleaseSigningConfigVersions
+> Task :card-table-android:lintVitalAnalyzeRelease
+> Task :app:lintVitalAnalyzeRelease
+> Task :app:lintVitalReportRelease
+> Task :app:lintVitalRelease
+> Task :app:packageRelease
+> Task :app:createReleaseApkListingFileRedirect
+> Task :app:assembleRelease
+
+[Incubating] Problems report is available at: file:///C:/work/whist_back/release-0.24.1/apk-build/root/reports/problems/problems-report.html
+
+Deprecated Gradle features were used in this build, making it incompatible with Gradle 10.
+
+You can use '--warning-mode all' to show the individual deprecation warnings and determine if they come from your own scripts or plugins.
+
+For more on this, please refer to https://docs.gradle.org/9.6.1/userguide/command_line_interface.html#sec:command_line_warnings in the Gradle documentation.
+
+BUILD SUCCESSFUL in 2m 15s
+89 actionable tasks: 89 executed
+Consider enabling configuration cache to speed up this build: https://docs.gradle.org/9.6.1/userguide/configuration_cache_enabling.html
