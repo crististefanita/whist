@@ -21,6 +21,7 @@ test('production Web and native portable adapters share geometry, card marks and
     'whist-lab-app/card-table-names/src/main/java','whist-lab-app/game-core/src/main/java',
     'whist-lab-app/app/src/main/java','atf-ui-browser/whist/src/main/java'].map(dir=>path.join(root,dir));
   const fixture=path.join(root,'atf-ui-browser/tests/ro/cardtable/browser/WhistSurfaceContract.java');
+  assert.ok(fs.readFileSync(path.join(root,'atf-ui-browser/pages/src/main/java/ro/cardtable/browser/PageJson.java'),'utf8').includes('return BrowserLayoutJson.fields(layout);'),'Static pages delegate to the portable geometry projection');
   const sources=[fixture,...fs.readdirSync(roots[0]+'/ro/cardtable/browser').filter(file=>file.endsWith('.java'))
     .map(file=>roots[0]+'/ro/cardtable/browser/'+file)];
   const args=['-proc:none','-encoding','UTF-8','-sourcepath',roots.join(path.delimiter),'-d',work,...sources];
@@ -32,6 +33,7 @@ test('production Web and native portable adapters share geometry, card marks and
     {encoding:'utf8',timeout:60000,windowsHide:true});
   const result=JSON.parse(text);assert.equal(result.status,'PASS');assert.equal(result.cases.length,4);
   assert.equal(result.cases[0].legacyFrames,24,'Legacy consumers do not inherit Whist native measurement semantics');
+  assert.deepEqual(JSON.parse(result.cases[0].minimumProtocol.jvm),JSON.parse(result.cases[0].minimumProtocol.pages),'JVM and compiled-page protocols preserve the same native minimum');
   assert.equal(result.cases[1].faces,52);assert.equal(result.cases[2].commands,8);
   const curve=result.cases[3];assert.equal(curve.samples.length,11);
   for(let i=0;i<curve.samples.length;i++){

@@ -79,7 +79,7 @@ test('production menus stay readable and centered in compact and desktop Chromiu
           const panelBox=panel.getBoundingClientRect();const modal=panel.matches('dialog');
           return {frame:rect(frame),stage:rect(stage),transform:getComputedStyle(stage).transform,
             background:getComputedStyle(stage).backgroundColor,foreground:getComputedStyle(stage).color,logicalHeight:stage.clientHeight,scale:box.height/stage.clientHeight,scaleX:new DOMMatrixReadOnly(getComputedStyle(stage).transform).a,scaleY:new DOMMatrixReadOnly(getComputedStyle(stage).transform).d,panel:rect(panel),pageHeight:document.documentElement.scrollHeight,stageOverflow:stage.scrollHeight-stage.clientHeight,panelOverflow:panel.scrollHeight-panel.clientHeight,modal,
-            root:parseFloat(getComputedStyle(document.documentElement).fontSize),title:parseFloat(getComputedStyle(panel.querySelector('h1,h2')).fontSize),
+            policyViewport:Number(stage.dataset.layoutViewport),root:parseFloat(getComputedStyle(document.documentElement).fontSize),title:parseFloat(getComputedStyle(panel.querySelector('h1,h2')).fontSize),
             extraWidth:stage.scrollWidth-stage.clientWidth,controls:controls.map(n=>({text:n.textContent,size:parseFloat(getComputedStyle(n).fontSize),
               width:n.getBoundingClientRect().width,height:n.getBoundingClientRect().height,overflow:n.scrollWidth>n.clientWidth+1})),
             reachable:controls.every(n=>{const r=n.getBoundingClientRect();return r.top>=-1&&r.bottom<=innerHeight+1&&r.left>=-1&&r.right<=innerWidth+1;})};
@@ -94,6 +94,7 @@ test('production menus stay readable and centered in compact and desktop Chromiu
         if(['home','setup'].includes(screen))assert.ok(Math.abs(measured.title-font*MENU_TYPOGRAPHY.title)<.01);
         assert.ok(Math.abs(measured.scaleX-measured.scaleY)<.00001,'All scene roles use one proportional fit');
         assert.ok(measured.extraWidth<=1,JSON.stringify(measured));
+        assert.equal(measured.policyViewport,profile.mobile?profile.height:ADAPTIVE_SURFACE.height,'Fitting content does not change the native viewport policy');
         assert.equal(measured.reachable,true,JSON.stringify({profile,language,font,screen,measured}));
         assert.ok(measured.controls.every(n=>!n.overflow),JSON.stringify({screen,measured}));
         if(screen==='rankings'){
@@ -163,8 +164,8 @@ test('production menus stay readable and centered in compact and desktop Chromiu
       await send('Emulation.setDeviceMetricsOverride',{...profile,deviceScaleFactor:1});
       await evaluate(`document.documentElement.style.fontSize='${font}px';document.documentElement.lang='${language}';`);
       const measured=await evaluate(`(async()=>{
-        const {createProfileDialogs}=await import('./profile.mjs?v=0.9');
-        const {surfaceFitter}=await import('./surface-fit.mjs?v=0.9');
+        const {createProfileDialogs}=await import('./profile.mjs?v=0.10');
+        const {surfaceFitter}=await import('./surface-fit.mjs?v=0.10');
         const element=(tag,text='',kind='')=>{const n=document.createElement(tag);n.textContent=text;n.className=kind;return n;};
         const button=(text,action,kind='')=>{const n=element('button',text,kind);n.onclick=action;return n;};
         const en=document.documentElement.lang==='en';
@@ -210,7 +211,7 @@ test('production menus stay readable and centered in compact and desktop Chromiu
     assert.ok(keyboard.dialog.top>=179&&keyboard.dialog.bottom<=481,'The modal follows the visual viewport rather than the layout viewport');
     console.log('Visual viewport observations: '+JSON.stringify(keyboard));
     const isolation=await evaluate(`(async()=>{
-      const {surfaceFitter}=await import('./surface-fit.mjs?v=0.9');
+      const {surfaceFitter}=await import('./surface-fit.mjs?v=0.10');
       const stage=document.createElement('main'),modal=document.createElement('dialog');
       stage.style.cssText='position:fixed;visibility:hidden;width:100px;height:100px';
       let root=document.createElement('section');root.className='whist-match';stage.append(root);document.body.append(stage,modal);

@@ -59,6 +59,7 @@ public final class WhistSurfaceContract {
                     var bidding = BrowserGeometry.measure(WEB, values);
                     values.put("bidOptions", "0");
                     var playing = BrowserGeometry.measure(WEB, values);
+                    equal(bidding.minimumBoardHeight(),playing.minimumBoardHeight(),"Phase-independent native minimum");
                     equal(bidding.board().seats(), playing.board().seats(), "Phase-stable Web seat rectangles");
                     var viewport = new TableViewportPolicy(viewportHeight, scale);
                     var reservation = TableLayoutMetrics.matchCenterReservation(mode, players, width, scale, viewport);
@@ -117,6 +118,14 @@ public final class WhistSurfaceContract {
                 "expected", "Equal logical regions, phase stability, complete fan and bounded physical rounding", "status", "PASS"));
         result.put("intrinsicFrames",intrinsicFrames());
         result.put("legacyFrames",legacyFrames());
+        var minimumInputs=new HashMap<>(Map.of("width","280","height","1","seatHeight","70","viewport","568",
+                "players","4","cards","1","handWidth","280","mode","ROMANIAN_WHIST"));
+        var minimum=BrowserGeometry.measure(WEB,minimumInputs);
+        equal(minimum.boardHeight(),minimum.minimumBoardHeight(),"Minimum allocation uses the native requirement");
+        minimumInputs.put("height","2000");var allocated=BrowserGeometry.measure(WEB,minimumInputs);
+        equal(minimum.minimumBoardHeight(),allocated.minimumBoardHeight(),"Allocated slack cannot alter the minimum");
+        equal(2000,allocated.boardHeight(),"Actual allocation remains independently available");
+        result.put("minimumProtocol",Map.of("jvm",BrowserJson.encode(allocated),"pages",BrowserJson.encode(BrowserLayoutJson.fields(allocated))));
         return Map.copyOf(result);
     }
 

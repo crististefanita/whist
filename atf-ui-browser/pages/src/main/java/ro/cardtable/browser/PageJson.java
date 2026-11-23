@@ -121,8 +121,7 @@ final class PageJson {
                     "travelMillis", cue.travelMillis(), "cards", cue.cards(), "holdMillis", cue.holdMillis(),
                     "seatFacts", cue.seatFacts());
         if (value instanceof BrowserGeometry.Layout layout)
-            return fields("board", layout.board(), "hand", layout.hand(), "boardHeight", layout.boardHeight(),
-                    "played", layout.played(), "bids", layout.bids(), "playedStyle", layout.playedStyle());
+            return BrowserLayoutJson.fields(layout);
         if (value instanceof BrowserGame.BidControls bids)
             return fields("columns", bids.columns(), "strip", bids.strip(), "choiceTarget", bids.choiceTarget(),
                     "rowHeight", bids.rowHeight(), "choiceInset", bids.choiceInset(), "submitWidth", bids.submitWidth(),

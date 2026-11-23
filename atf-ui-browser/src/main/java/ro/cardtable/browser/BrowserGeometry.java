@@ -12,7 +12,7 @@ import ro.cardtable.ui.seat.PlayerSeatMetrics;
 final class BrowserGeometry {
     private BrowserGeometry() { }
 
-    record Layout(TableGeometry.Plan board, HandLayoutMetrics.Fan hand, int boardHeight,
+    record Layout(TableGeometry.Plan board, HandLayoutMetrics.Fan hand, int boardHeight, int minimumBoardHeight,
                   PlayedCardMetrics.Layout played, BrowserGame.BidControls bids, Map<String, Integer> playedStyle) { }
 
     static Layout measure(BrowserGame game, Map<String, String> inputs) {
@@ -36,6 +36,7 @@ final class BrowserGeometry {
         TableGeometry.Plan board = null;
         PlayedCardMetrics.Layout played = null;
         BrowserGame.BidControls bids = null;
+        int minimumBoardHeight = 0;
         if (players >= 3 && width >= 240) {
             var profile = game.boardProfile(inputs.getOrDefault("mode", "ROMANIAN_WHIST"), players, width, bidOptions, policy, fontScale);
             var center = profile.center();
@@ -52,7 +53,8 @@ final class BrowserGeometry {
             var spec = new TableGeometry.BoardSpec(players, TableSizing.seatWidthDp(width, policy.isCompact()),
                     seatHeight + actorClearance, center, policy.regionGapDp(), policy.minimumBoardHeightDp(),
                     profile.handClearance(), true);
-            height = Math.max(height, spec.requiredHeight(0));
+            minimumBoardHeight = spec.requiredHeight(0);
+            height = Math.max(height, minimumBoardHeight);
             var plan = spec.plan(width, height, 0);
             int centerWidth = center.fullWidth() ? width : Math.min(width, center.width());
             var frames = plan.seats().stream().map(cell -> new TableGeometry.Rect(
@@ -65,7 +67,7 @@ final class BrowserGeometry {
                 "faceHeight", played.cardHeightDp(),
                 "faceTextSp", played.cardFaceTextSizeSp(), "playerTextSp", played.playerLabelTextSizeSp(),
                 "verticalPaddingDp", played.itemVerticalPaddingDp() / 2);
-        return new Layout(board, hand, height, played, bids, style);
+        return new Layout(board, hand, height, minimumBoardHeight, played, bids, style);
     }
 
     private static int number(Map<String, String> fields, String key, int minimum, int maximum) {

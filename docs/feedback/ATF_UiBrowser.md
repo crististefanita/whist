@@ -22,7 +22,7 @@ Extend coverage of AI decisions, streaks and playing for zero through component 
 
 | ID | Remaining work | Closure criterion |
 |---|---|---|
-| WEB-15 | Complete adoption of adaptive presentation contracts in remaining consumers. | Qualify Whist before exporting. Require explicit measured-frame opt-in and negative checks that borrowing its theme leaves legacy seat geometry unchanged. Repackage runtime and shared tests together; verify identical bytes in consumers without changing the Android artifact. Keep the currently qualified package immutable. |
+| WEB-15 | Distribution stays deferred until Whist Web acceptance is complete. | Close Whist Web display gaps before packaging or distributing to Rentz/Hold’em. Require explicit measured-frame opt-in and negative checks that borrowing its theme leaves legacy geometry unchanged. Then qualify identical runtime/test bytes in consumers without changing Android artifacts; keep admitted packages immutable. |
 
 ## WEB-16 Responsive game surface and menu typography
 
@@ -37,8 +37,9 @@ Whist shares native seat, card and animation policies. Preserve that boundary an
 
 1. Preserve the APK's proportions through one measured fit of the complete scene, including text inside seats, cards, header, help, dropdowns and score tables. Normalize native pixels by density and system insets. Phones use actual useful CSS dimensions; desktop magnifies a native-calibrated reference. Avoid independent font increases, unrelated breakpoint constants or clipping content to hide overflow.
 2. Bidding, play, menus and every non-history dialog fit usable height without vertical scrolling. Rules, achievement groups and rankings use bounded pages; score history is the sole internal vertical-scroll exception. Preserve complete text, input fields, navigation and manual choices.
-3. Keep frames fixed between bidding, play and collection. Localized play labels sit above their frames in bands reserved for both phase labels. Three-player Oh Hell, Reverse Oh Hell and descending variants must not intersect labels, bid buttons, other frames or the human hand.
+3. Keep frames fixed between bidding, play, collection and successive hand sizes. Verify the upper frames at four seats and the lower frames at five seats, including unknown and two-digit facts. Fitted text must retain its intrinsic height as in the APK; legacy multiline CSS must not reach nested fitted ink. Localized play labels sit above frames in bands reserved for both phases. Three-player variants must not intersect labels, bids, frames or the human hand.
 4. Retain the native horizontal hand gesture for dense cards. Test first/last-card access rather than forcing all 17 cards into a narrow viewport by reducing their indices.
+5. Select native policy from useful viewport height, then fit intrinsic scene demand. Keep minimum board reservation separate from allocated slack and old absolute-child bounds. Measure successive hands, not only several tricks in one hand; retain original failing traces when a validator is corrected.
 
 **Closure evidence**
 
