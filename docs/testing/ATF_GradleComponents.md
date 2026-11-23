@@ -87,6 +87,8 @@ Use an external build/cache directory. `whist.auditOutput` selects the evidence 
 
 [Testing strategy](README.md) · [Module × level matrix](ATF_TestingGuide.md) · [Shared table continuity](ATF_TableContinuity.md) · [Current Web suites](../../release/WEB/README.md)
 
+<a id="bounded-matrix-inputs"></a>
+
 ## Bounded matrix inputs
 
 Passing matrices aggregate comparisons by invariant.
@@ -95,3 +97,4 @@ Passing matrices aggregate comparisons by invariant.
 - Freeze mutable fixture context before evaluation and publish it completely on the first mismatch.
 - Record, fine-layout, animation and pixel matrices remain components, without product or rendered-fixture images; pixel checks still execute against their in-memory or file-round-tripped rasters.
 - Isolated units retain JUnit diagnostics without Extent.
+- Preserve numeric overload semantics using the original widened primitive type. Count matrix pairs and separately asserted invalid-input cases independently.

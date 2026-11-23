@@ -81,7 +81,7 @@ The [early-admission contract](../governance/ATF_TestChanges.md#early-source-con
 | Priority | Separate remaining gap | Closure criterion |
 |---|---|---|
 | P2 | Qualification metadata still reaches some diagnostics only after snapshot preparation. | Admit the active dossier's E2E inventory, catalog links and editorial limits through a cheap metadata check before the long collection. Preserve failed evidence and prove that a focused recheck cannot qualify a failed primary group; this is separate from source-control proof admission. |
-| P2 | RAG-25: qualify the compiler-only hint through the canonical proof pipeline, independently of report reuse. | Separate compiler reuse from proof reuse. Reuse only an admitted compiler identity and intact classpath; execute every selected positive/negative control freshly. Reject changed compiler inputs, tampered classes and partial or failed controls. Expose the compiler decision in the timing receipt. |
+
 
 <a id="framework-selection-boundaries"></a>
 
@@ -98,7 +98,6 @@ The [dependency selection contract](../testing/ATF_Collections.md#executable-dep
 |---|---|---|
 | P2 | RAG-26: updating one reviewed reader seal invalidates all ATF collections through the global policy identity. | Separate the topology fingerprint from reviewed reader bodies and their consumer scopes. A bounded seal-only update must select its affected owners. Topology changes, unknown scopes, missing seals and unadmitted reader changes retain complete qualification. Cover these boundaries with positive and negative component cases; preserve original evidence identities and expose selection reasons and stage timings. |
 | P1 | RAG-27: cold preparation and repeated filesystem validation can dominate the release before selected tests start. | Time snapshot subphases, post-compile validation and compiler sealing independently; batch filesystem inspection and hashing without weakening link, corruption or source-drift rejection, then compare cold and warm runs while preserving exact manifests and original report identities. |
-
 | P2 | RAG-28: the Maven compiler key includes Gradle-only test sources, so an Android test correction invalidates unchanged Maven bytecode. | Derive compilation inputs from declared Maven and build-helper roots while retaining POMs, resources, generated inputs, tools and unknown dependencies; keep the complete execution inventory and byte-seal rejection tests. |
 
 Measure snapshot preparation, compilation and execution separately. A focused diagnostic remains distinct from qualification of a complete primary collection; failure recovery within an owner is covered by the open invocation-reconciliation item above.
