@@ -1,13 +1,16 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
-import {boundedPages,surfaceFitter} from '../src/main/web/surface-fit.mjs';
-import {measureSeatActionClearance} from '../src/main/web/seat-presentation.mjs';
+import path from 'node:path';
+import {fileURLToPath,pathToFileURL} from 'node:url';
+const web=process.env.ATF_BROWSER_WEB_ROOT??fileURLToPath(new URL('../src/main/web/',import.meta.url));
+const {boundedPages,surfaceFitter}=await import(pathToFileURL(path.join(web,'surface-fit.mjs')));
+const {measureSeatActionClearance}=await import(pathToFileURL(path.join(web,'seat-presentation.mjs')));
 
 function environment(t){
   const observers=[],frames=new Map(),delivered=[],created=[];let sequence=0;
   const element=tag=>({tag,children:[],dataset:{},style:{setProperty(name,value){this[name]=value;},removeProperty(name){delete this[name];}},
     classList:{add(){}},setAttribute(name,value){this[name]=value;},append(...nodes){this.children.push(...nodes);},
-    matches(selector){return selector==='.'+this.className;},after(node){this.navigation=node;},remove(){this.removed=true;}});
+    matches(selector){return selector.split(',').includes('.'+this.className);},after(node){this.navigation=node;},remove(){this.removed=true;}});
   class Observer{
     constructor(callback){this.callback=callback;this.targets=[];this.observations=0;observers.push(this);}
     observe(target){this.targets.push(target);this.observations++;}
@@ -114,15 +117,17 @@ test('action bands measure both phase labels and always remove their probe',()=>
   assert.throws(()=>measureSeatActionClearance(seat,['PLAY NOW']),error=>error===failure);assert.equal(probe.removed,true);
 });
 
-test('short native dialogs retain natural height and the scene zoom while the catalogue fills its frame',t=>{
+test('short native dialogs retain natural height while catalogues and rankings fill the scene',t=>{
   const e=environment(t);e.dialog.open=true;e.dialog.scrollHeight=176;
   const fitting=surfaceFitter(e.stage,e.dialog,()=>{});
   const scene={width:393,height:626,scale:720/626};
   fitting.fitDialog(1280,720,false,scene);
   assert.equal(e.dialog.style['--modal-height'],'178px');
   assert.equal(e.dialog.style['--modal-scale'],scene.scale,'Short dialogs do not magnify independently');
-  e.dialog.className='achievement-catalogue';fitting.fitDialog(1280,720,false,scene);
-  assert.equal(e.dialog.style['--modal-height'],'626px','The native catalogue retains its full scene');
+  for(const kind of ['achievement-catalogue','game-rankings']){
+    e.dialog.className=kind;fitting.fitDialog(1280,720,false,scene);
+    assert.equal(e.dialog.style['--modal-height'],'626px','Long read-only dialogs retain their full scene');
+  }
   assert.equal(e.dialog.style.height,undefined);
   fitting.dispose();
 });

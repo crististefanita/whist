@@ -20,7 +20,8 @@ export function autoGame({ available, wait, step, changed }) {
       while (!turn.signal.aborted && selected && available()) {
         await wait(turn.signal);
         if (turn.signal.aborted) return;
-        if (!available() || !await step()) break;
+        if (!available()) break;
+        if (!await step()) { set(false); return; }
       }
       if (!turn.signal.aborted) set(false);
     } finally {

@@ -219,7 +219,7 @@ header .subtitle { font-size: 14px; color: #41574b; }
 }
 .history-points[data-series] { display: block; padding: .12em .16em; outline: 1px solid #29362e; }
 .history-points[data-series="penalty"] { outline-color: #97462e; color: #97462e; }
-.game-rankings .rankings > p { font-size: .84em; }
+.game-rankings .rankings > p { font-size: .84em; margin: 0 0 .75rem; }
 .ranking-options { display: grid; gap: .4em; }
 .ranking-options select { width: 100%; min-height: 2.5em; }
 .ranking-list {

@@ -1,12 +1,12 @@
-import { ADAPTIVE_SURFACE, adaptiveViewport, surfaceTypography, fitTextWidth, isPhone, viewportGeometry, textScale } from "./viewport.mjs?v=0.6";
+import { ADAPTIVE_SURFACE, adaptiveViewport, surfaceTypography, fitTextWidth, isPhone, viewportGeometry, textScale } from "./viewport.mjs?v=0.7";
 import { collect } from "./collection.mjs";
 import { autoGame, waitForDecision } from "./auto-game.mjs";
 import { bindHandFeedback } from "./hand-feedback.mjs";
-import { historyGrid, applyHistoryAppearance } from "./records.mjs?v=0.6";
-import { fitSeatLines, retainSeatFrames, updateSeatFact, measureSeatActionClearance, measureNativeSeat } from "./seat-presentation.mjs?v=0.6";
-import { historyFirst, menuFromEntries } from "./table-menu.mjs?v=0.6";
-import { createProfileDialogs, deviceProfile, dismissGameMenuOnOutsideClick, preferredLanguage, saveLanguage } from "./profile.mjs?v=0.6";
-import { surfaceFitter } from "./surface-fit.mjs?v=0.6";
+import { historyGrid, applyHistoryAppearance } from "./records.mjs?v=0.7";
+import { fitSeatLines, commitTableView, updateSeatFact, measureSeatActionClearance, measureNativeSeat } from "./seat-presentation.mjs?v=0.7";
+import { historyFirst, menuFromEntries } from "./table-menu.mjs?v=0.7";
+import { createProfileDialogs, deviceProfile, dismissGameMenuOnOutsideClick, preferredLanguage, saveLanguage } from "./profile.mjs?v=0.7";
+import { surfaceFitter } from "./surface-fit.mjs?v=0.7";
 
 const stage = document.querySelector("#table");
 const frame = document.querySelector("#frame");
@@ -145,7 +145,7 @@ function dialogBlocksPlay() {
 }
 
 function refreshAutomationGate() {
-  const blocked = dialogBlocksPlay();
+  const blocked = pending || dialogBlocksPlay();
   automation.pause(blocked);
   if (blocked) handFeedback?.cancel();
 }
@@ -173,6 +173,7 @@ async function issue(path, fields) {
   if (pending) return copy("busy", "O comandă este deja în curs.");
   pending = true;
   stage.setAttribute("aria-busy", "true");
+  refreshAutomationGate();
   errorBox.textContent = "";
   try {
     const previous = stage.querySelector(".setup") ? menuSetup
@@ -220,6 +221,7 @@ async function issue(path, fields) {
     delete stage.dataset.playingSteps;
     pending = false;
     stage.setAttribute("aria-busy", "false");
+    refreshAutomationGate();
   }
 }
 
@@ -967,8 +969,8 @@ async function render() {
   delete content.dataset.preparing;
   content.inert = false;
   content.append(errorBox);
-  retainSeatFrames(stage.querySelector(":scope > .match:not([data-preparing])"), content);
-  stage.replaceChildren(content);
+  const committed=commitTableView(stage,content);
+  layoutRequests.set(committed.querySelector(':scope > .board'),{});
   refreshAutomationGate();
 }
 

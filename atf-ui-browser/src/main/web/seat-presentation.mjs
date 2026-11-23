@@ -74,22 +74,58 @@ export function measureNativeSeat(seat){
 /** Commit measured content without replacing the existing per-seat frame objects. */
 export function retainSeatFrames(previous, next) {
   if (!previous || previous === next) return 0;
-  const before = [...(previous?.querySelectorAll(":scope > .board > .seat") ?? [])];
-  const after = [...next.querySelectorAll(":scope > .board > .seat")];
-  if (!before.length || before.length !== after.length) return 0;
-  const keys = nodes => nodes.map(node => node.dataset.seat);
-  const oldKeys = keys(before), newKeys = keys(after);
-  if (oldKeys.some(key => !key) || new Set(oldKeys).size !== before.length
-      || newKeys.some(key => !key) || new Set(newKeys).size !== after.length
-      || newKeys.some(key => !oldKeys.includes(key))) return 0;
-  const frames = new Map(before.map(node => [node.dataset.seat, node]));
-  for (const measured of after) {
-    const frame = frames.get(measured.dataset.seat);
+  const pairs=compatibleSeats(previous,next);
+  if(!pairs)return 0;
+  for(const [frame,measured] of pairs){
     synchronizeAttributes(frame,measured);
     synchronizeChildren(frame,measured);
     measured.replaceWith(frame);
   }
-  return after.length;
+  return pairs.length;
+}
+
+/** Commit a measured view without unmounting a compatible visible board or its seats. */
+export function commitTableView(stage,next){
+  const previous=stage.querySelector(':scope > .match:not([data-preparing])');
+  const pairs=previous&&previous!==next?compatibleSeats(previous,next):null;
+  if(!pairs){stage.replaceChildren(next);return next;}
+  const board=previous.querySelector(':scope > .board'),prepared=next.querySelector(':scope > .board');
+  const center=board.querySelector(':scope > .center'),nextCenter=prepared.querySelector(':scope > .center');
+  if(!center||!nextCenter){stage.replaceChildren(next);return next;}
+  for(const [frame,measured] of pairs){synchronizeAttributes(frame,measured);synchronizeChildren(frame,measured);}
+  synchronizeAttributes(board,prepared);
+  synchronizeAttributes(center,nextCenter);
+  center.replaceChildren(...nextCenter.childNodes);
+  synchronizeAttributes(previous,next);
+  replaceAroundBoard(previous,next,board,prepared);
+  next.remove();
+  return previous;
+}
+
+function replaceAroundBoard(current,next,board,prepared){
+  let cursor=current.firstChild;
+  for(const child of [...next.childNodes]){
+    if(child===prepared){
+      while(cursor&&cursor!==board){const after=cursor.nextSibling;cursor.remove();cursor=after;}
+      cursor=board.nextSibling;
+    }else if(cursor===board){current.insertBefore(child,cursor);}
+    else if(cursor){const after=cursor.nextSibling;cursor.replaceWith(child);cursor=after;}
+    else current.append(child);
+  }
+  while(cursor){const after=cursor.nextSibling;cursor.remove();cursor=after;}
+}
+
+function compatibleSeats(previous,next){
+  const before = [...(previous?.querySelectorAll(":scope > .board > .seat") ?? [])];
+  const after = [...next.querySelectorAll(":scope > .board > .seat")];
+  if (!before.length || before.length !== after.length) return null;
+  const keys = nodes => nodes.map(node => node.dataset.seat);
+  const oldKeys = keys(before), newKeys = keys(after);
+  if (oldKeys.some(key => !key) || new Set(oldKeys).size !== before.length
+      || newKeys.some(key => !key) || new Set(newKeys).size !== after.length
+      || newKeys.some(key => !oldKeys.includes(key))) return null;
+  const frames = new Map(before.map(node => [node.dataset.seat, node]));
+  return after.map(measured=>[frames.get(measured.dataset.seat),measured]);
 }
 
 function synchronizeAttributes(current,next){

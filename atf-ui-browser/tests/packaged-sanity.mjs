@@ -64,7 +64,7 @@ if (!output || !classes || !main || !title) {
 }
 await mkdir(output, { recursive: true });
 const images = [];
-const expected = "Resurse din JAR, API protejat și partidă pornită prin interfața comună";
+const expected = "Packaged resources, protected API and a match started through the shared interface";
 let result;
 try {
   result = await withServer({ classes, main }, "-", async url => {
@@ -155,7 +155,7 @@ try {
         const png = await send("Page.captureScreenshot", { format: "png" });
         const file = "sanity-" + main.split(".").at(-1) + ".png";
         await writeFile(join(output, file), Buffer.from(png.data, "base64"));
-        images.push({ file, title: title + " · adaptor din JAR, 414×896" });
+        images.push({ file, title: title + " · packaged adapter, 414×896" });
         return { version, menu, dropdowns, geometry };
       });
     }
@@ -166,5 +166,5 @@ try {
   result = { status: "FAIL", observed: error.stack };
   process.exitCode = 1;
 }
-await writeFile(join(output, "sanity.json"), JSON.stringify({ name: title + " · integrare JAR", expected, ...result }, null, 2) + "\n");
+await writeFile(join(output, "sanity.json"), JSON.stringify({ name: title + " · JAR integration", expected, ...result }, null, 2) + "\n");
 console.log(result.status + " " + title);
