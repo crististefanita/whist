@@ -8,7 +8,9 @@
 
 ## Qualification on the same device
 
-Fractional mobile viewport measurements must be normalized once at the integer geometry boundary, before compact policy and API projection. Component regression covers zoom-generated fractions, enlarged text and bidding/play transitions; malformed and non-positive input must still fail explicitly. The original mobile diagnostic reproduced the reported visible error. Native Android Chrome acceptance remains separate from desktop mobile emulation and cannot be closed by it.
+The fractional-height bridge and the public-browser two-hand sanity pass. The [display contract](../testing/ATF_DisplayComponents.md) owns integer normalization and visible-viewport coordinates.
+
+Same-device Android Chrome acceptance remains open; desktop mobile emulation does not close that boundary.
 
 | ID | Remaining sample | Closure criterion |
 |---|---|---|

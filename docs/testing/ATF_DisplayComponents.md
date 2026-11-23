@@ -2,7 +2,7 @@
 
 ## Overview
 
-The offline collection checks the dimensioning policies, the decoding of the Android observation and the geometric oracles or raster. The simulated entries are explicit; the acceptance of the installed version shall keep a restricted native verification.
+The offline collection checks sizing policies, Android observation decoding, geometry and raster oracles. Controlled inputs remain explicit; installed-app acceptance keeps a narrow native verification.
 
 ## Architecture
 
@@ -18,22 +18,24 @@ flowchart LR
 <details>
 <summary>Legend: same verification path for simulated and captured data</summary>
 
-The fixture describes measured regions without calling the application layout algorithm. The Decodator shall consume only one XML; E2E shall hold the catch and the component shall hold the interpretation of that observation.
+The fixture describes measured regions without calling the application layout algorithm. The decoder consumes one XML document; E2E owns capture, while components own interpretation.
 
 </details>
 
 ## What moves into the components
 
-[Shared UI module](../../whist-lab-app/atf-card-table-ui/README.md) has its own JVM tests for menu, name editing, geometry and border of dependence. The app retains adaptor and table tests, and the move of implementation does not change existing oracles; Android widgets and pixels have separate acceptances.
+The [shared UI module](../../whist-lab-app/atf-card-table-ui/README.md) owns JVM tests for menus, name editing, geometry and dependency boundaries. Whist retains adapter and table tests with independent oracles; native widgets and pixels require separate acceptance.
 
-| Level | Controlled entry | Proprietary checks | Owner |
+| Level | Controlled input | Owned checks | Owner |
 |---|---|---|---|
+| Integer geometry | Fractional CSS heights from zoom or browser controls | Floor a valid measured height once before compact-policy decisions and the integer Java boundary; malformed and non-positive input must retain an explicit error | Web geometry adapter |
+| Visible coordinates | DOM rectangles and observed visual-viewport offsets | Compare positions relative to the visible viewport when zoom or the keyboard pans the layout viewport; retain raw offsets with the observation | Platform observation adapter |
 | Application policies | Width, height, density, font, number of players and cards | Distribution of regions, minimum dimensions, available space, rounding and settings calculated | `app.table`, `app.hand`, `app.window` |
 | Name and action | Measured or simulated text heights, box contents and equalized place | Full action above the name, reserved space between shifts, increased censor without repeated scaling | `app.seat` |
 | Trump | Slide width of [Android and Web fixture](../../whist-lab-app/app/src/test/resources/whist-trump-text-fit.tsv) | Framing in the same box for card, symbol and text without trump, including enhanced font. [Reference palette](../../whist-lab-app/app/src/test/resources/whist-trump-palette.properties) and geometry is kept when AutoPlay is activated and stopped and during trick collection | [TrumpTileMetrics](../../whist-lab-app/card-table-core/src/main/java/ro/cardtable/ui/table/trump/TrumpTileMetrics.java) |
 | History | Useful window, number of seats, density and font | Full spread width, minimum legible, headers aligned, vertical budget for legend and red diagonal limited to failed bids | `app.score` |
-| Collection of levatates | Centers, actor, public history, watch, view port and controlled events of the scene | Full-cut, convergence, suspension/reluare and unique cleaning; rebuilding groups resizing, waiting for the closing of dialogues and rejects old stage callbacks, without the mutation of the match | `app.animation`, `app.lifecycle`, `app.navigation`, `app.presentation` |
-| decoding | XML and display profile | Semantic association, card faces, frames, title, trump and content window | [TableViewportObservation](../../atf-test-android/src/test/java/atf/android/e2e/display/support/TableViewportObservation.java) |
+| Trick collection | Centers, actor, public history, clock, viewport and controlled scene events | Complete trick, convergence, pause/resume and exactly one cleanup; rebuild after resize, wait for dialogs to close and reject stale callbacks without mutating the match | `app.animation`, `app.lifecycle`, `app.navigation`, `app.presentation` |
+| Observation decoding | XML and display profile | Semantic association, card faces, frames, title, trump and content window | [TableViewportObservation](../../atf-test-android/src/test/java/atf/android/e2e/display/support/TableViewportObservation.java) |
 | Geometric oracle | Snapshot with injected defects | Number, completeness, capping, framing and absence of overlaps | [TableViewportAudit](../../atf-test-android/src/main/java/atf/android/whist/evidence/TableViewportAudit.java) |
 | Oracle raster | Synthetic and logical coordinates | Change of scale, dominant colour, contrast and tolerances | [Components display](../../atf-test-android/src/test/java/atf/android/e2e/display/component/) |
 
@@ -41,8 +43,8 @@ The fixture describes measured regions without calling the application layout al
 
 - [Synthetic hierarchy](../../atf-test-android/src/test/java/atf/android/e2e/display/component/SyntheticTableHierarchy.java) maintains a valid base and explicitly changes the region to be rejected.
 - [Parametrized matrix](../../atf-test-android/src/test/java/atf/android/e2e/display/component/TableViewportObservationComponentTest.java) combines profiles and heights measured for different text scales; does not render Android fonts.
-- The simulated transport is misfiring on any command or catch. An accidental call to the device fails in the component.
-- JVM execution uses real Java dependencies before SDK stubs when the names of the classes coincide. The generation of the classpathus is preserved; a failure of the infrastructure does not substitute the verdict of the product.
+- The controlled transport rejects every device command or capture. An accidental device call fails the component test.
+- JVM execution uses real Java dependencies before SDK stubs when the names of the classes coincide. Classpath provenance is preserved; an infrastructure failure cannot become a product verdict.
 - The presence of a node does not prove its visibility; the areas without surface and the elements outside the window are rejected.
 - The window uses `android:id/content` when available; captures without this region have explicit fallback to the declared profile.
 - Full decaying of fixtures uses the EN signals and the action check has explicit contracts RO/EN. Change of language does not allow shortening of the label or loss of association with the active player.

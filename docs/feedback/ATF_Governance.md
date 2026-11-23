@@ -93,6 +93,7 @@ The [dependency selection contract](../testing/ATF_Collections.md#executable-dep
 | Priority | Bounded gap | Closure criterion |
 |---|---|---|
 | P2 | RAG-26: updating one reviewed reader seal invalidates all ATF collections through the global policy identity. | Separate the topology fingerprint from reviewed reader bodies and their consumer scopes. A bounded seal-only update must select its affected owners. Topology changes, unknown scopes, missing seals and unadmitted reader changes retain complete qualification. Cover these boundaries with positive and negative component cases; preserve original evidence identities and expose selection reasons and stage timings. |
+| P1 | RAG-27: cold preparation and repeated filesystem validation can dominate the release before selected tests start. | Time snapshot subphases, post-compile validation and compiler sealing independently; batch filesystem inspection and hashing without weakening link, corruption or source-drift rejection, then compare cold and warm runs while preserving exact manifests and original report identities. |
 
 Measure snapshot preparation, compilation and execution separately. A focused diagnostic remains distinct from qualification of a complete primary collection; failure recovery within an owner is covered by the open invocation-reconciliation item above.
 
