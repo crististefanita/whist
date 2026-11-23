@@ -329,7 +329,7 @@ The [visual contract registry](../../atf-tests/tools/visual-change-contracts.mjs
 | Contract | Allowed change | Required component owners | Required native sanity |
 |---|---|---|---|
 | Game header typography | Numeric initializers of `TITLE_SP`, `PROGRESS_SP`, `BID_SUMMARY_SP` | `whist-lab-app-display` | `signed-release-smoke`, `responsive-ui-sanity` |
-| Card rank typography | Numeric initializers of `INDEX_SIZE_SP`, `RANK_SCALE`, `INVERTED_SIZE_DP` | `whist-lab-app-display`, `whist-lab-app-atf-card-table-ui` | `signed-release-smoke`, `responsive-ui-sanity`, `signed-release-auto-game` |
+| Card rank typography | Numeric initializers of `INDEX_SIZE_SP`, `RANK_SCALE`, `INVERTED_SIZE_DP` | `whist-lab-app-display`, `whist-lab-app-atf-card-table-ui`, `whist-lab-app-card-table-core` | `signed-release-smoke`, `responsive-ui-sanity`, `signed-release-auto-game` |
 
 - [Source admission](../../atf-tests/tools/visual-contract-sources.mjs) reconstructs the baseline from its pinned Git commit and verifies both SHA-256 values. Uniform checkout EOL conversion is admitted only when it reproduces the recorded baseline hash.
 - All non-literal source text must remain equal. Added methods, expressions, changed names, missing owners, added or deleted contracts, invalid text and unavailable source bytes retain all native flow gates.
@@ -389,6 +389,7 @@ Native reports retain their original APK, execution commit, source fingerprint, 
 | Validator | Top-level Node modules under the release-tool directory have their own observed revision; changing them triggers validation, not native execution. An optional `validatorRevision` in the E2E request or plan pins that revision. |
 | Editorial metadata | Documentation and the bilingual review record can change without changing native runtime identity. |
 | Web-only module | `atf-ui-browser/` stays outside the Android build graph. Its changes may preserve APK evidence only with identical APK bytes and unchanged native and scenario inputs. |
+| Verification-only inputs | Maven `atf-tests/src/test/` and `atf-validation/src/test/`, plus the exact `config/atf-component-dependencies.json` reader policy, may change with identical APK bytes, unchanged native build inputs and unchanged scenarios. The validator records a separate admission and preserves original execution bytes and commit. Other configuration, binaries, runtime and unknown paths remain conservative. |
 | Original evidence | Preserve receipt, report and isolation bytes. Each group owns `source-provenance.json`; groups share the original source-input document under its fingerprint. |
 
 [Component contracts](../../atf-tests/tools/android-e2e-runtime-scope.test.mjs) check the browser build boundary, input addition, modification and removal, and reject mixed native or unknown changes. Original fingerprint fields remain intact; the current validator records a separate `runtimeAdmission` with changed paths and the unchanged Android fingerprint. Diff-derived mandatory flow selection remains unchanged.

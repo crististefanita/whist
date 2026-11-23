@@ -61,14 +61,18 @@ These rows describe executable boundaries, not Maven annotations. Source-set own
 
 | Module | Unit | Component | Integration | E2E | Ownership and executable selection |
 |---|---|---|---|---|---|
-| `card-table-core` | ✅ | ✅ | — | — | `unitTest` checks isolated normalization and snapshot ownership; `test` owns portable models, geometry, text roles and negative controls. [Core](../../whist-lab-app/card-table-core/README.md) |
-| `card-table-android` | — | ✅ | ✅ | — | `testDebugUnitTest` checks native adapter contracts. Focused instrumentation qualifies real widgets separately; no full resolution E2E matrix. [Android renderer](../../whist-lab-app/atf-card-table-ui/README.md) |
-| `card-table-web` | — | ✅ | ✅ | ✅ | Shared Java projection plus controlled DOM/clock components; one explicit short browser sanity flow checks wiring. [Web renderer](../../atf-ui-browser/README.md#verification) |
-| `whist-presentation` | — | ✅ | — | — | Game-specific portable projection; existing APK/Web component providers preserve catalog, checkpoint and presentation case identities. |
+| `whist-lab-app/card-table-core` | ✅ | ✅ | — | — | `unitTest` checks isolated normalization and snapshot ownership; `test` owns portable models, geometry, text roles and negative controls. [Core](../../whist-lab-app/card-table-core/README.md) |
+| `whist-lab-app/atf-card-table-ui` | — | ✅ | ✅ | — | `testDebugUnitTest` checks native adapter contracts. Focused instrumentation qualifies real widgets separately; no full resolution E2E matrix. [Android renderer](../../whist-lab-app/atf-card-table-ui/README.md) |
+| `atf-ui-browser` | — | ✅ | ✅ | ✅ | Shared Java projection plus controlled DOM/clock components; one explicit short browser sanity flow checks wiring. [Web renderer](../../atf-ui-browser/README.md#verification) |
+| `whist-lab-app/whist-presentation` | — | ✅ | — | — | Game-specific portable projection; existing APK/Web component providers preserve catalog, checkpoint and presentation case identities. |
 | `whist-lab-app/app` | — | ✅ | — | — | Commands, bidding, display, history and achievement primary tasks test Whist projections and lifecycle without a device. Installed-app journeys are owned by Maven's Android E2E module. |
 | `whist-lab-app/game-core` | — | ✅ | — | — | Rules, score and checkpoints; release rule collections exclude AI learning experiments. |
 | `whist-lab-app/ai-lab` | — | ✅ | — | — | Independent player and offline policy comparisons on legal fixtures and reserved deals. |
-| `test-audit` | — | ✅ | — | — | Capture, evaluated assertions and report/JUnit reconciliation; test-only dependency. |
+| `whist-lab-app/test-audit` | — | ✅ | — | — | Capture, evaluated assertions and report/JUnit reconciliation; test-only dependency. |
+| `atf-ui-browser/pages` | — | ✅ | — | — | Static-host engine and browser storage boundary through the owning Maven adapter collection; no native iOS acceptance. |
+| `atf-ui-browser/whist` | — | ✅ | — | — | Whist Web engine, projection and storage contracts through Maven adapter components. |
+| `whist-lab-app/card-table-names` | — | — | — | — | Shared naming vocabulary checked through game-core consumers; no independent source suite is declared. |
+| `whist-lab-app/ios-bridge` | — | ✅ | — | — | Portable JVM bridge contracts through the rules collection; native iOS delivery remains parked. |
 
 | Shared responsibility | Executable contract |
 |---|---|

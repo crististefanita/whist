@@ -8,6 +8,8 @@
 
 ## Qualification on the same device
 
+Fractional mobile viewport measurements must be normalized once at the integer geometry boundary, before compact policy and API projection. Component regression covers zoom-generated fractions, enlarged text and bidding/play transitions; malformed and non-positive input must still fail explicitly. The original mobile diagnostic reproduced the reported visible error. Native Android Chrome acceptance remains separate from desktop mobile emulation and cannot be closed by it.
+
 | ID | Remaining sample | Closure criterion |
 |---|---|---|
 | WEB-07 | Up to two Romanian 1–8–1 hands with four seats, from the same legal checkpoint in APK and Chrome on Android. | Compare legal moves, actor, last card and collection, score and history with adjustments. Check settings, Achievements, Play again and resume after reopening in RO/EN, with normal text and enlarged. |

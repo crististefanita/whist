@@ -72,6 +72,8 @@ class WhistSurfaceAdapterComponentTest {
                 value -> inputs.add("Controlled anchor, text, assigned-height and callback measurements without screenshots", value));
         assertTrue(output.contains("Seat handoff measurements:"), "Prepared south anchors and live playback retain one intrinsic demand");
         assertTrue(output.contains("Asset revision observations:"), "The published adapter does not retain the previous measurement implementation in cache");
+        assertTrue(output.contains("Fractional viewport observations:"), "Mobile zoom heights cross the integer geometry boundary without a visible error across bidding and play");
+        assertTrue(output.contains("Invalid viewport observations:"), "Malformed or non-positive dimensions retain their original rejection");
     }
 
     @Test void everySeatAndLegalDealShareOneNativeWebPhaseContract(ComponentInputs inputs) throws Exception {

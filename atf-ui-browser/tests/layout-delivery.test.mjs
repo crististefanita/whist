@@ -11,15 +11,15 @@ const start=source.indexOf('async function placeTable('),end=source.indexOf('fun
 assert.ok(start>=0&&end>start,'Use the production layout and placement functions');
 const settle=()=>new Promise(resolve=>setImmediate(resolve));
 
-function harness({deferFonts=false}={}){
-  const requests=[],fonts=[],seats=Array.from({length:3},()=>({style:{},offsetHeight:52,dataset:{actorLabel:'PLAY'}}));
+function harness({deferFonts=false,playerCount=3,fontSize="16px"}={}){
+  const requests=[],fonts=[],seats=Array.from({length:playerCount},()=>({style:{},offsetHeight:52,dataset:{actorLabel:'PLAY'}}));
   const cards=Array.from({length:2},()=>({style:{}})),fan={children:cards,style:{},querySelectorAll:()=>[]};
   const center={style:{}},played={childElementCount:0},hand={clientWidth:414,querySelector:()=>fan};
   const board={clientWidth:414,clientHeight:400,isConnected:true,style:{minHeight:''},dataset:{},
-    querySelectorAll:key=>key==='.seat'?seats:[],querySelector:key=>key==='.center'?center:key==='.cards-on-table'?played:null};
+    querySelectorAll:key=>key==='.seat'?seats:key==='[data-bid]'?[{},{}]:[],querySelector:key=>key==='.center'?center:key==='.cards-on-table'?played:null};
   const content={dataset:{},classList:{toggle(){}},hasAttribute:()=>false,querySelector:key=>key==='.board'?board:key==='.hand'?hand:null};
   const context={stage:{clientHeight:896,dataset:{},firstElementChild:content},state:{view:{header:{mode:'OH_HELL'}}},
-    layoutRequests:new WeakMap(),playedLayouts:new WeakMap(),document:{documentElement:{}},surface:{schedule(){}},getComputedStyle:node=>({fontSize:'16px',height:node===board?'400px':'600px'}),
+    layoutRequests:new WeakMap(),playedLayouts:new WeakMap(),document:{documentElement:{}},surface:{schedule(){}},getComputedStyle:node=>({fontSize,height:node===board?'400px':'600px'}),
     textScale,intrinsicTableHeight,fitTrumpText:()=>deferFonts?new Promise(resolve=>fonts.push(resolve)):Promise.resolve(),fitBidSummary(){},fitSeatLines(){},measureNativeSeat:()=>({bodyHeight:43,nameHeight:15}),
     measureSeatActionClearance:()=>14,copy:(_key,fallback)=>fallback,placePlayed(){},errorBox:{textContent:''},
     call:(_path,fields)=>new Promise((resolve,reject)=>requests.push({fields,resolve,reject}))};
@@ -101,4 +101,40 @@ test('stale layout failures do not replace the active error or cancel a newer me
 test('a current layout failure exposes its original message without applying partial coordinates',async()=>{
   const h=harness(),pending=h.layout();await settle();h.requests[0].reject(new Error('Current measurement failed'));await pending;
   assert.equal(h.context.errorBox.textContent,'Current measurement failed');assert.equal(h.center.style.inset,undefined);
+});
+
+
+test('fractional mobile viewport reaches the integer layout boundary across bidding and play',async()=>{
+ const observations=[];
+ for(const viewport of [655.3599853515625,626.01,895.9])for(const playerCount of [3,4,5,6])for(const fontSize of ['16px','20.8px']){
+  const h=harness({playerCount,fontSize});h.context.stage.dataset.layoutViewport=String(viewport);
+  let biddingFrames;
+  for(const phase of ['bidding','playing']){
+   if(phase==='playing')h.context.stage.dataset.playingSteps='true';
+   const pending=h.layout();await settle();const request=h.requests.at(-1);
+   if(Number.isInteger(request.fields.viewport)&&request.fields.viewport>0)request.resolve(h.result(40));
+   else request.reject(new Error('String contains invalid digits: '+request.fields.viewport));
+   await pending;
+   assert.equal(h.context.errorBox.textContent,'','A valid fractional mobile measurement must not become a visible game or score error');
+   assert.equal(request.fields.viewport,Math.floor(viewport),'Available height is floored once before the integer protocol');
+   assert.equal(request.fields.players,playerCount);assert.equal(request.fields.fontScale,parseFloat(fontSize)/16);
+   assert.equal(request.fields.bidOptions,phase==='bidding'?2:0);
+   const frames=h.seats.map(n=>n.style.inset);if(biddingFrames)assert.deepEqual(frames,biddingFrames);else biddingFrames=frames;
+   observations.push({viewport,normalized:request.fields.viewport,playerCount,fontSize,phase,error:h.context.errorBox.textContent,fixedFrames:frames});
+  }
+ }
+ assert.equal(observations.length,48);
+ console.log('Fractional viewport observations: '+JSON.stringify(observations));
+});
+
+test('malformed viewport still preserves the layout rejection and never paints seat positions',async()=>{
+ for(const value of ['NaN','Infinity','-1','0']){
+  const h=harness();h.context.stage.dataset.layoutViewport=value;
+  const pending=h.layout();await settle();const request=h.requests[0];
+  assert.ok(!Number.isInteger(request.fields.viewport)||request.fields.viewport<=0);
+  request.reject(new Error('Geometry input out of range'));await pending;
+  assert.equal(h.context.errorBox.textContent,'Geometry input out of range');
+  assert.equal(h.seats[0].style.inset,undefined,'Invalid input must not silently acquire a zero-sized layout');
+ }
+ console.log('Invalid viewport observations: malformed and non-positive dimensions preserve the original rejection');
 });

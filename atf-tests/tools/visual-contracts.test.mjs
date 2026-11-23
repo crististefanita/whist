@@ -5,7 +5,7 @@ import os from 'node:os';
 import path from 'node:path';
 import {fileURLToPath} from 'node:url';
 import test from 'node:test';
-import {visualChangeContract, visualContractPaths} from './visual-change-contracts.mjs';
+import {visualChangeContract, activeVisualContractPaths, visualContractAliases} from './visual-change-contracts.mjs';
 import {readVisualContractSources} from './visual-contract-sources.mjs';
 import {loadReleaseTestScope, inputFingerprint} from './evaluate-release-rag.mjs';
 import {allFlows} from './release-test-scope.mjs';
@@ -24,9 +24,9 @@ test('registered visual contracts retain live source and declared component owne
   for (const owner of ['ro.whistlab.app.theme.GameHeaderTypographyComponentTest', 'ro.cardtable.ui.cards.CardTypographyComponentTest']) {
     assert.ok(audit.split(/\r?\n/).includes(owner + '=component'), owner);
   }
-  for (const file of visualContractPaths) {
+  for (const file of activeVisualContractPaths) {
     const before = await fs.readFile(path.join(project, file));
-    const field = file === header ? 'TITLE_SP' : 'RANK_SCALE';
+    const field = file.endsWith('/GameHeaderTypography.java') ? 'TITLE_SP' : 'RANK_SCALE';
     const after = Buffer.from(before.toString().replace(new RegExp('(' + field + ' = )([0-9.]+)f'),
       (_, prefix, value) => prefix + (Number(value) + 1) + 'f'));
     const selected = visualChangeContract(file, hash(before), hash(after), {before, after}, owners);
@@ -41,6 +41,24 @@ test('registered visual contracts retain live source and declared component owne
     assert.deepEqual(documented(row), expected, 'Documented fields, component owners and native gates must match live policy');
     assert.throws(() => assert.deepEqual(documented(row.replace('`signed-release-smoke`', '`wrong-native-flow`')), expected),
       {code: 'ERR_ASSERTION'}, 'A changed native gate in documentation cannot pass the factual contract');
+  }
+});
+
+test('historical visual aliases retain numeric proof and their original owner boundary', async () => {
+  const owners = ['whist-lab-app-display', 'whist-lab-app-atf-card-table-ui', 'whist-lab-app-card-table-core'];
+  for (const [legacy, current] of Object.entries(visualContractAliases)) {
+    assert.ok(activeVisualContractPaths.includes(current));
+    const before = await fs.readFile(path.join(project, current));
+    const field = current.endsWith('/GameHeaderTypography.java') ? 'TITLE_SP' : 'RANK_SCALE';
+    const after = Buffer.from(before.toString().replace(new RegExp('(' + field + ' = )([0-9.]+)f'),
+      (_, prefix, value) => prefix + (Number(value) + 1) + 'f'));
+    const prove = file => visualChangeContract(file, hash(before), hash(after), {before, after}, owners);
+    const original = prove(legacy), active = prove(current);
+    assert.equal(original.status, 'PROVEN'); assert.equal(active.status, 'PROVEN');
+    assert.equal(original.id, active.id); assert.deepEqual(original.constants, active.constants);
+    assert.deepEqual(original.e2eGroups, active.e2eGroups);
+    assert.ok(original.componentGroups.every(owner => active.componentGroups.includes(owner)));
+    assert.equal(visualChangeContract('unknown/' + path.basename(current), hash(before), hash(after), {before, after}, owners), null);
   }
 });
 

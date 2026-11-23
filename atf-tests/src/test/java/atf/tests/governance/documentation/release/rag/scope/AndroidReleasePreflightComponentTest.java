@@ -310,8 +310,10 @@ class AndroidReleasePreflightComponentTest {
         environment.put("ATF_FIXTURE_PREFLIGHT", scratch.resolve("run/android-preflight.json").toString());
         Process process = builder.start();
         try {
-            AuditedAssertions.assertTrue(process.waitFor(45, TimeUnit.SECONDS), "Android preflight launcher exceeded its deadline");
-            return new Run(process.exitValue(), new String(Files.readAllBytes(output), StandardCharsets.UTF_8));
+            boolean completed = process.waitFor(45, TimeUnit.SECONDS);
+            String log = new String(Files.readAllBytes(output), StandardCharsets.UTF_8);
+            AuditedAssertions.assertTrue(completed, "Android preflight launcher exceeded its deadline: " + log);
+            return new Run(process.exitValue(), log);
         } finally {
             if (process.isAlive()) process.destroyForcibly();
         }
