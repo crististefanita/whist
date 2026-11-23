@@ -41,7 +41,7 @@ $work = Join-Path $tempRoot ('atf-quality-' + [guid]::NewGuid().ToString('N'))
 $stage = Join-Path $work 'project'
 New-Item -ItemType Directory -Path $stage | Out-Null
 $snapshot = Invoke-AtfQualificationPhase $timing 'governance.snapshot-preflight' {
-    New-AtfQualificationSnapshot $sourceRoot $stage $RunRoot $PinnedSourceInputs
+    New-AtfQualificationSnapshot $sourceRoot $stage $RunRoot $PinnedSourceInputs $timing
 }
 Invoke-AtfQualificationPhase $timing 'governance.test-change-recheck' {
     Assert-GovernanceTestChangeAdmission 'test-change-admission-recheck.json'
@@ -65,7 +65,9 @@ try {
     $env:TMP = $mavenTempRoot
     Push-Location $stage
     try {
-        Assert-AtfQualificationSnapshot $snapshot $stage $sourceRoot
+        Invoke-AtfQualificationPhase $timing 'governance.pre-maven-snapshot' {
+            Assert-AtfQualificationSnapshot $snapshot $stage $sourceRoot
+        }
         $testExit = Invoke-AtfQualificationPhase $timing 'governance.maven' {
             $review = @()
             if ($TestChangeBaseRef) { $review += "-Datf.governance.testChanges.baseRef=$TestChangeBaseRef" }

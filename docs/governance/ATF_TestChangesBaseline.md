@@ -7,6 +7,52 @@ This register defines reviewed controls, their Git base and exact paths. The [te
 ## Verified controls
 
 <details>
+<summary>Snapshot and compiler I/O without metadata shortcuts</summary>
+
+```yaml
+testChanges:
+  - id: RAG-SNAPSHOT-NATIVE-IO
+    status: VERIFIED
+    base: 3b28996f3e818558d237eca5989f12df48502c0c
+    expires: 2026-12-24
+    reason: Preserve exact source/release manifests and compiler seals while using fresh native content reads, bounded verified copying and named snapshot phases. Keep complete admission before mutation and preserve drift, corruption, private-material, duplicate-path and link refusals. Keep primary ownership and compiler reuse independently governed.
+    proof: 'mvn -o -pl atf-tests -am -Dtest=SnapshotIoComponentTest,LauncherSourceInventoryComponentTest,SigningSourceIsolationComponentTest,ComponentEvidenceScopeComponentTest,SuiteOwnershipGovernanceTest,AtfCollectionOwnershipComponentTest,TestChangeReviewComponentTest -Dsurefire.failIfNoSpecifiedTests=false test'
+    checks:
+      positive:
+        - atf.tests.governance.documentation.release.rag.scope.io.SnapshotIoComponentTest#byteInventoriesAndNamedSnapshotPhasesRemainEquivalent
+        - atf.tests.governance.support.LauncherSourceInventoryComponentTest#outputBoundariesKeepLegalPackagesAndDetectSourceChanges
+        - atf.tests.governance.documentation.release.rag.scope.ComponentEvidenceScopeComponentTest#editorialChangesReuseVerifiedMavenCompilationAndKeepFreshExecutionInputs
+        - atf.tests.governance.documentation.release.rag.scope.ComponentEvidenceScopeComponentTest#documentationDriftReadmitsOnlyUnchangedOwnersAndPreservesRejectedEvidence
+        - atf.tests.governance.suites.SuiteOwnershipGovernanceTest#everyMavenExecutableHasOnePrimaryOwnerAndEveryFocusedGateIsDeclared
+        - atf.tests.governance.suites.AtfCollectionOwnershipComponentTest#realDependencyClosuresSelectOnlyTheirConsumers
+      negative:
+        - atf.tests.governance.documentation.release.rag.scope.io.SnapshotIoComponentTest#sameMetadataDriftCorruptionAndIndirectPathsCannotQualify
+        - atf.tests.governance.support.SigningSourceIsolationComponentTest#aPublicPathCannotFollowALinkToPrivateMaterial
+        - atf.tests.governance.support.SigningSourceIsolationComponentTest#aForgedManifestCannotCopyPrivateMaterialOrPartiallyExportPublicFiles
+        - atf.tests.governance.source.changes.TestChangeReviewComponentTest#contentDigestsCannotBypassSourceChangeReview
+        - atf.tests.governance.suites.AtfCollectionOwnershipComponentTest#missingOrUnreviewedDependenciesCannotAuthorizeReuse
+    paths:
+      - scripts/AtfFileDigest.ps1
+      - scripts/Get-AtfSourceInputs.ps1
+      - scripts/Copy-AtfSourceInputs.ps1
+      - scripts/AtfQualificationSnapshot.ps1
+      - scripts/AtfComponentMaven.ps1
+      - scripts/run-component-suites.ps1
+      - scripts/run-atf-governance.ps1
+      - atf-tests/src/main/java/atf/tests/testchange/TestChangeReview.java
+      - atf-tests/src/test/java/atf/tests/governance/source/changes/TestChangeReviewComponentTest.java
+      - atf-tests/src/test/java/atf/tests/governance/documentation/release/rag/scope/io/SnapshotIoComponentTest.java
+      - atf-tests/src/test/java/atf/tests/suites/components/AtfOrchestrationComponentSuite.java
+      - atf-tests/tools/snapshot-io.test.mjs
+      - atf-tests/tools/component-source-check.test.mjs
+      - atf-tests/tools/release-test-scope.mjs
+      - config/atf-component-collections.json
+      - config/atf-component-dependencies.json
+```
+
+</details>
+
+<details>
 <summary>Maven compilation ownership and fresh execution</summary>
 
 ```yaml

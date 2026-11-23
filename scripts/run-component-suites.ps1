@@ -86,7 +86,9 @@ function Invoke-MavenSelections($selections, $stage, $provenanceFile) {
     $buildWork = if ($prepared -and $prepared.buildWorkspace) { $prepared.buildWorkspace } else { $workspace }
     Push-Location $stage
     try {
-        Assert-AtfQualificationSnapshot $snapshot $stage $sourceRoot
+        Invoke-AtfQualificationPhase $timing 'components.preparation-snapshot' {
+            Assert-AtfQualificationSnapshot $snapshot $stage $sourceRoot
+        }
         $classpathFile = Join-Path $buildWork 'component-classpath.txt'
         if ($prepared) {
             $repository = $prepared.repository
@@ -112,7 +114,9 @@ function Invoke-MavenSelections($selections, $stage, $provenanceFile) {
                 $LASTEXITCODE
             } -ExitCode
             if ($compileExit -ne 0) { throw "Compilarea a eșuat: $RunRoot/compile.log" }
-            Assert-AtfQualificationSnapshot $snapshot $stage $sourceRoot
+            Invoke-AtfQualificationPhase $timing 'components.post-compile-snapshot' {
+                Assert-AtfQualificationSnapshot $snapshot $stage $sourceRoot
+            }
             Copy-Item -LiteralPath (Join-Path $RunRoot 'source-inputs.json') -Destination (Join-Path $workspace 'compiler-source-inputs.json')
             $outputFingerprint = Invoke-AtfQualificationPhase $timing 'components.compiler-output-seal' {
                 Get-AtfComponentMavenFingerprint $workspace $repository $policy.mavenModules
@@ -229,7 +233,7 @@ try {
     } else {
         New-Item -ItemType Directory -Path $stage | Out-Null
         $snapshot = Invoke-AtfQualificationPhase $timing 'components.snapshot-preflight' {
-            New-AtfQualificationSnapshot $sourceRoot $stage $RunRoot $PinnedSourceInputs
+            New-AtfQualificationSnapshot $sourceRoot $stage $RunRoot $PinnedSourceInputs $timing
         }
     }
     Invoke-AtfQualificationPhase $timing 'components.test-change-recheck' {

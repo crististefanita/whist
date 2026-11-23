@@ -5,8 +5,10 @@ param(
 )
 $ErrorActionPreference = 'Stop'
 . (Join-Path $PSScriptRoot 'AtfSigningSourcePolicy.ps1')
+. (Join-Path $PSScriptRoot 'AtfFileDigest.ps1')
 $root = [IO.Path]::GetFullPath($SourceRoot)
 if (-not (Test-Path -LiteralPath $root -PathType Container)) { throw 'Rădăcina surselor nu există.' }
+Assert-AtfDirectSourcePath $root
 $policy = Get-Content -LiteralPath (Join-Path $root 'config/atf-governance-policy.json') -Raw | ConvertFrom-Json
 $boundaries = [Collections.Generic.HashSet[string]]::new([StringComparer]::OrdinalIgnoreCase)
 $protected = [Collections.Generic.List[string]]::new()
@@ -57,14 +59,15 @@ foreach ($boundary in $boundaries) {
 $null = $excluded.Add('release')
 $rows = [Collections.Generic.List[object]]::new()
 function Visit-InputDirectory([string]$directory) {
-    foreach ($entry in Get-ChildItem -LiteralPath $directory -Force) {
+    foreach ($entry in [IO.DirectoryInfo]::new($directory).EnumerateFileSystemInfos()) {
         $relative = [IO.Path]::GetRelativePath($root,$entry.FullName).Replace('\','/')
         if ($relative -ceq '.git') { continue }
         if (Test-AtfPrivateSigningInput $relative) { continue }
-        if ($entry.PSIsContainer -and $excluded.Contains($relative)) { continue }
+        $isDirectory = [bool]($entry.Attributes -band [IO.FileAttributes]::Directory)
+        if ($isDirectory -and $excluded.Contains($relative)) { continue }
         if ($entry.Attributes -band [IO.FileAttributes]::ReparsePoint) { throw "Intrare indirectă neinventariată: $relative" }
-        if ($entry.PSIsContainer) { Visit-InputDirectory $entry.FullName }
-        else { $rows.Add([pscustomobject]@{path=$relative;sha256=(Get-FileHash -LiteralPath $entry.FullName -Algorithm SHA256).Hash.ToLowerInvariant()}) }
+        if ($isDirectory) { Visit-InputDirectory $entry.FullName }
+        else { $rows.Add([pscustomobject]@{path=$relative;sha256=(Get-AtfFileSha256 $entry.FullName)}) }
     }
 }
 Visit-InputDirectory $root

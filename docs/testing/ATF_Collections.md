@@ -229,6 +229,21 @@ Compilation and execution have separate identities. The [compiler inventory](../
 
 The runner records compiler identity, cache admission and output sealing as named timing stages. A borrowed build has its original receipt and a hash-bound reference in the new workspace; neither source provenance nor old test reports are rewritten.
 
+### Snapshot and compiler I/O
+
+[Filesystem support](../../scripts/AtfFileDigest.ps1) reads fresh SHA-256 bytes and uses native directory enumeration; timestamps and file sizes never authorize reuse.
+
+| Boundary | Contract |
+|---|---|
+| Copy admission | Validate the complete manifest, public-signing boundary and direct paths before creating directories or copying files; reject duplicate destinations. |
+| Bounded batch | At most four copy workers recheck each source/destination path at use and independently hash written bytes. Windows uses buffered streams while preserving modification times and attributes; other platforms retain native copy semantics. |
+| Fresh validation | Re-inventory staged and live source/release trees after copying and after compilation; additions, deletions, same-metadata changes and indirect paths remain refusals. |
+| Compiler seal | Sort the same class, resource and dependency records ordinally and hash their exact content; no metadata cache substitutes for a read. |
+| Observability | Record `snapshot.inventory`, `snapshot.copy`, `snapshot.verify`, `snapshot.artifact-preflight` and `components.post-compile-snapshot` separately. Snapshot child stages overlap their parent duration and must not be added twice. |
+| Measurement | Compare identical manifests and compiler seals, disclose first-pass versus warm observations and OS-cache limits, and retain raw timings. A local I/O improvement is distinct from an end-to-end release speed claim. |
+
+Inventory and sealing do not initialize the copy compiler. Batch initialization belongs to the measured copy phase; a copy or preflight failure retains its original cause and blocks qualification.
+
 ```mermaid
 flowchart LR
     SOURCE[Current source snapshot] -->|admit Maven scope| FILTER[Retain compiler dependencies]
