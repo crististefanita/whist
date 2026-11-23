@@ -53,6 +53,22 @@
       "scope": "Seven current source, package, proof admission, catalog and dependency-ownership checks. Reuses unaffected broader documentation governance; targeted documentation CLI runs separately."
     },
     {
+      "id": "documentation-plan-governance",
+      "category": "governance",
+      "role": "PRIMARY",
+      "result": "PASS",
+      "path": "governance/documentation-plan/component-report.html",
+      "validatorCommit": "82780f0deeaa4497559e188c767d40782d2b6a3f",
+      "documentationCommit": "561f6bfeacba3f239f59f783efa3c75e222b8e0b",
+      "scope": "Focused atf-tests-documentation suite selection: eight passing checks of README structure, diagrams, prose, style, priority ownership and links. Uses unchanged compiled validators; the three-module architecture and TEST-04 runtime gates remain planned.",
+      "counts": {
+        "methods": 8,
+        "newUiExecutions": 0
+      },
+      "execution": "governance/documentation-plan/execution.json",
+      "footprint": "governance/documentation-plan/footprint.json"
+    },
+    {
       "id": "native-phase-integration",
       "category": "component",
       "path": "component/apk-policy/component-report.html",
@@ -235,6 +251,21 @@
       "path": "component/apk-policy/component-report.html",
       "bytes": 2429753,
       "sha256": "be2633e38c322ccfd2fb2370ba7bd08a9f26b2848a3a412d902e8db9b62faaf8"
+    },
+    {
+      "path": "governance/documentation-plan/component-report.html",
+      "bytes": 2515355,
+      "sha256": "8b9e8b26d0f0af1a5918ed2094f22d034b38df930747dd963822443775a25853"
+    },
+    {
+      "path": "governance/documentation-plan/execution.json",
+      "bytes": 864,
+      "sha256": "bfd91b72480ea3951b682fa4501c60b5189362cae91e47b4b19d50c4eedf794d"
+    },
+    {
+      "path": "governance/documentation-plan/footprint.json",
+      "bytes": 692,
+      "sha256": "6286c86ae987763e5441a9e598fb6bb528980ebd91ef3963cd9be0b8e8c5a3b1"
     }
   ],
   "executedRuntime": {

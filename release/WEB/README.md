@@ -30,6 +30,7 @@ Componentele dețin combinațiile de dimensiuni, text, ancore și ordinea evenim
 | [Treceri ilustrate la cinci/șase jucători](e2e/table-handoffs/extent.html) | `PASS` | `PRIMARY` | `9b57a75b` |
 | [Componente APK/Web comune pentru fiecare loc](component/phases/component-report.html) | `PASS` | `PRIMARY` | `9b57a75b` |
 | [Guvernanță curentă pentru responsabilități și sursă](governance/current/component-report.html) | `PASS` | `PRIMARY` | `9b57a75b` |
+| [Guvernanța planului și documentației](governance/documentation-plan/component-report.html) | `PASS` | `PRIMARY` | `82780f0d` |
 | [Integrarea JVM Android a contractului](component/apk-policy/component-report.html) | `PASS` | `REFERENCE` | `9b57a75b` |
 | [Referință anterioară la patru jucători](e2e/oh-hell/extent.html) | `PASS` | `REFERENCE` | `91716314` |
 | [Componente curente pentru treceri și dosar](component/handoff/component-report.html) | `PASS` | `REUSED` | `9a5b49b8` |
