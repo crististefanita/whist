@@ -109,7 +109,7 @@ public final class TrumpIndicatorComponentTest extends atf.gradle.audit.GradleAu
                     var suitOnly = withTrump(base, trump, null);
 
                     matrixChecks.at(CapturedValue.text(new Object[]{"Fixture before first assertion", "base", base, "copy", copy, "language", language, "mode", mode, "suit", suit, "suitOnly", suitOnly, "trump", trump}));
-                    matrixChecks.within("Numeric boundary: mode + \" \" + language", mode + " " + language, suit.symbol(), copy.trumpIndicatorValue(suitOnly));
+                    matrixChecks.equal(mode + " " + language, suit.symbol(), copy.trumpIndicatorValue(suitOnly));
                     matrixChecks.equal("copy.trumpAccessibility(suitOnly).contains(copy.suitName(suit)) must hold", true, copy.trumpAccessibility(suitOnly).contains(copy.suitName(suit)));
                     for (int rank : new int[]{7, 10, 11, 12, 13, 14}) {
                         var card = new Card(suit, rank);

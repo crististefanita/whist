@@ -72,6 +72,8 @@ LangGraph oferă noduri explicite, stare partajată și limite de checkpoint, da
 |---|---|---|
 | P2 | Încă nu există măsurători care să arate că un coordonator grafic îmbunătățește acest proces determinist de release față de checkpoint-urile actuale ale invocărilor. | Construiți un pilot shadow izolat care apelează numai comenzile existente. Injectați întreruperi în fiecare etapă și cereți paritate exactă pentru selecție, identitățile rapoartelor/JUnit și verdict, fără efecte secundare duplicate și fără autoritate de semnare, publicare sau ciclu de viață. Măsurați pornirea, costul unei rulări normale și recuperarea pe aceleași cazuri; adoptați numai dacă timpul median de recuperare scade cu cel puțin 20%, iar costul unei rulări neîntrerupte crește cu cel mult 5%. Niciun model nu poate stabili sau slăbi verdictul unui release. |
 
+<a id="testchanges-admission-before-collection-preparation"></a>
+
 ## Admiterea testChanges înainte de pregătirea colecției
 
 [Contractul admiterii timpurii](../governance/ATF_TestChanges.md#admiterea-timpurie-a-controlului-sursei) deține validarea canonică a probelor, admiterea planului de generare și reverificarea după pregătire. Rapoartele originale ale probelor, identitățile Git exacte și guvernanța finală rămân obligatorii; selecția sau reutilizarea compilării nu ocolesc admiterea.
@@ -96,6 +98,8 @@ LangGraph oferă noduri explicite, stare partajată și limite de checkpoint, da
 |---|---|---|
 | P2 | RAG-26: actualizarea unui singur sigiliu de cititor revizuit invalidează toate colecțiile ATF prin identitatea globală a politicii. | Separați amprenta topologiei de corpurile cititorilor revizuiți și de domeniile consumatorilor lor. Actualizarea delimitată doar la un sigiliu trebuie să selecteze responsabilii afectați. Schimbările topologiei, domeniile necunoscute, sigiliile lipsă și modificările neadmise ale cititorilor păstrează calificarea completă. Acoperiți limitele prin cazuri de componentă pozitive și negative; păstrați identitățile probelor originale și expuneți motivele selecției și timpii etapelor. |
 | P1 | RAG-27: pregătirea la rece și validarea repetată a sistemului de fișiere pot domina release-ul înainte de testele selectate. | Măsurați separat subetapele snapshot-ului, validarea după compilare și sigilarea compilatorului; grupați inspecția și hashing-ul fără a slăbi refuzul linkurilor, coruperii sau schimbării surselor, apoi comparați rulările la rece și la cald păstrând manifestele exacte și identitățile rapoartelor originale. |
+
+| P2 | RAG-28: cheia compilării Maven include surse de test folosite numai de Gradle, astfel încât o corecție Android invalidează bytecode-ul Maven neschimbat. | Derivați intrările compilării din rădăcinile Maven și build-helper declarate, păstrând POM-urile, resursele, intrările generate, uneltele și dependențele necunoscute; păstrați inventarul complet al execuției și testele de refuz al sigiliilor alterate. |
 
 Măsurați separat pregătirea snapshot-ului, compilarea și execuția. Diagnosticul focalizat rămâne distinct de calificarea unei colecții primare complete; recuperarea eșecurilor dintr-un responsabil aparține punctului deschis pentru reconcilierea invocărilor de mai sus.
 

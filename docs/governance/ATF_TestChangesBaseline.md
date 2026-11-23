@@ -2673,7 +2673,7 @@ testChanges:
     status: VERIFIED
     base: 7db8d301596e32384f5d7940a41654ee2fadf552
     expires: 2026-12-23
-    reason: Preserve matrix loops, original oracles and independent populations while bounding passing record, raster, fine-layout and animation inputs. Include raster tests in the history primary owner without duplicate reporting. Separate admitted Maven compiler reuse from fresh proof execution, including failure, incomplete output and changed bytecode. Prepare a maintenance APK with unchanged gameplay and presentation.
+    reason: Păstrează buclele matricilor, oracolele originale și populațiile independente, limitând intrările pentru înregistrări, raster, geometrie fină și animație. Include testele raster în responsabilul primar al istoricului, fără raportare dublată. Separă reutilizarea compilării Maven admise de execuția nouă a probelor, inclusiv eșecul, ieșirea incompletă și bytecode-ul alterat. Pregătește un APK de mentenanță cu jocul și afișarea neschimbate.
     proof: 'mvn -o -pl atf-tests -am -Dtest=GradleAuditGovernanceTest,ComponentEvidenceScopeComponentTest,AtfCollectionOwnershipComponentTest -Dsurefire.failIfNoSpecifiedTests=false test'
     checks:
       positive:
