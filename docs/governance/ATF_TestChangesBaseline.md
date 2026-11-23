@@ -2632,3 +2632,34 @@ testChanges:
 ```
 
 </details>
+
+<details>
+<summary>Geometry and score-history matrix audit inputs</summary>
+
+```yaml
+testChanges:
+  - id: WHIST-0241-MATRIX-INPUTS
+    status: VERIFIED
+    base: d7f3a384248ddfab0b1531072a4361f15f20eb40
+    expires: 2026-12-23
+    reason: Keep every geometry and history pair, conditional invariant, real hand and JSON restart while aggregating passing inputs with independent population checks and precise first-failure context; prepare the next maintenance APK identity.
+    proof: 'mvn -o -pl atf-tests -am -Dtest=GradleAuditGovernanceTest,AtfCollectionOwnershipComponentTest,ReleaseVersionComponentTest -Dsurefire.failIfNoSpecifiedTests=false test'
+    checks:
+      positive:
+        - atf.tests.governance.source.gradle.GradleAuditGovernanceTest#everyGradleTestClassHasOneExplicitLayerAndAnAuditedBase
+        - atf.tests.governance.suites.AtfCollectionOwnershipComponentTest#realDependencyClosuresSelectOnlyTheirConsumers
+        - atf.tests.governance.documentation.release.versioning.ReleaseVersionComponentTest#theApplicationUsesTheDeclaredPatchReleaseConvention
+      negative:
+        - atf.tests.governance.suites.AtfCollectionOwnershipComponentTest#missingOrUnreviewedDependenciesCannotAuthorizeReuse
+        - atf.tests.governance.documentation.release.versioning.ReleaseVersionComponentTest#absentVersionCannotBecomeADownloadIdentity
+    paths:
+      - whist-lab-app/app/src/test/java/ro/whistlab/app/score/ScoreHistoryGridMetricsComponentTest.java
+      - whist-lab-app/app/src/test/java/ro/whistlab/app/score/ScoreHistoryTableComponentTest.java
+      - whist-lab-app/app/src/test/java/ro/whistlab/app/table/GameTableLayoutComponentTest.java
+      - whist-lab-app/app/src/test/java/ro/whistlab/app/table/GameTablePhaseGeometryComponentTest.java
+      - whist-lab-app/app/src/test/java/ro/whistlab/app/table/TableViewportPolicyTest.java
+      - whist-lab-app/app/build.gradle
+      - config/atf-component-dependencies.json
+```
+
+</details>

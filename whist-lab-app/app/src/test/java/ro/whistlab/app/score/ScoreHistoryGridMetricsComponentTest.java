@@ -117,6 +117,10 @@ public final class ScoreHistoryGridMetricsComponentTest extends atf.gradle.audit
     }
 
     @Test public void spareWidthIsSharedByColumnsAndEveryHeaderKeepsItsBodyBoundary() {
+        var checks = new atf.gradle.audit.matrix.ExhaustiveMatrixChecks();
+        atf.gradle.audit.GradleInputs.fixture("Score-history width matrix", "players", "3–6",
+                "densities", new float[]{1, 1.5f, 2, 2.625f, 3.5f}, "fontScales", new float[]{1, 1.3f, 1.5f},
+                "viewportWidthsPx", new int[]{240, 320, 480, 644, 720, 1080, 1460, 2400}, "expectedPairs", 5520);
         for (int seats = 3; seats <= 6; seats++) for (float density : new float[]{1, 1.5f, 2, 2.625f, 3.5f}) {
             for (float scale : new float[]{1, 1.3f, 1.5f}) {
                 var minimum = ScoreHistoryGridMetrics.forDensity(seats, density)
@@ -124,24 +128,29 @@ public final class ScoreHistoryGridMetricsComponentTest extends atf.gradle.audit
                                 Math.round(38 * density * scale), Math.round(64 * density * scale));
                 for (int width : new int[]{240, 320, 480, 644, 720, 1080, 1460, 2400}) {
                     var grid = minimum.fitViewport(width);
-
-                    atf.gradle.audit.GradleInputs.fixture("Fixture before first assertion", "density", density, "grid", grid, "minimum", minimum, "scale", scale, "seats", seats, "width", width);
-                    assertEquals("grid.tableWidthPx() must equal Math.max(width, minimum.tableWidthPx())", Math.max(width, minimum.tableWidthPx()), grid.tableWidthPx());
-                    assertTrue("grid.handWidthPx() >= minimum.handWidthPx() must hold", grid.handWidthPx() >= minimum.handWidthPx());
-                    assertTrue("grid.bidWidthPx() >= minimum.bidWidthPx() must hold", grid.bidWidthPx() >= minimum.bidWidthPx());
-                    assertTrue("grid.pointsWidthPx() >= minimum.pointsWidthPx() must hold", grid.pointsWidthPx() >= minimum.pointsWidthPx());
-                    assertEquals("grid.separatorWidthPx() must equal minimum.separatorWidthPx()", minimum.separatorWidthPx(), grid.separatorWidthPx());
-                    assertEquals("grid.outerPaddingPx() must equal minimum.outerPaddingPx()", minimum.outerPaddingPx(), grid.outerPaddingPx());
+                    String location = "seats=" + seats + ", density=" + density + ", font=" + scale
+                            + ", width=" + width + ", minimum=" + minimum + ", grid=" + grid;
+                    checks.at(location);
+                    checks.equal("The table uses available width above its minimum", Math.max(width, minimum.tableWidthPx()), grid.tableWidthPx());
+                    checks.equal("Hand column retains its measured minimum", true, grid.handWidthPx() >= minimum.handWidthPx());
+                    checks.equal("Bid column retains its measured minimum", true, grid.bidWidthPx() >= minimum.bidWidthPx());
+                    checks.equal("Points column retains its measured minimum", true, grid.pointsWidthPx() >= minimum.pointsWidthPx());
+                    checks.equal("Separator thickness is invariant", minimum.separatorWidthPx(), grid.separatorWidthPx());
+                    checks.equal("Outer padding is invariant", minimum.outerPaddingPx(), grid.outerPaddingPx());
                     int header = grid.handWidthPx(), body = header;
                     for (int seat = 0; seat < seats; seat++) {
                         header += grid.separatorWidthPx() + grid.playerWidthPx();
                         body += grid.separatorWidthPx() + grid.bidWidthPx() + grid.pointsWidthPx();
-                        assertEquals("body must equal header", header, body);
+                        checks.at(location + ", seat=" + seat);
+                        checks.equal("Every player header ends at its body boundary", header, body);
                     }
-                    assertEquals("body + 2 * grid.outerPaddingPx() must equal grid.tableWidthPx()", grid.tableWidthPx(), body + 2 * grid.outerPaddingPx());
+                    checks.at(location);
+                    checks.equal("The last body boundary and padding consume the table", grid.tableWidthPx(), body + 2 * grid.outerPaddingPx());
                 }
             }
         }
+        assertEquals("All 480 grids retain every column and player-boundary check", 5520L, checks.checkedPairs());
+        checks.publish();
     }
 
     @Test public void extraWidthGrowsBothNumericColumnsAndResizingDoesNotMutateTheMinimum() {

@@ -45,9 +45,9 @@ The consumer shall have the time of validation and the data transmitted. If the 
 
 ## Cost of consumer inputs
 
-The Whist projection matrix uses the exhaustive ledger: every pair is evaluated, the expected population is asserted, and the first mismatch keeps full context. Remaining large producers require the same review before adopting aggregation; a short PASS message without coverage or an independent oracle is insufficient. Shared renderer resources and synthetic PNG fixtures must be measured separately from product screenshots.
+Whist projection, board containment, phase-clearance, fan, score-column and settled-series matrices use the exhaustive ledger: every pair is evaluated, the expected population is asserted, and the first mismatch keeps full context. Remaining large producers require the same review before adopting aggregation; a short PASS message without coverage or an independent oracle is insufficient. Shared renderer resources and synthetic PNG fixtures must be measured separately from product screenshots.
 
-- [ ] Extend bounded matrix inputs to the remaining geometry/history producers while preserving every scenario identity, invariant and failure context. Compare input-body bytes on identical selections and retain the original qualified release reports. Unit-only checks remain outside Extent; component adapter contracts retain their audited reports.
+- [ ] Extend bounded matrix inputs to remaining record, raster and fine-grained layout producers while preserving every scenario identity, invariant and failure context. Compare input-body bytes on identical selections and retain the original qualified release reports. Unit-only checks remain outside Extent; component adapter contracts retain their audited reports.
 
 | Priority | Liability and remaining qualification | Level and criterion of closure |
 |---|---|---|

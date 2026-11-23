@@ -37,39 +37,46 @@ public class TableViewportPolicyTest extends atf.gradle.audit.GradleAuditedTest 
     }
 
     @Test public void tallerFramesAndLowerCompositionKeepEveryRegionInsideTheBoard() {
-        for (int width : new int[]{280, 313, 353, 560, 760}) {
-            for (int players = 3; players <= 6; players++) {
-                for (int naturalHeight : new int[]{48, 62, 82, 110, 156}) {
-                    var seat = ro.whistlab.app.seat.PlayerSeatMetrics.arrange(naturalHeight, 12, 3);
-                    int seatHeight = seat.heightPx();
-
-                    atf.gradle.audit.GradleInputs.fixture("Fixture before first assertion", "naturalHeight", naturalHeight, "players", players, "seat", seat, "seatHeight", seatHeight, "width", width);
-                    assertEquals("seat.frameHeightPx() must equal (int)Math.ceil(naturalHeight * 1.25)", (int) Math.ceil(naturalHeight * 1.25), seat.frameHeightPx());
-                    var trick = TrickCardMetrics.forTable(players, width);
-                    int minimum = TableGeometry.minimumHeight(players, seatHeight, trick.centerHeightDp(), 8);
-                    for (int extra : new int[]{0, 80, 240}) {
-                        int height = minimum + extra;
-                        var plan = TableGeometry.arrangeDisplay(width, height, players,
-                                TableLayoutMetrics.seatWidthDp(width), seatHeight,
-                                trick.safeCenterWidthDp(), trick.centerHeightDp(), 8, true,
-                                TableGeometry.CenterAlignment.BALANCED);
-                        int inset = Math.min(Math.round(height * 0.05f), extra);
-                        assertTrue("TableLayoutMetrics.topInsetPx(height) >= inset must hold", TableLayoutMetrics.topInsetPx(height) >= inset);
-                        assertEquals("Human frame stays above the separate hand region",
-                                height, plan.seats().getFirst().bottom());
-                        var boxes = new java.util.ArrayList<>(plan.seats());
-                        boxes.add(plan.center());
-                        for (int first = 0; first < boxes.size(); first++) {
-                            var box = boxes.get(first);
-                            assertTrue("box.top() >= inset && box.bottom() <= height must hold", box.top() >= inset && box.bottom() <= height);
-                            for (int second = first + 1; second < boxes.size(); second++) {
-                                assertFalse("box.overlaps(boxes.get(second)) must remain false", box.overlaps(boxes.get(second)));
-                            }
+        var checks = new atf.gradle.audit.matrix.ExhaustiveMatrixChecks();
+        atf.gradle.audit.GradleInputs.fixture("Table containment matrix", "widthsDp", new int[]{280, 313, 353, 560, 760},
+                "players", "3–6", "naturalHeights", new int[]{48, 62, 82, 110, 156},
+                "extraHeights", new int[]{0, 80, 240}, "expectedPairs", 6250);
+        for (int width : new int[]{280, 313, 353, 560, 760}) for (int players = 3; players <= 6; players++) {
+            for (int naturalHeight : new int[]{48, 62, 82, 110, 156}) {
+                var seat = ro.whistlab.app.seat.PlayerSeatMetrics.arrange(naturalHeight, 12, 3);
+                checks.at("width=" + width + ", players=" + players + ", naturalHeight=" + naturalHeight);
+                checks.equal("Frame height keeps the 25 percent reserve", (int) Math.ceil(naturalHeight * 1.25), seat.frameHeightPx());
+                var trick = TrickCardMetrics.forTable(players, width);
+                int minimum = TableGeometry.minimumHeight(players, seat.heightPx(), trick.centerHeightDp(), 8);
+                for (int extra : new int[]{0, 80, 240}) {
+                    int height = minimum + extra;
+                    var plan = TableGeometry.arrangeDisplay(width, height, players,
+                            TableLayoutMetrics.seatWidthDp(width), seat.heightPx(),
+                            trick.safeCenterWidthDp(), trick.centerHeightDp(), 8, true,
+                            TableGeometry.CenterAlignment.BALANCED);
+                    String location = "width=" + width + ", players=" + players + ", naturalHeight=" + naturalHeight
+                            + ", extra=" + extra + ", plan=" + plan;
+                    checks.at(location);
+                    int inset = Math.min(Math.round(height * 0.05f), extra);
+                    checks.equal("The top inset covers the required reserve", true, TableLayoutMetrics.topInsetPx(height) >= inset);
+                    checks.equal("The human frame ends above the hand region", height, plan.seats().getFirst().bottom());
+                    var boxes = new java.util.ArrayList<>(plan.seats());
+                    boxes.add(plan.center());
+                    for (int first = 0; first < boxes.size(); first++) {
+                        var box = boxes.get(first);
+                        checks.at(location + ", first=" + first);
+                        checks.equal("Every occupied region stays inside the board", true,
+                                box.top() >= inset && box.bottom() <= height);
+                        for (int second = first + 1; second < boxes.size(); second++) {
+                            checks.at(location + ", first=" + first + ", second=" + second);
+                            checks.equal("Distinct occupied regions never intersect", false, box.overlaps(boxes.get(second)));
                         }
                     }
                 }
             }
         }
+        assertEquals("The independently enumerated containment population is complete", 6250L, checks.checkedPairs());
+        checks.publish();
     }
 
     @Test public void narrowerTrumpTileFitsLongValuesWithoutEnlargingTheFrame() {

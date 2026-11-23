@@ -148,9 +148,15 @@ public class ScoreHistoryTableComponentTest extends atf.gradle.audit.GradleAudit
 
     @Test public void settledSeriesMarkersSurviveJsonReloadForEveryHistoricalSeat() throws Exception {
         int positive = 0, negative = 0;
+        long expectedPairs = 0;
+        var checks = new atf.gradle.audit.matrix.ExhaustiveMatrixChecks();
         for (int points : List.of(5, 10)) {
             var game = seriesPaymentGame(points);
             int firstRecordedIndex = game.snapshot().handIndex();
+            int remaining = GameRules.handSizes(game.config().mode(), 4).size() - firstRecordedIndex;
+            expectedPairs += 4L * remaining * (remaining + 1);
+            atf.gradle.audit.GradleInputs.fixture("Series replay prefix", "seriesPoints", points,
+                    "firstRecordedIndex", firstRecordedIndex, "remainingHands", remaining, "checkpoint", game.saveState());
             var awards = new java.util.ArrayList<List<Integer>>();
             do {
                 finish(game);
@@ -159,10 +165,11 @@ public class ScoreHistoryTableComponentTest extends atf.gradle.audit.GradleAudit
                 var table = ScoreHistoryTable.forMatch(game.snapshot(), game.scoreHistory(), new WhistUiText(HowToPlay.Language.RO));
                 for (int hand = 0; hand < awards.size(); hand++) for (int seat = 0; seat < 4; seat++) {
                     var cell = table.rows().get(firstRecordedIndex + hand).cells().get(seat);
-
-                    atf.gradle.audit.GradleInputs.fixture("Fixture before first assertion", "awards", awards, "cell", cell, "firstRecordedIndex", firstRecordedIndex, "game", game, "hand", hand, "negative", negative, "points", points, "positive", positive, "seat", seat, "table", table);
-                    assertEquals("cell.seriesPoints() must equal (int)awards.get(hand).get(seat)", (int) awards.get(hand).get(seat), cell.seriesPoints());
-                    assertEquals("cell.displayPoints() must equal Integer.toString(game.scoreHistory().total(firstRecordedIndex + hand + 1, seat))", Integer.toString(game.scoreHistory().total(firstRecordedIndex + hand + 1, seat)), cell.displayPoints());
+                    checks.at("series=" + points + ", replay=" + awards.size() + ", hand="
+                            + (firstRecordedIndex + hand + 1) + ", seat=" + seat + ", awards=" + awards);
+                    checks.equal("Historical series payment survives JSON restoration", awards.get(hand).get(seat), cell.seriesPoints());
+                    checks.equal("Historical Points retain the cumulative total",
+                            Integer.toString(game.scoreHistory().total(firstRecordedIndex + hand + 1, seat)), cell.displayPoints());
                 }
                 for (int award : awards.get(awards.size() - 1)) {
                     if (award > 0) positive++;
@@ -172,6 +179,8 @@ public class ScoreHistoryTableComponentTest extends atf.gradle.audit.GradleAudit
                 game.startNextHand();
             } while (true);
         }
+        assertEquals("Every historical seat is rechecked after each remaining hand", expectedPairs, checks.checkedPairs());
+        checks.publish();
         assertTrue("Real engine hands must exercise a positive series payment", positive > 0);
         assertTrue("Real engine hands must exercise a negative series payment", negative > 0);
     }
