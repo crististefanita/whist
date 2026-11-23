@@ -41,16 +41,16 @@ Fereastra exclude barele sistemului și decupajul înaintea aranjării. Această
 | Rute și ecrane | [AppNavigation](navigation/AppNavigation.java) gestionează ruta și dialogurile curente; [screens](screens/) compune paginile, iar [ScreenViews](screens/ScreenViews.java) construiește widgeturile comune. |
 | Schimbarea ferestrei | [PresentationRefresh](presentation/PresentationRefresh.java) grupează cererile de refacere și invalidează callback-urile unei prezentări înlocuite; coordonatorul citește geometria curentă la livrare. |
 | Fereastră Android | [WindowContent](window/WindowContent.java) aplică protecția nativă și măsoară spațiul util; [WindowPadding](window/WindowPadding.java) păstrează baza imuabilă. |
-| Masă și licitare | [GameBoardLayout](table/GameBoardLayout.java), [TableGeometry](table/TableGeometry.java) și [BidGridMetrics](bidding/BidGridMetrics.java) măsoară locurile și regiunea centrală. |
-| Licitația propusă omului | [HumanBidSelection](bidding/HumanBidSelection.java) păstrează recomandarea Hard, selecția manuală și identitatea contextului. Activitatea transmite evaluarea coordonatorului asincron; numai confirmarea depune licitația în sesiune. |
+| Masă și licitare | [GameBoardLayout](table/GameBoardLayout.java), [TableGeometry](table/TableGeometry.java) și [BidGridMetrics](../../../../../../../whist-presentation/src/main/java/ro/whistlab/app/bidding/BidGridMetrics.java) măsoară locurile și regiunea centrală. |
+| Licitația propusă omului | [HumanBidSelection](../../../../../../../whist-presentation/src/main/java/ro/whistlab/app/bidding/HumanBidSelection.java) păstrează recomandarea Hard, selecția manuală și identitatea contextului. Activitatea transmite evaluarea coordonatorului asincron; numai confirmarea depune licitația în sesiune. |
 | Nume și tură | [PlayerSeatView](seat/PlayerSeatView.java) măsoară textul acțiunii deasupra chenarului; [PlayerSeatMetrics](seat/PlayerSeatMetrics.java) rezervă regiunile fără suprapuneri. |
-| Mână | [HandLayoutMetrics](hand/HandLayoutMetrics.java) calculează evantaiul; [CenteredHandView](hand/CenteredHandView.java) gestionează poziția inițială a derulării. |
-| Levată și atu | [TrickCardMetrics](table/TrickCardMetrics.java) ancorează cărțile după loc; [TrumpIndicatorView](table/TrumpIndicatorView.java) afișează informația despre atu. |
-| Colectarea levatei | [TrickCollectionMotion](../../../../../../../atf-card-table-ui/src/main/java/ro/cardtable/ui/animation/TrickCollectionMotion.java) calculează cadrul și timpul. [TrickCollectionAnimator](../../../../../../../atf-card-table-ui/src/main/java/ro/cardtable/ui/animation/TrickCollectionAnimator.java) aplică animația pe vederile Android. |
-| Scor | [ScoreHistoryTable](score/ScoreHistoryTable.java) proiectează programul complet pentru toate locurile; [ScoreHistoryView](score/ScoreHistoryView.java) îl afișează cu descrieri accesibile. |
+| Mână | [HandLayoutMetrics](../../../../../../../whist-presentation/src/main/java/ro/whistlab/app/hand/HandLayoutMetrics.java) calculează evantaiul; [CenteredHandView](hand/CenteredHandView.java) gestionează poziția inițială a derulării. |
+| Levată și atu | [TrickCardMetrics](../../../../../../../whist-presentation/src/main/java/ro/whistlab/app/table/TrickCardMetrics.java) ancorează cărțile după loc; [TrumpIndicatorView](table/TrumpIndicatorView.java) afișează informația despre atu. |
+| Colectarea levatei | [TrickCollectionMotion](../../../../../../../card-table-core/src/main/java/ro/cardtable/ui/animation/TrickCollectionMotion.java) calculează cadrul și timpul. [TrickCollectionAnimator](../../../../../../../atf-card-table-ui/src/main/java/ro/cardtable/ui/animation/TrickCollectionAnimator.java) aplică animația pe vederile Android. |
+| Scor | [ScoreHistoryTable](../../../../../../../whist-presentation/src/main/java/ro/whistlab/app/score/ScoreHistoryTable.java) proiectează programul complet pentru toate locurile; [ScoreHistoryView](score/ScoreHistoryView.java) îl afișează cu descrieri accesibile. |
 | Comenzi și salvare | [GameCommandFlow](lifecycle/GameCommandFlow.java) delimitează refuzul comenzii; [GamePersistence](persistence/GamePersistence.java) ordonează checkpoint-ul, clasamentul și exportul. |
 | Stocare și ciclu Android | [GameSessionStore](persistence/GameSessionStore.java) deține schema salvării; [CompletedTrickPause](lifecycle/CompletedTrickPause.java) delimitează pauza levatei. |
-| Texte și stil | [WhistUiText](localization/WhistUiText.java) deține EN/RO; [WhistUiPalette](theme/WhistUiPalette.java) și [GameHeaderTypography](theme/GameHeaderTypography.java) furnizează culorile și rolurile tipografice. |
+| Texte și stil | [WhistUiText](../../../../../../../whist-presentation/src/main/java/ro/whistlab/app/localization/WhistUiText.java) deține EN/RO; [WhistUiPalette](theme/WhistUiPalette.java) și [GameHeaderTypography](../../../../../../../whist-presentation/src/main/java/ro/whistlab/app/theme/GameHeaderTypography.java) furnizează culorile și rolurile tipografice. |
 
 Dimensiunile, pragurile și coeficienții de aranjare au sursa în componentele indicate. Atlasul păstrează relațiile și invariantele, astfel încât modificarea unui profil de ecran să poată fi urmărită din cod spre verificare.
 
@@ -62,7 +62,7 @@ Geometria păstrează separat locurile, țintele tactile, cărțile și textul. 
 <summary>Invariantele mesei, mâinii, atuului și istoricului</summary>
 
 - Locul omului rămâne sud; poziția cărții jucate depinde de locul actorului și de ordinea levatei.
-- [CardFaceMetrics](cards/CardFaceMetrics.java) păstrează proporția comună 5:7, scalată după rol; mâna schimbă suprapunerea, iar numărul jucătorilor schimbă pozițiile. [TableSeatLayout](table/TableSeatLayout.java) urmează ordinea circulară a motorului; la patru locuri adversarii ocupă un arc superior, fără îngustarea cărților jucate.
+- [CardFaceMetrics](../../../../../../../whist-presentation/src/main/java/ro/whistlab/app/cards/CardFaceMetrics.java) păstrează proporția comună 5:7, scalată după rol; mâna schimbă suprapunerea, iar numărul jucătorilor schimbă pozițiile. [TableSeatLayout](table/TableSeatLayout.java) urmează ordinea circulară a motorului; la patru locuri adversarii ocupă un arc superior, fără îngustarea cărților jucate.
 - Licitarea și levata folosesc regiunea centrală; [TableViewportPolicy](table/TableViewportPolicy.java) adaptează spațiul decorativ și înălțimea fețelor pentru ferestre scunde.
 - Bugetul decorativ ține cont de înălțimea utilă și de scara fontului. Aranjarea compactă poate fi necesară și pe un ecran înalt cu text mărit; dimensiunea cărților din mână și a țintelor tactile rămâne constantă.
 - Fiecare tură de licitare este randată înaintea calculului automat. Controalele omului sunt inactive cât licitează un adversar; eticheta de acțiune rămâne asociată locului care deține tura.
@@ -91,7 +91,7 @@ Punctele mâinii sunt derivate de domeniu din soldurile istoricului. Levatele ș
 
 ## Profil și clasamente
 
-[PlayerPreferences](profile/PlayerPreferences.java) păstrează numele preferat și limita de afișare. [HighScoreRepository](highscores/HighScoreRepository.java) actualizează topul local la încheiere, iar [contractul înregistrărilor](../../../../../../../../docs/game/ATF_PlayerRecords.md) definește partiționarea, exemplele marcate și prevenirea dublurilor.
+[PlayerPreferences](profile/PlayerPreferences.java) păstrează numele preferat și limita de afișare. [HighScoreRepository](../../../../../../../whist-presentation/src/main/java/ro/whistlab/app/highscores/HighScoreRepository.java) actualizează topul local la încheiere, iar [contractul înregistrărilor](../../../../../../../../docs/game/ATF_PlayerRecords.md) definește partiționarea, exemplele marcate și prevenirea dublurilor.
 
 ## Cum verificăm
 
@@ -120,7 +120,7 @@ Componentele geometrice verifică relații calculate. Captura fizică și intera
 
 ## Destinații și dialoguri
 
-Constructorii ecranelor primesc observații și acțiuni explicite, fără proprietatea sesiunii sau a executorului AI. [MatchSetup](screens/MatchSetup.java) păstrează alegerile configurării fără să modifice o partidă începută.
+Constructorii ecranelor primesc observații și acțiuni explicite, fără proprietatea sesiunii sau a executorului AI. [MatchSetup](../../../../../../../whist-presentation/src/main/java/ro/whistlab/app/screens/MatchSetup.java) păstrează alegerile configurării fără să modifice o partidă începută.
 
 ```mermaid
 %%{init: {"themeVariables":{"fontSize":"15px"},"themeCSS":".edgeLabel, .edgeLabel p { font-size: 12px !important; } .node rect { rx: 6px; ry: 6px; }","flowchart":{"curve":"linear","nodeSpacing":24,"rankSpacing":22,"padding":6},"sequence":{"mirrorActors":false,"messageMargin":24,"wrap":true}}}%%
@@ -157,10 +157,10 @@ La reluarea după oprirea procesului, un checkpoint aflat la final de levată pr
 
 | Componentă | Contract |
 |---|---|
-| [TrickCollectionRequest](animation/TrickCollectionRequest.java) | Acceptă numai levata publică completă, cu toate locurile distincte, câștigătorul motorului și aceleași cărți la sfârșitul istoricului. O observație parțială ori depășită nu pornește colectarea. |
+| [TrickCollectionRequest](../../../../../../../whist-presentation/src/main/java/ro/whistlab/app/animation/TrickCollectionRequest.java) | Acceptă numai levata publică completă, cu toate locurile distincte, câștigătorul motorului și aceleași cărți la sfârșitul istoricului. O observație parțială ori depășită nu pornește colectarea. |
 | [CompletedTrickPause](lifecycle/CompletedTrickPause.java) | Fereastră unică per levată și sesiune; suspendarea conservă timpul rămas, fără reluarea unei levate expirate. Reluarea precedă inclusiv pagina scorului ultimei levate din partidă. |
-| [TrickCollectionMotion](../../../../../../../atf-card-table-ui/src/main/java/ro/cardtable/ui/animation/TrickCollectionMotion.java) | Model pur pentru întârziere, durată, translație, micșorare și transparență. Întârzierea layout-ului consumă din timpul disponibil. |
-| [TrickCollectionRun](../../../../../../../atf-card-table-ui/src/main/java/ro/cardtable/ui/animation/TrickCollectionRun.java) | Deține observarea, pornirea unică și curățarea scenei prin porturi. Anularea invalidează cadrele depășite, iar tratarea erorilor păstrează cauza inițială. |
+| [TrickCollectionMotion](../../../../../../../card-table-core/src/main/java/ro/cardtable/ui/animation/TrickCollectionMotion.java) | Model pur pentru întârziere, durată, translație, micșorare și transparență. Întârzierea layout-ului consumă din timpul disponibil. |
+| [TrickCollectionRun](../../../../../../../card-table-core/src/main/java/ro/cardtable/ui/animation/TrickCollectionRun.java) | Deține observarea, pornirea unică și curățarea scenei prin porturi. Anularea invalidează cadrele depășite, iar tratarea erorilor păstrează cauza inițială. |
 | [TrickCollectionAnimator](../../../../../../../atf-card-table-ui/src/main/java/ro/cardtable/ui/animation/TrickCollectionAnimator.java) | Leagă coordonatorul testabil de adaptorul Android al măsurării și animației. Detașarea sau schimbarea geometriei anulează scena și restaurează transformările și regulile de clipping capturate. |
 | [GameScreen](screens/GameScreen.java) | Înlocuirea ecranului anulează efectul anterior; interacțiunea cu mâna rămâne suspendată până la expirarea pauzei. Fixture-urile statice păstrează afișarea fără animație. |
 
@@ -207,7 +207,7 @@ flowchart LR
 | Randare | Afișarea scorului nu înregistrează clasamentul. Reafișarea nu ocolește checkpoint-ul și nu scrie rezultate suplimentare. |
 | Reluare | Citirea și validarea salvării au bloc propriu. Salvarea ulterioară se execută în afara tratării datelor invalide, astfel încât eșecul ei nu șterge checkpoint-ul citit. |
 
-[SavedNumbers](persistence/SavedNumbers.java) refuză fracțiile, depășirile, șirurile și valorile nule înaintea conversiei câmpurilor întregi. Seed-ul păstrează exact domeniul semnat pe 64 de biți; valorile opționale folosesc implicitul numai când câmpul lipsește, apoi domeniul validează starea restaurată.
+[SavedNumbers](../../../../../../../whist-presentation/src/main/java/ro/whistlab/app/persistence/SavedNumbers.java) refuză fracțiile, depășirile, șirurile și valorile nule înaintea conversiei câmpurilor întregi. Seed-ul păstrează exact domeniul semnat pe 64 de biți; valorile opționale folosesc implicitul numai când câmpul lipsește, apoi domeniul validează starea restaurată.
 
 - [Componentele comenzilor](../../../../../test/java/ro/whistlab/app/lifecycle/GameCommandFlowComponentTest.java) verifică mutația reală și refuzul, plus defecte injectate după acceptare.
 - [Componentele persistenței](../../../../../test/java/ro/whistlab/app/persistence/GamePersistenceComponentTest.java) verifică ordinea și oprirea etapelor prin porturi controlate; blocarea folosește handshake, fără prag de performanță.
@@ -219,7 +219,7 @@ flowchart LR
 
 Calculul politicii rulează într-un executor separat, iar aplicarea mutării revine pe firul principal. [AiTurnRequest](lifecycle/AiTurnRequest.java) capturează starea imutabilă înaintea calculului și verifică identitatea partidei și egalitatea stării înaintea aplicării.
 
-Pentru om, [HumanBidSelection](bidding/HumanBidSelection.java) primește numai observația proprie și publică a motorului Hard. Evaluarea propune o selecție legală; sesiunea primește contractul numai prin confirmarea utilizatorului.
+Pentru om, [HumanBidSelection](../../../../../../../whist-presentation/src/main/java/ro/whistlab/app/bidding/HumanBidSelection.java) primește numai observația proprie și publică a motorului Hard. Evaluarea propune o selecție legală; sesiunea primește contractul numai prin confirmarea utilizatorului.
 
 | Continuitatea licitației | Comportament |
 |---|---|
@@ -255,7 +255,7 @@ Oprirea, revenirea la meniu și deschiderea dialogurilor suspendă automatizarea
 - Lease-ul permite `AiTurnRequest` să calculeze pentru locul uman numai cât timp este activ; coordonarea, verificarea snapshot-ului și aplicarea unică rămân pe calea AI existentă.
 - Ajungerea la scor, schimbarea mâinii, pornirea unei partide sau revenirea la meniul principal închide lease-ul. Automatizarea nu se transferă la mâna următoare.
 
-- [AutoGameHand](lifecycle/AutoGameHand.java) fixează limita de ciclu, iar [BidGridMetrics](bidding/BidGridMetrics.java) plasează controlul fără să acopere locurile.
+- [AutoGameHand](lifecycle/AutoGameHand.java) fixează limita de ciclu, iar [BidGridMetrics](../../../../../../../whist-presentation/src/main/java/ro/whistlab/app/bidding/BidGridMetrics.java) plasează controlul fără să acopere locurile.
 - Textele accesibile păstrează acțiunea completă pentru cititoarele de ecran. Componentele verifică 3–6 jucători, lățimi, text mărit, delimitarea lease-ului și ambele limbi; scenariul semnat verifică bifa, jocul până la scor și revenirea la control manual.
 
 - [Componentele coordonatorului](../../../../../test/java/ro/whistlab/app/lifecycle/AiTurnCoordinatorComponentTest.java) verifică firul calculului, predarea, anularea, dublurile și cauza eșecului.
@@ -273,7 +273,7 @@ Calificările rămase sunt centralizate în [feedback-ul Android](../../../../..
 
 ## Proiecția mesei către biblioteca comună
 
-[WhistTableContent](table/content/WhistTableContent.java) traduce numai datele vizibile ale snapshot-ului în `SeatContent`, `HandCard` și `PlayedCardContent`. [GameTablePanel](table/GameTablePanel.java) păstrează licitația, legalitatea transmisă, levata vizibilă și colectarea; biblioteca desenează și măsoară fără motor Whist.
+[WhistTableContent](../../../../../../../whist-presentation/src/main/java/ro/whistlab/app/table/content/WhistTableContent.java) traduce numai datele vizibile ale snapshot-ului în `SeatContent`, `HandCard` și `PlayedCardContent`. [GameTablePanel](table/GameTablePanel.java) păstrează licitația, legalitatea transmisă, levata vizibilă și colectarea; biblioteca desenează și măsoară fără motor Whist.
 
 - Chenarele păstrează numele integral și ordinea licitat/levate, cu o singură linie pentru fiecare. Rendererul măsoară textul îngroșat împreună cu eticheta și verifică lățimea după layout.
 - Selecția întoarce identitatea cărții din snapshot-ul afișat; adaptorul o rezolvă la obiectul original înaintea callback-ului existent.

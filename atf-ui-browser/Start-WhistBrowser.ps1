@@ -29,29 +29,7 @@ if (!$JsonLibrary) {
 $sources = @(
     Join-Path $PSScriptRoot 'whist/src/main/java'
     Join-Path $checkout 'whist-lab-app/game-core/src/main/java'
-    Join-Path $checkout 'whist-lab-app/app/src/main/java/ro/whistlab/app/bidding/HumanBidSelection.java'
-    Join-Path $checkout 'whist-lab-app/app/src/main/java/ro/whistlab/app/localization/WhistUiText.java'
-    Join-Path $checkout 'whist-lab-app/app/src/main/java/ro/whistlab/app/animation/TrickCollectionRequest.java'
-    Join-Path $checkout 'whist-lab-app/app/src/main/java/ro/whistlab/app/theme/GameHeaderTypography.java'
-    Join-Path $checkout 'whist-lab-app/app/src/main/java/ro/whistlab/app/theme/TrumpTileStyle.java'
-    $app = Join-Path $checkout 'whist-lab-app/app/src/main/java/ro/whistlab/app'
-    foreach ($metric in 'table/TableLayoutMetrics','table/TrickCardMetrics','bidding/BidGridMetrics','cards/CardFaceMetrics','hand/HandLayoutMetrics') {
-        Join-Path $app "$metric.java"
-    }
-    $achievements = Join-Path $checkout 'whist-lab-app/app/src/main/java/ro/whistlab/app/achievements'
-    foreach ($name in 'WhistAchievementCatalog','WhistAchievementCodec','WhistAchievementRepository','WhistAchievementState','WhistHandFacts','WhistMatchFacts') {
-        Join-Path $achievements "$name.java"
-    }
-    Join-Path $achievements 'presentation/WhistAchievementPresentation.java'
-    foreach ($part in 'persistence/GameCheckpointCodec','persistence/SavedNumbers','score/ScoreHistoryTable',
-        'score/ScoreHistoryColumn','highscores/HighScores','highscores/HighScoreCodec',
-        'highscores/HighScoreRepository','highscores/HighScorePresentation') {
-        Join-Path $app "$part.java"
-    }
-    Join-Path $app 'screens/MatchSetup.java'
-    Join-Path $app 'score/ScoreRows.java'
-    Join-Path $app 'table/content/WhistTableContent.java'
-    Join-Path $app 'cards/WhistCardFace.java'
+    Join-Path $checkout 'whist-lab-app/whist-presentation/src/main/java'
     $CatalogSource
 )
 $footerImage = Join-Path $checkout 'whist-lab-app/app/src/main/res/drawable-nodpi/teo_dedication.png'

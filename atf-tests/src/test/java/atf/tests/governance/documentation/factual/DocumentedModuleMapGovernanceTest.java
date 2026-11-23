@@ -45,4 +45,23 @@ class DocumentedModuleMapGovernanceTest {
             AuditedAssertions.assertTrue(failures.stream().anyMatch(failure -> failure.contains(mutation.get(2))), failures.toString());
         }
     }
+
+    @Test void explicitModuleLocationsRejectDuplicateAndEscapingAliases(@org.junit.jupiter.api.io.TempDir java.nio.file.Path checkout) throws Exception {
+        var gradle = Files.createDirectories(checkout.resolve("build-root"));
+        Files.createDirectories(gradle.resolve("gradle"));
+        Files.writeString(gradle.resolve("gradle/component-audit.gradle"),
+                "owner.dependencies.add('testImplementation', owner.dependencies.testFixtures(project(':test-audit')))");
+        var port = Files.createDirectories(checkout.resolve("portable"));
+        Files.writeString(port.resolve("build.gradle"), "plugins { id 'java-library' }\n");
+        String alias = "project(\":port\").projectDir = file(\"../portable\")\n";
+        Files.writeString(gradle.resolve("settings.gradle"), alias);
+        AuditedAssertions.assertEquals(1, BuildModuleDeclarations.gradleEdges(gradle, java.util.Set.of("port")).size(),
+                "A literal sibling module inside the checkout is supported");
+        for (String invalid : List.of(alias + alias, alias.replace("../portable", "../../outside"))) {
+            Files.writeString(gradle.resolve("settings.gradle"), invalid);
+            var failure = AuditedAssertions.assertThrows(IllegalArgumentException.class,
+                    () -> BuildModuleDeclarations.gradleEdges(gradle, java.util.Set.of("port")));
+            AuditedAssertions.assertTrue(failure.getMessage().contains("DOC-BUILD-MAP"), "Preserve the precise inventory failure");
+        }
+    }
 }

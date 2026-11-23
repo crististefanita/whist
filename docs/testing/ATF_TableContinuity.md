@@ -18,7 +18,7 @@ flowchart LR
 <details>
 <summary>Legendă: aserțiuni comune și renderere separate</summary>
 
-[Contractul comun](../../whist-lab-app/app/src/test/java/ro/whistlab/app/table/TablePhaseContract.java) deține populația și aserțiunile. Testul APK îl apelează direct; fixture-ul Web importă aceeași sursă și furnizează ambele adaptoare. Această comparație de politici nu simulează widgeturile Android, rasterizarea fonturilor sau emulatorul.
+[Portul neutru de observații](../../whist-lab-app/card-table-core/src/testFixtures/java/ro/cardtable/testing/SurfaceObservation.java) și [oracolul de continuitate](../../whist-lab-app/card-table-core/src/testFixtures/java/ro/cardtable/testing/SurfaceContinuity.java) sunt în fixture-urile core. [Contractul comun al jocului](../../whist-lab-app/app/src/test/java/ro/whistlab/app/table/TablePhaseContract.java) deține populația și aserțiunile. Testul APK îl apelează direct; fixture-ul Web importă aceeași sursă și furnizează ambele adaptoare. Această comparație de politici nu simulează widgeturile Android, rasterizarea fonturilor sau emulatorul.
 
 </details>
 
@@ -60,7 +60,7 @@ Politica de livrare cere una sau două mâini per joc E2E, la un singur viewport
 | Final de partidă | Folosiți un checkpoint legal aproape de final, validat în componente, apoi jucați mâna finală reală. |
 | Livrarea suitei | Indexul curent din `release/` leagă prin căi relative rapoartele canonice ale componentelor, rendererelor, guvernanței și E2E, cu selecție și proveniență explicite. |
 | Referințe istorice | Păstrați verdictele și octeții originali; un parcurs vechi peste buget nu devine o calificare primară curentă. |
-| Selecția imaginilor | Cel mult patru capturi relevante per scenariu normal este bugetul propus; păstrați suplimentar primul eșec vizual. Nu fotografiați fiecare carte sau combinație de afișaj și nu ascundeți datele unei aserțiuni eșuate. |
-| Gol de implementare | `TEST-04` urmărește impunerea bugetului în runnerele existente și la publicare; această politică nu afirmă că mecanismul este deja implementat. |
+| Selecția imaginilor | Admiterea și publicarea Web impun cel mult patru capturi normale; păstrați suplimentar primul eșec vizual. Nu fotografiați fiecare carte sau combinație de afișaj și nu ascundeți datele unei aserțiuni eșuate. |
+| Gol de implementare | Admiterea Web respinge planurile lungi înainte de pornire, iar publicatorul reconciliază rundele/capturile reale. Admiterea nativă acceptă una sau două; `TEST-04` păstrează închiderea driverelor pereche și a capturilor native. |
 
-[Planul de migrare și criteriile](../feedback/ATF_CardUi_Extraction.md#ui-three-module-plan) separă core portabil, adaptorul Android și adaptorul Web. Cazurile specifice jocului rămân la joc; suportul neutru pentru fixture-uri și oracle-uri aparține testelor core.
+[Implementare și acceptanță rămasă](../feedback/ATF_CardUi_Extraction.md#ui-three-module-plan) separă core portabil, adaptorul Android și adaptorul Web. Cazurile specifice jocului rămân la joc; suportul neutru pentru fixture-uri și oracle-uri aparține testelor core.

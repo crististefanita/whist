@@ -23,34 +23,9 @@ foreach ($source in $checkout, (Resolve-Path -LiteralPath $GameRoot).ProviderPat
 }
 $build = Join-Path $output ('browser-' + [guid]::NewGuid().ToString('N'))
 $classes = Join-Path $build 'classes'
-$inputs = @(
-    Join-Path $PSScriptRoot 'src/main/java'
-    $ui = Join-Path $checkout 'whist-lab-app/atf-card-table-ui/src/main/java/ro/cardtable/ui'
-    foreach ($contract in 'TableSeatLayout','TableSizing','TableGeometry','TableViewportPolicy','PlayedCardContent','PlayedCardMetrics','PlayedCardStyle','ScoreGridStyle') {
-        Join-Path $ui "table/$contract.java"
-    }
-    Join-Path $ui 'table/trump/TrumpTileMetrics.java'
-    Join-Path $ui 'hand/HandLayoutMetrics.java'
-    Join-Path $ui 'hand/HandInput.java'
-    Join-Path $ui 'hand/HandCard.java'
-    Join-Path $ui 'cards/CardFace.java'
-    Join-Path $ui 'cards/CardFaceInk.java'
-    Join-Path $ui 'cards/CardHighlight.java'
-    Join-Path $ui 'cards/CardFaceMetrics.java'
-    Join-Path $ui 'animation/CollectionTarget.java'
-    Join-Path $ui 'animation/TrickCollectionMotion.java'
-    Join-Path $ui 'seat/SeatContent.java'
-    Join-Path $ui 'seat/SeatTypography.java'
-    Join-Path $ui 'seat/PlayerSeatMetrics.java'
-    Join-Path $ui 'theme/TableColors.java'
-    Join-Path $ui 'turn/TurnPacing.java'
-    Join-Path $ui 'menu/TableMenuContent.java'
-    Join-Path $ui 'screens/GameTitleLayout.java'
-    foreach ($contract in 'ScoreTableContent','HistoryContent','HistoryGridMetrics','HistoryScrollSync','ScoreTypography','HistoryAppearance') {
-        Join-Path $ui "score/$contract.java"
-    }
-    Join-Path $checkout 'whist-lab-app/card-table-names/src/main/java'
-) + $JavaInputs
+$coreRoot = Join-Path $checkout 'whist-lab-app/card-table-core/src/main/java'
+$webRoots = @((Join-Path $PSScriptRoot 'src/main/java'), (Join-Path $checkout 'whist-lab-app/card-table-names/src/main/java'))
+$inputs = @($coreRoot) + $webRoots + $JavaInputs
 $sources = foreach ($inputPath in $inputs) {
     $item = Get-Item -LiteralPath $inputPath
     if ($item.PSIsContainer) {
@@ -68,18 +43,34 @@ $null = New-Item -ItemType Directory -Path $classes -Force
 function Format-JavacPath([string]$Path) {
     '"' + $Path.Replace('\', '/') + '"'
 }
-$argFile = Join-Path $build 'javac.args'
-$arguments = @('--release', '17', '-encoding', 'UTF-8', '-d', (Format-JavacPath $classes))
-$libraryPaths = foreach ($library in $Libraries) { (Resolve-Path -LiteralPath $library).ProviderPath }
-if ($libraryPaths) { $arguments += @('-cp', (Format-JavacPath ($libraryPaths -join [IO.Path]::PathSeparator))) }
-$arguments += @($sources | ForEach-Object { Format-JavacPath $_ })
-[IO.File]::WriteAllLines($argFile, [string[]]$arguments, [Text.UTF8Encoding]::new($false))
-& javac "@$argFile"
-if ($LASTEXITCODE -ne 0) { throw 'Browser adapter compilation failed.' }
-$runtime = (@($classes) + @($libraryPaths)) -join [IO.Path]::PathSeparator
-if ($BuildOnly) {
-    $runtime
-    return
+function Compile-Sources([string[]]$Sources, [string]$Destination, [string[]]$Classpath = @()) {
+    $null = New-Item -ItemType Directory -Path $Destination -Force
+    $argsFile = Join-Path (Split-Path $Destination) ((Split-Path $Destination -Leaf) + '.args')
+    $options = @('--release', '17', '-encoding', 'UTF-8', '-d', (Format-JavacPath $Destination))
+    if ($Classpath.Count) { $options += @('-cp', (Format-JavacPath ($Classpath -join [IO.Path]::PathSeparator))) }
+    $options += @($Sources | ForEach-Object { Format-JavacPath $_ })
+    [IO.File]::WriteAllLines($argsFile, [string[]]$options, [Text.UTF8Encoding]::new($false))
+    & javac "@$argsFile"
+    if ($LASTEXITCODE -ne 0) { throw 'Presentation module compilation failed.' }
 }
+function Module-Sources([string[]]$Roots) {
+    @(foreach ($folder in $Roots) { Get-ChildItem -LiteralPath $folder -Recurse -Filter '*.java' -File | ForEach-Object FullName })
+}
+function Module-Jar([string]$Name, [string[]]$Sources, [string[]]$Classpath = @()) {
+    $destination = Join-Path $build $Name
+    Compile-Sources $Sources $destination $Classpath
+    $artifact = Join-Path $build "$Name.jar"
+    & jar --create --file $artifact '--date=2026-01-01T00:00:00Z' -C $destination .
+    if ($LASTEXITCODE -ne 0) { throw 'Presentation module packaging failed.' }
+    $artifact
+}
+$coreJar = Module-Jar 'card-table-core' (Module-Sources @($coreRoot))
+$webJar = Module-Jar 'card-table-web' (Module-Sources $webRoots) @($coreJar)
+$libraryPaths = @($coreJar, $webJar) + @(foreach ($library in $Libraries) { (Resolve-Path -LiteralPath $library).ProviderPath })
+$sharedSources = @(Module-Sources (@($coreRoot) + $webRoots))
+$gameSources = @($sources | Where-Object { $_ -notin $sharedSources })
+if ($gameSources.Count) { Compile-Sources $gameSources $classes $libraryPaths }
+$runtime = (@($classes) + $libraryPaths) -join [IO.Path]::PathSeparator
+if ($BuildOnly) { $runtime; return }
 & java '-cp' $runtime $MainClass (Join-Path $PSScriptRoot 'src/main/web') $ListenAddress $Port @MainArguments
 if ($LASTEXITCODE -ne 0) { throw 'Browser server stopped with an error.' }

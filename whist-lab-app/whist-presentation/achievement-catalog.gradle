@@ -238,10 +238,5 @@ def verifyWhistAchievementCatalogValidation = tasks.register('verifyWhistAchieve
 }
 
 tasks.named('check') { dependsOn verifyWhistAchievementCatalogValidation }
-afterEvaluate {
-    tasks.named('testDebugAchievementsComponents') { dependsOn verifyWhistAchievementCatalogValidation }
-}
-
-androidComponents.onVariants(androidComponents.selector().all()) { variant ->
-    variant.sources.java.addGeneratedSourceDirectory(generateWhistAchievementCatalog) { it.outputDirectory }
-}
+sourceSets.main.java.srcDir(generateWhistAchievementCatalog.flatMap { it.outputDirectory })
+tasks.named('compileJava') { dependsOn generateWhistAchievementCatalog }

@@ -55,77 +55,25 @@ Matricea comună acoperă 3–6 locuri, ferestre compacte și înalte, font măr
 
 Rolurile comune și componentele adaptoarelor califică textul logic și contractul callback-urilor. Acceptanța raster nativă trebuie să observe suplimentar etichetele împachetate complete, derularea verticală și ultima acțiune pe APK-uri Whist și Rentz identificate, cu RO/EN și text mărit. O comparație de surse sau AAR nu certifică singură lipsa tăierii pe Android.
 
-## Limita de prezentare planificată în trei module
+## Acceptanța prezentării comune
 
 <a id="ui-three-module-plan"></a>
 
-**Lucru planificat; aceste trei module de build nu există încă.** Păstrați comportamentul Whist și fațadele de compatibilitate în timpul extragerii codului de prezentare deja portabil.
+Modelele portabile, geometria, rolurile textului și efectele deterministe aparțin `card-table-core`. Proiectele Android și Web depind de acest core; `whist-presentation` păstrează proiecțiile jocului în afara Android. Pachetele Java și identitățile componentelor existente rămân stabile. [Arhitectură și matrice executabilă](../testing/ATF_TestingGuide.md)
 
-| ID | Prioritate | Lacună observată în surse | Rezultat cerut |
+| ID | Prioritate | Graniță rămasă | Criteriu de închidere |
 |---|---|---|---|
-| UI-03 | P1 | Politicile portabile și widgeturile Android sunt în același modul; launcherele browser mențin liste de surse și importă clase de prezentare din aplicația Android. | JAR-ul pur `card-table-core` deține prezentarea comună; `card-table-android` îl consumă ca dependență a AAR-ului, iar `card-table-web` prin adaptorul JVM/paginii compilate. Manifestele modulelor înlocuiesc copierea surselor. |
-| UI-04 | P1 | Contractul comun al fazelor compară planuri de politică. Tipografia meniurilor are încă definiții Java/CSS separate, iar egalitatea politicilor nu detectează remontarea unui nod DOM sau textul nativ tăiat. | Rolurile comune, observațiile normalizate și un singur oracle acoperă geometria, meniurile, scorul, cărțile și ciclul de viață; verificările rendererelor păstrează măsurătorile reale și granița platformei. |
-| TEST-04 | P1 | Runnerele de diagnostic pot selecta `all` și prefixe lungi; profilul Oh Hell la patru jucători parcurge trei mâini, iar runnerul responsiv nativ acceptă până la cinci. | Impuneți un buget de una/două mâini per joc E2E înaintea pornirii și publicării. Puține scenarii pereche de navigare folosesc aceleași ID-uri, aserțiuni și structură de audit prin drivere APK/Web. |
-
-```mermaid
-flowchart LR
-    GAME["Proiecția publică<br/>deținută de joc"] -->|furnizează| CORE["card-table-core"]
-    CORE -->|este consumat de| APK["card-table-android"]
-    CORE -->|este consumat de| WEB["card-table-web"]
-    FIXTURES["Contracte comune<br/>de componentă"] -->|verifică| CORE
-    FIXTURES -->|exercită prin porturi| APK
-    FIXTURES -->|exercită prin porturi| WEB
-```
-
-<details>
-<summary>Legendă: responsabilități țintă, nu declarații curente de build</summary>
-
-Core deține modelele, geometria, tipografia, spațierea, tranzițiile intrării și planurile animațiilor fără importuri Android, DOM, stocare sau motoare de joc. Jocurile dețin regulile, alegerile legale, punctajul și proiecțiile publice; adaptoarele dețin măsurarea, desenarea, legarea navigării și ciclul de viață al platformei.
-
-</details>
-
-## Responsabilitatea componentelor comune
-
-Modulul comun trebuie să preia greul testelor de afișaj. Păstrați programările și datele specifice Whist în furnizorul de teste al jocului; publicați suportul neutru pentru fixture-uri/oracle ca artefact de teste al core.
-
-| Graniță | Responsabilitatea componentelor |
-|---|---|
-| Matricea afișajului | Cazuri legale ale jocului pentru fiecare loc; ferestre compacte/înalte/late, dimensiuni logice, densitate, scară a textului, RO/EN, zone rezervate și regiuni minime vizibile. Păstrați matricea completă în componente fără poze. |
-| Adaptoare de observație | Normalizați pixelii/densitatea/zonele Android și coordonatele CSS/scalarea scenei Web într-o observație imuabilă comună. Păstrați ID-urile locurilor/cărților, rândurile informațiilor, antetul, atuul, controalele, mâna, limitele vizibile și derularea. |
-| Aserțiuni independente | Comparați cu contractul, nu două copii ale aceluiași algoritm. Modificați chenarele de sus/jos, înălțimea rândurilor, suprapunerea controalelor, locurile lipsă, ordinea cărților și callback-urile întârziate; fiecare mutație trebuie respinsă. |
-| Meniuri și text | Un singur set tipizat de roluri controlează titlul, acțiunea, selecția, ajutorul, spațierea și țintele. Generați tokenurile Web și mapați unitățile Android din aceleași definiții; încadrarea platformei primește măsurători reale și aplică o singură dată scara accesibilității. |
-| Timp și ciclu de viață | Ceasurile/executanții controlați reproduc trecerile licitare/joc, colectarea, oprirea AutoGame, redimensionarea, încărcarea fonturilor, dialogurile și anularea prin navigare. Responsabilii expirați nu pot redesena sau trimite altă comandă. |
-| Partide complete offline | Suitele de componentă ale jocului folosesc motorul real cu seed, distribuire/checkpoint legal și ceas/stocare/executanți controlați. Testele comune UI primesc proiecțiile publice; core nu importă motorul, iar mock-urile nu decid scorul sau legalitatea. |
-| Verificări de renderer | Păstrați verificările mici ale platformei pentru fonturi reale, focus, gesturi, accesibilitate și limite desenate. Rezultatele de politică sau mock nu certifică paritatea fizică APK/Web. |
-
-## Ordinea migrării și închiderii
-
-1. Inventariați clasele portabile, resursele, API-urile publice, responsabilitățile testelor și consumatorii binari existenți. Fixați observațiile de referință și declarați mapările de compatibilitate înaintea mutării fișierelor.
-2. Extrageți core fără schimbarea regulilor ori valorilor vizuale implicite; păstrați fațadele existente până la migrarea apelanților. Core trebuie construit și testat fără SDK Android, pornirea browserului sau emulator.
-3. Faceți Android și Web dependente de aceeași identitate core. Eliminați importurile browserului din pachetele aplicației Android și copierea manuală a surselor portabile; păstrați prezentarea specifică în jocul său.
-4. Unificați rolurile meniului și modelele scenei, apoi conectați porturile de observație/comandă/ceas la contractele comune. Migrați aserțiunile înaintea eliminării testelor duplicate; păstrați ID-urile cazurilor, controalele negative și acoperirea.
-5. Impuneți bugetul E2E și admiteți parcursurile APK/Web focalizate. Împachetați și distribuiți după acceptanța Whist; criteriile consumatorilor și rendererelor fizice rămân deschise până la observare.
+| UI-04 | P1 | Observații ale rendererului fizic | Conectați măsurătorile native reale ale rândurilor, antetului, atuului și cărților la portul neutru de observații. Respingeți tăierea și redesenarea întârziată de un proprietar vechi; planurile portabile egale nu califică fonturile desenate. Păstrați verificările DOM controlate existente. |
+| TEST-04 | P1 | Orchestrarea parcursurilor scurte pe ambele platforme | Refolosiți o identitate de scenariu și un plan semantic de comenzi prin drivere APK/Web și aplicați bugetul declarat de capturi publicatorului APK. Admiterea și publicarea Web impun deja două mâini/patru capturi normale; limita nativă de mâini este impusă separat. |
 
 ## E2E minim și livrare pe suite
 
 <a id="ui-minimal-e2e-plan"></a>
 
-| Graniță | Criteriu de acceptare |
-|---|---|
-| Bugetul mâinilor | Cel mult două mâini distribuite/punctate per joc; una când este suficientă. Respingeți selecțiile primare peste buget înaintea browserului/emulatorului și din nou înaintea publicării; diagnosticele explicite rămân în afara calificării. |
-| Parcursuri esențiale | Acoperiți meniul/configurarea, profilul, licitarea/jocul, scorul/istoricul mâinii și navigarea continuă/principală. Reluați un checkpoint legal aproape de final pentru rezultate, realizări și Joacă din nou, fără rejucarea întregii partide. |
-| Durata parcursului | Două mâini reprezintă un plafon, nu ținta. Alegeți o mână scurtă sau un checkpoint aproape de final; secvențele lungi de cărți și partidele complete sunt verificate în componente, fără poze. |
-| Bugetul capturilor | Propuneți cel mult patru capturi relevante per scenariu normal, configurabile și declarate înaintea pornirii; o captură suplimentară păstrează primul eșec vizual. Nu capturați fiecare carte, actor sau combinație de rezoluție. |
-| Dimensiunea raportului | Deduplicați capturile identice prin API-ul Reporting existent și scurtați selecția UI. Păstrați aserțiunile și contextul necesar diagnosticului; compresia sau limitarea afișării nu poate schimba verdictul ori ascunde diferențe. |
-| Validitatea checkpoint-ului | Componentele dovedesc legalitatea, restaurarea și scorul checkpoint-ului. E2E înregistrează fixture-ul exact și execută tranzițiile reale; ecranele finale injectate nu înlocuiesc parcursul ultimei mâini. |
-| Un scenariu, două drivere | Refolosiți definițiile, ID-urile, rezultatele așteptate și rolurile Given/When/Then. Observațiile de accesibilitate APK și DOM browser folosesc drivere separate cu așteptări limitate. |
-| Artefacte curente | `release/` expune dosarul curent calificat și legături README relative spre HTML-ul canonic al suitelor. Înlocuiți duplicatele încorporate; păstrați dovezile refolosite cu revizia reală și separați clar referințele, respingerile și domeniul neexecutat. |
-| Audit Extent | Grupați rezultatele pe suite de componente, adaptoare/renderere, guvernanță și E2E; identificați cazurile selectate, precondițiile, comenzile versus observațiile, aserțiunile așteptat/real și identitățile sursei/artefactului. Rapoartele componentelor de continuitate nu au poze; puținele capturi E2E rămân inline și aparțin pașilor lor. |
-| Refolosire și RAG | Refolosiți numai dovezi validate neschimbate, inclusiv dependențe tranzitive, teste, resurse, generator/toolchain și identitatea selecției. Core modificat invalidează contractele adaptoarelor afectate chiar dacă fișierele lor nu s-au schimbat. |
+- Păstrați combinațiile de rezoluție, text, mâini legale, actori și câștigători în suite de componentă fără poze. Seturile unitare nu publică Extent; componentele păstrează precondițiile și aserțiunile evaluate.
+- E2E verifică tranzițiile esențiale între ferestre la un viewport lizibil, cel mult două mâini și puține capturi inline asociate checkpointurilor. Selectați mâini scurte legale sau un checkpoint aproape de final validat în componente; fără ecran final injectat.
+- Păstrați primul eșec și cauza lui originală. Reporting rămâne rendererul rezultatelor capturate; această lucrare schimbă intrările producătorului și organizarea suitelor.
+- Păstrați HTML-ul suitelor curente și navigarea README relativă în `release/WEB/`. Dovezile refolosite păstrează sursa, identitatea artefactului și verdictul; referințele nu devin acceptanță nativă curentă.
+- Împachetați și distribuiți numai după acceptanța Whist. UIX01–UIX06 păstrează propriile condiții de închidere pentru nativ și consumatori; nu le deduceți din compilarea sursei.
 
-## Guvernanța cerută înaintea închiderii
-
-- Guvernați direcția dependențelor, inventarul seturilor de surse și lipsa claselor core duplicate în pachete. O listă revizuită de fișiere nu înlocuiește o graniță de modul.
-- Versionați explicit compatibilitatea core/adaptoare; pachetele runtime/teste păstrează manifeste și SHA-256. Aliniați responsabilitățile modulelor din surse și documentația EN/RO.
-- Adăugați controale negative de componentă pentru importuri interzise, versiuni core divergente, cazuri lipsă din suite, dovezi expirate, legături relative rupte, capturi în componente și intrări E2E primare peste buget.
-- Folosiți API-urile Reporting existente; planul privește organizarea testelor și intrarea producătorilor, nu schimbarea JAR-ului Reporting. [Contractul testării](../testing/ATF_TableContinuity.md) · [Dovezi curente](../../release/WEB/README.md)
+[Proprietatea componentelor](../../whist-lab-app/card-table-core/README.md) · [Continuitate comună](../testing/ATF_TableContinuity.md) · [Dovezi curente](../../release/WEB/README.md)

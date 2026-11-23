@@ -35,7 +35,7 @@ if (collectionOwners.some(([owner, group]) => !owner || !group)
 const gradleAppPackages = new Map(collectionOwners.map(([owner, group]) => [owner, `whist-lab-app-${group}`]));
 
 const appGroups = [...new Set(gradleAppPackages.values())];
-const gradleGroups = [...appGroups, 'whist-lab-app-atf-card-table-ui', 'whist-lab-app-rules'];
+const gradleGroups = [...appGroups, 'whist-lab-app-atf-card-table-ui', 'whist-lab-app-card-table-core', 'whist-lab-app-rules'];
 const mavenGroups = ['atf-validation', 'atf-test-android', 'atf-tests'];
 const allGroups = [...mavenGroups, ...gradleGroups];
 const modernGroups = [...new Set([...allGroups, ...atfGroups])];
@@ -49,9 +49,9 @@ const frameworkOnly = file => nonBuildDocumentation(file)
     || file.startsWith('.atf-signing/');
 
 function appPackageOwner(file, sourceSet) {
-  const prefix = `whist-lab-app/app/src/${sourceSet}/java/ro/whistlab/app/`;
-  if (!file.startsWith(prefix)) return null;
-  const packageRoot = file.slice(prefix.length).split('/')[0];
+  const prefix = new RegExp(`^whist-lab-app/(?:app|whist-presentation)/src/${sourceSet}/java/ro/whistlab/app/`).exec(file);
+  if (!prefix) return null;
+  const packageRoot = file.slice(prefix[0].length).split('/')[0];
   return gradleAppPackages.get(packageRoot) ?? null;
 }
 
@@ -76,7 +76,7 @@ function affectedGroups(file) {
       || ['whist-lab-app/build.gradle', 'whist-lab-app/settings.gradle', 'whist-lab-app/gradle.properties'].includes(file)
       || file.startsWith('whist-lab-app/test-audit/')) return [...gradleGroups, 'atf-tests'];
 
-  if (file.startsWith('whist-lab-app/app/src/main/java/ro/whistlab/app/')) {
+  if (/^whist-lab-app\/(?:app|whist-presentation)\/src\/main\/java\/ro\/whistlab\/app\//.test(file)) {
     const owner = appPackageOwner(file, 'main');
     return owner ? [owner, 'atf-tests'] : allGroups;
   }
@@ -86,6 +86,14 @@ function affectedGroups(file) {
   }
   if (file.startsWith('whist-lab-app/app/src/rasterTest/')) return ['whist-lab-app-history', 'atf-tests'];
   if (file.startsWith('whist-lab-app/app/')) return [...appGroups, 'atf-tests'];
+  if (file.startsWith('whist-lab-app/whist-presentation/src/main/achievement-rules/')
+      || file === 'whist-lab-app/whist-presentation/achievement-catalog.gradle')
+    return ['whist-lab-app-achievements', 'atf-tests'];
+  if (file.startsWith('whist-lab-app/whist-presentation/')) return [...appGroups, 'atf-tests'];
+  if (/^whist-lab-app\/card-table-core\/src\/(?:test|unitTest)\//.test(file))
+    return ['whist-lab-app-card-table-core', 'atf-tests'];
+  if (file.startsWith('whist-lab-app/card-table-core/'))
+    return [...appGroups, 'whist-lab-app-atf-card-table-ui', 'whist-lab-app-card-table-core', 'atf-tests'];
 
   // Core, names and the shared presentation library are dependencies of the app collections.
   if (file.startsWith('whist-lab-app/game-core/src/main/java/ro/whistlab/core/rules/HowToPlay.java'))

@@ -17,6 +17,13 @@ const contracts = new Map([
     e2eGroups: ['responsive-ui-sanity', 'signed-release-auto-game', 'signed-release-smoke']
   }]
 ]);
+// Preserve old snapshot admission while the same public types move to explicit owners.
+contracts.set('whist-lab-app/whist-presentation/src/main/java/ro/whistlab/app/theme/GameHeaderTypography.java',
+  contracts.get(app + 'theme/GameHeaderTypography.java'));
+contracts.set('whist-lab-app/card-table-core/src/main/java/ro/cardtable/ui/cards/CardFaceMetrics.java', {
+  ...contracts.get(shared + 'cards/CardFaceMetrics.java'),
+  componentGroups: ['whist-lab-app-display', 'whist-lab-app-atf-card-table-ui', 'whist-lab-app-card-table-core']
+});
 
 export const visualContractPaths = Object.freeze([...contracts.keys()]);
 

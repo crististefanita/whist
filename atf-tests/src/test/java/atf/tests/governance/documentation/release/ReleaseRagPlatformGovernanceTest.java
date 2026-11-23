@@ -221,13 +221,13 @@ class ReleaseRagPlatformGovernanceTest {
                 "Release Extent selections must be discovered from the application collection catalog");
         assertTrue(runner.contains("ToTitleCase($_)"),
                 "Each catalog collection must resolve to its matching Gradle component task");
-        assertTrue(runner.contains(":atf-card-table-ui:testDebugUnitTest"),
+        assertTrue(runner.contains(":card-table-android:testDebugUnitTest"),
                 "The shared UI module must execute as a separate Extent selection");
         assertTrue(Files.readString(root.resolve("docs/testing/ATF_GradleComponents.md"))
                 .contains("testDebugAchievementsComponents"),
                 "The achievements suite must be documented as a primary collection");
         assertTrue(Files.readString(root.resolve("docs/testing/ATF_GradleComponents.md"))
-                .contains(":atf-card-table-ui:testDebugUnitTest"),
+                .contains(":card-table-android:testDebugUnitTest"),
                 "The shared UI suite must be documented as its own primary selection");
     }
 

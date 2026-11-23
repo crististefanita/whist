@@ -4,7 +4,7 @@
 
 Un pachet grupează tipuri care se schimbă pentru același contract. [Politica proiectului](../../config/atf-governance-policy.json) aplică limita de opt fișiere Java separat pe modul și set de surse; o extracție se justifică prin starea și invarianta mecanismului.
 
-[Tipografia antetului](../../whist-lab-app/app/src/main/java/ro/whistlab/app/theme/GameHeaderTypography.java) aparține stilului comun din `theme`; geometria și compoziția mesei rămân în `table`. Selecția componentelor de afișaj include ambele responsabilități.
+[Tipografia antetului](../../whist-lab-app/whist-presentation/src/main/java/ro/whistlab/app/theme/GameHeaderTypography.java) aparține stilului comun din `theme`; geometria și compoziția mesei rămân în `table`. Selecția componentelor de afișaj include ambele responsabilități.
 
 ## Alegerea responsabilului
 

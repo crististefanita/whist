@@ -57,22 +57,29 @@ Fiecare clasă Maven executabilă are exact un nivel. Clasele de suită descriu 
 
 ### Granițe Gradle și browser
 
-Rândurile descriu granițele exercitate și responsabilii executabili. Testele JUnit Gradle și contractele Node nu declară adnotările ATF de nivel din Maven. Numele unui task sau al unui fișier JavaScript nu extinde, așadar, matricea adnotărilor de mai sus.
+Rândurile descriu granițe executabile, nu adnotări Maven. Proprietatea setului de surse determină raportarea; cuvântul „unit” din taskul de gazdă Android nu transformă cazurile sale de componentă în unitare izolate.
 
-| Modul sau suprafață | Graniță unitară | Graniță de componentă | Graniță de integrare sau randare | Punct de intrare și limită |
-|---|---|---|---|---|
-| `whist-lab-app/game-core` | Cărți legale, punctaj, serii, limitele licitării și calculele politicilor. | Comenzi de sesiune, checkpoint-uri, realizări și observațiile permise AI-ului. | Partidele offline complete compară politici și invariante independente; fără acceptare UI. | [Testele motorului](../../whist-lab-app/game-core/src/test/README.md); regulile release-ului folosesc `:game-core:releaseRulesComponents`. Învățarea și calibrarea au populații separate. |
-| `whist-lab-app/ai-lab` | Date de evaluare și ajutoare deterministe pentru cercetare. | Fixture-uri legale generate, corpus și contractele uneltelor de experimentare. | Comparațiile controlate între politici aparțin cercetării, nu calificării aplicației instalate. | [Laborator](../../whist-lab-app/ai-lab/README.md); `:ai-lab:check` include verificările locale JVM și Node. |
-| `whist-lab-app/app` | Calcule de prezentare, etichete și valori persistate. | Controlere, preferințe, navigare, licitare și comportamentul istoricului scorului cu colaboratori Android controlați. | Interacțiunea nativă, imaginea raster și reluarea procesului au acceptare Android separată. | [Testele aplicației](../../whist-lab-app/app/src/test/README.md); responsabilii primari sunt achievements, bidding, commands, display și history. |
-| `whist-lab-app/atf-card-table-ui` | Geometrie portabilă a mesei, tipografie și măsurătorile feței cărților. | Controale comune, meniuri și ciclul animațiilor. | Acceptarea fontului și randării native rămâne separată de acordul calculelor. | [Teste UI](../../whist-lab-app/atf-card-table-ui/src/test/README.md); `:atf-card-table-ui:testDebugUnitTest`. |
-| `whist-lab-app/card-table-names` | Politica deterministă a numelor afișate. | Contractele consumatorilor exercită numele în motorul real. | Nu se revendică un parcurs nativ independent. | [Biblioteca de nume](../../whist-lab-app/card-table-names/README.md); compilare JVM și consumatorii motorului. |
-| `whist-lab-app/test-audit` | Modelul auditului și calculele comparațiilor. | Fixture-urile comune de raportare validează comparațiile capturate și rezultatul publicat. | Suitele consumatorilor stabilesc integrarea cu binarul real de raportare. | [Fixture-uri de audit](../../whist-lab-app/test-audit/README.md); suportul de test nu este livrat în aplicație. |
-| `whist-lab-app/ios-bridge` | Politici JVM ale punții. | Proiecția motorului și maparea comenzilor. | iOS nativ este suspendat; testele punții nu stabilesc acceptarea IPA sau a simulatorului. | [Perimetrul punții](../platform/ATF_iOSDelivery.md); exclusă din build-ul activ exclusiv JVM. |
-| `atf-ui-browser` | Calcule portabile pentru viewport, meniuri, gesturi și contractele randării. | Contractele JAR-urilor exportate de execuție/test și cazurile comune ale adaptoarelor. | Fontul, zoom-ul, focalizarea și tastatura necesită observații în browser. | [Adaptor comun](../../atf-ui-browser/README.md); [runner de contracte Node](../../atf-ui-browser/tests/run-components.mjs). |
-| `atf-ui-browser/whist` | Proiecția Whist și valorile expuse browserului. | Comenzile motorului, geometria și adaptarea interacțiunii. | Un parcurs real în browser verifică o mână randată și redeschiderea stocării. | [Adaptor Whist](../../atf-ui-browser/README.md); [responsabil de componentă al adaptorului](../../atf-tests/src/test/java/atf/tests/governance/documentation/release/rag/nativeproof/WhistSurfaceAdapterComponentTest.java). |
-| `atf-ui-browser/pages` | Codec-uri pentru stocarea locală și politici ale stării clientului. | Controale ale motorului compilat, navigare, istoric și efecte cu stocare sau timp controlat. | Scripturile Playwright exercită site-ul produs; starea simulată a browserului este identificată separat de acceptarea nativă. | [Pages](../../atf-ui-browser/README.md#verificare); `verify.mjs`, `verify-controls.mjs`, `verify-records.mjs`, `verify-navigation.mjs` și `verify-effects.mjs` au scopuri distincte. |
+| Modul | Unitar | Componentă | Integrare | E2E | Proprietate și selecție executabilă |
+|---|---|---|---|---|---|
+| `card-table-core` | ✅ | ✅ | — | — | `unitTest` verifică normalizarea izolată și proprietatea snapshoturilor; `test` deține modelele portabile, geometria, rolurile de text și controalele negative. [Core](../../whist-lab-app/card-table-core/README.md) |
+| `card-table-android` | — | ✅ | ✅ | — | `testDebugUnitTest` verifică contractele adaptorului nativ. Instrumentarea focalizată califică separat widgeturile reale; fără matrice E2E completă de rezoluții. [Renderer Android](../../whist-lab-app/atf-card-table-ui/README.md) |
+| `card-table-web` | — | ✅ | ✅ | ✅ | Proiecție Java comună și componente cu DOM/ceas controlat; un parcurs browser scurt, explicit, verifică legăturile. [Renderer Web](../../atf-ui-browser/README.md#verificare) |
+| `whist-presentation` | — | ✅ | — | — | Proiecție portabilă specifică jocului; furnizorii existenți de componente APK/Web păstrează identitățile cazurilor de catalog, checkpoint și prezentare. |
+| `whist-lab-app/app` | — | ✅ | — | — | Taskurile primare de comenzi, licitare, afișare, istoric și realizări verifică proiecțiile Whist și ciclul de viață fără dispozitiv. Parcursurile aplicației instalate aparțin modulului E2E Android din Maven. |
+| `whist-lab-app/game-core` | — | ✅ | — | — | Reguli, punctaj și checkpointuri; colecțiile de reguli pentru release exclud experimentele de învățare AI. |
+| `whist-lab-app/ai-lab` | — | ✅ | — | — | Jucător independent și comparații offline ale politicilor pe fixture-uri legale și distribuiri rezervate. |
+| `test-audit` | — | ✅ | — | — | Captură, aserțiuni evaluate și reconciliere raport/JUnit; dependență folosită numai la testare. |
 
-[Harta modulelor](../../README.md#harta-modulelor) deține apartenența la build și configurațiile dependențelor. [Catalogul colecțiilor](ATF_Collections.md) deține selecțiile executabile, bugetele și comenzile. Matricea mapează responsabilii; nu dublează definițiile taskurilor.
+| Responsabilitate comună | Contract executabil |
+|---|---|
+| Maparea modulelor | Android se mapează la directorul existent `atf-card-table-ui`; Web se mapează la `atf-ui-browser`. Pachetele Java rămân stabile. |
+| Fixture-uri neutre | Observațiile logice imuabile și oracolul de continuitate din core nu conțin reguli de joc. Whist oferă programele legale și proiecțiile publice. |
+| Rezultatul unitarelor | Cazurile izolate `unitTest` păstrează diagnostice JUnit fără Extent. |
+| Rezultatul componentelor | Capturează precondiții și comparații evaluate așteptat/observat în Extent canonic; fără poze de continuitate. |
+| Matricea componentelor | Rezoluție, densitate, scară de text, limbă, mărimi legale ale mâinii, actori și câștigători. |
+| Selecția E2E | Un parcurs scurt explicit și un viewport lizibil, cel mult două mâini și patru capturi normale; păstrează separat primul eșec. |
+| Admitere și publicare | Respinge matricele sau planurile lungi înainte de pornire, apoi reconciliază rundele reale și referințele imaginilor înaintea publicării HTML. |
+| Limita randării | Planurile egale ale politicii nu califică desenarea nativă a fonturilor. [Continuitate și contractul adaptoarelor](ATF_TableContinuity.md) |
 
 ### Biblioteci binare consumate
 

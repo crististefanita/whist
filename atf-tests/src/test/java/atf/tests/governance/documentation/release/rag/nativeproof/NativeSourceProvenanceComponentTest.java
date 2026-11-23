@@ -22,4 +22,9 @@ class NativeSourceProvenanceComponentTest {
         String output = NodeReleaseContracts.runContracts(Duration.ofSeconds(90), value -> inputs.add("Original native-source observations", value), "android-e2e-provenance.test.mjs");
         assertTrue(output.contains("Native source admission:"), output);
     }
+    @Test void presentationOwnersSelectOnlyAffectedCollections(ComponentInputs inputs) throws Exception {
+        String output = NodeReleaseContracts.runContracts(Duration.ofSeconds(45),
+                value -> inputs.add("Original module ownership and Android-flow decisions", value), "release-test-scope.test.mjs");
+        assertTrue(output.contains("Presentation ownership observations:"), "Core, native and game projection changes retain distinct owners");
+    }
 }

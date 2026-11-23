@@ -25,9 +25,10 @@ public final class GradleAuditGovernanceTest {
             var declaration = java.util.regex.Pattern.compile("(?m)^\\s*package\\s+([\\w.]+)\\s*;").matcher(source);
             assertTrue(declaration.find(), "Each test has an explicit package: " + file.file());
             String owner = declaration.group(1) + "." + name.substring(0, name.length() - 5);
-            assertTrue(source.matches("(?s).*\\bextends\\s+(?:atf\\.gradle\\.audit\\.)?GradleAuditedTest\\b.*"),
-                    "A new Gradle test cannot silently bypass input/assertion capture: " + owner);
-            found.put(owner, "declared");
+            boolean isolatedUnit = root.relativize(file.file()).toString().replace('\\', '/').contains("/src/unitTest/");
+            assertTrue(isolatedUnit || source.matches("(?s).*\\bextends\\s+(?:atf\\.gradle\\.audit\\.)?GradleAuditedTest\\b.*"),
+                    "Every component must capture inputs and assertions; isolated unit tests use the declared unit source set: " + owner);
+            found.put(owner, isolatedUnit ? "unit" : "audited");
         }
         var catalog = new TreeMap<String, String>();
         for (String line : Files.readAllLines(root.resolve("config/gradle-audit-collections.properties"))) {
@@ -39,6 +40,9 @@ public final class GradleAuditGovernanceTest {
         }
         assertFalse(found.isEmpty(), "The Gradle source perimeter cannot be empty");
         assertEquals(found.keySet(), catalog.keySet(), "The catalog includes every test class exactly once, including opt-in collections");
+        found.forEach((owner, layer) -> {
+            if (layer.equals("unit")) assertEquals("unit", catalog.get(owner), "An isolated unit cannot be published as a component");
+        });
     }
     @Test void inventoryRecognizesExplicitAndWildcardJUnit4ImportsWithoutTreatingJupiterAsJUnit4() {
         assertTrue(usesJUnit4Test("import org.junit.Test; class Explicit {}"));
@@ -54,7 +58,8 @@ public final class GradleAuditGovernanceTest {
         for (var file : GovernanceProject.sources(root)) {
             if (!file.test() || !file.module().startsWith("whist-lab-app/") || file.module().endsWith("/test-audit")) continue;
             String source = Files.readString(file.file());
-            if (source.contains("org.junit.Assert")) violations.add(root.relativize(file.file()).toString());
+            String relative = root.relativize(file.file()).toString().replace('\\', '/');
+            if (!relative.contains("/src/unitTest/") && source.contains("org.junit.Assert")) violations.add(relative);
         }
         assertEquals(List.of(), violations, "Helpers and parametrized cases use the same evaluated-assertion capture");
     }

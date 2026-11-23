@@ -244,8 +244,9 @@ try {
         $task = 'testDebug' + $suffix + 'Components'
         [pscustomobject]@{group="whist-lab-app-$_";project='whist-lab-app/app';task=$task;path=":app:$task";selection=$task}
     })
-    $uiTask = ':atf-card-table-ui:testDebugUnitTest'
+    $uiTask = ':card-table-android:testDebugUnitTest'
     $gradleGroups += [pscustomobject]@{group='whist-lab-app-atf-card-table-ui';project='whist-lab-app/atf-card-table-ui';task='testDebugUnitTest';path=$uiTask;selection=$uiTask}
+    $gradleGroups += [pscustomobject]@{group='whist-lab-app-card-table-core';project='whist-lab-app/card-table-core';task='test';path=':card-table-core:test';selection=':card-table-core:test'}
     $rulesTask = ':game-core:releaseRulesComponents'
     $gradleGroups += [pscustomobject]@{group='whist-lab-app-rules';project='whist-lab-app/game-core';task='releaseRulesComponents';path=$rulesTask;selection=$rulesTask}
     $knownGroups = @($primaryComponents.group) + @($gradleGroups.group)
@@ -322,11 +323,14 @@ try {
                 $results += @(Invoke-MavenSelections $mavenSelections $stage $provenanceFile)
             }
             if ($gradleSelections.Count) {
-                $AndroidSdk = Get-AtfAndroidSdkRoot $AndroidSdk
-                $env:ANDROID_HOME = [IO.Path]::GetFullPath($AndroidSdk)
-                $env:ANDROID_SDK_ROOT = $env:ANDROID_HOME
-                if (-not (Test-Path -LiteralPath (Join-Path $AndroidSdk 'platforms/android-36/android.jar') -PathType Leaf)) {
-                    throw 'Este necesar Android SDK platform 36 pentru selecțiile Gradle ale aplicației.'
+                $coreOnly = $gradleSelections.Count -eq 1 -and $gradleSelections[0].group -ceq 'whist-lab-app-card-table-core'
+                if (-not $coreOnly) {
+                    $AndroidSdk = Get-AtfAndroidSdkRoot $AndroidSdk
+                    $env:ANDROID_HOME = [IO.Path]::GetFullPath($AndroidSdk)
+                    $env:ANDROID_SDK_ROOT = $env:ANDROID_HOME
+                    if (-not (Test-Path -LiteralPath (Join-Path $AndroidSdk 'platforms/android-36/android.jar') -PathType Leaf)) {
+                        throw 'Este necesar Android SDK platform 36 pentru selecțiile Gradle ale aplicației.'
+                    }
                 }
                 $gradle = Join-Path $stage 'whist-lab-app/gradlew.bat'
                 $tasks = @($gradleSelections.path)
@@ -340,6 +344,7 @@ try {
                 $arguments = @('--no-daemon', '--offline', '--console=plain', '--continue', '--no-parallel') + $tasks +
                     @("-Pwhist.auditOutput=$RunRoot", "-Pwhist.auditSource=$fingerprint", "-Pwhist.auditCheckpoint=$checkpointPlan")
                 if ($tasks.Count -eq 1 -and $tasks[0] -ceq $uiTask) { $arguments += '-Pcardui.only=component' }
+                if ($coreOnly) { $arguments += '-Pcardui.only=core' }
                 $log = Join-Path $RunRoot 'gradle-components.log'
                 Push-Location (Join-Path $stage 'whist-lab-app')
                 try {

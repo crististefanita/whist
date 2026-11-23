@@ -66,7 +66,9 @@ android {
 dependencies {
     coreLibraryDesugaring "com.android.tools:desugar_jdk_libs:2.1.5"
     implementation project(":game-core")
-    implementation project(":atf-card-table-ui")
+    implementation project(":card-table-android")
+    implementation project(":whist-presentation")
+    testImplementation testFixtures(project(":card-table-core"))
     testImplementation "junit:junit:4.13.2"
     testImplementation "org.json:json:20240205"
 }
@@ -95,4 +97,12 @@ def rasterTest = tasks.register("historyRasterTest", Test) {
 tasks.named("check") { dependsOn rasterTest }
 
 apply from: rootProject.file('gradle/app-component-collections.gradle')
-apply from: 'achievement-catalog.gradle'
+// Compatibility task; generated game data belongs to the portable projection.
+tasks.register('generateWhistAchievementCatalog') {
+    dependsOn ':whist-presentation:generateWhistAchievementCatalog'
+}
+afterEvaluate {
+    tasks.named('testDebugAchievementsComponents') {
+        dependsOn ':whist-presentation:verifyWhistAchievementCatalogValidation'
+    }
+}

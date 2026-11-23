@@ -11,7 +11,7 @@ const asset = name => import(pathToFileURL(join(resolve(site), name)));
 const { initialize, commandLocal } = await asset("whist-engine.mjs");
 const { bindHandFeedback } = await asset("hand-feedback.mjs");
 const { fitTextWidth } = await asset("viewport.mjs");
-const scenarioFile = new URL("../../whist-lab-app/atf-card-table-ui/src/test/resources/hand-feedback.tsv", import.meta.url);
+const scenarioFile = new URL("../../whist-lab-app/card-table-core/src/test/resources/hand-feedback.tsv", import.meta.url);
 const scenario = (await readFile(scenarioFile, "utf8")).split(/\r?\n/u)
   .filter(line => line && !line.startsWith("#")).map(line => line.split("|"));
 const cases = [];

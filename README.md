@@ -20,20 +20,22 @@ Whist Lab este un joc local de levate pentru 3–6 jucători și un laborator pe
 
 ### Un joc, două interfețe active
 
-Motorul deține jocul legal și starea partidei. Adaptoarele de platformă transformă interacțiunea în comenzi și randează proiecția publică; calculele comune pentru masă nu fac singure randarea nativă și cea din browser identice.
+Motorul jocului deține jocul legal și starea. Trei module de prezentare separă contractele portabile de randarea Android și browser. Proiecțiile specifice rămân la joc; calculele comune nu fac singure pixelii desenați identici.
 
 ```mermaid
 %%{init: {"theme":"neutral","themeVariables":{"fontSize":"15px"},"themeCSS":".edgeLabel, .edgeLabel p { font-size: 12px !important; } .node rect { rx: 6px; ry: 6px; }","flowchart":{"curve":"linear","nodeSpacing":24,"rankSpacing":20,"padding":6},"sequence":{"mirrorActors":false,"messageMargin":24}}}%%
 flowchart LR
-    Android["Android"]
-    Web["Browser"]
-    Engine["game-core"]
-    Table["Contracte de masă"]
-    View["Randare"]
-    Android -->|comenzi| Engine
-    Web -->|comenzi| Engine
-    Engine -->|proiectează| View
-    Table -->|adaptează| View
+    GAME["Adaptor joc"]
+    CORE["card-table-core"]
+    ANDROID["Adaptor Android"]
+    WEB["Adaptor Web"]
+    APK["APK"]
+    BROWSER["Browser"]
+    GAME -->|furnizează| CORE
+    CORE -->|definește| ANDROID
+    CORE -->|definește| WEB
+    ANDROID -->|randează| APK
+    WEB -->|randează| BROWSER
 ```
 
 <details>
@@ -53,13 +55,15 @@ Această hartă arată dependențele directe ale aplicațiilor native. Traseul b
 %%{init: {"theme":"neutral","themeVariables":{"fontSize":"15px"},"themeCSS":".edgeLabel, .edgeLabel p { font-size: 12px !important; } .node rect { rx: 6px; ry: 6px; }","flowchart":{"curve":"linear","nodeSpacing":24,"rankSpacing":20,"padding":6},"sequence":{"mirrorActors":false,"messageMargin":24}}}%%
 flowchart LR
     app["Android app"]
-    atf_card_table_ui["UI Android comun"]
+    card_table_android["card-table-android"]
     ios["iOS · suspendat"]
     ios_bridge["ios-bridge"]
     game_core["game-core"]
+    whist_presentation["Proiecție Whist"]
     card_table_names["card-table-names"]
-    app -->|folosește| atf_card_table_ui
+    app -->|folosește| card_table_android
     app -->|folosește| game_core
+    app -->|folosește| whist_presentation
     ios -->|folosește| ios_bridge
     ios_bridge -->|expune| game_core
     game_core -->|folosește| card_table_names
@@ -79,7 +83,7 @@ flowchart LR
 | Zonă | Responsabil și ghid |
 |---|---|
 | Reguli și politici | [game-core](whist-lab-app/game-core/README.md) · [card-table-names](whist-lab-app/card-table-names/README.md) · [ai-lab](whist-lab-app/ai-lab/README.md) |
-| Aplicații active | [Android](whist-lab-app/app/src/main/java/ro/whistlab/app/README.md) · [UI comun pentru masă](whist-lab-app/atf-card-table-ui/README.md) · [Web](atf-ui-browser/README.md) |
+| Aplicații active | [Android](whist-lab-app/app/src/main/java/ro/whistlab/app/README.md) · [Core](whist-lab-app/card-table-core/README.md) · [Adaptor Android pentru masă](whist-lab-app/atf-card-table-ui/README.md) · [Web](atf-ui-browser/README.md) |
 | Validare și scenarii pe dispozitiv | [atf-validation](atf-validation/README.md) · [atf-test-android](atf-test-android/README.md) |
 | Verificare și audit | [atf-tests](atf-tests/README.md) · [test-audit](whist-lab-app/test-audit/README.md) · [Build JVM](whist-lab-app/algorithm-build/README.md) |
 | Execuție și livrare | [Scripturi](scripts/README.md) · [Catalogul livrărilor](release/README.md) |
@@ -90,7 +94,7 @@ flowchart LR
 | Build | Module declarate |
 |---|---|
 | Maven | atf-validation, atf-test-android, atf-tests |
-| Gradle | app, game-core, atf-card-table-ui, card-table-names, ai-lab, test-audit, ios-bridge |
+| Gradle | app, game-core, whist-presentation, card-table-core, card-table-android, card-table-web, card-table-names, ai-lab, test-audit, ios-bridge |
 | Gradle JVM | game-core, ai-lab, card-table-names, test-audit |
 
 Dependențele directe folosesc configurația din modulul consumator.
@@ -103,7 +107,12 @@ Dependențele directe folosesc configurația din modulul consumator.
 | Maven | atf-test-android | test | atf-console |
 | Maven | atf-tests | compile | atf-test-kit, atf-core, atf-test-android, atf-reporting |
 | Maven | atf-tests | test | atf-console, atf-mock |
-| Gradle | app | implementation | game-core, atf-card-table-ui |
+| Gradle | app | implementation | game-core, card-table-android, whist-presentation |
+| Gradle | app | testImplementation | card-table-core |
+| Gradle | card-table-android | api | card-table-core |
+| Gradle | card-table-web | api | card-table-core |
+| Gradle | card-table-web | implementation | card-table-names |
+| Gradle | whist-presentation | api | game-core, card-table-core |
 | Gradle | game-core | implementation | card-table-names |
 | Gradle | game-core | testImplementation | ai-lab |
 | Gradle | ios-bridge | implementation | game-core |

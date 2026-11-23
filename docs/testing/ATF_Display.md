@@ -93,7 +93,7 @@ Selecția acoperă diferențele care pot produce altă geometrie sau altă inter
 
 - Meniul păstrează configurarea accesibilă în viewport.
 - Masa de joc folosește înălțimea măsurată a ferestrei. Mâna, levata și chenarele încap simultan când există spațiu; pe ferestre joase, pagina se derulează fără să micșoreze cărțile sau țintele tactile.
-- [Tipografia antetului](../../whist-lab-app/app/src/main/java/ro/whistlab/app/theme/GameHeaderTypography.java) păstrează titlul la 14 sp și progresul la 11 sp; cele două rânduri ale licitației folosesc 11,7 sp, exact +30% față de 9 sp. Dimensiunea fracționară rămâne în SP pentru scalarea Android, iar câmpul multilinie își măsoară înălțimea. [Componenta de contract](../../whist-lab-app/app/src/test/java/ro/whistlab/app/theme/GameHeaderTypographyComponentTest.java) protejează proporția și rolurile celorlalte texte; fontul Android are calificare nativă separată.
+- [Tipografia antetului](../../whist-lab-app/whist-presentation/src/main/java/ro/whistlab/app/theme/GameHeaderTypography.java) păstrează titlul la 14 sp și progresul la 11 sp; cele două rânduri ale licitației folosesc 11,7 sp, exact +30% față de 9 sp. Dimensiunea fracționară rămâne în SP pentru scalarea Android, iar câmpul multilinie își măsoară înălțimea. [Componenta de contract](../../whist-lab-app/app/src/test/java/ro/whistlab/app/theme/GameHeaderTypographyComponentTest.java) protejează proporția și rolurile celorlalte texte; fontul Android are calificare nativă separată.
 - Licitarea nu acoperă locurile jucătorilor; selecția semantică distinge etichetele duplicate.
 - Fiecare acțiune este confruntată cu starea observată după ea.
 - Reluarea păstrează registrul scorului și informația cunoscută.

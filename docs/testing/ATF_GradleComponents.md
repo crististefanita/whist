@@ -2,34 +2,23 @@
 
 ## Pe scurt
 
-Componentele aplicației, motorului, jucătorului independent, bibliotecii grafice și rasterelor folosesc aceeași [punte JUnit](../../whist-lab-app/test-audit/README.md). Oracolul rămâne în test; Kitul capturează comparația când este evaluată, iar Reporting construiește HTML-ul canonic. [Strategia comună](README.md) stabilește selecția după risc.
+Gradle separă unitarele izolate, componentele auditate și observațiile opționale de platformă. Testele dețin oracolele; [puntea de audit](../../whist-lab-app/test-audit/README.md), folosită numai la testare, capturează comparațiile evaluate, iar biblioteca de raportare produce rapoarte Extent canonice în engleză.
 
 ## Responsabilități și niveluri
 
-| Zonă | Nivel și proprietate |
-|---|---|
-| Aplicație | Componente ale comenzilor, salvării, licitației, localizării și prezentării; fără activitate Android reală. |
-| Motor | Unități și componente de reguli, scor și decizie; colecțiile de învățare se activează separat. |
-| Jucător independent | `:ai-lab:test` verifică observații publice, decizii legale, bugete și izolarea classpath-ului de producție. |
-| Referințe experimentale | Suprapunerile de surse se păstrează separat de colecțiile Gradle curente. |
-| Interfață comună | Prezentare neutră și frontiere; regulile jocului rămân în consumator. Testele JVM se califică separat de colecțiile aplicației. |
-| Raster | Componente JVM cu imagini sintetice și oracole independente ale pixelilor. |
-| Puntea auditului | Componente controlate pentru lifecycle, captură, refuz, parametrizare și publicare. |
+| Responsabil | Selecție primară | Graniță |
+|---|---|---|
+| Prezentare portabilă | `:card-table-core:test` | Geometrie, conținut, roluri de text, feedbackul mâinii și efecte deterministe; fără pornire Android sau browser. |
+| Unitare izolate | `:card-table-core:unitTest` | Normalizare, snapshoturi imuabile și intrări invalide; numai JUnit, fără Extent sau dependențe de raportare. |
+| Renderer Android | `:card-table-android:testDebugUnitTest` | Contractele adaptorului nativ și proprietatea surselor; widgeturile reale cer instrumentare separată. |
+| Proiecții Whist | Colecțiile de componentă ale aplicației și contractele browserului | Conținutul comun al jocului, configurarea, realizările și codec-urile checkpointurilor din `whist-presentation`. |
+| Motorul jocului | Colecțiile de reguli ale release-ului | Comenzi legale, punctaj, checkpointuri și programe de joc; măsurătorile AI rămân separate. |
+| Jucător independent | `:ai-lab:test` | Observații publice, decizii legale și izolarea politicilor. |
+| Suport de audit | `:test-audit:test` | Ciclul capturii, verdictele originale, identitățile parametrilor și publicarea. |
 
-[Catalogul pachetelor](../../config/gradle-app-collections.properties) atribuie fiecare clasă unei singure colecții; guvernanța refuză omisiunile și pachetele fără owner.
+Directorul fizic al proiectului Android rămâne `atf-card-table-ui`; identitatea Gradle este `card-table-android`. Core deține clasele portabile și fixture-urile neutre de testare. Web depinde de core; launcherul construiește JAR-uri de module din rădăcini complete de surse, fără liste individuale de surse comune.
 
-| Colecție primară | Task și responsabilitate |
-|---|---|
-| Comenzi | `testDebugCommandsComponents`: lifecycle, animație, navigare și persistență. |
-| Licitare | `testDebugBiddingComponents`: recomandare, alegere și reluare. |
-| Istoric | `testDebugHistoryComponents`: scor, serii, tabel și geometrie. |
-| Afișare | `testDebugDisplayComponents`: modele de prezentare, masă, cărți și localizare. |
-| Realizări | `testDebugAchievementsComponents`: catalog, fapte de joc, progres durabil și notificări confirmate de utilizator. |
-| Interfață comună | `:atf-card-table-ui:testDebugUnitTest`: geometria mâinii și stabilitatea cadrului etichetelor de acțiune. |
-
-Intrarea `testDebugUnitTest` deleagă colecțiilor, fără a repeta populația. Modulul comun `atf-card-table-ui` are un task separat și un HTML canonic distinct; nu se amestecă în colecțiile aplicației. Acestea păstrează cazurile și comparațiile și limitează memoria publicării prin responsabilități independente; compilarea și semnarea APK-ului Release se califică separat.
-
-[Catalogul](../../config/gradle-audit-collections.properties) atribuie o singură categorie fiecărei clase. Categoria nu schimbă oracolul și nu include automat clasa în selecția release-ului. O colecție focalizată rămâne submulțime declarată; rularea ei și a colecției mari nu creează două populații unice.
+[Catalogul aplicației](../../config/gradle-app-collections.properties) atribuie fiecare pachet unei singure colecții primare: `testDebugCommandsComponents`, `testDebugBiddingComponents`, `testDebugHistoryComponents`, `testDebugDisplayComponents` sau `testDebugAchievementsComponents`. Taskul original `testDebugUnitTest` deleagă către acestea fără să execute o populație duplicată.
 
 ## Captura contextului
 
@@ -37,77 +26,48 @@ Intrarea `testDebugUnitTest` deleagă colecțiilor, fără a repeta populația. 
 sequenceDiagram
     participant F as Fixture
     participant T as Test
-    participant K as Kit
-    participant R as Reporting
-    F->>T: configurare și intrări efective
-    T->>K: expected independent și actual
-    K-->>T: verdictul original
-    T->>R: context, comparații și timp măsurat
-    R-->>T: HTML verificabil
+    participant K as Punte de audit
+    participant R as Raportare
+    F->>T: Precondiții declarate și intrări reale
+    T->>K: Valori așteptate și observate evaluate independent
+    K-->>T: Verdictul original
+    T->>R: Context capturat, comparații și durată măsurată
+    R-->>T: HTML canonic în engleză
 ```
 
 <details>
-<summary>Legendă: captura nu repetă operația</summary>
+<summary>Legendă — captura nu repetă operația</summary>
 
-Argumentele constructorului sau ale salvării sunt proiectate înaintea apelului, fără reevaluare. Contextul local al aserțiunii poate conține și rezultate calculate; el nu este prezentat drept stare inițială. Oracolul și ordinea operanzilor rămân cele ale testului.
+Înregistrați argumentele constructorului, salvării și comenzilor înainte de evaluare. Capturați valorile așteptate și observate o singură dată, păstrând excepția și verdictul original. Un fixture sau mock furnizează condiții declarate; nu poate inventa o execuție de platformă.
 
 </details>
 
-- `GradleInputs.created` capturează configurația înaintea construirii sesiunii, observația înaintea deciziei sau datele înaintea salvării și întoarce aceeași valoare.
-- `GradleInputs.fixture` capturează valorile locale relevante înaintea comparației; câmpurile fixture-ului păstrează și parametrii constructorului JUnit.
-- Proiecția citește explicit înregistrări, colecții și snapshot-ul public al sesiunii. Un helper fără proiecție declarată rămâne identificat ca atare; nu se inventează starea lui internă.
-- Aserțiunile păstrează expected, actual, verdictul și invariantul. Valorile mai lungi decât preview-ul apar integral în corpuri ordonate.
-- Rasterul se declară explicit drept imagine de componentă JVM și rămâne PNG inline. Nu dovedește randarea nativă Android.
+`GradleInputs.created` întoarce valoarea furnizată și înregistrează intrările ei. `GradleInputs.fixture` înregistrează datele relevante ale cazului înainte de comparație. Aserțiunile evaluate păstrează corpurile structurate complete, fără să le înlocuiască printr-un rezumat PASS.
 
 ## Proprietatea publicării
 
-O invocare JUnit păstrează identitatea parametrizării și verdictul original. Statement-ul măsurat include fixture-urile `before`/`after` ale JUnit 4; publicarea este în afara acestui interval. Sesiunea Reporting se creează, folosește și închide pe același fir de publicare; testele nu se mută pe acel fir.
+Taskurile auditate de componentă și guvernanță produc câte un Extent canonic. Taskurile izolate `unitTest` păstrează diagnostice JUnit și nu creează Extent. Matricele de continuitate și afișaj nu au capturi; o observație randată separată poate include un raster identificat explicit sau o captură E2E inline.
 
-Profilul publicării provine din contextul și comparațiile capturate înaintea randării. El este încorporat ca metadată de control și se confruntă cu proprietarii, fazele și rândurile HTML. Absența HTTP este explicită; o componentă logică nu primește transport sau acțiuni fictive pentru a satisface un validator implicit.
+Ieșirea JUnit este un oracol temporar independent al populației. Verificatorul reconciliază identitățile exacte și verdictele invocărilor cu HTML-ul; XML-ul temporar nu se livrează drept alt raport final. Fila `Overview` standard aparține bibliotecii Reporting și nu este înlocuit cu o galerie proprie de dovezi.
 
 ## Acceptanță și retenție
 
-În calificarea RAG, verificatorul scrie chitanța fiecărei selecții direct lângă raportul ei. Publicarea atomică a checkpoint-ului închide selecția înaintea următorului task din aceeași lansare. [Reluarea după întrerupere](ATF_ReleaseQualification.md#reluarea-etapelor-validate)
+[Catalogul nivelurilor](../../config/gradle-audit-collections.properties) declară fiecare responsabil executabil. Mutarea unei clase îi păstrează identitatea cazurilor. Contractele comune și controalele negative trebuie să treacă înainte să retragem o verificare duplicată de platformă.
 
-Matricile exhaustive compară fiecare pereche prin oracolul domeniului. [Verificatorul matricilor](../../whist-lab-app/test-audit/src/testFixtures/java/atf/gradle/audit/matrix/ExhaustiveMatrixChecks.java) oprește prima nepotrivire cu poziție, expected și actual; la succes publică numărul perechilor evaluate pe invariant și absența nepotrivirilor. Istoricul și geometria păstrează grilele complete de intrări, fără milioane de rânduri PASS individuale ori numărarea lor ca invocări JUnit.
-
-| Control | Refuz obligatoriu |
-|---|---|
-| Invocare | Lipsă de fixture, comparații necapturate sau clasificare absentă. |
-| Parametrizare | Identitate lipsă, suplimentară ori duplicată și verdict diferit de JUnit. |
-| Publicare | Rând eliminat, intenție modificată, receipt orfan sau date interpretate drept markup. |
-| Livrare | Grup XML păstrat ca raportare paralelă pentru aceeași selecție auditată. |
-
-XML-ul Gradle este oracol temporar de identitate și rezultat. După confruntarea lui cu HTML-ul și revizia detașată, livrarea păstrează HTML-ul selecției, fără copia XML a componentelor.
-
-Schema de calificare cu grupuri auditate renumără invocările în HTML, iar metadatele distribuției păstrează hash-urile și limitele. Dovezile istorice unice nu se șterg înainte de migrarea lor reală.
+RAG înregistrează independent fiecare task validat înainte să înceapă următorul. Refolosirea cere intrări de producție relevante, dependențe tranzitive, teste, resurse, unelte și selecție neschimbate. Un caz eșuat se rerulează după corecție; colecțiile valide neafectate rămân reutilizabile. [Checkpoint și reutilizare](ATF_ReleaseQualification.md#reluarea-etapelor-validate)
 
 ## Reguli, politici și memorie
 
-[Oracolul partidei românești](../../whist-lab-app/game-core/src/test/java/ro/whistlab/core/rules/RomanianWhistModelTest.java) compară distribuirea, licitația, legalitatea, câștigătorii, scorul și reluarea pentru fiecare mutare. Rezultatele conforme se agregă pe invariant, iar prima nepotrivire publică mâna, pasul și valorile comparate. Parametrizările rămân invocări separate.
+Partidele offline complete și verificările combinatorii ale regulilor aparțin colecțiilor de componentă, cu configurări legale și motor real. Învățarea AI și loturile rezervate de evaluare sunt opționale; o metrică a politicii este distinctă de oracolul jocului legal.
 
-| Selecție | Contract |
+| Proces | Contractul declarat de resurse |
 |---|---|
-| [Partida simulată](../../whist-lab-app/game-core/src/test/java/ro/whistlab/core/match/OfflineMockMatchTest.java) | Numărul de mâini, mutările și finalizarea sunt oracole de joc. Contractele nerecuperabile, fallback-urile și certificatele sunt observații ale politicii pe distribuirea selectată. |
-| [Obiectivul de salvare](../../whist-lab-app/game-core/src/test/java/ro/whistlab/core/ai/contract/HardSalvageObjectiveTest.java) | Pozițiile controlate verifică ordinea obiectivelor de decizie. |
-| offlinePerspectiveMatchTest și offlineStrategyProfileMatchTest | Compară politicile pe distribuiri identice, în loturi separate de regresia implicită. |
-
-| Proces JVM | Limită de heap și dovadă |
-|---|---|
-| Daemon, intrare exclusiv JVM | 256 MiB. |
-| Workerul [punții comune](../../whist-lab-app/gradle/component-audit.gradle) | 512 MiB pentru fiecare task, cu limita observată în raport. |
-| Verificatorul JUnit–Extent | 384 MiB pentru reconcilierea raportului cu rezultatele originale. |
-
-Colecția :game-core:regressionTest împarte inventarul implicit între AI, reguli, sesiune și scor, variante, jucătorul independent și restul componentelor. Fiecare partiție publică propriul HTML.
-
-Taskurile păstrează invocările după primul eșec. Lotul executat cu --continue păstrează și rezultatele taskurilor următoare.
+| Worker de test | Un worker, heap 512 MiB, fără oprire timpurie care ascunde invocările ulterioare. |
+| Verificatorul raportului | Heap 384 MiB pentru reconcilierea JUnit/HTML originală. |
+| Matricea de componentă | Agregă comparațiile exhaustive și prima nepotrivire precisă; nu emite milioane de rânduri PASS. |
 
 ## Rulare și limite
 
-[Configurarea comună](../../whist-lab-app/gradle/component-audit.gradle) se aplică atât reactorului Android, cât și [intrării exclusiv JVM](../../whist-lab-app/algorithm-build/README.md). `whist.auditOutput` identifică directorul execuției, iar `whist.auditSource` fixează amprenta sursei. Fiecare task are un singur worker și un HTML propriu; paralelismul suplimentar cere calificare distinctă.
+Folosiți un director extern pentru build și cache. `whist.auditOutput` selectează locul dovezilor, iar `whist.auditSource` identifică contextul sursei. Grupați taskurile afectate într-o singură invocare Gradle și păstrați checkpointuri la nivel de task.
 
-- Lansatorul agregat pornește taskurile Gradle necesare o singură dată, cu un worker de test pentru fiecare task.
-- Verificarea JUnit–Extent lasă un marker temporar per task numai după confruntarea identităților și verdictelor.
-- Un task independent poate publica dovada sa și când alt task eșuează. Rezultatul agregat păstrează eșecul și durata lansării.
-
-Compilarea, auditul structural și revizia interactivă sunt controale diferite. Numai cazurile executate primesc rezultat; clasificarea unei colecții de învățare nu dovedește rularea ei. Acceptanța unui APK se leagă de binarul identificat, conform [calificării livrării](ATF_ReleaseQualification.md).
+[Strategia de testare](README.md) · [Matrice modul × nivel](ATF_TestingGuide.md) · [Continuitatea comună a mesei](ATF_TableContinuity.md) · [Suite Web curente](../../release/WEB/README.md)

@@ -15,7 +15,7 @@ Configurarea permite alegerea variantei, a unei mese de 3–6 jucători și a ni
 
 Variantele disponibile sunt definite în catalogul de reguli.
 
-O salvare cu o variantă retrasă rămâne pe dispozitiv până când utilizatorul pornește o partidă nouă. Tipurile de reguli sunt definite în [GameMode](game-core/src/main/java/ro/whistlab/core/rules/GameMode.java), iar textele și etichetele efective în [WhistUiText](app/src/main/java/ro/whistlab/app/localization/WhistUiText.java). Regulile afișate se construiesc în [HowToPlay](game-core/src/main/java/ro/whistlab/core/rules/HowToPlay.java) pentru varianta, limba și numărul de jucători selectate.
+O salvare cu o variantă retrasă rămâne pe dispozitiv până când utilizatorul pornește o partidă nouă. Tipurile de reguli sunt definite în [GameMode](game-core/src/main/java/ro/whistlab/core/rules/GameMode.java), iar textele și etichetele efective în [WhistUiText](whist-presentation/src/main/java/ro/whistlab/app/localization/WhistUiText.java). Regulile afișate se construiesc în [HowToPlay](game-core/src/main/java/ro/whistlab/core/rules/HowToPlay.java) pentru varianta, limba și numărul de jucători selectate.
 
 - [Regulile jocului](../docs/game/README.md) dețin programul mâinilor, atuul, scorul și seriile pentru fiecare profil.
 - Istoricul se deschide din `Meniu joc → Scorul partidei → Istoricul scorului`. [Contractul istoricului](../docs/game/ATF_ScoreHistory.md) explică licitația, totalul fiecărui jucător, marcajele și adaptarea la fereastră.
@@ -26,7 +26,7 @@ La tura jucătorului, motorul Hard estimează și preselectează o licitație le
 
 - Calculul rulează în fundal și folosește mâna proprie, atuul și cartea întoarsă cunoscută, licitațiile publice și contextul de scor al motorului.
 - Alegerea manuală are prioritate; un rezultat întârziat nu înlocuiește selecția și nu se aplică altei mâini ori partide.
-- Dacă estimarea nu este disponibilă, se poate alege manual orice valoare legală. [Selecția contextuală](app/src/main/java/ro/whistlab/app/bidding/HumanBidSelection.java) păstrează această stare separat de contractele depuse.
+- Dacă estimarea nu este disponibilă, se poate alege manual orice valoare legală. [Selecția contextuală](whist-presentation/src/main/java/ro/whistlab/app/bidding/HumanBidSelection.java) păstrează această stare separat de contractele depuse.
 
 ## Joacă automat mâna curentă
 
@@ -62,7 +62,10 @@ GameSession validează comenzile înaintea schimbării stării; UI-ul redă star
 | Componentă | Responsabilitate |
 |---|---|
 | [game-core](game-core/README.md) | Reguli, sesiune, scor, salvare și politica AI a aplicației; teste JVM. |
-| [atf-card-table-ui](atf-card-table-ui/README.md) | Nucleu Android reutilizabil: meniu/profil, widgeturi, cărți, temă și geometria mâinii; fără motorul jocului sau biblioteci ATF. |
+| [card-table-core](card-table-core/README.md) | Geometrie portabilă, conținut, roluri de text, efecte deterministe și fixture-uri neutre de componentă. |
+| [card-table-android](atf-card-table-ui/README.md) | Widgeturi native, resurse și măsurători; consumă core și păstrează directorul fizic existent. |
+| [card-table-web](../atf-ui-browser/README.md) | Renderer browser și adaptor JVM/pagină compilată; consumă aceleași contracte core. |
+| [whist-presentation](whist-presentation/README.md) | Configurare portabilă a jocului, etichete, conținut public, realizări, rânduri de punctaj și codec-uri de checkpoint pentru ambele renderere. |
 | [card-table-names](card-table-names/README.md) | Politica Java comună pentru repartizarea numelor pe locuri și validarea numelui uman. |
 | [app](app/src/main/java/ro/whistlab/app/) | Activitatea Android, configurarea mesei, prezentarea jocului și persistența locală. |
 | [ai-lab](ai-lab/README.md) | Modul JVM al jucătorului independent, uneltelor și experimentelor offline; consumat numai la testare. |

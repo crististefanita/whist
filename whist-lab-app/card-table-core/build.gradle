@@ -1,0 +1,42 @@
+plugins {
+    id 'java-library'
+    id 'java-test-fixtures'
+    id 'maven-publish'
+}
+group = 'ro.cardtable'
+version = '0.3'
+java {
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
+    withSourcesJar()
+}
+sourceSets { unitTest }
+dependencies {
+    testImplementation 'junit:junit:4.13.2'
+    testImplementation testFixtures(project())
+    unitTestImplementation sourceSets.main.output
+    unitTestImplementation testFixtures(project())
+    unitTestImplementation 'junit:junit:4.13.2'
+}
+tasks.withType(Test).configureEach {
+    useJUnit()
+    systemProperty 'cardui.sourceRoot', projectDir.absolutePath
+}
+tasks.register('unitTest', Test) {
+    description = 'Small isolated tests; no Extent producer or screenshot dependency.'
+    testClassesDirs = sourceSets.unitTest.output.classesDirs
+    classpath = sourceSets.unitTest.runtimeClasspath
+    reports.html.required = false
+    reports.junitXml.required = true
+}
+tasks.named('check') { dependsOn 'unitTest' }
+tasks.named('test') { dependsOn 'unitTest' }
+publishing {
+    repositories {
+        maven {
+            name = 'isolated'
+            url = uri(providers.gradleProperty('cardui.repository').getOrElse(layout.buildDirectory.dir('repository').get().asFile.absolutePath))
+        }
+    }
+    publications { release(MavenPublication) { from components.java; artifactId = 'card-table-core' } }
+}

@@ -29,22 +29,22 @@ public final class UiLibraryBoundaryComponentTest extends GradleAuditedTest {
     }
 
     @Test public void portableTableContractsHaveNoPlatformImports() throws Exception {
-        var source = module().resolve("src/main/java/ro/cardtable/ui");
-        var contracts = List.of("animation/CollectionTarget.java", "animation/TrickCollectionMotion.java",
-                "turn/TurnPacing.java", "table/ScoreGridStyle.java", "seat/SeatContent.java",
-                "hand/HandInput.java", "cards/CardHighlight.java", "table/PlayedCardStyle.java",
-                "table/trump/TrumpTileMetrics.java", "score/ScoreTableContent.java", "score/HistoryContent.java",
-                "score/HistoryGridMetrics.java", "score/HistoryScrollSync.java", "score/ScoreTypography.java", "seat/SeatTypography.java");
+        var source = module().resolve("../card-table-core/src/main/java").normalize();
+        List<Path> contracts;
+        try (var paths = Files.walk(source)) {
+            contracts = paths.filter(Files::isRegularFile).filter(path -> path.toString().endsWith(".java")).sorted().toList();
+        }
         var platform = new ArrayList<>(GAME_PACKAGES);
         platform.addAll(List.of("import android.", "import androidx.", "import atf."));
         var violations = new ArrayList<String>();
-        for (String contract : contracts) {
-            String contents = readUtf8(source.resolve(contract));
+        for (Path contract : contracts) {
+            String contents = readUtf8(contract);
             for (String dependency : platform) {
                 if (contents.contains(dependency)) violations.add(contract + " imports " + dependency);
             }
         }
         GradleInputs.fixture("Portable Android and web contracts", "sources", contracts);
+        assertTrue("The portable module owns a non-empty source inventory", !contracts.isEmpty());
         assertEquals("Shared presentation cannot couple Android, ATF or game engines", List.of(), violations);
     }
 

@@ -22,6 +22,10 @@ final class BuildModuleDeclarations {
     private static final Pattern FIXTURES = Pattern.compile(
             "owner\\.dependencies\\.add\\(\\s*['\"](\\w+)['\"]\\s*,\\s*"
                     + "owner\\.dependencies\\.testFixtures\\(project\\(" + PROJECT + "\\)\\)\\s*\\)");
+    private static final Pattern LOCAL_FIXTURES = Pattern.compile(
+            "(?m)^\\h*(\\w+)\\h+testFixtures\\(project\\(" + PROJECT + "\\)\\)\\h*$");
+    private static final Pattern DIRECTORY = Pattern.compile(
+            "project\\((['\"]):([\\w-]+)\\1\\)\\.projectDir\\s*=\\s*file\\((['\"])([^'\"]+)\\3\\)");
 
     private BuildModuleDeclarations() { }
 
@@ -62,12 +66,22 @@ final class BuildModuleDeclarations {
 
     static Set<Edge> gradleEdges(Path gradle, Set<String> modules) throws Exception {
         var result = new LinkedHashSet<Edge>();
+        String settings = Files.readString(gradle.resolve("settings.gradle"));
+        var locations = new java.util.HashMap<String, String>();
+        var aliases = DIRECTORY.matcher(settings);
+        while (aliases.find()) {
+            if (!modules.contains(aliases.group(2)) || locations.putIfAbsent(aliases.group(2), aliases.group(4)) != null)
+                throw new IllegalArgumentException("DOC-BUILD-MAP: unknown or duplicate module alias");
+        }
         for (String module : modules) {
-            Path build = gradle.resolve(module).resolve("build.gradle");
+            Path build = gradle.resolve(locations.getOrDefault(module, module)).normalize().resolve("build.gradle");
+            if (!build.startsWith(gradle.getParent())) throw new IllegalArgumentException("DOC-BUILD-MAP: module escapes checkout");
             var dependencies = DEPENDENCY.matcher(Files.readString(build));
             while (dependencies.find()) {
                 result.add(new Edge("Gradle", module, dependencies.group(1), dependencies.group(2)));
             }
+            var localFixtures = LOCAL_FIXTURES.matcher(Files.readString(build));
+            while (localFixtures.find()) result.add(new Edge("Gradle", module, localFixtures.group(1), localFixtures.group(2)));
         }
         var fixtures = FIXTURES.matcher(Files.readString(gradle.resolve("gradle/component-audit.gradle")));
         if (!fixtures.find()) throw new IllegalArgumentException("DOC-BUILD-MAP: missing Gradle audit fixture declaration");

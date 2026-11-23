@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import ro.cardtable.ui.table.TableGeometry;
+import ro.cardtable.testing.SurfaceObservation;
+import ro.cardtable.testing.SurfaceContinuity;
 import ro.whistlab.core.rules.GameMode;
 import ro.whistlab.core.rules.GameRules;
 
@@ -51,10 +53,21 @@ public final class TablePhaseContract {
     public static void assertStable(Case fixture, State state, TableGeometry.Plan before, TableGeometry.Plan after) {
         if (before == null || after == null || before.seats().size() != fixture.players()
                 || after.seats().size() != fixture.players()) fail("POPULATION", fixture, state);
-        if (!before.seats().equals(after.seats())) fail("FRAME_DRIFT", fixture, state);
+        try { SurfaceContinuity.verify(observation(before), observation(after), 0); }
+        catch (AssertionError error) { fail("FRAME_DRIFT", fixture, state); }
         if (after.seats().stream().anyMatch(rect -> rect.right() <= rect.left() || rect.bottom() <= rect.top()
                 || rect.left() < 0 || rect.right() > fixture.width() || rect.top() < 0)) fail("FRAME_BOUNDS", fixture, state);
         if (after.seats().stream().anyMatch(after.center()::overlaps)) fail("CONTROL_OVERLAP", fixture, state);
+    }
+
+    private static SurfaceObservation observation(TableGeometry.Plan plan) {
+        var measured = new java.util.LinkedHashMap<String, SurfaceObservation.Bounds>();
+        for (int id = 0; id < plan.seats().size(); id++) {
+            var rect = plan.seats().get(id);
+            measured.put("seat:" + id, new SurfaceObservation.Bounds(rect.left(), rect.top(),
+                    rect.right() - rect.left(), rect.bottom() - rect.top()));
+        }
+        return new SurfaceObservation(measured);
     }
 
     private static void fail(String code, Case fixture, State state) {

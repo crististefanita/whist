@@ -2,7 +2,7 @@
 
 ## Pe scurt
 
-`atf-card-table-ui` este modulul Android Library care deține componentele vizuale comune pentru Whist, Rentz și Hold’em. Are surse Java 17, resurse, teste JVM și componente Android instrumentate. Aplicațiile furnizează datele vizibile și intențiile de joc, iar biblioteca furnizează desenul și comportamentul widgeturilor.
+`card-table-android` deține randarea nativă și măsurătorile de platformă. Directorul fizic rămâne `atf-card-table-ui`; modelele portabile, geometria, tipografia și efectele deterministe aparțin [card-table-core](../card-table-core/README.md). Jocurile păstrează acțiunile legale, starea și proiecțiile publice.
 
 | Intrare | Unde se verifică |
 |---|---|
@@ -15,17 +15,17 @@
 | Pachet | Contract implementat |
 |---|---|
 | [screens](src/main/java/ro/cardtable/ui/screens/ScreenViews.java) | Aceiași constructori de pagini, texte, butoane și selectori; eticheta selectorului și protecția ferestrei sunt porturi furnizate de aplicație. |
-| [menu](src/main/java/ro/cardtable/ui/menu/HomeMenuContent.java) | Ordine, etichete, tag-uri, stare de reluare și callback-uri; dropdown-ul păstrează cele două limbi și înregistrarea amânată a listenerului. |
-| [profile](src/main/java/ro/cardtable/ui/profile/NameEdit.java) | Dialogul acceptă filtrul de intrare al jocului. Normalizarea, persistența și excepția originală aparțin consumatorului. |
-| [cards](src/main/java/ro/cardtable/ui/cards/CardFace.java) | Însemne, proporții și marcaj crem-auriu. Jocul furnizează cartea vizibilă și decide când se marchează. |
-| [hand](src/main/java/ro/cardtable/ui/hand/HandLayoutMetrics.java) | Geometrie, derulare și interacțiune pentru o mână afișată. Adaptoarele păstrează durata marcajelor, ridicarea și revizia gestului prin [HandInput](src/main/java/ro/cardtable/ui/hand/HandInput.java). |
-| [seat](src/main/java/ro/cardtable/ui/seat/SeatContent.java) | Nume, fapte ordonate și actor activ furnizate de joc; etichetele se măsoară la lățimea locului, iar cadrul primește aceeași rezervare între faze. |
+| [menu](../card-table-core/src/main/java/ro/cardtable/ui/menu/HomeMenuContent.java) | Ordine, etichete, tag-uri, stare de reluare și callback-uri; dropdown-ul păstrează cele două limbi și înregistrarea amânată a listenerului. |
+| [profile](../card-table-core/src/main/java/ro/cardtable/ui/profile/NameEdit.java) | Dialogul acceptă filtrul de intrare al jocului. Normalizarea, persistența și excepția originală aparțin consumatorului. |
+| [cards](../card-table-core/src/main/java/ro/cardtable/ui/cards/CardFace.java) | Însemne, proporții și marcaj crem-auriu. Jocul furnizează cartea vizibilă și decide când se marchează. |
+| [hand](../card-table-core/src/main/java/ro/cardtable/ui/hand/HandLayoutMetrics.java) | Geometrie, derulare și interacțiune pentru o mână afișată. Adaptoarele păstrează durata marcajelor, ridicarea și revizia gestului prin [HandInput](../card-table-core/src/main/java/ro/cardtable/ui/hand/HandInput.java). |
+| [seat](../card-table-core/src/main/java/ro/cardtable/ui/seat/SeatContent.java) | Nume, fapte ordonate și actor activ furnizate de joc; etichetele se măsoară la lățimea locului, iar cadrul primește aceeași rezervare între faze. |
 | [table](src/main/java/ro/cardtable/ui/table/android/BoardLayout.java) | Regiuni ocupate, ordine vizuală, viewport și bandă centrală măsurată între locuri. Adaptorul Android aplică geometria comună. |
-| [turn](src/main/java/ro/cardtable/ui/turn/TurnPacing.java) | Așteaptă primul cadru vizibil, aplică intervalul comun și invalidează acțiunea dacă scena s-a schimbat. |
-| [animation](src/main/java/ro/cardtable/ui/animation/TrickCollectionMotion.java) | Validează setul locurilor și expune pauza, durata și curba colectării. Android desenează fețele native, iar web-ul redă aceeași curbă pe elementele din pagină. |
+| [turn](../card-table-core/src/main/java/ro/cardtable/ui/turn/TurnPacing.java) | Așteaptă primul cadru vizibil, aplică intervalul comun și invalidează acțiunea dacă scena s-a schimbat. |
+| [animation](../card-table-core/src/main/java/ro/cardtable/ui/animation/TrickCollectionMotion.java) | Validează setul locurilor și expune pauza, durata și curba colectării. Android desenează fețele native, iar web-ul redă aceeași curbă pe elementele din pagină. |
 | [CardFaceView](src/main/java/ro/cardtable/ui/cards/CardFaceView.java) | Mâna și masa desenează rangul și simbolul în colț, simbolul central și colțul inversat. Dimensiunile feței se scalează pentru masa de joc, iar colectarea mută vederile cărților de pe masă. |
-| [CardFaceMetrics](src/main/java/ro/cardtable/ui/cards/CardFaceMetrics.java) | Reperul este cartea din mâna Android. Adaptorul Web preia dimensiunile și pozițiile și păstrează aceeași structură la depunere și colectare. |
-| [ScoreGridStyle](src/main/java/ro/cardtable/ui/table/ScoreGridStyle.java) | Păstrează proporțiile, înălțimea și culorile tabelului de scor pentru adaptorul Android și browser. |
+| [CardFaceMetrics](../card-table-core/src/main/java/ro/cardtable/ui/cards/CardFaceMetrics.java) | Reperul este cartea din mâna Android. Adaptorul Web preia dimensiunile și pozițiile și păstrează aceeași structură la depunere și colectare. |
+| [ScoreGridStyle](../card-table-core/src/main/java/ro/cardtable/ui/table/ScoreGridStyle.java) | Păstrează proporțiile, înălțimea și culorile tabelului de scor pentru adaptorul Android și browser. |
 | [score](src/main/java/ro/cardtable/ui/score/README.md) | Widgeturi neutre pentru scor și istoric derulabil, conținut imuabil al consumatorului, coloane măsurate și sincronizare bidirecțională. Etichetele și punctajul rămân în adaptoare. |
 | [theme](src/main/java/ro/cardtable/ui/theme/TablePalette.java) și [widgets](src/main/java/ro/cardtable/ui/widgets/DropdownBackground.java) | Culori, chenare și desenul selectorului. |
 
@@ -71,13 +71,13 @@ Fațadele sunt adaptoare de compatibilitate, cu o singură implementare a algori
 | Text Android | Segment măsurat doar pentru rang; simbolul și textul accesibil rămân intacte |
 | Suprapunere în evantai | Rezervă cel mai lat rang măsurat, inclusiv `10`, înainte de suprapunere sau derulare |
 | Adaptor Web | Primește scara rangurilor prin configurație, independent de fonturile meniurilor |
-| Verificare comună | [Măsurători așteptate](src/test/resources/card-typography.tsv) folosite de componentele JVM și distribuite în JAR-ul de teste al browserului |
+| Verificare comună | [Măsurători așteptate](../card-table-core/src/test/resources/card-typography.tsv) folosite de componentele JVM și distribuite în JAR-ul de teste al browserului |
 | Verificare nativă | Randare reală, încadrare și concordanță între desen și măsurare la text mărit |
 
 Din copia temporară a rădăcinii Android `whist-lab-app`, cu PowerShell 7, JDK 21 și cache-ul Android pregătit, modulul se construiește fără sarcini ale aplicației.
 
 ```powershell
-.\gradlew.bat --offline --no-daemon :atf-card-table-ui:testDebugUnitTest :atf-card-table-ui:lintRelease :atf-card-table-ui:assembleDebugAndroidTest
+.\gradlew.bat --offline --no-daemon :card-table-android:testDebugUnitTest :atf-card-table-ui:lintRelease :atf-card-table-ui:assembleDebugAndroidTest
 ```
 
 | Selecție | Așteptare independentă |
@@ -85,7 +85,7 @@ Din copia temporară a rădăcinii Android `whist-lab-app`, cu PowerShell 7, JDK
 | Meniul comun | Ordine și tag-uri fixe, RO/EN, nume implicit/configurat, reluare dezactivată și callback-uri distincte. |
 | Editarea numelui | Intervalul propus, păstrarea selecției la refuz, ștergerea, ordinea validare/salvare și cauza eșecului. |
 | Geometria mesei și a mâinii | 3–6 locuri, profiluri între 320 și 600 dp, font 1–2×, o carte centrată și indici măsurați. |
-| Marcajul cărților | Aceeași paletă pentru refuz și recomandare. Același [scenariu de gesturi](src/test/resources/hand-feedback.tsv) verifică în JVM și web atingerea repetată, expirarea după revizie și selecția acceptată o singură dată. |
+| Marcajul cărților | Aceeași paletă pentru refuz și recomandare. Același [scenariu de gesturi](../card-table-core/src/test/resources/hand-feedback.tsv) verifică în JVM și web atingerea repetată, expirarea după revizie și selecția acceptată o singură dată. |
 | Realizări | Ordine și identități stabile, încărcarea detaliilor la cerere, stări ambigue respinse. |
 | Frontiera bibliotecii | Inventare Java distincte pentru producție, JVM și Android instrumentat. Manifest de bibliotecă fără aplicație ori permisiuni proprii. |
 | Modele de masă | Identități stabile, fapte ordonate și imuabile, regiuni măsurate și dimensiuni identice indiferent de numărul locurilor. |

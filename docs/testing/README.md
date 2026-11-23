@@ -20,6 +20,7 @@ Nivelul exprimă limita verificată, iar colecția selectează cazurile și cost
 | Cum pregătesc și controlez dispozitivul? | [Testarea Android](ATF_Android.md) |
 | Cum verific geometria, derularea și capturile? | [Profiluri de ecran](ATF_Display.md) |
 | În ce ordine pregătesc testele și dovezile unui release? | [Calificare pas cu pas](ATF_ReleaseQualification.md) |
+| Unde aparțin testele prezentării comune și ale adaptoarelor? | [Core și matrice detaliată modul × nivel](ATF_TestingGuide.md#granițe-gradle-și-browser) |
 | Ce pot verifica despre display fără emulator? | [Componente display](ATF_DisplayComponents.md) |
 | Cum verific jocul, geometria și gesturile în browser? | [Componentele adaptorului și Playwright](../../atf-ui-browser/README.md#verificare) |
 | Cum refolosesc APK și Web aserțiunile fazelor pentru fiecare loc? | [Continuitatea comună a mesei](ATF_TableContinuity.md) |
@@ -106,3 +107,11 @@ Un raport canonic reprezintă o selecție identificată. Suitele focalizate sunt
 - **Versiune:** [catalogul livrărilor](../../release/README.md) trimite la rezultate, capturi și limite; acest ghid păstrează strategia generică. Istoricul urmează [politica de retenție](../platform/ATF_ReleaseRetention.md).
 
 - **Proces:** [indexul livrărilor](../../release/index.json) selectează dosarul activ. [Contractul livrării](../platform/ATF_AndroidDelivery.md#dosarul-unei-versiuni) deține structura și publicarea; matricea de mai sus deține selecțiile executabile.
+
+## Prezentarea comună și proprietatea testelor
+
+`card-table-core` deține contractele portabile și majoritatea combinațiilor de afișaj ale componentelor. Adaptoarele Android și Web dețin randarea și observațiile platformei; Whist deține cazurile legale și proiecțiile publice.
+
+`unitTest` folosește JUnit fără Extent. Componentele capturează precondiții, fixture-uri, controale negative și aserțiuni evaluate așteptat/observat în Extent, fără poze de continuitate. E2E păstrează doar navigarea și interacțiunea esențiale la un viewport lizibil, cel mult două mâini, cu puține capturi inline.
+
+[Harta modulelor](../../README.md#harta-modulelor) · [Matricea executabilă modul × nivel](ATF_TestingGuide.md) · [Suite canonice curente](../../release/WEB/README.md)

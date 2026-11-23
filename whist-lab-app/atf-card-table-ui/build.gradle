@@ -2,7 +2,7 @@ apply plugin: 'com.android.library'
 apply plugin: 'maven-publish'
 
 group = 'ro.cardtable'
-version = '0.2'
+version = '0.3'
 
 android {
     namespace 'ro.cardtable.ui'
@@ -20,6 +20,7 @@ android {
     testOptions.unitTests.all { systemProperty 'cardui.sourceRoot', projectDir.absolutePath }
 }
 dependencies {
+    api project(':card-table-core')
     coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:2.1.5'
     testImplementation 'junit:junit:4.13.2'
 }

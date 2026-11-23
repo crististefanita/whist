@@ -1,17 +1,23 @@
-# Componentele bibliotecii pentru masa de joc
+# Testele de componentă ale adaptorului Android pentru masă
 
 ## Pe scurt
 
-Testele JVM verifică geometria mâinii, modelele de prezentare și frontiera bibliotecii reutilizabile. Oracolele compară valori calculate și semnături de dependență. [Strategia comună](../../../../docs/testing/README.md)
+Proiectul Android deține testele de gazdă specifice rendererului și controalele granițelor surselor. Geometria portabilă, conținutul, rolurile textului și majoritatea combinațiilor de afișare aparțin [componentelor core](../../../card-table-core/src/test/README.md).
 
-| Familie | Proprietate verificată |
+| Familie | Responsabilitatea adaptorului nativ |
 |---|---|
-| Masă și cărți | 3–6 locuri, bandă centrală, compactare, însemne și marcaj la densitate fracționară. |
-| Locuri și meniu | Conținutul modelului de prezentare, inclusiv editarea numelui și o înălțime comună a badge-ului pentru etichetele celor două faze. |
-| Realizări | Ordinea catalogului, cheile de restaurare și calculul detaliului la deschidere. |
-| Frontieră | Inventarele de producție, JVM și instrumentare exclud dependențele de joc. |
-| Scor și istoric | Rolurile coloanelor furnizate de adaptor, identități stabile, rânduri imuabile, minime numerice măsurate, ferestre joase și recuperarea derulării bidirecționale. Nu deduc reguli de punctaj. |
+| Realizări | Ordinea catalogului, identitățile de restaurare și evaluarea amânată a detaliilor. |
+| Intrarea profilului | Intervalele Android de intrare, limitele Unicode și păstrarea textului neafectat. |
+| Granițe | Inventarele native și core rămân independente de jocurile consumatoare; producția nu deține raportarea sau stocarea. |
 
-- Sarcina `:atf-card-table-ui:testDebugUnitTest` rulează pe JVM.
-- Opțiunea `-Pcardui.only=component` configurează biblioteca și puntea auditului. Lansatorul RAG o folosește când biblioteca este singura selecție Gradle.
-- Validarea vizuală pe dispozitiv aparține fluxurilor aplicației. [Colecțiile proiectului](../../../../docs/testing/ATF_Collections.md)
+## Execuție
+
+- `:card-table-android:testDebugUnitTest` rulează selecția componentelor de gazdă ale adaptorului nativ.
+- `-Pcardui.only=component` selectează Android, core și suportul de audit; `-Pcardui.only=core` admite verificările portabile fără Android SDK.
+- Taskul `test` din core cere precondiția izolată `unitTest`. Diagnosticele unitare nu au Extent sau dependență de raportare.
+
+## Acceptanță
+
+Geometria reală a widgeturilor, fonturile, focusul și atingerea cer instrumentare nativă separată. O componentă de gazdă sau un plan de politică egal nu califică pixelii desenați. Păstrați identitățile cazurilor când mutați aserțiunile între responsabili.
+
+[Strategia comună](../../../../docs/testing/README.md) · [Matrice modul × nivel](../../../../docs/testing/ATF_TestingGuide.md) · [Instrumentare nativă](../androidTest/README.md)

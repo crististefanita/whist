@@ -23,6 +23,12 @@ $build = Get-Content -LiteralPath (Join-Path $source "$module/build.gradle") -Ra
 $versionMatch = [regex]::Match($build, '(?m)^version\s*=\s*''([^'']+)''\s*$')
 if (!$versionMatch.Success) { throw 'Versiunea AAR trebuie declarată explicit în modul.' }
 $version = $versionMatch.Groups[1].Value
+$coreBuild = Get-Content -LiteralPath (Join-Path $source 'whist-lab-app/card-table-core/build.gradle') -Raw
+$coreVersion = [regex]::Match($coreBuild, '(?m)^version\s*=\s*''([^'']+)''\s*$').Groups[1].Value
+if ($coreVersion -cne $version) { throw 'The Android adapter and portable core must use the same new package version.' }
+$corePath = "ro/cardtable/card-table-core/$version"
+$coreFinal = Join-Path $repositoryRoot $corePath
+$coreNames = @("card-table-core-$version.jar", "card-table-core-$version.pom", "card-table-core-$version.module", "card-table-core-$version-sources.jar", "card-table-core-$version-test-fixtures.jar")
 Assert-CardTableLibraryVersion -Version $version -Existing $true
 $baseName = "card-table-ui-$version"
 $names = @("$baseName.aar", "$baseName.pom", "$baseName.module", "$baseName-sources.jar")
@@ -31,7 +37,8 @@ $final = Join-Path $repositoryRoot $artifactPath
 Assert-CardTableLibraryVersion -Version $version -Existing (Test-Path -LiteralPath $final)
 $receiptName = 'card-ui-build.json'
 
-$productionRoots = @("$module/build.gradle", "$module/src/main", 'whist-lab-app/settings.gradle',
+$productionRoots = @("$module/build.gradle", "$module/src/main", 'whist-lab-app/card-table-core/build.gradle',
+    'whist-lab-app/card-table-core/src/main', 'whist-lab-app/card-table-core/src/testFixtures', 'whist-lab-app/settings.gradle',
     'whist-lab-app/build.gradle', 'whist-lab-app/gradle.properties', 'whist-lab-app/gradlew.bat',
     'whist-lab-app/gradle/wrapper')
 $paths = [Collections.Generic.List[string]]::new()
@@ -71,6 +78,15 @@ function Confirm-Artifact {
             throw "Checksum AAR diferit pentru $name."
         }
     }
+    if ($receipt.core.coordinate -cne "ro.cardtable:card-table-core:$version" -or $receipt.core.files.Count -ne $coreNames.Count) {
+        throw 'The Android package must identify its complete portable core dependency.'
+    }
+    foreach ($name in $coreNames) {
+        $rows = @($receipt.core.files | Where-Object path -CEQ $name)
+        $item = Get-Item -LiteralPath (Join-Path $coreFinal $name)
+        if ($rows.Count -ne 1 -or $item.PSIsContainer -or ($item.Attributes -band [IO.FileAttributes]::ReparsePoint) -or
+                (Get-FileHash -LiteralPath $item.FullName).Hash -ine $rows[0].sha256) { throw "Portable core differs: $name" }
+    }
     $receiptPath
 }
 
@@ -95,7 +111,7 @@ Push-Location (Join-Path $stage 'whist-lab-app')
 try {
     $env:ANDROID_HOME = [IO.Path]::GetFullPath($AndroidSdk)
     $env:ANDROID_SDK_ROOT = $env:ANDROID_HOME
-    & ./gradlew.bat --offline --no-daemon --console=plain '-Pcardui.only=package' "-Pcardui.repository=$publishing" ':atf-card-table-ui:publishReleasePublicationToIsolatedRepository' *> (Join-Path $work 'gradle.log')
+    & ./gradlew.bat --offline --no-daemon --console=plain '-Pcardui.only=package' "-Pcardui.repository=$publishing" ':card-table-core:publishReleasePublicationToIsolatedRepository' ':card-table-android:publishReleasePublicationToIsolatedRepository' *> (Join-Path $work 'gradle.log')
     if ($LASTEXITCODE -ne 0) { throw "Împachetarea a eșuat. Consultați $work/gradle.log." }
 } finally {
     $env:ANDROID_HOME = $androidHome
@@ -110,7 +126,19 @@ $files = foreach ($name in $names) {
     Copy-Item -LiteralPath $built -Destination (Join-Path $handoff $name)
     [ordered]@{path=$name; sha256=(Get-FileHash -LiteralPath $built -Algorithm SHA256).Hash.ToLowerInvariant()}
 }
-[ordered]@{schemaVersion=1; coordinate="ro.cardtable:card-table-ui:$version"; inputSha256=$fingerprint; inputs=$inputs; files=@($files)} |
+$coreProduced = Join-Path $publishing $corePath
+New-Item -ItemType Directory -Path $coreFinal -Force | Out-Null
+$coreFiles = @(foreach ($name in $coreNames) {
+    $built = Join-Path $coreProduced $name
+    $target = Join-Path $coreFinal $name
+    $sha = (Get-FileHash -LiteralPath $built).Hash.ToLowerInvariant()
+    if (Test-Path -LiteralPath $target) {
+        if ((Get-FileHash -LiteralPath $target).Hash -ine $sha) { throw "Core coordinate already contains different bytes: $name" }
+    } else { Copy-Item -LiteralPath $built -Destination $target }
+    [ordered]@{path=$name; sha256=$sha}
+})
+[ordered]@{schemaVersion=1; coordinate="ro.cardtable:card-table-ui:$version"; inputSha256=$fingerprint; inputs=$inputs; files=@($files)
+    core=[ordered]@{coordinate="ro.cardtable:card-table-core:$version"; files=$coreFiles}} |
     ConvertTo-Json -Depth 6 | Set-Content -LiteralPath (Join-Path $handoff $receiptName) -Encoding utf8
 New-Item -ItemType Directory -Path (Split-Path -Parent $final) -Force | Out-Null
 try {

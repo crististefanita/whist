@@ -1,0 +1,14 @@
+plugins { id 'java-library' }
+group = 'ro.cardtable'
+version = '0.3'
+java {
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
+    withSourcesJar()
+}
+dependencies {
+    api project(':card-table-core')
+    implementation project(':card-table-names')
+}
+// Node component contracts and browser sanity flows are selected by the ATF catalog.
+// They are not a second copy of Android's geometry matrices.
