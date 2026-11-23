@@ -1,12 +1,12 @@
-import { ADAPTIVE_SURFACE, adaptiveViewport, surfaceTypography, fitTextWidth, isPhone, viewportGeometry, textScale } from "./viewport.mjs?v=0.5";
+import { ADAPTIVE_SURFACE, adaptiveViewport, surfaceTypography, fitTextWidth, isPhone, viewportGeometry, textScale } from "./viewport.mjs?v=0.6";
 import { collect } from "./collection.mjs";
 import { autoGame, waitForDecision } from "./auto-game.mjs";
 import { bindHandFeedback } from "./hand-feedback.mjs";
-import { historyGrid, applyHistoryAppearance } from "./records.mjs?v=0.5";
-import { fitSeatLine, fitSeatLines, retainSeatFrames, measureSeatActionClearance, measureNativeSeat } from "./seat-presentation.mjs?v=0.5";
-import { historyFirst, menuFromEntries } from "./table-menu.mjs?v=0.5";
-import { createProfileDialogs, deviceProfile, dismissGameMenuOnOutsideClick, preferredLanguage, saveLanguage } from "./profile.mjs?v=0.5";
-import { surfaceFitter } from "./surface-fit.mjs?v=0.5";
+import { historyGrid, applyHistoryAppearance } from "./records.mjs?v=0.6";
+import { fitSeatLines, retainSeatFrames, updateSeatFact, measureSeatActionClearance, measureNativeSeat } from "./seat-presentation.mjs?v=0.6";
+import { historyFirst, menuFromEntries } from "./table-menu.mjs?v=0.6";
+import { createProfileDialogs, deviceProfile, dismissGameMenuOnOutsideClick, preferredLanguage, saveLanguage } from "./profile.mjs?v=0.6";
+import { surfaceFitter } from "./surface-fit.mjs?v=0.6";
 
 const stage = document.querySelector("#table");
 const frame = document.querySelector("#frame");
@@ -679,7 +679,10 @@ async function placeTable(content = stage.firstElementChild) {
   content.classList.toggle('compact-table',stage.clientHeight<760*Math.max(1,fontScale));
   const seatWidth = Math.min(116, Math.round(width * (stage.clientHeight < 760*Math.max(1,fontScale) ? 0.25 : 0.29)),
     Math.floor((width - 16) / 3));
-  for (const seat of seats) seat.style.width = Math.max(1, seatWidth) + "px";
+  for (const seat of seats) {
+    const value=Math.max(1,seatWidth)+'px';
+    if(seat.style.width!==value)seat.style.width=value;
+  }
   fitSeatLines(seats);
   const intrinsic=state.view.header?seats.map(measureNativeSeat):[];
   try {
@@ -745,10 +748,9 @@ async function placeTable(content = stage.firstElementChild) {
 }
 
 function place(element, rectangle) {
-  element.style.inset = rectangle.top + "px auto auto " + rectangle.left + "px";
-  element.style.width = rectangle.right - rectangle.left + "px";
-  element.style.height = rectangle.bottom - rectangle.top + "px";
-  element.style.transform = "none";
+  const styles={inset:rectangle.top+'px auto auto '+rectangle.left+'px',
+    width:rectangle.right-rectangle.left+'px',height:rectangle.bottom-rectangle.top+'px',transform:'none'};
+  for(const [name,value] of Object.entries(styles))if(element.style[name]!==value)element.style[name]=value;
 }
 
 function whistHeader(match) {
@@ -844,10 +846,7 @@ function whistScore(match) {
 }
 
 function writeSeatFact(node, content) {
-  const separator = content.lastIndexOf(" ");
-  if (separator < 0) node.textContent = content;
-  else node.replaceChildren(content.slice(0, separator + 1), element("b", content.slice(separator + 1)));
-  fitSeatLine(node);
+  updateSeatFact(node,content);
 }
 
 function markSeat(node, active, bidding, actorLabel) {

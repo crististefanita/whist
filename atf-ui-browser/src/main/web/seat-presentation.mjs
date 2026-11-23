@@ -12,7 +12,27 @@ export function fitSeatLine(line) {
   if (available <= 0) return;
   const natural = Math.max(ink.scrollWidth, ink.offsetWidth);
   const scale = natural <= 0 ? 1 : Math.min(1, Math.max(0, available - 1) / natural);
-  ink.style.transform = `scaleX(${scale})`;
+  const transform=`scaleX(${scale})`;
+  if(ink.style.transform!==transform)ink.style.transform=transform;
+}
+
+/** Update the native-style fact without replacing its fitted line or numeric ink. */
+export function updateSeatFact(line,content){
+  if(line.textContent===content&&line.querySelector(':scope > .seat-line-ink'))return;
+  let ink=line.querySelector(':scope > .seat-line-ink');
+  const separator=content.lastIndexOf(' ');
+  const prefix=separator<0?content:content.slice(0,separator+1),value=content.slice(separator+1);
+  if(ink&&separator>=0&&ink.childNodes.length===2&&ink.firstChild.nodeType===3&&ink.lastChild.nodeName==='B'){
+    if(ink.firstChild.data!==prefix)ink.firstChild.data=prefix;
+    const number=ink.lastChild;
+    if(number.childNodes.length===1&&number.firstChild.nodeType===3){if(number.firstChild.data!==value)number.firstChild.data=value;}
+    else number.textContent=value;
+  }else{
+    const target=ink??line;
+    if(separator<0)target.textContent=content;
+    else{const number=line.ownerDocument.createElement('b');number.textContent=value;target.replaceChildren(prefix,number);}
+  }
+  fitSeatLine(line);
 }
 
 export function fitSeatLines(seats) {
@@ -65,11 +85,27 @@ export function retainSeatFrames(previous, next) {
   const frames = new Map(before.map(node => [node.dataset.seat, node]));
   for (const measured of after) {
     const frame = frames.get(measured.dataset.seat);
-    const attributes = new Map([...measured.attributes].map(attribute => [attribute.name, attribute.value]));
-    for (const attribute of [...frame.attributes]) if (!attributes.has(attribute.name)) frame.removeAttribute(attribute.name);
-    for (const [name, value] of attributes) frame.setAttribute(name, value);
-    frame.replaceChildren(...measured.childNodes);
+    synchronizeAttributes(frame,measured);
+    synchronizeChildren(frame,measured);
     measured.replaceWith(frame);
   }
   return after.length;
+}
+
+function synchronizeAttributes(current,next){
+  const wanted=new Map([...next.attributes].map(n=>[n.name,n.value]));
+  const existing=new Map([...current.attributes].map(n=>[n.name,n.value]));
+  for(const name of existing.keys())if(!wanted.has(name))current.removeAttribute(name);
+  for(const [name,value] of wanted)if(existing.get(name)!==value)current.setAttribute(name,value);
+}
+
+function synchronizeChildren(current,next){
+  const existing=[...current.childNodes],wanted=[...next.childNodes];
+  if(existing.length!==wanted.length||existing.some((n,i)=>!n?.nodeType||n.nodeType!==wanted[i]?.nodeType||n.nodeName!==wanted[i].nodeName)){
+    current.replaceChildren(...wanted);return;
+  }
+  for(const [i,node] of existing.entries()){
+    if(node.nodeType===3){if(node.data!==wanted[i].data)node.data=wanted[i].data;}
+    else if(node.nodeType===1){synchronizeAttributes(node,wanted[i]);synchronizeChildren(node,wanted[i]);}
+  }
 }

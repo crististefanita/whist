@@ -2011,3 +2011,30 @@ testChanges:
 ```
 
 </details>
+
+<details>
+<summary>Paginare lizibilă și desenarea stabilă a chenarelor</summary>
+
+```yaml
+testChanges:
+  - id: WEB-PAGING-PAINT
+    status: VERIFIED
+    base: e79c84cad19dd559bb6b70fe529196783f7bf318
+    expires: 2026-12-23
+    reason: Verify readable compact paging controls and preserve native-style seat rows, fitted ink, accessible facts and unchanged frame geometry across actor handoffs.
+    proof: 'mvn -o -pl atf-tests -am -Dtest=WhistSurfaceAdapterComponentTest -Dsurefire.failIfNoSpecifiedTests=false test'
+    checks:
+      positive:
+        - atf.tests.governance.documentation.release.rag.nativeproof.WhistSurfaceAdapterComponentTest#adaptiveWebMenusKeepTextIndependentOfTheUsableViewport
+        - atf.tests.governance.documentation.release.rag.nativeproof.WhistSurfaceAdapterComponentTest#webAndNativePortablePortsKeepMeasuredGeometryFacesAndGesturesAligned
+      negative:
+        - atf.tests.governance.documentation.release.rag.nativeproof.WhistSurfaceAdapterComponentTest#surfaceLifecycleRejectsInvalidPagesAndCallbacksAfterDisposal
+    paths:
+      - atf-tests/src/test/java/atf/tests/governance/documentation/release/rag/nativeproof/WhistSurfaceAdapterComponentTest.java
+      - atf-ui-browser/tests/responsive-surface.test.mjs
+      - atf-ui-browser/tests/seat-paint.test.mjs
+      - atf-ui-browser/tests/turn-continuity.mjs
+      - config/atf-component-dependencies.json
+```
+
+</details>
