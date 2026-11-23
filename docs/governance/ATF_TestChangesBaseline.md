@@ -2246,3 +2246,39 @@ testChanges:
 ```
 
 </details>
+
+
+<details>
+<summary>Contractul comun al distribuirilor legale și fazelor fiecărui loc</summary>
+
+```yaml
+testChanges:
+  - id: WEB-EVERY-SEAT-PHASES
+    status: VERIFIED
+    base: ae48475aaa6a6d52759f51597dcab73baa6ccbdd
+    expires: 2026-12-23
+    reason: Refolosește o singură matrice de politici native și Web pentru fiecare distribuire legală, actor și câștigător al colectării, cu regresii de ancore, mutații deliberate de deplasare și indici de audit echivalenți fără poze în componente.
+    proof: 'mvn -o -pl atf-tests -am -Dtest=WhistSurfaceAdapterComponentTest,WebReleaseDossierComponentTest -Dsurefire.failIfNoSpecifiedTests=false test'
+    checks:
+      positive:
+        - atf.tests.governance.documentation.release.rag.nativeproof.WhistSurfaceAdapterComponentTest#everySeatAndLegalDealShareOneNativeWebPhaseContract
+        - atf.tests.governance.documentation.release.rag.nativeproof.WhistSurfaceAdapterComponentTest#preparedAndLiveSeatsShareIntrinsicHeightWithoutBottomAnchorStretch
+        - atf.tests.governance.documentation.release.web.WebReleaseDossierComponentTest#portableWebInventoryChecksHashesPathsAndEvidenceOwnership
+      negative:
+        - atf.tests.governance.documentation.release.rag.nativeproof.WhistSurfaceAdapterComponentTest#sharedPhaseOracleRejectsEveryDisplacedOrMissingSeat
+    paths:
+      - atf-tests/src/test/java/atf/tests/governance/documentation/release/rag/nativeproof/WhistSurfaceAdapterComponentTest.java
+      - atf-tests/tools/web-release-dossier.test.mjs
+      - atf-ui-browser/tests/match-continuity.mjs
+      - atf-ui-browser/tests/seat-handoff.test.mjs
+      - atf-ui-browser/tests/whist-surface-contract.test.mjs
+      - whist-lab-app/app/src/test/java/ro/whistlab/app/table/GameTablePhaseGeometryComponentTest.java
+      - atf-ui-browser/tests/phase-contract.test.mjs
+      - atf-ui-browser/tests/portable-contract.mjs
+      - atf-ui-browser/tests/ro/cardtable/browser/TablePhaseAdapters.java
+      - whist-lab-app/app/src/test/java/ro/whistlab/app/table/NativePhaseAdapter.java
+      - whist-lab-app/app/src/test/java/ro/whistlab/app/table/TablePhaseContract.java
+      - config/atf-component-dependencies.json
+```
+
+</details>
