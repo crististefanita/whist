@@ -81,6 +81,8 @@ The [early-admission contract](../governance/ATF_TestChanges.md#early-source-con
 | P2 | Qualification metadata still reaches some diagnostics only after snapshot preparation. | Admit the active dossier's E2E inventory, catalog links and editorial limits through a cheap metadata check before the long collection. Preserve failed evidence and prove that a focused recheck cannot qualify a failed primary group; this is separate from source-control proof admission. |
 | P2 | RAG-25: proof generation rejects compiler reuse even when Maven inputs and sealed outputs remain unchanged. | Separate compiler reuse from proof reuse. Reuse only an admitted compiler identity and intact classpath; execute every selected positive/negative control freshly. Reject changed compiler inputs, tampered classes and partial or failed controls. Expose the compiler decision in the timing receipt. |
 
+<a id="framework-selection-boundaries"></a>
+
 ## Framework selection boundaries
 
 The [independent ATF owners](../testing/ATF_Collections.md#independent-atf-component-owners) separate editorial and payload checks from provenance, mocked Android, mocked GitHub, orchestration and reporting. Each primary collection has a positive class inventory, one canonical Extent and its own source-bound receipt.
