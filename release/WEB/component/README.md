@@ -12,3 +12,5 @@ Intrările controlate și simulările dețin combinațiile de ancore, dimensiuni
 | [Geometria comună și matricile controlate](native-ports/component-report.html) | `PASS` · `REUSED` | `9ec0b560` |
 
 HTML-ul păstrează datele complete și capturile inline aferente. Inventarul și hash-urile sunt în [manifest](../index.json); verificarea lor nu reexecută testele.
+
+- [Componente curente pentru treceri și dosar](handoff/component-report.html)

@@ -4,7 +4,7 @@
 
 Index portabil pentru artefactele Whist Web. Dovezile originale rămân autonome; toate legăturile către rapoarte sunt relative și funcționează după copierea întregului dosar.
 
-**Stare: pregătire.** Web-ul public anterior folosește revizia de cache 0.10; adaptorul corectat 0.11 este verificat separat înaintea confirmării publicării. Comparația fizică APK/Chrome rămâne deschisă.
+**Stare: calificat în browser.** Revizia publicată 0.11 corespunde resurselor executate, conform regulilor explicite de comparare din confirmarea livrării. Comparația fizică APK/Chrome rămâne deschisă.
 
 ## Cum se citește
 
@@ -28,6 +28,8 @@ Componentele dețin combinațiile de dimensiuni, text, ancore și ordinea evenim
 | Raport | Verdict original | Rol | Revizia validatorului |
 |---|---|---|---|
 | [Trecerile curente ilustrate](e2e/oh-hell/extent.html) | `PASS` | `PRIMARY` | `91716314` |
+| [Componente curente pentru treceri și dosar](component/handoff/component-report.html) | `PASS` | `PRIMARY` | `9a5b49b8` |
+| [Guvernanță curentă pentru responsabilități și sursă](governance/current/component-report.html) | `PASS` | `PRIMARY` | `9a5b49b8` |
 | [Contractele intrărilor raportului și urmelor](component/reporting/component-report.html) | `PASS` | `REUSED` | `91716314` |
 | [Geometria comună și matricile controlate](component/native-ports/component-report.html) | `PASS` | `REUSED` | `9ec0b560` |
 | [Referința de guvernanță ATF](governance/atf/component-report.html) | `PASS` | `REFERENCE` | `9cc19f7f` |
@@ -43,6 +45,8 @@ Componentele dețin combinațiile de dimensiuni, text, ancore și ordinea evenim
 - [Diagnostice](diagnostics/README.md): probe respinse păstrate integral.
 
 ## Integritate și întreținere
+
+- [Verificarea livrării](e2e/oh-hell/delivery.json) identifică sursa publicată și resursele deja testate; nu reprezintă o nouă rulare E2E.
 
 [Manifestul](index.json) păstrează mărimea, SHA-256, rolul și proveniența fiecărui raport. Nu păstrăm PNG-uri duplicate, XML-uri JUnit ori build-uri în acest dosar; rapoartele conțin imaginile inline.
 
