@@ -110,10 +110,32 @@ public final class WhistSurfaceContract {
             try { BrowserGeometry.measure(WEB, invalid); throw new AssertionError("Accepted invalid font scale"); }
             catch (IllegalArgumentException expected) { }
         }
-        return Map.of("name", "Web reference and native geometry adapter", "samples", samples, "actionBands", actionBands(),
+        var result = new HashMap<String,Object>(Map.of("name", "Web reference and native geometry adapter", "samples", samples, "actionBands", actionBands(),
                 "viewportHeights", List.of(568, 896, 1280), "widths", List.of(280, 320, 360, 414, 560, 760), "examples", examples,
                 "densities", List.of(1, 1.5, 2.75, 3.5), "fontScales", List.of(1, 1.3, 2),
-                "expected", "Equal logical regions, phase stability, complete fan and bounded physical rounding", "status", "PASS");
+                "expected", "Equal logical regions, phase stability, complete fan and bounded physical rounding", "status", "PASS"));
+        result.put("intrinsicFrames",intrinsicFrames());
+        return Map.copyOf(result);
+    }
+
+    private static int intrinsicFrames() {
+        int count = 0;
+        for (int viewport : new int[]{568,896}) for (int players=3;players<=6;players++) {
+            boolean compact=viewport==568;
+            var values=new HashMap<>(Map.of("mode","OH_HELL","players",""+players,"width","414",
+                    "height","400","seatHeight","50","viewport",""+viewport,"cards","17","handWidth","414"));
+            values.put("seatNaturalHeight",compact?"43":"56");values.put("seatNameHeight",compact?"15":"18");
+            values.put("actorClearance","15");values.put("bidOptions","18");
+            var bidding=BrowserGeometry.measure(WEB,values);
+            for(var frame:bidding.board().seats())equal(compact?60:90,frame.bottom()-frame.top(),"Intrinsic native frame includes heading reserve and 25 percent expansion");
+            values.put("bidOptions","0");
+            equal(bidding.board().seats(),BrowserGeometry.measure(WEB,values).board().seats(),"Measured native frames remain phase stable");
+            values.put("seatNameHeight","0");
+            try { BrowserGeometry.measure(WEB,values);throw new AssertionError("Invalid intrinsic heading accepted"); }
+            catch(IllegalArgumentException expected) { }
+            count++;
+        }
+        return count;
     }
 
     private static int actionBands() {

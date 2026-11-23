@@ -40,6 +40,17 @@ export function measureSeatActionClearance(seat, labels) {
   finally { probe.remove(); }
 }
 
+/** Measure intrinsic content, independently of the height assigned by the previous layout. */
+export function measureNativeSeat(seat){
+  const probe=seat.cloneNode(true);
+  Object.assign(probe.style,{height:'auto',minHeight:'0',width:seat.offsetWidth+'px',visibility:'hidden',pointerEvents:'none',transform:'none',left:'0',top:'0'});
+  seat.append(probe);
+  try{
+    const style=getComputedStyle(probe),name=probe.querySelector(':scope > strong');
+    return {bodyHeight:Math.max(1,Math.round(probe.offsetHeight-parseFloat(style.borderTopWidth)-parseFloat(style.borderBottomWidth))),nameHeight:name.offsetHeight};
+  }finally{probe.remove();}
+}
+
 /** Commit measured content without replacing the existing per-seat frame objects. */
 export function retainSeatFrames(previous, next) {
   if (!previous || previous === next) return 0;

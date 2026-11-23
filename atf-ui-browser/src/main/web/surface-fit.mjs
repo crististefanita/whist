@@ -1,4 +1,4 @@
-import {adaptiveViewport} from './viewport.mjs?v=0.4';
+import {ADAPTIVE_SURFACE,adaptiveViewport} from './viewport.mjs?v=0.5';
 
 /** Read-only collections use pages; interactive forms keep all their fields together. */
 export function boundedPages(host, groups) {
@@ -12,8 +12,9 @@ export function boundedPages(host, groups) {
   const previous=document.createElement('button'),next=document.createElement('button'),position=document.createElement('output');
   previous.type=next.type='button';previous.textContent=en?'Previous':'Înapoi';next.textContent=en?'Next':'Înainte';
   position.setAttribute('aria-live','polite');nav.append(previous,position,next);
-  let current=0;
+  let current=0,disposed=false;
   const show=index=>{
+    if(disposed||!Number.isInteger(index)||index<0||index>=groups.length)return;
     current=index;const active=new Set(groups[current]);
     for(const node of host.children)node.hidden=!active.has(node);
     previous.disabled=current===0;next.disabled=current===groups.length-1;
@@ -23,12 +24,12 @@ export function boundedPages(host, groups) {
   };
   previous.onclick=()=>show(current-1);next.onclick=()=>show(current+1);
   host.classList.add('surface-paged');host.after(nav);nav.hidden=groups.length<2;show(0);
-  return {nav,nodes:[...host.children]};
+  return {nav,nodes:[...host.children],dispose(){disposed=true;previous.onclick=next.onclick=null;nav.remove();}};
 }
 
 /** Fits the delivered DOM; history is deliberately outside the non-scrolling modal contract. */
 export function surfaceFitter(stage,profileDialog,resize) {
-  let requested=0,lastRoot=stage.firstElementChild;
+  let requested=0,disposed=false,lastRoot=stage.firstElementChild;
   const pages=new WeakMap();
   const grouped=host=>{
     const nodes=[...host.children],groups=[];
@@ -43,7 +44,7 @@ export function surfaceFitter(stage,profileDialog,resize) {
   function paginate(host){
     const old=pages.get(host),nodes=[...host.children];
     if(!nodes.length||old&&old.nodes.length===nodes.length&&old.nodes.every((node,i)=>node===nodes[i]))return;
-    old?.nav.remove();pages.set(host,boundedPages(host,grouped(host)));
+    old?.dispose();pages.set(host,boundedPages(host,grouped(host)));
   }
   function prepare(){
     const help=stage.querySelector('.whist-help');
@@ -54,36 +55,38 @@ export function surfaceFitter(stage,profileDialog,resize) {
     for(const host of stage.querySelectorAll('.surface-reader'))paginate(host);
     if(profileDialog.open)for(const host of profileDialog.querySelectorAll('.goals,.ranking-list,.whist-dialog-copy'))paginate(host);
   }
-  function fitDialog(width,height){
-    if(!profileDialog.open)return;
+  function fitDialog(width,height,mobile=false){
+    if(disposed||!profileDialog.open)return;
     const apply=result=>{
       profileDialog.style.setProperty('--modal-width',result.width*.94+'px');
       profileDialog.style.setProperty('--modal-height',result.height+'px');
       profileDialog.style.setProperty('--modal-scale',result.scale);
     };
-    let needed=height;
+    let needed=mobile?height:ADAPTIVE_SURFACE.height;
     for(let pass=0;pass<4;pass++){
-      apply(adaptiveViewport(width,height,needed));
+      apply(adaptiveViewport(width,height,needed,mobile));
       profileDialog.style.height='auto';
       const natural=profileDialog.scrollHeight+2;
       profileDialog.style.removeProperty('height');
       if(natural<=needed)break;
       needed=natural;
     }
-    apply(adaptiveViewport(width,height,needed));
+    apply(adaptiveViewport(width,height,needed,mobile));
   }
   function schedule(){
-    if(requested)return;
+    if(disposed||requested)return;
     requested=requestAnimationFrame(()=>{
       requested=0;
-      if(document.documentElement.dataset.surface!=='whist'||stage.querySelector(':scope > [data-preparing]'))return;
+      if(disposed||document.documentElement.dataset.surface!=='whist'||stage.querySelector(':scope > [data-preparing]'))return;
       prepare();resize();
     });
   }
   const contentSize=new ResizeObserver(()=>{
+    if(disposed)return;
     if(stage.scrollHeight>stage.clientHeight+1||profileDialog.open&&profileDialog.scrollHeight>profileDialog.clientHeight+1)schedule();
   });
   const mutations=new MutationObserver(records=>{
+    if(disposed)return;
     const rootChanged=lastRoot!==stage.firstElementChild;
     const modalChanged=records.some(record=>record.target===profileDialog||profileDialog.contains(record.target));
     if(!rootChanged&&!modalChanged)return;
@@ -97,7 +100,8 @@ export function surfaceFitter(stage,profileDialog,resize) {
   const changed=event=>{if(event.target.closest('.setup,.whist-home,.whist-help'))schedule();};
   stage.addEventListener('change',changed,true);
   return {fitDialog,schedule,dispose(){
-    cancelAnimationFrame(requested);mutations.disconnect();contentSize.disconnect();
+    if(disposed)return;disposed=true;
+    cancelAnimationFrame(requested);requested=0;mutations.disconnect();contentSize.disconnect();
     stage.removeEventListener('toggle',schedule,true);stage.removeEventListener('change',changed,true);
   }};
 }

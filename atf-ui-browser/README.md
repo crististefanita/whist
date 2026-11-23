@@ -197,11 +197,11 @@ Contractul publicat anterior păstrează pe desktop cadrul logic de 414 × 896, 
 
 | Responsabilitate | Contract |
 |---|---|
-| Spațiul disponibil | Măsoară lățimea, înălțimea, deplasările și zonele sigure ale viewport-ului vizual. Referința de masă de 896 unități folosește o lățime logică între 320 și 768; o singură încadrare proporțională respectă ambele limite fizice și centrează rezultatul. |
-| Rolurile textului | Titlul, secțiunea, acțiunea, selecția și textul ajutător folosesc valori rem explicite. Mărirea textului rădăcină este distinctă de încadrarea ulterioară a prezentării; etichetele și chenarele împart această încadrare. |
+| Spațiul disponibil | Măsoară lățimea, înălțimea, deplasările și zonele sigure ale viewport-ului vizual. Telefoanele folosesc dimensiunile CSS utile reale ca unități logice native. Desktopul folosește referința 393 × 626 calibrată după APK, centrată cu o singură scară limitată de înălțimea și lățimea ferestrei. Măsurarea conținutului poate extinde înălțimea logică necesară înaintea încadrării. |
+| Rolurile textului | Rolurile native pentru titlu, secțiune, acțiune, selecție și text ajutător transpun 25/13/16/14/14 sp în rem la o rădăcină de 16 px. Opțiunile listelor moștenesc dimensiunea controlului. Mărirea textului rădăcină este distinctă de încadrarea ulterioară a scenei; numele, licitațiile, levatele, cărțile și chenarele împart această încadrare. |
 | Suprafețe cu înălțime fixă | Licitarea, jocul, meniurile și dialogurile fără istoric încap fără derulare verticală a paginii sau panoului. Măsoară conținutul real înaintea încadrării; ascunderea unei bare de derulare nu dovedește încadrarea conținutului. |
 | Conținut lung | Regulile, grupele de realizări și clasamentele folosesc pagini limitate cu navigare vizibilă. Nodurile originale, progresul, ID-urile și acțiunile rămân intacte; formularele păstrează împreună toate câmpurile. Numai istoricul scorului păstrează derularea verticală internă. |
-| Adaptarea mesei | Portul Java primește regiunile logice măsurate și scara textului. Rezervă banda măsurată a etichetelor de licitare/joc deasupra fiecărui chenar, inclusiv a etichetelor ascunse, înaintea poziționării celulelor în stil nativ. |
+| Adaptarea mesei | Portul Java primește regiunile logice măsurate și scara textului. Măsoară conținutul intrinsec al chenarelor independent de înălțimea atribuită anterior; PlayerSeatMetrics comun păstrează rezerva nativă a titlului și extinderea chenarului. Rezervă banda măsurată a etichetelor de licitare/joc deasupra fiecărui chenar, inclusiv a celor ascunse, înaintea poziționării celulelor. Înălțimea logică reală selectează politica nativă compactă. |
 | Faze stabile | Păstrează înălțimea necesară a mesei pentru aceeași mână, același viewport și aceeași scară de text. Selecția licitației, turele și colectarea nu trebuie să redimensioneze chenarele. Suprapunerile colectării și bifarea AutoGame nu solicită o nouă încadrare. |
 | Tastatură și ciclu de viață | Urmărește deplasările viewport-ului vizual când tastatura deplasează pagina. Observă schimbările textului rădăcină; grupează callback-urile și deconectează observatorii la eliberarea adaptorului. |
 | Compatibilitate | Whist adoptă suprafața încadrată. Consumatorii existenți și exporturile imuabile păstrează adaptorul admis până la calificarea unui pachet nou de execuție/teste. |
@@ -221,10 +221,15 @@ flowchart LR
 <summary>Legendă — încadrare măsurată și acceptanță nativă independentă</summary>
 
 - [Componentele controlate](tests/responsive-surface.test.mjs) exercită învelișul de producție, meniurile localizate, paginarea, formularul profilului, textul mărit și un viewport deplasat de tastatură. Intrările negative și izolarea colectării/ciclului de viață rămân granițe de componentă.
+- [Componentele tipografice](tests/score-typography.test.mjs) compară etichetele/opțiunile listelor, antetele scorului, valorile și rolurile dialogurilor, păstrând celulele furnizate și legăturile comenzilor. [Componentele ciclului de viață](tests/surface-lifecycle.test.mjs) resping callback-urile vechi de paginare, observare și animație după eliberare.
 - [Verificarea jocului real](tests/responsive-game.mjs) folosește motorul JVM pentru variantele de joc și păstrează aceeași mână la schimbarea viewport-ului, limbii și textului. Verifică banda rezervată acțiunii, chenarele stabile între faze și accesul la evantai prin navigarea orizontală nativă.
 - Concordanța logică și capturile browserului nu stabilesc identitatea fonturilor native. [Acceptanța rămasă](../docs/feedback/ATF_UiBrowser.md#web-16-suprafața-de-joc-responsivă-și-tipografia-meniurilor) compară un APK identificat și Chrome pe același Android; iOS este în afara acestei calificări.
 
 </details>
+
+- Scara prezentării este `min(usableHeight / requiredHeight, usableWidth / logicalWidth)`. Aplic-o o singură dată scenei, fără mărirea independentă a etichetelor. Textul modal folosește aceleași roluri logice înaintea propriei încadrări unice.
+- Pe telefon, pixelii CSS sunt unități logice; măsurătorile Android de referință exclud întâi barele sistemului și împart pixelii fizici la densitate. Nu înlocui geometria logică prin pixelii capturii sau raportul pixelilor dispozitivului.
+- Whist include fețele Roboto obișnuită și îngroșată folosite de Androidul de referință, astfel încât Windows să nu substituie Segoe UI. Terminarea încărcării fonturilor solicită o măsurare nouă a geometriei; rutele JVM locale și Pages servesc aceste resurse. [Notificarea Roboto](src/main/web/Roboto-NOTICE.txt) însoțește fonturile.
 
 Transmite classpath-ul JVM produs de `Start-WhistBrowser.ps1 -BuildOnly`, un dosar nou extern de dovezi și, opțional, un executabil Chromium către `tests/responsive-game.mjs`. Dovezile consemnează viewport-ul, browserul, limba, textul, limitele și faptele jocului; [publicatorul](tests/Publish-BrowserExtent.ps1) include capturile în Extent standard în engleză. Navigarea orizontală a mâinii păstrează contractul APK pentru mâini dense; este distinctă de derularea verticală a paginii.
 

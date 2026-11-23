@@ -1,15 +1,12 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
 import fs from 'node:fs/promises';
-import os from 'node:os';
 import path from 'node:path';
-import http from 'node:http';
-import {fileURLToPath} from 'node:url';
-import {adaptiveViewport, surfaceTypography, MENU_TYPOGRAPHY, viewportGeometry} from '../src/main/web/viewport.mjs';
+import {adaptiveViewport, surfaceTypography, MENU_TYPOGRAPHY, ADAPTIVE_SURFACE, viewportGeometry} from '../src/main/web/viewport.mjs';
 import {boundedPages} from '../src/main/web/surface-fit.mjs';
 import {withBrowser, until} from './fixtures.mjs';
 
-const web=fileURLToPath(new URL('../src/main/web/',import.meta.url));
+import {rendererFixture} from './responsive-fixture.mjs';
 const profiles=[{width:320,height:568,mobile:true},{width:414,height:896,mobile:true},
   {width:1280,height:720,mobile:false},{width:1600,height:900,mobile:false},{width:420,height:460,mobile:false},
   {width:414,height:300,mobile:true}];
@@ -17,15 +14,20 @@ const profiles=[{width:320,height:568,mobile:true},{width:414,height:896,mobile:
 test('height-led dimensions preserve scene proportions and the legacy adapter',()=>{
   for(const {width,height} of [...profiles,{width:220,height:180},{width:1920,height:300}]){
     const frame=adaptiveViewport(width,height);
-    assert.equal(frame.height,896);assert.ok(frame.width>=320&&frame.width<=768);
-    assert.equal(frame.scale,Math.min(height/896,width/320));
+    assert.equal(frame.height,ADAPTIVE_SURFACE.height);assert.equal(frame.width,ADAPTIVE_SURFACE.width);
+    assert.equal(frame.scale,Math.min(height/ADAPTIVE_SURFACE.height,width/ADAPTIVE_SURFACE.width));
     assert.equal(frame.frameWidth,frame.width*frame.scale);assert.ok(frame.frameWidth<=width+.001);
-    assert.ok(frame.frameHeight<=height+.001);assert.equal(frame.frameHeight,896*frame.scale);
+    assert.ok(frame.frameHeight<=height+.001);assert.equal(frame.frameHeight,ADAPTIVE_SURFACE.height*frame.scale);
   }
   const a={},b={},host={children:[a,b]};
   for(const groups of [[],[[a]],[[a],[a]],[[a,b],[]],[[a],{}]])assert.throws(()=>boundedPages(host,groups),TypeError);
   assert.equal(viewportGeometry(1280,720,false).width,414,'Existing consumers retain the reference-frame adapter');
-  assert.equal(surfaceTypography()['--menu-action-size'],'1.5rem');
+  assert.equal(surfaceTypography()['--menu-action-size'],'1rem');
+  for(const {width,height} of profiles){
+    const phone=adaptiveViewport(width,height,undefined,true);
+    assert.deepEqual(phone,{width,height,scale:1,frameWidth:width,frameHeight:height},'Phone CSS dimensions match useful native dp before overflow fitting');
+  }
+  for(const mobile of ['true',1,null])assert.throws(()=>adaptiveViewport(414,896,undefined,mobile),RangeError);
   for(const role of Object.keys(MENU_TYPOGRAPHY))assert.match(surfaceTypography()['--menu-'+role+'-size'],/^\d+(\.\d+)?rem$/);
   for(const bad of [0,-1,NaN,Infinity,undefined,'414']){
     assert.throws(()=>adaptiveViewport(bad,896),RangeError);assert.throws(()=>adaptiveViewport(414,bad),RangeError);
@@ -33,42 +35,8 @@ test('height-led dimensions preserve scene proportions and the legacy adapter',(
   console.log('Adaptive policy observations: height-led proportional fit, bounded width, separate rem roles, unchanged legacy adapter; invalid dimensions rejected.');
 });
 
-function setup(language){
-  const en=language==='en';
-  const field=(key,label,initial,options=[])=>({key,label,initial,options});
-  return [field('players',en?'Players':'Jucători','4',[3,4,5,6].map(n=>({value:String(n),label:String(n)}))),
-    field('mode',en?'Game variant':'Varianta jocului','ROMANIAN_1_8_1',[{value:'ROMANIAN_1_8_1',label:en?'Romanian Whist 1–8–1':'Whist românesc 1–8–1'}]),
-    field('difficulty',en?'Opponents level':'Nivel adversari','NORMAL',[{value:'NORMAL',label:'Normal'},{value:'HARD',label:en?'Hard':'Dificil'}]),
-    field('series',en?'Series points':'Puncte serie','10',[{value:'5',label:'5'},{value:'10',label:'10'}]),
-    field('streaks','Series','yes'),field('zero',en?'Allow playing for zero':'Permite joc la 0','yes')];
-}
-
 test('production menus stay readable and centered in compact and desktop Chromium at RO EN and enlarged text',async t=>{
-  const work=await fs.mkdtemp(path.join(os.tmpdir(),'whist-responsive-'));
-  t.after(()=>fs.rm(work,{recursive:true,force:true,maxRetries:15,retryDelay:200}));
-  const catalogue={summary:'Progress',groups:Array.from({length:3},(_,i)=>({heading:'Group '+(i+1),goals:Array.from({length:5},(_,j)=>({marker:'○',title:'Exact contract '+(j+1),level:'Normal',progress:'0 / 5',description:'Win the declared tricks without receiving duplicate credit.'}))}))};
-  const reply={revision:1,view:null,collections:[],profile:{name:'Player',savedName:true,catalogue}};
-  const rankings={preferred:'romanian',boards:[{key:'romanian',label:'Romanian Whist',entries:Array.from({length:20},(_,i)=>({label:'Player '+(i+1),score:100-i}))}]};
-  const copy={home:'Whist',language:'Language',name:'Your name',newGame:'New game',resume:'Resume game',ranking:'Rankings',
-    achievements:'Achievements',help:'How to play',setup:'Game settings',start:'Start game',back:'Back',streaks:'Five-hand streaks',rulesAndSchedule:'Rules and schedule',save:'Save',cancel:'Cancel',nameHint:'Maximum 10 characters.',reset:'Reset name',instructionsSubtitle:'How to play',rules:Array.from({length:4},(_,i)=>({title:'Rule '+(i+1),body:'Follow the lead suit. When void, play trump if available. Each bid is an exact contract.'}))};
-  const rules={ROMANIAN_1_8_1:{romanian:true}};
-  const palette=[{name:'--whist-paper',color:'#f6f5ed'},{name:'--whist-pine',color:'#1d362b'},{name:'--whist-surface',color:'#fffef8'},{name:'--whist-accent',color:'#306f4e'}];
-  const configuration={surface:'whist',title:'Whist',palette,fields:setup('ro'),englishFields:setup('en'),copy:{en:{...copy,modeRules:rules},ro:{modeRules:rules,rules:Array.from({length:4},(_,i)=>({title:'Regula '+(i+1),body:'Respectă culoarea cerută. În lipsa ei, joacă atu dacă ai. Licitația este un contract exact.'}))}},autoDelayMillis:0};
-  const server=http.createServer(async(req,res)=>{
-    try{
-      const pathname=new URL(req.url,'http://localhost').pathname;
-      if(pathname.startsWith('/api/')){
-        res.setHeader('Content-Type','application/json');res.end(JSON.stringify(pathname==='/api/setup'?configuration:pathname==='/api/rankings'?rankings:reply));return;
-      }
-      const file=pathname==='/'?'index.html':pathname.slice(1);
-      if(file.includes('/')||file.includes('..')){res.writeHead(404).end();return;}
-      const bytes=await fs.readFile(path.join(web,file));
-      res.setHeader('Content-Type',file.endsWith('.mjs')?'text/javascript':file.endsWith('.css')?'text/css':file.endsWith('.html')?'text/html':'application/octet-stream');res.end(bytes);
-    }catch{res.writeHead(404).end();}
-  });
-  await new Promise(resolve=>server.listen(0,'127.0.0.1',resolve));
-  t.after(()=>new Promise(resolve=>server.close(resolve)));
-  const url='http://127.0.0.1:'+server.address().port+'/';
+  const {work,url}=await rendererFixture(t);
   const executable=process.env.ATF_BROWSER_EXECUTABLE??'C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe';
   const observations=[],checks=[];
   await withBrowser(executable,path.join(work,'profile'),async({send,evaluate,version})=>{
@@ -78,6 +46,7 @@ test('production menus stay readable and centered in compact and desktop Chromiu
       await send('Emulation.setUserAgentOverride',{userAgent:profile.mobile?'Mozilla/5.0 (Linux; Android 14; Mobile)':'Mozilla/5.0 (Windows NT 10.0; Win64; x64)'});
       await send('Page.navigate',{url});
       await until(()=>evaluate('!!document.querySelector(".whist-home button.primary")'));
+      await evaluate('document.fonts.ready');
       await evaluate(`document.documentElement.style.fontSize='${font}px';document.querySelector('.whist-language select').value='${language}';document.querySelector('.whist-language select').dispatchEvent(new Event('change'));`);
       await until(()=>evaluate(`document.documentElement.lang==='${language}'&&document.querySelector('#table').getAttribute('aria-busy')==='false'`));
       for(const screen of (profile.height===300?['profile']:['home','setup','profile','help','achievements','rankings'])){
@@ -110,14 +79,14 @@ test('production menus stay readable and centered in compact and desktop Chromiu
         assert.ok(Math.abs(measured.frame.left-(profile.width-measured.frame.width)/2)<1);
         assert.ok(measured.pageHeight<=profile.height+1,JSON.stringify(measured));
         assert.ok(measured.stageOverflow<=1&&measured.panelOverflow<=1,JSON.stringify({screen,profile,measured}));
-        if(['home','setup'].includes(screen))assert.ok(Math.abs(measured.title-font*2.34)<.01);
+        if(['home','setup'].includes(screen))assert.ok(Math.abs(measured.title-font*MENU_TYPOGRAPHY.title)<.01);
         assert.ok(Math.abs(measured.scaleX-measured.scaleY)<.00001,'All scene roles use one proportional fit');
         assert.ok(measured.extraWidth<=1,JSON.stringify(measured));
         assert.equal(measured.reachable,true,JSON.stringify({profile,language,font,screen,measured}));
         assert.ok(measured.controls.every(n=>!n.overflow),JSON.stringify({screen,measured}));
         const id=`RESPONSIVE-${profile.width}-${profile.height}-${language}-${font}-${screen}`;
         const images=[];
-        if(process.env.ATF_COMPONENT_CAPTURE_DIR&&profile.width===414&&profile.height===896){
+        if(process.env.ATF_COMPONENT_CAPTURE_DIR&&(profile.width===414&&profile.height===896||profile.width===1280&&['home','setup'].includes(screen))){
           await fs.mkdir(process.env.ATF_COMPONENT_CAPTURE_DIR,{recursive:true});await evaluate("document.querySelector('#table').scrollTop=0");
           const file=id+'.png',png=await send('Page.captureScreenshot',{format:'png'});
           await fs.writeFile(path.join(process.env.ATF_COMPONENT_CAPTURE_DIR,file),Buffer.from(png.data,'base64'));images.push({title:id,file});
@@ -140,14 +109,14 @@ test('production menus stay readable and centered in compact and desktop Chromiu
       await send('Emulation.setDeviceMetricsOverride',{...profile,deviceScaleFactor:1});
       await evaluate(`document.documentElement.style.fontSize='${font}px';document.documentElement.lang='${language}';`);
       const measured=await evaluate(`(async()=>{
-        const {createProfileDialogs}=await import('./profile.mjs?v=0.4');
-        const {surfaceFitter}=await import('./surface-fit.mjs?v=0.4');
+        const {createProfileDialogs}=await import('./profile.mjs?v=0.5');
+        const {surfaceFitter}=await import('./surface-fit.mjs?v=0.5');
         const element=(tag,text='',kind='')=>{const n=document.createElement(tag);n.textContent=text;n.className=kind;return n;};
         const button=(text,action,kind='')=>{const n=element('button',text,kind);n.onclick=action;return n;};
         const en=document.documentElement.lang==='en';
         const dialogs=createProfileDialogs(element,button,()=>{},(key,fallback)=>en?({close:'Close',history:'Score history'}[key]??fallback):fallback);
         const stage=document.querySelector('#table');
-        const fitting=surfaceFitter(stage,dialogs.dialog,()=>fitting.fitDialog(innerWidth,innerHeight));
+        const fitting=surfaceFitter(stage,dialogs.dialog,()=>fitting.fitDialog(innerWidth,innerHeight,/Android/.test(navigator.userAgent)));
         const table=element('table','','whist-score-grid'),head=element('thead'),body=element('tbody');
         const row=(values,tag)=>{const r=element('tr');for(const value of values)r.append(element(tag,value));return r;};
         head.append(row(en?['Player','Bid','Won','Points']:['Jucător','Licitat','Levate','Puncte'],'th'));
@@ -187,7 +156,7 @@ test('production menus stay readable and centered in compact and desktop Chromiu
     assert.ok(keyboard.dialog.top>=179&&keyboard.dialog.bottom<=481,'The modal follows the visual viewport rather than the layout viewport');
     console.log('Visual viewport observations: '+JSON.stringify(keyboard));
     const isolation=await evaluate(`(async()=>{
-      const {surfaceFitter}=await import('./surface-fit.mjs?v=0.4');
+      const {surfaceFitter}=await import('./surface-fit.mjs?v=0.5');
       const stage=document.createElement('main'),modal=document.createElement('dialog');
       stage.style.cssText='position:fixed;visibility:hidden;width:100px;height:100px';
       let root=document.createElement('section');root.className='whist-match';stage.append(root);document.body.append(stage,modal);

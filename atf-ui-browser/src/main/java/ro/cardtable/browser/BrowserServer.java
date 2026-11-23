@@ -36,7 +36,10 @@ public final class BrowserServer implements AutoCloseable {
             Map.entry("/seat-presentation.mjs", new Asset("seat-presentation.mjs", "text/javascript; charset=utf-8")),
             Map.entry("/surface-fit.mjs", new Asset("surface-fit.mjs", "text/javascript; charset=utf-8")),
             Map.entry("/collection.mjs", new Asset("collection.mjs", "text/javascript; charset=utf-8")),
-            Map.entry("/card-suits.woff2", new Asset("card-suits.woff2", "font/woff2")));
+            Map.entry("/card-suits.woff2", new Asset("card-suits.woff2", "font/woff2")),
+            Map.entry("/Roboto-Regular.ttf", new Asset("Roboto-Regular.ttf", "font/ttf")),
+            Map.entry("/Roboto-Bold.ttf", new Asset("Roboto-Bold.ttf", "font/ttf")),
+            Map.entry("/Roboto-NOTICE.txt", new Asset("Roboto-NOTICE.txt", "text/plain; charset=utf-8")));
     private static final Asset MENU_FOOTER = new Asset("menu-footer.png", "image/png");
     private final Map<String, Asset> routes = new HashMap<>(ASSETS);
     private final HttpServer server;

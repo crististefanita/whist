@@ -11,7 +11,7 @@ await fs.mkdir(output,{recursive:true});
 const web=fileURLToPath(new URL('../src/main/web/',import.meta.url)),checks=[];
 const footer=fileURLToPath(new URL('../../whist-lab-app/app/src/main/res/drawable-nodpi/teo_dedication.png',import.meta.url));
 const scenarios=[['ROMANIAN_WHIST',4],['OH_HELL',3],['REVERSE_OH_HELL',3],['DESCENDING',3],['DOWN_AND_UP',5],['LONG_ROMANIAN',6]];
-const profiles=[{width:320,height:568,mobile:true},{width:414,height:896,mobile:true},{width:1280,height:720,mobile:false}];
+const profiles=[{width:320,height:568,mobile:true},{width:414,height:896,mobile:true},{width:1280,height:720,mobile:false},{width:393,height:626,mobile:true}];
 const overlaps=(a,b)=>a.left<b.right-.5&&a.right>b.left+.5&&a.top<b.bottom-.5&&a.bottom>b.top+.5;
 function validate(o,profile,cards){
   assert.deepEqual(o.cards.map(n=>n.face),cards,'The identical hand survives language, text and viewport changes');
@@ -27,6 +27,10 @@ function validate(o,profile,cards){
   for(const region of [o.header,o.trump,o.hand,...o.seats,...o.cards,...o.controls,...o.actor])
     assert.ok(region.top>=o.frame.top-1&&region.bottom<=o.frame.bottom+1,'Every visible table role fits the height budget');
   assert.ok(o.seats.every(n=>n.width>0&&n.left>=o.board.left-1&&n.right<=o.board.right+1),'Seats remain inside the measured board');
+  for(const seat of o.typography.seats){
+    assert.ok(Math.abs(seat.name-o.typography.root*13/16)<.02&&Math.abs(seat.fact-o.typography.root*11/16)<.02,'Seat text uses the native logical roles before scene zoom');
+    assert.match(seat.family,/WhistRoboto/,'Seat text uses the bundled Android reference font');
+  }
   assert.ok(o.cards.every(n=>n.left>=o.fan.left-1&&n.right<=o.fan.right+1),'Every dealt card remains inside the native-style fan');
   assert.ok(o.handReach.first&&o.handReach.last,'The first and last card remain reachable through the native horizontal hand gesture');
 }
@@ -37,6 +41,7 @@ await withServer({classes:classpath,main:'ro.whistlab.browser.WhistBrowser',argu
       const box=n=>{const r=n.getBoundingClientRect();return {left:r.left,top:r.top,width:r.width,height:r.height,right:r.right,bottom:r.bottom};};
       const stage=document.querySelector('#table'),board=document.querySelector('.board'),hand=document.querySelector('.hand');
       return {logicalHeight:stage.clientHeight,stageOverflow:stage.scrollHeight-stage.clientHeight,pageHeight:document.documentElement.scrollHeight,
+        typography:{root:parseFloat(getComputedStyle(document.documentElement).fontSize),seats:[...board.querySelectorAll('.seat')].map(n=>({name:parseFloat(getComputedStyle(n.querySelector('strong')).fontSize),fact:parseFloat(getComputedStyle(n.querySelector('.seat-bid')).fontSize),family:getComputedStyle(n).fontFamily}))},
         actor:[...board.querySelectorAll('.seat-turn:not([hidden])')].map(n=>({text:n.textContent,inkOverflow:n.scrollWidth-n.clientWidth,...box(n)})),
         controls:[...board.querySelectorAll('[data-bid],.bid-submit')].filter(n=>n.getClientRects().length).map(box),
         frame:box(document.querySelector('#frame')),board:box(board),hand:box(hand),fan:box(hand.querySelector('.fan')),transform:getComputedStyle(stage).transform,
@@ -91,11 +96,12 @@ await withServer({classes:classpath,main:'ro.whistlab.browser.WhistBrowser',argu
       }
       await evaluate("document.querySelector('.bid-submit').click()");
       await until(()=>evaluate('!document.querySelector(".bid-submit")&&document.querySelector("#table").getAttribute("aria-busy")==="false"'),30000);
-      const playing=await record(`PLAY-${mode}-${players}`,profiles[2],'en',20.8,cards,'Playing',true);
+      const playing=await record(`PLAY-${mode}-${players}`,profiles.at(-1),'en',20.8,cards,'Playing',true);
       assert.equal(playing.actor.length,1,'The active player has one visible play label');
       assert.deepEqual(playing.seats.map(({left,top,width,height})=>({left,top,width,height})),last.seats.map(({left,top,width,height})=>({left,top,width,height})),'Seat frames do not move between bidding and play');
 
       await send('Emulation.setDeviceMetricsOverride',{...profiles[0],deviceScaleFactor:1});await home();
+      await send('Emulation.setUserAgentOverride',{userAgent:'Mozilla/5.0 (Linux; Android 14; Mobile)'});
       await evaluate("document.querySelector('.whist-language select').value='ro';document.querySelector('.whist-language select').dispatchEvent(new Event('change'))");
       await until(()=>evaluate("document.documentElement.lang==='ro'&&document.querySelector('#table').getAttribute('aria-busy')==='false'"));
       await evaluate("[...document.querySelectorAll('.whist-home button')].find(n=>/Reia partida/.test(n.textContent)).click()");

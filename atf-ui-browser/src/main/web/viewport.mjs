@@ -1,18 +1,20 @@
 export const REFERENCE = Object.freeze({ width: 414, height: 896 });
 export const MIN_DESKTOP_SCALE = 0.68;
-export const ADAPTIVE_SURFACE = Object.freeze({ minWidth: 320, maxWidth: 768, height: 896 });
+export const ADAPTIVE_SURFACE = Object.freeze({ width: 393, height: 626 });
 export const MENU_TYPOGRAPHY = Object.freeze({
-  title: 2.34, section: 1.3125, action: 1.5, selection: 1.125, helper: 1.21875, dedication: 1.40625
+  title: 1.5625, section: .8125, action: 1, selection: .875, helper: .875, dedication: .9375
 });
-export const SUMMARY_TYPOGRAPHY = Object.freeze({ progress: 1.5, bid: 1.35, progressLeading: 1.40625, bidLeading: 1.359375 });
+export const SUMMARY_TYPOGRAPHY = Object.freeze({ progress: 1, bid: 1, progressLeading: .9375, bidLeading: .9375 });
+export const SCORE_TABLE_EMPHASIS = 1;
 
 /** One height-led fitting scale keeps all presentation roles proportional. */
-export function adaptiveViewport(width, height, contentHeight = ADAPTIVE_SURFACE.height) {
-  if (![width, height, contentHeight].every(value => Number.isFinite(value) && value > 0))
+export function adaptiveViewport(width, height, contentHeight, mobile = false) {
+  contentHeight ??= mobile ? height : ADAPTIVE_SURFACE.height;
+  if (typeof mobile !== 'boolean' || ![width, height, contentHeight].every(value => Number.isFinite(value) && value > 0))
     throw new RangeError("The usable viewport must have positive finite dimensions");
   const logicalHeight = contentHeight;
-  const scale = Math.min(height / logicalHeight, width / ADAPTIVE_SURFACE.minWidth);
-  const available = Math.min(width / scale, ADAPTIVE_SURFACE.maxWidth);
+  const available = mobile ? width : ADAPTIVE_SURFACE.width;
+  const scale = Math.min(height / logicalHeight, width / available);
   return { width: available, height: logicalHeight, scale, frameWidth: available * scale, frameHeight: logicalHeight * scale };
 }
 
@@ -20,7 +22,8 @@ export function adaptiveViewport(width, height, contentHeight = ADAPTIVE_SURFACE
 export function surfaceTypography() {
   return { ...Object.fromEntries(Object.entries(MENU_TYPOGRAPHY).map(([role, rem]) => ["--menu-" + role + "-size", rem + "rem"])),
     "--table-progress-emphasis": String(SUMMARY_TYPOGRAPHY.progress), "--table-bid-emphasis": String(SUMMARY_TYPOGRAPHY.bid),
-    "--table-progress-leading": SUMMARY_TYPOGRAPHY.progressLeading + "rem", "--table-bid-leading": SUMMARY_TYPOGRAPHY.bidLeading + "rem" };
+    "--table-progress-leading": SUMMARY_TYPOGRAPHY.progressLeading + "rem", "--table-bid-leading": SUMMARY_TYPOGRAPHY.bidLeading + "rem",
+    "--score-table-emphasis": String(SCORE_TABLE_EMPHASIS) };
 }
 
 export function isPhone(userAgent) {

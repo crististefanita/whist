@@ -31,4 +31,21 @@ class WhistSurfaceAdapterComponentTest {
         assertTrue(output.contains("Adaptive policy observations:"), "Model boundaries and invalid dimensions are exercised");
         assertTrue(output.contains("Responsive renderer observations:"), "Actual renderer measurements accompany the comparisons");
     }
+
+    @Test void dropdownAndScoreTypographyPreserveNativeFactsAndCommandBindings(ComponentInputs inputs) throws Exception {
+        var root = GovernanceProject.locateProjectRoot();
+        String output = NodeReleaseContracts.runNode(List.of("node", "--test",
+                root.resolve("atf-ui-browser/tests/score-typography.test.mjs").toString()), root, Duration.ofSeconds(120),
+                value -> inputs.add("Measured dropdown and score typography, original cells and command bindings", value));
+        assertTrue(output.contains("Dropdown and score typography observations:"), "Measured role proportions and unchanged score cells accompany the verdict");
+    }
+
+    @Test void surfaceLifecycleRejectsInvalidPagesAndCallbacksAfterDisposal(ComponentInputs inputs) throws Exception {
+        var root = GovernanceProject.locateProjectRoot();
+        String output = NodeReleaseContracts.runNode(List.of("node", "--test",
+                root.resolve("atf-ui-browser/tests/surface-lifecycle.test.mjs").toString()), root, Duration.ofSeconds(30),
+                value -> inputs.add("Controlled observer, animation-frame and pagination deliveries", value));
+        assertTrue(output.contains("disposal rejects late animation frames"), "Late callback and observer reconnection regressions execute");
+        assertTrue(output.contains("invalid page populations fail"), "Rejected page populations preserve existing content");
+    }
 }

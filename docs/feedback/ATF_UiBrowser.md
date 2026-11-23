@@ -26,7 +26,7 @@ Deciziile AI, seriile și Jocul la 0 se extind prin componente cu oracol de dome
 
 ## WEB-16 Suprafața de joc responsivă și tipografia meniurilor
 
-**P1 · 88/100 · Implementarea încadrării și contractele portabile sunt disponibile; acceptanța APK/browser pe același dispozitiv rămâne deschisă.**
+**P1 · 88/100 · Încadrarea proporțională calibrată după APK și contractele portabile sunt disponibile; acceptanța APK/browser pe același dispozitiv rămâne deschisă.**
 
 Whist partajează politicile native ale locurilor, cărților și animațiilor. Păstrați această graniță și calificați independent randările fizice.
 
@@ -35,7 +35,7 @@ Whist partajează politicile native ale locurilor, cărților și animațiilor. 
 
 **Direcția necesară**
 
-1. Păstrați o singură încadrare măsurată după înălțime prin adaptor. Folosiți geometria logică și rolurile tipografice înaintea încadrării proporționale; evitați constantele independente pe rezoluții sau decuparea conținutului pentru a ascunde depășirile.
+1. Păstrați proporțiile APK-ului printr-o singură încadrare măsurată a scenei complete, inclusiv textul din chenare, cărțile, antetul, ajutorul, listele și tabelele de scor. Normalizați pixelii nativi prin densitate și zonele rezervate sistemului. Telefoanele folosesc dimensiunile CSS utile reale; desktopul mărește o referință calibrată după APK. Evitați măriri independente ale fonturilor, constante separate pe rezoluții sau decuparea conținutului pentru a ascunde depășirile.
 2. Licitarea, jocul, meniurile și fiecare dialog fără istoric încap în înălțimea utilă fără derulare verticală. Regulile, grupele de realizări și clasamentele folosesc pagini limitate; istoricul scorului este singura excepție cu derulare verticală internă. Păstrați textul complet, câmpurile, navigarea și alegerile manuale.
 3. Păstrați chenarele fixe între licitare, joc și colectare. Etichetele localizate ale turei stau deasupra chenarelor în benzi rezervate ambelor faze. Oh Hell, Reverse Oh Hell și variantele descrescătoare la trei jucători nu trebuie să intersecteze etichete, butoane de licitație, alte chenare sau mâna umană.
 4. Păstrați gestul orizontal nativ pentru mâinile dense. Verificați accesul la prima/ultima carte, fără a forța toate cele 17 cărți într-un viewport îngust prin reducerea indicilor.
@@ -44,7 +44,9 @@ Whist partajează politicile native ale locurilor, cărților și animațiilor. 
 
 - [Componentele](../../atf-ui-browser/tests/responsive-surface.test.mjs) acoperă meniuri/dialoguri cu înălțime fixă, paginare, izolarea callback-urilor, etichete localizate și text 1.0×/1.3× printr-o graniță HTTP controlată. [Verificările cu motor real](../../atf-ui-browser/tests/responsive-game.mjs) păstrează aceeași mână la redimensionare și schimbarea limbii; niciuna dintre suite nu pretinde acceptanță nativă APK.
 - Înregistrați intervalele de derulare și toate limitele vizibile ale paginii/panoului. Includeți profiluri compacte și desktop, etichete la trei jucători și mâini dense. Barele ascunse sau o singură imagine cu o carte nu stabilesc acest contract.
+- Comparați măsurătorile intrinseci ale chenarelor și rezervele native ale titlului/chenarului, nu doar dreptunghiurile obținute din înălțimi identice injectate. Verificați moștenirea rolului selecției de către opțiuni și păstrarea licitației, levatelor, diferenței mâinii și totalului cumulat în coloane cu tipografie nativă echilibrată. Încadrarea dialogurilor nu trebuie să aplice scara textului de două ori.
 - Randați același checkpoint și meniurile principal/configurare în APK și Chrome pe același Android. Comparați un profil compact, RO/EN și text normal/mărit; adăugați un profil browser desktop fără repetarea partidelor complete la fiecare dimensiune.
 - Extent include viewport-ul, densitatea, identitatea browserului/APK-ului, fonturile, limitele, verdictele derulării și faptele vizibile ale jocului, cu capturi inline. Păstrați acceptanța nativă deschisă până trece comparația fizică.
+- Considerați incompletă o rulare parțială a instrumentării native când orice widget raportează eroare, chiar dacă numărul aserțiunilor eșuate este zero. Identificați artefactul APK/test înaintea atribuirii rezultatelor sursei curente.
 
 Folosiți tipografia explicită și limitele derivate din viewport din Chess Web ca referințe de proiectare, păstrând motorul și responsabilitatea adaptoarelor Whist. WEB-07 și WEB-11 rămân criterii distincte de flux și glife.

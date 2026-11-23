@@ -41,6 +41,7 @@ $inputs = @(
     Join-Path $ui 'animation/TrickCollectionMotion.java'
     Join-Path $ui 'seat/SeatContent.java'
     Join-Path $ui 'seat/SeatTypography.java'
+    Join-Path $ui 'seat/PlayerSeatMetrics.java'
     Join-Path $ui 'theme/TableColors.java'
     Join-Path $ui 'turn/TurnPacing.java'
     Join-Path $ui 'menu/TableMenuContent.java'
