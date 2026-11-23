@@ -11,6 +11,16 @@ const profiles=[{width:320,height:568,mobile:true},{width:414,height:896,mobile:
   {width:1280,height:720,mobile:false},{width:1600,height:900,mobile:false},{width:420,height:460,mobile:false},
   {width:414,height:300,mobile:true}];
 
+function pagingContrast(button){
+  const rgb=value=>value.match(/[\d.]+/g).slice(0,3).map(Number);
+  const mix=(ink,paper,opacity)=>ink.map((value,i)=>value*opacity+paper[i]*(1-opacity));
+  const light=values=>values.map(v=>v/255).map(v=>v<=.04045?v/12.92:((v+.055)/1.055)**2.4)
+    .reduce((sum,v,i)=>sum+v*[.2126,.7152,.0722][i],0);
+  const background=rgb(button.paper),foreground=light(mix(rgb(button.ink),background,button.opacity));
+  const fill=light(mix(rgb(button.fill),background,button.opacity));
+  return (Math.max(foreground,fill)+.05)/(Math.min(foreground,fill)+.05);
+}
+
 test('height-led dimensions preserve scene proportions and the legacy adapter',()=>{
   for(const {width,height} of [...profiles,{width:220,height:180},{width:1920,height:300}]){
     const frame=adaptiveViewport(width,height);
@@ -92,10 +102,29 @@ test('production menus stay readable and centered in compact and desktop Chromiu
           await fs.writeFile(path.join(process.env.ATF_COMPONENT_CAPTURE_DIR,file),Buffer.from(png.data,'base64'));images.push({title:id,file});
         }
         if(['achievements','rankings','help'].includes(screen)){
+          const paging=()=>evaluate(`(()=>{const panel=document.querySelector(${JSON.stringify(selector)});let paper=panel;while(paper&&getComputedStyle(paper).backgroundColor==='rgba(0, 0, 0, 0)')paper=paper.parentElement;return [...panel.querySelectorAll('.surface-pages button')].map(n=>{
+            const style=getComputedStyle(n),face=getComputedStyle(n,'::before'),range=document.createRange();range.selectNodeContents(n);const ink=range.getBoundingClientRect(),rect=n.getBoundingClientRect(),scale=rect.height/n.offsetHeight;
+            return {text:n.textContent,disabled:n.disabled,ink:style.color,fill:face.content==='none'?style.backgroundColor:face.backgroundColor,paper:paper?getComputedStyle(paper).backgroundColor:'rgb(255, 255, 255)',opacity:Number(style.opacity),targetHeight:n.offsetHeight,targetWidth:n.offsetWidth,face:face.content,
+              faceHeight:n.offsetHeight-(parseFloat(face.top)||0)-(parseFloat(face.bottom)||0),faceWidth:n.offsetWidth-(parseFloat(face.left)||0)-(parseFloat(face.right)||0),inkWidth:ink.width/scale,inkHeight:ink.height/scale};});})()`);
+          const verify=buttons=>{for(const n of buttons){
+            assert.ok(pagingContrast(n)>=(n.disabled?3:4.5),'Readable paging text: '+JSON.stringify({screen,language,font,...n}));
+            assert.ok(n.targetHeight>=48,'Keep the native-sized touch region');
+            assert.notEqual(n.face,'none','The compact outline is independent of its touch region');
+            assert.ok(n.faceHeight<=n.targetHeight-8&&n.faceWidth<=n.targetWidth-4,'The outline stays close to its label');
+            assert.ok(n.inkWidth<=n.faceWidth-2&&n.inkHeight<=n.faceHeight-2,'The complete label fits inside its outline');
+          }};
+          const first=await paging();verify(first);assert.equal(first[0].disabled,true);
+          if(screen==='achievements'&&profile.width===320&&font===16&&language==='ro'){
+            await evaluate("(()=>{const n=document.querySelector('.achievement-catalogue .surface-pages button:last-child');n.style.setProperty('--page-button-ink','#fff');n.style.setProperty('--page-button-fill','#fff');})()");
+            const unreadable=await paging();assert.throws(()=>verify(unreadable),/Readable paging text/);
+            await evaluate("(()=>{const n=document.querySelector('.achievement-catalogue .surface-pages button:last-child');n.style.removeProperty('--page-button-ink');n.style.removeProperty('--page-button-fill');})()");
+          }
           const count=await evaluate("document.querySelector("+JSON.stringify(selector)+").querySelector('.surface-pages output')?.textContent");
           assert.ok(count?.startsWith('1 / '),'Long content is paginated without vertical scroll');
           await evaluate("document.querySelector("+JSON.stringify(selector)+").querySelector('.surface-pages button:last-child').click()");
           assert.ok((await evaluate("document.querySelector("+JSON.stringify(selector)+").querySelector('.surface-pages output').textContent")).startsWith('2 / '));
+          const next=await paging();verify(next);assert.equal(next[0].disabled,false);
+          measured.paging={first,next};
         }
         if(measured.modal)await evaluate("document.querySelector('dialog[open]').close()");
         if(screen==='help')await evaluate("document.querySelector('.whist-help > button').click()");
@@ -109,8 +138,8 @@ test('production menus stay readable and centered in compact and desktop Chromiu
       await send('Emulation.setDeviceMetricsOverride',{...profile,deviceScaleFactor:1});
       await evaluate(`document.documentElement.style.fontSize='${font}px';document.documentElement.lang='${language}';`);
       const measured=await evaluate(`(async()=>{
-        const {createProfileDialogs}=await import('./profile.mjs?v=0.5');
-        const {surfaceFitter}=await import('./surface-fit.mjs?v=0.5');
+        const {createProfileDialogs}=await import('./profile.mjs?v=0.6');
+        const {surfaceFitter}=await import('./surface-fit.mjs?v=0.6');
         const element=(tag,text='',kind='')=>{const n=document.createElement(tag);n.textContent=text;n.className=kind;return n;};
         const button=(text,action,kind='')=>{const n=element('button',text,kind);n.onclick=action;return n;};
         const en=document.documentElement.lang==='en';
@@ -156,7 +185,7 @@ test('production menus stay readable and centered in compact and desktop Chromiu
     assert.ok(keyboard.dialog.top>=179&&keyboard.dialog.bottom<=481,'The modal follows the visual viewport rather than the layout viewport');
     console.log('Visual viewport observations: '+JSON.stringify(keyboard));
     const isolation=await evaluate(`(async()=>{
-      const {surfaceFitter}=await import('./surface-fit.mjs?v=0.5');
+      const {surfaceFitter}=await import('./surface-fit.mjs?v=0.6');
       const stage=document.createElement('main'),modal=document.createElement('dialog');
       stage.style.cssText='position:fixed;visibility:hidden;width:100px;height:100px';
       let root=document.createElement('section');root.className='whist-match';stage.append(root);document.body.append(stage,modal);

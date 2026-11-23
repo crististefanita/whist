@@ -311,7 +311,19 @@ html[data-surface="whist"] { font-family: WhistRoboto, Roboto, sans-serif; }
 [data-surface="whist"] .player-dialog .live-score-table { max-height: none; overflow: visible; }
 [data-surface="whist"] .surface-paged > [hidden], .surface-pages[hidden] { display: none !important; }
 .surface-pages { display: flex; align-items: center; justify-content: space-between; gap: .5rem; flex: none; }
-.surface-pages button { min-height: 48px; }
+.surface-pages button {
+  position: relative; isolation: isolate; min-height: 48px; padding: 12px 10px;
+  border: 0; background: transparent; color: var(--page-button-ink, #1a3027); line-height: 1.2;
+}
+.surface-pages button::before {
+  content: ""; position: absolute; inset: 6px 2px; z-index: -1; pointer-events: none;
+  border: 1px solid var(--page-button-line, #526d5d); border-radius: 6px;
+  background: var(--page-button-fill, #fffef8);
+}
+.surface-pages button:disabled { opacity: .65; cursor: default; }
+.achievement-catalogue .surface-pages {
+  --page-button-ink: #fff; --page-button-fill: #1f5743; --page-button-line: #629478;
+}
 [data-surface="whist"] .player-dialog[open] {
   position: fixed; inset: auto; left: var(--modal-center-x, 50%); top: var(--modal-center-y, 50%); margin: 0;
   width: var(--modal-width); height: var(--modal-height); max-width: none; max-height: none;
