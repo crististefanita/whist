@@ -59,7 +59,7 @@ const resize = () => {
     const bounds=frame.getBoundingClientRect();
     document.documentElement.style.setProperty('--modal-center-x',(bounds.left+bounds.width/2)+'px');
     document.documentElement.style.setProperty('--modal-center-y',(bounds.top+bounds.height/2)+'px');
-    surface?.fitDialog(width,height,phone);
+    surface?.fitDialog(width,height,phone,result);
   }
   if (stage.firstElementChild?.matches(".match:not([data-preparing])")) void placeTable();
 };
