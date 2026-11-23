@@ -5,7 +5,19 @@ import {createHash} from 'node:crypto';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {verifyWebDossier} from './web-release-dossier.mjs';
+import {fileURLToPath} from 'node:url';
 const hash=bytes=>createHash('sha256').update(bytes).digest('hex');
+
+test('APK and Web indexes share the contract, audit roles and relative artifact navigation',()=>{
+ const project=fileURLToPath(new URL('../../',import.meta.url));
+ for(const file of ['atf-ui-browser/tests/README.md','atf-test-android/src/test/java/atf/android/e2e/display/README.md']){
+  const text=fs.readFileSync(path.join(project,file),'utf8');
+  for(const marker of ['table-audit-contract: TABLE-PHASE-CONTINUITY','table-audit-levels: component,e2e','table-audit-steps: GIVEN,WHEN,THEN'])assert.ok(text.includes(marker),file+' '+marker);
+  const destinations=[...text.matchAll(/\]\(([^)]+)\)/g)].map(n=>{assert.ok(!/^(?:[a-z]+:|\/)/i.test(n[1]),'Index links are relative');return path.resolve(project,path.dirname(file),n[1]);});
+  for(const target of ['docs/testing/ATF_TableContinuity.md','release/README.md','release/WEB/README.md'])assert.ok(destinations.includes(path.resolve(project,target)),file+' owns '+target);
+  for(const target of destinations)assert.ok(fs.statSync(target).isFile());
+ }
+});
 function fixture(t){
  const project=fs.mkdtempSync(path.join(os.tmpdir(),'web-dossier-'));t.after(()=>fs.rmSync(project,{recursive:true,force:true}));
  const root=path.join(project,'release/WEB');fs.mkdirSync(root,{recursive:true});

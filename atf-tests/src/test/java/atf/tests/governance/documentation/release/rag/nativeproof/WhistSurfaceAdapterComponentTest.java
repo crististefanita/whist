@@ -74,6 +74,23 @@ class WhistSurfaceAdapterComponentTest {
         assertTrue(output.contains("Asset revision observations:"), "The published adapter does not retain the previous measurement implementation in cache");
     }
 
+    @Test void everySeatAndLegalDealShareOneNativeWebPhaseContract(ComponentInputs inputs) throws Exception {
+        var root = GovernanceProject.locateProjectRoot();
+        String output = NodeReleaseContracts.runNode(List.of("node", "--test", "--test-concurrency=1",
+                "--test-name-pattern=all legal|production Web|CSS text", root.resolve("atf-ui-browser/tests/phase-contract.test.mjs").toString(),
+                root.resolve("atf-ui-browser/tests/whist-surface-contract.test.mjs").toString()), root, Duration.ofSeconds(100),
+                value -> inputs.add("Shared APK/Web matrix, observed plans and explicit renderer boundary", value));
+        assertTrue(output.contains("Shared table phase observations:"), "All six schedules, legal hand sizes, actors and winners use one oracle");
+    }
+
+    @Test void sharedPhaseOracleRejectsEveryDisplacedOrMissingSeat(ComponentInputs inputs) throws Exception {
+        var root = GovernanceProject.locateProjectRoot();
+        String output = NodeReleaseContracts.runNode(List.of("node", "--test", "--test-name-pattern=shifted",
+                root.resolve("atf-ui-browser/tests/phase-contract.test.mjs").toString()), root, Duration.ofSeconds(60),
+                value -> inputs.add("Controlled one-pixel drift and missing-seat mutations", value));
+        assertTrue(output.contains("Shared table phase negative controls:"), "The oracle rejects all 76 deliberate mutations");
+    }
+
     @Test void dropdownAndScoreTypographyPreserveNativeFactsAndCommandBindings(ComponentInputs inputs) throws Exception {
         var root = GovernanceProject.locateProjectRoot();
         String output = NodeReleaseContracts.runNode(List.of("node", "--test",

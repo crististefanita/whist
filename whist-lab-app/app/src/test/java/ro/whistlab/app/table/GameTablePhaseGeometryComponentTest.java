@@ -9,46 +9,11 @@ import static atf.gradle.audit.assertions.GradleAssertions.*;
 /** A hand keeps the same measured table anchors while the center changes from bid to trick. */
 public final class GameTablePhaseGeometryComponentTest extends atf.gradle.audit.GradleAuditedTest {
     @Test public void seatsStayAtIdenticalCoordinatesFromBiddingThroughPlay() {
-        int[] widths = {280, 313, 353, 560, 760};
-        int[] handSizes = {1, 2, 4, 8, 13};
-        float[] fontScales = {1f, 1.3f, 1.5f, 2f};
-        for (int players = 3; players <= 6; players++) for (int width : widths)
-            for (int handSize : handSizes) for (float fontScale : fontScales) {
-                var viewport = new TableViewportPolicy(569, fontScale);
-                var reservation = TableLayoutMetrics.centerReservation(players, handSize, width,
-                        fontScale, viewport);
-                var bids = BidGridMetrics.actionLayout(handSize + 1, width, fontScale);
-                var trick = TrickCardMetrics.forTable(players, width, fontScale, viewport);
-                int seatWidth = ro.cardtable.ui.table.TableSizing.seatWidthDp(width, viewport.isCompact());
-                int seatHeight = 82;
-                int gap = viewport.regionGapDp();
-                int height = TableGeometry.minimumHeight(players, seatHeight,
-                        reservation.reservedHeightDp(), gap) + 120;
-                var bidding = TableGeometry.arrangeDisplay(width, height, players, seatWidth, seatHeight,
-                        bids.centerWidthDp(), reservation.reservedHeightDp(), gap, true,
-                        TableGeometry.CenterAlignment.TOWARD_HUMAN,
-                        TableLayoutMetrics.humanHandClearanceDp());
-                var playing = TableGeometry.arrangeDisplay(width, height, players, seatWidth, seatHeight,
-                        trick.safeCenterWidthDp(), reservation.reservedHeightDp(), gap, true,
-                        TableGeometry.CenterAlignment.BALANCED,
-                        TableLayoutMetrics.humanHandClearanceDp());
-
-                atf.gradle.audit.GradleInputs.fixture("One viewport and one reserved band across phases",
-                        "players", players, "width", width, "hand size", handSize,
-                        "font scale", fontScale, "bidding center", bids, "trick center", trick,
-                        "reservation", reservation, "bidding plan", bidding, "playing plan", playing);
-                assertEquals("The full ordered seat rectangles remain identical during the hand",
-                        playing.seats(), bidding.seats());
-                assertTrue("The reservation covers bidding and playing controls",
-                        reservation.reservedHeightDp() >= bids.centerHeightDp()
-                                && reservation.reservedHeightDp() >= trick.centerHeightDp());
-                assertTrue("The bid area stays clear of every seat",
-                        bidding.seats().stream().noneMatch(bidding.center()::overlaps));
-                assertTrue("The trick area stays clear of every seat",
-                        playing.seats().stream().noneMatch(playing.center()::overlaps));
-                assertEquals("The human seat keeps the same breathing room above the separate hand",
-                        height - TableLayoutMetrics.humanHandClearanceDp(), playing.seats().getFirst().bottom());
-            }
+        var result = TablePhaseContract.verify(new NativePhaseAdapter());
+        atf.gradle.audit.GradleInputs.fixture("Shared APK/Web phase contract", "observed", result);
+        assertEquals("All six game schedules participate", 6, result.modes().size());
+        assertTrue("All legal hand sizes and viewport combinations participate", result.configurations() > 10000);
+        assertTrue("Every actor and collection winner retains every seat", result.seatComparisons() > 100000);
     }
 
     @Test public void fourCardTableKeepsTheHumanHandClearanceAcrossViewportAndDensityChanges() {
