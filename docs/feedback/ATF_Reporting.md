@@ -81,3 +81,5 @@ Măsurarea justifică investigarea reducerii redundanței; nu dovedește că toa
 ## Calificarea rămasă a producătorilor
 
 Pentru fiecare producător rămas, includeți fila standard `Overview` și structura în engleză în acceptanța HTML-ului autonom. Păstrați dovezile în limba originală a aplicației, PNG-urile încorporate la cazul proprietar și refuzați cadrele lipsă sau atribuite greșit. Contractul producătorului pentru navigator aparține suitei focalizate de raportare; nu implică acceptanța altor producători și nu modifică dovezile edițiilor sigilate.
+
+Pentru fiecare producător rămas, fluxurile de joc ilustrate cer puncte de control înainte/după ordonate și rânduri explicite de aserțiuni în locul unui singur PASS agregat. Inspectați fluxul real, ultimul său pas și proprietatea imaginilor în HTML autonom, alături de refuzul intrărilor incomplete sau contradictorii. Rapoartele istorice agregate își păstrează scopul original și nu dovedesc observațiile per acțiune absente; mecanismul calificat pentru navigator aparține [contractului publicării](../reporting/ATF_Audit.md#calificarea-unui-producător).

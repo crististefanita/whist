@@ -55,6 +55,12 @@ Implementarea verificării este legată de contractul exercitat:
 
 ## Calificarea unui producător
 
+Un E2E ilustrat în navigator urmărește un singur viewport lizibil și un flux coerent de joc. Testele de componentă dețin combinațiile de viewport, scară a textului, limbă și număr de locuri. Fiecare pas de joc înregistrat nou precizează acțiunea sau observația, starea originală înainte/după, comparațiile individuale așteptat/observat și verdictele evaluate. Compararea numai a extremelor finale nu înlocuiește verificările fiecărei depuneri.
+
+Consumatorul pentru navigator distinge comenzile reale ale driverului de observațiile jocului AI. Chenarele, rândurile ajustate, rezerva mâinii private și cărțile deja depuse sunt comparate independent; eliminarea unei cărți umane confirmate poate recentra intenționat evantaiul rămas. Intervalul original observat aparține acelei comparații și nu reprezintă timpul publicării. Imaginile păstrează dimensiunile originale în pixeli și pasul producător; Overview rămâne standard.
+
+[Componentele publicării](../../atf-tests/src/test/java/atf/tests/reporting/browser/BrowserExtentPublicationComponentTest.java) exercită pașii ordonați, proprietatea stărilor înainte/după, imaginile inline, rândurile explicite de aserțiuni și refuzul anterior publicării. Aserțiunile goale sau lipsă, stările originale absente, ID-urile duplicate și rezultatele contradictorii ale pasului/cazului nu pot produce un raport HTML acceptat. Intrările istorice agregate sunt etichetate drept rezumate în locul prezentării retroactive ca parcursuri înregistrate.
+
 Fiecare producător se califică pe suprafața API efectiv folosită. Trecerea unui publicator nu califică implicit alt adaptor sau revizia sa interactivă.
 
 1. Identificați intrarea, invocările native, sursele, bibliotecile și proprietarul fiecărei capturi.

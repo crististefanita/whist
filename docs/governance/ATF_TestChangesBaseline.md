@@ -2168,3 +2168,39 @@ testChanges:
 ```
 
 </details>
+
+
+<details>
+<summary>Depuneri ordonate în navigator și aserțiuni evaluate în raport</summary>
+
+```yaml
+testChanges:
+  - id: WEB-ORDERED-CHECKPOINTS
+    status: VERIFIED
+    base: 6cd3958315261c95218de7f724fdc4a7ad907960
+    expires: 2026-12-23
+    reason: Preserve ordered before/after deposit evidence, individual assertion rows and action-versus-observation ownership, rejecting incomplete or contradictory input without rewriting historical reports.
+    proof: 'mvn -o -pl atf-tests -am -Dtest=BrowserExtentPublicationComponentTest,WhistSurfaceAdapterComponentTest -Dsurefire.failIfNoSpecifiedTests=false test'
+    checks:
+      positive:
+        - atf.tests.reporting.browser.BrowserExtentPublicationComponentTest#standardOverviewKeepsEnglishNarrativeAndScenarioOwnedCaptures
+        - atf.tests.reporting.browser.BrowserExtentPublicationComponentTest#orderedStepsKeepEachActionBeforeAfterAndAssertionsInTheirOriginalOwner
+        - atf.tests.governance.documentation.release.rag.nativeproof.WhistSurfaceAdapterComponentTest#individualDepositsKeepOrderedBeforeAfterComparisons
+      negative:
+        - atf.tests.reporting.browser.BrowserExtentPublicationComponentTest#missingCaptureIsRejectedBeforeReportCreation
+        - atf.tests.reporting.browser.BrowserExtentPublicationComponentTest#externalCaptureAndInvalidPngCannotBePublished
+        - atf.tests.reporting.browser.BrowserExtentPublicationComponentTest#invalidLayerAndImageShapeDoNotCreatePartialReports
+        - atf.tests.reporting.browser.BrowserExtentPublicationComponentTest#incompleteOrContradictoryStepEvidenceIsRejectedBeforePublication
+    paths:
+      - atf-tests/src/test/java/atf/tests/governance/documentation/release/rag/nativeproof/WhistSurfaceAdapterComponentTest.java
+      - atf-tests/src/test/java/atf/tests/reporting/browser/BrowserExtentPublicationComponentTest.java
+      - atf-tests/src/test/java/atf/tests/reporting/browser/BrowserReportFixture.java
+      - atf-ui-browser/tests/BrowserExtent.java
+      - atf-ui-browser/tests/match-continuity.mjs
+      - atf-ui-browser/tests/table-checkpoints.mjs
+      - atf-ui-browser/tests/table-checkpoints.test.mjs
+      - atf-ui-browser/tests/table-continuity.mjs
+      - config/atf-component-dependencies.json
+```
+
+</details>
