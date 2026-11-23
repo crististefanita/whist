@@ -35,6 +35,7 @@ class WebReleaseDossierComponentTest {
 
     @Test void onlyTheExplicitTypedWebFolderIsAcceptedBesideAndroidVersions(ComponentInputs inputs) throws Exception {
         Path release = Files.createDirectory(temporary.resolve("release"));
+        Files.writeString(release.resolve("README.md"), "Synthetic catalog");
         Path version = Files.createDirectory(release.resolve("1.2.0"));
         Files.createDirectory(version.resolve("reports"));
         Files.writeString(version.resolve("README.md"), "Synthetic release");
@@ -53,6 +54,8 @@ class WebReleaseDossierComponentTest {
         assertThrows(java.io.IOException.class, () -> ReleaseArtifactCatalog.folders(temporary));
         index.put("webDossier", "WEB/index.json"); json.writeValue(release.resolve("index.json").toFile(), index);
         assertEquals(1, ReleaseArtifactCatalog.folders(temporary).size(), "Typed Web scope stays separate from Android versions");
+        Files.delete(web.resolve("index.json"));
+        assertThrows(java.io.IOException.class, () -> ReleaseArtifactCatalog.folders(temporary));
         Files.writeString(web.resolve("index.json"), "{\"schemaVersion\":1,\"kind\":\"OTHER\"}");
         assertThrows(java.io.IOException.class, () -> ReleaseArtifactCatalog.folders(temporary));
     }
