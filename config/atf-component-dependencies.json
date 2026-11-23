@@ -572,7 +572,7 @@
     "whist-lab-app/app/src/test/java/ro/whistlab/app/profile/PlayerProfileEditComponentTest.java": "84ef786ca3ddc7ea132b931b9496742dbb38cd8fe5b12912469572d849016d9f",
     "whist-lab-app/app/src/test/java/ro/whistlab/app/score/ArchivedScoreHistoryReplayTest.java": "5276c4893564454f1a6eb4dc65015e46c136a274a9795d532ca6b7a97b588d96",
     "whist-lab-app/app/src/test/java/ro/whistlab/app/score/ScoreHistoryCheckpointTest.java": "564cc4ce74cb0d43f5614740617a1e7762c004684f377efb723d7d39a77e8a02",
-    "whist-lab-app/app/src/test/java/ro/whistlab/app/score/ScoreHistoryGridMetricsComponentTest.java": "f604e1a16c8ff7ac9b59aa1c50c3f1610f6865231c6180df2feffc6c353fe585",
+    "whist-lab-app/app/src/test/java/ro/whistlab/app/score/ScoreHistoryGridMetricsComponentTest.java": "ee01f107ef4a9351ca2cceeb00630da2e9418468891e36d94ddc2cea0505a49b",
     "whist-lab-app/app/src/test/java/ro/whistlab/app/score/ScoreHistoryMeasureComponentTest.java": "407333fcf4ae2dc6c2e13ef9ed0dd5ac52338e065038dcb6c63d77a3431c7384",
     "whist-lab-app/app/src/test/java/ro/whistlab/app/score/ScoreHistoryOutcomeComponentTest.java": "67745ea94e9a3508a07b61421750c4f51034e7e562b65caea209f22b46a4417a",
     "whist-lab-app/app/src/test/java/ro/whistlab/app/score/ScoreHistorySeriesComponentTest.java": "a244ea7672dd6b2e208f500626835dd7cbb3af458d05227e51f0b109e7796689",
