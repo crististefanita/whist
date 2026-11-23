@@ -50,3 +50,11 @@ Whist partajează politicile native ale locurilor, cărților și animațiilor. 
 - Considerați incompletă o rulare parțială a instrumentării native când orice widget raportează eroare, chiar dacă numărul aserțiunilor eșuate este zero. Identificați artefactul APK/test înaintea atribuirii rezultatelor sursei curente.
 
 Folosiți tipografia explicită și limitele derivate din viewport din Chess Web ca referințe de proiectare, păstrând motorul și responsabilitatea adaptoarelor Whist. WEB-07 și WEB-11 rămân criterii distincte de flux și glife.
+
+## WEB-17 AutoGame în timpul unei mutări manuale în curs
+
+**P2 · 83/100 · Păstrarea intenției de automatizare în timpul prezentării unei mutări confirmate.**
+
+- Bifa poate fi selectată după actualizarea mâinii afișate, înaintea terminării comenzii manuale. Selecția se poate apoi anula fără avans; activarea după eliberarea comenzii funcționează. Condiția de disponibilitate în așteptare din [înveliș](../../atf-ui-browser/src/main/web/table.mjs) este cauza principală de verificat, separat de tipografie și încadrarea viewport-ului.
+- Tratează ocuparea temporară a comenzii ca așteptare sau pauză, nu ca mână încheiată. Păstrează mutarea trimisă, respinge comenzile concurente și lasă debifarea să oprească următoarea decizie automată.
+- Închide prin componente cu transport controlat pentru selecție în timpul animației/colectării, anulare, erori și ordinea comenzilor. Păstrează rezultatul inițial eșuat când continuarea din stare stabilă trece; califică independent comportamentul nativ/Web.
