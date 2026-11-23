@@ -42,6 +42,20 @@ test('modified bytes and missing local report links cannot qualify',t=>{
  f.add('component/report.html','<div id="dashboard-view"></div><table class="helm-validation-table"></table>');
  fs.writeFileSync(path.join(f.root,'README.md'),'# Broken index');assert.throws(()=>verifyWebDossier(f.project),/REPORT_LINK/);
 });
+test('supplemental evidence retains its role without becoming another primary flow',t=>{
+ const f=fixture(t);f.index.reports[0].role='SUPPLEMENTAL';f.save();
+ const observed=verifyWebDossier(f.project);assert.equal(observed.status,'PASS');assert.equal(observed.primaryE2e,1);
+ f.index.reports[0].role='UNKNOWN';f.save();assert.throws(()=>verifyWebDossier(f.project),/SCOPE/);
+});
+test('a reference category index is optional only when no reference report is declared',t=>{
+ const f=fixture(t);fs.unlinkSync(path.join(f.root,'reference/README.md'));fs.rmdirSync(path.join(f.root,'reference'));
+ assert.equal(verifyWebDossier(f.project).status,'PASS');
+ fs.mkdirSync(path.join(f.root,'reference'));f.add('reference/check.html','<div id="dashboard-view"></div><table class="helm-validation-table"></table>');
+ f.index.reports.push({id:'REFERENCE',category:'reference',path:'reference/check.html',role:'REFERENCE',result:'PASS',scope:'Synthetic retained reference evidence',validatorCommit:'e'.repeat(40)});
+ fs.appendFileSync(path.join(f.root,'README.md'),'\n[Reference](reference/check.html)');f.save();
+ assert.throws(()=>verifyWebDossier(f.project),/UNREGISTERED_FILE/);
+ fs.writeFileSync(path.join(f.root,'reference/README.md'),'# Reference index');assert.equal(verifyWebDossier(f.project).status,'PASS');
+});
 test('absolute, parent-traversing and indirect evidence paths are rejected',t=>{
  for(const name of ['C:/outside.html','../outside.html']){const f=fixture(t);f.index.integrity[0].path=name;f.save();assert.throws(()=>verifyWebDossier(f.project),/RELATIVE_PATH/);}
  const f=fixture(t),outside=path.join(f.project,'owned-original');fs.renameSync(path.join(f.root,'component'),outside);

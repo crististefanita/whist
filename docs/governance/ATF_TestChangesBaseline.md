@@ -2614,15 +2614,19 @@ testChanges:
     status: VERIFIED
     base: d43a8576d3a9c850302194769178411f1c4933c9
     expires: 2026-12-23
-    reason: Refactor Whist projection matrix inputs while preserving all four invocation identities and exhaustive pairs; independently assert the population and retain exact first-failure context. Review layer ownership and conservative dependency admission; execute the changed Gradle cases separately.
-    proof: 'mvn -o -pl atf-tests -am -Dtest=GradleAuditGovernanceTest,AtfCollectionOwnershipComponentTest -Dsurefire.failIfNoSpecifiedTests=false test'
+    reason: Refactor Whist projection matrix inputs while preserving all four invocation identities and exhaustive pairs; independently assert the population and retain exact first-failure context. Review layer ownership and conservative dependency admission; execute the changed Gradle cases separately. Also verify supplemental roles and optional reference indexes against the real dossier and negative fixtures.
+    proof: 'mvn -o -pl atf-tests -am -Dtest=GradleAuditGovernanceTest,AtfCollectionOwnershipComponentTest,WebReleaseDossierComponentTest -Dsurefire.failIfNoSpecifiedTests=false test'
     checks:
       positive:
         - atf.tests.governance.source.gradle.GradleAuditGovernanceTest#everyGradleTestClassHasOneExplicitLayerAndAnAuditedBase
         - atf.tests.governance.suites.AtfCollectionOwnershipComponentTest#realDependencyClosuresSelectOnlyTheirConsumers
+        - atf.tests.governance.documentation.release.web.WebReleaseDossierComponentTest#portableWebInventoryChecksHashesPathsAndEvidenceOwnership
+        - atf.tests.governance.documentation.release.web.WebReleaseDossierComponentTest#currentWebDossierHasOneIllustratedFlowAndNoComponentCaptures
       negative:
         - atf.tests.governance.suites.AtfCollectionOwnershipComponentTest#missingOrUnreviewedDependenciesCannotAuthorizeReuse
     paths:
+      - atf-tests/tools/web-release-dossier.mjs
+      - atf-tests/tools/web-release-dossier.test.mjs
       - whist-lab-app/app/src/test/java/ro/whistlab/app/table/content/WhistTableContentComponentTest.java
       - config/atf-component-dependencies.json
 ```
