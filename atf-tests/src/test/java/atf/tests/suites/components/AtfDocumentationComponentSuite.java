@@ -26,7 +26,7 @@ import org.junit.platform.suite.api.*;
     "^atf\\.tests\\.governance\\.documentation\\.release\\.ReleaseIntegrityGovernanceTest$",
     "^atf\\.tests\\.governance\\.documentation\\.release\\.ReleasePresentationGovernanceTest$",
     "^atf\\.tests\\.governance\\.documentation\\.release\\.ReleaseRagPlatformGovernanceTest$",
-    "^atf\\.tests\\.governance\\.documentation\\.release\\.WebReleaseDossierComponentTest$",
+    "^atf\\.tests\\.governance\\.documentation\\.release\\.web\\.WebReleaseDossierComponentTest$",
     "^atf\\.tests\\.governance\\.documentation\\.release\\.reporting\\.ReleaseSuiteReportingGovernanceTest$",
     "^atf\\.tests\\.governance\\.documentation\\.strategy\\.TestingStrategyGovernanceTest$",
     "^atf\\.tests\\.governance\\.source\\.TestLayerGovernanceTest$",

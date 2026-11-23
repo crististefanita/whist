@@ -2226,6 +2226,8 @@ testChanges:
       negative:
         - atf.tests.governance.documentation.release.ReleaseArtifactLayoutGovernanceTest#onlyTheExplicitTypedWebFolderIsAcceptedBesideAndroidVersions
     paths:
+      - atf-tests/src/test/java/atf/tests/governance/documentation/release/ReleaseArtifactLayoutGovernanceTest.java
+      - atf-tests/src/test/java/atf/tests/governance/documentation/release/web/WebReleaseDossierComponentTest.java
       - config/atf-component-dependencies.json
       - atf-tests/src/test/java/atf/tests/governance/documentation/release/ReleaseArtifactCatalog.java
       - atf-tests/src/test/java/atf/tests/governance/documentation/release/rag/nativeproof/WhistSurfaceAdapterComponentTest.java
