@@ -1,0 +1,25 @@
+{
+  "schemaVersion": 1,
+  "role": "REJECTED_ORIGINAL_DIAGNOSTIC",
+  "result": "FAIL",
+  "expected": {
+    "visibleGeometryError": ""
+  },
+  "observed": {
+    "boundary": "Actual desktop Chromium with mobile emulation and page scale; not native Android Chrome",
+    "version": "Edg/158.0.4370.33",
+    "width": 314.3999938964844,
+    "height": 655.2000122070312,
+    "pageScale": 1.25,
+    "before": {
+      "error": "",
+      "height": 819,
+      "policy": "819"
+    },
+    "error": "String contains invalid digits: 655.2000122070312",
+    "policy": "655.2000122070312",
+    "text": "Whist · Românesc\nAutomat\n\nMâna 1 / 24\n\nLicitații depuse 1/4\nTotal licitat 0/1\n\nATU\n10\n♣\nTu\nLicitat: —\nLevate: 0\nIon\nLicitat: —\nLevate: 0\nVlad\nLicitat: —\nLevate: 0\nEva\nLicitat: 0\nLevate: 0\n0\n1\nLicitează\n9\n♥\n♥\n9\n♥\n\nString contains invalid digits: 655.2000122070312",
+    "reproduced": true
+  },
+  "note": "Original compiled-page error before normalization; not a current qualification result."
+}

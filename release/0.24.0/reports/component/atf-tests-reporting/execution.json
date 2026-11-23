@@ -1,0 +1,226 @@
+{
+  "schemaVersion" : 1,
+  "kind" : "live-source-components",
+  "apkQualification" : false,
+  "suite" : "atf.tests.suites.components.AtfReportingComponentSuite",
+  "tests" : 70,
+  "outcomes" : {
+    "PASS" : 70
+  },
+  "coverageErrors" : [ ],
+  "containerFailures" : [ ],
+  "junitIdentitySha256" : "fbabe2dd10c2ebcec9a5c9e5619971795b33434bfc426d4bf1b933c76062c8fd",
+  "invocations" : [ {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfReportingComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.reporting.GameReportTextAuditContractTest]/[method:textAndLiteralEntitiesAreDecodedExactlyOnce()]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfReportingComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.reporting.GameReportTextAuditContractTest]/[method:orderedTextFragmentsJoinOnlyInsideTheSameDisclosureAndNeedEveryPart()]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfReportingComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.reporting.GameReportTextAuditContractTest]/[method:jsonRequiresTheWholeTypedDocumentIncludingLargeNumbersAndLastScalar()]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfReportingComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.reporting.acceptance.NativeModuleResultsComponentTest]/[method:aggregationKeepsFailuresErrorsSkipsDurationsAndSourceFiles(java.nio.file.Path)]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfReportingComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.reporting.acceptance.NativeModuleResultsComponentTest]/[method:absenceOfNativeResultsAndExternalEntityDocumentsAreRefused(java.nio.file.Path)]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfReportingComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.learning.LearningRunReportContractTest]/[method:localInterningPreservesDifferentLongValuesWithoutUsingTheirVerdict()]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfReportingComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.learning.LearningRunReportContractTest]/[method:zeroDetailContradictoryPassAndChangedClosedSourceAreRefused()]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfReportingComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.learning.LearningRunReportContractTest]/[method:standaloneInvocationsPreserveFullTypedContextOutcomeAndTiming()]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfReportingComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.learning.LearningRunReportContractTest]/[method:missingSelectedReceiptCannotBeTurnedIntoASmallerAcceptedSuite()]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfReportingComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.learning.LearningRunReportContractTest]/[method:skipAndErrorKeepTheirOriginalOutcomeAndEmptySelectionsCannotPass()]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfReportingComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.learning.LearningRunReportContractTest]/[method:shortJsonAndLongBoundedCellsRetainTheirFullOwnedComparisonBody()]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfReportingComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.learning.LearningRunReportContractTest]/[method:missingLastRowCrossOwnerFailedVerdictAndTimingMutantsAreRefused()]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfReportingComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.reporting.browser.BrowserExtentPublicationComponentTest]/[method:standardOverviewKeepsEnglishNarrativeAndScenarioOwnedCaptures(atf.android.evidence.component.ComponentInputs)]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfReportingComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.reporting.browser.BrowserExtentPublicationComponentTest]/[method:orderedStepsKeepEachActionBeforeAfterAndAssertionsInTheirOriginalOwner(atf.android.evidence.component.ComponentInputs)]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfReportingComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.reporting.browser.BrowserExtentPublicationComponentTest]/[method:externalCaptureAndInvalidPngCannotBePublished(atf.android.evidence.component.ComponentInputs)]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfReportingComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.reporting.browser.BrowserExtentPublicationComponentTest]/[method:passingTableFlowsCannotUnderstateTheirHandOrCaptureBudget(atf.android.evidence.component.ComponentInputs)]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfReportingComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.reporting.browser.BrowserExtentPublicationComponentTest]/[method:missingCaptureIsRejectedBeforeReportCreation(atf.android.evidence.component.ComponentInputs)]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfReportingComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.reporting.browser.BrowserExtentPublicationComponentTest]/[method:incompleteOrContradictoryStepEvidenceIsRejectedBeforePublication(atf.android.evidence.component.ComponentInputs)]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfReportingComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.reporting.browser.BrowserExtentPublicationComponentTest]/[method:invalidLayerAndImageShapeDoNotCreatePartialReports(atf.android.evidence.component.ComponentInputs)]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfReportingComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.contracts.LegacyUiMediaReportContractTest]/[method:observationOnlyFramesKeepOneKeywordExactBytesAndZeroInventedComparisons()]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfReportingComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.reporting.GameReportPolicyContractTest]/[method:optionalBudgetHasExactBoundaryAndNeverUsesRawSensitiveValues()]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfReportingComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.reporting.GameReportPolicyContractTest]/[method:strictPresentationExtensionsRejectWrongTypesOverflowAndUnlimitedSettings()]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfReportingComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.reporting.GameReportPolicyContractTest]/[method:loadedPolicyDoesNotChangeAfterYamlMutation()]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfReportingComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.reporting.GameEvidenceBodiesContractTest]/[method:ambiguousOrTrailingJsonCannotBeSilentlyNormalizedAway()]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfReportingComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.reporting.GameEvidenceBodiesContractTest]/[method:jsonFragmentsRemainWholeTypedDocumentsWithEveryOrderedArrayValue()]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfReportingComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.reporting.GameEvidenceBodiesContractTest]/[method:emptyContainersCannotDisappearWhenTheBudgetIsTooSmall()]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfReportingComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.reporting.GameEvidenceBodiesContractTest]/[method:secretsAreRedactedBeforeSplittingAndBudgeting()]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfReportingComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.reporting.GameEvidenceBodiesContractTest]/[method:nativeNumericSpellingsSurviveWholeAndFragmentedJsonBodies()]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfReportingComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.reporting.GameEvidenceBodiesContractTest]/[method:exactTextBoundariesRetainEveryCharacterAndUnicodeScalar()]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfReportingComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.reporting.GameEvidenceBodiesContractTest]/[method:anIndivisibleJsonValueIsRefusedInsteadOfPublishingHalfJsonOrAnExternalEscape()]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfReportingComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.contracts.AndroidInlineScreenshotReportContractTest]/[method:observationOnlyViewportKeepsItsPngWithoutInventingAssertions()]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfReportingComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.contracts.AndroidInlineScreenshotReportContractTest]/[method:rendersAndroidPngAsAnInlineUiCheckpoint()]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfReportingComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.reporting.text.ReportTextValueMatcherTest]/[method:missingReorderedOrTruncatedJsonIsRejected()]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfReportingComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.reporting.text.ReportTextValueMatcherTest]/[method:arbitraryTextIsNotReformattedOrMatchedAsAPartialJsonPrefix()]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfReportingComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.reporting.text.ReportTextValueMatcherTest]/[method:nativeCompactJsonPreservesEveryValueAndItsOrder()]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfReportingComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.reporting.GameReportPublicationContractTest]/[method:interruptedCallerRetainsCapturedRowsAndOriginalException()]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfReportingComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.reporting.GameReportPublicationContractTest]/[method:fullOverflowAndIndivisibleRequiredValuesDeclareIncompleteWithoutChangingCapturedFailure()]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfReportingComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.reporting.GameReportPublicationContractTest]/[method:selectionAndPresentationShareOneOptionalBudget()]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfReportingComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.reporting.GameReportPublicationContractTest]/[method:fieldGroupsKeepEveryOriginalRowAndTheFullLastValue()]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfReportingComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.learning.EvidenceSelectionContractTest]/[method:tooSmallConfiguredBodyRefusesPublicationBeforeCreatingAnApparentlyCompleteReport()]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfReportingComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.learning.EvidenceSelectionContractTest]/[method:summaryRetainsAllOutcomesAndGateWithoutCherryPickingPassingScores()]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfReportingComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.learning.EvidenceSelectionContractTest]/[method:optionalBudgetKeepsWholeDeduplicatedRecordsAtBoundary()]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfReportingComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.learning.EvidenceSelectionContractTest]/[method:strictYamlRejectsZeroUnknownEnumsWrongTypesOverflowAndUnknownKeys()]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfReportingComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.learning.EvidenceSelectionContractTest]/[method:capturedPolicyAndReceiptCannotBeChangedByLaterYamlOrCallerMutation()]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfReportingComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.learning.EvidenceSelectionContractTest]/[method:autoThresholdsAreInclusiveAtMinusExactAndPlusOne()]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfReportingComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.learning.EvidenceSelectionContractTest]/[method:configuredRegressionsStayCompleteWhenLearningIsSampled()]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfReportingComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.learning.EvidenceSelectionContractTest]/[method:fullKeepsEveryCheckpointAndOriginalValuesEvenBeyondAdaptiveThresholds()]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfReportingComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.learning.LearningRunReportContractTest]/[test-template:everyModePreservesChunkedCheckpointAndIndependentLastFailure(atf.tests.learning.EvidencePolicy$DetailLevel)]/[test-template-invocation:#1]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfReportingComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.learning.LearningRunReportContractTest]/[test-template:everyModePreservesChunkedCheckpointAndIndependentLastFailure(atf.tests.learning.EvidencePolicy$DetailLevel)]/[test-template-invocation:#2]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfReportingComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.learning.LearningRunReportContractTest]/[test-template:everyModePreservesChunkedCheckpointAndIndependentLastFailure(atf.tests.learning.EvidencePolicy$DetailLevel)]/[test-template-invocation:#3]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfReportingComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.contracts.AndroidPhaseTraceReplayContractTest]/[test-template:mutatedTimingCannotAcquireAnotherPhaseOrSilentlyBecomeLegacy(java.lang.String, java.lang.String, java.nio.file.Path)]/[test-template-invocation:#1]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfReportingComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.contracts.AndroidPhaseTraceReplayContractTest]/[test-template:mutatedTimingCannotAcquireAnotherPhaseOrSilentlyBecomeLegacy(java.lang.String, java.lang.String, java.nio.file.Path)]/[test-template-invocation:#2]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfReportingComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.contracts.AndroidPhaseTraceReplayContractTest]/[test-template:mutatedTimingCannotAcquireAnotherPhaseOrSilentlyBecomeLegacy(java.lang.String, java.lang.String, java.nio.file.Path)]/[test-template-invocation:#3]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfReportingComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.contracts.AndroidPhaseTraceReplayContractTest]/[test-template:mutatedTimingCannotAcquireAnotherPhaseOrSilentlyBecomeLegacy(java.lang.String, java.lang.String, java.nio.file.Path)]/[test-template-invocation:#4]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfReportingComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.contracts.AndroidPhaseTraceReplayContractTest]/[test-template:mutatedTimingCannotAcquireAnotherPhaseOrSilentlyBecomeLegacy(java.lang.String, java.lang.String, java.nio.file.Path)]/[test-template-invocation:#5]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfReportingComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.contracts.AndroidPhaseTraceReplayContractTest]/[test-template:mutatedTimingCannotAcquireAnotherPhaseOrSilentlyBecomeLegacy(java.lang.String, java.lang.String, java.nio.file.Path)]/[test-template-invocation:#6]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfReportingComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.contracts.AndroidPhaseTraceReplayContractTest]/[test-template:republicationKeepsOriginalIntervalsRatherThanDispatchOrPublication(java.lang.String, java.nio.file.Path)]/[test-template-invocation:#1]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfReportingComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.contracts.AndroidPhaseTraceReplayContractTest]/[test-template:republicationKeepsOriginalIntervalsRatherThanDispatchOrPublication(java.lang.String, java.nio.file.Path)]/[test-template-invocation:#2]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfReportingComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.reporting.GameReportPublicationContractTest]/[test-template:individualAndSuiteRetainEveryComparisonAndPng(atf.tests.learning.EvidencePolicy$DetailLevel, boolean, int)]/[test-template-invocation:#1]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfReportingComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.reporting.GameReportPublicationContractTest]/[test-template:individualAndSuiteRetainEveryComparisonAndPng(atf.tests.learning.EvidencePolicy$DetailLevel, boolean, int)]/[test-template-invocation:#2]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfReportingComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.reporting.GameReportPublicationContractTest]/[test-template:individualAndSuiteRetainEveryComparisonAndPng(atf.tests.learning.EvidencePolicy$DetailLevel, boolean, int)]/[test-template-invocation:#3]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfReportingComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.reporting.GameReportPublicationContractTest]/[test-template:individualAndSuiteRetainEveryComparisonAndPng(atf.tests.learning.EvidencePolicy$DetailLevel, boolean, int)]/[test-template-invocation:#4]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfReportingComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.reporting.GameReportPublicationContractTest]/[test-template:individualAndSuiteRetainEveryComparisonAndPng(atf.tests.learning.EvidencePolicy$DetailLevel, boolean, int)]/[test-template-invocation:#5]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfReportingComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.reporting.GameReportPublicationContractTest]/[test-template:individualAndSuiteRetainEveryComparisonAndPng(atf.tests.learning.EvidencePolicy$DetailLevel, boolean, int)]/[test-template-invocation:#6]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfReportingComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.reporting.GameReportPublicationContractTest]/[test-template:individualAndSuiteRetainEveryComparisonAndPng(atf.tests.learning.EvidencePolicy$DetailLevel, boolean, int)]/[test-template-invocation:#7]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfReportingComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.reporting.GameReportPublicationContractTest]/[test-template:individualAndSuiteRetainEveryComparisonAndPng(atf.tests.learning.EvidencePolicy$DetailLevel, boolean, int)]/[test-template-invocation:#8]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfReportingComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.reporting.GameReportPublicationContractTest]/[test-template:individualAndSuiteRetainEveryComparisonAndPng(atf.tests.learning.EvidencePolicy$DetailLevel, boolean, int)]/[test-template-invocation:#9]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfReportingComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.reporting.GameReportPublicationContractTest]/[test-template:individualAndSuiteRetainEveryComparisonAndPng(atf.tests.learning.EvidencePolicy$DetailLevel, boolean, int)]/[test-template-invocation:#10]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfReportingComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.reporting.GameReportPublicationContractTest]/[test-template:individualAndSuiteRetainEveryComparisonAndPng(atf.tests.learning.EvidencePolicy$DetailLevel, boolean, int)]/[test-template-invocation:#11]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfReportingComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.reporting.GameReportPublicationContractTest]/[test-template:individualAndSuiteRetainEveryComparisonAndPng(atf.tests.learning.EvidencePolicy$DetailLevel, boolean, int)]/[test-template-invocation:#12]",
+    "outcome" : "PASS"
+  } ],
+  "provenanceSha256" : "32a3ea0f57c4c5e10c2bb33f111d71254e5a0e6edb63ceaa7cdeea5c6d40207e",
+  "reportSha256" : "4131388396671448ec3b913acca93c4d9f88a5aa4c301921d4d3641100a47eab"
+}

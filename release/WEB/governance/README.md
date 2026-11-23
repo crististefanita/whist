@@ -1,13 +1,13 @@
-# Dovezile de guvernanță
+# Controale pentru calificarea Web
 
 ## Pe scurt
 
-Păstrează verdictele originale și reia numai limita corectată. [Lotul inițial](../diagnostics/initial-governance/component-report.html) are 61 de rezultate reușite și un eșec de admitere pentru checkout modificat. Rezultatele reușite se reutilizează; HTML-ul său nu este redenumit verde.
+Controalele de admitere a sursei păstrează verificări pozitive și negative; probele de componentă conțin intrări și aserțiuni evaluate fără capturi ale produsului.
 
-- După comiterea celor trei ghiduri editoriale, [singurul control eșuat](resume/component-report.html) a trecut.
-- [Dovada sa](resume/execution.json) păstrează separat revizia documentației evaluate și revizia compilatorului original.
-- [Proba implementării](../component/adapters/proof.json) rămâne legată de baza și diff-ul sursei originale.
+## Audit curent
 
-[Revizuirea interactivă](browser-review/execution.json) a verificat `Overview` standard în Edge headless real: grafice, fără galerie injectată, fără capturi la componente și cei 14 pași, 140 de aserțiuni și patru poze E2E. Este o revizuire a raportului, nu încă un E2E de produs.
+[Extent de componentă](current/component-report.html) · [Proba legată de sursă](current/proof.json) · [Revizia interactivă a raportului](current/report-review.json)
 
-[Înapoi la index](../README.md) · [Contractul de guvernanță](../../../docs/governance/README.md)
+## Limită
+
+O selecție de probe nu înlocuiește colecția primară ATF completă. Dosarul APK conține calificarea independentă.

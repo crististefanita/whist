@@ -1,15 +1,15 @@
-# Contractele componentelor
+# Contractele componentelor Web
 
 ## Pe scurt
 
-Contractele portabile comune preiau combinațiile. Suitele Extent păstrează precondițiile, comparațiile evaluate așteptat/obținut și cazurile negative fără poze de produs.
+Intrările controlate, oracolele comune de fază și comparațiile adaptoarelor dețin combinațiile de afișare fără poze ale produsului. Prerechizitele unitare Core păstrează diagnostice JUnit fără Extent.
 
-| Suită | Selecție și domeniu |
-|---|---|
-| [Contractele adaptoarelor](adapters/component-report.html) | Unsprezece controale pozitive/negative; fiecare distribuire legală și loc prin același oracol logic APK/Web. [Proba originală](adapters/proof.json) |
-| [Nucleul portabil](core/component-report.html) | Cincizeci de invocări de componentă, cu SDK absent deliberat. [Execuție](core/execution.json) |
-| [Regresia intrărilor matricelor](matrix/component-report.html) | Două metode afectate; bucle complete păstrate, comparațiile reușite agregate per invariantă. |
+## Selecții
 
-[Trei unități izolate](core/unit-execution.json) rulează ca precondiție fără Extent. Numerele selecțiilor suprapuse nu se însumează drept acoperire distinctă. Cele opt controale separate ale adaptorului nativ au trecut extern; aceste rapoarte nu declară desenare nativă sau un APK nou instalat.
+- [Controalele comune ale adaptoarelor](adapters/component-report.html)
+- [Componentele nucleului portabil](core/component-report.html)
+- [Auditul suplimentar al matricelor](matrix/component-report.html)
 
-[Înapoi la index](../README.md) · [Matricea modul × nivel](../../../docs/testing/ATF_TestingGuide.md)
+## Responsabilitate
+
+Contractele de sursă neschimbate își păstrează probele originale. Cel mai recent [control pentru înălțimi fracționare](../governance/current/component-report.html) verifică limita Web modificată.

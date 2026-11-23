@@ -1,7 +1,13 @@
-# Verdictul original respins
+# Diagnosticul mobil respins
 
 ## Pe scurt
 
-[Lotul original de guvernanță](initial-governance/component-report.html) păstrează 62 de teste: 61 reușite și unul eșuat cu `TEST-CHANGE-PROOF-DIRTY`. [Selecția](initial-governance/selection.json) și [execuția](initial-governance/execution.json) explică domeniul și decizia explicită de reutilizare. Raportul rămâne respins; [controlul corectat](../governance/resume/component-report.html) este o execuție separată.
+Observația originală din pagina publică a reprodus înălțimea CSS fracționară trimisă către un parser întreg. Rămâne un diagnostic respins și nu este numărat drept calificare trecută.
 
-[Înapoi la index](../README.md)
+## Cauza originală
+
+[Eroarea și viewport-ul capturate inițial](mobile-height.json)
+
+## Recuperare
+
+Fluxul public corectat și regresia de componentă legată de sursă sunt indexate separat; rapoartele investigațiilor fără legătură nu sunt transferate în acest dosar.

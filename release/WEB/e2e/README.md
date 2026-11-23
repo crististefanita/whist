@@ -1,18 +1,13 @@
-# Sanity ilustrat minimal
+# Sanity Web public
 
 ## Pe scurt
 
-Un parcurs în browserul local, un singur viewport lizibil de 1664×916, două mâini de o carte. Prima mână este manuală; a doua folosește AutoGame. Selecția verifică legăturile și continuitatea mesei, nu fiecare rezoluție sau o partidă completă.
+Jocul public compilat parcurge două mâini de o carte, manual și apoi AutoGame, în Edge fără sunet, cu emulare mobilă și zoom. Nu califică randarea în Chrome nativ.
 
-<!-- table-audit-contract: TABLE-PHASE-CONTINUITY -->
+## Audit
 
-| Limită | Dovadă |
-|---|---|
-| Combinațiile comune pentru 3–6 locuri | [Oracol de componentă](../component/adapters/component-report.html), fără poze |
-| Sanity desenat pentru patru locuri | [Extent](table-sanity/extent.html): 14 pași ordonați, 140 de aserțiuni și patru capturi inline |
-| Execuție și selecție | [Dovada execuției](table-sanity/execution.json), server JVM local |
-| APK instalat | Neexecutat; dovezile release-ului Android existent rămân separate |
+[Extent: 16 pași, 142 de aserțiuni, patru capturi inline](table-sanity/extent.html) · [Recipisa livrării](table-sanity/delivery.json) · [Observațiile originale](table-sanity/execution.json)
 
-Admiterea respinge planurile lungi înaintea pornirii browserului; publicarea reconciliază mâinile și capturile reale. [Indexul testelor Web](../../../atf-ui-browser/tests/README.md) și [indexul APK](../../../atf-test-android/src/test/java/atf/android/e2e/display/README.md) partajează rolurile de audit; adaptoarele semantice pereche și controlul capturilor la publicarea APK rămân feedback explicit.
+## Limita coordonatelor
 
-[Înapoi la dosar](../README.md) · [Manifest](../index.json)
+Dreptunghiurile măsurate folosesc originea observată a viewport-ului vizual. Deplasările brute rămân în observații, astfel încât panoramarea paginii să nu fie confundată cu mutarea chenarelor.

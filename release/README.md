@@ -8,18 +8,18 @@ Catalogul urmărește ediția Android curentă și predecesoarea imediată. Un r
 
 ## Versiunea curentă
 
-[0.23.2 — Release Android de mentenanță](0.23.2/README.md) este publicat; APK-ul și checksum-ul au trecut verificarea descărcării directe.
+[0.24.0 — Release Android de mentenanță](0.24.0/README.md) este publicat; APK-ul și checksum-ul au trecut verificarea descărcării directe.
 
 ## Versiunea precedentă
 
-[0.23.1 — Release Android și dovezi](0.23.1/README.md) este ediția publicată imediat precedentă.
+[0.23.2 — Release Android și dovezi](0.23.2/README.md) este ediția publicată imediat precedentă.
 
 ## Versiuni disponibile
 
 | Versiune | Stare | Dosar |
 |---|---|---|
-| 0.23.2 | Publicat; APK și checksum verificate | [APK și dovezi](0.23.2/README.md) |
-| 0.23.1 | Ediția publicată precedentă | [APK și dovezi](0.23.1/README.md) |
+| 0.24.0 | Publicat; APK și checksum verificate | [APK și dovezi](0.24.0/README.md) |
+| 0.23.2 | Ediția publicată precedentă | [APK și dovezi](0.23.2/README.md) |
 
 ## Publicare și verificare
 

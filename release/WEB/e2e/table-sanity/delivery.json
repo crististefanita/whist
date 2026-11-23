@@ -1,0 +1,25 @@
+{
+  "schemaVersion": 1,
+  "status": "PASS",
+  "observedAtUtc": "2026-11-23T17:04:05.314Z",
+  "url": "https://crististefanita.github.io/whist/",
+  "httpStatus": 200,
+  "cacheRevision": "0.13",
+  "sourceCommit": "57fda70cae8f28a26a052f0bca0eca686d9e71e4",
+  "workflowRun": 45214953471,
+  "htmlSha256": "2b86be2a8b4358a385ce1e4650c063d3b97d3dfe6b10cdb5e0338cbe013eb639",
+  "adapterSha256": "fe3ebe6a0482f1e650ec2a26223a39c3dfc789b2d2416ba756b3a3044984ab42",
+  "boundary": "Public compiled TeaVM in headless desktop Edge Android mobile emulation; not native Android Chrome",
+  "viewport": {
+    "width": 393,
+    "height": 819,
+    "pageScale": 1.25
+  },
+  "flow": {
+    "hands": 2,
+    "steps": 16,
+    "assertions": 142,
+    "captures": 4,
+    "maxFrameDelta": 0
+  }
+}

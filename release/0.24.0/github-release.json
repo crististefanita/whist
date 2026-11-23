@@ -1,0 +1,26 @@
+{
+  "schemaVersion": 1,
+  "id": 455753165,
+  "tag": "v0.24.0",
+  "targetCommit": "f2ae1676f18020140454292891121110beb89ccf",
+  "url": "https://github.com/crististefanita/whist/releases/tag/v0.24.0",
+  "draft": false,
+  "prerelease": false,
+  "publishedAt": "2026-11-23T17:23:36Z",
+  "assets": [
+    {
+      "name": "WhistLab-0.24.0.apk",
+      "id": 783858494,
+      "url": "https://github.com/crististefanita/whist/releases/download/v0.24.0/WhistLab-0.24.0.apk",
+      "size": 1033649,
+      "sha256": "d9ab907dc55494e744519b344eb3a367b05401f6f9c12a82af2e393dbe00a578"
+    },
+    {
+      "name": "WhistLab-0.24.0.apk.sha256",
+      "id": 783858630,
+      "url": "https://github.com/crististefanita/whist/releases/download/v0.24.0/WhistLab-0.24.0.apk.sha256",
+      "size": 86,
+      "sha256": "b5ff2a95c941d65a4d9b0a5ced7cf1d00406dfa1a344aef0aa090877eecbeee4"
+    }
+  ]
+}
