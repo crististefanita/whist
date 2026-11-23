@@ -1,4 +1,5 @@
 import atf.reporting.contract.AtfAssertion;
+import atf.reporting.contract.AtfGherkinKeyword;
 import atf.reporting.contract.AtfReportStatus;
 import atf.reporting.configuration.ReportingSettings;
 import atf.reporting.evidence.ReportScreenshotPolicy;
@@ -8,6 +9,8 @@ import atf.reporting.model.ReportField;
 import atf.reporting.model.ReportObservation;
 import atf.reporting.model.ReportScreenshot;
 import atf.reporting.ui.UiExtentReportSession;
+import atf.reporting.ui.model.AtfUiActionRecord;
+import atf.reporting.ui.model.AtfUiEvidenceSource;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.nio.file.Files;
@@ -15,10 +18,12 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
+import java.util.HashSet;
 
 /** Publishes recorded comparisons and scenario-owned captures using the pinned Reporting API. */
 class BrowserExtent {
-    record Check(JsonNode result, String layer, List<ReportScreenshot> captures) { }
+    record Check(JsonNode result, String layer, List<ReportScreenshot> captures, List<Step> steps) { }
+    record Step(JsonNode input, List<AtfAssertion> assertions, List<ReportScreenshot> captures, AtfReportStatus status) { }
 
     public static void main(String[] args) throws Exception {
         if (args.length != 2) throw new IllegalArgumentException("Evidence directory and new Extent path required");
@@ -51,12 +56,15 @@ class BrowserExtent {
                     phase.observation(new ReportObservation("Recorded inputs and identity", List.of(
                             new ReportField("Case ID", test.path("id").asText(title)),
                             new ReportField("Evidence layer", check.layer()),
+                            new ReportField("Flow detail", check.steps().isEmpty() ? "Aggregate summary; no per-action trace was recorded" : "Ordered before/after checkpoints"),
                             new ReportField("Original outcome", status.name())), List.of(
                             body("Original expected", test.required("expected")),
                             body("Original observed", test.required("observed"))), List.of()));
-                    phase.uiValidation("Recorded comparisons", "Captured test result", null,
+                    if (check.steps().isEmpty()) phase.uiValidation("Recorded comparisons", "Captured test result", null,
                             List.of(new AtfAssertion(title, display(test.required("expected")),
                                     display(test.required("observed")), status == AtfReportStatus.PASS, status)), status);
+                    int sequence = 0;
+                    for (var step : check.steps()) publishStep(phase, step, ++sequence);
                     for (var capture : check.captures()) {
                         phase.uiValidationAsMedia(capture.title(), "Captured checkpoint", capture.base64Png(),
                                 List.of(), List.of(), status);
@@ -85,6 +93,58 @@ class BrowserExtent {
         test.required("expected"); test.required("observed");
         String layer = test.path("layer").asText(defaultLayer);
         suite(layer);
+        var steps = new ArrayList<Step>();
+        var ids = new HashSet<String>();
+        if (test.has("steps")) {
+            if (!test.get("steps").isArray() || test.get("steps").isEmpty())
+                throw new IllegalArgumentException("Recorded steps must be a nonempty array");
+            for (var step : test.get("steps")) {
+                if (!ids.add(text(step, "id"))) throw new IllegalArgumentException("Duplicate step ID");
+                text(step, "name"); text(step, "action"); text(step, "url");
+                AtfGherkinKeyword.valueOf(text(step, "keyword"));
+                AtfUiEvidenceSource.valueOf(text(step, "source"));
+                if (!step.required("durationMillis").isIntegralNumber() || !step.get("durationMillis").canConvertToLong()
+                        || step.get("durationMillis").longValue() < 0) throw new IllegalArgumentException("Observed step duration is required");
+                step.required("before").requireNonNull(); step.required("after").requireNonNull();
+                if (!step.required("assertions").isArray() || step.get("assertions").isEmpty())
+                    throw new IllegalArgumentException("Each step requires captured assertions");
+                var assertions = new ArrayList<AtfAssertion>();
+                for (var row : step.get("assertions")) {
+                    if (!row.required("passed").isBoolean()) throw new IllegalArgumentException("Assertion verdict must be Boolean");
+                    assertions.add(new AtfAssertion(text(row, "name"), display(row.required("expected").requireNonNull()),
+                            display(row.required("observed").requireNonNull()), row.get("passed").booleanValue()));
+                }
+                var outcome = assertions.stream().allMatch(AtfAssertion::passed) ? AtfReportStatus.PASS : AtfReportStatus.FAIL;
+                if (!outcome.name().equals(text(step, "status"))) throw new IllegalArgumentException("Step outcome contradicts assertions");
+                if (test.get("status").asText().equals("PASS") && outcome != AtfReportStatus.PASS)
+                    throw new IllegalArgumentException("Passing case contains a failed step");
+                steps.add(new Step(step, List.copyOf(assertions), captures(step, directory), outcome));
+            }
+        }
+        return new Check(test, layer, captures(test, directory), List.copyOf(steps));
+    }
+
+    private static void publishStep(UiExtentReportSession.UiPhase phase, Step step, int sequence) {
+        var input = step.input();
+        String name = input.get("id").asText() + " · " + input.get("name").asText();
+        phase.observation(new ReportObservation(name + " — original before/after", List.of(),
+                List.of(body("Before", input.get("before")), body("After", input.get("after"))), List.of()));
+        var action = new AtfUiActionRecord(sequence, input.get("action").asText(), input.get("url").asText(),
+                "Observe the recorded before/after comparison", "Captured state transition", input.get("durationMillis").longValue(), step.status(),
+                AtfUiEvidenceSource.valueOf(input.get("source").asText()));
+        phase.step(AtfGherkinKeyword.valueOf(input.get("keyword").asText()), name, input.get("url").asText(), "",
+                step.assertions(), List.of(action), step.status());
+        for (var capture : step.captures()) phase.uiValidationAsMedia(capture.title(), name, capture.base64Png(),
+                List.of(), List.of(), step.status());
+    }
+
+    private static String text(JsonNode input, String field) {
+        var value = input.required(field);
+        if (!value.isTextual() || value.asText().isBlank()) throw new IllegalArgumentException("Nonempty text required: " + field);
+        return value.asText();
+    }
+
+    private static List<ReportScreenshot> captures(JsonNode test, Path directory) throws Exception {
         var captures = new ArrayList<ReportScreenshot>();
         if (test.has("images") && !test.get("images").isArray())
             throw new IllegalArgumentException("Captured images must be an array");
@@ -95,7 +155,7 @@ class BrowserExtent {
             if (!ReportScreenshot.hasPngSignature(payload)) throw new IllegalArgumentException("Invalid PNG: " + png.getFileName());
             captures.add(new ReportScreenshot(image.required("title").asText(), payload));
         }
-        return new Check(test, layer, List.copyOf(captures));
+        return List.copyOf(captures);
     }
 
     private static String suite(String layer) {

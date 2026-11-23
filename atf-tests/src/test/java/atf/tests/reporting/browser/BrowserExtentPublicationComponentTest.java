@@ -86,6 +86,53 @@ public class BrowserExtentPublicationComponentTest {
         assertFalse(Files.exists(root.resolve("report.html")), "Malformed inventories cannot be partially published");
     }
 
+    @Test void orderedStepsKeepEachActionBeforeAfterAndAssertionsInTheirOriginalOwner(ComponentInputs inputs) throws Exception {
+        BrowserReportFixture.steps(root);
+        inputs.add("Ordered flow fixture", "Two recorded deposits, a real driver-action label and an observation label, distinct before/after values, assertions and images.");
+        BrowserReportFixture.publish(publisher, root);
+        Document doc = Jsoup.parse(Files.readString(root.resolve("report.html")));
+        Element flow = scenario(doc, "Observed four-player flow");
+        String text = flow.text();
+        assertTrue(text.indexOf("Human deposits A♠") < text.indexOf("AI deposits K♥"), "Canonical steps retain their execution order");
+        for (int i = 0; i < 2; i++) {
+            assertTrue(text.contains("BEFORE_DEPOSIT_" + i) && text.contains("AFTER_DEPOSIT_" + i), "Each step retains both original states");
+            assertTrue(text.contains("FRAME_ASSERTION_" + i), "Evaluated assertion rows are present, not only an aggregate PASS");
+            assertTrue(text.contains("DEPOSIT_CAPTURE_" + i), "Each capture belongs to its producing step");
+        }
+        assertTrue(text.contains("Click the legal A♠") && text.contains("Observe the AI deposit"), "Observing an AI action cannot be relabelled as a driver click");
+        String flowHtml = flow.outerHtml();
+        int firstStep = flowHtml.indexOf("Human deposits A♠"), secondStep = flowHtml.indexOf("AI deposits K♥");
+        int firstImage = flowHtml.indexOf(BrowserReportFixture.payload(root.resolve("first.png")));
+        int secondImage = flowHtml.indexOf(BrowserReportFixture.payload(root.resolve("second.png")));
+        assertTrue(firstImage > firstStep && firstImage < secondStep && secondImage > secondStep, "Step images remain between their original action and the next action");
+        assertFalse(text.contains("Recorded comparisons"), "Stepped flows do not add a synthetic aggregate assertion");
+        assertFalse(doc.selectFirst("#dashboard-view").text().contains("FRAME_ASSERTION"), "Overview remains standard");
+    }
+
+    @Test void incompleteOrContradictoryStepEvidenceIsRejectedBeforePublication(ComponentInputs inputs) throws Exception {
+        inputs.add("Negative controls", "Missing assertions or before state, duplicated IDs, a non-Boolean or contradictory verdict, a passing case with a failed step, and an absent/negative observed interval.");
+        for (String mutation : java.util.List.of("assertions", "before", "null-before", "duplicate", "boolean", "step-status", "case-status", "duration")) {
+            Path evidence = root.resolve(mutation);
+            var test = BrowserReportFixture.steps(evidence);
+            var step = (com.fasterxml.jackson.databind.node.ObjectNode) test.get("steps").get(0);
+            var assertion = (com.fasterxml.jackson.databind.node.ObjectNode) step.get("assertions").get(0);
+            switch (mutation) {
+                case "assertions" -> step.putArray("assertions");
+                case "before" -> step.remove("before");
+                case "null-before" -> step.putNull("before");
+                case "duplicate" -> ((com.fasterxml.jackson.databind.node.ObjectNode) test.get("steps").get(1)).put("id", "DEPOSIT-1");
+                case "boolean" -> assertion.put("passed", "true");
+                case "step-status" -> step.put("status", "FAIL");
+                case "case-status" -> { assertion.put("passed", false); step.put("status", "FAIL"); }
+                case "duration" -> step.put("durationMillis", -1);
+                default -> throw new AssertionError(mutation);
+            }
+            BrowserReportFixture.writeSteps(evidence, test);
+            assertThrows(IllegalArgumentException.class, () -> BrowserReportFixture.publish(publisher, evidence));
+            assertFalse(Files.exists(evidence.resolve("report.html")), "Rejected step data creates no partial HTML: " + mutation);
+        }
+    }
+
     private static Element scenario(Document doc, String title) {
         Element node = doc.select("a.node").stream().filter(element -> element.text().equals(title)).findFirst().orElseThrow();
         while (!node.hasClass("card")) node = node.parent();

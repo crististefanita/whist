@@ -54,6 +54,15 @@ class WhistSurfaceAdapterComponentTest {
         assertTrue(output.contains("Responsive renderer observations:"), "Actual renderer measurements accompany the comparisons");
     }
 
+    @Test void individualDepositsKeepOrderedBeforeAfterComparisons(ComponentInputs inputs) throws Exception {
+        var root = GovernanceProject.locateProjectRoot();
+        String output = NodeReleaseContracts.runNode(List.of("node", "--test",
+                root.resolve("atf-ui-browser/tests/table-checkpoints.test.mjs").toString(),
+                root.resolve("atf-ui-browser/tests/table-continuity.test.mjs").toString()), root, Duration.ofSeconds(30),
+                value -> inputs.add("Actual before/after trace-oracle outputs, including drift mutations", value));
+        assertTrue(output.contains("Table checkpoint observations:"), "Individual deposits retain field assertions and observation ownership");
+    }
+
     @Test void dropdownAndScoreTypographyPreserveNativeFactsAndCommandBindings(ComponentInputs inputs) throws Exception {
         var root = GovernanceProject.locateProjectRoot();
         String output = NodeReleaseContracts.runNode(List.of("node", "--test",
