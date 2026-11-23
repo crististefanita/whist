@@ -2213,6 +2213,7 @@ testChanges:
 testChanges:
   - id: WEB-HANDOFF-DOSSIER
     status: VERIFIED
+    allowDelete: true
     base: 9cc19f7f16b1c09f6e5737ffee9a97e18a26e668
     expires: 2026-12-23
     reason: Izolează întinderea produsă de ancora inferioară moștenită în fixture-uri de componentă fără poze, păstrează un singur parcurs browser ilustrat și respinge inventarele de rapoarte corupte sau clasificate greșit.
@@ -2220,10 +2221,10 @@ testChanges:
     checks:
       positive:
         - atf.tests.governance.documentation.release.rag.nativeproof.WhistSurfaceAdapterComponentTest#preparedAndLiveSeatsShareIntrinsicHeightWithoutBottomAnchorStretch
-        - atf.tests.governance.documentation.release.WebReleaseDossierComponentTest#portableWebInventoryChecksHashesPathsAndEvidenceOwnership
-        - atf.tests.governance.documentation.release.WebReleaseDossierComponentTest#currentWebDossierHasOneIllustratedFlowAndNoComponentCaptures
+        - atf.tests.governance.documentation.release.web.WebReleaseDossierComponentTest#portableWebInventoryChecksHashesPathsAndEvidenceOwnership
+        - atf.tests.governance.documentation.release.web.WebReleaseDossierComponentTest#currentWebDossierHasOneIllustratedFlowAndNoComponentCaptures
       negative:
-        - atf.tests.governance.documentation.release.WebReleaseDossierComponentTest#onlyTheExplicitTypedWebFolderIsAcceptedBesideAndroidVersions
+        - atf.tests.governance.documentation.release.ReleaseArtifactLayoutGovernanceTest#onlyTheExplicitTypedWebFolderIsAcceptedBesideAndroidVersions
     paths:
       - config/atf-component-dependencies.json
       - atf-tests/src/test/java/atf/tests/governance/documentation/release/ReleaseArtifactCatalog.java
