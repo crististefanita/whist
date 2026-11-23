@@ -1,4 +1,4 @@
-# Whist 0.24.0
+# Whist Lab 0.24.0
 
 Whist 0.24.0 separates portable presentation contracts from Android and Web adapters and fixes fractional mobile viewport parsing.
 

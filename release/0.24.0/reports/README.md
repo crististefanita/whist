@@ -67,3 +67,5 @@ All native selections use Android API 28 at 1080×1920, density 440. Display com
 [Current source](apk-inputs.json) · [Component execution](component/source-component-run.json) · [Reuse decisions](component/component-reuse.json) · [APK build equivalence](diagnostics/apk-build-equivalence.json) · [Qualification plan](qualification-plan.json)
 
 The APK was assembled before verification-only maintenance. Its bytes and native build inputs remain identical; the current validator independently admits the original execution snapshots. Web emulation does not close same-device Android Chrome acceptance.
+
+[Release catalog](../../README.md) · [Testing strategy](../../../docs/testing/README.md)
