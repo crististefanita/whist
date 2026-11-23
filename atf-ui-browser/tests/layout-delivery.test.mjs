@@ -5,7 +5,7 @@ import test from 'node:test';
 import {runInNewContext} from 'node:vm';
 import {fileURLToPath,pathToFileURL} from 'node:url';
 const web=process.env.ATF_BROWSER_WEB_ROOT??fileURLToPath(new URL('../src/main/web/',import.meta.url));
-const {textScale}=await import(pathToFileURL(path.join(web,'viewport.mjs')));
+const {textScale,intrinsicTableHeight}=await import(pathToFileURL(path.join(web,'viewport.mjs')));
 const source=fs.readFileSync(path.join(web,'table.mjs'),'utf8');
 const start=source.indexOf('async function placeTable('),end=source.indexOf('function whistHeader(',start);
 assert.ok(start>=0&&end>start,'Use the production layout and placement functions');
@@ -17,10 +17,10 @@ function harness({deferFonts=false}={}){
   const center={style:{}},played={childElementCount:0},hand={clientWidth:414,querySelector:()=>fan};
   const board={clientWidth:414,clientHeight:400,isConnected:true,style:{minHeight:''},dataset:{},
     querySelectorAll:key=>key==='.seat'?seats:[],querySelector:key=>key==='.center'?center:key==='.cards-on-table'?played:null};
-  const content={classList:{toggle(){}},hasAttribute:()=>false,querySelector:key=>key==='.board'?board:key==='.hand'?hand:null};
+  const content={dataset:{},classList:{toggle(){}},hasAttribute:()=>false,querySelector:key=>key==='.board'?board:key==='.hand'?hand:null};
   const context={stage:{clientHeight:896,dataset:{},firstElementChild:content},state:{view:{header:{mode:'OH_HELL'}}},
-    layoutRequests:new WeakMap(),playedLayouts:new WeakMap(),document:{documentElement:{}},getComputedStyle:()=>({fontSize:'16px'}),
-    textScale,fitTrumpText:()=>deferFonts?new Promise(resolve=>fonts.push(resolve)):Promise.resolve(),fitBidSummary(){},fitSeatLines(){},measureNativeSeat:()=>({bodyHeight:43,nameHeight:15}),
+    layoutRequests:new WeakMap(),playedLayouts:new WeakMap(),document:{documentElement:{}},surface:{schedule(){}},getComputedStyle:node=>({fontSize:'16px',height:node===board?'400px':'600px'}),
+    textScale,intrinsicTableHeight,fitTrumpText:()=>deferFonts?new Promise(resolve=>fonts.push(resolve)):Promise.resolve(),fitBidSummary(){},fitSeatLines(){},measureNativeSeat:()=>({bodyHeight:43,nameHeight:15}),
     measureSeatActionClearance:()=>14,copy:(_key,fallback)=>fallback,placePlayed(){},errorBox:{textContent:''},
     call:(_path,fields)=>new Promise((resolve,reject)=>requests.push({fields,resolve,reject}))};
   const layout=runInNewContext(source.slice(start,end)+';placeTable',context);
@@ -54,6 +54,23 @@ test('the production trump fitter does not write text after its layout owner exp
   const old=fit(content,()=>current);current=false;release([]);await old;
   assert.equal(reads,0);assert.equal(fits.length,0);
   await fit(content,()=>true);assert.equal(reads,1);assert.deepEqual(fits,tile.children);
+});
+
+test('fitting a taller scene cannot change the native policy of the useful viewport',async()=>{
+  const h=harness();h.context.stage.clientHeight=1000;h.context.stage.dataset.layoutViewport='568';
+  const toggles=[];h.context.stage.firstElementChild.classList.toggle=(name,value)=>toggles.push({name,value});
+  const pending=h.layout();await settle();
+  assert.equal(h.requests[0].fields.viewport,568,'The Android-style short-window policy uses useful height, not fitted content height');
+  assert.deepEqual(toggles,[{name:'compact-table',value:true}]);
+  h.requests[0].resolve(h.result(40));await pending;
+});
+
+test('only a current native minimum can update the intrinsic scene reservation',async()=>{
+  const h=harness(),older=h.layout();await settle();const newer=h.layout();await settle();
+  h.requests[1].resolve({...h.result(40),minimumBoardHeight:320});await newer;
+  assert.equal(h.context.stage.firstElementChild.dataset.minimumHeight,'520');
+  h.requests[0].resolve({...h.result(5),minimumBoardHeight:600});await older;
+  assert.equal(h.context.stage.firstElementChild.dataset.minimumHeight,'520','An old allocation cannot inflate the next hand');
 });
 
 test('an older layout reply cannot move seats or cards after the latest measurement commits',async()=>{

@@ -22,7 +22,7 @@ Deciziile AI, seriile și Jocul la 0 se extind prin componente cu oracol de dome
 
 | ID | Lucrare rămasă | Criteriu de închidere |
 |---|---|---|
-| WEB-15 | Finalizarea adoptării contractelor adaptive de prezentare în consumatorii rămași. | Calificați Whist înaintea exportului. Cereți activarea explicită a chenarelor măsurate și controale negative prin care împrumutarea temei păstrează geometria anterioară a locurilor. Reîmpachetați împreună execuția și testele; verificați aceiași octeți în consumatori fără modificarea artefactului Android. Păstrați imuabil pachetul calificat curent. |
+| WEB-15 | Distribuirea rămâne amânată până la acceptanța completă Whist Web. | Închideți lacunele afișajului Whist Web înaintea împachetării ori distribuirii către Rentz/Hold’em. Cereți activarea explicită a chenarelor măsurate și controale negative prin care împrumutarea temei păstrează geometria anterioară. Apoi calificați aceiași octeți de execuție/teste în consumatori fără modificarea artefactelor Android; păstrați imuabile pachetele admise. |
 
 ## WEB-16 Suprafața de joc responsivă și tipografia meniurilor
 
@@ -37,8 +37,9 @@ Whist partajează politicile native ale locurilor, cărților și animațiilor. 
 
 1. Păstrați proporțiile APK-ului printr-o singură încadrare măsurată a scenei complete, inclusiv textul din chenare, cărțile, antetul, ajutorul, listele și tabelele de scor. Normalizați pixelii nativi prin densitate și zonele rezervate sistemului. Telefoanele folosesc dimensiunile CSS utile reale; desktopul mărește o referință calibrată după APK. Evitați măriri independente ale fonturilor, constante separate pe rezoluții sau decuparea conținutului pentru a ascunde depășirile.
 2. Licitarea, jocul, meniurile și fiecare dialog fără istoric încap în înălțimea utilă fără derulare verticală. Regulile, grupele de realizări și clasamentele folosesc pagini limitate; istoricul scorului este singura excepție cu derulare verticală internă. Păstrați textul complet, câmpurile, navigarea și alegerile manuale.
-3. Păstrați chenarele fixe între licitare, joc și colectare. Etichetele localizate ale turei stau deasupra chenarelor în benzi rezervate ambelor faze. Oh Hell, Reverse Oh Hell și variantele descrescătoare la trei jucători nu trebuie să intersecteze etichete, butoane de licitație, alte chenare sau mâna umană.
+3. Păstrați chenarele fixe între licitare, joc, colectare și mâini consecutive cu numere diferite de cărți. Verificați chenarele de sus la patru locuri și pe cele de jos la cinci, inclusiv la valori necunoscute și cu două cifre. Textul încadrat trebuie să păstreze înălțimea intrinsecă precum în APK; CSS-ul vechi pentru mai multe rânduri nu trebuie să ajungă la textul încadrat imbricat. Etichetele localizate stau deasupra chenarelor în benzi rezervate ambelor faze. Variantele la trei jucători nu trebuie să intersecteze etichete, licitații, chenare sau mâna umană.
 4. Păstrați gestul orizontal nativ pentru mâinile dense. Verificați accesul la prima/ultima carte, fără a forța toate cele 17 cărți într-un viewport îngust prin reducerea indicilor.
+5. Selectați politica nativă din înălțimea utilă a viewport-ului, apoi încadrați cerința intrinsecă a scenei. Separați rezervarea minimă a tablei de spațiul alocat și limitele vechi ale copiilor absoluți. Măsurați mâini consecutive, nu doar câteva levate din aceeași mână; păstrați urmele originale eșuate când se corectează un validator.
 
 **Dovezi de închidere**
 

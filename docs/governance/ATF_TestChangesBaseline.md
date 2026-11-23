@@ -2133,3 +2133,38 @@ testChanges:
 ```
 
 </details>
+
+<details>
+<summary>Rezervarea intrinsecă a mesei și mâini consecutive stabile</summary>
+
+```yaml
+testChanges:
+  - id: WEB-INTRINSIC-FOOTPRINT
+    status: VERIFIED
+    base: c07a11a46e2c48a25272ea81de5f63797794538b
+    expires: 2026-12-23
+    reason: Keep fitted seat rows single-line, separate native viewport policy and minimum reservation from allocated scene size, and verify deposited-card boundaries without masking intentional fan recentering.
+    proof: 'mvn -o -pl atf-tests -am -Dtest=WhistSurfaceAdapterComponentTest -Dsurefire.failIfNoSpecifiedTests=false test'
+    checks:
+      positive:
+        - atf.tests.governance.documentation.release.rag.nativeproof.WhistSurfaceAdapterComponentTest#mountedCardsAndLayoutOwnersSurvivePhaseAndActorChanges
+        - atf.tests.governance.documentation.release.rag.nativeproof.WhistSurfaceAdapterComponentTest#webAndNativePortablePortsKeepMeasuredGeometryFacesAndGesturesAligned
+        - atf.tests.governance.documentation.release.rag.nativeproof.WhistSurfaceAdapterComponentTest#adaptiveWebMenusKeepTextIndependentOfTheUsableViewport
+      negative:
+        - atf.tests.governance.documentation.release.rag.nativeproof.WhistSurfaceAdapterComponentTest#surfaceLifecycleRejectsInvalidPagesAndCallbacksAfterDisposal
+    paths:
+      - atf-tests/src/test/java/atf/tests/governance/documentation/release/rag/nativeproof/WhistSurfaceAdapterComponentTest.java
+      - atf-ui-browser/Package-CardTableBrowser.ps1
+      - atf-ui-browser/tests/layout-delivery.test.mjs
+      - atf-ui-browser/tests/match-continuity.mjs
+      - atf-ui-browser/tests/responsive-surface.test.mjs
+      - atf-ui-browser/tests/ro/cardtable/browser/WhistSurfaceContract.java
+      - atf-ui-browser/tests/seat-measurements.test.mjs
+      - atf-ui-browser/tests/table-continuity.mjs
+      - atf-ui-browser/tests/table-continuity.test.mjs
+      - atf-ui-browser/tests/table-height.test.mjs
+      - atf-ui-browser/tests/whist-surface-contract.test.mjs
+      - config/atf-component-dependencies.json
+```
+
+</details>

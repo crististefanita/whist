@@ -774,7 +774,7 @@ html[data-surface="whist"] { font-family: WhistRoboto, Roboto, sans-serif; }
   transform: none;
   font: inherit;
 }
-[data-surface="whist"] .seat span:first-of-type { white-space: pre-line; }
+[data-surface="whist"] .seat > span:first-of-type:not(.seat-line) { white-space: pre-line; }
 .whist-score {
   display: grid; gap: 8px;
   font-size: var(--score-text-body, 1rem);

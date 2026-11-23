@@ -1,12 +1,12 @@
-import { ADAPTIVE_SURFACE, adaptiveViewport, surfaceTypography, fitTextWidth, isPhone, viewportGeometry, textScale } from "./viewport.mjs?v=0.9";
+import { ADAPTIVE_SURFACE, adaptiveViewport, surfaceTypography, fitTextWidth, isPhone, viewportGeometry, textScale, intrinsicTableHeight } from "./viewport.mjs?v=0.10";
 import { collect } from "./collection.mjs";
 import { autoGame, waitForDecision } from "./auto-game.mjs";
-import { bindHandFeedback } from "./hand-feedback.mjs?v=0.9";
-import { historyGrid, applyHistoryAppearance } from "./records.mjs?v=0.9";
-import { fitSeatLines, commitTableView, updateSeatFact, measureSeatActionClearance, measureNativeSeat } from "./seat-presentation.mjs?v=0.9";
-import { historyFirst, menuFromEntries } from "./table-menu.mjs?v=0.9";
-import { createProfileDialogs, deviceProfile, dismissGameMenuOnOutsideClick, preferredLanguage, saveLanguage } from "./profile.mjs?v=0.9";
-import { surfaceFitter } from "./surface-fit.mjs?v=0.9";
+import { bindHandFeedback } from "./hand-feedback.mjs?v=0.10";
+import { historyGrid, applyHistoryAppearance } from "./records.mjs?v=0.10";
+import { fitSeatLines, commitTableView, updateSeatFact, measureSeatActionClearance, measureNativeSeat } from "./seat-presentation.mjs?v=0.10";
+import { historyFirst, menuFromEntries } from "./table-menu.mjs?v=0.10";
+import { createProfileDialogs, deviceProfile, dismissGameMenuOnOutsideClick, preferredLanguage, saveLanguage } from "./profile.mjs?v=0.10";
+import { surfaceFitter } from "./surface-fit.mjs?v=0.10";
 
 const stage = document.querySelector("#table");
 const frame = document.querySelector("#frame");
@@ -15,7 +15,7 @@ const history = document.querySelector("#history");
 let animation;
 let surface;
 let fitKey, fitHeight=ADAPTIVE_SURFACE.height;
-const resize = () => {
+const resize = (relayout = true) => {
   animation?.hideOverlay();
   const visual = window.visualViewport;
   const inset = getComputedStyle(viewport);
@@ -26,6 +26,8 @@ const resize = () => {
   const phone = isPhone(navigator.userAgent);
   const adaptive = document.documentElement.dataset.surface === "whist" || document.documentElement.dataset.engine === "whist";
   const baseHeight=phone?height:ADAPTIVE_SURFACE.height;
+  if(adaptive)stage.dataset.layoutViewport=String(baseHeight);
+  else delete stage.dataset.layoutViewport;
   let result = adaptive ? adaptiveViewport(width, height,baseHeight,phone) : viewportGeometry(width, height, phone);
   if (adaptive) {
     const current=stage.querySelector(':scope > .whist-match:not([data-preparing])');
@@ -35,7 +37,8 @@ const resize = () => {
     fitKey=key;
     stage.style.setProperty('--stage-width',result.width+'px');
     stage.style.setProperty('--stage-height',result.height+'px');
-    fitHeight=Math.max(fitHeight,stage.scrollHeight);
+    fitHeight=current?.dataset.minimumHeight
+      ?Math.max(baseHeight,Number(current.dataset.minimumHeight)):Math.max(fitHeight,stage.scrollHeight);
     result=adaptiveViewport(width,height,fitHeight,phone);
   }
   if (adaptive) {
@@ -61,7 +64,7 @@ const resize = () => {
     document.documentElement.style.setProperty('--modal-center-y',(bounds.top+bounds.height/2)+'px');
     surface?.fitDialog(width,height,phone,result);
   }
-  if (stage.firstElementChild?.matches(".match:not([data-preparing])")) void placeTable();
+  if (relayout!==false&&stage.firstElementChild?.matches(".match:not([data-preparing])")) void placeTable();
 };
 resize();
 window.addEventListener("resize", resize);
@@ -681,8 +684,9 @@ async function placeTable(content = stage.firstElementChild) {
   const fan = hand.querySelector(".fan");
   const width = board.clientWidth;
   const fontScale=textScale(getComputedStyle(document.documentElement).fontSize);
-  content.classList.toggle('compact-table',stage.clientHeight<760*Math.max(1,fontScale));
-  const seatWidth = Math.min(116, Math.round(width * (stage.clientHeight < 760*Math.max(1,fontScale) ? 0.25 : 0.29)),
+  const layoutViewport=Number(stage.dataset.layoutViewport??stage.clientHeight);
+  content.classList.toggle('compact-table',layoutViewport<760*Math.max(1,fontScale));
+  const seatWidth = Math.min(116, Math.round(width * (layoutViewport < 760*Math.max(1,fontScale) ? 0.25 : 0.29)),
     Math.floor((width - 16) / 3));
   for (const seat of seats) {
     const value=Math.max(1,seatWidth)+'px';
@@ -703,11 +707,18 @@ async function placeTable(content = stage.firstElementChild) {
       fontScale,
       bidOptions: stage.dataset.playingSteps && !content.hasAttribute("data-preparing")
         ? 0 : board.querySelectorAll("[data-bid]").length,
-      players: seats.length, viewport: stage.clientHeight, handWidth: hand.clientWidth, cards: fan.children.length,
+      players: seats.length, viewport: layoutViewport, handWidth: hand.clientWidth, cards: fan.children.length,
       ...(state.view.header && { handIndexWidth: Math.max(1, ...[...fan.querySelectorAll(".card-index:not(.inverted)")]
         .map(index => index.offsetLeft + index.offsetWidth + 2)) })
     });
     if (layoutRequests.get(board) !== request || !board.isConnected) return;
+    if(state.view.header&&layout.minimumBoardHeight>0){
+      const minimum=intrinsicTableHeight(parseFloat(getComputedStyle(content).height),
+        parseFloat(getComputedStyle(board).height),layout.minimumBoardHeight);
+      const changed=content.dataset.minimumHeight!==String(minimum);
+      content.dataset.minimumHeight=String(minimum);
+      if(changed&&!content.hasAttribute('data-preparing'))surface?.schedule();
+    }
     const cardsOnTable = board.querySelector(".cards-on-table");
     playedLayouts.set(cardsOnTable, layout.played ? { ...layout.played, ...layout.playedStyle } : null);
     if (layout.board) {
@@ -944,15 +955,21 @@ async function render() {
   let width, height;
   do {
     width = stage.clientWidth;
-    height = stage.clientHeight;
+    height = content.clientHeight;
     await placeTable(content);
-  } while (content.isConnected && (width !== stage.clientWidth || height !== stage.clientHeight));
+    if(content.dataset.minimumHeight){
+      content.style.minHeight='0';
+      content.style.height=Math.max(Number(stage.dataset.layoutViewport),Number(content.dataset.minimumHeight))+'px';
+    }
+  } while (content.isConnected && (width !== stage.clientWidth || height !== content.clientHeight));
   if (!content.isConnected) return;
   delete content.dataset.preparing;
   content.inert = false;
   content.append(errorBox);
   const playedLayout=playedLayouts.get(content.querySelector('.cards-on-table'));
   const committed=commitTableView(stage,content,{retainHand:!!match.header&&!!timing});
+  committed.style.removeProperty('height');committed.style.removeProperty('min-height');
+  resize(false);
   playedLayouts.set(committed.querySelector('.cards-on-table'),playedLayout);
   layoutRequests.set(committed.querySelector(':scope > .board'),{});
   if (acceptsFeedback) {

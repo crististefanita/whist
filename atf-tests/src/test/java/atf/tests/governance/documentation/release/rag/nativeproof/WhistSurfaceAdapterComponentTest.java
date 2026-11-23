@@ -29,11 +29,17 @@ class WhistSurfaceAdapterComponentTest {
         var root = GovernanceProject.locateProjectRoot();
         String output = NodeReleaseContracts.runNode(List.of("node", "--test", "--test-concurrency=1",
                 root.resolve("atf-ui-browser/tests/seat-paint.test.mjs").toString(),
+                root.resolve("atf-ui-browser/tests/seat-measurements.test.mjs").toString(),
+                root.resolve("atf-ui-browser/tests/table-height.test.mjs").toString(),
+                root.resolve("atf-ui-browser/tests/table-continuity.test.mjs").toString(),
                 root.resolve("atf-ui-browser/tests/layout-delivery.test.mjs").toString(),
                 root.resolve("atf-ui-browser/tests/asset-revision.test.mjs").toString(),
                 root.resolve("atf-ui-browser/tests/hand-lifecycle.test.mjs").toString()), root, Duration.ofSeconds(90),
                 value -> inputs.add("Original mounted-card and delayed-owner observations", value));
         assertTrue(output.contains("Seat paint observations:"), "Frames, hand faces and public cards retain their identities");
+        assertTrue(output.contains("Seat measurement observations:"), "Bid and trick values cannot change the native-style fitted line height");
+        assertTrue(output.contains("Intrinsic table observations:"), "Allocated board slack cannot inflate the next hand");
+        assertTrue(output.contains("Table continuity oracle observations:"), "Accepted fan recentering does not conceal frame or AI-turn drift");
         assertTrue(output.contains("Layout delivery observations:"), "Delayed or reordered layout replies cannot overwrite committed frame and card positions");
         assertTrue(output.contains("Hand lifecycle observations:"), "A retained hand has one live input owner and rejects disposed callbacks");
         assertTrue(output.contains("Asset revision observations:"), "The live shell cannot load an obsolete delegated-hand adapter");

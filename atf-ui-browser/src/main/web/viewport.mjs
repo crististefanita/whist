@@ -51,3 +51,9 @@ export function textScale(fontSize) {
   const scale = Number.parseFloat(fontSize) / 16;
   return Number.isFinite(scale) && scale >= .5 && scale <= 3 ? scale : 1;
 }
+/** Native minimum plus non-board flow; allocated space and absolute overflow are not intrinsic demand. */
+export function intrinsicTableHeight(contentHeight, allocatedBoardHeight, minimumBoardHeight) {
+  if (![contentHeight,allocatedBoardHeight,minimumBoardHeight].every(n=>typeof n==='number'&&Number.isFinite(n)&&n>0)
+      ||allocatedBoardHeight>contentHeight)throw new RangeError('Invalid intrinsic table dimensions');
+  return Math.ceil(contentHeight-allocatedBoardHeight+minimumBoardHeight);
+}
