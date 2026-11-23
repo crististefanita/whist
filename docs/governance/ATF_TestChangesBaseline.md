@@ -2547,3 +2547,25 @@ testChanges:
 ```
 
 </details>
+
+<details>
+<summary>Android shared-presentation release version</summary>
+
+```yaml
+testChanges:
+  - id: WHIST-024-DELIVERY-VERSION
+    status: VERIFIED
+    base: d99ab5071b7a8a285ca055fc5938485f19a03aa4
+    expires: 2026-12-23
+    reason: Increment the Android delivery identity for the extracted shared presentation modules without changing test selection, task filters or runtime rules.
+    proof: 'mvn -o -pl atf-tests -am -Dtest=ReleaseVersionComponentTest -Dsurefire.failIfNoSpecifiedTests=false test'
+    checks:
+      positive:
+        - atf.tests.governance.documentation.release.versioning.ReleaseVersionComponentTest#theApplicationUsesTheDeclaredPatchReleaseConvention
+      negative:
+        - atf.tests.governance.documentation.release.versioning.ReleaseVersionComponentTest#absentVersionCannotBecomeADownloadIdentity
+    paths:
+      - whist-lab-app/app/build.gradle
+```
+
+</details>
