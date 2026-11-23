@@ -52,6 +52,19 @@ JUnit output is a temporary independent population oracle. The verifier reconcil
 
 ## Acceptance and retention
 
+### Exhaustive matrices with bounded audit inputs
+
+The [matrix ledger](../../whist-lab-app/test-audit/src/testFixtures/java/atf/gradle/audit/matrix/ExhaustiveMatrixChecks.java) evaluates every expected/actual pair and aggregates passing comparisons by named invariant.
+
+| Boundary | Required contract |
+|---|---|
+| Preconditions | Record axes, deterministic setup and the independently expected population. |
+| Coverage | Compare the expected population with the evaluated count; reject an empty scan or a swallowed mismatch. |
+| Failure | Fail immediately with the location and complete expected/actual values of the first mismatch. |
+| Identity | Preserve invocation identities and qualified report bytes; changed inputs produce new evidence. |
+| Size | Measure decoded input bodies and comparison counts separately from shared embedded HTML resources. |
+| Levels | Units verify isolated calculations without Extent; components retain audited adapter contracts, independent oracles, coverage and negative cases. |
+
 The [layer catalog](../../config/gradle-audit-collections.properties) declares every executable owner. Moving a class preserves its case identity. Shared contracts and negative controls must pass before retiring a duplicate platform check.
 
 RAG records each validated task independently before starting the next task. Reuse requires unchanged relevant production inputs, transitive dependencies, tests, resources, toolchain and selection. A failed case is rerun after correction; unrelated valid collections remain reusable. [Checkpoint and reuse](ATF_ReleaseQualification.md#resume-validated-steps)
