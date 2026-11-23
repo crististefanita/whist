@@ -84,8 +84,8 @@ export function retainSeatFrames(previous, next) {
   return pairs.length;
 }
 
-/** Commit a measured view without unmounting a compatible visible board or its seats. */
-export function commitTableView(stage,next){
+/** Keep public faces mounted; retainHand requires the caller to dispose and rebind delegated input. */
+export function commitTableView(stage,next,{retainHand=false}={}){
   const previous=stage.querySelector(':scope > .match:not([data-preparing])');
   const pairs=previous&&previous!==next?compatibleSeats(previous,next):null;
   if(!pairs){stage.replaceChildren(next);return next;}
@@ -99,17 +99,37 @@ export function commitTableView(stage,next){
   for(const [frame,measured] of pairs){synchronizeAttributes(frame,measured);synchronizeChildren(frame,measured);}
   synchronizeAttributes(board,prepared);
   synchronizeAttributes(center,nextCenter);
-  center.replaceChildren(...nextCenter.childNodes);
+  commitCenter(center,nextCenter);
   synchronizeAttributes(previous,next);
   const anchors=new Map([[prepared,board]]);
   if(header&&nextHeader){
     synchronizeAttributes(header,nextHeader);synchronizeChildren(header,nextHeader,true);
     anchors.set(nextHeader,header);
   }
+  if(retainHand&&scroll!==null){
+    synchronizeAttributes(hand,nextHand);
+    synchronizeChildren(hand,nextHand);
+    anchors.set(nextHand,hand);
+  }
   replaceAroundAnchors(previous,next,anchors);
-  if(scroll!==null)nextHand.scrollLeft=scroll;
+  if(scroll!==null)(retainHand?hand:nextHand).scrollLeft=scroll;
   next.remove();
   return previous;
+}
+
+function commitCenter(current,next){
+  const cards=current.querySelector(':scope > .cards-on-table'),fresh=next.querySelector(':scope > .cards-on-table');
+  if(!cards||!fresh){current.replaceChildren(...next.childNodes);return;}
+  const key=node=>node.dataset.seat!==undefined&&node.querySelector('.card')?.dataset.face
+    ?node.dataset.seat+'|'+node.querySelector('.card').dataset.face:null;
+  const existing=new Map([...cards.children].map(node=>[key(node),node])),anchors=new Map();
+  for(const node of fresh.children){
+    const id=key(node),retained=id&&existing.get(id);
+    if(retained){synchronizeAttributes(retained,node);synchronizeChildren(retained,node);anchors.set(node,retained);}
+  }
+  synchronizeAttributes(cards,fresh);
+  replaceAroundAnchors(cards,fresh,anchors);
+  replaceAroundAnchors(current,next,new Map([[fresh,cards]]));
 }
 
 function replaceAroundAnchors(current,next,anchors){

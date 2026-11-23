@@ -2,14 +2,14 @@
 
 ## Overview
 
-[Adapter documentation](../../atf-ui-browser/README.md) explains the course of APK, JAR and Pages. The registry follows the comparison on the same Android device.
+[Adapter documentation](../../atf-ui-browser/README.md) explains the APK, shared-package and Pages paths. This register tracks the remaining comparison on the same Android device.
 
 ## Qualification on the same device
 
 | ID | Remaining sample | Closure criterion |
 |---|---|---|
 | WEB-07 | A Romanian 1–8–1 match with four seats, from the same checkpoint in APK and Chrome on Android. | Compare legal moves, actor, last card and collection, score and history with adjustments. Check settings, Achievements, Play again and resume after reopening in RO/EN, with normal text and enlarged. |
-| WEB-11 | Maximum Hand in Chrome Android at 360 × 800 and 414 × 896, with enhanced text. | Confirm access to all 17 cards, including A, K, Q, J and `10`. Compare glyphs in hand, table and collection, including in browser without `font-variant-emoji`. |
+| WEB-11 | A maximum-size hand in Android Chrome at 360 × 800 and 414 × 896, with enlarged text. | Confirm access to all 17 cards, including A, K, Q, J and `10`. Compare glyphs in hand, on the table and during collection, including browsers without `font-variant-emoji`. |
 
 Use the same useful profile and document the density, scale of text, language, browser version and APK hash. Compare geometry by the reserved areas of the system. Record separately the rounding of edges, font measurement and interactive areas. [Display matrix](../testing/ATF_Display.md)
 
@@ -45,7 +45,7 @@ Whist shares native seat, card and animation policies. Preserve that boundary an
 - [Components](../../atf-ui-browser/tests/responsive-surface.test.mjs) cover fixed-height menus/dialogs, paging, callback isolation, localized labels and 1.0×/1.3× text through a controlled HTTP boundary. [Real-engine checks](../../atf-ui-browser/tests/responsive-game.mjs) retain the same hand across resizing and language changes; neither suite claims native APK acceptance.
 - Record page/panel scroll ranges and all visible bounds. Include compact and desktop profiles, three-player labels and dense hands. Hidden scrollbars or a single one-card picture cannot establish this contract.
 - Compare intrinsic seat measurements and native heading/frame reserves, not only rectangles produced from identical injected heights. Verify dropdown options inherit the selected-value role and score columns preserve bid, won tricks, hand delta and cumulative total with balanced native typography. Dialog fitting must not apply text scale twice.
-- Verify paging-label contrast and compact outlines in Achievements, rankings and help, in both languages and enabled/disabled states. Keep Previous/Next separate from Close; check real dismissal as well as the labels. Preserve compatible headers, trump text, seat rows and fitted ink during AI/human handoffs, with unchanged hand scroll and placed-card origins. Delayed layout replies must not repaint newer geometry; [controlled delivery checks](../../atf-ui-browser/tests/layout-delivery.test.mjs) isolate this boundary. Stable outer rectangles alone do not establish paint continuity. Confirm the reported visual motion at five and six seats before closing physical acceptance.
+- Verify paging-label contrast and compact outlines in Achievements, rankings and help, in both languages and enabled/disabled states. Keep Previous/Next separate from Close; check real dismissal as well as the labels. Preserve compatible headers, trump text, seat rows and fitted ink during AI/human handoffs, with unchanged hand nodes, scroll and deposited faces. [Hand ownership](../../atf-ui-browser/tests/hand-lifecycle.test.mjs) and [delayed layout checks](../../atf-ui-browser/tests/layout-delivery.test.mjs) isolate stale callbacks, including font completion before layout. Stable outer rectangles alone do not establish paint continuity. Confirm the reported visual motion at three to six seats before closing physical acceptance.
 - Render the same saved checkpoint and home/setup menus in APK and Chrome on one Android device. Compare a compact profile, RO/EN and normal/enlarged text; add a desktop browser profile without repeating complete matches at every size.
 - Extent includes viewport, density, browser/APK identity, text sizes, bounds, scroll verdicts and visible game facts, with inline captures. Keep native acceptance open until the physical comparison passes.
 - Treat a partial native instrumentation run as incomplete when any widget reports an error, even if its assertion-failure count is zero. Identify the APK/test artifact before attributing its results to current source.

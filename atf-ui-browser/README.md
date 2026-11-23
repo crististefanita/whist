@@ -15,7 +15,8 @@ Whist uses the Java engine and portable table contracts in both APK and browser.
 | Actor label | An optional consumer-owned `actorLabel` preserves the visible game action, including the human seat. Hidden headings are excluded before layout. |
 | Seat text | `SeatTypography` supplies roles; measured text fits horizontally without changing row height. |
 | Score text | `ScoreTypography` supplies logical sizes to native sp and Web rem adapters; accessibility scaling applies once. |
-| Frame identity | Prepared redraws keep the view, board, header, trump and compatible seat rows mounted. Interactive controls receive fresh callbacks, open menus remain open, and an unchanged hand retains its horizontal scroll; incompatible tables mount fresh content. |
+| Frame identity | Prepared redraws keep the view, board, header, trump, compatible seat rows and deposited faces mounted. A delegated unchanged hand retains its fan, face nodes and scroll; incompatible tables and changed hands mount fresh content. |
+| Input ownership | The adapter disposes the old hand owner before preparing a view and binds one owner to the committed fan. Disposed replies and lift completions cannot paint or submit a command; ordinary cancellation keeps the current listener usable. Fresh menu callbacks retain the open state. |
 | Trick continuity | Native-style tables attach controls only for visible actions. Automatic-only and action-free states create no empty sibling or extra flex gap; real bidding controls and legacy prompts remain visible. |
 | Component boundary | Checks execute the delivered constructor and adapters. Native raster and painted geometry have separate platform acceptance. |
 
@@ -226,11 +227,35 @@ flowchart LR
 
 - [Controlled components](tests/responsive-surface.test.mjs) exercise the production shell, localized menus, paging, profile form, text enlargement and a panned keyboard viewport. Negative inputs and collection/lifecycle isolation remain component boundaries.
 - [Typography components](tests/score-typography.test.mjs) compare dropdown labels/options, score headings, values and dialog roles while preserving supplied cells and command bindings. [Lifecycle components](tests/surface-lifecycle.test.mjs) reject stale paging, observer and animation callbacks after disposal.
-- [Paint continuity components](tests/seat-paint.test.mjs) preserve mounted views, boards, rows and ink through changed facts and actors. They reject identical-looking replacement rows, detect unmounts and redundant style writes, and check fresh-table fallbacks. Supplied rectangles isolate the DOM contract; native geometry and real-game sampling remain separate checks.
+- [Paint continuity components](tests/seat-paint.test.mjs) preserve mounted views, boards, rows, hand faces and deposited cards through changed facts and actors. They reject identical-looking replacement rows, detect unmounts and redundant style writes, and check changed hands and legacy callbacks. Supplied rectangles isolate the DOM contract; native geometry and real-game sampling remain separate checks.
+- [Hand lifecycle components](tests/hand-lifecycle.test.mjs) control pending replies, completed lifts and disposal on a retained fan. A fresh owner receives one click; an abandoned owner cannot paint, submit or keep a listener. [Asset revision](tests/asset-revision.test.mjs) runs separately from native geometry so the entry point cannot load an obsolete hand adapter.
 - [Automation ownership components](tests/automation-handoff.test.mjs) run the production command owner and gate with controlled transport and presentation. Cover selection while busy, deselection, overlapping dialogs, rejected commands and rapid toggles; a negative control rejects the former gate that ignored pending commands.
-- [Layout delivery components](tests/layout-delivery.test.mjs) execute production placement with delayed and reordered replies. Old replies and errors cannot overwrite committed frame/card geometry; navigation and a new commit invalidate pending measurements.
+- [Layout delivery components](tests/layout-delivery.test.mjs) acquire ownership before awaiting fonts and execute production placement with delayed and reordered replies. Expired font continuations cannot measure, style or request layout; old replies and errors cannot overwrite newer geometry. Navigation and a new commit invalidate pending measurements.
 - [Real-game verification](tests/responsive-game.mjs) uses the JVM engine across the game variants and retains the identical hand while changing viewport, language and text. It checks the reserved action band, phase-stable frames and access to the native horizontal hand fan.
 - Logical agreement and browser captures do not establish native font identity. The [remaining acceptance](../docs/feedback/ATF_UiBrowser.md#web-16-responsive-game-surface-and-menu-typography) compares an identified APK and Chrome on the same Android; iOS is outside this qualification.
+
+</details>
+
+```mermaid
+sequenceDiagram
+    participant Adapter as Game adapter
+    participant Input as Hand input owner
+    participant Layout as Measured layout
+    participant View as Mounted table
+    Adapter->>Input: Dispose previous owner
+    Adapter->>Layout: Prepare next view and capture generation
+    Layout-->>Adapter: Reply only while generation is current
+    Adapter->>View: Commit retained frames and compatible faces
+    Adapter->>Input: Bind once to committed fan
+    Input-->>Adapter: Submit current revision only
+```
+
+<details>
+<summary>Legend: retained display and replaceable command ownership</summary>
+
+- Display identity and input ownership have separate lifecycles: stable nodes do not retain old command callbacks.
+- `retainHand` is explicit because legacy cards may own direct listeners. A changed composition receives a fresh hand.
+- Font and transport continuations validate the same generation before applying any geometry.
 
 </details>
 

@@ -19,14 +19,24 @@ class WhistSurfaceAdapterComponentTest {
         var root = GovernanceProject.locateProjectRoot();
         String output = NodeReleaseContracts.runNode(List.of("node", "--test",
                 "--test-concurrency=1", root.resolve("atf-ui-browser/tests/whist-surface-contract.test.mjs").toString(),
-                root.resolve("atf-ui-browser/tests/seat-paint.test.mjs").toString(),
-                root.resolve("atf-ui-browser/tests/layout-delivery.test.mjs").toString(),
                 root.resolve("atf-ui-browser/tests/automation-handoff.test.mjs").toString()), root, Duration.ofSeconds(160),
                 value -> inputs.add("Original Web/native adapter observations", value));
         assertTrue(output.contains("Whist adapter observations:"), output);
-        assertTrue(output.contains("Seat paint observations:"), "Native-style frames and fitted row identities survive actor handoffs");
         assertTrue(output.contains("AutoGame handoff observations:"), "Production command ownership preserves automation intent without duplicate decisions");
+    }
+
+    @Test void mountedCardsAndLayoutOwnersSurvivePhaseAndActorChanges(ComponentInputs inputs) throws Exception {
+        var root = GovernanceProject.locateProjectRoot();
+        String output = NodeReleaseContracts.runNode(List.of("node", "--test", "--test-concurrency=1",
+                root.resolve("atf-ui-browser/tests/seat-paint.test.mjs").toString(),
+                root.resolve("atf-ui-browser/tests/layout-delivery.test.mjs").toString(),
+                root.resolve("atf-ui-browser/tests/asset-revision.test.mjs").toString(),
+                root.resolve("atf-ui-browser/tests/hand-lifecycle.test.mjs").toString()), root, Duration.ofSeconds(90),
+                value -> inputs.add("Original mounted-card and delayed-owner observations", value));
+        assertTrue(output.contains("Seat paint observations:"), "Frames, hand faces and public cards retain their identities");
         assertTrue(output.contains("Layout delivery observations:"), "Delayed or reordered layout replies cannot overwrite committed frame and card positions");
+        assertTrue(output.contains("Hand lifecycle observations:"), "A retained hand has one live input owner and rejects disposed callbacks");
+        assertTrue(output.contains("Asset revision observations:"), "The live shell cannot load an obsolete delegated-hand adapter");
     }
 
     @Test void adaptiveWebMenusKeepTextIndependentOfTheUsableViewport(ComponentInputs inputs) throws Exception {
