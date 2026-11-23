@@ -30,6 +30,7 @@ Components own combinations of dimensions, text, anchors and event order. E2E re
 | [Five/six-player illustrated handoffs](e2e/table-handoffs/extent.html) | `PASS` | `PRIMARY` | `9b57a75b` |
 | [Shared every-seat APK/Web components](component/phases/component-report.html) | `PASS` | `PRIMARY` | `9b57a75b` |
 | [Current ownership and source governance](governance/current/component-report.html) | `PASS` | `PRIMARY` | `9b57a75b` |
+| [Plan and documentation governance](governance/documentation-plan/component-report.html) | `PASS` | `PRIMARY` | `82780f0d` |
 | [Android JVM contract integration](component/apk-policy/component-report.html) | `PASS` | `REFERENCE` | `9b57a75b` |
 | [Earlier four-player reference](e2e/oh-hell/extent.html) | `PASS` | `REFERENCE` | `91716314` |
 | [Current handoff and dossier components](component/handoff/component-report.html) | `PASS` | `REUSED` | `9a5b49b8` |

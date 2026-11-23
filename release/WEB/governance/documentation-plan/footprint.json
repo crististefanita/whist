@@ -1,0 +1,13 @@
+{
+  "schemaVersion": 1,
+  "kind": "REPORT_INPUT_FOOTPRINT",
+  "report": "../../e2e/table-handoffs/extent.html",
+  "reportSha256": "75f2e9565fa3ae4835f1030081388016861671ecd261fbf56b755fdcfe6fd300",
+  "reportBytes": 9720495,
+  "inlinePngOccurrences": 11,
+  "uniqueInlinePng": 9,
+  "base64PngBytes": 677732,
+  "uniqueDecodedPngBytes": 500624,
+  "boundary": "Counts PNG data URIs in the original HTML; does not attribute remaining bytes to one producer or certify a Reporting-library change.",
+  "conclusion": "Shorten primary UI journeys and keep whole games and display combinations in components. Preserve failure context and comparison truth; no UI tests were rerun for this observation."
+}
