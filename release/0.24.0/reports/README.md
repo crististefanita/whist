@@ -8,12 +8,21 @@ The portable presentation core, Android renderer and Web adapter have separate o
 
 ```mermaid
 flowchart LR
-    SOURCE["Pinned source"] --> COMPONENT["Component owners"]
-    SOURCE --> APK["Signed APK"]
-    APK --> NATIVE["Native sanity"]
-    COMPONENT --> RAG["Read-only RAG"]
-    NATIVE --> RAG
+    SOURCE["Pinned source"] -->|selects| COMPONENT["Components"]
+    SOURCE -->|builds| APK["Signed APK"]
+    APK -->|undergoes| NATIVE["Native sanity"]
+    COMPONENT -->|informs| RAG["Read-only RAG"]
+    NATIVE -->|informs| RAG
 ```
+
+<details>
+<summary>Legend: qualification boundaries</summary>
+
+Components verify source-owned contracts. Native selections verify the identified APK and profile; the evaluator reads both receipts.
+
+</details>
+
+[Component index](component/README.md) · [Native E2E index](e2e/README.md)
 
 ## Component selections
 

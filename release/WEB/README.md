@@ -8,6 +8,21 @@ Source-bound components and one short public browser flow. The public mobile-emu
 
 Components own the combinations; E2E verifies two real hands and keeps four inline captures. Reused HTML retains its original source, verdict and bytes.
 
+```mermaid
+flowchart LR
+    GAME["Game adapter"] -->|projects through| CORE["Portable core components"]
+    CORE -->|shares contracts with| ADAPTERS["Android and Web adapters"]
+    ADAPTERS -->|wires through| SANITY["Two-hand browser sanity"]
+    SANITY -->|indexes in| AUDIT["Relative suite dossier"]
+```
+
+<details>
+<summary>Legend: evidence boundaries</summary>
+
+Components own combinations and deliberate negative cases without photos. Unit prerequisites have no Extent. The short E2E illustrates real actions and observations; equal policy plans do not prove native painted fonts.
+
+</details>
+
 ## Reports and provenance
 
 | Report | Role | Original outcome |
