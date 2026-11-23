@@ -269,7 +269,7 @@
     "atf-tests/src/test/java/atf/tests/governance/documentation/release/ReleaseIntegrityGovernanceTest.java": "691a59dc3c91505459f8b58259122c04f14072fb1cbeafd89ef1c76b37c26f89",
     "atf-tests/src/test/java/atf/tests/governance/documentation/release/ReleasePresentationGovernanceTest.java": "a0b89df139be162b521f9e5b2ff1b17971b0b5935c1691c4ccb75ec2def1e191",
     "atf-tests/src/test/java/atf/tests/governance/documentation/release/ReleaseRagPlatformGovernanceTest.java": "202587e30c1e96bf24c2412495b6b739d3cb5dba30394689fc3e896396270583",
-    "atf-tests/src/test/java/atf/tests/governance/documentation/release/WebReleaseDossierComponentTest.java": "d5e5c4af0d4af76539ef5c449857d982dc39aca02e4a65b75b875edaa76f081b",
+    "atf-tests/src/test/java/atf/tests/governance/documentation/release/WebReleaseDossierComponentTest.java": "2483b08d1d78b204bad811941254962f6427896dc2eb9448dc9e6f26e15d806e",
     "atf-tests/src/test/java/atf/tests/governance/documentation/release/download/ApkDownloadComponentTest.java": "130127c593cc46e13869f2532a861eb36666faf0c59951e4b4ee743b334417a4",
     "atf-tests/src/test/java/atf/tests/governance/documentation/release/download/PublishedApkDownloadAcceptanceTest.java": "e43ba086d04706b9a2390bf01ddc3444d7e62171989b0354cbbed162c52a0382",
     "atf-tests/src/test/java/atf/tests/governance/documentation/release/handoff/ReleaseCommitEvidence.java": "fd03ef39c0614bd15328b37ccefb4030832171796d5668b176357aaf21e296a4",
