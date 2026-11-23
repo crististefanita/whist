@@ -1,10 +1,8 @@
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
-import os from 'node:os';
 import path from 'node:path';
-import {execFileSync} from 'node:child_process';
-import {fileURLToPath} from 'node:url';
 import {test} from 'node:test';
+import {portableContract} from './portable-contract.mjs';
 import {textScale} from '../src/main/web/viewport.mjs';
 import {collectionFrame} from '../src/main/web/collection.mjs';
 
@@ -14,23 +12,9 @@ test('CSS text scale is logical and is independent of desktop device-pixel ratio
 });
 
 test('production Web and native portable adapters share geometry, card marks and gesture transitions', t => {
-  const root=fileURLToPath(new URL('../../',import.meta.url));
-  const work=fs.mkdtempSync(path.join(os.tmpdir(),'whist-surface-'));
-  t.after(()=>fs.rmSync(work,{recursive:true,force:true}));
-  const roots=['atf-ui-browser/src/main/java','whist-lab-app/atf-card-table-ui/src/main/java',
-    'whist-lab-app/card-table-names/src/main/java','whist-lab-app/game-core/src/main/java',
-    'whist-lab-app/app/src/main/java','atf-ui-browser/whist/src/main/java'].map(dir=>path.join(root,dir));
-  const fixture=path.join(root,'atf-ui-browser/tests/ro/cardtable/browser/WhistSurfaceContract.java');
+  const {root,run}=portableContract(t,'ro.cardtable.browser.WhistSurfaceContract');
   assert.ok(fs.readFileSync(path.join(root,'atf-ui-browser/pages/src/main/java/ro/cardtable/browser/PageJson.java'),'utf8').includes('return BrowserLayoutJson.fields(layout);'),'Static pages delegate to the portable geometry projection');
-  const sources=[fixture,...fs.readdirSync(roots[0]+'/ro/cardtable/browser').filter(file=>file.endsWith('.java'))
-    .map(file=>roots[0]+'/ro/cardtable/browser/'+file)];
-  const args=['-proc:none','-encoding','UTF-8','-sourcepath',roots.join(path.delimiter),'-d',work,...sources];
-  const quote=value=>'"'+value.replaceAll('\\','/')+'"';
-  const argFile=path.join(work,'javac.args');fs.writeFileSync(argFile,args.map(quote).join('\n'));
-  execFileSync('javac',['-J-Xmx384m','@'+argFile],{encoding:'utf8',timeout:60000,windowsHide:true});
-  const text=execFileSync('java',['-Xmx256m','-Dfile.encoding=UTF-8','-Dstdout.encoding=UTF-8','-cp',work,'ro.cardtable.browser.WhistSurfaceContract',
-    path.join(root,'whist-lab-app/atf-card-table-ui/src/test/resources/hand-feedback.tsv')],
-    {encoding:'utf8',timeout:60000,windowsHide:true});
+  const text=run(path.join(root,'whist-lab-app/atf-card-table-ui/src/test/resources/hand-feedback.tsv'));
   const result=JSON.parse(text);assert.equal(result.status,'PASS');assert.equal(result.cases.length,4);
   assert.equal(result.cases[0].legacyFrames,24,'Legacy consumers do not inherit Whist native measurement semantics');
   assert.deepEqual(JSON.parse(result.cases[0].minimumProtocol.jvm),JSON.parse(result.cases[0].minimumProtocol.pages),'JVM and compiled-page protocols preserve the same native minimum');

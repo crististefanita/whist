@@ -14,6 +14,8 @@ const profiles=[
  {id:'four-tall',players:4,width:414,height:896,font:16,language:'en',mobile:true},
  {id:'four-desktop',players:4,width:1920,height:1080,font:20.8,language:'en',mobile:false},
  {id:'four-oh-hell',players:4,width:1664,height:916,font:16,language:'ro',mobile:false,mode:'OH_HELL',deals:[10,9,8]},
+ {id:'five-oh-hell',players:5,width:1664,height:916,font:16,language:'ro',mobile:false,mode:'OH_HELL',deals:[10,9]},
+ {id:'six-oh-hell',players:6,width:1664,height:916,font:16,language:'ro',mobile:false,mode:'OH_HELL',deals:[8,7]},
  {id:'five-compact',players:5,width:393,height:626,font:20.8,language:'ro',mobile:true},
  {id:'five-desktop',players:5,width:1280,height:720,font:20.8,language:'en',mobile:false}
 ];

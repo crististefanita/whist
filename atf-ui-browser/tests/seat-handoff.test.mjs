@@ -11,7 +11,7 @@ test('intrinsic seat measurement is independent of assigned frame height and act
   const observations=await evaluate(`(async()=>{
    const {fitSeatLines,updateSeatFact,measureNativeSeat}=await import('./seat-presentation.mjs');
    const rows=[];
-   for(const compact of [true,false])for(const font of [16,20.8,25.6])for(const width of [88,116])for(const anchor of ['south','north','north-west','north-east']){
+   for(const compact of [true,false])for(const font of [16,20.8,25.6])for(const width of [88,116])for(const anchor of ['south','north','north-west','north-east','south-west','south-east']){
    document.documentElement.style.fontSize=font+'px';
    const host=document.createElement('section');host.className='match whist-match'+(compact?' compact-table':'');host.style.cssText='position:fixed;width:393px;height:626px;visibility:hidden';document.body.append(host);
    const seat=document.createElement('div');seat.className='seat '+anchor;seat.style.cssText='width:'+width+'px;height:60px';host.append(seat);
@@ -27,6 +27,6 @@ test('intrinsic seat measurement is independent of assigned frame height and act
   })()`);
   console.log('Seat handoff measurements: '+JSON.stringify(observations));
   for(const row of observations){assert.equal(row.bodyHeight,row.reference.bodyHeight,'Intrinsic demand ignores old anchors: '+JSON.stringify(row));assert.equal(row.nameHeight,row.reference.nameHeight);if(row.compact&&row.font===16){assert.equal(row.bodyHeight,43);assert.equal(row.nameHeight,15);}}
-  assert.equal(observations.length,768,'The component owns the anchor, text and phase combinations');
+  assert.equal(observations.length,1152,'The component owns every 3–6-player anchor, text and phase combination');
  });
 });
