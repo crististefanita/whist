@@ -2604,3 +2604,27 @@ testChanges:
 ```
 
 </details>
+
+<details>
+<summary>Inputuri limitate pentru auditul proiecțiilor Whist</summary>
+
+```yaml
+testChanges:
+  - id: WHIST-024-PROJECTION-AUDIT-INPUTS
+    status: VERIFIED
+    base: d43a8576d3a9c850302194769178411f1c4933c9
+    expires: 2026-12-23
+    reason: Refactorizează inputurile matricii proiecțiilor Whist, păstrând cele patru identități și toate perechile exhaustive; verifică independent populația și păstrează contextul exact al primului eșec. Verifică nivelurile și admiterea conservatoare a dependențelor; execută separat cazurile Gradle modificate.
+    proof: 'mvn -o -pl atf-tests -am -Dtest=GradleAuditGovernanceTest,AtfCollectionOwnershipComponentTest -Dsurefire.failIfNoSpecifiedTests=false test'
+    checks:
+      positive:
+        - atf.tests.governance.source.gradle.GradleAuditGovernanceTest#everyGradleTestClassHasOneExplicitLayerAndAnAuditedBase
+        - atf.tests.governance.suites.AtfCollectionOwnershipComponentTest#realDependencyClosuresSelectOnlyTheirConsumers
+      negative:
+        - atf.tests.governance.suites.AtfCollectionOwnershipComponentTest#missingOrUnreviewedDependenciesCannotAuthorizeReuse
+    paths:
+      - whist-lab-app/app/src/test/java/ro/whistlab/app/table/content/WhistTableContentComponentTest.java
+      - config/atf-component-dependencies.json
+```
+
+</details>

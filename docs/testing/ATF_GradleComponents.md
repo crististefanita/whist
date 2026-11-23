@@ -52,6 +52,19 @@ Ieșirea JUnit este un oracol temporar independent al populației. Verificatorul
 
 ## Acceptanță și retenție
 
+### Matrice exhaustive cu inputuri de audit limitate
+
+[Registrul matricii](../../whist-lab-app/test-audit/src/testFixtures/java/atf/gradle/audit/matrix/ExhaustiveMatrixChecks.java) evaluează fiecare pereche așteptat/observat și agregă comparațiile reușite după invariantul denumit.
+
+| Graniță | Contract obligatoriu |
+|---|---|
+| Precondiții | Înregistrează axele, configurarea deterministă și populația așteptată independent. |
+| Acoperire | Compară populația așteptată cu numărul evaluat; respinge parcurgerea goală sau nepotrivirea capturată. |
+| Eșec | Eșuează imediat cu poziția și valorile așteptate/observate complete ale primei nepotriviri. |
+| Identitate | Păstrează identitățile invocărilor și octeții rapoartelor calificate; inputurile schimbate produc dovezi noi. |
+| Dimensiune | Măsoară corpurile decodificate și numărul comparațiilor separat de resursele HTML comune încorporate. |
+| Niveluri | Unitarele verifică izolat calcule, fără Extent; componentele păstrează contractele auditate, oracolele independente, acoperirea și cazurile negative. |
+
 [Catalogul nivelurilor](../../config/gradle-audit-collections.properties) declară fiecare responsabil executabil. Mutarea unei clase îi păstrează identitatea cazurilor. Contractele comune și controalele negative trebuie să treacă înainte să retragem o verificare duplicată de platformă.
 
 RAG înregistrează independent fiecare task validat înainte să înceapă următorul. Refolosirea cere intrări de producție relevante, dependențe tranzitive, teste, resurse, unelte și selecție neschimbate. Un caz eșuat se rerulează după corecție; colecțiile valide neafectate rămân reutilizabile. [Checkpoint și reutilizare](ATF_ReleaseQualification.md#reluarea-etapelor-validate)

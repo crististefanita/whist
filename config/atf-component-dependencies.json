@@ -589,7 +589,7 @@
     "whist-lab-app/app/src/test/java/ro/whistlab/app/table/TableViewportPolicyTest.java": "f9d21a68309899d4342881226ff4e1b9a0d916c04e767913a8a8549d753022a7",
     "whist-lab-app/app/src/test/java/ro/whistlab/app/table/TrickCardMetricsComponentTest.java": "2ad065a805c7ee9517b6b56dd9d5cdc1070ef4190a2f2e474efd69481b211690",
     "whist-lab-app/app/src/test/java/ro/whistlab/app/table/TrumpIndicatorComponentTest.java": "adb056596d38cbcd461de8cdef34bff09d7312c29c0a7edbf1045e03f3abb8eb",
-    "whist-lab-app/app/src/test/java/ro/whistlab/app/table/content/WhistTableContentComponentTest.java": "df09dbc3bafed2024e59e1fb40158208e2b6afc47ba3fb613fcd1d4ff4821729",
+    "whist-lab-app/app/src/test/java/ro/whistlab/app/table/content/WhistTableContentComponentTest.java": "9909a380127d90300b9bde9d0788f5524e6f6088e4760747afcf50eb86b299b6",
     "whist-lab-app/app/src/test/java/ro/whistlab/app/theme/GameHeaderTypographyComponentTest.java": "b612ccdae6c362d7be465b557595a2983c4a4cd9656ad9a018edbebc31dcc903",
     "whist-lab-app/app/src/test/java/ro/whistlab/app/window/WindowPaddingComponentTest.java": "7af857c9a3ec2cced0bd884eeb37ec4df76beda376f9c88402e6197c3cc1d45f",
     "whist-lab-app/atf-card-table-ui/src/test/java/ro/cardtable/ui/achievements/AchievementNoticeStyleComponentTest.java": "b6f83188eb75efff5048d3ef88e56c0574b808e69d035b8ec77851c2f561b17f",
