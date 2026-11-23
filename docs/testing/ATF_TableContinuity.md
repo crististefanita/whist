@@ -47,3 +47,20 @@ The oracle compares every ordered seat against the same match baseline, checks p
 | Delivery | A README index uses relative links to canonical HTML. Reused evidence keeps its identity, scope and original verdict; never relabel a policy result as installed-APK acceptance. |
 
 The [current Web dossier](../../release/WEB/README.md) separates component and E2E artifacts. The [Android catalog](../../release/README.md) retains immutable release evidence; an unexecuted native flow remains explicitly unexecuted. Runtime parity and artifact identity are separate from the validator revision.
+
+## E2E budget and suite ownership
+
+Whole games belong to game components: real engine, legal setup and controlled external dependencies. UI core verifies projections and display matrices; adapters add only their platform checks.
+
+Delivery policy requires one or two hands per E2E game at one readable viewport. Resolution, density, text, actor and variant matrices belong to shared screenshot-free components; E2E verifies real window transitions and retains inline captures.
+
+| Scope | Contract |
+|---|---|
+| Shared scenario | The same IDs, preconditions, outcomes and Given/When/Then steps execute through APK/Web drivers. |
+| Match completion | Use a legal near-final checkpoint validated in components, then play the real last hand. |
+| Suite delivery | The current `release/` index links canonical component, renderer, governance and E2E reports by relative path, with explicit selection and provenance. |
+| Historical references | Preserve original outcomes and bytes; an older over-budget journey does not become current primary qualification. |
+| Image selection | At most four relevant captures per normal scenario is the proposed budget; additionally retain the first visual failure. Do not photograph each card or display combination, and do not conceal failed comparison data. |
+| Implementation gap | `TEST-04` tracks enforcement in existing runners and publication; this policy does not claim that enforcement already exists. |
+
+[Migration plan and criteria](../feedback/ATF_CardUi_Extraction.md#ui-three-module-plan) separate portable core, Android adapter and Web adapter. Game-specific cases remain with the game; neutral fixture/oracle support belongs to core tests.

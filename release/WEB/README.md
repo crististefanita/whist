@@ -11,7 +11,7 @@ Portable index for Whist Web artifacts. Original evidence remains standalone; ev
 ```mermaid
 flowchart LR
     SOURCE["Identified source"] -->|checks through| COMPONENT["Components without screenshots"]
-    COMPONENT -->|complements with| FLOW["One illustrated E2E flow"]
+    COMPONENT -->|complements with| FLOW["One E2E suite, few journeys"]
     FLOW -->|indexes in| DOSSIER["Portable Web dossier"]
     REJECTED["Original rejected outcome"] -->|explains the regression in| COMPONENT
 ```
@@ -31,7 +31,7 @@ Components own combinations of dimensions, text, anchors and event order. E2E re
 | [Shared every-seat APK/Web components](component/phases/component-report.html) | `PASS` | `PRIMARY` | `9b57a75b` |
 | [Current ownership and source governance](governance/current/component-report.html) | `PASS` | `PRIMARY` | `9b57a75b` |
 | [Android JVM contract integration](component/apk-policy/component-report.html) | `PASS` | `REFERENCE` | `9b57a75b` |
-| [Current illustrated handoffs](e2e/oh-hell/extent.html) | `PASS` | `REUSED` | `91716314` |
+| [Earlier four-player reference](e2e/oh-hell/extent.html) | `PASS` | `REFERENCE` | `91716314` |
 | [Current handoff and dossier components](component/handoff/component-report.html) | `PASS` | `REUSED` | `9a5b49b8` |
 | [Report input and trace contracts](component/reporting/component-report.html) | `PASS` | `REUSED` | `91716314` |
 | [Shared geometry and controlled matrices](component/native-ports/component-report.html) | `PASS` | `REUSED` | `9ec0b560` |
@@ -46,6 +46,10 @@ Components own combinations of dimensions, text, anchors and event order. E2E re
 - [Governance](governance/README.md): source, documentation and inventory contracts.
 - [References](reference/README.md): previous coverage with explicit limits.
 - [Diagnostics](diagnostics/README.md): original rejected evidence retained in full.
+
+## Suite selection policy
+
+[The testing contract](../../docs/testing/ATF_TableContinuity.md) requires screenshot-free components and minimal navigation E2E with at most two hands per game. [The migration plan](../../docs/feedback/ATF_CardUi_Extraction.md#ui-three-module-plan) keeps budget enforcement explicitly open; this documentation update adds no UI execution or APK qualification.
 
 ## Integrity and maintenance
 

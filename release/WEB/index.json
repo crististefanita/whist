@@ -67,11 +67,11 @@
     {
       "id": "WEB-FLOW",
       "category": "e2e",
-      "role": "REUSED",
+      "role": "REFERENCE",
       "result": "PASS",
       "path": "e2e/oh-hell/extent.html",
       "validatorCommit": "917163149f4618434c850505513dd06982467548",
-      "scope": "Three Oh Hell hands, 10/9/8 cards, four players, RO, one 1664×916 desktop viewport; manual play, AutoGame, AI-to-human handoffs and collection.",
+      "scope": "Three Oh Hell hands, 10/9/8 cards, four players, RO, one 1664×916 desktop viewport; manual play, AutoGame, AI-to-human handoffs and collection. Historical three-hand observation: retained as a reference outside the new two-hand E2E budget, not reused as current primary qualification.",
       "counts": {
         "hands": 3,
         "tricks": 27,

@@ -27,10 +27,13 @@ The 1–100 score expresses work priority, not quality or completion percentage.
 | ID | Priority | Score | ToDo remaining and short closing criterion |
 |---|---:|---:|---|
 | RPT-01 | P1 | 95 | Check each producer via detached HTML and negative controls for missing, external or misassigned content. [Register](ATF_Reporting.md#rpt-android-html-only---audit-delivery-without-auxiliary-copies) |
+| TEST-04 | P1 | 95 | Enforce at most two hands per E2E game, paired APK/Web scenarios and rejection before startup/publication. [Register](ATF_CardUi_Extraction.md#ui-minimal-e2e-plan) |
 | RPT-02 | P1 | 94 | Qualify remaining producers against missing assertions and unusable original comparisons, including FAIL, ERROR and SKIP. [Register](ATF_Reporting.md#rpt-android-component-html---captured-comparisons-not-just-junit-xml) |
+| UI-03 | P1 | 94 | Extract portable core, Android adapter and Web adapter, with the primary component matrix and real dependencies instead of source copying. [Register](ATF_CardUi_Extraction.md#ui-three-module-plan) |
 | AND-01 | P1 | 93 | Prove checkpoint recovery after corruption or interruption, preserving user data or reporting an explicit error. [Register](ATF_Android.md) |
 | AND-02 | P1 | 92 | Qualify the active actor, stable geometry and visible hand in bidding, play and AutoGame on the APK, for 3–6 players, RO/EN and enlarged text. [Register](ATF_Android.md) |
 | TEST-03 | P1 | 92 | Restore current module/font routes and adaptive desktop expectations in the legacy Playwright harness; qualify HTTP admission before startup and one compiled-game move. [Register](ATF_Governance.md#qualification-of-claims-and-launchers) |
+| UI-04 | P1 | 92 | Unify menu roles and renderer observations through ports and one oracle; actual measurements and callback cancellation remain verifiable. [Register](ATF_CardUi_Extraction.md#ui-three-module-plan) |
 | AI-01 | P1 | 91 | Calibrate Hard inference for bidding with 2–8 cards and cards played on new lots; separate the accuracy of probabilities from the simulated score. [Register](ATF_Ai.md) |
 | ACH-01 | P1 | 90 | Qualify restoration of Achievements scroll position and selection on the APK, and notification resumption after activity recreation. [Register](ATF_Achievements.md) |
 | AND-03 | P1 | 89 | Qualify API 37, navigation of the system, resumption, enlarged fonts and memory on an identified device. [Register](ATF_Android.md) |

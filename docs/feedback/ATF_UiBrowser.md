@@ -4,11 +4,13 @@
 
 [Adapter documentation](../../atf-ui-browser/README.md) explains the APK, shared-package and Pages paths. This register tracks the remaining comparison on the same Android device.
 
+[The shared three-module plan](ATF_CardUi_Extraction.md#ui-three-module-plan) owns extraction and the main display matrix. E2E selects essential navigation and transitions with at most two hands per game; `TEST-04` remains open for mechanical budget enforcement.
+
 ## Qualification on the same device
 
 | ID | Remaining sample | Closure criterion |
 |---|---|---|
-| WEB-07 | A Romanian 1–8–1 match with four seats, from the same checkpoint in APK and Chrome on Android. | Compare legal moves, actor, last card and collection, score and history with adjustments. Check settings, Achievements, Play again and resume after reopening in RO/EN, with normal text and enlarged. |
+| WEB-07 | Up to two Romanian 1–8–1 hands with four seats, from the same legal checkpoint in APK and Chrome on Android. | Compare legal moves, actor, last card and collection, score and history with adjustments. Check settings, Achievements, Play again and resume after reopening in RO/EN, with normal text and enlarged. |
 | WEB-11 | A maximum-size hand in Android Chrome at 360 × 800 and 414 × 896, with enlarged text. | Confirm access to all 17 cards, including A, K, Q, J and `10`. Compare glyphs in hand, on the table and during collection, including browsers without `font-variant-emoji`. |
 
 Use the same useful profile and document the density, scale of text, language, browser version and APK hash. Compare geometry by the reserved areas of the system. Record separately the rounding of edges, font measurement and interactive areas. [Display matrix](../testing/ATF_Display.md)
