@@ -2213,6 +2213,7 @@ testChanges:
 testChanges:
   - id: WEB-HANDOFF-DOSSIER
     status: VERIFIED
+    allowDelete: true
     base: 9cc19f7f16b1c09f6e5737ffee9a97e18a26e668
     expires: 2026-12-23
     reason: Isolate inherited bottom-anchor stretch in controlled component fixtures without screenshots, retain one illustrated browser journey, and reject corrupt or misclassified portable report inventories.
@@ -2220,11 +2221,13 @@ testChanges:
     checks:
       positive:
         - atf.tests.governance.documentation.release.rag.nativeproof.WhistSurfaceAdapterComponentTest#preparedAndLiveSeatsShareIntrinsicHeightWithoutBottomAnchorStretch
-        - atf.tests.governance.documentation.release.WebReleaseDossierComponentTest#portableWebInventoryChecksHashesPathsAndEvidenceOwnership
-        - atf.tests.governance.documentation.release.WebReleaseDossierComponentTest#currentWebDossierHasOneIllustratedFlowAndNoComponentCaptures
+        - atf.tests.governance.documentation.release.web.WebReleaseDossierComponentTest#portableWebInventoryChecksHashesPathsAndEvidenceOwnership
+        - atf.tests.governance.documentation.release.web.WebReleaseDossierComponentTest#currentWebDossierHasOneIllustratedFlowAndNoComponentCaptures
       negative:
-        - atf.tests.governance.documentation.release.WebReleaseDossierComponentTest#onlyTheExplicitTypedWebFolderIsAcceptedBesideAndroidVersions
+        - atf.tests.governance.documentation.release.ReleaseArtifactLayoutGovernanceTest#onlyTheExplicitTypedWebFolderIsAcceptedBesideAndroidVersions
     paths:
+      - atf-tests/src/test/java/atf/tests/governance/documentation/release/ReleaseArtifactLayoutGovernanceTest.java
+      - atf-tests/src/test/java/atf/tests/governance/documentation/release/web/WebReleaseDossierComponentTest.java
       - config/atf-component-dependencies.json
       - atf-tests/src/test/java/atf/tests/governance/documentation/release/ReleaseArtifactCatalog.java
       - atf-tests/src/test/java/atf/tests/governance/documentation/release/rag/nativeproof/WhistSurfaceAdapterComponentTest.java

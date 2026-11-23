@@ -343,6 +343,25 @@ class ReleaseArtifactLayoutGovernanceTest {
         AuditedAssertions.assertTrue(failure.getMessage().startsWith("RELEASE-CATALOG-SECTIONS: " + file));
     }
 
+    @Test void onlyTheExplicitTypedWebFolderIsAcceptedBesideAndroidVersions(atf.android.evidence.component.ComponentInputs inputs) throws Exception {
+        Path root = project("0.1.0", List.of("0.1.0")), release = root.resolve("release");
+        Path web = Files.createDirectory(release.resolve("WEB"));
+        Files.writeString(web.resolve("README.md"), "Synthetic Web index");
+        Files.writeString(web.resolve("index.json"), "{\"schemaVersion\":1,\"kind\":\"WHIST_WEB_TEST_DOSSIER\"}");
+        inputs.add("Controlled catalog", "One valid Android edition; test an unregistered folder, wrong registration, missing index and wrong Web type.");
+        rejected(root, "UNREGISTERED");
+        var json = new com.fasterxml.jackson.databind.ObjectMapper();
+        var index = (com.fasterxml.jackson.databind.node.ObjectNode) json.readTree(release.resolve("index.json").toFile());
+        index.put("webDossier", "OTHER/index.json"); json.writeValue(release.resolve("index.json").toFile(), index);
+        rejected(root, "WEB-REGISTRATION");
+        index.put("webDossier", "WEB/index.json"); json.writeValue(release.resolve("index.json").toFile(), index);
+        assertEquals(1, ReleaseArtifactCatalog.folders(root).size(), "Typed Web scope does not add an Android edition");
+        Files.delete(web.resolve("index.json"));
+        rejected(root, "WEB-REQUIRED");
+        Files.writeString(web.resolve("index.json"), "{\"schemaVersion\":1,\"kind\":\"OTHER\"}");
+        rejected(root, "WEB-SCHEMA");
+    }
+
     private Path project(String current, List<String> versions) throws Exception {
         Path root = Files.createDirectory(temporary.resolve("project"));
         Files.createDirectories(root.resolve("release"));
