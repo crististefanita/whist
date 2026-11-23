@@ -17,6 +17,10 @@ The project owns Android-boundary and adapter checks. Reusable contracts are req
 
 [Quality governance](../governance/README.md) · [Good documentation practices](../governance/ATF_Documentation.md)
 
+| ID | Remaining boundary | Closure criterion |
+|---|---|---|
+| GOV-06 | [BrowserUi](../../atf-ui-browser/tests/BrowserUi.java) combines loopback hosting, browser lifecycle, scenario drivers and result emission. | Extract these responsibilities behind small collaborators while preserving scenario IDs, source identity, owned-profile cleanup and standard English Extent output. Keep lifecycle/error components independent of gameplay flows and compare the selected case inventory before and after extraction; no coverage may be removed. |
+
 ## Qualification of claims and launchers
 
 [RAG evaluator regressions](../testing/ATF_ReleaseQualification.md#evaluator-regression-tests) verify qualified-source attestations. [Release integrity governance](../../atf-tests/src/test/java/atf/tests/governance/documentation/release/ReleaseIntegrityGovernanceTest.java) separately verifies APK and payload bytes in the recorded dossiers.

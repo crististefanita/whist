@@ -42,6 +42,7 @@ The 1–100 score expresses work priority, not quality or completion percentage.
 | RAG-21 | P2 | 84 | The plan-only pilot proves source-bound restart and selector parity; full report/JUnit parity and the recovery-time gate remain open. [Register](ATF_Governance.md#langgraph-shadow-pilot) |
 | DOC-02 | P2 | 83 | Review inherited English operational terms against code and Romanian meaning; require editorial acceptance as well as executable diagnostics and edition parity. [Register](ATF_Governance.md#improving-guidance-guides) |
 | AI-02 | P2 | 82 | Measure opportunities, conversions to 500, ranking impact and latency on new batches; separate natural play from controlled prefixes. [Register](ATF_Ai.md#playing-for-zero) |
+| GOV-06 | P2 | 80 | Separate browser hosting, lifecycle, scenarios and evidence emission without losing case identities, cleanup or English reporting. [Register](ATF_Governance.md#cohesion-and-package-development) |
 | WEB-07 | P2 | 79 | Qualify settings, resume, Play again and history in APK and Chrome on the same Android in RO/EN and with increased text. [Register](ATF_UiBrowser.md#qualification-on-the-same-device) |
 | WEB-11 | P2 | 78 | Qualify ranks and suit glyphs in a 17-card hand with enlarged text in Android Chrome. [Register](ATF_UiBrowser.md#qualification-on-the-same-device) |
 | WEB-15 | P2 | 77 | Complete adoption qualification in remaining consumers, preserving matching runtime/test JAR hashes and game-specific adapters. [Register](ATF_UiBrowser.md#shared-package-adoption) |
