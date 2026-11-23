@@ -39,12 +39,27 @@ release/
 - The index uses `schemaVersion: 2`, `currentVersion` and up to two entries in `versions`, starting with the current edition and then the immediate previous edition.
 - The main README and index identify the current version. An older reference can support the audit, but cannot replace the active candidate's APK, link or verified download.
 - The APK, checksum and version manifest belong in the same version directory. Do not keep a competing active copy in a distribution directory; the main README links to the `release` catalog.
-- `release` contains the catalog, index and at most two version directories. Each directory name must match its manifest, and `currentVersion` must be the first entry.
+- `release` contains the catalog, index, at most two Android version directories and the explicitly registered Web dossier. Each Android directory name must match its manifest, and `currentVersion` must be the first entry.
 - The version README presents delivery and links to `reports/README.md`, which describes selections, results and limits. The manifest and presentation metadata belong at version level; canonical reports and diagnostics belong under `reports`.
 - Keep canonical reports and only evidence or diagnostics justified for that APK. [Handoff contract](../reporting/ATF_Handoff.md#compact-handoff-and-exceptions) removes incorporated duplicates and preserves unique evidence until publication completes. Keep omitted or blocked results explicit; never inherit another version's verdict automatically.
 - Builds, intermediate candidates and historical diagnostics stay in external staging or an explicitly retained archive. [Shared test strategy](../testing/README.md) remains version-independent.
 
 ## Replacement and recovery
+
+### Independent Web evidence
+
+The catalog registers exactly `WEB/index.json` for the [current Web dossier](../../release/WEB/README.md). This typed directory has its own immutable report inventory; it does not change Android retention or claim APK qualification.
+
+| Category | Retention contract |
+|---|---|
+| Components | Original Extent comparisons, controlled preconditions and negative cases; no screenshots. |
+| E2E | One primary illustrated journey at a readable viewport, with ordered actions, observations and individual assertions. |
+| Governance | Identified source and inventory checks, with their original scope. |
+| References and diagnostics | Keep only evidence needed to explain current coverage or an active regression; preserve original verdicts. |
+
+Run `node atf-tests/tools/web-release-dossier.mjs $ProjectRoot` after updating links or payloads. It checks relative paths, hashes, provenance and ownership, rejects unregistered files, and keeps loose PNGs, JUnit XML and builds outside the dossier. Index integrity does not qualify changed source or replace the original executions.
+
+### Android edition rotation
 
 1. Prepare the new directory outside the active catalog; pin the executed sources and dependencies.
 2. Preserve the previous directory, manifest and index. Compare SHA-256 values and verify the retained copy before moving old data.

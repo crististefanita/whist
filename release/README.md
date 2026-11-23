@@ -4,6 +4,8 @@
 
 The catalog tracks the current Android edition and its immediate predecessor. A release is published only after its APK, source-bound evidence and diff-selected qualification pass the RAG process.
 
+[Current Web test dossier](WEB/README.md) separately indexes component contracts without screenshots and the focused illustrated browser flow. Its manifest preserves report identity and publication state; Web evidence is not an Android edition.
+
 ## Current version
 
 [0.23.2 — Android maintenance release](0.23.2/README.md) is published; the APK and checksum passed direct-download verification.

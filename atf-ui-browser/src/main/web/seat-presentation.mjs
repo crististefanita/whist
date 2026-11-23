@@ -63,7 +63,7 @@ export function measureSeatActionClearance(seat, labels) {
 /** Measure intrinsic content, independently of the height assigned by the previous layout. */
 export function measureNativeSeat(seat){
   const probe=seat.cloneNode(true);
-  Object.assign(probe.style,{height:'auto',minHeight:'0',width:seat.offsetWidth+'px',visibility:'hidden',pointerEvents:'none',transform:'none',left:'0',top:'0'});
+  Object.assign(probe.style,{height:'auto',minHeight:'0',width:seat.offsetWidth+'px',visibility:'hidden',pointerEvents:'none',transform:'none',inset:'0 auto auto 0'});
   seat.append(probe);
   try{
     const style=getComputedStyle(probe),name=probe.querySelector(':scope > strong');

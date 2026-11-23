@@ -1,12 +1,12 @@
-import { ADAPTIVE_SURFACE, adaptiveViewport, surfaceTypography, fitTextWidth, isPhone, viewportGeometry, textScale, intrinsicTableHeight } from "./viewport.mjs?v=0.10";
+import { ADAPTIVE_SURFACE, adaptiveViewport, surfaceTypography, fitTextWidth, isPhone, viewportGeometry, textScale, intrinsicTableHeight } from "./viewport.mjs?v=0.11";
 import { collect } from "./collection.mjs";
 import { autoGame, waitForDecision } from "./auto-game.mjs";
-import { bindHandFeedback } from "./hand-feedback.mjs?v=0.10";
-import { historyGrid, applyHistoryAppearance } from "./records.mjs?v=0.10";
-import { fitSeatLines, commitTableView, updateSeatFact, measureSeatActionClearance, measureNativeSeat } from "./seat-presentation.mjs?v=0.10";
-import { historyFirst, menuFromEntries } from "./table-menu.mjs?v=0.10";
-import { createProfileDialogs, deviceProfile, dismissGameMenuOnOutsideClick, preferredLanguage, saveLanguage } from "./profile.mjs?v=0.10";
-import { surfaceFitter } from "./surface-fit.mjs?v=0.10";
+import { bindHandFeedback } from "./hand-feedback.mjs?v=0.11";
+import { historyGrid, applyHistoryAppearance } from "./records.mjs?v=0.11";
+import { fitSeatLines, commitTableView, updateSeatFact, measureSeatActionClearance, measureNativeSeat } from "./seat-presentation.mjs?v=0.11";
+import { historyFirst, menuFromEntries } from "./table-menu.mjs?v=0.11";
+import { createProfileDialogs, deviceProfile, dismissGameMenuOnOutsideClick, preferredLanguage, saveLanguage } from "./profile.mjs?v=0.11";
+import { surfaceFitter } from "./surface-fit.mjs?v=0.11";
 
 const stage = document.querySelector("#table");
 const frame = document.querySelector("#frame");

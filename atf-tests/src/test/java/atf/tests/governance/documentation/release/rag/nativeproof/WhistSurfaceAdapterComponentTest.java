@@ -63,6 +63,17 @@ class WhistSurfaceAdapterComponentTest {
         assertTrue(output.contains("Table checkpoint observations:"), "Individual deposits retain field assertions and observation ownership");
     }
 
+    @Test void preparedAndLiveSeatsShareIntrinsicHeightWithoutBottomAnchorStretch(ComponentInputs inputs) throws Exception {
+        var root = GovernanceProject.locateProjectRoot();
+        String output = NodeReleaseContracts.runNode(List.of("node", "--test", "--test-concurrency=1",
+                root.resolve("atf-ui-browser/tests/seat-handoff.test.mjs").toString(),
+                root.resolve("atf-ui-browser/tests/layout-delivery.test.mjs").toString(),
+                root.resolve("atf-ui-browser/tests/asset-revision.test.mjs").toString()), root, Duration.ofSeconds(60),
+                value -> inputs.add("Controlled anchor, text, assigned-height and callback measurements without screenshots", value));
+        assertTrue(output.contains("Seat handoff measurements:"), "Prepared south anchors and live playback retain one intrinsic demand");
+        assertTrue(output.contains("Asset revision observations:"), "The published adapter does not retain the previous measurement implementation in cache");
+    }
+
     @Test void dropdownAndScoreTypographyPreserveNativeFactsAndCommandBindings(ComponentInputs inputs) throws Exception {
         var root = GovernanceProject.locateProjectRoot();
         String output = NodeReleaseContracts.runNode(List.of("node", "--test",

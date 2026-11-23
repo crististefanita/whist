@@ -14,7 +14,7 @@ Whist uses the Java engine and portable table contracts in both APK and browser.
 |---|---|
 | Actor label | An optional consumer-owned `actorLabel` preserves the visible game action, including the human seat. Hidden headings are excluded before layout. |
 | Seat text | `SeatTypography` supplies roles; measured text fits horizontally without changing row height. |
-| Seat measurement | Fitted native-style names and facts keep one line, complete text and a stable intrinsic height across unknown, one-digit and two-digit values. Legacy multiline facts are scoped to unfitted direct children. Active-state colors do not change the footprint. |
+| Seat measurement | Fitted native-style names and facts keep one line, complete text and a stable intrinsic height across unknown, one-digit and two-digit values. Intrinsic probes reset every inset, including inherited bottom anchors, before measuring automatic height. Prepared and mounted frames therefore use the same measurement. |
 | Score text | `ScoreTypography` supplies logical sizes to native sp and Web rem adapters; accessibility scaling applies once. |
 | Frame identity | Prepared redraws keep the view, board, header, trump, compatible seat rows and deposited faces mounted. A delegated unchanged hand retains its fan, face nodes and scroll; incompatible tables and changed hands mount fresh content. |
 | Input ownership | The adapter disposes the old hand owner before preparing a view and binds one owner to the committed fan. Disposed replies and lift completions cannot paint or submit a command; ordinary cancellation keeps the current listener usable. Fresh menu callbacks retain the open state. |
@@ -299,6 +299,10 @@ Whist uses the same native table policy through [WhistBoardAdapter](whist/src/ma
 [Adapter components](tests/whist-surface-contract.test.mjs) compile only the portable dependency closure with the JDK, without Gradle, SDK or emulator. Their [JUnit owner](../atf-tests/src/test/java/atf/tests/governance/documentation/release/rag/nativeproof/WhistSurfaceAdapterComponentTest.java) captures actual observations in Extent. The default text scale remains unchanged; invalid scale inputs are rejected at the layout boundary.
 
 ## Verification
+
+- Components own the combinations, using explicit preconditions and controlled renderer data without screenshots. [Seat handoff regression](tests/seat-handoff.test.mjs) varies text scale, width, anchor, prior frame height and active state through the production measurement adapter; it compares intrinsic demand against an independently unanchored probe.
+
+- Keep illustrated E2E coverage small: one readable viewport and a relevant manual/AutoGame journey, with ordered before/after observations and individual assertions. [Current Web dossier](../release/WEB/README.md) links original reports by relative path and separates the active flow, reused components, references and rejected diagnostics. Components qualify the combinations; a browser flow confirms their integration without claiming native APK acceptance.
 
 The table menu exposes score history directly in Whist and Rentz through the common menu adapter. Opening history pauses automatic scheduling; closing the dialog resumes the same table without replaying commands. Component checks cover localized labels, one callback per choice, outside-click dismissal and immutable menu plans.
 
