@@ -1,0 +1,227 @@
+{
+  "schemaVersion": 2,
+  "publication": {
+    "state": "QUALIFIED",
+    "channel": "TEST",
+    "repository": "crististefanita/whist",
+    "accessMode": "AUTHENTICATED",
+    "targetUrl": "https://github.com/crististefanita/whist/releases/download/v0.24.2/WhistLab-0.24.2.apk"
+  },
+  "release": {
+    "applicationId": "ro.whistlab.app",
+    "versionName": "0.24.2",
+    "versionCode": 52,
+    "minSdk": 24,
+    "targetSdk": 36,
+    "artifactKind": "apk",
+    "platforms": [
+      "android"
+    ],
+    "platform": "android",
+    "apkName": "WhistLab-0.24.2.apk",
+    "apkRelativePath": "WhistLab-0.24.2.apk",
+    "apkBytes": 1033649,
+    "apkSha256": "23369821507c0bc8c658dc1ee2ac79358af56dfa29e3c385fcb7d4099b062517",
+    "apkCrc32": "cecf4344",
+    "signingCertificate": "Android Debug",
+    "productionManagedKey": false,
+    "certificateSha256": "b80c45a9b52ef0c83dcb929ba4aeb8775c836e5e6d587324d7ec725c079fb4c3"
+  },
+  "source": {
+    "sourceCommit": "e18de2eea56ebbccddeabd48082ff18bef4706eb",
+    "inputManifest": "reports/apk-inputs.json",
+    "workingTreeFingerprint": "82cf70e5111ae29ee3d04f33e136c6a8c6cedc8f3a71e1fac0cba1f3eef8c1c7",
+    "fingerprintFormat": "SHA-256 of UTF-8 ordinal-sorted path TAB sha256 LF records"
+  },
+  "qualification": {
+    "state": "PASS",
+    "schemaVersion": 3,
+    "reportSchema": "ATF_EXTENT_HTML_INLINE_BASE64_V1",
+    "platforms": {
+      "android": {
+        "implemented": true,
+        "artifactKind": "apk",
+        "gates": {
+          "androidComponents": {
+            "status": "PASS",
+            "receipt": "reports/component/source-component-run.json"
+          },
+          "apkBuild": {
+            "status": "PASS",
+            "receipt": "reports/diagnostics/build.log"
+          },
+          "apkIdentity": {
+            "status": "PASS",
+            "receipt": "reports/diagnostics/apk-identity.json"
+          },
+          "signing": {
+            "status": "PASS",
+            "receipt": "reports/diagnostics/signing-compatibility.json"
+          }
+        }
+      }
+    },
+    "auditedGroups": {
+      "atf-test-android": {
+        "protocol": "ATF_J24_COMPONENT_EXTENT",
+        "tests": 277,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0,
+        "report": "reports/component/atf-test-android/component-report.html",
+        "componentEvidenceOrigin": "2fdc764101b7237468d7ba34a34aafb2a00c2a3e364307fe1c5b7fab1ad62d60"
+      },
+      "atf-tests": {
+        "protocol": "ATF_J24_COMPONENT_EXTENT",
+        "tests": 96,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0,
+        "report": "reports/component/atf-tests/component-report.html"
+      },
+      "atf-tests-android": {
+        "protocol": "ATF_J24_COMPONENT_EXTENT",
+        "tests": 52,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0,
+        "report": "reports/component/atf-tests-android/component-report.html"
+      },
+      "atf-tests-documentation": {
+        "protocol": "ATF_J24_COMPONENT_EXTENT",
+        "tests": 166,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0,
+        "report": "reports/component/atf-tests-documentation/component-report.html"
+      },
+      "atf-tests-github": {
+        "protocol": "ATF_J24_COMPONENT_EXTENT",
+        "tests": 33,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0,
+        "report": "reports/component/atf-tests-github/component-report.html"
+      },
+      "atf-tests-orchestration": {
+        "protocol": "ATF_J24_COMPONENT_EXTENT",
+        "tests": 82,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0,
+        "report": "reports/component/atf-tests-orchestration/component-report.html"
+      },
+      "atf-tests-provenance": {
+        "protocol": "ATF_J24_COMPONENT_EXTENT",
+        "tests": 120,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0,
+        "report": "reports/component/atf-tests-provenance/component-report.html"
+      },
+      "atf-tests-reporting": {
+        "protocol": "ATF_J24_COMPONENT_EXTENT",
+        "tests": 70,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0,
+        "report": "reports/component/atf-tests-reporting/component-report.html"
+      },
+      "atf-validation": {
+        "protocol": "ATF_J24_COMPONENT_EXTENT",
+        "tests": 19,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0,
+        "report": "reports/component/atf-validation/component-report.html",
+        "componentEvidenceOrigin": "2fdc764101b7237468d7ba34a34aafb2a00c2a3e364307fe1c5b7fab1ad62d60"
+      },
+      "whist-lab-app-achievements": {
+        "protocol": "ATF_J24_COMPONENT_EXTENT",
+        "tests": 28,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0,
+        "report": "reports/component/whist-lab-app-achievements/component-report.html",
+        "componentEvidenceOrigin": "4b6f1e8cd2875d5a9afa02cd80a50695f2520308994726d19ea217ed6b9fc3e9"
+      },
+      "whist-lab-app-atf-card-table-ui": {
+        "protocol": "ATF_J24_COMPONENT_EXTENT",
+        "tests": 8,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0,
+        "report": "reports/component/whist-lab-app-atf-card-table-ui/component-report.html",
+        "componentEvidenceOrigin": "2fdc764101b7237468d7ba34a34aafb2a00c2a3e364307fe1c5b7fab1ad62d60"
+      },
+      "whist-lab-app-bidding": {
+        "protocol": "ATF_J24_COMPONENT_EXTENT",
+        "tests": 255,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0,
+        "report": "reports/component/whist-lab-app-bidding/component-report.html",
+        "componentEvidenceOrigin": "4b6f1e8cd2875d5a9afa02cd80a50695f2520308994726d19ea217ed6b9fc3e9"
+      },
+      "whist-lab-app-card-table-core": {
+        "protocol": "ATF_J24_COMPONENT_EXTENT",
+        "tests": 50,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0,
+        "report": "reports/component/whist-lab-app-card-table-core/component-report.html",
+        "componentEvidenceOrigin": "945b6a3bc9a4df284d0355fd91ee464f8b51572d6fd8d4827d4ef761ed2c4243"
+      },
+      "whist-lab-app-commands": {
+        "protocol": "ATF_J24_COMPONENT_EXTENT",
+        "tests": 123,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0,
+        "report": "reports/component/whist-lab-app-commands/component-report.html",
+        "componentEvidenceOrigin": "c93687f6aa7f078b5fef4e50edefc4a7efd42e8e1bc51a6ca3cb457754818f00"
+      },
+      "whist-lab-app-display": {
+        "protocol": "ATF_J24_COMPONENT_EXTENT",
+        "tests": 107,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0,
+        "report": "reports/component/whist-lab-app-display/component-report.html",
+        "componentEvidenceOrigin": "c93687f6aa7f078b5fef4e50edefc4a7efd42e8e1bc51a6ca3cb457754818f00"
+      },
+      "whist-lab-app-history": {
+        "protocol": "ATF_J24_COMPONENT_EXTENT",
+        "tests": 70,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0,
+        "report": "reports/component/whist-lab-app-history/component-report.html"
+      },
+      "whist-lab-app-rules": {
+        "protocol": "ATF_J24_COMPONENT_EXTENT",
+        "tests": 40,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0,
+        "report": "reports/component/whist-lab-app-rules/component-report.html",
+        "componentEvidenceOrigin": "2fdc764101b7237468d7ba34a34aafb2a00c2a3e364307fe1c5b7fab1ad62d60"
+      }
+    },
+    "e2eGroups": {},
+    "e2e": {
+      "status": "NOT_RUN",
+      "rationale": "Diff-selected maintenance changes only test inputs, review metadata and Android version values; runtime, shared UI and Web application sources are unchanged, and no native flow is selected."
+    },
+    "uniqueJunitInvocations": 1596
+  },
+  "integrity": {
+    "schemaVersion": 1,
+    "kind": "OBSERVED_PAYLOAD_HASHES",
+    "files": []
+  },
+  "evidenceRetention": {
+    "canonicalReport": "reports/component/atf-tests/component-report.html",
+    "canonicalReportSha256": "488fe07728f147720c311ba78747c5fee1ab61942fabae93f381a17168fcd51c"
+  }
+}

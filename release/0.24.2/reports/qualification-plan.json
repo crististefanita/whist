@@ -1,0 +1,40 @@
+{
+  "schemaVersion": 2,
+  "releaseVersion": "0.24.2",
+  "catalogued": false,
+  "channel": "TEST",
+  "changeRisk": "maintenanceOrRefactor",
+  "declaredPlatforms": [
+    "android"
+  ],
+  "componentGroups": [
+    "atf-test-android",
+    "atf-tests",
+    "atf-tests-android",
+    "atf-tests-documentation",
+    "atf-tests-github",
+    "atf-tests-orchestration",
+    "atf-tests-provenance",
+    "atf-tests-reporting",
+    "atf-validation",
+    "whist-lab-app-achievements",
+    "whist-lab-app-atf-card-table-ui",
+    "whist-lab-app-bidding",
+    "whist-lab-app-card-table-core",
+    "whist-lab-app-commands",
+    "whist-lab-app-display",
+    "whist-lab-app-history",
+    "whist-lab-app-rules"
+  ],
+  "userFlowChanged": false,
+  "e2e": {
+    "status": "NOT_RUN",
+    "rationale": "Diff-selected maintenance changes only test inputs, review metadata and Android version values; runtime, shared UI and Web application sources are unchanged, and no native flow is selected."
+  },
+  "scope": {
+    "baselineVersion": "0.24.1",
+    "baselineCommit": "57af4fab359608e4e9dc55884c2daac2bf0e4464",
+    "baselineFingerprint": "a48d3cbe15b48bdbcf5f568660b52aeddb5fc97d224ce85fd8e9a6f9740c582d",
+    "candidateFingerprint": "82cf70e5111ae29ee3d04f33e136c6a8c6cedc8f3a71e1fac0cba1f3eef8c1c7"
+  }
+}

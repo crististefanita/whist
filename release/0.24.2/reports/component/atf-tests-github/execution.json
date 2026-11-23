@@ -1,0 +1,115 @@
+{
+  "schemaVersion" : 1,
+  "kind" : "live-source-components",
+  "apkQualification" : false,
+  "suite" : "atf.tests.suites.components.AtfGithubComponentSuite",
+  "tests" : 33,
+  "outcomes" : {
+    "PASS" : 33
+  },
+  "coverageErrors" : [ ],
+  "containerFailures" : [ ],
+  "junitIdentitySha256" : "ab5e2386a5334930e77ecb1c446be4bf81725b870af62a589c1cf2f3d6e4add8",
+  "invocations" : [ {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfGithubComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.download.DownloadSelectionComponentTest]/[method:repositoryCandidateUsesTheExactMainBranchPathAndCannotStandInForCurrent()]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfGithubComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.download.DownloadSelectionComponentTest]/[method:aPreparedCandidateCannotBorrowTheOlderPublishedVersionOrItsPassingDownload()]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfGithubComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.download.DownloadSelectionComponentTest]/[method:announcedCandidateCanDriveTheMainReadmeWithoutReplacingPublishedIdentity()]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfGithubComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.download.DownloadSelectionComponentTest]/[method:fractionalSizesAndDifferentCurrentIdentitiesRemainExplicitErrors()]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfGithubComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.rag.ReleaseRagGithubComponentTest]/[method:authenticatedGithubApiDownloadCanSatisfyThePublishedGateWithoutPersistingCredentials()]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfGithubComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.rag.ReleaseRagGithubComponentTest]/[method:authenticatedBrowserMcpDownloadCanSatisfyThePublishedGateWithoutPersistingCredentials()]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfGithubComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.rag.ReleaseRagGithubComponentTest]/[method:publishedStageRequiresAReceiptForItsDeclaredAccessMode()]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfGithubComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.rag.scope.ReleasePublicationSealComponentTest]/[method:publicationSealsTheManifestBeforeObservingGithub()]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfGithubComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.rag.scope.ReleasePublicationSealComponentTest]/[method:unqualifiedLocalTagsStopBeforeSourceReconstruction()]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfGithubComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.download.ApkDownloadComponentTest]/[method:completeResponseHasTheDeclaredIdentityAndBecomesTheFinalApkOnlyAfterValidation()]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfGithubComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.download.ApkDownloadComponentTest]/[method:assetRedirectCannotForwardTheApiCredentialToAnotherOrigin()]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfGithubComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.rag.ReleaseRagGithubComponentTest]/[test-template:authenticatedGithubDownloadRejectsMismatchedOrSensitiveReceipts(java.lang.String)]/[test-template-invocation:#1]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfGithubComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.rag.ReleaseRagGithubComponentTest]/[test-template:authenticatedGithubDownloadRejectsMismatchedOrSensitiveReceipts(java.lang.String)]/[test-template-invocation:#2]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfGithubComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.rag.ReleaseRagGithubComponentTest]/[test-template:authenticatedGithubDownloadRejectsMismatchedOrSensitiveReceipts(java.lang.String)]/[test-template-invocation:#3]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfGithubComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.rag.ReleaseRagGithubComponentTest]/[test-template:authenticatedGithubDownloadRejectsMismatchedOrSensitiveReceipts(java.lang.String)]/[test-template-invocation:#4]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfGithubComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.rag.ReleaseRagGithubComponentTest]/[test-template:publishedGithubReleaseRequiresMatchingRetentionEvidence(java.lang.String)]/[test-template-invocation:#1]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfGithubComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.rag.ReleaseRagGithubComponentTest]/[test-template:publishedGithubReleaseRequiresMatchingRetentionEvidence(java.lang.String)]/[test-template-invocation:#2]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfGithubComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.rag.ReleaseRagGithubComponentTest]/[test-template:publishedGithubReleaseRequiresMatchingRetentionEvidence(java.lang.String)]/[test-template-invocation:#3]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfGithubComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.rag.ReleaseRagGithubComponentTest]/[test-template:publishedGithubReleaseRequiresMatchingRetentionEvidence(java.lang.String)]/[test-template-invocation:#4]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfGithubComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.rag.ReleaseRagGithubComponentTest]/[test-template:publishedGithubReleaseRequiresMatchingRetentionEvidence(java.lang.String)]/[test-template-invocation:#5]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfGithubComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.rag.ReleaseRagGithubComponentTest]/[test-template:publishedGithubReleaseRequiresMatchingRetentionEvidence(java.lang.String)]/[test-template-invocation:#6]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfGithubComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.rag.ReleaseRagGithubComponentTest]/[test-template:publishedGithubReleaseRequiresMatchingRetentionEvidence(java.lang.String)]/[test-template-invocation:#7]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfGithubComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.download.ApkDownloadComponentTest]/[test-template:incompleteDeceptiveOrMisidentifiedResponsesCannotBecomeAnApk(java.lang.String)]/[test-template-invocation:#1]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfGithubComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.download.ApkDownloadComponentTest]/[test-template:incompleteDeceptiveOrMisidentifiedResponsesCannotBecomeAnApk(java.lang.String)]/[test-template-invocation:#2]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfGithubComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.download.ApkDownloadComponentTest]/[test-template:incompleteDeceptiveOrMisidentifiedResponsesCannotBecomeAnApk(java.lang.String)]/[test-template-invocation:#3]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfGithubComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.download.ApkDownloadComponentTest]/[test-template:incompleteDeceptiveOrMisidentifiedResponsesCannotBecomeAnApk(java.lang.String)]/[test-template-invocation:#4]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfGithubComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.download.ApkDownloadComponentTest]/[test-template:incompleteDeceptiveOrMisidentifiedResponsesCannotBecomeAnApk(java.lang.String)]/[test-template-invocation:#5]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfGithubComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.download.ApkDownloadComponentTest]/[test-template:incompleteDeceptiveOrMisidentifiedResponsesCannotBecomeAnApk(java.lang.String)]/[test-template-invocation:#6]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfGithubComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.download.ApkDownloadComponentTest]/[test-template:incompleteDeceptiveOrMisidentifiedResponsesCannotBecomeAnApk(java.lang.String)]/[test-template-invocation:#7]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfGithubComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.download.ApkDownloadComponentTest]/[test-template:incompleteDeceptiveOrMisidentifiedResponsesCannotBecomeAnApk(java.lang.String)]/[test-template-invocation:#8]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfGithubComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.download.ApkDownloadComponentTest]/[test-template:incompleteDeceptiveOrMisidentifiedResponsesCannotBecomeAnApk(java.lang.String)]/[test-template-invocation:#9]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfGithubComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.download.ApkDownloadComponentTest]/[test-template:incompleteDeceptiveOrMisidentifiedResponsesCannotBecomeAnApk(java.lang.String)]/[test-template-invocation:#10]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfGithubComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.download.ApkDownloadComponentTest]/[test-template:incompleteDeceptiveOrMisidentifiedResponsesCannotBecomeAnApk(java.lang.String)]/[test-template-invocation:#11]",
+    "outcome" : "PASS"
+  } ],
+  "provenanceSha256" : "c5ab7e1c645697ad5001a9b64e954da8d447ce2e6787acd1a990940fb76ba716",
+  "reportSha256" : "77063482c8ccbc7cd2a82d4652f3c4b10ea1ad48ec3166b52c1e82c0b07abe27"
+}

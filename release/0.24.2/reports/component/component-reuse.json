@@ -1,0 +1,4333 @@
+{
+  "schemaVersion": 2,
+  "comparison": {
+    "baselineRelease": null,
+    "androidVersionMetadataOnly": false
+  },
+  "decisions": [
+    {
+      "group": "atf-validation",
+      "decision": "REUSE",
+      "reason": "RAG_GATE_ONLY",
+      "affectedGroups": [
+        "atf-tests",
+        "atf-tests-android",
+        "atf-tests-documentation",
+        "atf-tests-github",
+        "atf-tests-orchestration",
+        "atf-tests-provenance",
+        "atf-tests-reporting",
+        "whist-lab-app-achievements",
+        "whist-lab-app-bidding",
+        "whist-lab-app-commands",
+        "whist-lab-app-display",
+        "whist-lab-app-history"
+      ],
+      "changedInputs": [
+        "README.md",
+        "atf-tests/src/test/java/atf/tests/governance/documentation/release/ReleaseRagPlatformGovernanceTest.java",
+        "atf-tests/src/test/java/atf/tests/governance/documentation/release/rag/nativeproof/WhistSurfaceAdapterComponentTest.java",
+        "atf-tests/src/test/java/atf/tests/governance/documentation/release/rag/scope/AndroidReleasePreflightComponentTest.java",
+        "atf-tests/src/test/java/atf/tests/governance/documentation/release/rag/scope/ComponentEvidenceScopeComponentTest.java",
+        "atf-tests/src/test/java/atf/tests/governance/source/gradle/GradleAuditGovernanceTest.java",
+        "atf-tests/tools/android-e2e-provenance.mjs",
+        "atf-tests/tools/android-e2e-runtime-scope.test.mjs",
+        "atf-tests/tools/component-evidence-scope.mjs",
+        "atf-tests/tools/component-proof-compiler-reuse.test.mjs",
+        "atf-tests/tools/release-test-scope.mjs",
+        "atf-tests/tools/release-test-scope.test.mjs",
+        "atf-tests/tools/visual-change-contracts.mjs",
+        "atf-tests/tools/visual-contracts.test.mjs",
+        "atf-tests/tools/web-release-dossier.mjs",
+        "atf-tests/tools/web-release-dossier.test.mjs",
+        "atf-ui-browser/src/main/web/index.html",
+        "atf-ui-browser/src/main/web/surface-fit.mjs",
+        "atf-ui-browser/src/main/web/table.mjs",
+        "atf-ui-browser/tests/layout-delivery.test.mjs",
+        "config/atf-component-dependencies.json",
+        "config/documentation-editions.json",
+        "docs/feedback/ATF_Governance.md",
+        "docs/feedback/ATF_Reporting.md",
+        "docs/feedback/ATF_UiBrowser.md",
+        "docs/feedback/README.md",
+        "docs/governance/ATF_TestChangesBaseline.md",
+        "docs/testing/ATF_Collections.md",
+        "docs/testing/ATF_DisplayComponents.md",
+        "docs/testing/ATF_GradleComponents.md",
+        "docs/testing/ATF_ReleaseQualification.md",
+        "docs/testing/ATF_TestingGuide.md",
+        "scripts/run-component-suites.ps1",
+        "whist-lab-app/app/build.gradle",
+        "whist-lab-app/app/src/rasterTest/java/ro/whistlab/app/score/raster/HistoryRaster.java",
+        "whist-lab-app/app/src/rasterTest/java/ro/whistlab/app/score/raster/HistoryRasterAudit.java",
+        "whist-lab-app/app/src/rasterTest/java/ro/whistlab/app/score/raster/HistoryViewportRaster.java",
+        "whist-lab-app/app/src/rasterTest/java/ro/whistlab/app/score/raster/ScoreHistoryCumulativeComponentTest.java",
+        "whist-lab-app/app/src/rasterTest/java/ro/whistlab/app/score/raster/ScoreHistoryPhoneRasterComponentTest.java",
+        "whist-lab-app/app/src/rasterTest/java/ro/whistlab/app/score/raster/ScoreHistoryRecoveryRasterComponentTest.java",
+        "whist-lab-app/app/src/rasterTest/java/ro/whistlab/app/score/raster/ScoreHistoryResponsiveRasterComponentTest.java",
+        "whist-lab-app/app/src/test/java/ro/whistlab/app/animation/TrickCollectionMotionComponentTest.java",
+        "whist-lab-app/app/src/test/java/ro/whistlab/app/animation/TrickCollectionRequestComponentTest.java",
+        "whist-lab-app/app/src/test/java/ro/whistlab/app/animation/TrickCollectionResizeComponentTest.java",
+        "whist-lab-app/app/src/test/java/ro/whistlab/app/animation/TrickCollectionRunComponentTest.java",
+        "whist-lab-app/app/src/test/java/ro/whistlab/app/bidding/AutoGameBidActionComponentTest.java",
+        "whist-lab-app/app/src/test/java/ro/whistlab/app/lifecycle/CompletedTrickOwnershipComponentTest.java",
+        "whist-lab-app/app/src/test/java/ro/whistlab/app/score/ScoreHistoryCheckpointTest.java",
+        "whist-lab-app/app/src/test/java/ro/whistlab/app/score/ScoreHistoryGridMetricsComponentTest.java",
+        "whist-lab-app/app/src/test/java/ro/whistlab/app/score/ScoreHistorySeriesComponentTest.java",
+        "whist-lab-app/app/src/test/java/ro/whistlab/app/score/ScoreHistoryTableComponentTest.java",
+        "whist-lab-app/app/src/test/java/ro/whistlab/app/score/award/SeriesPointsFrameComponentTest.java",
+        "whist-lab-app/app/src/test/java/ro/whistlab/app/seat/PlayerSeatMetricsComponentTest.java",
+        "whist-lab-app/app/src/test/java/ro/whistlab/app/table/GameTableLayoutComponentTest.java",
+        "whist-lab-app/app/src/test/java/ro/whistlab/app/table/GameTablePhaseGeometryComponentTest.java",
+        "whist-lab-app/app/src/test/java/ro/whistlab/app/table/TableSeatOrderComponentTest.java",
+        "whist-lab-app/app/src/test/java/ro/whistlab/app/table/TableViewportPolicyTest.java",
+        "whist-lab-app/app/src/test/java/ro/whistlab/app/table/TrickCardMetricsComponentTest.java",
+        "whist-lab-app/app/src/test/java/ro/whistlab/app/table/TrumpIndicatorComponentTest.java",
+        "whist-lab-app/app/src/test/java/ro/whistlab/app/table/content/WhistTableContentComponentTest.java",
+        "whist-lab-app/card-table-core/src/testFixtures/README.md",
+        "whist-lab-app/card-table-core/src/unitTest/README.md",
+        "whist-lab-app/gradle/app-component-collections.gradle"
+      ],
+      "affectedInputs": [],
+      "alwaysEvaluatedRagChecks": [
+        "DOCUMENTATION_EDITIONS"
+      ],
+      "dependencyEvidence": [
+        {
+          "path": "atf-tests/src/test/java/atf/tests/governance/documentation/release/ReleaseRagPlatformGovernanceTest.java",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "atf-tests/src/test/java/atf/tests/governance/documentation/release/rag/nativeproof/WhistSurfaceAdapterComponentTest.java",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "atf-tests/src/test/java/atf/tests/governance/documentation/release/rag/scope/AndroidReleasePreflightComponentTest.java",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "atf-tests/src/test/java/atf/tests/governance/documentation/release/rag/scope/ComponentEvidenceScopeComponentTest.java",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "atf-tests/src/test/java/atf/tests/governance/source/gradle/GradleAuditGovernanceTest.java",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "atf-tests/tools/android-e2e-provenance.mjs",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "atf-tests/tools/android-e2e-runtime-scope.test.mjs",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "atf-tests/tools/component-evidence-scope.mjs",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "atf-tests/tools/component-proof-compiler-reuse.test.mjs",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "atf-tests/tools/release-test-scope.mjs",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "atf-tests/tools/release-test-scope.test.mjs",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "atf-tests/tools/visual-change-contracts.mjs",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "atf-tests/tools/visual-contracts.test.mjs",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "atf-tests/tools/web-release-dossier.mjs",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "atf-tests/tools/web-release-dossier.test.mjs",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "atf-ui-browser/src/main/web/index.html",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "atf-ui-browser/src/main/web/surface-fit.mjs",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "atf-ui-browser/src/main/web/table.mjs",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "atf-ui-browser/tests/layout-delivery.test.mjs",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "config/atf-component-dependencies.json",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "scripts/run-component-suites.ps1",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "whist-lab-app/app/build.gradle",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "whist-lab-app/app/src/rasterTest/java/ro/whistlab/app/score/raster/HistoryRaster.java",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "whist-lab-app/app/src/rasterTest/java/ro/whistlab/app/score/raster/HistoryRasterAudit.java",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "whist-lab-app/app/src/rasterTest/java/ro/whistlab/app/score/raster/HistoryViewportRaster.java",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "whist-lab-app/app/src/rasterTest/java/ro/whistlab/app/score/raster/ScoreHistoryCumulativeComponentTest.java",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "whist-lab-app/app/src/rasterTest/java/ro/whistlab/app/score/raster/ScoreHistoryPhoneRasterComponentTest.java",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "whist-lab-app/app/src/rasterTest/java/ro/whistlab/app/score/raster/ScoreHistoryRecoveryRasterComponentTest.java",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "whist-lab-app/app/src/rasterTest/java/ro/whistlab/app/score/raster/ScoreHistoryResponsiveRasterComponentTest.java",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "whist-lab-app/app/src/test/java/ro/whistlab/app/animation/TrickCollectionMotionComponentTest.java",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "whist-lab-app/app/src/test/java/ro/whistlab/app/animation/TrickCollectionRequestComponentTest.java",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "whist-lab-app/app/src/test/java/ro/whistlab/app/animation/TrickCollectionResizeComponentTest.java",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "whist-lab-app/app/src/test/java/ro/whistlab/app/animation/TrickCollectionRunComponentTest.java",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "whist-lab-app/app/src/test/java/ro/whistlab/app/bidding/AutoGameBidActionComponentTest.java",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "whist-lab-app/app/src/test/java/ro/whistlab/app/lifecycle/CompletedTrickOwnershipComponentTest.java",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "whist-lab-app/app/src/test/java/ro/whistlab/app/score/ScoreHistoryCheckpointTest.java",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "whist-lab-app/app/src/test/java/ro/whistlab/app/score/ScoreHistoryGridMetricsComponentTest.java",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "whist-lab-app/app/src/test/java/ro/whistlab/app/score/ScoreHistorySeriesComponentTest.java",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "whist-lab-app/app/src/test/java/ro/whistlab/app/score/ScoreHistoryTableComponentTest.java",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "whist-lab-app/app/src/test/java/ro/whistlab/app/score/award/SeriesPointsFrameComponentTest.java",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "whist-lab-app/app/src/test/java/ro/whistlab/app/seat/PlayerSeatMetricsComponentTest.java",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "whist-lab-app/app/src/test/java/ro/whistlab/app/table/GameTableLayoutComponentTest.java",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "whist-lab-app/app/src/test/java/ro/whistlab/app/table/GameTablePhaseGeometryComponentTest.java",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "whist-lab-app/app/src/test/java/ro/whistlab/app/table/TableSeatOrderComponentTest.java",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "whist-lab-app/app/src/test/java/ro/whistlab/app/table/TableViewportPolicyTest.java",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "whist-lab-app/app/src/test/java/ro/whistlab/app/table/TrickCardMetricsComponentTest.java",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "whist-lab-app/app/src/test/java/ro/whistlab/app/table/TrumpIndicatorComponentTest.java",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "whist-lab-app/app/src/test/java/ro/whistlab/app/table/content/WhistTableContentComponentTest.java",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "whist-lab-app/gradle/app-component-collections.gradle",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        }
+      ],
+      "componentEvidenceOrigin": "2fdc764101b7237468d7ba34a34aafb2a00c2a3e364307fe1c5b7fab1ad62d60",
+      "tests": 19,
+      "reportSha256": "9e271de0ebf29edc0971eb1b0b84303b905fc6d232dd1982a60e3d03803e4914",
+      "executionSha256": "3cdce9412a30778be43069f742faabe2e357baa23bfe055a80d249ab25e202e2"
+    },
+    {
+      "group": "atf-test-android",
+      "decision": "REUSE",
+      "reason": "RAG_GATE_ONLY",
+      "affectedGroups": [
+        "atf-tests",
+        "atf-tests-android",
+        "atf-tests-documentation",
+        "atf-tests-github",
+        "atf-tests-orchestration",
+        "atf-tests-provenance",
+        "atf-tests-reporting",
+        "whist-lab-app-achievements",
+        "whist-lab-app-bidding",
+        "whist-lab-app-commands",
+        "whist-lab-app-display",
+        "whist-lab-app-history"
+      ],
+      "changedInputs": [
+        "README.md",
+        "atf-tests/src/test/java/atf/tests/governance/documentation/release/ReleaseRagPlatformGovernanceTest.java",
+        "atf-tests/src/test/java/atf/tests/governance/documentation/release/rag/nativeproof/WhistSurfaceAdapterComponentTest.java",
+        "atf-tests/src/test/java/atf/tests/governance/documentation/release/rag/scope/AndroidReleasePreflightComponentTest.java",
+        "atf-tests/src/test/java/atf/tests/governance/documentation/release/rag/scope/ComponentEvidenceScopeComponentTest.java",
+        "atf-tests/src/test/java/atf/tests/governance/source/gradle/GradleAuditGovernanceTest.java",
+        "atf-tests/tools/android-e2e-provenance.mjs",
+        "atf-tests/tools/android-e2e-runtime-scope.test.mjs",
+        "atf-tests/tools/component-evidence-scope.mjs",
+        "atf-tests/tools/component-proof-compiler-reuse.test.mjs",
+        "atf-tests/tools/release-test-scope.mjs",
+        "atf-tests/tools/release-test-scope.test.mjs",
+        "atf-tests/tools/visual-change-contracts.mjs",
+        "atf-tests/tools/visual-contracts.test.mjs",
+        "atf-tests/tools/web-release-dossier.mjs",
+        "atf-tests/tools/web-release-dossier.test.mjs",
+        "atf-ui-browser/src/main/web/index.html",
+        "atf-ui-browser/src/main/web/surface-fit.mjs",
+        "atf-ui-browser/src/main/web/table.mjs",
+        "atf-ui-browser/tests/layout-delivery.test.mjs",
+        "config/atf-component-dependencies.json",
+        "config/documentation-editions.json",
+        "docs/feedback/ATF_Governance.md",
+        "docs/feedback/ATF_Reporting.md",
+        "docs/feedback/ATF_UiBrowser.md",
+        "docs/feedback/README.md",
+        "docs/governance/ATF_TestChangesBaseline.md",
+        "docs/testing/ATF_Collections.md",
+        "docs/testing/ATF_DisplayComponents.md",
+        "docs/testing/ATF_GradleComponents.md",
+        "docs/testing/ATF_ReleaseQualification.md",
+        "docs/testing/ATF_TestingGuide.md",
+        "scripts/run-component-suites.ps1",
+        "whist-lab-app/app/build.gradle",
+        "whist-lab-app/app/src/rasterTest/java/ro/whistlab/app/score/raster/HistoryRaster.java",
+        "whist-lab-app/app/src/rasterTest/java/ro/whistlab/app/score/raster/HistoryRasterAudit.java",
+        "whist-lab-app/app/src/rasterTest/java/ro/whistlab/app/score/raster/HistoryViewportRaster.java",
+        "whist-lab-app/app/src/rasterTest/java/ro/whistlab/app/score/raster/ScoreHistoryCumulativeComponentTest.java",
+        "whist-lab-app/app/src/rasterTest/java/ro/whistlab/app/score/raster/ScoreHistoryPhoneRasterComponentTest.java",
+        "whist-lab-app/app/src/rasterTest/java/ro/whistlab/app/score/raster/ScoreHistoryRecoveryRasterComponentTest.java",
+        "whist-lab-app/app/src/rasterTest/java/ro/whistlab/app/score/raster/ScoreHistoryResponsiveRasterComponentTest.java",
+        "whist-lab-app/app/src/test/java/ro/whistlab/app/animation/TrickCollectionMotionComponentTest.java",
+        "whist-lab-app/app/src/test/java/ro/whistlab/app/animation/TrickCollectionRequestComponentTest.java",
+        "whist-lab-app/app/src/test/java/ro/whistlab/app/animation/TrickCollectionResizeComponentTest.java",
+        "whist-lab-app/app/src/test/java/ro/whistlab/app/animation/TrickCollectionRunComponentTest.java",
+        "whist-lab-app/app/src/test/java/ro/whistlab/app/bidding/AutoGameBidActionComponentTest.java",
+        "whist-lab-app/app/src/test/java/ro/whistlab/app/lifecycle/CompletedTrickOwnershipComponentTest.java",
+        "whist-lab-app/app/src/test/java/ro/whistlab/app/score/ScoreHistoryCheckpointTest.java",
+        "whist-lab-app/app/src/test/java/ro/whistlab/app/score/ScoreHistoryGridMetricsComponentTest.java",
+        "whist-lab-app/app/src/test/java/ro/whistlab/app/score/ScoreHistorySeriesComponentTest.java",
+        "whist-lab-app/app/src/test/java/ro/whistlab/app/score/ScoreHistoryTableComponentTest.java",
+        "whist-lab-app/app/src/test/java/ro/whistlab/app/score/award/SeriesPointsFrameComponentTest.java",
+        "whist-lab-app/app/src/test/java/ro/whistlab/app/seat/PlayerSeatMetricsComponentTest.java",
+        "whist-lab-app/app/src/test/java/ro/whistlab/app/table/GameTableLayoutComponentTest.java",
+        "whist-lab-app/app/src/test/java/ro/whistlab/app/table/GameTablePhaseGeometryComponentTest.java",
+        "whist-lab-app/app/src/test/java/ro/whistlab/app/table/TableSeatOrderComponentTest.java",
+        "whist-lab-app/app/src/test/java/ro/whistlab/app/table/TableViewportPolicyTest.java",
+        "whist-lab-app/app/src/test/java/ro/whistlab/app/table/TrickCardMetricsComponentTest.java",
+        "whist-lab-app/app/src/test/java/ro/whistlab/app/table/TrumpIndicatorComponentTest.java",
+        "whist-lab-app/app/src/test/java/ro/whistlab/app/table/content/WhistTableContentComponentTest.java",
+        "whist-lab-app/card-table-core/src/testFixtures/README.md",
+        "whist-lab-app/card-table-core/src/unitTest/README.md",
+        "whist-lab-app/gradle/app-component-collections.gradle"
+      ],
+      "affectedInputs": [],
+      "alwaysEvaluatedRagChecks": [
+        "DOCUMENTATION_EDITIONS"
+      ],
+      "dependencyEvidence": [
+        {
+          "path": "atf-tests/src/test/java/atf/tests/governance/documentation/release/ReleaseRagPlatformGovernanceTest.java",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "atf-tests/src/test/java/atf/tests/governance/documentation/release/rag/nativeproof/WhistSurfaceAdapterComponentTest.java",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "atf-tests/src/test/java/atf/tests/governance/documentation/release/rag/scope/AndroidReleasePreflightComponentTest.java",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "atf-tests/src/test/java/atf/tests/governance/documentation/release/rag/scope/ComponentEvidenceScopeComponentTest.java",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "atf-tests/src/test/java/atf/tests/governance/source/gradle/GradleAuditGovernanceTest.java",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "atf-tests/tools/android-e2e-provenance.mjs",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "atf-tests/tools/android-e2e-runtime-scope.test.mjs",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "atf-tests/tools/component-evidence-scope.mjs",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "atf-tests/tools/component-proof-compiler-reuse.test.mjs",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "atf-tests/tools/release-test-scope.mjs",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "atf-tests/tools/release-test-scope.test.mjs",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "atf-tests/tools/visual-change-contracts.mjs",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "atf-tests/tools/visual-contracts.test.mjs",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "atf-tests/tools/web-release-dossier.mjs",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "atf-tests/tools/web-release-dossier.test.mjs",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "atf-ui-browser/src/main/web/index.html",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "atf-ui-browser/src/main/web/surface-fit.mjs",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "atf-ui-browser/src/main/web/table.mjs",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "atf-ui-browser/tests/layout-delivery.test.mjs",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "config/atf-component-dependencies.json",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "scripts/run-component-suites.ps1",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "whist-lab-app/app/build.gradle",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "whist-lab-app/app/src/rasterTest/java/ro/whistlab/app/score/raster/HistoryRaster.java",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "whist-lab-app/app/src/rasterTest/java/ro/whistlab/app/score/raster/HistoryRasterAudit.java",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "whist-lab-app/app/src/rasterTest/java/ro/whistlab/app/score/raster/HistoryViewportRaster.java",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "whist-lab-app/app/src/rasterTest/java/ro/whistlab/app/score/raster/ScoreHistoryCumulativeComponentTest.java",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "whist-lab-app/app/src/rasterTest/java/ro/whistlab/app/score/raster/ScoreHistoryPhoneRasterComponentTest.java",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "whist-lab-app/app/src/rasterTest/java/ro/whistlab/app/score/raster/ScoreHistoryRecoveryRasterComponentTest.java",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "whist-lab-app/app/src/rasterTest/java/ro/whistlab/app/score/raster/ScoreHistoryResponsiveRasterComponentTest.java",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "whist-lab-app/app/src/test/java/ro/whistlab/app/animation/TrickCollectionMotionComponentTest.java",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "whist-lab-app/app/src/test/java/ro/whistlab/app/animation/TrickCollectionRequestComponentTest.java",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "whist-lab-app/app/src/test/java/ro/whistlab/app/animation/TrickCollectionResizeComponentTest.java",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "whist-lab-app/app/src/test/java/ro/whistlab/app/animation/TrickCollectionRunComponentTest.java",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "whist-lab-app/app/src/test/java/ro/whistlab/app/bidding/AutoGameBidActionComponentTest.java",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "whist-lab-app/app/src/test/java/ro/whistlab/app/lifecycle/CompletedTrickOwnershipComponentTest.java",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "whist-lab-app/app/src/test/java/ro/whistlab/app/score/ScoreHistoryCheckpointTest.java",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "whist-lab-app/app/src/test/java/ro/whistlab/app/score/ScoreHistoryGridMetricsComponentTest.java",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "whist-lab-app/app/src/test/java/ro/whistlab/app/score/ScoreHistorySeriesComponentTest.java",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "whist-lab-app/app/src/test/java/ro/whistlab/app/score/ScoreHistoryTableComponentTest.java",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "whist-lab-app/app/src/test/java/ro/whistlab/app/score/award/SeriesPointsFrameComponentTest.java",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "whist-lab-app/app/src/test/java/ro/whistlab/app/seat/PlayerSeatMetricsComponentTest.java",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "whist-lab-app/app/src/test/java/ro/whistlab/app/table/GameTableLayoutComponentTest.java",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "whist-lab-app/app/src/test/java/ro/whistlab/app/table/GameTablePhaseGeometryComponentTest.java",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "whist-lab-app/app/src/test/java/ro/whistlab/app/table/TableSeatOrderComponentTest.java",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "whist-lab-app/app/src/test/java/ro/whistlab/app/table/TableViewportPolicyTest.java",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "whist-lab-app/app/src/test/java/ro/whistlab/app/table/TrickCardMetricsComponentTest.java",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "whist-lab-app/app/src/test/java/ro/whistlab/app/table/TrumpIndicatorComponentTest.java",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "whist-lab-app/app/src/test/java/ro/whistlab/app/table/content/WhistTableContentComponentTest.java",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "whist-lab-app/gradle/app-component-collections.gradle",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        }
+      ],
+      "componentEvidenceOrigin": "2fdc764101b7237468d7ba34a34aafb2a00c2a3e364307fe1c5b7fab1ad62d60",
+      "tests": 277,
+      "reportSha256": "5ebe5c74375a0a858beed395f525b0ae9cd936f3d9fbee1a2eb73ed421c66a9f",
+      "executionSha256": "4b1b051e02dc138d870b1cbabf0c7ff528227d342e0d3d168267f701cd0b6e6a"
+    },
+    {
+      "group": "atf-tests",
+      "decision": "INVALID",
+      "reason": "ENOENT: no such file or directory, lstat 'C:\\work\\whist_back\\release-0.24.2\\accepted-ready\\atf-tests'"
+    },
+    {
+      "group": "atf-tests-documentation",
+      "decision": "INVALID",
+      "reason": "ENOENT: no such file or directory, lstat 'C:\\work\\whist_back\\release-0.24.2\\accepted-ready\\atf-tests-documentation'"
+    },
+    {
+      "group": "atf-tests-provenance",
+      "decision": "INVALID",
+      "reason": "ENOENT: no such file or directory, lstat 'C:\\work\\whist_back\\release-0.24.2\\accepted-ready\\atf-tests-provenance'"
+    },
+    {
+      "group": "atf-tests-android",
+      "decision": "INVALID",
+      "reason": "ENOENT: no such file or directory, lstat 'C:\\work\\whist_back\\release-0.24.2\\accepted-ready\\atf-tests-android'"
+    },
+    {
+      "group": "atf-tests-github",
+      "decision": "INVALID",
+      "reason": "ENOENT: no such file or directory, lstat 'C:\\work\\whist_back\\release-0.24.2\\accepted-ready\\atf-tests-github'"
+    },
+    {
+      "group": "atf-tests-orchestration",
+      "decision": "INVALID",
+      "reason": "ENOENT: no such file or directory, lstat 'C:\\work\\whist_back\\release-0.24.2\\accepted-ready\\atf-tests-orchestration'"
+    },
+    {
+      "group": "atf-tests-reporting",
+      "decision": "INVALID",
+      "reason": "ENOENT: no such file or directory, lstat 'C:\\work\\whist_back\\release-0.24.2\\accepted-ready\\atf-tests-reporting'"
+    },
+    {
+      "group": "whist-lab-app-achievements",
+      "decision": "REUSE",
+      "reason": "RAG_GATE_ONLY",
+      "affectedGroups": [
+        "atf-tests",
+        "atf-tests-android",
+        "atf-tests-documentation",
+        "atf-tests-github",
+        "atf-tests-orchestration",
+        "atf-tests-provenance",
+        "atf-tests-reporting",
+        "whist-lab-app-commands",
+        "whist-lab-app-display",
+        "whist-lab-app-history"
+      ],
+      "changedInputs": [
+        "config/atf-component-dependencies.json",
+        "config/documentation-editions.json",
+        "docs/governance/ATF_TestChangesBaseline.md",
+        "whist-lab-app/app/src/rasterTest/java/ro/whistlab/app/score/raster/HistoryRaster.java",
+        "whist-lab-app/app/src/rasterTest/java/ro/whistlab/app/score/raster/HistoryViewportRaster.java",
+        "whist-lab-app/app/src/test/java/ro/whistlab/app/animation/TrickCollectionResizeComponentTest.java",
+        "whist-lab-app/app/src/test/java/ro/whistlab/app/lifecycle/CompletedTrickOwnershipComponentTest.java",
+        "whist-lab-app/app/src/test/java/ro/whistlab/app/score/ScoreHistoryGridMetricsComponentTest.java",
+        "whist-lab-app/app/src/test/java/ro/whistlab/app/table/TrumpIndicatorComponentTest.java"
+      ],
+      "affectedInputs": [],
+      "alwaysEvaluatedRagChecks": [
+        "DOCUMENTATION_EDITIONS"
+      ],
+      "dependencyEvidence": [
+        {
+          "path": "config/atf-component-dependencies.json",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "whist-lab-app/app/src/rasterTest/java/ro/whistlab/app/score/raster/HistoryRaster.java",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "whist-lab-app/app/src/rasterTest/java/ro/whistlab/app/score/raster/HistoryViewportRaster.java",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "whist-lab-app/app/src/test/java/ro/whistlab/app/animation/TrickCollectionResizeComponentTest.java",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "whist-lab-app/app/src/test/java/ro/whistlab/app/lifecycle/CompletedTrickOwnershipComponentTest.java",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "whist-lab-app/app/src/test/java/ro/whistlab/app/score/ScoreHistoryGridMetricsComponentTest.java",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "whist-lab-app/app/src/test/java/ro/whistlab/app/table/TrumpIndicatorComponentTest.java",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        }
+      ],
+      "componentEvidenceOrigin": "4b6f1e8cd2875d5a9afa02cd80a50695f2520308994726d19ea217ed6b9fc3e9",
+      "tests": 28,
+      "reportSha256": "b615ced0d9965526d07326e184826aba56a3d633ab63918d650fe80c288117d2",
+      "executionSha256": "4903522773cd183279b0f8dbe1df4cc3a9fa50675ae4bb77c58794c7aa72d430"
+    },
+    {
+      "group": "whist-lab-app-bidding",
+      "decision": "REUSE",
+      "reason": "RAG_GATE_ONLY",
+      "affectedGroups": [
+        "atf-tests",
+        "atf-tests-android",
+        "atf-tests-documentation",
+        "atf-tests-github",
+        "atf-tests-orchestration",
+        "atf-tests-provenance",
+        "atf-tests-reporting",
+        "whist-lab-app-commands",
+        "whist-lab-app-display",
+        "whist-lab-app-history"
+      ],
+      "changedInputs": [
+        "config/atf-component-dependencies.json",
+        "config/documentation-editions.json",
+        "docs/governance/ATF_TestChangesBaseline.md",
+        "whist-lab-app/app/src/rasterTest/java/ro/whistlab/app/score/raster/HistoryRaster.java",
+        "whist-lab-app/app/src/rasterTest/java/ro/whistlab/app/score/raster/HistoryViewportRaster.java",
+        "whist-lab-app/app/src/test/java/ro/whistlab/app/animation/TrickCollectionResizeComponentTest.java",
+        "whist-lab-app/app/src/test/java/ro/whistlab/app/lifecycle/CompletedTrickOwnershipComponentTest.java",
+        "whist-lab-app/app/src/test/java/ro/whistlab/app/score/ScoreHistoryGridMetricsComponentTest.java",
+        "whist-lab-app/app/src/test/java/ro/whistlab/app/table/TrumpIndicatorComponentTest.java"
+      ],
+      "affectedInputs": [],
+      "alwaysEvaluatedRagChecks": [
+        "DOCUMENTATION_EDITIONS"
+      ],
+      "dependencyEvidence": [
+        {
+          "path": "config/atf-component-dependencies.json",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "whist-lab-app/app/src/rasterTest/java/ro/whistlab/app/score/raster/HistoryRaster.java",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "whist-lab-app/app/src/rasterTest/java/ro/whistlab/app/score/raster/HistoryViewportRaster.java",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "whist-lab-app/app/src/test/java/ro/whistlab/app/animation/TrickCollectionResizeComponentTest.java",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "whist-lab-app/app/src/test/java/ro/whistlab/app/lifecycle/CompletedTrickOwnershipComponentTest.java",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "whist-lab-app/app/src/test/java/ro/whistlab/app/score/ScoreHistoryGridMetricsComponentTest.java",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "whist-lab-app/app/src/test/java/ro/whistlab/app/table/TrumpIndicatorComponentTest.java",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        }
+      ],
+      "componentEvidenceOrigin": "4b6f1e8cd2875d5a9afa02cd80a50695f2520308994726d19ea217ed6b9fc3e9",
+      "tests": 255,
+      "reportSha256": "80ac8676b86247d0fd24f3a7bc3efacfab1a25cac040d8303b0ba0dc362b9466",
+      "executionSha256": "1b7743f60a6a8ce3e374a11af5dd8b66ad3898e83f82672bdc8fe6e9c82b3425"
+    },
+    {
+      "group": "whist-lab-app-commands",
+      "decision": "REUSE",
+      "reason": "OWNED_INPUTS_UNCHANGED",
+      "affectedGroups": [
+        "atf-tests",
+        "atf-tests-android",
+        "atf-tests-documentation",
+        "atf-tests-github",
+        "atf-tests-orchestration",
+        "atf-tests-provenance",
+        "atf-tests-reporting",
+        "whist-lab-app-history"
+      ],
+      "changedInputs": [
+        "config/atf-component-dependencies.json",
+        "whist-lab-app/app/src/test/java/ro/whistlab/app/score/ScoreHistoryGridMetricsComponentTest.java"
+      ],
+      "affectedInputs": [],
+      "alwaysEvaluatedRagChecks": [],
+      "dependencyEvidence": [
+        {
+          "path": "config/atf-component-dependencies.json",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "whist-lab-app/app/src/test/java/ro/whistlab/app/score/ScoreHistoryGridMetricsComponentTest.java",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        }
+      ],
+      "componentEvidenceOrigin": "c93687f6aa7f078b5fef4e50edefc4a7efd42e8e1bc51a6ca3cb457754818f00",
+      "tests": 123,
+      "reportSha256": "529a222f969cc694110b175dd3fa09dea07509cdfee490a250f2a9e4b1698898",
+      "executionSha256": "639709bf408de975cbd1cc1be87749db4b786c3352bb8e2f53b65b435d702d75"
+    },
+    {
+      "group": "whist-lab-app-display",
+      "decision": "REUSE",
+      "reason": "OWNED_INPUTS_UNCHANGED",
+      "affectedGroups": [
+        "atf-tests",
+        "atf-tests-android",
+        "atf-tests-documentation",
+        "atf-tests-github",
+        "atf-tests-orchestration",
+        "atf-tests-provenance",
+        "atf-tests-reporting",
+        "whist-lab-app-history"
+      ],
+      "changedInputs": [
+        "config/atf-component-dependencies.json",
+        "whist-lab-app/app/src/test/java/ro/whistlab/app/score/ScoreHistoryGridMetricsComponentTest.java"
+      ],
+      "affectedInputs": [],
+      "alwaysEvaluatedRagChecks": [],
+      "dependencyEvidence": [
+        {
+          "path": "config/atf-component-dependencies.json",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "whist-lab-app/app/src/test/java/ro/whistlab/app/score/ScoreHistoryGridMetricsComponentTest.java",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        }
+      ],
+      "componentEvidenceOrigin": "c93687f6aa7f078b5fef4e50edefc4a7efd42e8e1bc51a6ca3cb457754818f00",
+      "tests": 107,
+      "reportSha256": "222fb1dabcd5167995a7c26b277c55169c88e1f5c85515dfc106dcf31d4cb4f7",
+      "executionSha256": "9c3cfb7823e57699c336e0cc0a542e7e0381ceeda41bd28a2d88b84dbf5c10c9"
+    },
+    {
+      "group": "whist-lab-app-history",
+      "decision": "INVALID",
+      "reason": "ENOENT: no such file or directory, lstat 'C:\\work\\whist_back\\release-0.24.2\\accepted-ready\\whist-lab-app-history'"
+    },
+    {
+      "group": "whist-lab-app-atf-card-table-ui",
+      "decision": "REUSE",
+      "reason": "RAG_GATE_ONLY",
+      "affectedGroups": [
+        "atf-tests",
+        "atf-tests-android",
+        "atf-tests-documentation",
+        "atf-tests-github",
+        "atf-tests-orchestration",
+        "atf-tests-provenance",
+        "atf-tests-reporting",
+        "whist-lab-app-achievements",
+        "whist-lab-app-bidding",
+        "whist-lab-app-commands",
+        "whist-lab-app-display",
+        "whist-lab-app-history"
+      ],
+      "changedInputs": [
+        "README.md",
+        "atf-tests/src/test/java/atf/tests/governance/documentation/release/ReleaseRagPlatformGovernanceTest.java",
+        "atf-tests/src/test/java/atf/tests/governance/documentation/release/rag/nativeproof/WhistSurfaceAdapterComponentTest.java",
+        "atf-tests/src/test/java/atf/tests/governance/documentation/release/rag/scope/AndroidReleasePreflightComponentTest.java",
+        "atf-tests/src/test/java/atf/tests/governance/documentation/release/rag/scope/ComponentEvidenceScopeComponentTest.java",
+        "atf-tests/src/test/java/atf/tests/governance/source/gradle/GradleAuditGovernanceTest.java",
+        "atf-tests/tools/android-e2e-provenance.mjs",
+        "atf-tests/tools/android-e2e-runtime-scope.test.mjs",
+        "atf-tests/tools/component-evidence-scope.mjs",
+        "atf-tests/tools/component-proof-compiler-reuse.test.mjs",
+        "atf-tests/tools/release-test-scope.mjs",
+        "atf-tests/tools/release-test-scope.test.mjs",
+        "atf-tests/tools/visual-change-contracts.mjs",
+        "atf-tests/tools/visual-contracts.test.mjs",
+        "atf-tests/tools/web-release-dossier.mjs",
+        "atf-tests/tools/web-release-dossier.test.mjs",
+        "atf-ui-browser/src/main/web/index.html",
+        "atf-ui-browser/src/main/web/surface-fit.mjs",
+        "atf-ui-browser/src/main/web/table.mjs",
+        "atf-ui-browser/tests/layout-delivery.test.mjs",
+        "config/atf-component-dependencies.json",
+        "config/documentation-editions.json",
+        "docs/feedback/ATF_Governance.md",
+        "docs/feedback/ATF_Reporting.md",
+        "docs/feedback/ATF_UiBrowser.md",
+        "docs/feedback/README.md",
+        "docs/governance/ATF_TestChangesBaseline.md",
+        "docs/testing/ATF_Collections.md",
+        "docs/testing/ATF_DisplayComponents.md",
+        "docs/testing/ATF_GradleComponents.md",
+        "docs/testing/ATF_ReleaseQualification.md",
+        "docs/testing/ATF_TestingGuide.md",
+        "scripts/run-component-suites.ps1",
+        "whist-lab-app/app/build.gradle",
+        "whist-lab-app/app/src/rasterTest/java/ro/whistlab/app/score/raster/HistoryRaster.java",
+        "whist-lab-app/app/src/rasterTest/java/ro/whistlab/app/score/raster/HistoryRasterAudit.java",
+        "whist-lab-app/app/src/rasterTest/java/ro/whistlab/app/score/raster/HistoryViewportRaster.java",
+        "whist-lab-app/app/src/rasterTest/java/ro/whistlab/app/score/raster/ScoreHistoryCumulativeComponentTest.java",
+        "whist-lab-app/app/src/rasterTest/java/ro/whistlab/app/score/raster/ScoreHistoryPhoneRasterComponentTest.java",
+        "whist-lab-app/app/src/rasterTest/java/ro/whistlab/app/score/raster/ScoreHistoryRecoveryRasterComponentTest.java",
+        "whist-lab-app/app/src/rasterTest/java/ro/whistlab/app/score/raster/ScoreHistoryResponsiveRasterComponentTest.java",
+        "whist-lab-app/app/src/test/java/ro/whistlab/app/animation/TrickCollectionMotionComponentTest.java",
+        "whist-lab-app/app/src/test/java/ro/whistlab/app/animation/TrickCollectionRequestComponentTest.java",
+        "whist-lab-app/app/src/test/java/ro/whistlab/app/animation/TrickCollectionResizeComponentTest.java",
+        "whist-lab-app/app/src/test/java/ro/whistlab/app/animation/TrickCollectionRunComponentTest.java",
+        "whist-lab-app/app/src/test/java/ro/whistlab/app/bidding/AutoGameBidActionComponentTest.java",
+        "whist-lab-app/app/src/test/java/ro/whistlab/app/lifecycle/CompletedTrickOwnershipComponentTest.java",
+        "whist-lab-app/app/src/test/java/ro/whistlab/app/score/ScoreHistoryCheckpointTest.java",
+        "whist-lab-app/app/src/test/java/ro/whistlab/app/score/ScoreHistoryGridMetricsComponentTest.java",
+        "whist-lab-app/app/src/test/java/ro/whistlab/app/score/ScoreHistorySeriesComponentTest.java",
+        "whist-lab-app/app/src/test/java/ro/whistlab/app/score/ScoreHistoryTableComponentTest.java",
+        "whist-lab-app/app/src/test/java/ro/whistlab/app/score/award/SeriesPointsFrameComponentTest.java",
+        "whist-lab-app/app/src/test/java/ro/whistlab/app/seat/PlayerSeatMetricsComponentTest.java",
+        "whist-lab-app/app/src/test/java/ro/whistlab/app/table/GameTableLayoutComponentTest.java",
+        "whist-lab-app/app/src/test/java/ro/whistlab/app/table/GameTablePhaseGeometryComponentTest.java",
+        "whist-lab-app/app/src/test/java/ro/whistlab/app/table/TableSeatOrderComponentTest.java",
+        "whist-lab-app/app/src/test/java/ro/whistlab/app/table/TableViewportPolicyTest.java",
+        "whist-lab-app/app/src/test/java/ro/whistlab/app/table/TrickCardMetricsComponentTest.java",
+        "whist-lab-app/app/src/test/java/ro/whistlab/app/table/TrumpIndicatorComponentTest.java",
+        "whist-lab-app/app/src/test/java/ro/whistlab/app/table/content/WhistTableContentComponentTest.java",
+        "whist-lab-app/card-table-core/src/testFixtures/README.md",
+        "whist-lab-app/card-table-core/src/unitTest/README.md",
+        "whist-lab-app/gradle/app-component-collections.gradle"
+      ],
+      "affectedInputs": [],
+      "alwaysEvaluatedRagChecks": [
+        "DOCUMENTATION_EDITIONS"
+      ],
+      "dependencyEvidence": [
+        {
+          "path": "atf-tests/src/test/java/atf/tests/governance/documentation/release/ReleaseRagPlatformGovernanceTest.java",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "atf-tests/src/test/java/atf/tests/governance/documentation/release/rag/nativeproof/WhistSurfaceAdapterComponentTest.java",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "atf-tests/src/test/java/atf/tests/governance/documentation/release/rag/scope/AndroidReleasePreflightComponentTest.java",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "atf-tests/src/test/java/atf/tests/governance/documentation/release/rag/scope/ComponentEvidenceScopeComponentTest.java",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "atf-tests/src/test/java/atf/tests/governance/source/gradle/GradleAuditGovernanceTest.java",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "atf-tests/tools/android-e2e-provenance.mjs",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "atf-tests/tools/android-e2e-runtime-scope.test.mjs",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "atf-tests/tools/component-evidence-scope.mjs",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "atf-tests/tools/component-proof-compiler-reuse.test.mjs",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "atf-tests/tools/release-test-scope.mjs",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "atf-tests/tools/release-test-scope.test.mjs",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "atf-tests/tools/visual-change-contracts.mjs",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "atf-tests/tools/visual-contracts.test.mjs",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "atf-tests/tools/web-release-dossier.mjs",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "atf-tests/tools/web-release-dossier.test.mjs",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "atf-ui-browser/src/main/web/index.html",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "atf-ui-browser/src/main/web/surface-fit.mjs",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "atf-ui-browser/src/main/web/table.mjs",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "atf-ui-browser/tests/layout-delivery.test.mjs",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "config/atf-component-dependencies.json",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "scripts/run-component-suites.ps1",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "whist-lab-app/app/build.gradle",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "whist-lab-app/app/src/rasterTest/java/ro/whistlab/app/score/raster/HistoryRaster.java",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "whist-lab-app/app/src/rasterTest/java/ro/whistlab/app/score/raster/HistoryRasterAudit.java",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "whist-lab-app/app/src/rasterTest/java/ro/whistlab/app/score/raster/HistoryViewportRaster.java",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "whist-lab-app/app/src/rasterTest/java/ro/whistlab/app/score/raster/ScoreHistoryCumulativeComponentTest.java",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "whist-lab-app/app/src/rasterTest/java/ro/whistlab/app/score/raster/ScoreHistoryPhoneRasterComponentTest.java",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "whist-lab-app/app/src/rasterTest/java/ro/whistlab/app/score/raster/ScoreHistoryRecoveryRasterComponentTest.java",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "whist-lab-app/app/src/rasterTest/java/ro/whistlab/app/score/raster/ScoreHistoryResponsiveRasterComponentTest.java",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "whist-lab-app/app/src/test/java/ro/whistlab/app/animation/TrickCollectionMotionComponentTest.java",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "whist-lab-app/app/src/test/java/ro/whistlab/app/animation/TrickCollectionRequestComponentTest.java",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "whist-lab-app/app/src/test/java/ro/whistlab/app/animation/TrickCollectionResizeComponentTest.java",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "whist-lab-app/app/src/test/java/ro/whistlab/app/animation/TrickCollectionRunComponentTest.java",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "whist-lab-app/app/src/test/java/ro/whistlab/app/bidding/AutoGameBidActionComponentTest.java",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "whist-lab-app/app/src/test/java/ro/whistlab/app/lifecycle/CompletedTrickOwnershipComponentTest.java",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "whist-lab-app/app/src/test/java/ro/whistlab/app/score/ScoreHistoryCheckpointTest.java",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "whist-lab-app/app/src/test/java/ro/whistlab/app/score/ScoreHistoryGridMetricsComponentTest.java",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "whist-lab-app/app/src/test/java/ro/whistlab/app/score/ScoreHistorySeriesComponentTest.java",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "whist-lab-app/app/src/test/java/ro/whistlab/app/score/ScoreHistoryTableComponentTest.java",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "whist-lab-app/app/src/test/java/ro/whistlab/app/score/award/SeriesPointsFrameComponentTest.java",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "whist-lab-app/app/src/test/java/ro/whistlab/app/seat/PlayerSeatMetricsComponentTest.java",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "whist-lab-app/app/src/test/java/ro/whistlab/app/table/GameTableLayoutComponentTest.java",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "whist-lab-app/app/src/test/java/ro/whistlab/app/table/GameTablePhaseGeometryComponentTest.java",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "whist-lab-app/app/src/test/java/ro/whistlab/app/table/TableSeatOrderComponentTest.java",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "whist-lab-app/app/src/test/java/ro/whistlab/app/table/TableViewportPolicyTest.java",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "whist-lab-app/app/src/test/java/ro/whistlab/app/table/TrickCardMetricsComponentTest.java",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "whist-lab-app/app/src/test/java/ro/whistlab/app/table/TrumpIndicatorComponentTest.java",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "whist-lab-app/app/src/test/java/ro/whistlab/app/table/content/WhistTableContentComponentTest.java",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "whist-lab-app/gradle/app-component-collections.gradle",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        }
+      ],
+      "componentEvidenceOrigin": "2fdc764101b7237468d7ba34a34aafb2a00c2a3e364307fe1c5b7fab1ad62d60",
+      "tests": 8,
+      "reportSha256": "b5c444a95c747d161ea049fbe4effc0b5d61186d240a22dec9dba95a1865a464",
+      "executionSha256": "45d5b3c976e19332cd9163dcf65082916fcc165d18f6906636ba09142426bd94"
+    },
+    {
+      "group": "whist-lab-app-card-table-core",
+      "decision": "REUSE",
+      "reason": "RAG_GATE_ONLY",
+      "affectedGroups": [
+        "atf-tests",
+        "atf-tests-android",
+        "atf-tests-documentation",
+        "atf-tests-github",
+        "atf-tests-orchestration",
+        "atf-tests-provenance",
+        "atf-tests-reporting",
+        "whist-lab-app-achievements",
+        "whist-lab-app-bidding",
+        "whist-lab-app-commands",
+        "whist-lab-app-display",
+        "whist-lab-app-history"
+      ],
+      "changedInputs": [
+        "README.md",
+        "atf-tests/src/test/java/atf/tests/governance/documentation/release/ReleaseRagPlatformGovernanceTest.java",
+        "atf-tests/src/test/java/atf/tests/governance/documentation/release/rag/nativeproof/WhistSurfaceAdapterComponentTest.java",
+        "atf-tests/src/test/java/atf/tests/governance/documentation/release/rag/scope/AndroidReleasePreflightComponentTest.java",
+        "atf-tests/src/test/java/atf/tests/governance/documentation/release/rag/scope/ComponentEvidenceScopeComponentTest.java",
+        "atf-tests/src/test/java/atf/tests/governance/source/gradle/GradleAuditGovernanceTest.java",
+        "atf-tests/tools/android-e2e-provenance.mjs",
+        "atf-tests/tools/android-e2e-runtime-scope.test.mjs",
+        "atf-tests/tools/component-evidence-scope.mjs",
+        "atf-tests/tools/component-proof-compiler-reuse.test.mjs",
+        "atf-tests/tools/release-test-scope.mjs",
+        "atf-tests/tools/release-test-scope.test.mjs",
+        "atf-tests/tools/visual-change-contracts.mjs",
+        "atf-tests/tools/visual-contracts.test.mjs",
+        "atf-tests/tools/web-release-dossier.mjs",
+        "atf-tests/tools/web-release-dossier.test.mjs",
+        "atf-ui-browser/README.md",
+        "atf-ui-browser/src/main/web/index.html",
+        "atf-ui-browser/src/main/web/surface-fit.mjs",
+        "atf-ui-browser/src/main/web/table.mjs",
+        "atf-ui-browser/tests/layout-delivery.test.mjs",
+        "config/atf-component-dependencies.json",
+        "config/documentation-editions.json",
+        "docs/feedback/ATF_Governance.md",
+        "docs/feedback/ATF_Reporting.md",
+        "docs/feedback/ATF_UiBrowser.md",
+        "docs/feedback/README.md",
+        "docs/governance/ATF_TestChangesBaseline.md",
+        "docs/testing/ATF_Collections.md",
+        "docs/testing/ATF_DisplayComponents.md",
+        "docs/testing/ATF_GradleComponents.md",
+        "docs/testing/ATF_ReleaseQualification.md",
+        "docs/testing/ATF_TestingGuide.md",
+        "scripts/run-component-suites.ps1",
+        "whist-lab-app/README.md",
+        "whist-lab-app/app/build.gradle",
+        "whist-lab-app/app/src/rasterTest/java/ro/whistlab/app/score/raster/HistoryRaster.java",
+        "whist-lab-app/app/src/rasterTest/java/ro/whistlab/app/score/raster/HistoryRasterAudit.java",
+        "whist-lab-app/app/src/rasterTest/java/ro/whistlab/app/score/raster/HistoryViewportRaster.java",
+        "whist-lab-app/app/src/rasterTest/java/ro/whistlab/app/score/raster/ScoreHistoryCumulativeComponentTest.java",
+        "whist-lab-app/app/src/rasterTest/java/ro/whistlab/app/score/raster/ScoreHistoryPhoneRasterComponentTest.java",
+        "whist-lab-app/app/src/rasterTest/java/ro/whistlab/app/score/raster/ScoreHistoryRecoveryRasterComponentTest.java",
+        "whist-lab-app/app/src/rasterTest/java/ro/whistlab/app/score/raster/ScoreHistoryResponsiveRasterComponentTest.java",
+        "whist-lab-app/app/src/test/java/ro/whistlab/app/animation/TrickCollectionMotionComponentTest.java",
+        "whist-lab-app/app/src/test/java/ro/whistlab/app/animation/TrickCollectionRequestComponentTest.java",
+        "whist-lab-app/app/src/test/java/ro/whistlab/app/animation/TrickCollectionResizeComponentTest.java",
+        "whist-lab-app/app/src/test/java/ro/whistlab/app/animation/TrickCollectionRunComponentTest.java",
+        "whist-lab-app/app/src/test/java/ro/whistlab/app/bidding/AutoGameBidActionComponentTest.java",
+        "whist-lab-app/app/src/test/java/ro/whistlab/app/lifecycle/CompletedTrickOwnershipComponentTest.java",
+        "whist-lab-app/app/src/test/java/ro/whistlab/app/score/ScoreHistoryCheckpointTest.java",
+        "whist-lab-app/app/src/test/java/ro/whistlab/app/score/ScoreHistoryGridMetricsComponentTest.java",
+        "whist-lab-app/app/src/test/java/ro/whistlab/app/score/ScoreHistorySeriesComponentTest.java",
+        "whist-lab-app/app/src/test/java/ro/whistlab/app/score/ScoreHistoryTableComponentTest.java",
+        "whist-lab-app/app/src/test/java/ro/whistlab/app/score/award/SeriesPointsFrameComponentTest.java",
+        "whist-lab-app/app/src/test/java/ro/whistlab/app/seat/PlayerSeatMetricsComponentTest.java",
+        "whist-lab-app/app/src/test/java/ro/whistlab/app/table/GameTableLayoutComponentTest.java",
+        "whist-lab-app/app/src/test/java/ro/whistlab/app/table/GameTablePhaseGeometryComponentTest.java",
+        "whist-lab-app/app/src/test/java/ro/whistlab/app/table/TableSeatOrderComponentTest.java",
+        "whist-lab-app/app/src/test/java/ro/whistlab/app/table/TableViewportPolicyTest.java",
+        "whist-lab-app/app/src/test/java/ro/whistlab/app/table/TrickCardMetricsComponentTest.java",
+        "whist-lab-app/app/src/test/java/ro/whistlab/app/table/TrumpIndicatorComponentTest.java",
+        "whist-lab-app/app/src/test/java/ro/whistlab/app/table/content/WhistTableContentComponentTest.java",
+        "whist-lab-app/card-table-core/src/testFixtures/README.md",
+        "whist-lab-app/card-table-core/src/unitTest/README.md",
+        "whist-lab-app/gradle/app-component-collections.gradle"
+      ],
+      "affectedInputs": [],
+      "alwaysEvaluatedRagChecks": [
+        "DOCUMENTATION_EDITIONS"
+      ],
+      "dependencyEvidence": [
+        {
+          "path": "atf-tests/src/test/java/atf/tests/governance/documentation/release/ReleaseRagPlatformGovernanceTest.java",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "atf-tests/src/test/java/atf/tests/governance/documentation/release/rag/nativeproof/WhistSurfaceAdapterComponentTest.java",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "atf-tests/src/test/java/atf/tests/governance/documentation/release/rag/scope/AndroidReleasePreflightComponentTest.java",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "atf-tests/src/test/java/atf/tests/governance/documentation/release/rag/scope/ComponentEvidenceScopeComponentTest.java",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "atf-tests/src/test/java/atf/tests/governance/source/gradle/GradleAuditGovernanceTest.java",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "atf-tests/tools/android-e2e-provenance.mjs",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "atf-tests/tools/android-e2e-runtime-scope.test.mjs",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "atf-tests/tools/component-evidence-scope.mjs",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "atf-tests/tools/component-proof-compiler-reuse.test.mjs",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "atf-tests/tools/release-test-scope.mjs",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "atf-tests/tools/release-test-scope.test.mjs",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "atf-tests/tools/visual-change-contracts.mjs",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "atf-tests/tools/visual-contracts.test.mjs",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "atf-tests/tools/web-release-dossier.mjs",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "atf-tests/tools/web-release-dossier.test.mjs",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "atf-ui-browser/src/main/web/index.html",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "atf-ui-browser/src/main/web/surface-fit.mjs",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "atf-ui-browser/src/main/web/table.mjs",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "atf-ui-browser/tests/layout-delivery.test.mjs",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "config/atf-component-dependencies.json",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "scripts/run-component-suites.ps1",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "whist-lab-app/app/build.gradle",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "whist-lab-app/app/src/rasterTest/java/ro/whistlab/app/score/raster/HistoryRaster.java",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "whist-lab-app/app/src/rasterTest/java/ro/whistlab/app/score/raster/HistoryRasterAudit.java",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "whist-lab-app/app/src/rasterTest/java/ro/whistlab/app/score/raster/HistoryViewportRaster.java",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "whist-lab-app/app/src/rasterTest/java/ro/whistlab/app/score/raster/ScoreHistoryCumulativeComponentTest.java",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "whist-lab-app/app/src/rasterTest/java/ro/whistlab/app/score/raster/ScoreHistoryPhoneRasterComponentTest.java",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "whist-lab-app/app/src/rasterTest/java/ro/whistlab/app/score/raster/ScoreHistoryRecoveryRasterComponentTest.java",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "whist-lab-app/app/src/rasterTest/java/ro/whistlab/app/score/raster/ScoreHistoryResponsiveRasterComponentTest.java",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "whist-lab-app/app/src/test/java/ro/whistlab/app/animation/TrickCollectionMotionComponentTest.java",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "whist-lab-app/app/src/test/java/ro/whistlab/app/animation/TrickCollectionRequestComponentTest.java",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "whist-lab-app/app/src/test/java/ro/whistlab/app/animation/TrickCollectionResizeComponentTest.java",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "whist-lab-app/app/src/test/java/ro/whistlab/app/animation/TrickCollectionRunComponentTest.java",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "whist-lab-app/app/src/test/java/ro/whistlab/app/bidding/AutoGameBidActionComponentTest.java",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "whist-lab-app/app/src/test/java/ro/whistlab/app/lifecycle/CompletedTrickOwnershipComponentTest.java",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "whist-lab-app/app/src/test/java/ro/whistlab/app/score/ScoreHistoryCheckpointTest.java",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "whist-lab-app/app/src/test/java/ro/whistlab/app/score/ScoreHistoryGridMetricsComponentTest.java",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "whist-lab-app/app/src/test/java/ro/whistlab/app/score/ScoreHistorySeriesComponentTest.java",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "whist-lab-app/app/src/test/java/ro/whistlab/app/score/ScoreHistoryTableComponentTest.java",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "whist-lab-app/app/src/test/java/ro/whistlab/app/score/award/SeriesPointsFrameComponentTest.java",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "whist-lab-app/app/src/test/java/ro/whistlab/app/seat/PlayerSeatMetricsComponentTest.java",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "whist-lab-app/app/src/test/java/ro/whistlab/app/table/GameTableLayoutComponentTest.java",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "whist-lab-app/app/src/test/java/ro/whistlab/app/table/GameTablePhaseGeometryComponentTest.java",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "whist-lab-app/app/src/test/java/ro/whistlab/app/table/TableSeatOrderComponentTest.java",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "whist-lab-app/app/src/test/java/ro/whistlab/app/table/TableViewportPolicyTest.java",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "whist-lab-app/app/src/test/java/ro/whistlab/app/table/TrickCardMetricsComponentTest.java",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "whist-lab-app/app/src/test/java/ro/whistlab/app/table/TrumpIndicatorComponentTest.java",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "whist-lab-app/app/src/test/java/ro/whistlab/app/table/content/WhistTableContentComponentTest.java",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "whist-lab-app/gradle/app-component-collections.gradle",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        }
+      ],
+      "componentEvidenceOrigin": "945b6a3bc9a4df284d0355fd91ee464f8b51572d6fd8d4827d4ef761ed2c4243",
+      "tests": 50,
+      "reportSha256": "439cb679ad75bc5e4805973bb976dfe85258adaa46c32a0114e237044f08de3e",
+      "executionSha256": "bad71213fd1ee693b1f3f27cad6a48138875a2022a19d043d31922844f6f40bb"
+    },
+    {
+      "group": "whist-lab-app-rules",
+      "decision": "REUSE",
+      "reason": "RAG_GATE_ONLY",
+      "affectedGroups": [
+        "atf-tests",
+        "atf-tests-android",
+        "atf-tests-documentation",
+        "atf-tests-github",
+        "atf-tests-orchestration",
+        "atf-tests-provenance",
+        "atf-tests-reporting",
+        "whist-lab-app-achievements",
+        "whist-lab-app-bidding",
+        "whist-lab-app-commands",
+        "whist-lab-app-display",
+        "whist-lab-app-history"
+      ],
+      "changedInputs": [
+        "README.md",
+        "atf-tests/src/test/java/atf/tests/governance/documentation/release/ReleaseRagPlatformGovernanceTest.java",
+        "atf-tests/src/test/java/atf/tests/governance/documentation/release/rag/nativeproof/WhistSurfaceAdapterComponentTest.java",
+        "atf-tests/src/test/java/atf/tests/governance/documentation/release/rag/scope/AndroidReleasePreflightComponentTest.java",
+        "atf-tests/src/test/java/atf/tests/governance/documentation/release/rag/scope/ComponentEvidenceScopeComponentTest.java",
+        "atf-tests/src/test/java/atf/tests/governance/source/gradle/GradleAuditGovernanceTest.java",
+        "atf-tests/tools/android-e2e-provenance.mjs",
+        "atf-tests/tools/android-e2e-runtime-scope.test.mjs",
+        "atf-tests/tools/component-evidence-scope.mjs",
+        "atf-tests/tools/component-proof-compiler-reuse.test.mjs",
+        "atf-tests/tools/release-test-scope.mjs",
+        "atf-tests/tools/release-test-scope.test.mjs",
+        "atf-tests/tools/visual-change-contracts.mjs",
+        "atf-tests/tools/visual-contracts.test.mjs",
+        "atf-tests/tools/web-release-dossier.mjs",
+        "atf-tests/tools/web-release-dossier.test.mjs",
+        "atf-ui-browser/src/main/web/index.html",
+        "atf-ui-browser/src/main/web/surface-fit.mjs",
+        "atf-ui-browser/src/main/web/table.mjs",
+        "atf-ui-browser/tests/layout-delivery.test.mjs",
+        "config/atf-component-dependencies.json",
+        "config/documentation-editions.json",
+        "docs/feedback/ATF_Governance.md",
+        "docs/feedback/ATF_Reporting.md",
+        "docs/feedback/ATF_UiBrowser.md",
+        "docs/feedback/README.md",
+        "docs/governance/ATF_TestChangesBaseline.md",
+        "docs/testing/ATF_Collections.md",
+        "docs/testing/ATF_DisplayComponents.md",
+        "docs/testing/ATF_GradleComponents.md",
+        "docs/testing/ATF_ReleaseQualification.md",
+        "docs/testing/ATF_TestingGuide.md",
+        "scripts/run-component-suites.ps1",
+        "whist-lab-app/app/build.gradle",
+        "whist-lab-app/app/src/rasterTest/java/ro/whistlab/app/score/raster/HistoryRaster.java",
+        "whist-lab-app/app/src/rasterTest/java/ro/whistlab/app/score/raster/HistoryRasterAudit.java",
+        "whist-lab-app/app/src/rasterTest/java/ro/whistlab/app/score/raster/HistoryViewportRaster.java",
+        "whist-lab-app/app/src/rasterTest/java/ro/whistlab/app/score/raster/ScoreHistoryCumulativeComponentTest.java",
+        "whist-lab-app/app/src/rasterTest/java/ro/whistlab/app/score/raster/ScoreHistoryPhoneRasterComponentTest.java",
+        "whist-lab-app/app/src/rasterTest/java/ro/whistlab/app/score/raster/ScoreHistoryRecoveryRasterComponentTest.java",
+        "whist-lab-app/app/src/rasterTest/java/ro/whistlab/app/score/raster/ScoreHistoryResponsiveRasterComponentTest.java",
+        "whist-lab-app/app/src/test/java/ro/whistlab/app/animation/TrickCollectionMotionComponentTest.java",
+        "whist-lab-app/app/src/test/java/ro/whistlab/app/animation/TrickCollectionRequestComponentTest.java",
+        "whist-lab-app/app/src/test/java/ro/whistlab/app/animation/TrickCollectionResizeComponentTest.java",
+        "whist-lab-app/app/src/test/java/ro/whistlab/app/animation/TrickCollectionRunComponentTest.java",
+        "whist-lab-app/app/src/test/java/ro/whistlab/app/bidding/AutoGameBidActionComponentTest.java",
+        "whist-lab-app/app/src/test/java/ro/whistlab/app/lifecycle/CompletedTrickOwnershipComponentTest.java",
+        "whist-lab-app/app/src/test/java/ro/whistlab/app/score/ScoreHistoryCheckpointTest.java",
+        "whist-lab-app/app/src/test/java/ro/whistlab/app/score/ScoreHistoryGridMetricsComponentTest.java",
+        "whist-lab-app/app/src/test/java/ro/whistlab/app/score/ScoreHistorySeriesComponentTest.java",
+        "whist-lab-app/app/src/test/java/ro/whistlab/app/score/ScoreHistoryTableComponentTest.java",
+        "whist-lab-app/app/src/test/java/ro/whistlab/app/score/award/SeriesPointsFrameComponentTest.java",
+        "whist-lab-app/app/src/test/java/ro/whistlab/app/seat/PlayerSeatMetricsComponentTest.java",
+        "whist-lab-app/app/src/test/java/ro/whistlab/app/table/GameTableLayoutComponentTest.java",
+        "whist-lab-app/app/src/test/java/ro/whistlab/app/table/GameTablePhaseGeometryComponentTest.java",
+        "whist-lab-app/app/src/test/java/ro/whistlab/app/table/TableSeatOrderComponentTest.java",
+        "whist-lab-app/app/src/test/java/ro/whistlab/app/table/TableViewportPolicyTest.java",
+        "whist-lab-app/app/src/test/java/ro/whistlab/app/table/TrickCardMetricsComponentTest.java",
+        "whist-lab-app/app/src/test/java/ro/whistlab/app/table/TrumpIndicatorComponentTest.java",
+        "whist-lab-app/app/src/test/java/ro/whistlab/app/table/content/WhistTableContentComponentTest.java",
+        "whist-lab-app/card-table-core/src/testFixtures/README.md",
+        "whist-lab-app/card-table-core/src/unitTest/README.md",
+        "whist-lab-app/gradle/app-component-collections.gradle"
+      ],
+      "affectedInputs": [],
+      "alwaysEvaluatedRagChecks": [
+        "DOCUMENTATION_EDITIONS"
+      ],
+      "dependencyEvidence": [
+        {
+          "path": "atf-tests/src/test/java/atf/tests/governance/documentation/release/ReleaseRagPlatformGovernanceTest.java",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "atf-tests/src/test/java/atf/tests/governance/documentation/release/rag/nativeproof/WhistSurfaceAdapterComponentTest.java",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "atf-tests/src/test/java/atf/tests/governance/documentation/release/rag/scope/AndroidReleasePreflightComponentTest.java",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "atf-tests/src/test/java/atf/tests/governance/documentation/release/rag/scope/ComponentEvidenceScopeComponentTest.java",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "atf-tests/src/test/java/atf/tests/governance/source/gradle/GradleAuditGovernanceTest.java",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "atf-tests/tools/android-e2e-provenance.mjs",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "atf-tests/tools/android-e2e-runtime-scope.test.mjs",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "atf-tests/tools/component-evidence-scope.mjs",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "atf-tests/tools/component-proof-compiler-reuse.test.mjs",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "atf-tests/tools/release-test-scope.mjs",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "atf-tests/tools/release-test-scope.test.mjs",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "atf-tests/tools/visual-change-contracts.mjs",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "atf-tests/tools/visual-contracts.test.mjs",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "atf-tests/tools/web-release-dossier.mjs",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "atf-tests/tools/web-release-dossier.test.mjs",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "atf-ui-browser/src/main/web/index.html",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "atf-ui-browser/src/main/web/surface-fit.mjs",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "atf-ui-browser/src/main/web/table.mjs",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "atf-ui-browser/tests/layout-delivery.test.mjs",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "config/atf-component-dependencies.json",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "scripts/run-component-suites.ps1",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "whist-lab-app/app/build.gradle",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "whist-lab-app/app/src/rasterTest/java/ro/whistlab/app/score/raster/HistoryRaster.java",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "whist-lab-app/app/src/rasterTest/java/ro/whistlab/app/score/raster/HistoryRasterAudit.java",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "whist-lab-app/app/src/rasterTest/java/ro/whistlab/app/score/raster/HistoryViewportRaster.java",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "whist-lab-app/app/src/rasterTest/java/ro/whistlab/app/score/raster/ScoreHistoryCumulativeComponentTest.java",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "whist-lab-app/app/src/rasterTest/java/ro/whistlab/app/score/raster/ScoreHistoryPhoneRasterComponentTest.java",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "whist-lab-app/app/src/rasterTest/java/ro/whistlab/app/score/raster/ScoreHistoryRecoveryRasterComponentTest.java",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "whist-lab-app/app/src/rasterTest/java/ro/whistlab/app/score/raster/ScoreHistoryResponsiveRasterComponentTest.java",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "whist-lab-app/app/src/test/java/ro/whistlab/app/animation/TrickCollectionMotionComponentTest.java",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "whist-lab-app/app/src/test/java/ro/whistlab/app/animation/TrickCollectionRequestComponentTest.java",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "whist-lab-app/app/src/test/java/ro/whistlab/app/animation/TrickCollectionResizeComponentTest.java",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "whist-lab-app/app/src/test/java/ro/whistlab/app/animation/TrickCollectionRunComponentTest.java",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "whist-lab-app/app/src/test/java/ro/whistlab/app/bidding/AutoGameBidActionComponentTest.java",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "whist-lab-app/app/src/test/java/ro/whistlab/app/lifecycle/CompletedTrickOwnershipComponentTest.java",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "whist-lab-app/app/src/test/java/ro/whistlab/app/score/ScoreHistoryCheckpointTest.java",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "whist-lab-app/app/src/test/java/ro/whistlab/app/score/ScoreHistoryGridMetricsComponentTest.java",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "whist-lab-app/app/src/test/java/ro/whistlab/app/score/ScoreHistorySeriesComponentTest.java",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "whist-lab-app/app/src/test/java/ro/whistlab/app/score/ScoreHistoryTableComponentTest.java",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "whist-lab-app/app/src/test/java/ro/whistlab/app/score/award/SeriesPointsFrameComponentTest.java",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "whist-lab-app/app/src/test/java/ro/whistlab/app/seat/PlayerSeatMetricsComponentTest.java",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "whist-lab-app/app/src/test/java/ro/whistlab/app/table/GameTableLayoutComponentTest.java",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "whist-lab-app/app/src/test/java/ro/whistlab/app/table/GameTablePhaseGeometryComponentTest.java",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "whist-lab-app/app/src/test/java/ro/whistlab/app/table/TableSeatOrderComponentTest.java",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "whist-lab-app/app/src/test/java/ro/whistlab/app/table/TableViewportPolicyTest.java",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "whist-lab-app/app/src/test/java/ro/whistlab/app/table/TrickCardMetricsComponentTest.java",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "whist-lab-app/app/src/test/java/ro/whistlab/app/table/TrumpIndicatorComponentTest.java",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "whist-lab-app/app/src/test/java/ro/whistlab/app/table/content/WhistTableContentComponentTest.java",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "whist-lab-app/gradle/app-component-collections.gradle",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        }
+      ],
+      "componentEvidenceOrigin": "2fdc764101b7237468d7ba34a34aafb2a00c2a3e364307fe1c5b7fab1ad62d60",
+      "tests": 40,
+      "reportSha256": "58def42d9a6fcdd1a02e23051fa082a03d17564aa99b40d8422fe9f72407422a",
+      "executionSha256": "ee6562f734fc190bd0db4a167388b4587ffddd5d9a83ce63a627b9c9dfca480d"
+    }
+  ]
+}
