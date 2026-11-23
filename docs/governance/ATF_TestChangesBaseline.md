@@ -153,7 +153,7 @@ testChanges:
     proof: 'mvn -o -pl atf-tests -am -Dtest=ComponentEvidenceScopeComponentTest -Dsurefire.failIfNoSpecifiedTests=false test'
     checks:
       positive:
-        - atf.tests.governance.documentation.release.rag.scope.ComponentEvidenceScopeComponentTest#borrowedCompilerDoesNotCacheControlExecution
+        - atf.tests.governance.documentation.release.rag.scope.ComponentEvidenceScopeComponentTest#editorialChangesReuseVerifiedMavenCompilationAndKeepFreshExecutionInputs
       negative:
         - atf.tests.governance.documentation.release.rag.scope.ComponentEvidenceScopeComponentTest#componentResumeImportsOnlyVerifiedEvidenceFromTheInterruptedSnapshot
     paths:
@@ -1839,7 +1839,7 @@ testChanges:
     proof: 'mvn -o -pl atf-tests -am -Dtest=ComponentEvidenceScopeComponentTest -Dsurefire.failIfNoSpecifiedTests=false test'
     checks:
       positive:
-        - atf.tests.governance.documentation.release.rag.scope.ComponentEvidenceScopeComponentTest#borrowedCompilerDoesNotCacheControlExecution
+        - atf.tests.governance.documentation.release.rag.scope.ComponentEvidenceScopeComponentTest#editorialChangesReuseVerifiedMavenCompilationAndKeepFreshExecutionInputs
       negative:
         - atf.tests.governance.documentation.release.rag.scope.ComponentEvidenceScopeComponentTest#compilerInventoriesKeepPayloadsAndRejectInvalidSourceIdentities
     paths:
