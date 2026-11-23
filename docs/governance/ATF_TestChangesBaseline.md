@@ -2070,3 +2070,35 @@ testChanges:
 ```
 
 </details>
+
+<details>
+<summary>Tranziții stabile ale mesei și închiderea clară a cititorului</summary>
+
+```yaml
+testChanges:
+  - id: WEB-TRANSITION-STABILITY
+    status: VERIFIED
+    base: bb3430825c04293d98ceaee30dfe4dd181c5faea
+    expires: 2026-12-23
+    reason: Verify retained headers and hand scroll, fresh menu callbacks, delayed layout isolation, explicit native-frame opt-in and Close distinct from Previous/Next.
+    proof: 'mvn -o -pl atf-tests -am -Dtest=WhistSurfaceAdapterComponentTest -Dsurefire.failIfNoSpecifiedTests=false test'
+    checks:
+      positive:
+        - atf.tests.governance.documentation.release.rag.nativeproof.WhistSurfaceAdapterComponentTest#adaptiveWebMenusKeepTextIndependentOfTheUsableViewport
+        - atf.tests.governance.documentation.release.rag.nativeproof.WhistSurfaceAdapterComponentTest#webAndNativePortablePortsKeepMeasuredGeometryFacesAndGesturesAligned
+      negative:
+        - atf.tests.governance.documentation.release.rag.nativeproof.WhistSurfaceAdapterComponentTest#surfaceLifecycleRejectsInvalidPagesAndCallbacksAfterDisposal
+    paths:
+      - atf-tests/src/test/java/atf/tests/governance/documentation/release/rag/nativeproof/WhistSurfaceAdapterComponentTest.java
+      - atf-ui-browser/Package-CardTableBrowser.ps1
+      - atf-ui-browser/tests/layout-delivery.test.mjs
+      - atf-ui-browser/tests/responsive-fixture.mjs
+      - atf-ui-browser/tests/responsive-surface.test.mjs
+      - atf-ui-browser/tests/ro/cardtable/browser/WhistSurfaceContract.java
+      - atf-ui-browser/tests/seat-paint.test.mjs
+      - atf-ui-browser/tests/turn-continuity.mjs
+      - atf-ui-browser/tests/whist-surface-contract.test.mjs
+      - config/atf-component-dependencies.json
+```
+
+</details>

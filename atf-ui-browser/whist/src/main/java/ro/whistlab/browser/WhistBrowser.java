@@ -63,6 +63,7 @@ public final class WhistBrowser implements BrowserGame {
 
     @Override public String title() { return "Whist Lab"; }
     @Override public String surface() { return "whist"; }
+    @Override public boolean usesMeasuredSeatFrames() { return true; }
     @Override public List<Token> palette() {
         var tokens = new ArrayList<>(List.of(color("paper", TableColors.BACKGROUND), color("surface", TableColors.SURFACE),
                 color("pine", TableColors.PINE), color("accent", TableColors.ACCENT),

@@ -92,23 +92,34 @@ export function commitTableView(stage,next){
   const board=previous.querySelector(':scope > .board'),prepared=next.querySelector(':scope > .board');
   const center=board.querySelector(':scope > .center'),nextCenter=prepared.querySelector(':scope > .center');
   if(!center||!nextCenter){stage.replaceChildren(next);return next;}
+  const header=previous.querySelector(':scope > header'),nextHeader=next.querySelector(':scope > header');
+  const hand=previous.querySelector(':scope > .hand'),nextHand=next.querySelector(':scope > .hand');
+  const faces=node=>[...(node?.querySelectorAll('.card')??[])].map(n=>n.dataset.face).join('|');
+  const scroll=hand&&nextHand&&faces(hand)===faces(nextHand)?hand.scrollLeft:null;
   for(const [frame,measured] of pairs){synchronizeAttributes(frame,measured);synchronizeChildren(frame,measured);}
   synchronizeAttributes(board,prepared);
   synchronizeAttributes(center,nextCenter);
   center.replaceChildren(...nextCenter.childNodes);
   synchronizeAttributes(previous,next);
-  replaceAroundBoard(previous,next,board,prepared);
+  const anchors=new Map([[prepared,board]]);
+  if(header&&nextHeader){
+    synchronizeAttributes(header,nextHeader);synchronizeChildren(header,nextHeader,true);
+    anchors.set(nextHeader,header);
+  }
+  replaceAroundAnchors(previous,next,anchors);
+  if(scroll!==null)nextHand.scrollLeft=scroll;
   next.remove();
   return previous;
 }
 
-function replaceAroundBoard(current,next,board,prepared){
+function replaceAroundAnchors(current,next,anchors){
   let cursor=current.firstChild;
   for(const child of [...next.childNodes]){
-    if(child===prepared){
-      while(cursor&&cursor!==board){const after=cursor.nextSibling;cursor.remove();cursor=after;}
-      cursor=board.nextSibling;
-    }else if(cursor===board){current.insertBefore(child,cursor);}
+    if(anchors.has(child)){
+      const retained=anchors.get(child);
+      while(cursor&&cursor!==retained){const after=cursor.nextSibling;cursor.remove();cursor=after;}
+      cursor=retained.nextSibling;
+    }else if([...anchors.values()].includes(cursor)){current.insertBefore(child,cursor);}
     else if(cursor){const after=cursor.nextSibling;cursor.replaceWith(child);cursor=after;}
     else current.append(child);
   }
@@ -135,13 +146,18 @@ function synchronizeAttributes(current,next){
   for(const [name,value] of wanted)if(existing.get(name)!==value)current.setAttribute(name,value);
 }
 
-function synchronizeChildren(current,next){
+function synchronizeChildren(current,next,interactive=false){
   const existing=[...current.childNodes],wanted=[...next.childNodes];
   if(existing.length!==wanted.length||existing.some((n,i)=>!n?.nodeType||n.nodeType!==wanted[i]?.nodeType||n.nodeName!==wanted[i].nodeName)){
     current.replaceChildren(...wanted);return;
   }
   for(const [i,node] of existing.entries()){
     if(node.nodeType===3){if(node.data!==wanted[i].data)node.data=wanted[i].data;}
-    else if(node.nodeType===1){synchronizeAttributes(node,wanted[i]);synchronizeChildren(node,wanted[i]);}
+    else if(node.nodeType===1){
+      if(interactive&&node.matches('button,input,select,textarea,details')){
+        if(node.matches('details'))wanted[i].open=node.open;
+        node.replaceWith(wanted[i]);
+      }else{synchronizeAttributes(node,wanted[i]);synchronizeChildren(node,wanted[i],interactive);}
+    }
   }
 }

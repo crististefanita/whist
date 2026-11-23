@@ -33,12 +33,12 @@ export async function rendererFixture(t){
   const catalogue={summary:'Progress',groups:Array.from({length:3},(_,i)=>({heading:'Group '+(i+1),goals:Array.from({length:5},(_,j)=>({marker:'○',title:'Exact contract '+(j+1),level:'Normal',progress:'0 / 5',description:'Win the declared tricks without receiving duplicate credit.'}))}))};
   const reply={revision:1,view:null,collections:[],profile:{name:'Player',savedName:true,catalogue}};
   const rankings={preferred:'romanian',boards:[{key:'romanian',label:'Romanian Whist',entries:Array.from({length:20},(_,i)=>({label:'Player '+(i+1),score:100-i}))}]};
-  const copy={home:'Whist',language:'Language',name:'Your name',newGame:'New game',resume:'Resume game',ranking:'Rankings',achievements:'Achievements',help:'How to play',setup:'Game settings',start:'Start game',back:'Back',streaks:'Five-hand streaks',rulesAndSchedule:'Rules and schedule',save:'Save',cancel:'Cancel',nameHint:'Maximum 10 characters.',reset:'Reset name',instructionsSubtitle:'How to play',
+  const copy={home:'Whist',language:'Language',name:'Your name',newGame:'New game',resume:'Resume game',ranking:'Rankings',rankingHint:'Local top 20 · sample entries are marked · AI scores included',close:'Close',achievements:'Achievements',help:'How to play',setup:'Game settings',start:'Start game',back:'Back',streaks:'Five-hand streaks',rulesAndSchedule:'Rules and schedule',save:'Save',cancel:'Cancel',nameHint:'Maximum 10 characters.',reset:'Reset name',instructionsSubtitle:'How to play',
     scoringDetails:'Scoring details',history:'Score history',mainMenu:'Main menu',
     rules:Array.from({length:4},(_,i)=>({title:'Rule '+(i+1),body:'Follow the lead suit. When void, play trump if available. Each bid is an exact contract.'}))};
   const rules={ROMANIAN_1_8_1:{romanian:true}};
   const palette=[{name:'--whist-paper',color:'#f6f5ed'},{name:'--whist-pine',color:'#1d362b'},{name:'--whist-surface',color:'#fffef8'},{name:'--whist-accent',color:'#306f4e'}];
-  const configuration={surface:'whist',title:'Whist',palette,fields:settings('ro'),englishFields:settings('en'),copy:{en:{...copy,modeRules:rules},ro:{modeRules:rules,rules:Array.from({length:4},(_,i)=>({title:'Regula '+(i+1),body:'Respectă culoarea cerută. În lipsa ei, joacă atu dacă ai. Licitația este un contract exact.'}))}},autoDelayMillis:0};
+  const configuration={surface:'whist',title:'Whist',palette,fields:settings('ro'),englishFields:settings('en'),copy:{en:{...copy,modeRules:rules},ro:{close:'Închide',rankingHint:'Top 20 local · exemplele sunt marcate · include scorurile AI',modeRules:rules,rules:Array.from({length:4},(_,i)=>({title:'Regula '+(i+1),body:'Respectă culoarea cerută. În lipsa ei, joacă atu dacă ai. Licitația este un contract exact.'}))}},autoDelayMillis:0};
   let language='ro';const requests=[];
   const server=http.createServer(async(req,res)=>{
     try{

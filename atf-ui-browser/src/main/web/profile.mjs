@@ -95,7 +95,7 @@ export function createProfileDialogs(element, button, submit, copy = (_, text) =
     }
     const content = element("div", "", "achievement-content");
     content.append(summary, progress, body);
-    show(copy("achievements", "Realizări"), content, copy("back", "Înapoi"), "achievement-catalogue");
+    show(copy("achievements", "Realizări"), content, copy("close", "Închide"), "achievement-catalogue");
   }
 
   function goalRow(goal, collapsible) {

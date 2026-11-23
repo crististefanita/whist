@@ -17,9 +17,12 @@ test('native-style seat rows retain their DOM and supplied rectangles through ac
         document.documentElement.style.fontSize=font+'px';
         const host=document.createElement('section');host.className='whist-match compact-table';
         host.style.cssText='position:fixed;top:0;left:0;visibility:hidden;width:'+width+'px;height:320px';document.body.append(host);
+        let handled=-1;
         const make=step=>{
           const view=document.createElement('section'),board=document.createElement('div');view.className='match whist-match';board.className='board';
-          board.style.cssText='position:relative;width:'+width+'px;height:320px';view.append(board);host.append(view);
+          const header=document.createElement('header'),title=document.createElement('h1'),menu=document.createElement('details'),entry=document.createElement('button'),trump=document.createElement('div');
+          title.textContent='Whist';menu.className='whist-navigation';entry.textContent='Score';entry.onclick=()=>handled=step;menu.append(entry);trump.className='whist-trump';trump.textContent='8♠';header.append(title,menu,trump);
+          board.style.cssText='position:relative;width:'+width+'px;height:320px';view.append(header,board);host.append(view);
           for(let seat=0;seat<players;seat++){
             const n=document.createElement('div');n.className='seat'+(seat===step%players?' active':'');n.dataset.seat=String(seat);
             n.style.cssText='left:'+(seat%3*width/3)+'px;top:'+(Math.floor(seat/3)*150)+'px;width:'+Math.floor((width-16)/3)+'px;height:80px;transform:none';
@@ -29,20 +32,23 @@ test('native-style seat rows retain their DOM and supplied rectangles through ac
             n.append(name,bid,won);board.append(n);updateSeatFact(bid,bid.textContent);updateSeatFact(won,won.textContent);
             if(seat===step%players)n.setAttribute('aria-current','true');
           }
-          fitSeatLines(board.children);const center=document.createElement('div');center.className='center';board.append(center);return view;
+          fitSeatLines(board.children);const center=document.createElement('div');center.className='center';board.append(center);
+          const hand=document.createElement('div'),fan=document.createElement('div');hand.className='hand';hand.style.cssText='width:100px;height:40px;overflow:auto';fan.style.cssText='width:300px;height:40px';
+          for(const face of ['A♠','K♥']){const card=document.createElement('span');card.className='card';card.dataset.face=face;fan.append(card);}hand.append(fan);view.append(hand);return view;
         };
         let current=make(0),frames=[...current.querySelectorAll('.seat')];
-        const original=current,board=current.querySelector('.board');
+        const original=current,board=current.querySelector('.board'),header=current.querySelector('header'),title=header.querySelector('h1'),trump=header.querySelector('.whist-trump');
+        header.querySelector('details').open=true;current.querySelector('.hand').scrollLeft=40;
         const refs=frames.map(n=>({frame:n,parent:n.parentNode,rows:[...n.children],ink:[...n.querySelectorAll('.seat-line-ink')],numbers:[...n.querySelectorAll('b')],rectangle:box(n)}));
         let styleChanges=0,unmounts=0;const observer=new MutationObserver(records=>{
           styleChanges+=records.filter(r=>r.attributeName==='style').length;
-          for(const r of records)for(const n of r.removedNodes)if(n===original||n===board||refs.some(ref=>ref.frame===n))unmounts++;
+          for(const r of records)for(const n of r.removedNodes)if(n===original||n===board||n===header||refs.some(ref=>ref.frame===n))unmounts++;
         });
         frames.forEach(n=>observer.observe(n,{attributes:true}));
         observer.observe(host,{childList:true});observer.observe(original,{childList:true});observer.observe(board,{childList:true});
         const verify=()=>{
           const actual=[...current.querySelectorAll('.seat')];
-          return current===original&&current.querySelector('.board')===board&&actual.every((n,i)=>n===refs[i].frame&&n.parentNode===refs[i].parent&&[...n.children].every((r,j)=>r===refs[i].rows[j])&&
+          return current===original&&current.querySelector('header')===header&&header.querySelector('h1')===title&&header.querySelector('.whist-trump')===trump&&current.querySelector('.hand').scrollLeft===40&&current.querySelector('.board')===board&&actual.every((n,i)=>n===refs[i].frame&&n.parentNode===refs[i].parent&&[...n.children].every((r,j)=>r===refs[i].rows[j])&&
             [...n.querySelectorAll('.seat-line-ink')].every((r,j)=>r===refs[i].ink[j])&&
             [...n.querySelectorAll('b')].every((r,j)=>r===refs[i].numbers[j])&&JSON.stringify(box(n))===JSON.stringify(refs[i].rectangle));
         };
@@ -53,6 +59,8 @@ test('native-style seat rows retain their DOM and supplied rectangles through ac
           if(!verify())throw Error('An unchanged seat rectangle or fitted row was replaced');
           if(JSON.stringify(frames.map(n=>n.textContent))!==JSON.stringify(wanted))throw Error('Retained text became stale');
           if(frames.some((n,i)=>n.hasAttribute('aria-current')!==(i===step%players)))throw Error('Retained actor accessibility became stale');
+          if(!header.querySelector('details').open)throw Error('An open navigation menu was closed during presentation');
+          header.querySelector('button').click();if(handled!==step)throw Error('A retained menu used stale game facts');
           await Promise.resolve();
         }
         if(styleChanges||unmounts)throw Error('Unchanged frame styles were rewritten or the visible board was unmounted');

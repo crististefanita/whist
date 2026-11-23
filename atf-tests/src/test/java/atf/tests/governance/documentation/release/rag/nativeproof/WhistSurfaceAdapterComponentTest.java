@@ -20,11 +20,13 @@ class WhistSurfaceAdapterComponentTest {
         String output = NodeReleaseContracts.runNode(List.of("node", "--test",
                 "--test-concurrency=1", root.resolve("atf-ui-browser/tests/whist-surface-contract.test.mjs").toString(),
                 root.resolve("atf-ui-browser/tests/seat-paint.test.mjs").toString(),
+                root.resolve("atf-ui-browser/tests/layout-delivery.test.mjs").toString(),
                 root.resolve("atf-ui-browser/tests/automation-handoff.test.mjs").toString()), root, Duration.ofSeconds(160),
                 value -> inputs.add("Original Web/native adapter observations", value));
         assertTrue(output.contains("Whist adapter observations:"), output);
         assertTrue(output.contains("Seat paint observations:"), "Native-style frames and fitted row identities survive actor handoffs");
         assertTrue(output.contains("AutoGame handoff observations:"), "Production command ownership preserves automation intent without duplicate decisions");
+        assertTrue(output.contains("Layout delivery observations:"), "Delayed or reordered layout replies cannot overwrite committed frame and card positions");
     }
 
     @Test void adaptiveWebMenusKeepTextIndependentOfTheUsableViewport(ComponentInputs inputs) throws Exception {

@@ -21,6 +21,7 @@ import ro.whistlab.core.rules.GameMode;
 public final class WhistSurfaceContract {
     private static final BrowserGame WEB = new BrowserGame() {
         public String title() { return "Whist"; }
+        public boolean usesMeasuredSeatFrames() { return true; }
         public List<Field> fields() { return List.of(); }
         public Match start(Map<String, String> configuration) { throw new UnsupportedOperationException("Geometry only"); }
         @Override public BoardProfile boardProfile(String mode, int players, int width, int options,
@@ -115,7 +116,30 @@ public final class WhistSurfaceContract {
                 "densities", List.of(1, 1.5, 2.75, 3.5), "fontScales", List.of(1, 1.3, 2),
                 "expected", "Equal logical regions, phase stability, complete fan and bounded physical rounding", "status", "PASS"));
         result.put("intrinsicFrames",intrinsicFrames());
+        result.put("legacyFrames",legacyFrames());
         return Map.copyOf(result);
+    }
+
+    private static int legacyFrames() {
+        var legacy = new BrowserGame() {
+            public String title() { return "Consumer"; }
+            public String surface() { return "whist"; }
+            public List<Field> fields() { return List.of(); }
+            public Match start(Map<String,String> values) { throw new UnsupportedOperationException("Geometry only"); }
+        };
+        equal(false,legacy.usesMeasuredSeatFrames(),"Existing adapters retain raw geometry by default");
+        equal(true,WEB.usesMeasuredSeatFrames(),"The native-frame adapter explicitly selects measured frames");
+        int count=0;
+        for(int players=3;players<=6;players++)for(int width:new int[]{280,414,760})for(int viewport:new int[]{568,896}){
+            var values=new HashMap<>(Map.of("players",""+players,"width",""+width,"height","400","seatHeight","66",
+                    "viewport",""+viewport,"cards","8","handWidth",""+width));
+            var expected=BrowserGeometry.measure(legacy,values);
+            values.put("actorClearance","24");values.put("seatNaturalHeight","43");values.put("seatNameHeight","15");
+            var observed=BrowserGeometry.measure(legacy,values);
+            equal(expected.board(),observed.board(),"Unselected native measurements never move legacy seats or centers");
+            equal(expected.hand(),observed.hand(),"Frame policy does not alter the consumer hand");count++;
+        }
+        return count;
     }
 
     private static int intrinsicFrames() {

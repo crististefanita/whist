@@ -40,6 +40,7 @@ test('production Web and native portable adapters share geometry, card marks and
     path.join(root,'whist-lab-app/atf-card-table-ui/src/test/resources/hand-feedback.tsv')],
     {encoding:'utf8',timeout:60000,windowsHide:true});
   const result=JSON.parse(text);assert.equal(result.status,'PASS');assert.equal(result.cases.length,4);
+  assert.equal(result.cases[0].legacyFrames,24,'Legacy consumers do not inherit Whist native measurement semantics');
   assert.equal(result.cases[1].faces,52);assert.equal(result.cases[2].commands,8);
   const curve=result.cases[3];assert.equal(curve.samples.length,11);
   for(let i=0;i<curve.samples.length;i++){
