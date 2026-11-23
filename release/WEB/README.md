@@ -42,4 +42,4 @@ Componentele dețin combinațiile și cazurile negative deliberate, fără poze.
 
 ## Limite
 
-Raportul matricelor focalizate completează controalele părinte; nu număra de două ori metodele suprapuse. Calificarea APK curentă are propriul [index de release](../0.24.0/reports/README.md).
+Raportul matricelor focalizate completează controalele părinte; nu număra de două ori metodele suprapuse. Calificarea APK curentă are propriul [index de release](../README.md).

@@ -1,0 +1,426 @@
+{
+  "status": "PASS",
+  "scope": "Original scenario identities and all loop oracles retained; 23 fixed populations plus dynamic schedule/seat cases. New raster scenarios have no historical primary-report baseline.",
+  "selectedMethods": 25,
+  "declaredOuterPairs": 26417,
+  "separateNegativeControls": 7,
+  "decodedBodies": {
+    "beforeBytes": 9783692,
+    "afterBytes": 243444,
+    "reductionPercent": 97.51173687806198
+  },
+  "componentDossier": {
+    "beforeBytes": 136515009,
+    "afterBytes": 113211743
+  },
+  "additions": {
+    "whist-lab-app-display": [],
+    "whist-lab-app-history": [
+      "aLegacyPrefixDisplaysOnlyTheKnownBoundaryBalanceAndSubsequentTotals",
+      "everyHistoricalRowShowsItsOwnClosingBalanceForEverySeatAndLanguage",
+      "finalHandsAndTheLastEligiblePaymentsRemainVisibleAfterFileRecoveryAtThreeToSixSeats",
+      "rasterSeparatorsUseTheThirtyPercentThinnerDpPolicyAtFractionalDensities",
+      "rasterShowsRectanglesOnlyInAwardedPointsAndRedEvenForAPositiveRunningTotal",
+      "redDiagonalPixelsBelongOnlyToMissedBidsForEverySeatAndTextScale",
+      "savedBiddingPlayingAndSettlementKeepHistoricalRectanglesAndPixelsInBothLanguages",
+      "tallPhoneWithFractionalDensityKeepsFullRowsAndUsesTheAvailableWidth",
+      "viewportsFillTheirWindowKeepTheLegendVisibleAndRetainEverySeat"
+    ],
+    "whist-lab-app-bidding": [],
+    "whist-lab-app-commands": []
+  },
+  "counts": [
+    {
+      "group": "atf-test-android",
+      "before": 277,
+      "after": 277
+    },
+    {
+      "group": "atf-tests",
+      "before": 96,
+      "after": 96
+    },
+    {
+      "group": "atf-tests-android",
+      "before": 52,
+      "after": 52
+    },
+    {
+      "group": "atf-tests-documentation",
+      "before": 166,
+      "after": 166
+    },
+    {
+      "group": "atf-tests-github",
+      "before": 33,
+      "after": 33
+    },
+    {
+      "group": "atf-tests-orchestration",
+      "before": 78,
+      "after": 82
+    },
+    {
+      "group": "atf-tests-provenance",
+      "before": 120,
+      "after": 120
+    },
+    {
+      "group": "atf-tests-reporting",
+      "before": 70,
+      "after": 70
+    },
+    {
+      "group": "atf-validation",
+      "before": 19,
+      "after": 19
+    },
+    {
+      "group": "whist-lab-app-achievements",
+      "before": 28,
+      "after": 28
+    },
+    {
+      "group": "whist-lab-app-atf-card-table-ui",
+      "before": 8,
+      "after": 8
+    },
+    {
+      "group": "whist-lab-app-bidding",
+      "before": 255,
+      "after": 255
+    },
+    {
+      "group": "whist-lab-app-card-table-core",
+      "before": 50,
+      "after": 50
+    },
+    {
+      "group": "whist-lab-app-commands",
+      "before": 123,
+      "after": 123
+    },
+    {
+      "group": "whist-lab-app-display",
+      "before": 107,
+      "after": 107
+    },
+    {
+      "group": "whist-lab-app-history",
+      "before": 61,
+      "after": 70
+    },
+    {
+      "group": "whist-lab-app-rules",
+      "before": 40,
+      "after": 40
+    }
+  ],
+  "rows": [
+    {
+      "method": "noLayoutDelayOrResumeCanExtendTheOriginalDeadline",
+      "declaredOuterPairs": 8967,
+      "before": {
+        "decodedBodyBytes": 2365344,
+        "comparisonRows": 8967
+      },
+      "after": {
+        "decodedBodyBytes": 1759,
+        "comparisonRows": 3
+      }
+    },
+    {
+      "method": "motionNeverOvershootsAndFadesOnlyNearTheDestination",
+      "declaredOuterPairs": 2058,
+      "before": {
+        "decodedBodyBytes": 464176,
+        "comparisonRows": 2058
+      },
+      "after": {
+        "decodedBodyBytes": 1938,
+        "comparisonRows": 3
+      }
+    },
+    {
+      "method": "everyCardConvergesOnEveryWinningSeatAtThreeToSixPlaces",
+      "declaredOuterPairs": 1290,
+      "before": {
+        "decodedBodyBytes": 296212,
+        "comparisonRows": 1290
+      },
+      "after": {
+        "decodedBodyBytes": 1712,
+        "comparisonRows": 3
+      }
+    },
+    {
+      "method": "everySeatCanCollectACompleteRomanianTrickWithOrWithoutATrumpWinner",
+      "declaredOuterPairs": 144,
+      "before": {
+        "decodedBodyBytes": 142893,
+        "comparisonRows": 144
+      },
+      "after": {
+        "decodedBodyBytes": 2879,
+        "comparisonRows": 3
+      }
+    },
+    {
+      "method": "portraitLandscapeAndResizeBurstsUseOnlyTheLatestGeometryForEveryWinningSeat",
+      "declaredOuterPairs": 316,
+      "before": {
+        "decodedBodyBytes": 88951,
+        "comparisonRows": 316
+      },
+      "after": {
+        "decodedBodyBytes": 1918,
+        "comparisonRows": 3
+      }
+    },
+    {
+      "method": "everyFaceReachesTheEnginesWinnerAndCompletesOnlyOnce",
+      "declaredOuterPairs": 402,
+      "before": {
+        "decodedBodyBytes": 403752,
+        "comparisonRows": 402
+      },
+      "after": {
+        "decodedBodyBytes": 1920,
+        "comparisonRows": 3
+      }
+    },
+    {
+      "method": "bidChoicesAndSubmissionReserveOnlyTheirRowsAtEveryWidth",
+      "declaredOuterPairs": 300,
+      "before": {
+        "decodedBodyBytes": 69489,
+        "comparisonRows": 300
+      },
+      "after": {
+        "decodedBodyBytes": 1661,
+        "comparisonRows": 3
+      }
+    },
+    {
+      "method": "collectionRetainsEveryCardAndTheEnginesWinnerAtEveryTableSize",
+      "declaredOuterPairs": 144,
+      "before": {
+        "decodedBodyBytes": 88951,
+        "comparisonRows": 144
+      },
+      "after": {
+        "decodedBodyBytes": 1927,
+        "comparisonRows": 3
+      }
+    },
+    {
+      "method": "everyModeKeepsEverySeatThroughTheLastHandAndAFreshMatchStartsEmpty",
+      "declaredOuterPairs": 2622,
+      "before": {
+        "decodedBodyBytes": 1856657,
+        "comparisonRows": 2622
+      },
+      "after": {
+        "decodedBodyBytes": 5413,
+        "comparisonRows": 3
+      }
+    },
+    {
+      "method": "pixelRemaindersCannotCreateAnEmptyStripOrAnOverflow",
+      "declaredOuterPairs": 404,
+      "before": {
+        "decodedBodyBytes": 181355,
+        "comparisonRows": 408
+      },
+      "after": {
+        "decodedBodyBytes": 2626,
+        "comparisonRows": 8
+      }
+    },
+    {
+      "method": "playerHeadersAndSubcolumnsAlignWithoutClippingAtFractionalDensities",
+      "declaredOuterPairs": 182,
+      "before": {
+        "decodedBodyBytes": 67933,
+        "comparisonRows": 182
+      },
+      "after": {
+        "decodedBodyBytes": 1949,
+        "comparisonRows": 3
+      }
+    },
+    {
+      "method": "diagonalStrikeCrossesZeroAndTwoDigitBidsWithoutEnteringTheirNeighbours",
+      "declaredOuterPairs": 160,
+      "before": {
+        "decodedBodyBytes": 39969,
+        "comparisonRows": 163
+      },
+      "after": {
+        "decodedBodyBytes": 2458,
+        "comparisonRows": 6
+      }
+    },
+    {
+      "method": "completeMatchesRetainEverySeatsTotalsAndBothSeriesPaymentsAcrossJsonRestarts",
+      "declaredOuterPairs": 704,
+      "before": {
+        "decodedBodyBytes": 470958,
+        "comparisonRows": 1568
+      },
+      "after": {
+        "decodedBodyBytes": 161492,
+        "comparisonRows": 867
+      }
+    },
+    {
+      "method": "onlyPositiveAndNegativeSeriesPaymentsRectangleTheRecordedTotal",
+      "declaredOuterPairs": 176,
+      "before": {
+        "decodedBodyBytes": 345909,
+        "comparisonRows": 176
+      },
+      "after": {
+        "decodedBodyBytes": 4795,
+        "comparisonRows": 3
+      }
+    },
+    {
+      "method": "thirteenStandardFacesFitWithoutAccumulatingFractionalPixelAdvanceRounding",
+      "declaredOuterPairs": 384,
+      "before": {
+        "decodedBodyBytes": 67942,
+        "comparisonRows": 384
+      },
+      "after": {
+        "decodedBodyBytes": 1809,
+        "comparisonRows": 3
+      }
+    },
+    {
+      "method": "handIndicesReserveTheMeasuredGlyphBandAtEverySupportedWidth",
+      "declaredOuterPairs": 198,
+      "before": {
+        "decodedBodyBytes": 61900,
+        "comparisonRows": 198
+      },
+      "after": {
+        "decodedBodyBytes": 1786,
+        "comparisonRows": 3
+      }
+    },
+    {
+      "method": "everyGameModeBidsAndPlaysInTheDisplayedSeatOrderFromItsActualLeader",
+      "declaredOuterPairs": 240,
+      "before": {
+        "decodedBodyBytes": 263224,
+        "comparisonRows": 240
+      },
+      "after": {
+        "decodedBodyBytes": 8707,
+        "comparisonRows": 3
+      }
+    },
+    {
+      "method": "namesAndPlayedCardsKeepTheSameClockwiseOrderForThreeToSixSeats",
+      "declaredOuterPairs": 195,
+      "before": {
+        "decodedBodyBytes": 125175,
+        "comparisonRows": 195
+      },
+      "after": {
+        "decodedBodyBytes": 3288,
+        "comparisonRows": 3
+      }
+    },
+    {
+      "method": "compactHandTrickAndEverySeatFitOneViewportWithoutIntersections",
+      "declaredOuterPairs": 606,
+      "before": {
+        "decodedBodyBytes": 102516,
+        "comparisonRows": 606
+      },
+      "after": {
+        "decodedBodyBytes": 2519,
+        "comparisonRows": 3
+      }
+    },
+    {
+      "method": "shorterCardFacesKeepSeatAnchorsAndAvoidSeatsAcrossWidthsAndTextScales",
+      "declaredOuterPairs": 3780,
+      "before": {
+        "decodedBodyBytes": 686276,
+        "comparisonRows": 3780
+      },
+      "after": {
+        "decodedBodyBytes": 12150,
+        "comparisonRows": 3
+      }
+    },
+    {
+      "method": "threeToSixPlayersKeepTheSamePortraitFacesIncludingTheFivePlayerRegression",
+      "declaredOuterPairs": 1537,
+      "before": {
+        "decodedBodyBytes": 629084,
+        "comparisonRows": 1537
+      },
+      "after": {
+        "decodedBodyBytes": 1883,
+        "comparisonRows": 3
+      }
+    },
+    {
+      "method": "everyModeUsesOneSuitOrTurnedCardValueInBothLanguages",
+      "declaredOuterPairs": 960,
+      "before": {
+        "decodedBodyBytes": 351051,
+        "comparisonRows": 960
+      },
+      "after": {
+        "decodedBodyBytes": 3736,
+        "comparisonRows": 3
+      }
+    },
+    {
+      "method": "everySeatAndFractionalDensityKeepsItsRectangleOutOfBidsAndNeighbours",
+      "declaredOuterPairs": 648,
+      "before": {
+        "decodedBodyBytes": 137319,
+        "comparisonRows": 648
+      },
+      "after": {
+        "decodedBodyBytes": 1847,
+        "comparisonRows": 3
+      }
+    },
+    {
+      "method": "allVariantsAndSeatsExposeTheWholeScheduleAndExactRecordedCells",
+      "declaredOuterPairs": null,
+      "before": {
+        "decodedBodyBytes": 358465,
+        "comparisonRows": 26
+      },
+      "after": {
+        "decodedBodyBytes": 9268,
+        "comparisonRows": 3
+      }
+    },
+    {
+      "method": "fullLocalizedActionsStayAboveNamesAcrossCommonResolutionsAndFontScales",
+      "declaredOuterPairs": null,
+      "before": {
+        "decodedBodyBytes": 118191,
+        "comparisonRows": 1
+      },
+      "after": {
+        "decodedBodyBytes": 2004,
+        "comparisonRows": 5
+      }
+    }
+  ],
+  "limitations": [
+    "Counts are comparison pairs, not game distributions or unique tests; dynamic nested helper oracles remain independently checked in their own ledgers.",
+    "Shared renderer resources and unchanged evidence are measured only in the whole dossier, not attributed to matrix-body savings.",
+    "This maintenance release does not qualify native Chrome/APK visual parity."
+  ]
+}
