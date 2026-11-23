@@ -26,11 +26,11 @@ public class TrickCollectionRequestComponentTest extends atf.gradle.audit.Gradle
                 String context = "players=" + count + ", winner=" + winner + ", trump=" + trump;
 
                 matrixChecks.at(CapturedValue.text(new Object[]{"Fixture before first assertion", "before", before, "context", context, "count", count, "game", game, "request", request, "trump", trump, "winner", winner}));
-                matrixChecks.within("Numeric boundary: context", context, winner, request.winner());
-                matrixChecks.within("Numeric boundary: context", context, winner, GameRules.winningSeat(before.lastTrick(), before.trump()));
+                matrixChecks.equal(context, winner, request.winner());
+                matrixChecks.equal(context, winner, GameRules.winningSeat(before.lastTrick(), before.trump()));
                 var order = new ArrayList<Integer>();
                 for (int step = 1; step <= count; step++) order.add((winner + step) % count);
-                matrixChecks.within("Numeric boundary: context", context, order, request.seats());
+                matrixChecks.equal(context, order, request.seats());
                 matrixChecks.equal("game.snapshot() must equal before", before, game.snapshot());
             }
         assertEquals("The original matrix population remains complete", 144L, matrixChecks.checkedPairs());

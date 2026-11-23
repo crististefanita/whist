@@ -18,7 +18,9 @@ Gradle separates isolated units, audited components and optional platform observ
 
 The Android project's physical directory remains `atf-card-table-ui`; its Gradle identity is `card-table-android`. Core owns portable classes and neutral test fixtures. Web depends on core; the launcher builds module JARs from complete source roots rather than maintaining individual shared-source lists.
 
-The [application catalog](../../config/gradle-app-collections.properties) assigns each package to one primary collection: `testDebugCommandsComponents`, `testDebugBiddingComponents`, `testDebugHistoryComponents`, `testDebugDisplayComponents` or `testDebugAchievementsComponents`. The original `testDebugUnitTest` delegates to these tasks without executing a duplicate population. The history owner includes both model tests and the complete `src/rasterTest` population; `historyRasterTest` delegates to that owner. One Extent receipt therefore covers the state and rendered JVM contracts without a second raster execution.
+- The [application catalog](../../config/gradle-app-collections.properties) assigns each package to one primary collection: `testDebugCommandsComponents`, `testDebugBiddingComponents`, `testDebugHistoryComponents`, `testDebugDisplayComponents` or `testDebugAchievementsComponents`. The original `testDebugUnitTest` delegates to these tasks without executing a duplicate population.
+
+- The history owner includes both model tests and the complete `src/rasterTest` population; `historyRasterTest` delegates to that owner. One Extent receipt therefore covers the state and rendered JVM contracts without a second raster execution.
 
 ## Context capture
 
@@ -87,4 +89,9 @@ Use an external build/cache directory. `whist.auditOutput` selects the evidence 
 
 ## Bounded matrix inputs
 
-Passing matrices aggregate comparisons by invariant. Preserve every original loop, case identity and independent oracle; assert the planned population independently. Freeze mutable fixture context before evaluation and publish it completely on the first mismatch. Record, fine-layout, animation and pixel matrices remain components, without product or rendered-fixture images; pixel checks still execute against their in-memory or file-round-tripped rasters. Isolated units retain JUnit diagnostics without Extent.
+Passing matrices aggregate comparisons by invariant.
+
+- Preserve every original loop, case identity and independent oracle; assert the planned population independently.
+- Freeze mutable fixture context before evaluation and publish it completely on the first mismatch.
+- Record, fine-layout, animation and pixel matrices remain components, without product or rendered-fixture images; pixel checks still execute against their in-memory or file-round-tripped rasters.
+- Isolated units retain JUnit diagnostics without Extent.
