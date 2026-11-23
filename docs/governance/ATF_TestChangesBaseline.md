@@ -2569,3 +2569,38 @@ testChanges:
 ```
 
 </details>
+<details>
+<summary>Geometrie mobilă fracționară și admiterea proprietarilor extrași</summary>
+
+```yaml
+testChanges:
+  - id: WHIST-024-MOBILE-GEOMETRY-ADMISSION
+    status: VERIFIED
+    base: b4da7a1f867f77b857a07ad17fd35c961f174aef
+    expires: 2026-12-23
+    reason: Normalize fractional mobile CSS height before integer layout, preserve invalid-input rejection, reconcile extracted source owners and historical visual aliases, and readmit only identical native builds after verification maintenance.
+    proof: 'mvn -o -pl atf-tests -am -Dtest=WhistSurfaceAdapterComponentTest,ReleaseRagPlatformGovernanceTest,NativeSourceProvenanceComponentTest,VisualContractScopeComponentTest -Dsurefire.failIfNoSpecifiedTests=false test'
+    checks:
+      positive:
+        - atf.tests.governance.documentation.release.rag.nativeproof.WhistSurfaceAdapterComponentTest#preparedAndLiveSeatsShareIntrinsicHeightWithoutBottomAnchorStretch
+        - atf.tests.governance.documentation.release.ReleaseRagPlatformGovernanceTest#everyDeclaredApplicationAndSharedUiCollectionIsIncludedInReleaseExtentAndRag
+        - atf.tests.governance.documentation.release.rag.nativeproof.NativeSourceProvenanceComponentTest#immutableRuntimeEvidenceSurvivesValidatorMaintenanceButRejectsChangedInputs
+        - atf.tests.governance.documentation.release.rag.scope.VisualContractScopeComponentTest#theRealPlannerBindsPinnedBytesAndKeepsUnavailableProofsConservative
+      negative:
+        - atf.tests.governance.documentation.release.rag.scope.VisualContractScopeComponentTest#unprovenContractsKeepEveryNativeFlow
+    paths:
+      - atf-tests/src/test/java/atf/tests/governance/documentation/release/ReleaseRagPlatformGovernanceTest.java
+      - atf-tests/src/test/java/atf/tests/governance/documentation/release/rag/nativeproof/WhistSurfaceAdapterComponentTest.java
+      - atf-tests/src/test/java/atf/tests/governance/documentation/release/rag/scope/AndroidReleasePreflightComponentTest.java
+      - atf-tests/tools/android-e2e-provenance.mjs
+      - atf-tests/tools/android-e2e-runtime-scope.test.mjs
+      - atf-tests/tools/visual-change-contracts.mjs
+      - atf-tests/tools/visual-contracts.test.mjs
+      - atf-ui-browser/src/main/web/index.html
+      - atf-ui-browser/src/main/web/surface-fit.mjs
+      - atf-ui-browser/src/main/web/table.mjs
+      - atf-ui-browser/tests/layout-delivery.test.mjs
+      - config/atf-component-dependencies.json
+```
+
+</details>

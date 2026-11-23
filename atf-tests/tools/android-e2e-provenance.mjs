@@ -12,6 +12,8 @@ const scenarioInput = file => /^(?:atf-test-android|scripts)\//.test(file);
 const select = (inputs, predicate) => new Map([...inputs].filter(([file]) => predicate(file)));
 const runtimeInput = file => !editorial(file) && !validatorInput(file) && !scenarioInput(file);
 const browserOnly = file => file.startsWith('atf-ui-browser/');
+const verificationOnly = file => /^atf-(?:tests|validation)\/src\/test\//.test(file)
+  || file === 'config/atf-component-dependencies.json';
 
 export function admitWebOnlyRuntimeChanges(originalFiles, currentFiles) {
   const original = select(componentInputMap(originalFiles), runtimeInput);
@@ -27,6 +29,24 @@ export function admitWebOnlyRuntimeChanges(originalFiles, currentFiles) {
   if (androidBefore !== androidAfter) throw Error('ANDROID_E2E_RUNTIME_CHANGED');
   return {kind: 'UNCHANGED_ANDROID_RUNTIME_WITH_WEB_ONLY_INPUTS', changedInputs: changed,
     androidRuntimeFingerprint: androidAfter};
+}
+
+// This admission is evaluated only after the installed APK, original receipt and
+// unchanged native scenario identity have been bound. Never rewrite their source.
+export function admitVerificationRuntimeChanges(originalFiles, currentFiles) {
+  const original = select(componentInputMap(originalFiles), runtimeInput);
+  const current = select(componentInputMap(currentFiles), runtimeInput);
+  const changed = [...new Set([...original.keys(), ...current.keys()])]
+    .filter(file => original.get(file) !== current.get(file)).sort();
+  if (changed.every(browserOnly)) return admitWebOnlyRuntimeChanges(originalFiles, currentFiles);
+  if (!changed.length || changed.some(file => !browserOnly(file) && !verificationOnly(file)))
+    throw Error('ANDROID_E2E_RUNTIME_CHANGED');
+  const buildInput = file => !browserOnly(file) && !verificationOnly(file);
+  const before = select(original, buildInput), after = select(current, buildInput);
+  if (!before.size || !after.size || inputFingerprint(before) !== inputFingerprint(after))
+    throw Error('ANDROID_E2E_RUNTIME_CHANGED');
+  return {kind: 'UNCHANGED_ANDROID_BUILD_WITH_VERIFICATION_ONLY_INPUTS', changedInputs: changed,
+    androidRuntimeFingerprint: inputFingerprint(after)};
 }
 const revision = inputs => ({fingerprint: inputFingerprint(inputs),
   files: [...inputs].sort(([a], [b]) => a < b ? -1 : a > b ? 1 : 0).map(([file, sha256]) => ({path: file, sha256}))});
@@ -109,7 +129,7 @@ export async function admitNativeSource({manifest, receipt, receiptSha256, origi
   if (Object.entries(original).some(([key, value]) => origin[key] !== value))
     throw Error('ANDROID_E2E_EXECUTION_VALIDATOR_PROVENANCE');
   const runtimeAdmission = original.runtimeFingerprint === current.runtimeFingerprint ? undefined
-    : admitWebOnlyRuntimeChanges(originalSource.value.files, source.files);
+    : admitVerificationRuntimeChanges(originalSource.value.files, source.files);
   if (original.scenarioFingerprint !== current.scenarioFingerprint) throw Error('ANDROID_E2E_SCENARIO_INPUTS_CHANGED');
   const validator = await verifyNativeValidator(expectedValidatorFingerprint);
   return {executionSourceCommit: origin.sourceCommit, executionSourceFingerprint: origin.sourceFingerprint,

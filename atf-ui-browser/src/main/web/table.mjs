@@ -1,12 +1,12 @@
-import { ADAPTIVE_SURFACE, adaptiveViewport, surfaceTypography, fitTextWidth, isPhone, viewportGeometry, textScale, intrinsicTableHeight } from "./viewport.mjs?v=0.12";
+import { ADAPTIVE_SURFACE, adaptiveViewport, surfaceTypography, fitTextWidth, isPhone, viewportGeometry, textScale, intrinsicTableHeight } from "./viewport.mjs?v=0.13";
 import { collect } from "./collection.mjs";
 import { autoGame, waitForDecision } from "./auto-game.mjs";
-import { bindHandFeedback } from "./hand-feedback.mjs?v=0.12";
-import { historyGrid, applyHistoryAppearance } from "./records.mjs?v=0.12";
-import { fitSeatLines, commitTableView, updateSeatFact, measureSeatActionClearance, measureNativeSeat } from "./seat-presentation.mjs?v=0.12";
-import { historyFirst, menuFromEntries } from "./table-menu.mjs?v=0.12";
-import { createProfileDialogs, deviceProfile, dismissGameMenuOnOutsideClick, preferredLanguage, saveLanguage } from "./profile.mjs?v=0.12";
-import { surfaceFitter } from "./surface-fit.mjs?v=0.12";
+import { bindHandFeedback } from "./hand-feedback.mjs?v=0.13";
+import { historyGrid, applyHistoryAppearance } from "./records.mjs?v=0.13";
+import { fitSeatLines, commitTableView, updateSeatFact, measureSeatActionClearance, measureNativeSeat } from "./seat-presentation.mjs?v=0.13";
+import { historyFirst, menuFromEntries } from "./table-menu.mjs?v=0.13";
+import { createProfileDialogs, deviceProfile, dismissGameMenuOnOutsideClick, preferredLanguage, saveLanguage } from "./profile.mjs?v=0.13";
+import { surfaceFitter } from "./surface-fit.mjs?v=0.13";
 
 const stage = document.querySelector("#table");
 const frame = document.querySelector("#frame");
@@ -684,7 +684,7 @@ async function placeTable(content = stage.firstElementChild) {
   const fan = hand.querySelector(".fan");
   const width = board.clientWidth;
   const fontScale=textScale(getComputedStyle(document.documentElement).fontSize);
-  const layoutViewport=Number(stage.dataset.layoutViewport??stage.clientHeight);
+  const layoutViewport=Math.floor(Number(stage.dataset.layoutViewport??stage.clientHeight));
   content.classList.toggle('compact-table',layoutViewport<760*Math.max(1,fontScale));
   const seatWidth = Math.min(116, Math.round(width * (layoutViewport < 760*Math.max(1,fontScale) ? 0.25 : 0.29)),
     Math.floor((width - 16) / 3));

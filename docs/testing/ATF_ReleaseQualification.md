@@ -329,7 +329,7 @@ $Selection = Get-Content -LiteralPath $SelectionFile -Raw | ConvertFrom-Json
 | Contract | Modificare permisă | Responsabili de componentă obligatorii | Verificare nativă obligatorie |
 |---|---|---|---|
 | Tipografia antetului de joc | Inițializatori numerici pentru `TITLE_SP`, `PROGRESS_SP`, `BID_SUMMARY_SP` | `whist-lab-app-display` | `signed-release-smoke`, `responsive-ui-sanity` |
-| Tipografia rangurilor cărților | Inițializatori numerici pentru `INDEX_SIZE_SP`, `RANK_SCALE`, `INVERTED_SIZE_DP` | `whist-lab-app-display`, `whist-lab-app-atf-card-table-ui` | `signed-release-smoke`, `responsive-ui-sanity`, `signed-release-auto-game` |
+| Tipografia rangurilor cărților | Inițializatori numerici pentru `INDEX_SIZE_SP`, `RANK_SCALE`, `INVERTED_SIZE_DP` | `whist-lab-app-display`, `whist-lab-app-atf-card-table-ui`, `whist-lab-app-card-table-core` | `signed-release-smoke`, `responsive-ui-sanity`, `signed-release-auto-game` |
 
 - [Admiterea surselor](../../atf-tests/tools/visual-contract-sources.mjs) reconstruiește baza din commitul Git fixat și verifică ambele valori SHA-256. Conversia uniformă EOL din checkout este admisă numai dacă reproduce hash-ul înregistrat al bazei.
 - Tot textul sursă din afara literalilor trebuie să rămână egal. Metodele adăugate, expresiile, numele schimbate, responsabilii lipsă, contractele adăugate sau șterse, textul invalid și octeții sursă indisponibili păstrează toate porțile native.
@@ -389,6 +389,7 @@ Rapoartele native păstrează APK-ul, commitul execuției, amprenta sursei, scen
 | Validator | Modulele Node de la primul nivel al directorului uneltelor de release au o revizie observată proprie; schimbarea lor cere validare, nu execuție nativă. Câmpul opțional `validatorRevision` din cererea E2E sau plan fixează această revizie. |
 | Metadate editoriale | Documentația și înregistrarea reviziei bilingve se pot schimba fără modificarea identității motorului nativ. |
 | Modul exclusiv Web | `atf-ui-browser/` nu face parte din graful build-ului Android. Modificările lui pot păstra probele APK-ului numai cu aceiași octeți APK și intrări native și de scenariu neschimbate. |
+| Intrări exclusiv de verificare | Sursele Maven `atf-tests/src/test/` și `atf-validation/src/test/`, plus politica exactă `config/atf-component-dependencies.json`, se pot schimba cu aceiași octeți APK, intrări de build nativ și scenarii neschimbate. Validatorul înregistrează separat admiterea și păstrează octeții și commitul execuției originale. Alte configurații, biblioteci, surse runtime și căi necunoscute rămân conservative. |
 | Dovezi originale | Păstrați octeții chitanței, raportului și izolării. Fiecare grup deține `source-provenance.json`; grupurile împart documentul original al intrărilor sursei sub amprenta lui. |
 
 [Contractele de componentă](../../atf-tests/tools/android-e2e-runtime-scope.test.mjs) verifică separarea browserului de build-ul Android, adăugarea, modificarea și eliminarea intrărilor și resping schimbările native sau necunoscute combinate. Câmpurile originale de amprentă rămân intacte; validatorul curent înregistrează separat `runtimeAdmission`, cu căile schimbate și amprenta Android neschimbată. Selecția fluxurilor obligatorii calculată din diff rămâne neschimbată.

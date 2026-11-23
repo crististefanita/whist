@@ -189,6 +189,7 @@ class ReleaseRagPlatformGovernanceTest {
         var allExpectedGroups = new java.util.TreeSet<>(expectedGroups);
         allExpectedGroups.add("whist-lab-app-atf-card-table-ui");
         allExpectedGroups.add("whist-lab-app-rules");
+        allExpectedGroups.add("whist-lab-app-card-table-core");
         JsonNode rag = policy().path("ragEvaluator");
         var declaredGroups = new java.util.TreeSet<String>();
         strings(rag.path("requiredComponentGroupsByPlatform").path("android")).stream()
@@ -223,6 +224,13 @@ class ReleaseRagPlatformGovernanceTest {
                 "Each catalog collection must resolve to its matching Gradle component task");
         assertTrue(runner.contains(":card-table-android:testDebugUnitTest"),
                 "The shared UI module must execute as a separate Extent selection");
+        assertTrue(runner.contains(":card-table-core:test"),
+                "The portable core must execute as a separate component selection");
+        assertTrue(java.util.stream.StreamSupport.stream(
+                rag.path("introducedComponentGroupsByPlatform").path("android").spliterator(), false)
+                .anyMatch(rule -> rule.path("group").asText().equals("whist-lab-app-card-table-core")
+                        && rule.path("sinceReleaseVersion").asText().equals("0.23.3")),
+                "Portable core qualification starts at its declared source extraction boundary");
         assertTrue(Files.readString(root.resolve("docs/testing/ATF_GradleComponents.md"))
                 .contains("testDebugAchievementsComponents"),
                 "The achievements suite must be documented as a primary collection");

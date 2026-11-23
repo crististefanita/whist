@@ -8,6 +8,8 @@
 
 ## Calificarea pe același dispozitiv
 
+Măsurătorile fracționare ale viewport-ului mobil trebuie normalizate o singură dată la limita geometriei întregi, înaintea politicii compacte și a proiecției API. Regresia de componentă acoperă fracțiile generate de zoom, textul mărit și tranzițiile licitație/joc; intrările malformate și nepozitive trebuie să rămână erori explicite. Diagnosticul mobil original a reprodus eroarea vizibilă raportată. Acceptanța în Chrome Android nativ rămâne separată de emularea mobilă pe desktop și nu poate fi închisă prin aceasta.
+
 | ID | Probă rămasă | Criteriu de închidere |
 |---|---|---|
 | WEB-07 | Cel mult două mâini românești 1–8–1 cu patru locuri, de la același checkpoint legal în APK și Chrome pe Android. | Compară mutările legale, actorul, ultima carte și colectarea, scorul și istoricul cu ajustări. Verifică setările, Realizările, Joacă din nou și reluarea după redeschidere în RO/EN, cu text normal și mărit. |

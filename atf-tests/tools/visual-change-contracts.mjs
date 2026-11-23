@@ -26,6 +26,11 @@ contracts.set('whist-lab-app/card-table-core/src/main/java/ro/cardtable/ui/cards
 });
 
 export const visualContractPaths = Object.freeze([...contracts.keys()]);
+export const visualContractAliases = Object.freeze({
+  [app + 'theme/GameHeaderTypography.java']: 'whist-lab-app/whist-presentation/src/main/java/ro/whistlab/app/theme/GameHeaderTypography.java',
+  [shared + 'cards/CardFaceMetrics.java']: 'whist-lab-app/card-table-core/src/main/java/ro/cardtable/ui/cards/CardFaceMetrics.java'
+});
+export const activeVisualContractPaths = Object.freeze(visualContractPaths.filter(file => !Object.hasOwn(visualContractAliases, file)));
 
 function normalize(text, fields) {
   const values = {};
