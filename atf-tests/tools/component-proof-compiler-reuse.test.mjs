@@ -110,8 +110,11 @@ for($n=0;$n -lt $count;$n++){
 test('proof compiler reuse keeps every control fresh and records compilation reuse twice', async t=>{
   const result=await exercise(t,'success');for(const run of result.runs)assert.equal(run.exit,0,run.log);assert.equal(result.maven,false);assert.equal(result.controls,2);
   for(const run of result.runs){assert.equal(run.exit,0,run.log);assert.equal(run.proof,true);assert.equal(run.phases.find(row=>row.stage==='components.maven-compile').status,'REUSED');}
+  observe('success',result);
 });
 for(const mode of ['failure','partial','tampered'])test(`proof compiler reuse rejects ${mode} execution without promoting a proof`,async t=>{
   const result=await exercise(t,mode);assert.equal(result.runs[0].proof,false);assert.notEqual(result.runs[0].exit,0,result.runs[0].log);
   assert.equal(result.maven,mode==='tampered');assert.equal(result.controls,mode==='tampered'?0:1);
+  observe(mode,result);
 });
+function observe(mode,result){process.stdout.write(JSON.stringify({fixture:'Mocked Java transport; real launcher, snapshot and compiler admission',mode,mavenStarted:result.maven,freshControlExecutions:result.controls,runs:result.runs.map(run=>({exit:run.exit,proofPromoted:run.proof,compilerStages:run.phases.filter(row=>row.stage.includes('compiler')||row.stage.includes('maven')).map(({stage,status})=>({stage,status}))}))})+'\n');}

@@ -33,20 +33,40 @@ class ComponentEvidenceScopeComponentTest {
                 "Failed owners, altered reports and later code changes remain ineligible for reuse");
     }
 
-    @Test @ExtendWith(GameReportAudit.class)
-    void editorialChangesReuseVerifiedMavenCompilationAndKeepFreshExecutionInputs(ComponentInputs inputs) throws Exception {
-        String output = runContracts(PUBLICATION_TIMEOUT,
-                value -> inputs.add("Compiler admission, fresh proof executions and controlled rejection outcomes", value),
-                "component-compiler-inputs.test.mjs", "component-maven-reuse.test.mjs", "component-proof-compiler-reuse.test.mjs");
+    @Test void editorialChangesReuseVerifiedMavenCompilationAndKeepFreshExecutionInputs() throws Exception {
+        String output = runContracts(PUBLICATION_TIMEOUT, "component-compiler-inputs.test.mjs", "component-maven-reuse.test.mjs");
         AuditedAssertions.assertTrue(output.contains("documentation preserves verified compilation without copying"),
                 "Editorial inputs preserve compiled classes while reports remain bound to the new execution snapshot");
         AuditedAssertions.assertTrue(output.contains("changed compiler inputs and unverified workspaces reject"),
                 "Source, tool, bytecode, dependency, lock and path admission remain mandatory");
-        AuditedAssertions.assertTrue(output.contains("proof compiler reuse keeps every control fresh"),
-                "Two generation runs borrow compilation but execute their controls independently");
-        for (String rejected : List.of("failure", "partial", "tampered"))
-            AuditedAssertions.assertTrue(output.contains("proof compiler reuse rejects " + rejected),
-                    "Failed or incomplete execution and altered compiler output cannot promote a proof: " + rejected);
+    }
+
+    @Test @ExtendWith(GameReportAudit.class)
+    void borrowedCompilerDoesNotCacheControlExecution(ComponentInputs inputs) throws Exception {
+        proofCompilerContract("keeps every control", inputs);
+    }
+
+    @Test @ExtendWith(GameReportAudit.class)
+    void failedControlsCannotPromoteAProof(ComponentInputs inputs) throws Exception {
+        proofCompilerContract("rejects failure", inputs);
+    }
+
+    @Test @ExtendWith(GameReportAudit.class)
+    void incompleteControlsCannotPromoteAProof(ComponentInputs inputs) throws Exception {
+        proofCompilerContract("rejects partial", inputs);
+    }
+
+    @Test @ExtendWith(GameReportAudit.class)
+    void tamperedCompilerCannotQualifyProofGeneration(ComponentInputs inputs) throws Exception {
+        proofCompilerContract("rejects tampered", inputs);
+    }
+
+    private static void proofCompilerContract(String scenario, ComponentInputs inputs) throws Exception {
+        var root = atf.tests.governance.support.GovernanceProject.locateProjectRoot();
+        String output = runNode(List.of("node", "--test", "--test-name-pattern", scenario,
+                root.resolve("atf-tests/tools/component-proof-compiler-reuse.test.mjs").toString()),
+                root, Duration.ofSeconds(105), value -> inputs.add("Controlled compiler and proof observations", value));
+        AuditedAssertions.assertTrue(output.contains(scenario), "The named compiler/proof boundary executed: " + scenario);
     }
 
     @Test void compilerInventoriesKeepPayloadsAndRejectInvalidSourceIdentities() throws Exception {
