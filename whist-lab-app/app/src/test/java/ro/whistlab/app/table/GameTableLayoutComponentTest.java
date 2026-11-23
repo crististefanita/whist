@@ -31,23 +31,29 @@ public final class GameTableLayoutComponentTest extends atf.gradle.audit.GradleA
     }
 
     @Test public void allHandCountsRemainCenteredWithoutGapsAtActualWindowDensities() {
+        var checks = new atf.gradle.audit.matrix.ExhaustiveMatrixChecks();
+        atf.gradle.audit.GradleInputs.fixture("Private fan matrix", "widthsDp", new int[]{280, 313, 353, 560, 760},
+                "densities", new float[]{1, 2, 2.625f, 2.75f}, "fontScales", new float[]{1, 1.3f, 1.5f},
+                "cards", "1–17", "expectedPairs", 3300);
         for (int width : new int[]{280, 313, 353, 560, 760}) for (float density : new float[]{1, 2, 2.625f, 2.75f}) {
             int pixels = Math.round(width * density);
             for (float scale : new float[]{1, 1.3f, 1.5f}) for (int count = 1; count <= 17; count++) {
                 int index = Math.round(19 * scale * density);
                 var fan = HandLayoutMetrics.fan(count, pixels, density, scale, index);
                 int end = fan.left(count - 1) + fan.cardWidth();
-
-                atf.gradle.audit.GradleInputs.fixture("Fixture before first assertion", "count", count, "density", density, "end", end, "fan", fan, "index", index, "pixels", pixels, "scale", scale, "width", width);
-                assertEquals(fan.first(), fan.width() - end, 1);
-                assertTrue("fan.advance() <= fan.cardWidth() must hold", fan.advance() <= fan.cardWidth());
-                if (count > 1) assertTrue("fan.advance() >= index must hold", fan.advance() >= index);
+                checks.at("width=" + width + ", density=" + density + ", font=" + scale
+                        + ", cards=" + count + ", index=" + index + ", fan=" + fan);
+                checks.within("The fan is centered within one pixel", fan.first(), fan.width() - end, 1);
+                checks.equal("Adjacent faces have no gap", true, fan.advance() <= fan.cardWidth());
+                if (count > 1) checks.equal("Every exposed index remains readable", true, fan.advance() >= index);
                 if (count <= 3) {
-                    assertEquals("fan.width() must equal pixels", pixels, fan.width());
-                    if (count > 1) assertTrue("fan.advance() < fan.cardWidth() must hold", fan.advance() < fan.cardWidth());
+                    checks.equal("Short hands retain the full viewport width", pixels, fan.width());
+                    if (count > 1) checks.equal("Short hands retain their intended overlap", true, fan.advance() < fan.cardWidth());
                 }
             }
         }
+        assertEquals("All 1020 fans retain every conditional invariant", 3300L, checks.checkedPairs());
+        checks.publish();
     }
 
     @Test public void thirteenStandardFacesFitWithoutAccumulatingFractionalPixelAdvanceRounding() {

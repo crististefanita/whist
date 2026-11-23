@@ -21,49 +21,43 @@ public final class GameTablePhaseGeometryComponentTest extends atf.gradle.audit.
         int[] spareHeightsDp = {0, 8, 24, 72};
         float[] densities = {1f, 1.5f, 2f, 2.75f, 3.5f};
         float[] fontScales = {1f, 1.3f, 1.5f, 2f};
+        var checks = new atf.gradle.audit.matrix.ExhaustiveMatrixChecks();
+        atf.gradle.audit.GradleInputs.fixture("Four-card four-seat phase matrix", "widthsDp", widths,
+                "spareHeightsDp", spareHeightsDp, "densities", densities, "fontScales", fontScales, "expectedPairs", 2000);
         for (int width : widths) for (float density : densities) for (float fontScale : fontScales) {
             var viewport = new TableViewportPolicy(569, fontScale);
             var reservation = TableLayoutMetrics.centerReservation(4, 4, width, fontScale, viewport);
             var bids = BidGridMetrics.actionLayout(5, width, fontScale);
             var trick = TrickCardMetrics.forTable(4, width, fontScale, viewport);
             int pixelWidth = Math.round(width * density);
-            int seatWidth = Math.round(ro.cardtable.ui.table.TableSizing.seatWidthDp(
-                    width, viewport.isCompact()) * density);
+            int seatWidth = Math.round(ro.cardtable.ui.table.TableSizing.seatWidthDp(width, viewport.isCompact()) * density);
             int seatHeight = Math.round((52 + 30 * fontScale) * density);
             int centerHeight = Math.round(reservation.reservedHeightDp() * density);
             int gap = Math.round(viewport.regionGapDp() * density);
             int minimum = TableGeometry.minimumHeight(4, seatHeight, centerHeight, gap);
             int requestedClearance = Math.round(TableLayoutMetrics.humanHandClearanceDp() * density);
-
             for (int spareDp : spareHeightsDp) {
-                int sparePx = Math.round(spareDp * density);
-                int height = minimum + sparePx;
+                int sparePx = Math.round(spareDp * density), height = minimum + sparePx;
                 var bidding = TableGeometry.arrangeDisplay(pixelWidth, height, 4, seatWidth, seatHeight,
                         Math.round(bids.centerWidthDp() * density), centerHeight, gap, true,
                         TableGeometry.CenterAlignment.TOWARD_HUMAN, requestedClearance);
                 var playing = TableGeometry.arrangeDisplay(pixelWidth, height, 4, seatWidth, seatHeight,
                         Math.round(trick.safeCenterWidthDp() * density), centerHeight, gap, true,
                         TableGeometry.CenterAlignment.BALANCED, requestedClearance);
+                checks.at("width=" + width + ", density=" + density + ", font=" + fontScale
+                        + ", spare=" + spareDp + ", bidding=" + bidding + ", playing=" + playing);
                 int actualClearance = Math.min(requestedClearance, sparePx);
-
-                atf.gradle.audit.GradleInputs.fixture("Four-card four-seat table at the same viewport in both phases",
-                        "widthDp", width, "heightPx", height, "density", density,
-                        "fontScale", fontScale, "spareHeightDp", spareDp,
-                        "reservation", reservation, "bidding", bidding, "playing", playing,
-                        "requestedClearancePx", requestedClearance, "actualClearancePx", actualClearance);
-                assertEquals("Bidding and playing preserve every seat rectangle",
-                        bidding.seats(), playing.seats());
-                assertEquals("The board uses only measured vertical slack for the hand gap",
-                        actualClearance, height - playing.seats().getFirst().bottom());
-                assertTrue("The playing center stays above the hand clearance",
-                        playing.center().bottom() <= height - actualClearance);
-                assertTrue("The playing center remains clear of all seat frames",
-                        playing.seats().stream().noneMatch(playing.center()::overlaps));
-                assertTrue("The full table remains within the viewport",
+                checks.equal("Bidding and playing preserve every seat rectangle", bidding.seats(), playing.seats());
+                checks.equal("Only measured slack supplies the hand gap", actualClearance, height - playing.seats().getFirst().bottom());
+                checks.equal("The playing center stays above the hand clearance", true, playing.center().bottom() <= height - actualClearance);
+                checks.equal("The playing center remains clear of every seat", true, playing.seats().stream().noneMatch(playing.center()::overlaps));
+                checks.equal("The whole table stays inside the viewport", true,
                         playing.seats().stream().allMatch(seat -> seat.top() >= 0 && seat.bottom() <= height)
                                 && playing.center().top() >= 0 && playing.center().bottom() <= height);
             }
         }
+        assertEquals("All 400 phase fixtures retain five independent invariants", 2000L, checks.checkedPairs());
+        checks.publish();
     }
 
     @Test public void theFullPrivateFaceAndLiftFitInTheSameBandAcrossBothPhases() {

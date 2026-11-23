@@ -2632,3 +2632,34 @@ testChanges:
 ```
 
 </details>
+
+<details>
+<summary>Inputurile matricilor de geometrie și istoric</summary>
+
+```yaml
+testChanges:
+  - id: WHIST-0241-MATRIX-INPUTS
+    status: VERIFIED
+    base: d7f3a384248ddfab0b1531072a4361f15f20eb40
+    expires: 2026-12-23
+    reason: Păstrează fiecare pereche de geometrie și istoric, invariant condițional, mână reală și reluare JSON, agregând inputurile reușite cu populație verificată independent și context precis la prima nepotrivire; pregătește identitatea următorului APK de mentenanță.
+    proof: 'mvn -o -pl atf-tests -am -Dtest=GradleAuditGovernanceTest,AtfCollectionOwnershipComponentTest,ReleaseVersionComponentTest -Dsurefire.failIfNoSpecifiedTests=false test'
+    checks:
+      positive:
+        - atf.tests.governance.source.gradle.GradleAuditGovernanceTest#everyGradleTestClassHasOneExplicitLayerAndAnAuditedBase
+        - atf.tests.governance.suites.AtfCollectionOwnershipComponentTest#realDependencyClosuresSelectOnlyTheirConsumers
+        - atf.tests.governance.documentation.release.versioning.ReleaseVersionComponentTest#theApplicationUsesTheDeclaredPatchReleaseConvention
+      negative:
+        - atf.tests.governance.suites.AtfCollectionOwnershipComponentTest#missingOrUnreviewedDependenciesCannotAuthorizeReuse
+        - atf.tests.governance.documentation.release.versioning.ReleaseVersionComponentTest#absentVersionCannotBecomeADownloadIdentity
+    paths:
+      - whist-lab-app/app/src/test/java/ro/whistlab/app/score/ScoreHistoryGridMetricsComponentTest.java
+      - whist-lab-app/app/src/test/java/ro/whistlab/app/score/ScoreHistoryTableComponentTest.java
+      - whist-lab-app/app/src/test/java/ro/whistlab/app/table/GameTableLayoutComponentTest.java
+      - whist-lab-app/app/src/test/java/ro/whistlab/app/table/GameTablePhaseGeometryComponentTest.java
+      - whist-lab-app/app/src/test/java/ro/whistlab/app/table/TableViewportPolicyTest.java
+      - whist-lab-app/app/build.gradle
+      - config/atf-component-dependencies.json
+```
+
+</details>
