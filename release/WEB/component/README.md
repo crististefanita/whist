@@ -2,19 +2,14 @@
 
 ## Overview
 
-Controlled inputs and mocks own the combinations of anchors, sizes, text and delayed callbacks. These reports contain assertions and original observations without product screenshots.
+Shared portable contracts carry the combinations. Their Extent suites retain preconditions, evaluated expected/actual comparisons and negative cases without product photos.
 
-[Back to the index](../README.md)
+| Suite | Selection and scope |
+|---|---|
+| [Adapter contracts](adapters/component-report.html) | Eleven positive/negative controls; every legal deal and seat through the same APK/Web policy oracle. [Original proof](adapters/proof.json) |
+| [Portable core](core/component-report.html) | Fifty component invocations, SDK deliberately absent. [Execution](core/execution.json) |
+| [Matrix input regression](matrix/component-report.html) | Two affected matrix methods; complete loops retained, passing comparisons aggregated per invariant. |
 
-| Report | Original outcome | Provenance |
-|---|---|---|
-| [Report input and trace contracts](reporting/component-report.html) | `PASS` · `REUSED` | `91716314` |
-| [Shared geometry and controlled matrices](native-ports/component-report.html) | `PASS` · `REUSED` | `9ec0b560` |
+[Three isolated units](core/unit-execution.json) run as a prerequisite with no Extent. Counts across overlapping selections must not be summed as distinct coverage. The native adapter's separate eight component checks passed externally; these reports do not claim native painting or a new installed APK.
 
-The HTML retains complete data and its owned inline captures. The [manifest](../index.json) holds inventory and hashes; checking them does not rerun the tests.
-
-- [Current handoff and dossier components](handoff/component-report.html)
-
-- [Shared every-seat APK/Web components](phases/component-report.html)
-
-- [Android JVM contract integration](apk-policy/component-report.html)
+[Back to the index](../README.md) · [Module × level matrix](../../../docs/testing/ATF_TestingGuide.md)

@@ -1,0 +1,16 @@
+{
+  "kind": "isolated-unit-result",
+  "sourceCommit": "87f47c290559a512a594f3b85e1384e66e8ae59d",
+  "task": ":card-table-core:unitTest",
+  "tests": 3,
+  "failures": 0,
+  "errors": 0,
+  "skipped": 0,
+  "junitSha256": "8e4d5e4cad16340024df82d4043d6b35ec12841ce484b805212e69feb6f165bb",
+  "cases": [
+    "observationOwnsItsSnapshot",
+    "rejectsInvalidMeasurementsInsteadOfHidingMissingRegions",
+    "normalizesPlatformScaleAndOriginWithoutChangingLayout"
+  ],
+  "extent": false
+}

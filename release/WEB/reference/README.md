@@ -1,13 +1,7 @@
-# Explicitly scoped references
+# Scoped publication reference
 
 ## Overview
 
-Reference results explain previous coverage and its limits. They are not additional current E2E obligations and are not rerun merely because the dossier layout changes.
+[The previous public delivery receipt](../e2e/oh-hell/delivery.json) and [runtime snapshot](../e2e/oh-hell/runtime-snapshot.json) identify public revision 0.11. They do not qualify the new local 0.12 runtime. Superseded long E2E reports remain recoverable from Git rather than enlarging the current dossier.
 
 [Back to the index](../README.md)
-
-| Report | Original outcome | Provenance |
-|---|---|---|
-| [Earlier Romanian flow reference](romanian/extent.html) | `PASS` · `REFERENCE` | `91716314` |
-
-The HTML retains complete data and its owned inline captures. The [manifest](../index.json) holds inventory and hashes; checking them does not rerun the tests.

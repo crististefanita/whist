@@ -1,13 +1,7 @@
-# Preserved rejection evidence
+# Original rejected outcome
 
 ## Overview
 
-Rejected evidence keeps its original verdict and scope. It explains the defect and the regression requirement; it is excluded from the current passing qualification.
+[The original governance batch](initial-governance/component-report.html) retains 62 tests: 61 passed and one failed with `TEST-CHANGE-PROOF-DIRTY`. [Selection](initial-governance/selection.json) and [execution](initial-governance/execution.json) explain its scope and the explicit reuse decision. The report stays rejected; [the corrected control](../governance/resume/component-report.html) is a separate execution.
 
 [Back to the index](../README.md)
-
-| Report | Original outcome | Provenance |
-|---|---|---|
-| [Original AI-to-human displacement](anchor-before/extent.html) | `FAIL` · `REJECTED` | `91716314` |
-
-The HTML retains complete data and its owned inline captures. The [manifest](../index.json) holds inventory and hashes; checking them does not rerun the tests.

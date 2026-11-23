@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "kind": "WHIST_WEB_TEST_DOSSIER",
-  "state": "BROWSER_QUALIFIED",
+  "state": "OPEN",
   "publication": {
     "url": "https://crististefanita.github.io/whist/",
     "sourceCommit": "9a5b49b82d3fb9b3ad7d5815ff213a8305bb5eb8",
@@ -10,217 +10,150 @@
   },
   "reports": [
     {
-      "id": "WEB-FIVE-SIX-FLOW",
+      "id": "WEB-TABLE-SANITY",
       "category": "e2e",
-      "path": "e2e/table-handoffs/extent.html",
+      "path": "e2e/table-sanity/extent.html",
       "role": "PRIMARY",
       "result": "PASS",
-      "validatorCommit": "9b57a75bf5721a6199ccb9a38b23fd7f2f15b09c",
-      "scope": "Two real published-browser journeys at 1664×916: five players (10/9 cards) and six players (8/7), manual and AutoGame. Each observed deposit and collection retains before/after assertions; no native widget claim.",
+      "validatorCommit": "87f47c290559a512a594f3b85e1384e66e8ae59d",
+      "scope": "Local JVM game, headless muted Edge, 1664×916, four players: two one-card hands, manual then AutoGame. Fourteen ordered steps and 140 comparisons; four actual inline captures. No public-static or installed-APK qualification.",
       "counts": {
-        "flows": 2,
-        "hands": 4,
-        "tricks": 34,
-        "deposits": 185,
-        "steps": 286,
-        "assertions": 3280
+        "flows": 1,
+        "hands": 2,
+        "steps": 14,
+        "assertions": 140,
+        "captures": 4
       }
     },
     {
-      "id": "shared-phase-components",
+      "id": "shared-adapter-contracts",
       "category": "component",
-      "path": "component/phases/component-report.html",
+      "path": "component/adapters/component-report.html",
       "role": "PRIMARY",
       "result": "PASS",
-      "validatorCommit": "9b57a75bf5721a6199ccb9a38b23fd7f2f15b09c",
-      "proof": "component/phases/proof.json",
-      "scope": "One APK/Web oracle: all six schedules and all legal deal sizes for three through six players; every actor/winner and phase, width/height/text combinations. Includes all six anchor measurements, drift mutations and matched audit indexes without screenshots.",
+      "validatorCommit": "87f47c290559a512a594f3b85e1384e66e8ae59d",
+      "proof": "component/adapters/proof.json",
+      "scope": "Eleven source-bound positive and negative controls: every legal deal and seat across six schedules, neutral APK/Web phase oracle, menu roles, minimal flow budget, publisher admission, module inventory and dependency selection. Logical policy equality does not prove native painted fonts.",
       "counts": {
+        "methods": 11,
         "configurations": 10620,
         "adapterTransitions": 369360,
         "seatComparisons": 1710000,
-        "negativeMutations": 76,
-        "intrinsicAnchorCases": 1152
+        "negativeMutations": 76
       }
     },
     {
-      "id": "current-governance",
-      "category": "governance",
-      "path": "governance/current/component-report.html",
-      "role": "PRIMARY",
-      "result": "PASS",
-      "validatorCommit": "9b57a75bf5721a6199ccb9a38b23fd7f2f15b09c",
-      "scope": "Seven current source, package, proof admission, catalog and dependency-ownership checks. Reuses unaffected broader documentation governance; targeted documentation CLI runs separately."
-    },
-    {
-      "id": "documentation-plan-governance",
-      "category": "governance",
-      "role": "PRIMARY",
-      "result": "PASS",
-      "path": "governance/documentation-plan/component-report.html",
-      "validatorCommit": "82780f0deeaa4497559e188c767d40782d2b6a3f",
-      "documentationCommit": "561f6bfeacba3f239f59f783efa3c75e222b8e0b",
-      "scope": "Focused atf-tests-documentation suite selection: eight passing checks of README structure, diagrams, prose, style, priority ownership and links. Uses unchanged compiled validators; the three-module architecture and TEST-04 runtime gates remain planned.",
-      "counts": {
-        "methods": 8,
-        "newUiExecutions": 0
-      },
-      "execution": "governance/documentation-plan/execution.json",
-      "footprint": "governance/documentation-plan/footprint.json"
-    },
-    {
-      "id": "native-phase-integration",
+      "id": "portable-core-components",
       "category": "component",
-      "path": "component/apk-policy/component-report.html",
-      "role": "REFERENCE",
+      "path": "component/core/component-report.html",
+      "role": "PRIMARY",
       "result": "PASS",
-      "validatorCommit": "9b57a75bf5721a6199ccb9a38b23fd7f2f15b09c",
-      "scope": "One actual Android application JVM unit-test invocation imports the same phase contract. Original source label is Live shared phase contract; no APK installation. The identified source version was committed afterward; this is not installed-APK qualification.",
+      "validatorCommit": "87f47c290559a512a594f3b85e1384e66e8ae59d",
+      "scope": "Fifty audited portable model, geometry and text component invocations. Core-only launch passed with a deliberately absent Android SDK. Three isolated unit prerequisites are recorded without Extent; no Android or emulator execution.",
+      "counts": {
+        "components": 50,
+        "unitsWithoutExtent": 3
+      }
+    },
+    {
+      "id": "matrix-audit-inputs",
+      "category": "component",
+      "path": "component/matrix/component-report.html",
+      "role": "PRIMARY",
+      "result": "PASS",
+      "validatorCommit": "87f47c290559a512a594f3b85e1384e66e8ae59d",
+      "scope": "Focused rerun of the two matrix methods whose audit inputs changed. Full loops and invariants retained; successful comparisons aggregate per invariant and first mismatch retains contextual inputs. Live-checkout diagnostic, not an installed APK.",
+      "counts": {
+        "methods": 2
+      }
+    },
+    {
+      "id": "governance-resumed-control",
+      "category": "governance",
+      "path": "governance/resume/component-report.html",
+      "role": "PRIMARY",
+      "result": "PASS",
+      "validatorCommit": "838afacaae98f10e19523f87ddbd3a5fe95a1b71",
+      "scope": "Only the failed dirty-checkout admission control rerun after the editorial guides were committed. Original eleven-selector proof and 61 unaffected passing governance outcomes are reused, without rewriting the initial batch verdict.",
       "counts": {
         "methods": 1
       }
     },
     {
-      "id": "WEB-FLOW",
-      "category": "e2e",
-      "role": "REFERENCE",
-      "result": "PASS",
-      "path": "e2e/oh-hell/extent.html",
-      "validatorCommit": "917163149f4618434c850505513dd06982467548",
-      "scope": "Three Oh Hell hands, 10/9/8 cards, four players, RO, one 1664×916 desktop viewport; manual play, AutoGame, AI-to-human handoffs and collection. Historical three-hand observation: retained as a reference outside the new two-hand E2E budget, not reused as current primary qualification.",
-      "counts": {
-        "hands": 3,
-        "tricks": 27,
-        "deposits": 108
-      }
-    },
-    {
-      "id": "handoff-components",
-      "category": "component",
-      "path": "component/handoff/component-report.html",
-      "role": "REUSED",
-      "result": "PASS",
-      "validatorCommit": "9a5b49b82d3fb9b3ad7d5815ff213a8305bb5eb8",
-      "proof": "component/handoff/proof.json",
-      "scope": "Four selected component methods: 768 controlled intrinsic-measurement combinations without screenshots, portable dossier positive/negative controls, current inventory and typed catalog rejection."
-    },
-    {
-      "id": "WEB-REPORTING",
-      "category": "component",
-      "role": "REUSED",
-      "result": "PASS",
-      "path": "component/reporting/component-report.html",
-      "validatorCommit": "917163149f4618434c850505513dd06982467548",
-      "scope": "Seven source-bound methods: ordered assertions, action/observation ownership, report integrity and negative input controls; no product screenshots.",
-      "proof": "component/reporting/proof.json",
-      "counts": {
-        "methods": 7
-      }
-    },
-    {
-      "id": "WEB-GEOMETRY",
-      "category": "component",
-      "role": "REUSED",
-      "result": "PASS",
-      "path": "component/native-ports/component-report.html",
-      "validatorCommit": "9ec0b560ae9c85110a07212df7035d0c019fde64",
-      "scope": "Four source-bound methods for native/Web geometry ports, measured roles, lifecycle and controlled renderer cases; inherited scope, not a fresh APK run.",
-      "proof": "component/native-ports/proof.json",
-      "counts": {
-        "methods": 4
-      }
-    },
-    {
-      "id": "WEB-GOVERNANCE",
-      "category": "governance",
-      "role": "REFERENCE",
-      "result": "PASS",
-      "path": "governance/atf/component-report.html",
-      "validatorCommit": "9cc19f7f16b1c09f6e5737ffee9a97e18a26e668",
-      "scope": "Forty-five governance tests on the preceding qualified source. Current dossier checks are run separately; this report is not relabelled as newly executed.",
-      "counts": {
-        "methods": 45
-      }
-    },
-    {
-      "id": "WEB-ROMANIAN-REFERENCE",
-      "category": "reference",
-      "role": "REFERENCE",
-      "result": "PASS",
-      "path": "reference/romanian/extent.html",
-      "validatorCommit": "917163149f4618434c850505513dd06982467548",
-      "scope": "Earlier Romanian 1–8–1 flow at 1920×1080 and 1.3× text: eleven hands and 270 ordered checkpoints. Retained reference, not current Oh Hell acceptance.",
-      "counts": {
-        "hands": 11,
-        "steps": 270,
-        "assertions": 2700
-      }
-    },
-    {
-      "id": "WEB-ANCHOR-REJECTION",
+      "id": "original-governance-batch",
       "category": "diagnostics",
+      "path": "diagnostics/initial-governance/component-report.html",
       "role": "REJECTED",
       "result": "FAIL",
-      "path": "diagnostics/anchor-before/extent.html",
-      "validatorCommit": "917163149f4618434c850505513dd06982467548",
-      "scope": "Original Oh Hell rejection: prepared south anchor stretched the measurement probe; observed frame drift about 17.56 CSS px. The original failure is preserved."
+      "validatorCommit": "87f47c290559a512a594f3b85e1384e66e8ae59d",
+      "scope": "Original batch: 61 PASS and one TEST-CHANGE-PROOF-DIRTY failure while three editorial guides were uncommitted. Preserve original report and verdict; the corrected one-control execution is indexed separately.",
+      "counts": {
+        "tests": 62,
+        "passed": 61,
+        "failed": 1
+      }
     }
   ],
   "integrity": [
     {
-      "path": "e2e/oh-hell/extent.html",
-      "bytes": 6593784,
-      "sha256": "47d466f51eecf75f816f360d2c7eded28266d63ce32e344d4953960797f0f216"
+      "path": "component/adapters/component-report.html",
+      "bytes": 2858120,
+      "sha256": "7efa7fc021df7da5d49f2c28d2375e97fd8d4cf11b9e512fdc8d1c409fa3c09e"
     },
     {
-      "path": "component/reporting/component-report.html",
-      "bytes": 2550714,
-      "sha256": "d28a2c09c383d4657b2c0421a714e335f47c7a2127a234e5e3e537202464cc4c"
+      "path": "component/adapters/proof.json",
+      "bytes": 2496,
+      "sha256": "80fd1751f98d7e734e26c4f42f7ae714aff4b2cecda93bef9cf45244997a6751"
     },
     {
-      "path": "component/reporting/proof.json",
-      "bytes": 1711,
-      "sha256": "b07a98f93ad1a32ea2c9b37baaed6eff5bbe2e290dea2023ca89653414eb3a5e"
+      "path": "component/core/component-report.html",
+      "bytes": 4118887,
+      "sha256": "439cb679ad75bc5e4805973bb976dfe85258adaa46c32a0114e237044f08de3e"
     },
     {
-      "path": "component/native-ports/component-report.html",
-      "bytes": 2879771,
-      "sha256": "8d7b648c849811162fd7c6a77b09a6536a7c7d496aa15c8b545e18ce6768adce"
+      "path": "component/core/execution.json",
+      "bytes": 385,
+      "sha256": "bad71213fd1ee693b1f3f27cad6a48138875a2022a19d043d31922844f6f40bb"
     },
     {
-      "path": "component/native-ports/proof.json",
-      "bytes": 1280,
-      "sha256": "b6e1ad06bbb2b9003a6722358de376fb21b5843e5c9d7e0bd5a3bbb0509bf1c7"
+      "path": "component/core/release-inputs.json",
+      "bytes": 23183,
+      "sha256": "b2a40bbb1adf62143dabf0824bb627533b8304b73bb596c768b8edb8f2364dee"
     },
     {
-      "path": "governance/atf/component-report.html",
-      "bytes": 3063726,
-      "sha256": "66ebfba59c43fad1acf0b5d04d3759e4b76bc810caaea0145f8d4b1781139dde"
+      "path": "component/core/source-inputs.json",
+      "bytes": 231971,
+      "sha256": "e084c42106f72d312da25258bfacd214d8ed9d9b743aeb9f346dfa4731dc13f8"
     },
     {
-      "path": "reference/romanian/extent.html",
-      "bytes": 8262608,
-      "sha256": "3f4a63709a170c63753952c93b98eac2c23820edf9b4c8ae7e6893babb3b481b"
+      "path": "component/core/source-provenance.json",
+      "bytes": 1259,
+      "sha256": "945b6a3bc9a4df284d0355fd91ee464f8b51572d6fd8d4827d4ef761ed2c4243"
     },
     {
-      "path": "diagnostics/anchor-before/extent.html",
-      "bytes": 6586288,
-      "sha256": "f9f892f1c946f82d6e7fe6a722c0028f2febff187b1cebe0f5e18fa849101d21"
+      "path": "component/core/unit-execution.json",
+      "bytes": 479,
+      "sha256": "641272d04df95c2e5910b15439074ec5f9e2c8be5e84da6f23098a061c44e497"
     },
     {
-      "path": "e2e/oh-hell/runtime-snapshot.json",
-      "bytes": 3296,
-      "sha256": "7f041e58a94e0a9d98c35aa56eca365a2fd17c153d7a2e5b7cdd76a4f8c8435f"
+      "path": "component/matrix/component-report.html",
+      "bytes": 2438989,
+      "sha256": "86591a553871376fc3ca7867924e64043b6b9366ffe91170d8180aa94690682f"
     },
     {
-      "path": "component/handoff/component-report.html",
-      "bytes": 2719954,
-      "sha256": "993a8ac03b3a1f7a00a058a8dc38c0c0a0eeddb3179aebbcb5b8e84e36141935"
+      "path": "diagnostics/initial-governance/component-report.html",
+      "bytes": 3928609,
+      "sha256": "ae8dbd58afa90b909c7c13d8d6d5819b6487993d3187dcb7157b25dbff81f2e1"
     },
     {
-      "path": "component/handoff/proof.json",
-      "bytes": 1242,
-      "sha256": "dac9b22c227d0eeecc552d8467c2ee5b35a6327b3c03f8e62e7523dd53f12fc1"
+      "path": "diagnostics/initial-governance/execution.json",
+      "bytes": 702,
+      "sha256": "660616d72742444e31bf9b753c21be28dc29dadb1605b01fa76e2d645fdba0c2"
+    },
+    {
+      "path": "diagnostics/initial-governance/selection.json",
+      "bytes": 3058,
+      "sha256": "6aab98fe7c745ebcc093c4e406bdd0596837896df60aecd19894139ecfd19f5e"
     },
     {
       "path": "e2e/oh-hell/delivery.json",
@@ -228,55 +161,46 @@
       "sha256": "18299bebde5d1bbd13d04dbe7df179882e8387ccb7e7ecd2dc1f7bf17365d780"
     },
     {
-      "path": "governance/current/component-report.html",
-      "bytes": 2503481,
-      "sha256": "e296a6368a304ba5b2774e87f76edb30a81ac2a6ffbf3253896f51be16cdcf8b"
+      "path": "e2e/oh-hell/runtime-snapshot.json",
+      "bytes": 3296,
+      "sha256": "7f041e58a94e0a9d98c35aa56eca365a2fd17c153d7a2e5b7cdd76a4f8c8435f"
     },
     {
-      "path": "e2e/table-handoffs/extent.html",
-      "bytes": 9720495,
-      "sha256": "75f2e9565fa3ae4835f1030081388016861671ecd261fbf56b755fdcfe6fd300"
+      "path": "e2e/table-sanity/execution.json",
+      "bytes": 281,
+      "sha256": "77b3ec3b9117eb731d0995fdf96f5aa74342675eaf3d5c331b8e96a2474cbdce"
     },
     {
-      "path": "component/phases/component-report.html",
-      "bytes": 2867654,
-      "sha256": "62fc4fde26a0168b49bce945effc6af5ca963d3b3876288e96b72ed079c8314e"
+      "path": "e2e/table-sanity/extent.html",
+      "bytes": 2916451,
+      "sha256": "384f71ee7a43e046f8160d325e13939b3992b14abb8338fccd771ee867a8d653"
     },
     {
-      "path": "component/phases/proof.json",
-      "bytes": 1253,
-      "sha256": "a78eecf0dcc50209c1a29330d5819bd49b6af39e5421dd937fc113e0e5fa45a7"
+      "path": "governance/browser-review/execution.json",
+      "bytes": 826,
+      "sha256": "e949646aebe8348d49dd79bcfd9a980d69b0fd852906a8e145af64fa3df1d96a"
     },
     {
-      "path": "component/apk-policy/component-report.html",
-      "bytes": 2429753,
-      "sha256": "be2633e38c322ccfd2fb2370ba7bd08a9f26b2848a3a412d902e8db9b62faaf8"
+      "path": "governance/resume/component-report.html",
+      "bytes": 2419269,
+      "sha256": "35a6275a30b59a3441371ba900a244ceee15e7e879b4d8810622bee1b56bdb0d"
     },
     {
-      "path": "governance/documentation-plan/component-report.html",
-      "bytes": 2515355,
-      "sha256": "8b9e8b26d0f0af1a5918ed2094f22d034b38df930747dd963822443775a25853"
-    },
-    {
-      "path": "governance/documentation-plan/execution.json",
-      "bytes": 864,
-      "sha256": "bfd91b72480ea3951b682fa4501c60b5189362cae91e47b4b19d50c4eedf794d"
-    },
-    {
-      "path": "governance/documentation-plan/footprint.json",
-      "bytes": 692,
-      "sha256": "6286c86ae987763e5441a9e598fb6bb528980ebd91ef3963cd9be0b8e8c5a3b1"
+      "path": "governance/resume/execution.json",
+      "bytes": 543,
+      "sha256": "5777665c7661e1842d5e390008983b31348151523bf7af383d7af551c9d1b6d8"
     }
   ],
   "executedRuntime": {
-    "cacheRevision": "0.11",
-    "runtimeSnapshot": "e2e/oh-hell/runtime-snapshot.json"
+    "target": "local JVM server",
+    "sourceCommit": "87f47c290559a512a594f3b85e1384e66e8ae59d",
+    "cacheRevision": "0.12"
   },
   "qualification": {
-    "validatorSourceCommit": "9b57a75bf5721a6199ccb9a38b23fd7f2f15b09c",
-    "runtimeSourceCommit": "9a5b49b82d3fb9b3ad7d5815ff213a8305bb5eb8",
+    "validatorSourceCommit": "87f47c290559a512a594f3b85e1384e66e8ae59d",
+    "documentationCommit": "838afacaae98f10e19523f87ddbd3a5fe95a1b71",
     "contract": "TABLE-PHASE-CONTINUITY",
     "nativeWidgetE2e": "NOT_RUN",
-    "boundary": "Shared policy components and published Web observations; existing APK release evidence remains immutable."
+    "boundary": "Current local browser sanity and source-bound components. Previous public 0.11 receipt retained only as a reference; refreshed public-static/native acceptance remains open."
   }
 }
