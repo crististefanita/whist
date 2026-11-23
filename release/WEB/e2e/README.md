@@ -2,7 +2,7 @@
 
 ## Pe scurt
 
-Puține parcursuri la un singur viewport lizibil: patru locuri refolosite și două parcursuri curente la cinci/șase locuri. Componentele comune dețin combinațiile de rezoluție, text, distribuire și actori.
+Puține parcursuri la un singur viewport lizibil: o referință istorică la patru locuri și două parcursuri curente la cinci/șase locuri. Componentele comune dețin combinațiile de rezoluție, text, distribuire și actori.
 
 ## Contractul comun al auditului
 
@@ -11,7 +11,7 @@ Puține parcursuri la un singur viewport lizibil: patru locuri refolosite și do
 | Locuri | Componente APK/Web | E2E Web | E2E APK instalat |
 |---|---|---|---|
 | 3 | [Contractul comun](../component/phases/component-report.html) | Neselectat în această iterație | Neexecutat |
-| 4 | [Contractul comun](../component/phases/component-report.html) | [Parcurs refolosit](oh-hell/extent.html) | Neexecutat |
+| 4 | [Contractul comun](../component/phases/component-report.html) | [Referință anterioară cu trei mâini](oh-hell/extent.html) | Neexecutat |
 | 5 | [Contractul comun](../component/phases/component-report.html) | [Parcurs curent](table-handoffs/extent.html) · 10/9 cărți | Neexecutat |
 | 6 | [Contractul comun](../component/phases/component-report.html) | [Parcurs curent](table-handoffs/extent.html) · 8/7 cărți | Neexecutat |
 
@@ -23,3 +23,5 @@ Fiecare depunere și colectare observată păstrează pașii Given/When/Then, da
 - [Integrarea JVM Android](../component/apk-policy/component-report.html) execută contractul aplicației fără emulator sau capturi native
 - [Catalog Android](../../README.md) păstrează dovezile release-urilor; comparația fizică APK/Chrome rămâne deschisă
 - [Înapoi la dosar](../README.md) · [Manifest și proveniență](../index.json)
+
+Politica următoarei selecții este E2E minim de navigare, cu cel mult două mâini scurte per joc și puține capturi relevante. Referința cu trei mâini își păstrează rezultatul original; nu satisface bugetul curent.

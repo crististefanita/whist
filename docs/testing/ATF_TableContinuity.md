@@ -47,3 +47,20 @@ Oracle-ul compară fiecare loc ordonat cu aceeași referință a partidei și ve
 | Livrare | Indexul README folosește legături relative spre HTML-ul canonic. Dovezile refolosite păstrează identitatea, domeniul și verdictul original; nu redenumiți un rezultat de politică drept acceptanță a APK-ului instalat. |
 
 [Dosarul Web curent](../../release/WEB/README.md) separă artefactele componentelor de E2E. [Catalogul Android](../../release/README.md) păstrează dovezile imuabile ale release-urilor; un parcurs nativ neexecutat rămâne explicit neexecutat. Paritatea runtime și identitatea artefactelor sunt separate de revizia validatorului.
+
+## Bugetul E2E și proprietatea suitei
+
+Partidele complete aparțin componentelor jocului: motor real, setup legal și dependențe externe controlate. Core UI verifică proiecțiile și matricele de afișaj; adaptoarele adaugă numai verificările propriei platforme.
+
+Politica de livrare cere una sau două mâini per joc E2E, la un singur viewport lizibil. Matricele de rezoluție, densitate, text, actori și variante aparțin componentelor comune fără poze; E2E verifică tranzițiile reale între ferestre și păstrează capturi inline.
+
+| Domeniu | Contract |
+|---|---|
+| Scenariu comun | Aceleași ID-uri, precondiții, rezultate și pași Given/When/Then sunt executate prin drivere APK/Web. |
+| Final de partidă | Folosiți un checkpoint legal aproape de final, validat în componente, apoi jucați mâna finală reală. |
+| Livrarea suitei | Indexul curent din `release/` leagă prin căi relative rapoartele canonice ale componentelor, rendererelor, guvernanței și E2E, cu selecție și proveniență explicite. |
+| Referințe istorice | Păstrați verdictele și octeții originali; un parcurs vechi peste buget nu devine o calificare primară curentă. |
+| Selecția imaginilor | Cel mult patru capturi relevante per scenariu normal este bugetul propus; păstrați suplimentar primul eșec vizual. Nu fotografiați fiecare carte sau combinație de afișaj și nu ascundeți datele unei aserțiuni eșuate. |
+| Gol de implementare | `TEST-04` urmărește impunerea bugetului în runnerele existente și la publicare; această politică nu afirmă că mecanismul este deja implementat. |
+
+[Planul de migrare și criteriile](../feedback/ATF_CardUi_Extraction.md#ui-three-module-plan) separă core portabil, adaptorul Android și adaptorul Web. Cazurile specifice jocului rămân la joc; suportul neutru pentru fixture-uri și oracle-uri aparține testelor core.

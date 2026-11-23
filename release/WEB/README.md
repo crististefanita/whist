@@ -31,7 +31,7 @@ Componentele dețin combinațiile de dimensiuni, text, ancore și ordinea evenim
 | [Componente APK/Web comune pentru fiecare loc](component/phases/component-report.html) | `PASS` | `PRIMARY` | `9b57a75b` |
 | [Guvernanță curentă pentru responsabilități și sursă](governance/current/component-report.html) | `PASS` | `PRIMARY` | `9b57a75b` |
 | [Integrarea JVM Android a contractului](component/apk-policy/component-report.html) | `PASS` | `REFERENCE` | `9b57a75b` |
-| [Trecerile curente ilustrate](e2e/oh-hell/extent.html) | `PASS` | `REUSED` | `91716314` |
+| [Referință anterioară la patru jucători](e2e/oh-hell/extent.html) | `PASS` | `REFERENCE` | `91716314` |
 | [Componente curente pentru treceri și dosar](component/handoff/component-report.html) | `PASS` | `REUSED` | `9a5b49b8` |
 | [Contractele intrărilor raportului și urmelor](component/reporting/component-report.html) | `PASS` | `REUSED` | `91716314` |
 | [Geometria comună și matricile controlate](component/native-ports/component-report.html) | `PASS` | `REUSED` | `9ec0b560` |
@@ -46,6 +46,10 @@ Componentele dețin combinațiile de dimensiuni, text, ancore și ordinea evenim
 - [Guvernanță](governance/README.md): contracte de sursă, documentație și inventar.
 - [Referințe](reference/README.md): acoperire anterioară cu limite explicite.
 - [Diagnostice](diagnostics/README.md): probe respinse păstrate integral.
+
+## Politica selecției suitelor
+
+[Contractul testării](../../docs/testing/ATF_TableContinuity.md) cere componente fără poze și E2E minim de navigare, cu cel mult două mâini per joc. [Planul de migrare](../../docs/feedback/ATF_CardUi_Extraction.md#ui-three-module-plan) păstrează explicit impunerea bugetului ca lucru deschis; actualizarea documentației nu adaugă rulări UI sau calificare APK.
 
 ## Integritate și întreținere
 
