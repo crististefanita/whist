@@ -42,7 +42,13 @@ $build=Join-Path $Root ('whist-component-suites-'+('a'*32))
 foreach($dir in @($source,$cache,$previous,$build)){New-Item -ItemType Directory $dir | Out-Null}
 Copy-Item -LiteralPath (Join-Path $HostRoot 'atf-tests') -Destination (Join-Path $source 'atf-tests') -Recurse
 Put (Join-Path $source 'pom.xml') '<project/>'
-Put (Join-Path $source 'config/atf-governance-policy.json') '{"mavenModules":[],"additionalSourceRoots":[]}'
+$policy=@{mavenModules=@();additionalSourceRoots=@()}
+$null=New-Item -ItemType Directory -Force (Join-Path $source 'config')
+if($Mode -eq 'gradle') {
+ $policy.additionalSourceRoots=@(@{path='gradle/src/test/java';test=$true})
+ Put (Join-Path $source 'gradle/src/test/java/OnlyTest.java') 'original Gradle test'
+}
+Write-AtfComponentJson (Join-Path $source 'config/atf-governance-policy.json') $policy
 foreach($name in @('release-platform-rag-policy.json','gradle-app-collections.properties','atf-component-collections.json','atf-test-suites.json')){
  Copy-Item -LiteralPath (Join-Path $HostRoot "config/$name") -Destination (Join-Path $source "config/$name")
 }
@@ -82,8 +88,10 @@ $maven=Join-Path $Root 'maven/bin/mvn.ps1';Put $maven '[IO.File]::WriteAllText($
 $inputs=Join-Path $Root 'inputs.json'
 $rows=@(& (Join-Path $scripts 'Get-AtfSourceInputs.ps1') -SourceRoot $source)
 Write-AtfComponentJson $inputs $rows
-$identity=Get-AtfComponentCompilerIdentity $inputs $java $maven
+$identity=Get-AtfComponentCompilerIdentity $inputs $java $maven $source
 Copy-Item $inputs (Join-Path $build 'compiler-source-inputs.json')
+Put (Join-Path $build 'project/pom.xml') ([IO.File]::ReadAllText((Join-Path $source 'pom.xml')))
+Put (Join-Path $build 'project/config/atf-governance-policy.json') ([IO.File]::ReadAllText((Join-Path $source 'config/atf-governance-policy.json')))
 $repo=Join-Path $build 'maven-repository';$jar=Join-Path $repo 'dependency.jar'
 Put $jar 'controlled bytecode';Put (Join-Path $repo 'dependency.pom') '<project/>'
 $classpath=Join-Path $build 'component-classpath.txt';Put $classpath $jar
@@ -92,11 +100,16 @@ Write-AtfComponentJson (Join-Path $previous 'component-workspace.json') @{schema
 if($Mode -eq 'tampered'){Put $jar 'changed bytecode'}
 $env:PROOF_RUN_MARKER=Join-Path $Root 'controls.marker';$env:MAVEN_RUN_MARKER=Join-Path $Root 'maven.marker';$env:PROOF_RUN_MODE=$Mode
 $env:WHIST_QUALIFICATION_TEMP_ROOT=$Root;$env:TEMP=$Root;$env:TMP=$Root
-$runs=@();$count=if($Mode -eq 'success'){2}else{1}
+$runs=@();$count=if($Mode -in @('success','gradle')){2}else{1}
 for($n=0;$n -lt $count;$n++){
+ if($Mode -eq 'gradle') {
+  Put (Join-Path $source 'gradle/src/test/java/OnlyTest.java') "changed Gradle test $n"
+  $null=& git -C $source -c user.name=Fixture -c user.email=fixture@example.invalid add .
+  $null=& git -C $source -c user.name=Fixture -c user.email=fixture@example.invalid commit -q -m "Changed Gradle test $n"
+ }
  $output=Join-Path $Root "run-$n";$log=Join-Path $Root "run-$n.log"
  & pwsh -NoProfile -NonInteractive -File (Join-Path $scripts 'run-component-suites.ps1') -SourceRoot $source -RunRoot $output -TestChangeControl FIXTURE-COMPILER -TestChangeBaseRef $base -CompilerReuseFrom $previous -JavaHome $javaHome -Maven $maven -MavenCache $cache *> $log
- $runs+=@{exit=$LASTEXITCODE;proof=(Test-Path (Join-Path $output 'FIXTURE-COMPILER/proof.json'));phases=if(Test-Path (Join-Path $output 'timing.json')){(Get-Content (Join-Path $output 'timing.json') -Raw|ConvertFrom-Json).stages}else{@()};log=(Get-Content $log -Raw)}
+ $runs+=@{exit=$LASTEXITCODE;proof=(Test-Path (Join-Path $output 'FIXTURE-COMPILER/proof.json'));sourceFingerprint=if(Test-Path (Join-Path $output 'source-provenance.json')){(Get-Content (Join-Path $output 'source-provenance.json') -Raw|ConvertFrom-Json).sourceFingerprint}else{''};phases=if(Test-Path (Join-Path $output 'timing.json')){(Get-Content (Join-Path $output 'timing.json') -Raw|ConvertFrom-Json).stages}else{@()};log=(Get-Content $log -Raw)}
 }
 @{runs=$runs;maven=(Test-Path $env:MAVEN_RUN_MARKER);controls=if(Test-Path $env:PROOF_RUN_MARKER){@(Get-Content $env:PROOF_RUN_MARKER).Count}else{0}}|ConvertTo-Json -Depth 8
 `);
@@ -111,6 +124,12 @@ test('proof compiler reuse keeps every control fresh and records compilation reu
   const result=await exercise(t,'success');for(const run of result.runs)assert.equal(run.exit,0,run.log);assert.equal(result.maven,false);assert.equal(result.controls,2);
   for(const run of result.runs){assert.equal(run.exit,0,run.log);assert.equal(run.proof,true);assert.equal(run.phases.find(row=>row.stage==='components.maven-compile').status,'REUSED');}
   observe('success',result);
+});
+test('isolated Gradle test changes reuse Maven while two source snapshots execute fresh controls',async t=>{
+ const result=await exercise(t,'gradle');assert.equal(result.maven,false);assert.equal(result.controls,2);
+ assert.equal(new Set(result.runs.map(run=>run.sourceFingerprint)).size,2);
+ for(const run of result.runs){assert.equal(run.exit,0,run.log);assert.equal(run.proof,true);assert.equal(run.phases.find(row=>row.stage==='components.maven-compile').status,'REUSED');}
+ observe('gradle',result);
 });
 for(const mode of ['failure','partial','tampered'])test(`proof compiler reuse rejects ${mode} execution without promoting a proof`,async t=>{
   const result=await exercise(t,mode);assert.equal(result.runs[0].proof,false);assert.notEqual(result.runs[0].exit,0,result.runs[0].log);

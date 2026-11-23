@@ -212,24 +212,27 @@ Governance fixtures resolve the active release through `release/index.json` and 
 
 ## Maven compiler reuse
 
-Compilation and execution have separate identities. The [compiler inventory](../../atf-tests/tools/component-compiler-inputs.mjs) omits editorial Markdown and the bilingual review record; Java, POMs, resource payloads, binaries, launcher code and unknown inputs remain included.
+Compilation and execution have separate identities. The [compiler inventory](../../atf-tests/tools/component-compiler-inputs.mjs) omits editorial Markdown, the bilingual review record and admitted Gradle-only test Java. The execution inventory remains complete.
 
 | Boundary | Admission and outcome |
 |---|---|
 | Compiler key | Non-editorial source inventory, JDK binaries, Maven installation, user settings and supported environment options must match. Unknown external argument overrides disable reuse. |
+| Maven scope | [Recipe admission](../../scripts/AtfCompilerIdentity.ps1) binds the policy and POM bytes, including literal source roots, build-helper additions and profile resources. Only Java inside a declared extra test root, outside every Maven compilation/resource root, may leave the compiler key. |
+| Conservative boundary | Shared providers, resources, POMs, binaries, launchers and unknown files remain included. Unsupported plugins, extensions, nested reactors or unresolved roots retain the complete non-editorial key; unbound or indirect recipe files reject admission. |
 | Compiled output | [Output admission](../../scripts/AtfComponentMaven.ps1) verifies classes, resources, dependency JAR/POM bytes, frozen input inventory and classpath destinations. Missing or altered data selects fresh preparation. |
 | Another run | [Borrowing](../../scripts/AtfComponentMavenReuse.ps1) resolves the original compiler workspace inside the configured external temp root and holds its exclusive lease throughout execution. No repository or class tree is copied. |
 | Proof generation | `-CompilerReuseFrom <compiler-run>` may borrow admitted compilation in single-control or batch generation. Every selected control runs freshly; no proof or report is borrowed. Failed or incomplete execution never promotes a proof. `-ReuseFrom` remains forbidden for proof generation. |
 | Execution snapshot | The current source and release snapshots remain mandatory. Reusing compilation does not credit a test; owner selection and original report validation remain independent. |
 | Lifetime | References work only while the verified compiler workspace survives. Busy, missing, indirect, foreign or legacy workspaces trigger fresh compilation; retained reports can still be reused independently. |
 
-- A documentation-only rerun preserves the compiled owner and records new assertions against the current snapshot; after workspace cleanup, preparation starts again from source.
+- Documentation and admitted Gradle-only test edits can preserve the Maven compiler while the affected owner still executes against its current snapshot. Byte seals and workspace leases remain mandatory; after workspace cleanup, preparation starts again from source.
 
 The runner records compiler identity, cache admission and output sealing as named timing stages. A borrowed build has its original receipt and a hash-bound reference in the new workspace; neither source provenance nor old test reports are rewritten.
 
 ```mermaid
 flowchart LR
-    SOURCE[Current source snapshot] -->|remove editorial inputs| KEY[Compiler and tool key]
+    SOURCE[Current source snapshot] -->|admit Maven scope| FILTER[Retain compiler dependencies]
+    FILTER -->|remove only admitted inputs| KEY[Compiler and tool key]
     KEY -->|verify bytes and acquire lease| CACHE[Original compiled workspace]
     KEY -->|missing or incompatible| BUILD[Fresh Maven preparation]
     CACHE -->|provide verified classes| RUN[Selected test owner]

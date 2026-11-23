@@ -7,6 +7,40 @@ This register defines reviewed controls, their Git base and exact paths. The [te
 ## Verified controls
 
 <details>
+<summary>Maven compilation ownership and fresh execution</summary>
+
+```yaml
+testChanges:
+  - id: RAG-MAVEN-INPUT-OWNERSHIP
+    status: VERIFIED
+    base: 2ca72d50c35d15375b294cce8aa502dc18feb4fd
+    expires: 2026-12-24
+    reason: Bind literal Maven and build-helper recipes before excluding registered Gradle-only test Java from the compiler key. Preserve resource and unknown inputs, full execution snapshots and output seals. Exercise fresh controls on changed Gradle snapshots with a reused compiler; reject unsupported, foreign, indirect or corrupt recipes and outputs.
+    proof: 'mvn -o -pl atf-tests -am -Dtest=ComponentEvidenceScopeComponentTest -Dsurefire.failIfNoSpecifiedTests=false test'
+    checks:
+      positive:
+        - atf.tests.governance.documentation.release.rag.scope.ComponentEvidenceScopeComponentTest#literalMavenRootsKeepSharedProvidersAndRejectUnknownOrUnboundRecipes
+        - atf.tests.governance.documentation.release.rag.scope.ComponentEvidenceScopeComponentTest#gradleOnlyChangesReuseCompilationWithoutReusingControlVerdicts
+        - atf.tests.governance.documentation.release.rag.scope.ComponentEvidenceScopeComponentTest#editorialChangesReuseVerifiedMavenCompilationAndKeepFreshExecutionInputs
+        - atf.tests.governance.suites.AtfCollectionOwnershipComponentTest#realDependencyClosuresSelectOnlyTheirConsumers
+      negative:
+        - atf.tests.governance.documentation.release.rag.scope.ComponentEvidenceScopeComponentTest#tamperedCompilerCannotQualifyProofGeneration
+        - atf.tests.governance.suites.AtfCollectionOwnershipComponentTest#missingOrUnreviewedDependenciesCannotAuthorizeReuse
+    paths:
+      - scripts/AtfCompilerIdentity.ps1
+      - scripts/AtfComponentMaven.ps1
+      - scripts/run-component-suites.ps1
+      - atf-tests/tools/component-compiler-inputs.mjs
+      - atf-tests/tools/component-compiler-inputs.test.mjs
+      - atf-tests/tools/component-compiler-scope.test.mjs
+      - atf-tests/tools/component-proof-compiler-reuse.test.mjs
+      - atf-tests/src/test/java/atf/tests/governance/documentation/release/rag/scope/ComponentEvidenceScopeComponentTest.java
+      - config/atf-component-dependencies.json
+```
+
+</details>
+
+<details>
 <summary>Shared policy units and static browser admission</summary>
 
 ```yaml

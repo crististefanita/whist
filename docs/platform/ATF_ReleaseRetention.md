@@ -157,6 +157,8 @@ Resume with `--recipe $GitProof` and a new output file when a recipe was require
 
 Delivery is complete only when the local `release/` projection contains the newest published edition from the canonical catalogue.
 
+The tracked project `release/` is the canonical two-version catalog. The single-version projection below is a separate `--local-release` delivery directory; it does not rotate the tracked catalog down to one version.
+
 | Location or control | Required state |
 |---|---|
 | Local projection | Exactly one version, selected by the published canonical catalogue. |

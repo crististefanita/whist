@@ -18,3 +18,22 @@ test('compiler inventories reject duplicate, indirect and malformed source ident
     assert.throws(()=>compilerInputs(rows));
   }
 });
+
+test('literal Maven roots keep shared providers while isolated Gradle test Java leaves the compiler key', () => {
+  const scope={schemaVersion:1,compiledRoots:['module/src/main/java','module/src/test/java',
+    'module/src/test/resources','game/src/main/java','custom/checks','ANDROID/src/test/java/PAYLOAD'],testRoots:['android/src/test/java',
+    'game/src/test/java','module/src/test/java','custom/checks']};
+  const keep=['pom.xml','config/atf-governance-policy.json','module/src/test/java/Case.java',
+    'game/src/main/java/Engine.java','custom/checks/Case.java','module/src/test/resources/Data.java',
+    'android/src/test/java/fixture.yaml','android/src/test/java/payload/Data.java','unknown/src/test/java/Case.java','android/src/test/javax/Case.java'];
+  const skip=['android/src/test/java/Case.java','game/src/test/java/RuleTest.java'];
+  assert.deepEqual(compilerInputs([...keep,...skip].map(row),scope).map(r=>r.path),keep.sort());
+  assert.deepEqual(compilerInputs([...keep,...skip].map(row)).map(r=>r.path),[...keep,...skip].sort());
+});
+
+test('invalid compiler scopes cannot grant an exclusion', () => {
+  for(const scope of [{schemaVersion:2,compiledRoots:['a'],testRoots:[]},
+    {schemaVersion:1,compiledRoots:[],testRoots:['android']},
+    {schemaVersion:1,compiledRoots:['../outside'],testRoots:[]},
+    {schemaVersion:1,compiledRoots:['a'],testRoots:['android\\test']}])assert.throws(()=>compilerInputs([row('pom.xml')],scope));
+});
