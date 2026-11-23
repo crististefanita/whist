@@ -55,9 +55,15 @@ The implementation of the verification shall be linked to the contract exercised
 
 ## Qualification of a producer
 
-An illustrated browser E2E follows one readable viewport and a coherent game flow. Component tests own combinations of viewport, text scale, language and seat count. Each newly recorded game step states the action or observation, original state before and after, individual expected/observed comparisons and evaluated verdicts. Comparing only final extrema does not replace the per-deposit checks.
+An illustrated browser E2E follows one readable viewport and a coherent game flow. Component tests own combinations of viewport, text scale, language and seat count.
 
-The browser consumer distinguishes actual driver commands from observations of AI play. Frames, fitted rows, private-hand reservation and already deposited cards are compared independently; removing a committed human card may intentionally recenter the remaining fan. The original observation interval belongs to that comparison and is not the publisher's execution time. Images retain their original pixel dimensions and producing step; Overview stays standard.
+| Record | Required contract |
+|---|---|
+| Step | Preserve the action or observation, original before/after states, individual expected/observed comparisons and evaluated verdicts; final extrema do not replace per-deposit checks. |
+| Ownership | Distinguish actual driver commands from observations of AI play. |
+| Geometry | Compare frames, fitted rows, private-hand reservation and deposited cards independently; a committed human removal may intentionally recenter its fan. |
+| Time | Keep the original observation interval separately from the publisher's execution time. |
+| Captures | Retain original pixel dimensions and producing step, including references to byte-identical PNGs interned inside the same HTML; Overview stays standard. |
 
 The [publisher components](../../atf-tests/src/test/java/atf/tests/reporting/browser/BrowserExtentPublicationComponentTest.java) exercise ordered steps, before/after ownership, inline images, explicit assertion rows and rejection before publication. Empty or missing assertions, absent original states, duplicate IDs and contradictory step/case outcomes cannot produce an accepted HTML report. Aggregate historical inputs are labelled as summaries rather than being retroactively presented as recorded journeys.
 
