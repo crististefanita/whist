@@ -2,13 +2,13 @@
 
 ## Overview
 
-The engine holds the game data, and the Android app holds their persistence and presentation. The changes in the interface shall qualify for the actual installed binary with the status and purpose of the declared scenario.
+The engine owns match data; the Android app owns their persistence and presentation. Qualify interface changes against the actual installed binary, with the scenario's state and purpose declared.
 
 ## Native acceptance of proportions and order
 
 The display profiles guide holds geometry and text. The common interface registry holds the extraction of reusable components. [Profiles](../testing/ATF_Display.md#profiles-and-field-of-qualification) · [Common interface](ATF_CardUi_Extraction.md)
 
-| Priority | Rated rating | Closure criterion |
+| Priority | Remaining qualification | Closure criterion |
 |---|---|---|
 | P1 | Extension of native qualification beyond the compact profile; components do not substitute the fonts and Android interaction. | High profile and increased text: 13 cards, fully levitated to 5 seats and the actors' succession to 3/5/6 places, with legible names and indices. Keep the captures, XMLs and APK hashs without repeating a full game on each profile. |
 | P1 | Extend AutoGame's compact sample to the native matrix of the actor and positions. | On the identified APK, check the bidding and the game at 3–6 places, in RO/EN and on compact profile plus increased text: only the current actor has badge, the badge remains visible when AutoGame plays the human player's seat, the manual controls remain locked, and the collection of the trick and the score screen does not mark an actor. The places do not move when the phase changes, and the face and the lifting of the card remain visible. Components check projection and geometry; only Android observation with APK/hash and catch can close the criterion. |
@@ -46,12 +46,12 @@ For Achievements, the presentation component reopens the progress in simulated s
 
 ## Persistence and coordination
 
-[Orders and rescue](../../whist-lab-app/app/src/main/java/ro/whistlab/app/README.md#commands-persistence-and-errors) have port components for refusal, checkpoint, rankings and continuation. The yield is not performing; the recovery of native storage and the cost per device shall be kept separate.
+[Commands and persistence](../../whist-lab-app/app/src/main/java/ro/whistlab/app/README.md#commands-persistence-and-errors) have component ports for rejection, checkpoints, rankings and continuation. Rendering does not record results; native storage recovery and device cost require separate qualification.
 
-| Priority | Lacquer and source | Level and criterion of closure |
+| Priority | Gap and source | Verification level and closure criterion |
 |---|---|---|
 | P1 | Recovery of Android storage: checkpoint `SharedPreferences` and ranking `AtomicFile` do not have native acceptance after corruption or interruption. | Android on APK identified: controlled interruption, recovery or explicit error, user data stored; serialisation components and storage ports remain separate checks. |
-| P2 | The latency of the syncron checkpoint is not qualified on the device; the order of components does not certify reactivity. | Environment and status identified, cost of writing separately from the calculation of AI and rendering; keep order and cause of error before any movement of I/O between executors. |
+| P2 | Synchronous checkpoint latency is not qualified on-device; component ordering does not establish responsiveness. | Identify environment and state; measure writing separately from AI computation and rendering. Preserve ordering and original errors before moving I/O between executors. |
 
 ## Qualification of visual changes
 
@@ -63,16 +63,16 @@ For Achievements, the presentation component reopens the progress in simulated s
 | P1 | Accessibility and location | Ordnance assisted, labels of unknown or negative values, first and last removable in both languages. In the enlarged text, face the full title of dialogue and the names of first/last column separately before and after the course; the qualification of the region of legend does not demonstrate the legibility of these regions. |
 | P2 | Configured name and shift badge | Check the name at the maximum accepted length in all positions and with the active badge; the visible identity must be legible and the abbreviation must have an explicit rule and access to the full name. |
 
-- **Region: ** the action of the shift has a region measured above the box; the components check the dimensions and separation for the increased text.
-- **Observation: ** E2E uses the same decoder for playing and bidding; native acceptance remains necessary for glyphs, actual division by rows and captures in RO/EN.
+- **Region:** the turn action occupies a measured band above the frame; components check its size and separation with enlarged text.
+- **Observation:** E2E uses the same decoder for play and bidding; native acceptance remains necessary for glyphs, actual wrapping and RO/EN captures.
 
-- **Sanity: ** notice the full action above the name at all active places, including after changing shift and returning from break.
-- **History: ** check the first and last column after running, the numerical tags of the cards and continuity of the separators between the players.
+- **Sanity:** observe the complete action above the name at every active seat, including after turn changes and resumption.
+- **History:** check the first and last column after scrolling, card indices and continuous player separators.
 
 A change of geometry or style is linked to the sources and APK inspected. The device qualification and component audit are separate records, kept externally.
 
-- **Common: ** Sanity check compares the size of the frame at the same density and scale of text in all ways with a turned card, a color and lack of the edge. Check the two complete regions and the accessible identity without any additional line about the absence of the card.
-- **Deposit:** check the text button RO/EN complete, at normal font and enlarged; the withdrawn outline remains separate from the tactile target. [Display contract](../testing/ATF_Display.md) be of common size and criteria.
+- **Shared trump:** compare the complete frame at the same density and text scale across modes, using a turned card, a suit and no trump. Verify both complete regions and accessible identity, without an extra absence row.
+- **Bidding:** check the complete RO/EN button label with normal and enlarged text; the inset outline remains separate from the touch target. [Display contract](../testing/ATF_Display.md) owns the shared sizes and criteria.
 
 ## Native acceptance on Android 17
 
@@ -88,7 +88,7 @@ Window protection and calculation of useful space are implemented; the acceptanc
 
 The memory limit of the adapter remains distinct from the geometry of the interface.
 
-| Priority | Lacquer and source | Level and criterion of closure |
+| Priority | Gap and source | Verification level and closure criterion |
 |---|---|---|
 | P2 | [CommandProcess](../../atf-test-android/src/main/java/atf/android/process/CommandProcess.java) reads the flows in full, without separate budgets for text and binary. | Components with controlled output: explicit outflow of each budget, demarcated memory and incomplete PNG refused prior to publication; the term and initial cause shall be maintained. |
 

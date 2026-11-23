@@ -2,25 +2,25 @@
 
 ## Overview
 
-Whist already integrates the common Android module. The register follows checks on APK and other consumers, the Unicode limit of names and extensions that need a joint contract. [Library contract](../../whist-lab-app/atf-card-table-ui/README.md)
+Whist integrates the shared Android module. This register tracks native and consumer acceptance, Unicode name limits and extensions that need a shared contract. [Library contract](../../whist-lab-app/atf-card-table-ui/README.md)
 
 ## Priorities and closing conditions
 
 | ID | What remains | Closure criterion |
 |---|---|---|
-| UIX01 · UIX02 | Geometry and drawing in consumers | On the AARs fixed for each game, compare the anchors, rounding and legibility to the same screen profile. Record configuration, region captured and APK. |
-| UIX03 | Keyboard, selection and focus on APK | Confirm in RO/EN typing and sticking to ten non-BMP letters, refusing to 11 and maintaining selection and focus. [Entry components](../testing/ATF_Android.md#profile-history-leaderboards-and-series) qualify the Whist rule and simulated Android intervals. |
-| UIX04 | Table positions and projections | [Android matrix](ATF_Android.md#native-acceptance-of-proportions-and-order) for Whist next. For each consumer, it is a local order of seats and a legal move applied only once. |
+| UIX01 · UIX02 | Geometry and drawing in consumers | With each game's pinned AAR, compare anchors, rounding and readability on the same screen profile. Record configuration, captured region and APK identity. |
+| UIX03 | Keyboard, selection and focus on APK | In RO/EN, type and paste ten non-BMP characters, reject eleven and preserve selection and focus. [Input components](../testing/ATF_Android.md#profile-history-leaderboards-and-series) qualify the Whist rule and simulated Android input ranges. |
+| UIX04 | Table positions and projections | Complete the Whist [Android matrix](ATF_Android.md#native-acceptance-of-proportions-and-order). Each consumer verifies its own seat order and applies a legal move exactly once. |
 | UIX05 | Adoption of common score and history widgets | `score` now owns neutral content, Android rendering, measured columns and synchronized panes. Keep Whist and Rentz captions, awards and row actions in their adapters. Qualify native scrolling, focus, restoration and unchanged game-specific columns in each consumer before closing parity. [Widget contract](../../whist-lab-app/atf-card-table-ui/src/main/java/ro/cardtable/ui/score/README.md) |
-| UIX06 | Cost and acceptance of AAR consumers | Compare the source build with the AAR on the same inputs. Run native samples on the admitted version and keep her identity. [Packaging and consumption](../../whist-lab-app/atf-card-table-ui/README.md#packaging-and-consumption) |
+| UIX06 | Cost and acceptance of AAR consumers | Compare the source build with the AAR on the same inputs. Run native samples on the admitted version and retain its identity. [Packaging and consumption](../../whist-lab-app/atf-card-table-ui/README.md#packaging-and-consumption) |
 
 ## Shared AutoGame control
 
-- Check the touch and control space on the compact APK and with increased text in both languages. Retrieval of the header keeps the value provided by the game, and a touch produces one intention. [Header contract](../../whist-lab-app/atf-card-table-ui/README.md#table-header)
+- Check touch targets and control spacing on compact APKs and with enlarged text in both languages. Rebuilding the header preserves the game-provided value, and one tap produces one intent. [Header contract](../../whist-lab-app/atf-card-table-ui/README.md#table-header)
 - Keep the active control stoppable while an AI response is pending. A controlled executor delivers that response after stopping; the revision and command journal must remain unchanged.
-- Confront the ticker at bid, the score stop, break and replay in Whist. Check separately the header positioning in the consumer using the AAR.[Native acceptance](ATF_Android.md#native-acceptance-of-proportions-and-order)
+- Verify the ticker during bidding, score stops, pause and replay in Whist. Separately check header placement in each AAR consumer. [Native acceptance](ATF_Android.md#native-acceptance-of-proportions-and-order)
 
-For each consumer, attach to the UIX06 coordinated AAR and native verdict for header, checkboxes and notifications. The criterion of packaging and qualification of the Web JARs belongs to [Adapter documentation](../../atf-ui-browser/README.md#adapter-library).
+For UIX06, record each consumer's AAR coordinate and native verdict for the header, checkboxes and notifications. [Adapter documentation](../../atf-ui-browser/README.md#adapter-library) owns Web JAR packaging and qualification.
 
 ## Regression and delivery
 
