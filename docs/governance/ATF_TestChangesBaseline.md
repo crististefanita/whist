@@ -153,7 +153,7 @@ testChanges:
     proof: 'mvn -o -pl atf-tests -am -Dtest=ComponentEvidenceScopeComponentTest -Dsurefire.failIfNoSpecifiedTests=false test'
     checks:
       positive:
-        - atf.tests.governance.documentation.release.rag.scope.ComponentEvidenceScopeComponentTest#editorialChangesReuseVerifiedMavenCompilationAndKeepFreshExecutionInputs
+        - atf.tests.governance.documentation.release.rag.scope.ComponentEvidenceScopeComponentTest#borrowedCompilerDoesNotCacheControlExecution
       negative:
         - atf.tests.governance.documentation.release.rag.scope.ComponentEvidenceScopeComponentTest#componentResumeImportsOnlyVerifiedEvidenceFromTheInterruptedSnapshot
     paths:
@@ -1839,7 +1839,7 @@ testChanges:
     proof: 'mvn -o -pl atf-tests -am -Dtest=ComponentEvidenceScopeComponentTest -Dsurefire.failIfNoSpecifiedTests=false test'
     checks:
       positive:
-        - atf.tests.governance.documentation.release.rag.scope.ComponentEvidenceScopeComponentTest#editorialChangesReuseVerifiedMavenCompilationAndKeepFreshExecutionInputs
+        - atf.tests.governance.documentation.release.rag.scope.ComponentEvidenceScopeComponentTest#borrowedCompilerDoesNotCacheControlExecution
       negative:
         - atf.tests.governance.documentation.release.rag.scope.ComponentEvidenceScopeComponentTest#compilerInventoriesKeepPayloadsAndRejectInvalidSourceIdentities
     paths:
@@ -2678,9 +2678,10 @@ testChanges:
     checks:
       positive:
         - atf.tests.governance.source.gradle.GradleAuditGovernanceTest#everyGradleTestClassHasOneExplicitLayerAndAnAuditedBase
-        - atf.tests.governance.documentation.release.rag.scope.ComponentEvidenceScopeComponentTest#editorialChangesReuseVerifiedMavenCompilationAndKeepFreshExecutionInputs
+        - atf.tests.governance.documentation.release.rag.scope.ComponentEvidenceScopeComponentTest#borrowedCompilerDoesNotCacheControlExecution
       negative:
-        - atf.tests.governance.suites.AtfCollectionOwnershipComponentTest#missingOrUnreviewedDependenciesCannotAuthorizeReuse
+        - atf.tests.governance.documentation.release.rag.scope.ComponentEvidenceScopeComponentTest#tamperedCompilerCannotQualifyProofGeneration
+        - atf.tests.governance.documentation.release.rag.scope.ComponentEvidenceScopeComponentTest#failedControlsCannotPromoteAProof
     paths:
       - atf-tests/src/test/java/atf/tests/governance/documentation/release/rag/scope/ComponentEvidenceScopeComponentTest.java
       - atf-tests/src/test/java/atf/tests/governance/source/gradle/GradleAuditGovernanceTest.java
