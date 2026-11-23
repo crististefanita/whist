@@ -72,7 +72,7 @@ public final class ScoreHistoryGridMetricsComponentTest extends atf.gradle.audit
 
     @Test public void diagonalStrikeCrossesZeroAndTwoDigitBidsWithoutEnteringTheirNeighbours() {
         var matrixChecks = new ExhaustiveMatrixChecks();
-        atf.gradle.audit.GradleInputs.fixture("Exhaustive matrix scope", "scenario", "diagonalStrikeCrossesZeroAndTwoDigitBidsWithoutEnteringTheirNeighbours", "expected pairs", 163);
+        atf.gradle.audit.GradleInputs.fixture("Exhaustive matrix scope", "scenario", "diagonalStrikeCrossesZeroAndTwoDigitBidsWithoutEnteringTheirNeighbours", "expected numeric pairs", 160, "separate negative controls", 3);
         for (float density : new float[]{1, 1.5f, 2.625f, 2.75f, 3.5f}) {
             for (float scale : new float[]{1, 1.15f, 1.3f, 1.5f}) {
                 for (int digits : new int[]{1, 2}) {
@@ -92,7 +92,7 @@ public final class ScoreHistoryGridMetricsComponentTest extends atf.gradle.audit
         assertThrows("The operation rejects its input with IllegalArgumentException.class", IllegalArgumentException.class, () -> BidStrikeGeometry.across(5, 0, 4, 8, 20, 1));
         assertThrows("The operation rejects its input with IllegalArgumentException.class", IllegalArgumentException.class, () -> BidStrikeGeometry.across(0, 0, 4, 8, 2, 1));
         assertThrows("The operation rejects its input with IllegalArgumentException.class", IllegalArgumentException.class, () -> BidStrikeGeometry.across(0, 0, Float.NaN, 8, 20, 1));
-        assertEquals("The original matrix population remains complete", 163L, matrixChecks.checkedPairs());
+        assertEquals("Every numeric pair remains evaluated alongside the three exception controls", 160L, matrixChecks.checkedPairs());
         matrixChecks.publish();
     }
 
@@ -183,7 +183,8 @@ public final class ScoreHistoryGridMetricsComponentTest extends atf.gradle.audit
 
     @Test public void pixelRemaindersCannotCreateAnEmptyStripOrAnOverflow() {
         var matrixChecks = new ExhaustiveMatrixChecks();
-        atf.gradle.audit.GradleInputs.fixture("Exhaustive matrix scope", "scenario", "pixelRemaindersCannotCreateAnEmptyStripOrAnOverflow", "expected pairs", 408);
+        atf.gradle.audit.GradleInputs.fixture("Exhaustive matrix scope", "scenario", "pixelRemaindersCannotCreateAnEmptyStripOrAnOverflow", "expected numeric pairs", 404, "separate negative controls", 4);
+        int negativeControls = 0;
         for (int seats = 3; seats <= 6; seats++) {
             var minimum = ScoreHistoryGridMetrics.forDensity(seats, 1);
             for (int width = minimum.tableWidthPx(); width < minimum.tableWidthPx() + 100; width++)
@@ -192,8 +193,10 @@ matrixChecks.at(CapturedValue.text(new Object[]{"Fixture before first assertion"
 matrixChecks.equal("minimum.fitViewport(width).tableWidthPx() must equal width", width, minimum.fitViewport(width).tableWidthPx()); }
             matrixChecks.equal("minimum.fitViewport(Integer.MAX_VALUE).tableWidthPx() must equal Integer.MAX_VALUE", Integer.MAX_VALUE, minimum.fitViewport(Integer.MAX_VALUE).tableWidthPx());
             assertThrows("The operation rejects its input with IllegalArgumentException.class", IllegalArgumentException.class, () -> minimum.fitViewport(-1));
+            negativeControls++;
         }
-        assertEquals("The original matrix population remains complete", 408L, matrixChecks.checkedPairs());
+        assertEquals("Every numeric pair remains evaluated", 404L, matrixChecks.checkedPairs());
+        assertEquals("The original negative control executes for each table size", 4, negativeControls);
         matrixChecks.publish();
     }
 }
