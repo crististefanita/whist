@@ -3,6 +3,7 @@ package ro.cardtable.ui.screens;
 import ro.cardtable.ui.widgets.DropdownBackground;
 import ro.cardtable.ui.theme.TablePalette;
 import ro.cardtable.ui.theme.TableColors;
+import ro.cardtable.ui.menu.MenuTypography;
 import android.app.Activity;
 import android.graphics.Color;
 import android.graphics.Typeface;
@@ -41,7 +42,7 @@ public class ScreenViews {
     }
 
     public LinearLayout page(String eyebrow, String title, int horizontalPadding) {
-        return page(eyebrow, title, horizontalPadding, 12, 25);
+        return page(eyebrow, title, horizontalPadding, MenuTypography.EYEBROW.logicalPixels(), MenuTypography.TITLE.logicalPixels());
     }
 
     public LinearLayout page(String eyebrow, String title, int horizontalPadding, int eyebrowSize, int titleSize) {
@@ -109,7 +110,7 @@ public class ScreenViews {
 
     public void addButton(LinearLayout parent, String label, String description, boolean enabled,
             Runnable action, boolean primary) {
-        addButton(parent, label, description, enabled, action, primary, 16);
+        addButton(parent, label, description, enabled, action, primary, MenuTypography.ACTION.logicalPixels());
     }
 
     public void addButton(LinearLayout parent, String label, String description, boolean enabled,
@@ -145,7 +146,7 @@ public class ScreenViews {
                 activity, android.R.layout.simple_spinner_item, new ArrayList<>(values)) {
             @Override public View getView(int position, View recycled, ViewGroup parent) {
                 TextView selected = (TextView) super.getView(position, recycled, parent);
-                selected.setTextSize(14);
+                selected.setTextSize(MenuTypography.SELECTION.logicalPixels());
                 selected.setTextColor(INK);
                 selected.setSingleLine(true);
                 selected.setEllipsize(android.text.TextUtils.TruncateAt.END);

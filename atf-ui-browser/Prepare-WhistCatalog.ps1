@@ -14,6 +14,6 @@ gradle.beforeProject { project ->
 '@ | Set-Content -LiteralPath $init -Encoding utf8
 $build = Join-Path $run 'build'
 & $GradleExecutable --offline --no-daemon --max-workers=2 -p $project --project-cache-dir (Join-Path $run 'cache') `
-    "-Patf.browser.catalogueRoot=$build" -I $init :app:generateWhistAchievementCatalog *> (Join-Path $run 'gradle.log')
+    "-Patf.browser.catalogueRoot=$build" '-Pcardui.only=whist' -I $init :whist-presentation:generateWhistAchievementCatalog *> (Join-Path $run 'gradle.log')
 if ($LASTEXITCODE -ne 0) { throw "Whist catalogue generation failed. See $run/gradle.log" }
-(Resolve-Path -LiteralPath (Join-Path $build '_app/generated/sources/whistAchievements/java')).ProviderPath
+(Resolve-Path -LiteralPath (Join-Path $build '_whist-presentation/generated/sources/whistAchievements/java')).ProviderPath

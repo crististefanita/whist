@@ -86,13 +86,13 @@ The static edition distributes the Java engine compiled with TeaVM in a Web Work
 
 | Contract shared with Android | Application in browser |
 |---|---|
-| [Header typography](../whist-lab-app/app/src/main/java/ro/whistlab/app/theme/GameHeaderTypography.java) and [palette](../whist-lab-app/atf-card-table-ui/src/main/java/ro/cardtable/ui/theme/TableColors.java) | The adapter transmits the text's roles and colors. The contract applies to the header, menu and table. |
-| [Table reservation](../whist-lab-app/app/src/main/java/ro/whistlab/app/table/TableLayoutMetrics.java) | Measure the window and keep the same centre reserved for all hands of the variant. |
-| [Bidding controls](../whist-lab-app/app/src/main/java/ro/whistlab/app/bidding/BidGridMetrics.java) | The bid value and confirmation retain a touch target of 48 logical units. Outlines are inset; column count and the dismissible row follow APK policy. |
-| [Move pacing](../whist-lab-app/atf-card-table-ui/src/main/java/ro/cardtable/ui/turn/TurnPacing.java) | Each automatic card appears after the delay defined by APK. The adapter plays the actor, card and collection in order produced by the engine. |
+| [Header typography](../whist-lab-app/whist-presentation/src/main/java/ro/whistlab/app/theme/GameHeaderTypography.java) and [palette](../whist-lab-app/card-table-core/src/main/java/ro/cardtable/ui/theme/TableColors.java) | The adapter transmits the text's roles and colors. The contract applies to the header, menu and table. |
+| [Table reservation](../whist-lab-app/whist-presentation/src/main/java/ro/whistlab/app/table/TableLayoutMetrics.java) | Measure the window and keep the same centre reserved for all hands of the variant. |
+| [Bidding controls](../whist-lab-app/whist-presentation/src/main/java/ro/whistlab/app/bidding/BidGridMetrics.java) | The bid value and confirmation retain a touch target of 48 logical units. Outlines are inset; column count and the dismissible row follow APK policy. |
+| [Move pacing](../whist-lab-app/card-table-core/src/main/java/ro/cardtable/ui/turn/TurnPacing.java) | Each automatic card appears after the delay defined by APK. The adapter plays the actor, card and collection in order produced by the engine. |
 
-[Table contract](../whist-lab-app/atf-card-table-ui/src/main/java/ro/cardtable/ui/table/TableGeometry.java) receives the measured dimensions and phase reservation. Android applies the rectangle in the ViewGroup, and the web applies it in the DOM.
-[Collection curve](../whist-lab-app/atf-card-table-ui/src/main/java/ro/cardtable/ui/animation/TrickCollectionMotion.java) assesses progress on Android and provides web-based frames that the browser interpolates.
+[Table contract](../whist-lab-app/card-table-core/src/main/java/ro/cardtable/ui/table/TableGeometry.java) receives the measured dimensions and phase reservation. Android applies the rectangle in the ViewGroup, and the web applies it in the DOM.
+[Collection curve](../whist-lab-app/card-table-core/src/main/java/ro/cardtable/ui/animation/TrickCollectionMotion.java) assesses progress on Android and provides web-based frames that the browser interpolates.
 
 | Data | Retention in the static edition |
 |---|---|
@@ -101,16 +101,16 @@ The static edition distributes the Java engine compiled with TeaVM in a Web Work
 | Match | The menu allows for the resuming after reopening. The browser saves the checkpoint at each accepted command and uses the same validation as the APK. |
 | Site data | Wiping the site storage or changing the browser starts a new profile. If storage is disabled, the session uses the memory of the tab. |
 
-- [Checkpoint codec](../whist-lab-app/app/src/main/java/ro/whistlab/app/persistence/GameCheckpointCodec.java) restores distribution, tricks and history at the last accepted command. The identity of the match remains stable and prevents duplication of results. A damaged checkpoint can be removed independently of profile and progress.
+- [Checkpoint codec](../whist-lab-app/whist-presentation/src/main/java/ro/whistlab/app/persistence/GameCheckpointCodec.java) restores distribution, tricks and history at the last accepted command. The identity of the match remains stable and prevents duplication of results. A damaged checkpoint can be removed independently of profile and progress.
 - Web Locks serializes writes between supporting tabs. A tab with an outdated revision reloads the checkpoint before its next command. If the browser refuses writing, the game can continue in memory and display the storage error.
 - The history displays all hands and total after each hand in column P. A red diagonal marks the missed bid. In column P, a box marks the streak bonus, and a red box marks the penalty.
-- Settings use [Same default values as APK](../whist-lab-app/app/src/main/java/ro/whistlab/app/screens/MatchSetup.java). The change of language keeps the options on the screen, and the rules dialogue shows the schedule of the option for the selected number of players.
+- Settings use [Same default values as APK](../whist-lab-app/whist-presentation/src/main/java/ro/whistlab/app/screens/MatchSetup.java). The change of language keeps the options on the screen, and the rules dialogue shows the schedule of the option for the selected number of players.
 - In the game menu, the current score opens up the history when there are completed hands. At the last score, **Play again** retains the configuration and replaces the local game with a new deal and identifier.
 - Player boxes display the name, bid and tricks won from the APK projection. The gold tag shows the playable cards. The total appears in score and history.
 - [Hand adapter](src/main/java/ro/cardtable/browser/BrowserHandAdapter.java) sends gestures to the common model used in the APK. The refusal highlights the pressed card and legal options for 1,100 ms. When choosing a legal card, the play follows a 150 ms card lift. The adapter projects the same fan curve and layers as the APK.
 - Whist card faces use the Android hand design. The rank and symbol in the corner, the central symbol and the inverted corner shall be proportionately scaled in the trick. Collection animates copies of the card faces away from the table. Accessible text includes the player and the card.
 - Whist’s main menu uses the Android locale’s dedication and the same photo, copied from application resources during the build.
-- [The contract of the trump box](../whist-lab-app/atf-card-table-ui/src/main/java/ro/cardtable/ui/table/trump/TrumpTileMetrics.java) provides the basic dimensions and typography. Android measures with native font, and Web with Canvas. [Shared text-fit cases](../whist-lab-app/app/src/test/resources/whist-trump-text-fit.tsv) checks both adapters.
+- [The contract of the trump box](../whist-lab-app/card-table-core/src/main/java/ro/cardtable/ui/table/trump/TrumpTileMetrics.java) provides the basic dimensions and typography. Android measures with native font, and Web with Canvas. [Shared text-fit cases](../whist-lab-app/app/src/test/resources/whist-trump-text-fit.tsv) checks both adapters.
 - The collection shall apply the time-setting in the common module. The complete trick and the winner's current trick count are in the collection event. The hand is laid out again immediately after a card is played, and the stable table contains the cards in the current trick. Resize can remove the temporary drawing, and the next card retains its scheduled delay.
 - AutoGame is activated for the current hand. Pending commands and open dialogs pause scheduling while preserving selection; completion resumes it only when both owners release the gate. Deselection cancels the next decision and committed moves finish. A rejected automated command stops without retries. Score and the main menu clear selection.
 
@@ -127,7 +127,7 @@ node .\atf-ui-browser\pages\verify.mjs $Site $EvidenceRoot
 - For score history and checkpoint compatibility, generate legal data with [WhistRecordsFixture](pages/WhistRecordsFixture.java) and run [checking Pages](pages/verify-records.mjs) with site directory, evidence file and JSON data file. The fixture compiles with the JVM launcher and `ScoredHandFixture` of the application tests.
 - For language, settings, navigation and Play again, run `node .\atf-ui-browser\pages\verify-navigation.mjs $Site $EvidenceRoot`. The sample also produces a local checkpoint for visual check of resumption from the final score.
 - For bookmarking, trick order and resize, run `node .\atf-ui-browser\pages\verify-effects.mjs $Site $EvidenceRoot`.
-- For reaction to card pressing, lifting and trick face, run `node .\atf-ui-browser\pages\verify-card-adapter.mjs $Site $EvidenceRoot`. The JVM check and the UI module test consume the same [gestures scenario](../whist-lab-app/atf-card-table-ui/src/test/resources/hand-feedback.tsv).
+- For reaction to card pressing, lifting and trick face, run `node .\atf-ui-browser\pages\verify-card-adapter.mjs $Site $EvidenceRoot`. The JVM check and the UI module test consume the same [gestures scenario](../whist-lab-app/card-table-core/src/test/resources/hand-feedback.tsv).
 - Use `--contract-only` to check only geometry on phases and curve samples from the compiled artifact. For this selection, omit the browser executable.
 
 The workflow [.github/workflows/whist-pages.yml](https://github.com/crististefanita/whist/blob/main/.github/workflows/whist-pages.yml) builds and verifies the static site before deploying it from `main` through GitHub Actions. After deployment, open the public URL in an anonymous session and verify the assets and the start of a hand.

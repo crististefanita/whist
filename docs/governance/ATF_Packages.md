@@ -4,7 +4,7 @@
 
 A package groups types that change for the same contract. [Project policy](../../config/atf-governance-policy.json) applies the limit of eight Java files separately on the module and set of sources; an extraction is justified by the mechanism's state and invariance.
 
-[Header typography](../../whist-lab-app/app/src/main/java/ro/whistlab/app/theme/GameHeaderTypography.java) belongs to the common style of `theme`; geometry and composition of the table remain in `table`. The selection of display components shall include both responsibilities.
+[Header typography](../../whist-lab-app/whist-presentation/src/main/java/ro/whistlab/app/theme/GameHeaderTypography.java) belongs to the common style of `theme`; geometry and composition of the table remain in `table`. The selection of display components shall include both responsibilities.
 
 ## Choosing an owner
 

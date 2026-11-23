@@ -37,6 +37,7 @@ class TestChangeReviewComponentTest {
         String base = repo.git("rev-parse", "HEAD");
         repo.put("atf-tests/src/test/README.md", "# Added guide\n");
         repo.put("src/test/README.md", "# Root guide\n");
+        repo.put("atf-ui-browser/tests/README.md", "# Browser guide\n");
         repo.put(changed, "# Revised guide\n");
         repo.git("add", changed);
         repo.git("rm", deleted);
@@ -52,7 +53,9 @@ class TestChangeReviewComponentTest {
                 "config/atf-component-collections.json", "atf-tests/tools/atf-component-ownership.mjs",
                 "config/atf-component-dependencies.json", "atf-tests/tools/atf-component-dependencies.mjs",
                 "atf-tests/tools/atf-dependency-references.mjs", "atf-tests/tools/atf-script-references.mjs",
-                "atf-tests/tools/atf-dependency-cli.mjs", "atf-tests/tools/component-source-check.mjs");
+                "atf-tests/tools/atf-dependency-cli.mjs", "atf-tests/tools/component-source-check.mjs",
+                "atf-ui-browser/tests/flow-budget.mjs", "atf-ui-browser/tests/flow-budget.test.mjs",
+                "atf-ui-browser/build.gradle", "module/src/unitTest/java/UnitTest.java");
         for (String path : paths) repo.put(path, "controlled payload\n");
         AuditedAssertions.assertEquals(paths.stream().sorted().map(path -> uncovered("A", path, repo.base)).toList(),
                 check(repo).diagnostics(), "Fixture payloads, source code and selector contracts still require review");
@@ -131,16 +134,18 @@ class TestChangeReviewComponentTest {
         repo.put(IGNORED, "ignored source\n");
         String fixture = "whist-lab-app/test-audit/src/testFixtures/resources/replay.json";
         repo.put(fixture, "{}\n");
+        String unit = "whist-lab-app/card-table-core/src/unitTest/java/UnitTest.java";
+        repo.put(unit, "class UnitTest {}\n");
         repo.put("docs/guide.md", "# Editorial change\n");
         repo.put("target/generated/src/test/java/Debug.java", "generated output\n");
         var missing = check(repo);
-        AuditedAssertions.assertEquals(6, missing.protectedPaths(), missing.diagnostics().toString());
+        AuditedAssertions.assertEquals(7, missing.protectedPaths(), missing.diagnostics().toString());
         AuditedAssertions.assertEquals(List.of(
                 uncovered("A", NEW_TEST, repo.base), uncovered("A", IGNORED, repo.base),
-                uncovered("A", fixture, repo.base), uncovered("D", TEST, repo.base),
+                uncovered("A", unit, repo.base), uncovered("A", fixture, repo.base), uncovered("D", TEST, repo.base),
                 uncovered("M", RESOURCE, repo.base), uncovered("M", "pom.xml", repo.base)), missing.diagnostics());
         repo.put(FEEDBACK, repo.control("REVIEW-DIFF", "ACTIVE", repo.base, VALID, true,
-                "pom.xml", TEST, NEW_TEST, RESOURCE, IGNORED, fixture));
+                "pom.xml", TEST, NEW_TEST, RESOURCE, IGNORED, fixture, unit));
         AuditedAssertions.assertEquals(List.of(), check(repo).diagnostics(), "An exact control covers every Git change");
     }
 

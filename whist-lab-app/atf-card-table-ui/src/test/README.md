@@ -1,17 +1,23 @@
-# Components of the library for the table
+# Android table adapter component tests
 
 ## Overview
 
-JVM tests check the geometry of the hand, presentation models and border of the reusable library. Oracles compare calculated values and addictive signatures. [Common strategy](../../../../docs/testing/README.md)
+The Android project owns renderer-specific host tests and source-boundary checks. Portable geometry, content, text roles and the bulk of display combinations are owned by [core components](../../../card-table-core/src/test/README.md).
 
-| Family | Proprietary checks |
+| Family | Native adapter responsibility |
 |---|---|
-| Table and cards | 3–6 places, central tape, compaction, marking and marking at fractional density. |
-| Places and menu | Content of the model presentation, including name editing and a common height of the badge for the labels of the two phases. |
-| Achievements | Catalogue order, restoration keys and calculation of the details at the opening. |
-| Border | Production inventories, JVM and instrumentation exclude game dependencies. |
-| Score and history | Adapter-owned column roles, stable identities, immutable rows, measured numeric minima, short windows and bidirectional scroll recovery. No game scoring is inferred. |
+| Achievements | Catalog order, restoration identities and deferred detail evaluation. |
+| Profile input | Android input ranges, Unicode limits and preservation of unaffected text. |
+| Boundaries | Native and core inventories remain free of consumer game dependencies; production carries no reporting or storage owner. |
 
-- Task `:atf-card-table-ui:testDebugUnitTest` runs on the JVM.
-- Option `-Pcardui.only=component` configures the library and audit module. The RAG launcher uses it when the library is the only Gradle selection.
-- Visual validation on device belongs to application flows. [Project collections](../../../../docs/testing/ATF_Collections.md)
+## Execution
+
+- `:card-table-android:testDebugUnitTest` runs the native adapter's host component selection.
+- `-Pcardui.only=component` selects Android, core and audit support; `-Pcardui.only=core` admits portable checks without an Android SDK.
+- Core's `test` task requires its isolated `unitTest` prerequisite. Unit diagnostics have no Extent or reporting dependency.
+
+## Acceptance
+
+Real widget geometry, fonts, focus and touch need separate native instrumentation. A host component or an equal policy plan does not qualify painted pixels. Preserve case identities when moving assertions between owners.
+
+[Common strategy](../../../../docs/testing/README.md) · [Module × level matrix](../../../../docs/testing/ATF_TestingGuide.md) · [Native instrumentation](../androidTest/README.md)

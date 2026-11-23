@@ -107,4 +107,21 @@ class WhistSurfaceAdapterComponentTest {
         assertTrue(output.contains("disposal rejects late animation frames"), "Late callback and observer reconnection regressions execute");
         assertTrue(output.contains("invalid page populations fail"), "Rejected page populations preserve existing content");
     }
+
+    @Test void portableMenuRolesPreserveBothAdapterBaselines(ComponentInputs inputs) throws Exception {
+        var root = GovernanceProject.locateProjectRoot();
+        String output = NodeReleaseContracts.runNode(List.of("node", "--test",
+                root.resolve("atf-ui-browser/tests/menu-roles.test.mjs").toString()), root, Duration.ofSeconds(60),
+                value -> inputs.add("Original portable text roles and browser CSS conversion", value));
+        assertTrue(output.contains("Shared menu role observations:"), "Java roles retain approved native defaults and browser proportions");
+    }
+
+    @Test void minimalFlowsReconcileHandsAndRejectMatricesOrExcessiveCaptures(ComponentInputs inputs) throws Exception {
+        var root = GovernanceProject.locateProjectRoot();
+        String output = NodeReleaseContracts.runNode(List.of("node", "--test",
+                root.resolve("atf-ui-browser/tests/flow-budget.test.mjs").toString()), root, Duration.ofSeconds(30),
+                value -> inputs.add("Original flow plans, executions and rejection causes", value));
+        assertTrue(output.contains("Flow budget observations:"), "A selected two-hand flow reconciles actual hands and captures");
+        assertTrue(output.contains("Flow budget rejection observations:"), "Long plans, mismatched execution and extra captures are rejected");
+    }
 }

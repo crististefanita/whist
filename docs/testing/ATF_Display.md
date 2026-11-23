@@ -93,7 +93,7 @@ The selection shall cover differences that may produce another geometry or inter
 
 - The menu keeps the configuration accessible in the view port.
 - The table uses the measured window height. Hand, trick and boxes fit simultaneously when there is space; on the low windows, the page runs without shrinking the cards or tactile targets.
-- [Header typography](../../whist-lab-app/app/src/main/java/ro/whistlab/app/theme/GameHeaderTypography.java) keep the title to 14 p and progress to 11 sp; the two rows of the bid use 11,7 sp, exact +30% vs 9 sp. Fractional size remains in SP for the scaling of Android, and the multiline field measures its height. [Contract component](../../whist-lab-app/app/src/test/java/ro/whistlab/app/theme/GameHeaderTypographyComponentTest.java) protects the proportion and roles of other texts; the Android font has a separate native qualification.
+- [Header typography](../../whist-lab-app/whist-presentation/src/main/java/ro/whistlab/app/theme/GameHeaderTypography.java) keep the title to 14 p and progress to 11 sp; the two rows of the bid use 11,7 sp, exact +30% vs 9 sp. Fractional size remains in SP for the scaling of Android, and the multiline field measures its height. [Contract component](../../whist-lab-app/app/src/test/java/ro/whistlab/app/theme/GameHeaderTypographyComponentTest.java) protects the proportion and roles of other texts; the Android font has a separate native qualification.
 - Bidding does not cover players' seats; semantic selection distinguishes duplicate labels.
 - Each action is confronted with the state observed after it.
 - The resume shall keep the score register and the known information.

@@ -1,7 +1,7 @@
 #requires -Version 7.0
 param(
     [string]$Profiles = '',
-    [Alias('HandsPerProfile')][ValidateRange(1,5)][int]$Hands = 1,
+    [Alias('HandsPerProfile')][ValidateRange(1,2)][int]$Hands = 1,
     [string]$Serial = '127.0.0.1:5555',
     [string]$AdbServerSocket = 'tcp:192.168.56.1:5038',
     [string]$AdbExecutable = 'C:\tools\whist-android-sdk\platform-tools\adb.exe',

@@ -19,8 +19,11 @@ export function adaptiveViewport(width, height, contentHeight, mobile = false) {
 }
 
 /** Explicit menu roles retain the approved default sizes and follow the user's root font. */
-export function surfaceTypography() {
-  return { ...Object.fromEntries(Object.entries(MENU_TYPOGRAPHY).map(([role, rem]) => ["--menu-" + role + "-size", rem + "rem"])),
+export function surfaceTypography(roles = MENU_TYPOGRAPHY) {
+  if (!roles || Object.keys(roles).length !== Object.keys(MENU_TYPOGRAPHY).length ||
+      Object.keys(MENU_TYPOGRAPHY).some(role => !Number.isFinite(roles[role]) || roles[role] <= 0))
+    throw new RangeError('Invalid shared menu typography');
+  return { ...Object.fromEntries(Object.entries(roles).map(([role, rem]) => ["--menu-" + role + "-size", rem + "rem"])),
     "--table-progress-emphasis": String(SUMMARY_TYPOGRAPHY.progress), "--table-bid-emphasis": String(SUMMARY_TYPOGRAPHY.bid),
     "--table-progress-leading": SUMMARY_TYPOGRAPHY.progressLeading + "rem", "--table-bid-leading": SUMMARY_TYPOGRAPHY.bidLeading + "rem",
     "--score-table-emphasis": String(SCORE_TABLE_EMPHASIS) };

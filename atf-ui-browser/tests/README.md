@@ -14,11 +14,13 @@ Shared contract for components and E2E. The adapter owns the platform protocol; 
 
 ## Components
 
-Components verify all legal combinations, actors and winners without pictures. Capture preconditions and original comparisons in Extent.
+Core owns neutral observations and the continuity oracle; Whist supplies legal schedules and both adapters. Components verify all legal combinations, actors and winners without pictures, capturing preconditions and original comparisons in Extent. [Executable module × level matrix](../../docs/testing/ATF_TestingGuide.md)
 
 ## E2E
 
-Select few representative journeys with Given/When/Then, before/after comparisons and inline pictures. Do not replay the resolution matrix in E2E.
+Select an explicit short journey with Given/When/Then, before/after comparisons and inline pictures. The default `four-sanity` profile uses one 1664 × 916 viewport, one manual hand and one AutoGame hand, with at most four normal captures.
+
+The runner rejects `all` or more than two hands before browser startup; the publisher independently reconciles actual rounds and image references. Resolution matrices remain in components.
 
 ## Artifacts
 

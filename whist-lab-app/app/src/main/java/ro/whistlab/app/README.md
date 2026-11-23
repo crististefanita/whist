@@ -41,16 +41,16 @@ The window excludes system bars and cutouts before layout. Native inset handling
 | Routes and screens | [AppNavigation](navigation/AppNavigation.java) manages the current route and dialogues; [screens](screens/) composes the pages and [ScreenViews](screens/ScreenViews.java) builds common widgets. |
 | Change of window | [PresentationRefresh](presentation/PresentationRefresh.java) groups the recovery requests and invalidate the callbacks of a replaced presentation; the coordinator reads the current geometry on delivery. |
 | Android Window | [WindowContent](window/WindowContent.java) applies native protection and measures useful space; [WindowPadding](window/WindowPadding.java) retains the immutable base. |
-| Table and bidding | [GameBoardLayout](table/GameBoardLayout.java), [TableGeometry](table/TableGeometry.java) and [BidGridMetrics](bidding/BidGridMetrics.java) measure the places and the central region. |
-| The proposed bid to man | [HumanBidSelection](bidding/HumanBidSelection.java) keeps Hard Recommendation, Manual Selection and Background Identity. The activity shall transmit the assessment to the asynchronous coordinator; only the confirmation shall submit the bid in session. |
+| Table and bidding | [GameBoardLayout](table/GameBoardLayout.java), [TableGeometry](table/TableGeometry.java) and [BidGridMetrics](../../../../../../../whist-presentation/src/main/java/ro/whistlab/app/bidding/BidGridMetrics.java) measure the places and the central region. |
+| The proposed bid to man | [HumanBidSelection](../../../../../../../whist-presentation/src/main/java/ro/whistlab/app/bidding/HumanBidSelection.java) keeps Hard Recommendation, Manual Selection and Background Identity. The activity shall transmit the assessment to the asynchronous coordinator; only the confirmation shall submit the bid in session. |
 | Name and turn | [PlayerSeatView](seat/PlayerSeatView.java) measures the text of the action above the box; [PlayerSeatMetrics](seat/PlayerSeatMetrics.java) reserves the regions without overlaps. |
-| Hand | [HandLayoutMetrics](hand/HandLayoutMetrics.java) calculates the fan; [CenteredHandView](hand/CenteredHandView.java) manages the initial position of the run. |
-| Lived and trump | [TrickCardMetrics](table/TrickCardMetrics.java) anchors the cards after the place; [TrumpIndicatorView](table/TrumpIndicatorView.java) displays the information about the trump. |
-| Collection of levatates | [TrickCollectionMotion](../../../../../../../atf-card-table-ui/src/main/java/ro/cardtable/ui/animation/TrickCollectionMotion.java) calculates the frame and time. [TrickCollectionAnimator](../../../../../../../atf-card-table-ui/src/main/java/ro/cardtable/ui/animation/TrickCollectionAnimator.java) applies animation to Android views. |
-| Score | [ScoreHistoryTable](score/ScoreHistoryTable.java) designs the full program for all places; [ScoreHistoryView](score/ScoreHistoryView.java) displays it with accessible descriptions. |
+| Hand | [HandLayoutMetrics](../../../../../../../whist-presentation/src/main/java/ro/whistlab/app/hand/HandLayoutMetrics.java) calculates the fan; [CenteredHandView](hand/CenteredHandView.java) manages the initial position of the run. |
+| Lived and trump | [TrickCardMetrics](../../../../../../../whist-presentation/src/main/java/ro/whistlab/app/table/TrickCardMetrics.java) anchors the cards after the place; [TrumpIndicatorView](table/TrumpIndicatorView.java) displays the information about the trump. |
+| Collection of levatates | [TrickCollectionMotion](../../../../../../../card-table-core/src/main/java/ro/cardtable/ui/animation/TrickCollectionMotion.java) calculates the frame and time. [TrickCollectionAnimator](../../../../../../../atf-card-table-ui/src/main/java/ro/cardtable/ui/animation/TrickCollectionAnimator.java) applies animation to Android views. |
+| Score | [ScoreHistoryTable](../../../../../../../whist-presentation/src/main/java/ro/whistlab/app/score/ScoreHistoryTable.java) designs the full program for all places; [ScoreHistoryView](score/ScoreHistoryView.java) displays it with accessible descriptions. |
 | Orders and rescue | [GameCommandFlow](lifecycle/GameCommandFlow.java) delimits the refusal of order; [GamePersistence](persistence/GamePersistence.java) orders the checkpoint, ranking and export. |
 | Storage and cycle Android | [GameSessionStore](persistence/GameSessionStore.java) holds saving scheme; [CompletedTrickPause](lifecycle/CompletedTrickPause.java) delimits the trick's break. |
-| Texts and style | [WhistUiText](localization/WhistUiText.java) hold EN/RO; [WhistUiPalette](theme/WhistUiPalette.java) and [GameHeaderTypography](theme/GameHeaderTypography.java) provide the colors and typographic roles. |
+| Texts and style | [WhistUiText](../../../../../../../whist-presentation/src/main/java/ro/whistlab/app/localization/WhistUiText.java) hold EN/RO; [WhistUiPalette](theme/WhistUiPalette.java) and [GameHeaderTypography](../../../../../../../whist-presentation/src/main/java/ro/whistlab/app/theme/GameHeaderTypography.java) provide the colors and typographic roles. |
 
 The dimensions, thresholds and fixing coefficients shall be the source in the components indicated. The Atlas shall maintain relationships and invariants so that the modification of a screen profile can be traced from the code to verification.
 
@@ -62,7 +62,7 @@ Geometry keeps separate places, tactile targets, cards and text. The detailed cr
 <summary>Table, hand, trump and historical variants</summary>
 
 - The human player's seat remains south; the position of the card played depends on the place of the actor and the order of the trick.
-- [CardFaceMetrics](cards/CardFaceMetrics.java) keep the proportion common 5:7, scaled after role; the hand changes the overlap, and the number of players changes positions. [TableSeatLayout](table/TableSeatLayout.java) follow the circular order of the engine; four places the opponents occupy a higher arc without narrowing the cards played.
+- [CardFaceMetrics](../../../../../../../whist-presentation/src/main/java/ro/whistlab/app/cards/CardFaceMetrics.java) keep the proportion common 5:7, scaled after role; the hand changes the overlap, and the number of players changes positions. [TableSeatLayout](table/TableSeatLayout.java) follow the circular order of the engine; four places the opponents occupy a higher arc without narrowing the cards played.
 - Bidding and trick use the central region; [TableViewportPolicy](table/TableViewportPolicy.java) adapts decorative space and the height of the faces for short windows.
 - The decorative budget shall take account of the useful height and the font scale. Compact arrangement may be required on a high screen with increased text; the size of the cards in the hand and the tactile targets remains constant.
 - Each bidding lap shall be rounded before the automatic calculation. Human controls are inactive while an opponent bids; the action label remains associated with the location that holds the shift.
@@ -91,7 +91,7 @@ The points of the hand are derived from the domain of the historical hips. The k
 
 ## Profiles and leaderboards
 
-[PlayerPreferences](profile/PlayerPreferences.java) keeps the favorite name and display limit. [HighScoreRepository](highscores/HighScoreRepository.java) updates the local top at the end, and [contract of records](../../../../../../../../docs/game/ATF_PlayerRecords.md) defines partition, marked examples and prevention of doubles.
+[PlayerPreferences](profile/PlayerPreferences.java) keeps the favorite name and display limit. [HighScoreRepository](../../../../../../../whist-presentation/src/main/java/ro/whistlab/app/highscores/HighScoreRepository.java) updates the local top at the end, and [contract of records](../../../../../../../../docs/game/ATF_PlayerRecords.md) defines partition, marked examples and prevention of doubles.
 
 ## How do we check
 
@@ -120,7 +120,7 @@ Geometric components check calculated relationships. Physical capture and intera
 
 ## Destinations and dialogues
 
-Screen builders receive explicit observations and actions without the ownership of the session or of the AI executor. [MatchSetup](screens/MatchSetup.java) keeps the configuration choices without altering a match started.
+Screen builders receive explicit observations and actions without the ownership of the session or of the AI executor. [MatchSetup](../../../../../../../whist-presentation/src/main/java/ro/whistlab/app/screens/MatchSetup.java) keeps the configuration choices without altering a match started.
 
 ```mermaid
 %%{init: {"themeVariables":{"fontSize":"15px"},"themeCSS":".edgeLabel, .edgeLabel p { font-size: 12px !important; } .node rect { rx: 6px; ry: 6px; }","flowchart":{"curve":"linear","nodeSpacing":24,"rankSpacing":22,"padding":6},"sequence":{"mirrorActors":false,"messageMargin":24,"wrap":true}}}%%
@@ -157,10 +157,10 @@ Upon resumption after the trial has been terminated, a checkpoint at the end of 
 
 | Component | Contract |
 |---|---|
-| [TrickCollectionRequest](animation/TrickCollectionRequest.java) | Accept only the full public trick, with all distinct seats, the engine winner and the same cards at the end of history. A partial or outdated observation does not start collection. |
+| [TrickCollectionRequest](../../../../../../../whist-presentation/src/main/java/ro/whistlab/app/animation/TrickCollectionRequest.java) | Accept only the full public trick, with all distinct seats, the engine winner and the same cards at the end of history. A partial or outdated observation does not start collection. |
 | [CompletedTrickPause](lifecycle/CompletedTrickPause.java) | The single window per trick and session; suspension preserves the remaining time without restarting an expired trick. The resume shall also predate the last trick score of the game. |
-| [TrickCollectionMotion](../../../../../../../atf-card-table-ui/src/main/java/ro/cardtable/ui/animation/TrickCollectionMotion.java) | Pure model for delay, duration, translation, shrinkage and transparency. The delay in the layout takes up time. |
-| [TrickCollectionRun](../../../../../../../atf-card-table-ui/src/main/java/ro/cardtable/ui/animation/TrickCollectionRun.java) | Owns observation, unique start and scene cleaning through ports. Cancellation invalidates outdated frames and the treatment of errors retains the original cause. |
+| [TrickCollectionMotion](../../../../../../../card-table-core/src/main/java/ro/cardtable/ui/animation/TrickCollectionMotion.java) | Pure model for delay, duration, translation, shrinkage and transparency. The delay in the layout takes up time. |
+| [TrickCollectionRun](../../../../../../../card-table-core/src/main/java/ro/cardtable/ui/animation/TrickCollectionRun.java) | Owns observation, unique start and scene cleaning through ports. Cancellation invalidates outdated frames and the treatment of errors retains the original cause. |
 | [TrickCollectionAnimator](../../../../../../../atf-card-table-ui/src/main/java/ro/cardtable/ui/animation/TrickCollectionAnimator.java) | Tape the testable coordinator to the Android measurement and animation adapter. The posting or change of geometry cancels the scene and restores the captured transformations and clipping rules. |
 | [GameScreen](screens/GameScreen.java) | Replacement of the screen cancels the previous effect; interaction with the hand remains suspended until the break expires. Static fixtures keep display without animation. |
 
@@ -207,7 +207,7 @@ flowchart LR
 | Rendering | Display of the score does not record the ranking. The redisplay does not bypass the checkpoint and does not write any additional results. |
 | Reluare | Reading and validating saving have their own block. The subsequent rescue is performed outside the treatment of invalid data, so that her failure does not erase the read checkpoint. |
 
-[SavedNumbers](persistence/SavedNumbers.java) refuses fractions, overruns, strings and values null before conversion of whole fields. The seedage keeps exactly the field signed on 64 bits; the optional values use the implicit only when the field is missing, then the domain validates the restored status.
+[SavedNumbers](../../../../../../../whist-presentation/src/main/java/ro/whistlab/app/persistence/SavedNumbers.java) refuses fractions, overruns, strings and values null before conversion of whole fields. The seedage keeps exactly the field signed on 64 bits; the optional values use the implicit only when the field is missing, then the domain validates the restored status.
 
 - [Command components](../../../../../test/java/ro/whistlab/app/lifecycle/GameCommandFlowComponentTest.java) verify accepted mutations and rejected commands, plus defects injected after acceptance.
 - [The components of persistence](../../../../../test/java/ro/whistlab/app/persistence/GamePersistenceComponentTest.java) checks order and stop steps through controlled ports; blocking uses handshake without performance threshold.
@@ -219,7 +219,7 @@ flowchart LR
 
 The calculation of policy runs in a separate executor and the application of the move returns to the main thread. [AiTurnRequest](lifecycle/AiTurnRequest.java) captures the immutable status prior to the calculation and verifies the identity of the match and the equality of status prior to application.
 
-For man, [HumanBidSelection](bidding/HumanBidSelection.java) receives only the own and public observation of the Hard engine. The evaluation proposes a legal selection; the session receives the contract only by confirming the user.
+For man, [HumanBidSelection](../../../../../../../whist-presentation/src/main/java/ro/whistlab/app/bidding/HumanBidSelection.java) receives only the own and public observation of the Hard engine. The evaluation proposes a legal selection; the session receives the contract only by confirming the user.
 
 | Continuity of the bid | Behaviour |
 |---|---|
@@ -255,7 +255,7 @@ Stopping, returning to the menu and opening of dialogues suspend automation. The
 - The leasehold allows `AiTurnRequest` to calculate for the human place only while it is active; coordination, checking the snapshots and single application remain on the existing AI path.
 - The score, the hand change, the starting of a game or the return to the main menu closes the leastcase. Automation shall not be transferred to the next hand.
 
-- [AutoGameHand](lifecycle/AutoGameHand.java) sets the cycle limit, and [BidGridMetrics](bidding/BidGridMetrics.java) places the control without covering the seats.
+- [AutoGameHand](lifecycle/AutoGameHand.java) sets the cycle limit, and [BidGridMetrics](../../../../../../../whist-presentation/src/main/java/ro/whistlab/app/bidding/BidGridMetrics.java) places the control without covering the seats.
 - Accessible texts keep the full action for screen readers. Components check 3–6 players, widths, increased text, delimitation of the leases and both languages; the signed script checks the check, the game up to the score and returning to manual control.
 
 - [Coordinator components](../../../../../test/java/ro/whistlab/app/lifecycle/AiTurnCoordinatorComponentTest.java) checks the thread of the calculation, handoff, cancellation, doubles and cause of failure.
@@ -273,7 +273,7 @@ The remaining qualifications are centralised in [Feedback Android](../../../../.
 
 ## Table projection into the common library
 
-[WhistTableContent](table/content/WhistTableContent.java) translate only the visible data of snapshots into `SeatContent`, `HandCard` and `PlayedCardContent`. [GameTablePanel](table/GameTablePanel.java) keep the bid, the legality transmitted, the visible trick and the collection; the library draws and measures without the Whist engine.
+[WhistTableContent](../../../../../../../whist-presentation/src/main/java/ro/whistlab/app/table/content/WhistTableContent.java) translate only the visible data of snapshots into `SeatContent`, `HandCard` and `PlayedCardContent`. [GameTablePanel](table/GameTablePanel.java) keep the bid, the legality transmitted, the visible trick and the collection; the library draws and measures without the Whist engine.
 
 - The batches shall keep the full name and order bid/trick, with one line per line. The Renderer measures the thickened text along with the label and verifies the width after the layout.
 - The selection returns the identity of the card in the displayed snapshots; the adapter solves it to the original object before the existing callback.

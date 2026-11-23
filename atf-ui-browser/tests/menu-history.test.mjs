@@ -41,8 +41,8 @@ test('history appearance matches the native policy at narrow and enlarged text p
   const probe=fileURLToPath(new URL('./MenuHistoryProbe.java',import.meta.url));
   const compile=['-proc:none','-encoding','UTF-8','-d',work];
   if(process.env.ATF_BROWSER_RUNTIME_JAR)compile.push('-cp',process.env.ATF_BROWSER_RUNTIME_JAR);
-  else compile.push(path.join(project,'whist-lab-app/atf-card-table-ui/src/main/java/ro/cardtable/ui/score/HistoryAppearance.java'),
-    path.join(project,'whist-lab-app/atf-card-table-ui/src/main/java/ro/cardtable/ui/table/ScoreGridStyle.java'));
+  else compile.push(path.join(project,'whist-lab-app/card-table-core/src/main/java/ro/cardtable/ui/score/HistoryAppearance.java'),
+    path.join(project,'whist-lab-app/card-table-core/src/main/java/ro/cardtable/ui/table/ScoreGridStyle.java'));
   execFileSync('javac',[...compile,probe],{windowsHide:true,timeout:30000});
   const cp=[work,process.env.ATF_BROWSER_RUNTIME_JAR].filter(Boolean).join(path.delimiter);
   const policies=JSON.parse(execFileSync('java',['-cp',cp,'MenuHistoryProbe'],{encoding:'utf8',windowsHide:true}));

@@ -14,7 +14,7 @@ test('CSS text scale is logical and is independent of desktop device-pixel ratio
 test('production Web and native portable adapters share geometry, card marks and gesture transitions', t => {
   const {root,run}=portableContract(t,'ro.cardtable.browser.WhistSurfaceContract');
   assert.ok(fs.readFileSync(path.join(root,'atf-ui-browser/pages/src/main/java/ro/cardtable/browser/PageJson.java'),'utf8').includes('return BrowserLayoutJson.fields(layout);'),'Static pages delegate to the portable geometry projection');
-  const text=run(path.join(root,'whist-lab-app/atf-card-table-ui/src/test/resources/hand-feedback.tsv'));
+  const text=run(path.join(root,'whist-lab-app/card-table-core/src/test/resources/hand-feedback.tsv'));
   const result=JSON.parse(text);assert.equal(result.status,'PASS');assert.equal(result.cases.length,4);
   assert.equal(result.cases[0].legacyFrames,24,'Legacy consumers do not inherit Whist native measurement semantics');
   assert.deepEqual(JSON.parse(result.cases[0].minimumProtocol.jvm),JSON.parse(result.cases[0].minimumProtocol.pages),'JVM and compiled-page protocols preserve the same native minimum');

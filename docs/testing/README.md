@@ -20,6 +20,7 @@ The level describes the boundary checked; the collection selects cases and execu
 | How do I prepare and control the device? | [Android testing](ATF_Android.md) |
 | How do I check geometry, scrolling and captures? | [Screen profiles](ATF_Display.md) |
 | In what order are release checks and evidence prepared? | [Qualification workflow](ATF_ReleaseQualification.md) |
+| Where do shared presentation and adapter tests belong? | [Core and detailed module × level matrix](ATF_TestingGuide.md#gradle-and-browser-boundaries) |
 | What can I check about the display without the emulator? | [Display components](ATF_DisplayComponents.md) |
 | How do I check the game, geometry and gestures in the browser? | [Adapter and Playwright Components](../../atf-ui-browser/README.md#verification) |
 | How do APK and Web reuse every-seat phase assertions? | [Shared table continuity](ATF_TableContinuity.md) |
@@ -106,3 +107,11 @@ A canonical report is an identified selection. Focused suites are declared subse
 - **Version:** [Release catalog](../../release/README.md) links results, captures and limits; this guide keeps the generic strategy. History follows [retention policy](../platform/ATF_ReleaseRetention.md).
 
 - **Process:** [delivery index](../../release/index.json) selects the active dossier. [Delivery contract](../platform/ATF_AndroidDelivery.md#folder-of-a-version) owns structure and publication; the matrix above owns executable selections.
+
+## Shared presentation and test ownership
+
+`card-table-core` carries portable contracts and the bulk of display component combinations. Android and Web adapters own rendering and platform observations; Whist owns legal cases and public projections.
+
+`unitTest` uses JUnit without Extent. Components capture preconditions, fixtures, negative controls and evaluated expected/actual assertions in Extent without continuity pictures. E2E keeps only essential navigation and interaction at one readable viewport, at most two hands, with few inline captures.
+
+[Module map](../../README.md#module-map) · [Executable module × level matrix](ATF_TestingGuide.md) · [Current canonical suites](../../release/WEB/README.md)

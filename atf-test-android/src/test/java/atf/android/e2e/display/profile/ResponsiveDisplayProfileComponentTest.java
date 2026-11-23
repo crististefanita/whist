@@ -60,11 +60,11 @@ class ResponsiveDisplayProfileComponentTest {
     void configuredGameFlowHandsAreBoundedAndDefaultToOne() {
         assertEquals(1, ResponsiveDisplayProfile.handsToPlay("1"));
         assertEquals(1, ResponsiveDisplayProfile.handsToPlay(null));
-        assertEquals(5, ResponsiveDisplayProfile.handsToPlay("5"));
+        assertEquals(2, ResponsiveDisplayProfile.handsToPlay("2"));
         assertThrows(IllegalArgumentException.class,
                 () -> ResponsiveDisplayProfile.handsToPlay("0"));
         assertThrows(IllegalArgumentException.class,
-                () -> ResponsiveDisplayProfile.handsToPlay("6"));
+                () -> ResponsiveDisplayProfile.handsToPlay("3"));
         assertThrows(IllegalArgumentException.class,
                 () -> ResponsiveDisplayProfile.handsToPlay("many"));
     }

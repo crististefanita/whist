@@ -36,6 +36,8 @@ $testInputs = @(
     Join-Path $tests 'layout-delivery.test.mjs'
     Join-Path $tests 'hand-lifecycle.test.mjs'
     Join-Path $tests 'asset-revision.test.mjs'
+    Join-Path $tests 'flow-budget.mjs'
+    Join-Path $tests 'flow-budget.test.mjs'
     Join-Path $tests 'ScoreTypographyProbe.java'
     Join-Path $tests 'MenuHistoryProbe.java'
     Join-Path $tests 'menu-history-contract.mjs'
@@ -43,8 +45,8 @@ $testInputs = @(
     Join-Path $tests 'seat-presentation.mjs'
     Join-Path $tests 'viewport-contract.mjs'
     Join-Path $tests 'card-typography.mjs'
-    Join-Path $checkout 'whist-lab-app/atf-card-table-ui/src/test/resources/card-typography.tsv'
-    Join-Path $checkout 'whist-lab-app/atf-card-table-ui/src/test/resources/hand-feedback.tsv'
+    Join-Path $checkout 'whist-lab-app/card-table-core/src/test/resources/card-typography.tsv'
+    Join-Path $checkout 'whist-lab-app/card-table-core/src/test/resources/hand-feedback.tsv'
     Join-Path $tests 'trump-text-fit.mjs'
     Join-Path $checkout 'whist-lab-app/app/src/test/resources/whist-trump-text-fit.tsv'
 )
@@ -56,7 +58,8 @@ function Get-CleanCommit {
     $commit
 }
 function Get-InputManifest {
-    $files = @($PSCommandPath, $starter, (Join-Path $checkout 'scripts/CardTableLibraryVersion.psm1')) + @(& $starter @launch -ListSources) + $testInputs
+    $files = @($PSCommandPath, $starter, (Join-Path $checkout 'scripts/CardTableLibraryVersion.psm1'),
+        (Join-Path $checkout 'whist-lab-app/card-table-core/build.gradle'), (Join-Path $source 'build.gradle')) + @(& $starter @launch -ListSources) + $testInputs
     $files += @(Get-ChildItem -LiteralPath (Join-Path $source 'web') -Recurse -File | ForEach-Object FullName)
     $order = [string[]]$files
     [Array]::Sort($order, [StringComparer]::Ordinal)
@@ -112,9 +115,20 @@ if (Test-Path -LiteralPath $final) {
     return
 }
 
-$classes = & $starter @launch -BuildOnly
+$runtime = & $starter @launch -BuildOnly
+$entries = $runtime -split [regex]::Escape([string][IO.Path]::PathSeparator)
+$classes = $entries[0]
 $staging = Join-Path (Split-Path $classes) 'distribution'
 $null = New-Item -ItemType Directory -Path $staging
+# The compatibility runtime contains the two qualified module JARs, never a hand-maintained source subset.
+foreach ($entry in $entries | Select-Object -Skip 1) {
+    if (![IO.File]::Exists($entry) -or [IO.Path]::GetExtension($entry) -cne '.jar') { throw 'Expected a compiled module JAR.' }
+    Push-Location $classes
+    try {
+        & jar --extract --file $entry
+        if ($LASTEXITCODE -ne 0) { throw 'Presentation module assembly failed.' }
+    } finally { Pop-Location }
+}
 Copy-Item -LiteralPath (Join-Path $source 'web') -Destination (Join-Path $classes 'ro/cardtable/browser/web') -Recurse
 $timestamp = '2026-01-01T00:00:00Z'
 & jar --create --file (Join-Path $staging $jars[0]) "--date=$timestamp" -C $classes .

@@ -1,12 +1,12 @@
-import { ADAPTIVE_SURFACE, adaptiveViewport, surfaceTypography, fitTextWidth, isPhone, viewportGeometry, textScale, intrinsicTableHeight } from "./viewport.mjs?v=0.11";
+import { ADAPTIVE_SURFACE, adaptiveViewport, surfaceTypography, fitTextWidth, isPhone, viewportGeometry, textScale, intrinsicTableHeight } from "./viewport.mjs?v=0.12";
 import { collect } from "./collection.mjs";
 import { autoGame, waitForDecision } from "./auto-game.mjs";
-import { bindHandFeedback } from "./hand-feedback.mjs?v=0.11";
-import { historyGrid, applyHistoryAppearance } from "./records.mjs?v=0.11";
-import { fitSeatLines, commitTableView, updateSeatFact, measureSeatActionClearance, measureNativeSeat } from "./seat-presentation.mjs?v=0.11";
-import { historyFirst, menuFromEntries } from "./table-menu.mjs?v=0.11";
-import { createProfileDialogs, deviceProfile, dismissGameMenuOnOutsideClick, preferredLanguage, saveLanguage } from "./profile.mjs?v=0.11";
-import { surfaceFitter } from "./surface-fit.mjs?v=0.11";
+import { bindHandFeedback } from "./hand-feedback.mjs?v=0.12";
+import { historyGrid, applyHistoryAppearance } from "./records.mjs?v=0.12";
+import { fitSeatLines, commitTableView, updateSeatFact, measureSeatActionClearance, measureNativeSeat } from "./seat-presentation.mjs?v=0.12";
+import { historyFirst, menuFromEntries } from "./table-menu.mjs?v=0.12";
+import { createProfileDialogs, deviceProfile, dismissGameMenuOnOutsideClick, preferredLanguage, saveLanguage } from "./profile.mjs?v=0.12";
+import { surfaceFitter } from "./surface-fit.mjs?v=0.12";
 
 const stage = document.querySelector("#table");
 const frame = document.querySelector("#frame");
@@ -1000,7 +1000,7 @@ try {
     rememberLanguage("en");
   }
   document.documentElement.dataset.surface = setup.surface ?? "table";
-  if (setup.surface === "whist") for (const [name, value] of Object.entries(surfaceTypography()))
+  if (setup.surface === "whist") for (const [name, value] of Object.entries(surfaceTypography(setup.menuTypography)))
     document.documentElement.style.setProperty(name, value);
   resize();
   for (const token of setup.palette ?? []) document.documentElement.style.setProperty(token.name, token.color);

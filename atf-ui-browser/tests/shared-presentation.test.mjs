@@ -35,7 +35,7 @@ test('the real Web score renderer matches native text roles and preserves action
   const work=fs.mkdtempSync(path.join(os.tmpdir(),'score-adapter-'));
   t.after(()=>fs.promises.rm(work,{recursive:true,force:true,maxRetries:15,retryDelay:200}));
   const root=fileURLToPath(new URL('../../',import.meta.url));
-  const contract=path.join(root,'whist-lab-app/atf-card-table-ui/src/main/java/ro/cardtable/ui/score/ScoreTypography.java');
+  const contract=path.join(root,'whist-lab-app/card-table-core/src/main/java/ro/cardtable/ui/score/ScoreTypography.java');
   const probe=fileURLToPath(new URL('./ScoreTypographyProbe.java',import.meta.url));
   const compile=['-proc:none','-encoding','UTF-8','-d',work];
   if(process.env.ATF_BROWSER_RUNTIME_JAR)compile.push('-cp',process.env.ATF_BROWSER_RUNTIME_JAR);

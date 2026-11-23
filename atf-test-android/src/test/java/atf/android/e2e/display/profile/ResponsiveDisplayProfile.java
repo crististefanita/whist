@@ -54,10 +54,10 @@ public record ResponsiveDisplayProfile(int width, int height, int density) {
         try {
             hands = Integer.parseInt(value == null || value.isBlank() ? "1" : value.trim());
         } catch (NumberFormatException exception) {
-            throw new IllegalArgumentException("Hands to play must be between 1 and 5", exception);
+            throw new IllegalArgumentException("Hands to play must be between 1 and 2", exception);
         }
-        if (hands < 1 || hands > 5) {
-            throw new IllegalArgumentException("Hands to play must be between 1 and 5");
+        if (hands < 1 || hands > 2) {
+            throw new IllegalArgumentException("Hands to play must be between 1 and 2");
         }
         return hands;
     }

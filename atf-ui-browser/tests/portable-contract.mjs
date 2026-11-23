@@ -8,9 +8,9 @@ import {fileURLToPath} from 'node:url';
 export function portableContract(t,main,{testSources=false}={}){
  const root=fileURLToPath(new URL('../../',import.meta.url)),work=fs.mkdtempSync(path.join(os.tmpdir(),'whist-contract-'));
  t.after(()=>fs.rmSync(work,{recursive:true,force:true,maxRetries:15,retryDelay:200}));
- const roots=['atf-ui-browser/src/main/java','whist-lab-app/atf-card-table-ui/src/main/java',
+ const roots=['atf-ui-browser/src/main/java','whist-lab-app/card-table-core/src/main/java','whist-lab-app/card-table-core/src/testFixtures/java',
   'whist-lab-app/card-table-names/src/main/java','whist-lab-app/game-core/src/main/java',
-  'whist-lab-app/app/src/main/java','atf-ui-browser/whist/src/main/java',
+  'whist-lab-app/whist-presentation/src/main/java','atf-ui-browser/whist/src/main/java',
   ...(testSources?['whist-lab-app/app/src/test/java']:[])].map(n=>path.join(root,n));
  const fixture=path.join(root,'atf-ui-browser/tests',...main.split('.'))+'.java';
  const sources=[fixture,...fs.readdirSync(roots[0]+'/ro/cardtable/browser').filter(n=>n.endsWith('.java')).map(n=>roots[0]+'/ro/cardtable/browser/'+n)];

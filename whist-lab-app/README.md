@@ -15,7 +15,7 @@ Select English or Romanian through the interface. The selection persists across 
 
 The available variants are defined in the catalogue of rules.
 
-A saved game using a retired variant remains on the device until the user starts a new game. The types of rules are defined in [GameMode](game-core/src/main/java/ro/whistlab/core/rules/GameMode.java), and actual texts and labels in [WhistUiText](app/src/main/java/ro/whistlab/app/localization/WhistUiText.java). The displayed rules are built in [HowToPlay](game-core/src/main/java/ro/whistlab/core/rules/HowToPlay.java) for the variant, language and number of players selected.
+A saved game using a retired variant remains on the device until the user starts a new game. The types of rules are defined in [GameMode](game-core/src/main/java/ro/whistlab/core/rules/GameMode.java), and actual texts and labels in [WhistUiText](whist-presentation/src/main/java/ro/whistlab/app/localization/WhistUiText.java). The displayed rules are built in [HowToPlay](game-core/src/main/java/ro/whistlab/core/rules/HowToPlay.java) for the variant, language and number of players selected.
 
 - [Rules of the game](../docs/game/README.md) defines the hand schedule, trump, scoring and series for each profile.
 - Open history from `Game menu → Game score → Score history`. The [history contract](../docs/game/ATF_ScoreHistory.md) explains bids, player totals, markings, and adaptation to the window.
@@ -26,7 +26,7 @@ At the player's turn, the Hard engine estimates and pre-selects a legal bid from
 
 - The background calculation uses the player’s hand, the known trump and turned-up card, public bids and the engine’s scoring context.
 - Manual selection has priority. A delayed result cannot replace it or apply to a different hand or game.
-- If the estimate is not available, any legal value can be chosen manually. [Contextual selection](app/src/main/java/ro/whistlab/app/bidding/HumanBidSelection.java) keeps this condition separate from the contracts submitted.
+- If the estimate is not available, any legal value can be chosen manually. [Contextual selection](whist-presentation/src/main/java/ro/whistlab/app/bidding/HumanBidSelection.java) keeps this condition separate from the contracts submitted.
 
 ## Play the current hand automatically
 

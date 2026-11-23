@@ -18,7 +18,16 @@ dependencyResolutionManagement {
 
 rootProject.name = "whist-lab-app"
 def uiMode = providers.gradleProperty("cardui.only").getOrElse("")
-if (!(uiMode in ["", "package", "component"])) throw new GradleException("Unknown cardui.only mode")
-include(":atf-card-table-ui")
+if (!(uiMode in ["", "package", "component", "core", "web", "whist"])) throw new GradleException("Unknown cardui.only mode")
+include(":card-table-core", ":card-table-names")
+if (!(uiMode in ["core", "web", "whist"])) {
+    include(":card-table-android")
+    project(":card-table-android").projectDir = file("atf-card-table-ui")
+}
 if (uiMode != "package") include(":test-audit")
-if (uiMode.isEmpty()) include(":game-core", ":ai-lab", ":app", ":card-table-names", ":ios-bridge")
+if (uiMode in ["", "web"]) {
+    include(":card-table-web")
+    project(":card-table-web").projectDir = file("../atf-ui-browser")
+}
+if (uiMode in ["", "whist"]) include(":game-core", ":ai-lab", ":whist-presentation")
+if (uiMode.isEmpty()) include(":app", ":ios-bridge")

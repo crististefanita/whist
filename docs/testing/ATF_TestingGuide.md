@@ -57,22 +57,29 @@ Each executable Maven class owns exactly one level. Suite classes describe selec
 
 ### Gradle and browser boundaries
 
-These rows describe exercised boundaries and their executable owners. Gradle's JUnit tests and Node contracts do not declare the Maven ATF layer annotations. A task name or a JavaScript filename therefore does not extend the annotation matrix above.
+These rows describe executable boundaries, not Maven annotations. Source-set ownership determines the reporting contract; the word “unit” in Android's host task name does not turn its component cases into isolated units.
 
-| Module or surface | Unit boundary | Component boundary | Integration or rendered boundary | Entry point and limit |
-|---|---|---|---|---|
-| `whist-lab-app/game-core` | Legal cards, scoring, series, bidding limits and policy calculations. | Session commands, checkpoints, achievements and allowed AI observations. | Complete offline games compare policies and independent invariants; no UI acceptance. | [Engine tests](../../whist-lab-app/game-core/src/test/README.md); release rules use `:game-core:releaseRulesComponents`. Learning and calibration have separate populations. |
-| `whist-lab-app/ai-lab` | Evaluation data and deterministic research helpers. | Legal generated fixtures, corpus and experiment-tool contracts. | Controlled policy comparisons belong to research, not to installed-app qualification. | [Laboratory](../../whist-lab-app/ai-lab/README.md); `:ai-lab:check` includes local JVM and Node checks. |
-| `whist-lab-app/app` | Presentation calculations, labels and persisted values. | Controllers, preferences, navigation, bidding and score-history behavior with controlled Android collaborators. | Native interaction, raster output and process restoration have separate Android acceptance. | [App tests](../../whist-lab-app/app/src/test/README.md); primary owners are achievements, bidding, commands, display and history. |
-| `whist-lab-app/atf-card-table-ui` | Portable table geometry, typography and card-face metrics. | Shared controls, menus and animation lifecycle. | Native font and rendering acceptance remains separate from arithmetic agreement. | [UI tests](../../whist-lab-app/atf-card-table-ui/src/test/README.md); `:atf-card-table-ui:testDebugUnitTest`. |
-| `whist-lab-app/card-table-names` | Deterministic display-name policy. | Consumer contracts exercise the names in the real engine. | No independent native journey is claimed. | [Name library](../../whist-lab-app/card-table-names/README.md); JVM compilation and engine consumers. |
-| `whist-lab-app/test-audit` | Audit-model and comparison calculations. | Shared reporting fixtures validate captured comparisons and output. | Consumer suites establish integration with their real reporting binary. | [Audit fixtures](../../whist-lab-app/test-audit/README.md); test support is not shipped in the application. |
-| `whist-lab-app/ios-bridge` | JVM bridge policies. | Engine projection and command mapping. | Native iOS is parked; bridge tests do not establish IPA or simulator acceptance. | [Bridge scope](../platform/ATF_iOSDelivery.md); excluded from the active JVM-only build. |
-| `atf-ui-browser` | Portable viewport, menus, gestures and rendering-contract calculations. | Exported runtime/test JAR contracts and shared adapter cases. | Browser font, zoom, focus and keyboard behavior require browser observations. | [Shared adapter](../../atf-ui-browser/README.md); [Node contract runner](../../atf-ui-browser/tests/run-components.mjs). |
-| `atf-ui-browser/whist` | Whist projection and browser-facing values. | Engine commands, layout and interaction adaptation. | A real browser journey verifies a rendered hand and storage reopening. | [Whist adapter](../../atf-ui-browser/README.md); [adapter component owner](../../atf-tests/src/test/java/atf/tests/governance/documentation/release/rag/nativeproof/WhistSurfaceAdapterComponentTest.java). |
-| `atf-ui-browser/pages` | Local-storage codecs and client state policies. | Compiled-engine controls, navigation, history and effects with controlled storage or time. | Playwright scripts exercise the produced site; mocked browser state is identified separately from native acceptance. | [Pages](../../atf-ui-browser/README.md#verification); `verify.mjs`, `verify-controls.mjs`, `verify-records.mjs`, `verify-navigation.mjs` and `verify-effects.mjs` have distinct purposes. |
+| Module | Unit | Component | Integration | E2E | Ownership and executable selection |
+|---|---|---|---|---|---|
+| `card-table-core` | ✅ | ✅ | — | — | `unitTest` checks isolated normalization and snapshot ownership; `test` owns portable models, geometry, text roles and negative controls. [Core](../../whist-lab-app/card-table-core/README.md) |
+| `card-table-android` | — | ✅ | ✅ | — | `testDebugUnitTest` checks native adapter contracts. Focused instrumentation qualifies real widgets separately; no full resolution E2E matrix. [Android renderer](../../whist-lab-app/atf-card-table-ui/README.md) |
+| `card-table-web` | — | ✅ | ✅ | ✅ | Shared Java projection plus controlled DOM/clock components; one explicit short browser sanity flow checks wiring. [Web renderer](../../atf-ui-browser/README.md#verification) |
+| `whist-presentation` | — | ✅ | — | — | Game-specific portable projection; existing APK/Web component providers preserve catalog, checkpoint and presentation case identities. |
+| `whist-lab-app/app` | — | ✅ | — | — | Commands, bidding, display, history and achievement primary tasks test Whist projections and lifecycle without a device. Installed-app journeys are owned by Maven's Android E2E module. |
+| `whist-lab-app/game-core` | ✅ | ✅ | — | — | Rules, score and checkpoints; release rule collections exclude AI learning experiments. |
+| `whist-lab-app/ai-lab` | — | ✅ | — | — | Independent player and offline policy comparisons on legal fixtures and reserved deals. |
+| `test-audit` | — | ✅ | — | — | Capture, evaluated assertions and report/JUnit reconciliation; test-only dependency. |
 
-The [module map](../../README.md#module-map) owns build membership and dependency scopes. The [collection catalog](ATF_Collections.md) owns executable selections, budgets and commands. The matrix maps those owners; it does not duplicate their task definitions.
+| Shared responsibility | Executable contract |
+|---|---|
+| Module mapping | Android maps to the existing `atf-card-table-ui` directory; Web maps to `atf-ui-browser`. Java packages remain stable. |
+| Neutral fixtures | Core's immutable logical observations and continuity oracle contain no game rules. Whist supplies legal schedules and public projections. |
+| Unit output | Isolated `unitTest` cases keep JUnit diagnostics without Extent. |
+| Component output | Capture preconditions and evaluated expected/actual comparisons in canonical Extent; no continuity pictures. |
+| Component matrix | Resolution, density, text scale, language, legal hand sizes, actors and winners. |
+| E2E selection | One explicit sanity flow and one readable viewport, at most two hands and four normal captures; preserve the first failure separately. |
+| Admission and publication | Reject matrices or long plans before startup, then reconcile actual rounds and image references before HTML publication. |
+| Rendering limit | Equal policy plans do not qualify native font painting. [Continuity and adapter contract](ATF_TableContinuity.md) |
 
 ### Consumed binary libraries
 

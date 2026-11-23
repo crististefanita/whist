@@ -1,4 +1,4 @@
-import {adaptiveViewport} from './viewport.mjs?v=0.11';
+import {adaptiveViewport} from './viewport.mjs?v=0.12';
 
 /** Read-only collections use pages; interactive forms keep all their fields together. */
 export function boundedPages(host, groups) {

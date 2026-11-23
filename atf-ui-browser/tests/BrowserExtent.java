@@ -91,6 +91,8 @@ class BrowserExtent {
             throw new IllegalArgumentException("Recorded case name is required");
         AtfReportStatus.valueOf(test.required("status").asText());
         test.required("expected"); test.required("observed");
+        if (test.path("id").asText().startsWith("MATCH-ANCHORS-") && test.path("status").asText().equals("PASS"))
+            verifyFlowBudget(test);
         String layer = test.path("layer").asText(defaultLayer);
         suite(layer);
         var steps = new ArrayList<Step>();
@@ -136,6 +138,33 @@ class BrowserExtent {
                 step.assertions(), List.of(action), step.status());
         for (var capture : step.captures()) phase.uiValidationAsMedia(capture.title(), name, capture.base64Png(),
                 List.of(), List.of(), step.status());
+    }
+
+    private static void verifyFlowBudget(JsonNode test) {
+        var observed = test.required("observed");
+        var rounds = observed.required("rounds");
+        var deals = observed.required("profile").required("deals");
+        var budget = observed.required("flowBudget");
+        if (!rounds.isArray() || rounds.isEmpty() || rounds.size() > 2 || !deals.isArray()
+                || deals.size() != rounds.size() || !budget.path("contract").asText().equals("MINIMAL_TABLE_FLOW_V1")
+                || budget.path("hands").asInt(-1) != rounds.size() || budget.path("maximumHands").asInt(-1) != 2
+                || budget.path("maximumNormalCaptures").asInt(-1) != 4)
+            throw new IllegalArgumentException("E2E_HAND_BUDGET");
+        for (int i = 0; i < rounds.size(); i++) {
+            var round = rounds.get(i);
+            if (!round.path("hand").isIntegralNumber() || round.path("hand").asInt() != i + 1
+                    || !deals.get(i).isIntegralNumber() || deals.get(i).asInt() <= 0
+                    || !round.path("cards").equals(deals.get(i)))
+                throw new IllegalArgumentException("E2E_EXECUTION_SEQUENCE");
+        }
+        var images = new ArrayList<JsonNode>();
+        test.path("images").forEach(images::add);
+        test.path("steps").forEach(step -> step.path("images").forEach(images::add));
+        var files = new HashSet<String>();
+        for (var image : images) if (!files.add(image.path("file").asText()))
+            throw new IllegalArgumentException("E2E_CAPTURE_BUDGET");
+        if (images.size() > 4 || budget.path("normalCaptures").asInt(-1) != images.size())
+            throw new IllegalArgumentException("E2E_CAPTURE_BUDGET");
     }
 
     private static String text(JsonNode input, String field) {

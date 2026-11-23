@@ -10,6 +10,8 @@ subprojects { owner ->
                 forkEvery = 0
                 maxHeapSize = '512m'
                 failFast = false
+                // Isolated unit tests keep JUnit diagnostics, without component reporting.
+                if (testTask.name == 'unitTest') return
                 def auditRoot = providers.gradleProperty('whist.auditOutput').map { rootProject.file(it) }
                         .getOrElse(rootProject.layout.buildDirectory.dir('reports/component').get().asFile)
                 def checkpoint = checkpointTasks[testTask.path]

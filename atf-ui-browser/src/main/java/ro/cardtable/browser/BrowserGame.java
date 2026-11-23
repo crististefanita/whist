@@ -32,7 +32,7 @@ public interface BrowserGame {
     default Map<String, Object> interfaceCopy(String language) { return Map.of(); }
     default int autoDelayMillis() { return 0; }
     default Map<String, Object> setup(List<?> collectionSamples) {
-        return Map.of("title", title(), "fields", fields(), "englishFields", fields("en"),
+        var setup = new java.util.LinkedHashMap<String, Object>(Map.of("title", title(), "fields", fields(), "englishFields", fields("en"),
                 "surface", surface(), "palette", palette(), "collectionSamples", collectionSamples,
                 "copy", Map.of("ro", interfaceCopy("ro"), "en", interfaceCopy("en")),
                 "autoDelayMillis", autoDelayMillis(),
@@ -42,7 +42,9 @@ public interface BrowserGame {
                         "liftScale", HandLayoutMetrics.CARD_LIFT_SCALE,
                         "restLayer", HandLayoutMetrics.NEIGHBOR_Z_DP, "liftLayer", HandLayoutMetrics.SELECTED_Z_DP,
                         "progress", java.util.stream.IntStream.rangeClosed(0, 10)
-                                .mapToObj(step -> HandLayoutMetrics.liftProgress(step / 10f)).toList()));
+                                .mapToObj(step -> HandLayoutMetrics.liftProgress(step / 10f)).toList())));
+        setup.put("menuTypography", ro.cardtable.ui.menu.MenuTypography.browserRoles());
+        return java.util.Collections.unmodifiableMap(setup);
     }
     Match start(Map<String, String> configuration);
     default boolean hasProfile() { return false; }

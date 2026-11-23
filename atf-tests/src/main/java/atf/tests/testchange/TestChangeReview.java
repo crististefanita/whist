@@ -24,9 +24,9 @@ public final class TestChangeReview {
     public static final String BASE_PROPERTY = "atf.governance.testChanges.baseRef";
     public static final String BASE_ENV = "ATF_TEST_CHANGE_BASE_REF";
 
-    private static final List<String> TEST_SETS = List.of("test", "androidTest", "rasterTest", "testFixtures");
+    private static final List<String> TEST_SETS = List.of("test", "unitTest", "androidTest", "rasterTest", "testFixtures");
     private static final Pattern SOURCE = Pattern.compile("(?s)^(.*?/)?src/(?:" + String.join("|", TEST_SETS) + ")/.+");
-    private static final Pattern GRADLE = Pattern.compile("^whist-lab-app/(?:.*/)?(?:build|settings)\\.gradle(?:\\.kts)?$");
+    private static final Pattern GRADLE = Pattern.compile("^(?:whist-lab-app/(?:.*/)?|atf-ui-browser/)(?:build|settings)\\.gradle(?:\\.kts)?$");
     private static final Set<String> OUTPUTS = Set.of(".git", "target", "build", ".gradle", "artifacts", "node_modules", "release");
     private static final List<String> GATES = List.of(
             "atf-tests/src/main/java/atf/tests/jvm/JavaSourceParser.java",
@@ -201,6 +201,8 @@ public final class TestChangeReview {
             return !editorial && !generated(source.group(1));
         }
         if (generated(path)) return false;
+        if (path.startsWith("atf-ui-browser/tests/"))
+            return !path.endsWith(".md") || path.matches("atf-ui-browser/tests/(?:assets|res|resources|fixtures)/.*");
         return path.equals("pom.xml") || path.endsWith("/pom.xml") || GRADLE.matcher(path).matches()
                 || GATES.contains(path) || GATE_DIRECTORIES.stream().anyMatch(path::startsWith)
                 || path.startsWith("atf-tests/tools/") && path.endsWith(".test.mjs");
@@ -216,7 +218,8 @@ public final class TestChangeReview {
         var specs = new ArrayList<>(GATES);
         specs.addAll(GATE_DIRECTORIES);
         specs.addAll(List.of("pom.xml", ":(glob)**/pom.xml", ":(glob)whist-lab-app/**/build.gradle*",
-                ":(glob)whist-lab-app/**/settings.gradle*", ":(glob)atf-tests/tools/**/*.test.mjs"));
+                ":(glob)whist-lab-app/**/settings.gradle*", ":(glob)atf-tests/tools/**/*.test.mjs",
+                "atf-ui-browser/build.gradle", "atf-ui-browser/settings.gradle", "atf-ui-browser/tests/"));
         for (String set : TEST_SETS) specs.add(":(glob)**/src/" + set + "/**");
         return specs;
     }

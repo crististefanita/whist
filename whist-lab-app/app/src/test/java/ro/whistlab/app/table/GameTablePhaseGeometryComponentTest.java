@@ -132,9 +132,14 @@ public final class GameTablePhaseGeometryComponentTest extends atf.gradle.audit.
     }
 
     @Test public void threePlayerSchedulesKeepAnchorsStableAcrossEveryModeAndHandSize() {
+        var matrix = new atf.gradle.audit.matrix.ExhaustiveMatrixChecks();
         int[] widths = {280, 360, 393};
         int[] heights = {440, 560, 620};
         float[] fontScales = {1f, 1.5f, 2f};
+        atf.gradle.audit.GradleInputs.fixture("Complete matrix domains", "widthDp", java.util.Arrays.toString(widths),
+                "heightDp", java.util.Arrays.toString(heights), "fontScale", java.util.Arrays.toString(fontScales), "players", 3,
+                "schedules", java.util.Arrays.stream(GameMode.values()).collect(java.util.stream.Collectors.toMap(
+                        Enum::name, mode -> GameRules.handSizes(mode, 3))));
         for (GameMode mode : GameMode.values()) {
             var schedule = GameRules.handSizes(mode, 3);
             int largestHand = schedule.stream().mapToInt(Integer::intValue).max().orElseThrow();
@@ -155,19 +160,20 @@ public final class GameTablePhaseGeometryComponentTest extends atf.gradle.audit.
                         TableGeometry.CenterAlignment.BALANCED,
                         TableLayoutMetrics.humanHandClearanceDp());
 
-                atf.gradle.audit.GradleInputs.fixture("Three-player complete schedule geometry",
+                matrixAt(matrix, "Three-player complete schedule geometry",
                         "mode", mode, "schedule", schedule, "widthDp", width,
                         "heightDp", height, "fontScale", fontScale,
                         "largestHand", largestHand, "reservation", reservation, "baseline", baseline);
-                assertEquals("The reservation covers the largest bid controls in the full schedule",
+                matrix.equal("The reservation covers the largest bid controls in the full schedule",
                         BidGridMetrics.actionLayout(largestHand + 1, width, fontScale, reservation.useBidStrip())
                                 .centerHeightDp(), reservation.biddingHeightDp());
-                assertEquals("The reservation covers the current table's complete trick",
+                matrix.equal("The reservation covers the current table's complete trick",
                         trick.centerHeightDp(), reservation.playingHeightDp());
 
                 for (int handSize : schedule) {
+                    matrix.at("mode=" + mode + "; width=" + width + "; height=" + height + "; font=" + fontScale + "; hand=" + handSize + "; baseline=" + baseline);
                     var bids = BidGridMetrics.actionLayout(handSize + 1, width, fontScale, reservation.useBidStrip());
-                    assertTrue("The active choices fit the phase-independent center band",
+                    matrix.equal("The active choices fit the phase-independent center band", true,
                             bids.centerHeightDp() <= reservation.reservedHeightDp());
                     var bidding = TableGeometry.arrangeDisplay(width, boardHeight, 3, seatWidth, seatHeight,
                             bids.centerWidthDp(), reservation.reservedHeightDp(), gap, true,
@@ -177,25 +183,30 @@ public final class GameTablePhaseGeometryComponentTest extends atf.gradle.audit.
                             trick.safeCenterWidthDp(), reservation.reservedHeightDp(), gap, true,
                             TableGeometry.CenterAlignment.BALANCED,
                             TableLayoutMetrics.humanHandClearanceDp());
-                    assertEquals("Every scheduled hand preserves all three seat anchors",
+                    matrix.equal("Every scheduled hand preserves all three seat anchors",
                             baseline.seats(), bidding.seats());
-                    assertEquals("The table stays fixed between bidding and playing",
+                    matrix.equal("The table stays fixed between bidding and playing",
                             bidding.seats(), playing.seats());
-                    assertTrue("The bid selector stays clear of the seats",
+                    matrix.equal("The bid selector stays clear of the seats", true,
                             bidding.seats().stream().noneMatch(bidding.center()::overlaps));
-                    assertTrue("The trick stays clear of the seats",
+                    matrix.equal("The trick stays clear of the seats", true,
                             playing.seats().stream().noneMatch(playing.center()::overlaps));
                 }
             }
         }
+            matrix.publish();
     }
 
     @Test public void fivePlayerReverseOhHellKeepsItsAnchorsAcrossTheMatchSchedule() {
+        var matrix = new atf.gradle.audit.matrix.ExhaustiveMatrixChecks();
         int[] widths = {280, 360, 393};
         int[] heights = {440, 560, 620};
         float[] fontScales = {1f, 2f};
         var schedule = GameRules.handSizes(GameMode.REVERSE_OH_HELL, 5);
         int largestHand = schedule.stream().mapToInt(Integer::intValue).max().orElseThrow();
+        atf.gradle.audit.GradleInputs.fixture("Complete matrix domains", "widthDp", java.util.Arrays.toString(widths),
+                "heightDp", java.util.Arrays.toString(heights), "fontScale", java.util.Arrays.toString(fontScales),
+                "players", 5, "mode", GameMode.REVERSE_OH_HELL, "schedule", schedule);
         for (int width : widths) for (int height : heights) for (float fontScale : fontScales) {
             var viewport = new TableViewportPolicy(height, fontScale);
             var reservation = TableLayoutMetrics.matchCenterReservation(GameMode.REVERSE_OH_HELL,
@@ -211,16 +222,17 @@ public final class GameTablePhaseGeometryComponentTest extends atf.gradle.audit.
                     TableGeometry.CenterAlignment.BALANCED,
                     TableLayoutMetrics.humanHandClearanceDp());
 
-            atf.gradle.audit.GradleInputs.fixture("Five-player Reverse Oh Hell schedule geometry",
+            matrixAt(matrix, "Five-player Reverse Oh Hell schedule geometry",
                     "schedule", schedule, "widthDp", width, "boardHeightDp", boardHeight,
                     "fontScale", fontScale, "reservation", reservation, "baseline", baseline);
-            assertEquals("All five seats reserve the maximum scheduled bid grid",
+            matrix.equal("All five seats reserve the maximum scheduled bid grid",
                     BidGridMetrics.actionLayout(largestHand + 1, width, fontScale).centerHeightDp(),
                     reservation.biddingHeightDp());
-            assertEquals("All five seats reserve the complete trick band",
+            matrix.equal("All five seats reserve the complete trick band",
                     trick.centerHeightDp(), reservation.playingHeightDp());
 
             for (int handSize : schedule) {
+                    matrix.at("mode=" + GameMode.REVERSE_OH_HELL + "; width=" + width + "; height=" + height + "; font=" + fontScale + "; hand=" + handSize + "; baseline=" + baseline);
                 var bids = BidGridMetrics.actionLayout(handSize + 1, width, fontScale);
                 var bidding = TableGeometry.arrangeDisplay(width, boardHeight, 5, seatWidth, seatHeight,
                         bids.centerWidthDp(), reservation.reservedHeightDp(), gap, true,
@@ -230,12 +242,13 @@ public final class GameTablePhaseGeometryComponentTest extends atf.gradle.audit.
                         trick.safeCenterWidthDp(), reservation.reservedHeightDp(), gap, true,
                         TableGeometry.CenterAlignment.BALANCED,
                         TableLayoutMetrics.humanHandClearanceDp());
-                assertEquals("Every scheduled hand preserves the five seat anchors",
+                matrix.equal("Every scheduled hand preserves the five seat anchors",
                         baseline.seats(), bidding.seats());
-                assertEquals("The same player frames remain during bidding and play",
+                matrix.equal("The same player frames remain during bidding and play",
                         bidding.seats(), playing.seats());
             }
         }
+            matrix.publish();
     }
 
     @Test public void maximumHandFitsBelowTheBidControlsAt720By1280() {
@@ -296,5 +309,8 @@ public final class GameTablePhaseGeometryComponentTest extends atf.gradle.audit.
         assertThrows("An eighteen-card selector is outside a 52-card deal to three players",
                 IllegalArgumentException.class,
                 () -> TableLayoutMetrics.centerReservation(3, 18, 353, 1f, viewport));
+    }
+    private static void matrixAt(atf.gradle.audit.matrix.ExhaustiveMatrixChecks matrix, Object... inputs) {
+        matrix.at(java.util.Arrays.deepToString(inputs));
     }
 }

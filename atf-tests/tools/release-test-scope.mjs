@@ -23,10 +23,11 @@ const rules = [
   ['checkpoint', /^whist-lab-app\/app\/src\/main\/java\/ro\/whistlab\/app\/(?:persistence|lifecycle)\//, [bidding, autoGame, history, achievements]],
   ['game-core', /^whist-lab-app\/game-core\/src\/main\//, [bidding, autoGame, history, achievements]],
   ['card-table-ui', /^whist-lab-app\/atf-card-table-ui\/src\/main\//, [profile, display, autoGame, achievements]],
+  ['card-table-core', /^whist-lab-app\/card-table-core\/src\/main\//, [profile, display, autoGame, history, achievements]],
   ['player-names', /^whist-lab-app\/card-table-names\/src\/main\//, [profile, display]]
 ];
 
-const nonProduct = /^(?:atf-validation\/|atf-tests\/|atf-test-android\/|ios\/|whist-lab-app\/(?:ai-lab|ios-bridge|test-audit|algorithm-build)\/|whist-lab-app\/[^/]+\/src\/(?:test|androidTest|rasterTest)\/|\.github\/|\.atf-signing\/)/;
+const nonProduct = /^(?:atf-validation\/|atf-tests\/|atf-test-android\/|ios\/|whist-lab-app\/(?:ai-lab|ios-bridge|test-audit|algorithm-build)\/|whist-lab-app\/[^/]+\/src\/(?:test|unitTest|testFixtures|androidTest|rasterTest)\/|\.github\/|\.atf-signing\/)/;
 const testConfiguration = /^config\/(?:atf-governance-policy\.json|atf-test-suites\.json|atf-component-(?:collections|dependencies)\.json|release-platform-rag-policy\.json|documentation-editions\.json|gradle-(?:app|audit)-collections\.properties|test-collections\.json)$/;
 const testLaunchers = /^scripts\/(?:AtfLocalPaths\.ps1|AtfSigningSourcePolicy\.ps1|Get-AtfSourceInputs\.ps1|Copy-AtfSourceInputs\.ps1|AtfQualificationSnapshot\.ps1|AtfComponentJvm\.ps1|AtfTestChangeAdmission\.ps1|AtfComponentResume\.ps1|AtfComponentMaven\.ps1|AtfCompilerIdentity\.ps1|AtfComponentMavenReuse\.ps1|AtfQualificationTiming\.ps1|Measure-AtfReleaseCommand\.ps1|AtfAndroidMaven\.ps1|AtfAndroidPackageRegistration\.ps1|AtfAndroidUserReadiness\.ps1|AtfAndroidUserOwnership\.ps1|AtfDeviceLease\.ps1|Invoke-AtfAndroidDisposableUser\.ps1|check-android-release-device\.ps1|export-card-table-ui\.ps1|run-(?:atf-governance|component-suites|whist-collection|whist-responsive-sanity|whist-signed-e2e)\.ps1)$/;
 
@@ -37,7 +38,8 @@ function classify(file, metadataOnly, hasRulesComponents) {
   if (nonBuildDocumentation(file)) return {rule: 'documentation', e2eGroups: []};
   if (file === appBuild && metadataOnly) return {rule: 'android-version-metadata', e2eGroups: []};
   for (const [rule, pattern, e2eGroups] of rules) {
-    if (pattern.test(file)) return {rule, e2eGroups};
+    const projected = file.replace(/^whist-lab-app\/whist-presentation\//, 'whist-lab-app/app/');
+    if (pattern.test(projected)) return {rule, e2eGroups};
   }
   if (nonProduct.test(file) || testConfiguration.test(file) || testLaunchers.test(file)
       || file === android + 'gradle/component-audit.gradle' || isStandaloneGovernanceLauncher(file)) {

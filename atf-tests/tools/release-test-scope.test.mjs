@@ -8,6 +8,25 @@ const build = 'whist-lab-app/app/build.gradle';
 const bid = 'whist-lab-app/app/src/main/java/ro/whistlab/app/bidding/BidPolicy.java';
 const digest = value => createHash('sha256').update(value).digest('hex');
 
+test('presentation module ownership preserves core reuse and excludes unit fixtures from Android journeys', () => {
+  const all=['atf-tests','atf-validation','atf-test-android','whist-lab-app-card-table-core',
+    'whist-lab-app-atf-card-table-ui','whist-lab-app-bidding','whist-lab-app-display','whist-lab-app-rules'];
+  const scope=file=>deriveReleaseTestScope(new Map(),new Map([[file,'changed']]),all);
+  const units=scope('whist-lab-app/card-table-core/src/unitTest/java/demo/UnitTest.java');
+  assert.deepEqual(units.runComponentGroups,['atf-tests','whist-lab-app-card-table-core']);
+  assert.deepEqual(units.requiredE2eGroups,[]);
+  const native=scope('whist-lab-app/atf-card-table-ui/src/main/java/ro/cardtable/ui/cards/CardFaceView.java');
+  assert.ok(!native.runComponentGroups.includes('whist-lab-app-card-table-core'),'Native-only changes preserve core evidence');
+  const core=scope('whist-lab-app/card-table-core/src/main/java/ro/cardtable/ui/menu/MenuTypography.java');
+  assert.ok(core.runComponentGroups.includes('whist-lab-app-card-table-core'));
+  assert.ok(core.runComponentGroups.includes('whist-lab-app-atf-card-table-ui'));
+  assert.ok(!core.runComponentGroups.includes('whist-lab-app-rules'),'Presentation does not alter game rules');
+  const bid=scope('whist-lab-app/whist-presentation/src/main/java/ro/whistlab/app/bidding/HumanBidSelection.java');
+  assert.deepEqual(bid.runComponentGroups,['atf-tests','whist-lab-app-bidding']);
+  assert.deepEqual(bid.requiredE2eGroups,['signed-release-auto-game','signed-release-bidding']);
+  console.log('Presentation ownership observations: '+JSON.stringify({units:units.runComponentGroups,native:native.runComponentGroups,core:core.runComponentGroups,bid:bid.runComponentGroups}));
+});
+
 test('a bidding change requires the native bidding and AutoGame selections', () => {
   const selection = deriveReleaseTestScope(new Map([[bid, 'old']]), new Map([[bid, 'new']]), groups);
   assert.equal(selection.kind, 'USER_FLOW');
@@ -42,7 +61,7 @@ test('package ownership covers product, score and test sources and rejects an un
   for (const [file, owner] of [
     ['whist-lab-app/app/src/main/java/ro/whistlab/app/achievements/AchievementCatalog.java', 'whist-lab-app-achievements'],
     ['whist-lab-app/app/src/test/java/ro/whistlab/app/score/ScoreHistoryTableComponentTest.java', 'whist-lab-app-history'],
-    ['whist-lab-app/app/src/main/java/ro/whistlab/app/localization/WhistUiText.java', 'whist-lab-app-display']
+    ['whist-lab-app/whist-presentation/src/main/java/ro/whistlab/app/localization/WhistUiText.java', 'whist-lab-app-display']
   ]) {
     const scope = deriveReleaseTestScope(new Map(), new Map([[file, 'changed']]), all);
     assert.deepEqual(scope.runComponentGroups, ['atf-tests', owner], file);

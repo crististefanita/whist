@@ -18,7 +18,7 @@ flowchart LR
 <details>
 <summary>Legend: shared assertions and separate renderers</summary>
 
-The [shared contract](../../whist-lab-app/app/src/test/java/ro/whistlab/app/table/TablePhaseContract.java) owns the population and assertions. The APK test calls it directly; the Web fixture imports the same source and supplies both adapters. No Android widgets, font rasterization or emulator are simulated by this policy comparison.
+The neutral [observation port](../../whist-lab-app/card-table-core/src/testFixtures/java/ro/cardtable/testing/SurfaceObservation.java) and [continuity oracle](../../whist-lab-app/card-table-core/src/testFixtures/java/ro/cardtable/testing/SurfaceContinuity.java) live in core test fixtures. The game-owned [shared contract](../../whist-lab-app/app/src/test/java/ro/whistlab/app/table/TablePhaseContract.java) owns the population and assertions. The APK test calls it directly; the Web fixture imports the same source and supplies both adapters. No Android widgets, font rasterization or emulator are simulated by this policy comparison.
 
 </details>
 
@@ -60,7 +60,7 @@ Delivery policy requires one or two hands per E2E game at one readable viewport.
 | Match completion | Use a legal near-final checkpoint validated in components, then play the real last hand. |
 | Suite delivery | The current `release/` index links canonical component, renderer, governance and E2E reports by relative path, with explicit selection and provenance. |
 | Historical references | Preserve original outcomes and bytes; an older over-budget journey does not become current primary qualification. |
-| Image selection | At most four relevant captures per normal scenario is the proposed budget; additionally retain the first visual failure. Do not photograph each card or display combination, and do not conceal failed comparison data. |
-| Implementation gap | `TEST-04` tracks enforcement in existing runners and publication; this policy does not claim that enforcement already exists. |
+| Image selection | Web admission and publication enforce at most four normal captures; additionally retain the first visual failure. Do not photograph each card or display combination, and do not conceal failed comparison data. |
+| Implementation gap | Web admission rejects long plans before startup and the publisher reconciles actual rounds/captures. Native hand admission accepts one or two; `TEST-04` retains paired-driver and native-capture closure. |
 
-[Migration plan and criteria](../feedback/ATF_CardUi_Extraction.md#ui-three-module-plan) separate portable core, Android adapter and Web adapter. Game-specific cases remain with the game; neutral fixture/oracle support belongs to core tests.
+[Implementation and remaining acceptance](../feedback/ATF_CardUi_Extraction.md#ui-three-module-plan) separate portable core, Android adapter and Web adapter. Game-specific cases remain with the game; neutral fixture/oracle support belongs to core tests.

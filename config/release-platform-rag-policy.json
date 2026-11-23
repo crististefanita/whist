@@ -131,6 +131,10 @@
         {
           "group": "whist-lab-app-rules",
           "sinceReleaseVersion": "0.21.5"
+        },
+        {
+          "group": "whist-lab-app-card-table-core",
+          "sinceReleaseVersion": "0.23.3"
         }
       ]
     },

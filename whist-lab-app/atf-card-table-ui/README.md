@@ -2,7 +2,7 @@
 
 ## Overview
 
-`atf-card-table-ui` owns the Android visual components shared by Whist, Rentz and Hold'em. It contains Java 17 sources, resources, JVM tests and instrumented Android component tests. Games supply visible data and interaction intents; the library renders the widgets and handles their presentation behaviour.
+`card-table-android` owns native rendering and platform measurement. Its physical directory remains `atf-card-table-ui`; portable models, geometry, typography and deterministic effects belong to [card-table-core](../card-table-core/README.md). Games retain their legal actions, state and public projections.
 
 | Entry point | Where to check |
 |---|---|
@@ -15,17 +15,17 @@
 | Package | Implemented contract |
 |---|---|
 | [screens](src/main/java/ro/cardtable/ui/screens/ScreenViews.java) | Shared factories for pages, text, buttons and dropdowns; the app supplies dropdown labels and window protection. |
-| [menu](src/main/java/ro/cardtable/ui/menu/HomeMenuContent.java) | Item order, labels, tags, resume state and callbacks; dropdowns preserve both locales and attach listeners after initialization. |
-| [profile](src/main/java/ro/cardtable/ui/profile/NameEdit.java) | The dialog accepts the game's input policy. Normalization, persistence and the original failure cause belong to the consumer. |
-| [cards](src/main/java/ro/cardtable/ui/cards/CardFace.java) | Rank and suit identity, proportions and cream/gold highlighting. The game supplies the visible face and decides when it is marked. |
-| [hand](src/main/java/ro/cardtable/ui/hand/HandLayoutMetrics.java) | Hand layout, scrolling and gestures. Adapters retain feedback duration, lift timing and gesture revisions through [HandInput](src/main/java/ro/cardtable/ui/hand/HandInput.java). |
-| [seat](src/main/java/ro/cardtable/ui/seat/SeatContent.java) | Names, ordered facts and the active player come from the game; labels fit the measured seat width and frame reservations stay fixed across phases. |
+| [menu](../card-table-core/src/main/java/ro/cardtable/ui/menu/HomeMenuContent.java) | Item order, labels, tags, resume state and callbacks; dropdowns preserve both locales and attach listeners after initialization. |
+| [profile](../card-table-core/src/main/java/ro/cardtable/ui/profile/NameEdit.java) | The dialog accepts the game's input policy. Normalization, persistence and the original failure cause belong to the consumer. |
+| [cards](../card-table-core/src/main/java/ro/cardtable/ui/cards/CardFace.java) | Rank and suit identity, proportions and cream/gold highlighting. The game supplies the visible face and decides when it is marked. |
+| [hand](../card-table-core/src/main/java/ro/cardtable/ui/hand/HandLayoutMetrics.java) | Hand layout, scrolling and gestures. Adapters retain feedback duration, lift timing and gesture revisions through [HandInput](../card-table-core/src/main/java/ro/cardtable/ui/hand/HandInput.java). |
+| [seat](../card-table-core/src/main/java/ro/cardtable/ui/seat/SeatContent.java) | Names, ordered facts and the active player come from the game; labels fit the measured seat width and frame reservations stay fixed across phases. |
 | [table](src/main/java/ro/cardtable/ui/table/android/BoardLayout.java) | Occupied regions, visual orders, viewport and central band measured between places. The Android Adapter applies common geometry. |
-| [turn](src/main/java/ro/cardtable/ui/turn/TurnPacing.java) | Wait for the first visible frame, apply the common range and invalidate the action if the scene has changed. |
-| [animation](src/main/java/ro/cardtable/ui/animation/TrickCollectionMotion.java) | Validate the seating set and expose the break, duration and curve of the collection. Android draws native faces, and the website plays the same curve on the page elements. |
+| [turn](../card-table-core/src/main/java/ro/cardtable/ui/turn/TurnPacing.java) | Wait for the first visible frame, apply the common range and invalidate the action if the scene has changed. |
+| [animation](../card-table-core/src/main/java/ro/cardtable/ui/animation/TrickCollectionMotion.java) | Validate the seating set and expose the break, duration and curve of the collection. Android draws native faces, and the website plays the same curve on the page elements. |
 | [CardFaceView](src/main/java/ro/cardtable/ui/cards/CardFaceView.java) | The hand and table draw the rank and symbol in the corner, the central symbol and the inverted corner. The face dimensions are scaled for the table, and the collection moves the cards' views off the table. |
-| [CardFaceMetrics](src/main/java/ro/cardtable/ui/cards/CardFaceMetrics.java) | Shared proportions, rank sizes and suit geometry. Each adapter applies the same face contract to hand, table and collection roles. |
-| [ScoreGridStyle](src/main/java/ro/cardtable/ui/table/ScoreGridStyle.java) | Keep the proportions, height and colours of the score table for the Android adapter and browser. |
+| [CardFaceMetrics](../card-table-core/src/main/java/ro/cardtable/ui/cards/CardFaceMetrics.java) | Shared proportions, rank sizes and suit geometry. Each adapter applies the same face contract to hand, table and collection roles. |
+| [ScoreGridStyle](../card-table-core/src/main/java/ro/cardtable/ui/table/ScoreGridStyle.java) | Keep the proportions, height and colours of the score table for the Android adapter and browser. |
 | [score](src/main/java/ro/cardtable/ui/score/README.md) | Neutral score and scrollable history widgets, immutable consumer content, measured columns and two-way pane synchronization. Game labels and scoring remain in adapters. |
 | [theme](src/main/java/ro/cardtable/ui/theme/TablePalette.java) and [widgets](src/main/java/ro/cardtable/ui/widgets/DropdownBackground.java) | Colors, checkboxes and drawing of the selector. |
 
@@ -71,13 +71,13 @@ The facades are compatibility adapters with a single implementation of the algor
 | Android text | Rank-only measured span; suit and accessible text remain intact |
 | Fan overlap | Reserve the widest measured rank, including `10`, before overlap or scrolling |
 | Web adapter | Receive rank scale through setup, independently of menu fonts |
-| Shared verification | [Expected measurements](src/test/resources/card-typography.tsv) used by JVM components and distributed in the browser tests JAR |
+| Shared verification | [Expected measurements](../card-table-core/src/test/resources/card-typography.tsv) used by JVM components and distributed in the browser tests JAR |
 | Native verification | Real shaping, clipping and draw/measure agreement at enlarged text sizes |
 
 From the temporary copy of the Android root `whist-lab-app`, with PowerShell 7, JDK 21 and the Android cache prepared, the module is built without the application's tasks.
 
 ```powershell
-.\gradlew.bat --offline --no-daemon :atf-card-table-ui:testDebugUnitTest :atf-card-table-ui:lintRelease :atf-card-table-ui:assembleDebugAndroidTest
+.\gradlew.bat --offline --no-daemon :card-table-android:testDebugUnitTest :atf-card-table-ui:lintRelease :atf-card-table-ui:assembleDebugAndroidTest
 ```
 
 | Selection | Independent waiting |
@@ -85,7 +85,7 @@ From the temporary copy of the Android root `whist-lab-app`, with PowerShell 7, 
 | Shared menu | Fixed orders and tags, RO/EN, implicit/configured name, disabled restart and distinct callbacks. |
 | Edit Name | Proposed interval, retention of selection at refusal, deletion, order validation/persistence and cause of failure. |
 | Table and hand geometry | 3–6 places, profiles between 320 and 600 dp, font 1–2 ×, a centred card and measured indices. |
-| Bookmark | Same pallet for refusal and recommendation. The same [gestures scenario](src/test/resources/hand-feedback.tsv) checks the repeated touch in JVM and the web, the expiry after revision and the selection accepted once. |
+| Bookmark | Same pallet for refusal and recommendation. The same [gestures scenario](../card-table-core/src/test/resources/hand-feedback.tsv) checks the repeated touch in JVM and the web, the expiry after revision and the selection accepted once. |
 | Achievements | Stable orders and identities, loading of details on request, ambiguous states rejected. |
 | Library boundary | Java separate invention for production, JVM and Android instrumented. Library manifest without application or permissions. |
 | Table models | Stable identities, orderly and immutable facts, measured regions and identical dimensions regardless of the number of seats. |

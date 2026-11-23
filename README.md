@@ -20,20 +20,22 @@ Whist Lab is a local trick-taking game for 3–6 players and a laboratory for ve
 
 ### One game, two active interfaces
 
-The engine owns legal play and game state. Platform adapters translate interaction into commands and render the public projection; shared table calculations do not make native and browser rendering identical by themselves.
+The game engine owns legal play and state. Three presentation modules separate portable contracts from Android and browser rendering. Game-specific projections remain with the game; shared calculations do not make painted pixels identical by themselves.
 
 ```mermaid
 %%{init: {"theme":"neutral","themeVariables":{"fontSize":"15px"},"themeCSS":".edgeLabel, .edgeLabel p { font-size: 12px !important; } .node rect { rx: 6px; ry: 6px; }","flowchart":{"curve":"linear","nodeSpacing":24,"rankSpacing":20,"padding":6},"sequence":{"mirrorActors":false,"messageMargin":24}}}%%
 flowchart LR
-    Android["Android"]
-    Web["Browser"]
-    Engine["game-core"]
-    Table["Table contracts"]
-    View["Platform rendering"]
-    Android -->|commands| Engine
-    Web -->|commands| Engine
-    Engine -->|projects| View
-    Table -->|adapts| View
+    GAME["Game adapter"]
+    CORE["card-table-core"]
+    ANDROID["Android adapter"]
+    WEB["Web adapter"]
+    APK["APK"]
+    BROWSER["Browser"]
+    GAME -->|supplies| CORE
+    CORE -->|defines| ANDROID
+    CORE -->|defines| WEB
+    ANDROID -->|renders| APK
+    WEB -->|renders| BROWSER
 ```
 
 <details>
@@ -53,13 +55,15 @@ This map shows direct native application dependencies. The browser path is descr
 %%{init: {"theme":"neutral","themeVariables":{"fontSize":"15px"},"themeCSS":".edgeLabel, .edgeLabel p { font-size: 12px !important; } .node rect { rx: 6px; ry: 6px; }","flowchart":{"curve":"linear","nodeSpacing":24,"rankSpacing":20,"padding":6},"sequence":{"mirrorActors":false,"messageMargin":24}}}%%
 flowchart LR
     app["Android app"]
-    atf_card_table_ui["Shared Android UI"]
+    card_table_android["card-table-android"]
     ios["iOS · parked"]
     ios_bridge["ios-bridge"]
     game_core["game-core"]
+    whist_presentation["Whist projection"]
     card_table_names["card-table-names"]
-    app -->|uses| atf_card_table_ui
+    app -->|uses| card_table_android
     app -->|uses| game_core
+    app -->|uses| whist_presentation
     ios -->|uses| ios_bridge
     ios_bridge -->|exposes| game_core
     game_core -->|uses| card_table_names
@@ -79,7 +83,7 @@ flowchart LR
 | Area | Owner and guide |
 |---|---|
 | Rules and policies | [game-core](whist-lab-app/game-core/README.md) · [card-table-names](whist-lab-app/card-table-names/README.md) · [ai-lab](whist-lab-app/ai-lab/README.md) |
-| Active applications | [Android](whist-lab-app/app/src/main/java/ro/whistlab/app/README.md) · [Shared table UI](whist-lab-app/atf-card-table-ui/README.md) · [Web](atf-ui-browser/README.md) |
+| Active applications | [Android](whist-lab-app/app/src/main/java/ro/whistlab/app/README.md) · [Core](whist-lab-app/card-table-core/README.md) · [Android table adapter](whist-lab-app/atf-card-table-ui/README.md) · [Web](atf-ui-browser/README.md) |
 | Validation and device scenarios | [atf-validation](atf-validation/README.md) · [atf-test-android](atf-test-android/README.md) |
 | Verification and audit | [atf-tests](atf-tests/README.md) · [test-audit](whist-lab-app/test-audit/README.md) · [JVM build](whist-lab-app/algorithm-build/README.md) |
 | Execution and delivery | [Scripts](scripts/README.md) · [Release catalog](release/README.md) |
@@ -90,7 +94,7 @@ flowchart LR
 | Build | Declared modules |
 |---|---|
 | Maven | atf-validation, atf-test-android, atf-tests |
-| Gradle | app, game-core, atf-card-table-ui, card-table-names, ai-lab, test-audit, ios-bridge |
+| Gradle | app, game-core, whist-presentation, card-table-core, card-table-android, card-table-web, card-table-names, ai-lab, test-audit, ios-bridge |
 | Gradle JVM | game-core, ai-lab, card-table-names, test-audit |
 
 Direct dependencies use the configuration declared by the consuming module.
@@ -103,7 +107,12 @@ Direct dependencies use the configuration declared by the consuming module.
 | Maven | atf-test-android | test | atf-console |
 | Maven | atf-tests | compile | atf-test-kit, atf-core, atf-test-android, atf-reporting |
 | Maven | atf-tests | test | atf-console, atf-mock |
-| Gradle | app | implementation | game-core, atf-card-table-ui |
+| Gradle | app | implementation | game-core, card-table-android, whist-presentation |
+| Gradle | app | testImplementation | card-table-core |
+| Gradle | card-table-android | api | card-table-core |
+| Gradle | card-table-web | api | card-table-core |
+| Gradle | card-table-web | implementation | card-table-names |
+| Gradle | whist-presentation | api | game-core, card-table-core |
 | Gradle | game-core | implementation | card-table-names |
 | Gradle | game-core | testImplementation | ai-lab |
 | Gradle | ios-bridge | implementation | game-core |

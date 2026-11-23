@@ -1,0 +1,12 @@
+plugins { id 'java-library' }
+java {
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
+}
+dependencies {
+    api project(':game-core')
+    api project(':card-table-core')
+    // Android supplies this API; the browser supplies its pinned runtime JAR.
+    compileOnly 'org.json:json:20240205'
+}
+apply from: 'achievement-catalog.gradle'

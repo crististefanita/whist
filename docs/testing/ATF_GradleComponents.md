@@ -2,112 +2,72 @@
 
 ## Overview
 
-The application, game engine, independent player, graphics library and raster tests use the same [JUnit bridge](../../whist-lab-app/test-audit/README.md). The Oracle remains in the test; the kit captures the comparison when evaluated, and Reporting builds the canonical HTML. Use the [test strategy](README.md) to select suites based on risk.
+Gradle separates isolated units, audited components and optional platform observations. Tests own their oracles; the test-only [audit bridge](../../whist-lab-app/test-audit/README.md) captures evaluated comparisons and the reporting library produces canonical English Extent reports.
 
-## Liabilities and levels
+## Responsibilities and levels
 
-| Area | Level and property |
-|---|---|
-| Application | Components of commands, persistence, bid, location and presentation; no real Android activity. |
-| Engine | Units and components of rules, score and decision; learning collections shall be activated separately. |
-| Independent Player | `:ai-lab:test` checks public observations, legal decisions, budgets and the isolation of the production classification. |
-| Experimental references | Source overlays shall be kept separate from current Gradle collections. |
-| Common interface | Neutral presentation and borders; the rules of the game remain in the consumer. JVM tests qualify separately from the application collections. |
-| Raster | JVM components with synthetic images and independent pixel oracles. |
-| Audit deck | Controlled components for lifecycle, capture, refusal, parametrization and publication. |
+| Owner | Primary selection | Boundary |
+|---|---|---|
+| Portable presentation | `:card-table-core:test` | Geometry, content, text roles, hand feedback and deterministic effects; no Android or browser startup. |
+| Isolated units | `:card-table-core:unitTest` | Normalization, immutable snapshots and invalid inputs; JUnit only, without Extent or reporting dependencies. |
+| Android renderer | `:card-table-android:testDebugUnitTest` | Native adapter contracts and source ownership; real widgets require separate instrumentation. |
+| Whist projections | Application component collections and browser contracts | Shared game content, setup, achievements and checkpoint codecs from `whist-presentation`. |
+| Game engine | Release rule collections | Legal commands, scoring, checkpoints and game schedules; AI measurements remain separate. |
+| Independent player | `:ai-lab:test` | Public observations, legal decisions and policy isolation. |
+| Audit support | `:test-audit:test` | Capture lifecycle, original verdicts, parameter identities and publication. |
 
-[Package catalogue](../../config/gradle-app-collections.properties) assigns each class to a single collection; governance refuses omissions and packages without owner.
+The Android project's physical directory remains `atf-card-table-ui`; its Gradle identity is `card-table-android`. Core owns portable classes and neutral test fixtures. Web depends on core; the launcher builds module JARs from complete source roots rather than maintaining individual shared-source lists.
 
-| Primary collection | Task and Liability |
-|---|---|
-| Commands | `testDebugCommandsComponents`: lifecycle, animation, navigation and persistence. |
-| Bidding | `testDebugBiddingComponents`: recommendation, choice and resumption. |
-| History | `testDebugHistoryComponents`: score, series, table and geometry. |
-| Display | `testDebugDisplayComponents`: presentation, table, cards and location models. |
-| Achievements | `testDebugAchievementsComponents`: catalog, game facts, sustainable progress and user confirmed notifications. |
-| Common interface | `:atf-card-table-ui:testDebugUnitTest`: hand geometry and stability of action label frame. |
+The [application catalog](../../config/gradle-app-collections.properties) assigns each package to one primary collection: `testDebugCommandsComponents`, `testDebugBiddingComponents`, `testDebugHistoryComponents`, `testDebugDisplayComponents` or `testDebugAchievementsComponents`. The original `testDebugUnitTest` delegates to these tasks without executing a duplicate population.
 
-The `testDebugUnitTest` entry delegates to collections without repeating population. The Joint Module `atf-card-table-ui` has a separate task and a distinct canonical HTML; do not mix in the application collections. They shall retain cases and comparisons and limit the memory of publication through independent responsibilities; the compilation and signature of the Release APK shall qualify separately.
-
-[Catalog](../../config/gradle-audit-collections.properties) assigns one category to each class. Category does not change oracle and does not automatically include class in the selection of the release. A focused collection remains the subset declared; running it and the large collection do not create two unique populations.
-
-## Context Capture
+## Context capture
 
 ```mermaid
 sequenceDiagram
     participant F as Fixture
     participant T as Test
-    participant K as Kit
+    participant K as Audit bridge
     participant R as Reporting
-    F->>T: actual configuration and inputs
-    T->>K: Expected and actual, independently evaluated
-    K-->>T: verdict original
-    T->>R: context, comparisons and time measured
-    R-->>T: Verifiable HTML
+    F->>T: Declared preconditions and actual inputs
+    T->>K: Independently evaluated expected and actual values
+    K-->>T: Original verdict
+    T->>R: Captured context, comparisons and measured duration
+    R-->>T: Canonical English HTML
 ```
 
 <details>
-<summary>Legend: catch does not repeat operation</summary>
+<summary>Legend — capture does not repeat the operation</summary>
 
-Capture constructor or save arguments before the call without evaluating them twice. List computed values in the assertion context, separate from the initial state. The test owns the oracle and evaluation order.
+Record constructor, save and command arguments before evaluation. Capture expected and actual values once, preserving the original exception and verdict. A fixture or mock supplies declared conditions; it cannot invent a platform execution.
 
 </details>
 
-- `GradleInputs.created` captures the configuration before the session is built, the observation before the decision or data before saving and returns the same value.
-- `GradleInputs.fixture` captures the relevant local values prior to comparison; the fixture fields also retain the parameters of the JUnit producer.
-- The projection explicitly reads the recordings, collections and the public snack of the session. A helper without a declared projection remains identified as such; his internal state is not invented.
-- The assertions keep the verdict and the invariant expected, present. Values longer than the preview appear in full order bodies.
-- The raster is explicitly declared as a JVM component image and remains PNG inline. Doesn't prove the native android rendering.
+`GradleInputs.created` returns the supplied value while recording its inputs. `GradleInputs.fixture` records relevant case data before comparison. Evaluated assertions retain complete structured bodies rather than replacing them with a PASS summary.
 
 ## Reporting profile
 
-Each JUnit invocation retains its parameterized identity and original verdict. The measured statement includes JUnit 4 before/after fixtures, with publishing outside that interval. Create, use and close the Reporting session on one publishing thread, while tests remain on their execution thread.
+Audited component and governance tasks produce one canonical Extent each. Isolated `unitTest` tasks keep JUnit diagnostics and do not create Extent. Continuity and display matrices have no screenshots; a separate rendered observation may carry an explicitly identified raster or inline E2E capture.
 
-The publication profile comes from the context and comparisons captured prior to the rendering. It is incorporated as metadata control and faces owners, phases and rows of HTML. The absence of HTTP is explicit; a logical component does not receive transport or fictitious actions to satisfy an default validator.
+JUnit output is a temporary independent population oracle. The verifier reconciles exact invocation identities and outcomes against HTML; temporary XML is not delivered as another final report. The standard Overview belongs to Reporting and is not replaced with a custom evidence gallery.
 
 ## Acceptance and retention
 
-In the RAG qualification, the verifier writes the receipt of each selection directly next to her report. The atomic publication of the checkpoint closes the selection before the next task force in the same release. [Resume after interruption](ATF_ReleaseQualification.md#resume-validated-steps)
+The [layer catalog](../../config/gradle-audit-collections.properties) declares every executable owner. Moving a class preserves its case identity. Shared contracts and negative controls must pass before retiring a duplicate platform check.
 
-The exhaustive matrix compares each pair through the oracle of the domain. [Matrix verifier](../../whist-lab-app/test-audit/src/testFixtures/java/atf/gradle/audit/matrix/ExhaustiveMatrixChecks.java) stops at the first mismatch with position, expected and current; the number of pairs assessed on the invariant and the absence of mismatches at public success. History and geometry keep complete input grids, without millions of individual PASS rows or counting them as JUnit invokes.
-
-| Control | Rejection required |
-|---|---|
-| Invocation | Absence of fixture, unflattened comparisons or missing classification. |
-| parameterization | Missing, additional or duplicate identity and verdict different from JUnit. |
-| Publication | Removed row, changed intent, orphan receipt or data interpreted as markup. |
-| Delivery | XML group kept as parallel reporting for the same audited selection. |
-
-The Gradle XMLis is a temporary identity and result oracle. After confronting HTML and detached revision, the delivery retains the HTML of the selection without copy of XML of the components.
-
-The qualification scheme with audited groups renounces the invocation in HTML, and the distribution metadata keep the hashes and limits. Unique historical evidence does not erase prior to their actual migration.
+RAG records each validated task independently before starting the next task. Reuse requires unchanged relevant production inputs, transitive dependencies, tests, resources, toolchain and selection. A failed case is rerun after correction; unrelated valid collections remain reusable. [Checkpoint and reuse](ATF_ReleaseQualification.md#resume-validated-steps)
 
 ## Rules, policies and memory
 
-[Romanian Whist oracle](../../whist-lab-app/game-core/src/test/java/ro/whistlab/core/rules/RomanianWhistModelTest.java) checks the deal, bids, legal moves, trick winners, scoring and restoration. The report groups successes by invariant and records the hand, step, expected value and actual value of the first mismatch. Each parameterized invocation has its own report entry.
+Full offline games and combinatorial rule checks belong to component collections with legal setups and the real engine. AI learning and reserved evaluation lots are opt-in; a policy metric is distinct from a legal-game oracle.
 
-| Selection | Contract |
+| Process | Declared resource contract |
 |---|---|
-| [The simulated game](../../whist-lab-app/game-core/src/test/java/ro/whistlab/core/match/OfflineMockMatchTest.java) | The number of hands, moves and completion are game oracles. Unrecoverable contracts, fallbacks and certificates are policy observations on the selected distribution. |
-| [Rescue objective](../../whist-lab-app/game-core/src/test/java/ro/whistlab/core/ai/contract/HardSalvageObjectiveTest.java) | Controlled positions shall verify the order of decision-making objectives. |
-| offlinePerspectiveMatchTest and offlineStrategyProfileMatchTest | Compare policies on identical distributions in lots separate from default regression. |
-
-| Process JVM | Limit of heap and proof |
-|---|---|
-| Daemon, JVM exclusive input | 256 MiB. |
-| Worker [common decks](../../whist-lab-app/gradle/component-audit.gradle) | 512 MiB per task, with the limit observed in the report. |
-| Verifier JUnit–Extent | 384 MiB for reconciling the report with the original results. |
-
-Collection: gamecore: regressionTest shares the default inventory between AI, rules, session and score, variants, independent player and rest of components. Each partition publishes its own HTML.
-
-Task keeps the claims after the first failure. The lot executed with --continue also keeps the results of the following taskpoints.
+| Test worker | One worker, 512 MiB heap, no early failure hiding later invocations. |
+| Report verifier | 384 MiB heap for original JUnit/HTML reconciliation. |
+| Component matrix | Aggregate exhaustive comparisons and the first precise mismatch; do not emit millions of PASS rows. |
 
 ## Execution and limits
 
-[Common configuration](../../whist-lab-app/gradle/component-audit.gradle) apply to both the Android reactor and [JVM exclusive input](../../whist-lab-app/algorithm-build/README.md). `whist.auditOutput` identify the director of the execution, and `whist.auditSource` Each task has one worker and one HTML of its own; additional parallelism requires distinct qualification.
+Use an external build/cache directory. `whist.auditOutput` selects the evidence location and `whist.auditSource` identifies the source context. Group affected tasks in one Gradle invocation and retain task-level checkpoints.
 
-- The aggregate launcher starts the required Gradle taskbooks once, with a test worker for each task.
-- The JUnit-Extent check leaves a temporary marker per task only after confronting identities and verdicts.
-- An independent task can publish his evidence when another task fails. The aggregate result shall retain the failure and duration of the launch.
-
-Computing, structural audit and interactive review are different controls. Only executed cases receive results; classification of a learning collection does not prove running. Acceptance of an APK is linked to the identified binary, according to the [the qualification of delivery](ATF_ReleaseQualification.md).
+[Testing strategy](README.md) · [Module × level matrix](ATF_TestingGuide.md) · [Shared table continuity](ATF_TableContinuity.md) · [Current Web suites](../../release/WEB/README.md)
