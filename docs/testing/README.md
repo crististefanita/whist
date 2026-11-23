@@ -22,6 +22,7 @@ The level describes the boundary checked; the collection selects cases and execu
 | In what order are release checks and evidence prepared? | [Qualification workflow](ATF_ReleaseQualification.md) |
 | What can I check about the display without the emulator? | [Display components](ATF_DisplayComponents.md) |
 | How do I check the game, geometry and gestures in the browser? | [Adapter and Playwright Components](../../atf-ui-browser/README.md#verification) |
+| How do APK and Web reuse every-seat phase assertions? | [Shared table continuity](ATF_TableContinuity.md) |
 | How do I audit Gradle components without parallel reports? | [Gradle capture and collections](ATF_GradleComponents.md) |
 
 ## From property to result

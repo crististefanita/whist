@@ -14,3 +14,7 @@ Controlled inputs and mocks own the combinations of anchors, sizes, text and del
 The HTML retains complete data and its owned inline captures. The [manifest](../index.json) holds inventory and hashes; checking them does not rerun the tests.
 
 - [Current handoff and dossier components](handoff/component-report.html)
+
+- [Shared every-seat APK/Web components](phases/component-report.html)
+
+- [Android JVM contract integration](apk-policy/component-report.html)

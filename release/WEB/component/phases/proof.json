@@ -1,0 +1,25 @@
+{
+  "schemaVersion" : 1,
+  "kind" : "ATF_TEST_CHANGE_PROOF",
+  "identity" : {
+    "id" : "WEB-EVERY-SEAT-PHASES",
+    "base" : "ae48475aaa6a6d52759f51597dcab73baa6ccbdd",
+    "commit" : "9b57a75bf5721a6199ccb9a38b23fd7f2f15b09c",
+    "diffSha256" : "5c09bc671e5b4d10e64c3e90630bab6e49f1c598c575455693470a82c886ac0a"
+  },
+  "positive" : [ {
+    "selector" : "atf.tests.governance.documentation.release.rag.nativeproof.WhistSurfaceAdapterComponentTest#everySeatAndLegalDealShareOneNativeWebPhaseContract",
+    "verdict" : "PASS"
+  }, {
+    "selector" : "atf.tests.governance.documentation.release.rag.nativeproof.WhistSurfaceAdapterComponentTest#preparedAndLiveSeatsShareIntrinsicHeightWithoutBottomAnchorStretch",
+    "verdict" : "PASS"
+  }, {
+    "selector" : "atf.tests.governance.documentation.release.web.WebReleaseDossierComponentTest#portableWebInventoryChecksHashesPathsAndEvidenceOwnership",
+    "verdict" : "PASS"
+  } ],
+  "negative" : [ {
+    "selector" : "atf.tests.governance.documentation.release.rag.nativeproof.WhistSurfaceAdapterComponentTest#sharedPhaseOracleRejectsEveryDisplacedOrMissingSeat",
+    "verdict" : "PASS"
+  } ],
+  "reportSha256" : "62fc4fde26a0168b49bce945effc6af5ca963d3b3876288e96b72ed079c8314e"
+}

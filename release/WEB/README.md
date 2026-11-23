@@ -27,9 +27,12 @@ Components own combinations of dimensions, text, anchors and event order. E2E re
 
 | Report | Original outcome | Role | Validator revision |
 |---|---|---|---|
-| [Current illustrated handoffs](e2e/oh-hell/extent.html) | `PASS` | `PRIMARY` | `91716314` |
-| [Current handoff and dossier components](component/handoff/component-report.html) | `PASS` | `PRIMARY` | `9a5b49b8` |
-| [Current ownership and source governance](governance/current/component-report.html) | `PASS` | `PRIMARY` | `9a5b49b8` |
+| [Five/six-player illustrated handoffs](e2e/table-handoffs/extent.html) | `PASS` | `PRIMARY` | `9b57a75b` |
+| [Shared every-seat APK/Web components](component/phases/component-report.html) | `PASS` | `PRIMARY` | `9b57a75b` |
+| [Current ownership and source governance](governance/current/component-report.html) | `PASS` | `PRIMARY` | `9b57a75b` |
+| [Android JVM contract integration](component/apk-policy/component-report.html) | `PASS` | `REFERENCE` | `9b57a75b` |
+| [Current illustrated handoffs](e2e/oh-hell/extent.html) | `PASS` | `REUSED` | `91716314` |
+| [Current handoff and dossier components](component/handoff/component-report.html) | `PASS` | `REUSED` | `9a5b49b8` |
 | [Report input and trace contracts](component/reporting/component-report.html) | `PASS` | `REUSED` | `91716314` |
 | [Shared geometry and controlled matrices](component/native-ports/component-report.html) | `PASS` | `REUSED` | `9ec0b560` |
 | [ATF governance reference](governance/atf/component-report.html) | `PASS` | `REFERENCE` | `9cc19f7f` |
