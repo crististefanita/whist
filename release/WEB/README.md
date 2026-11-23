@@ -4,7 +4,7 @@
 
 Portable index for Whist Web artifacts. Original evidence remains standalone; every report link is relative and works after copying the complete directory.
 
-**State: preparation.** The preceding public Web uses cache revision 0.10; the corrected 0.11 adapter is verified separately before publication is confirmed. Physical APK/Chrome comparison remains open.
+**State: browser-qualified.** Published revision 0.11 matches the executed browser resources under the delivery receipt's explicit comparison rules. Physical APK/Chrome comparison remains open.
 
 ## Reading path
 
@@ -28,6 +28,8 @@ Components own combinations of dimensions, text, anchors and event order. E2E re
 | Report | Original outcome | Role | Validator revision |
 |---|---|---|---|
 | [Current illustrated handoffs](e2e/oh-hell/extent.html) | `PASS` | `PRIMARY` | `91716314` |
+| [Current handoff and dossier components](component/handoff/component-report.html) | `PASS` | `PRIMARY` | `9a5b49b8` |
+| [Current ownership and source governance](governance/current/component-report.html) | `PASS` | `PRIMARY` | `9a5b49b8` |
 | [Report input and trace contracts](component/reporting/component-report.html) | `PASS` | `REUSED` | `91716314` |
 | [Shared geometry and controlled matrices](component/native-ports/component-report.html) | `PASS` | `REUSED` | `9ec0b560` |
 | [ATF governance reference](governance/atf/component-report.html) | `PASS` | `REFERENCE` | `9cc19f7f` |
@@ -43,6 +45,8 @@ Components own combinations of dimensions, text, anchors and event order. E2E re
 - [Diagnostics](diagnostics/README.md): original rejected evidence retained in full.
 
 ## Integrity and maintenance
+
+- [Delivery verification](e2e/oh-hell/delivery.json) identifies the published source and already tested resources; it is not another E2E execution.
 
 The [manifest](index.json) preserves each report's size, SHA-256, role and provenance. No duplicate PNGs, JUnit XML or builds are retained here; reports contain inline images.
 

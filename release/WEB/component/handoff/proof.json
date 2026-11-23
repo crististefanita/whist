@@ -1,0 +1,25 @@
+{
+  "schemaVersion" : 1,
+  "kind" : "ATF_TEST_CHANGE_PROOF",
+  "identity" : {
+    "id" : "WEB-HANDOFF-DOSSIER",
+    "base" : "9cc19f7f16b1c09f6e5737ffee9a97e18a26e668",
+    "commit" : "9a5b49b82d3fb9b3ad7d5815ff213a8305bb5eb8",
+    "diffSha256" : "ffc0e24b1f7540d8f216c12118c51df61148f7710bcfae07884f7859fe7e28d9"
+  },
+  "positive" : [ {
+    "selector" : "atf.tests.governance.documentation.release.rag.nativeproof.WhistSurfaceAdapterComponentTest#preparedAndLiveSeatsShareIntrinsicHeightWithoutBottomAnchorStretch",
+    "verdict" : "PASS"
+  }, {
+    "selector" : "atf.tests.governance.documentation.release.web.WebReleaseDossierComponentTest#portableWebInventoryChecksHashesPathsAndEvidenceOwnership",
+    "verdict" : "PASS"
+  }, {
+    "selector" : "atf.tests.governance.documentation.release.web.WebReleaseDossierComponentTest#currentWebDossierHasOneIllustratedFlowAndNoComponentCaptures",
+    "verdict" : "PASS"
+  } ],
+  "negative" : [ {
+    "selector" : "atf.tests.governance.documentation.release.ReleaseArtifactLayoutGovernanceTest#onlyTheExplicitTypedWebFolderIsAcceptedBesideAndroidVersions",
+    "verdict" : "PASS"
+  } ],
+  "reportSha256" : "993a8ac03b3a1f7a00a058a8dc38c0c0a0eeddb3179aebbcb5b8e84e36141935"
+}

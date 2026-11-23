@@ -1,15 +1,12 @@
 {
   "schemaVersion": 1,
   "kind": "WHIST_WEB_TEST_DOSSIER",
-  "state": "OPEN",
+  "state": "BROWSER_QUALIFIED",
   "publication": {
     "url": "https://crististefanita.github.io/whist/",
-    "sourceCommit": "9cc19f7f16b1c09f6e5737ffee9a97e18a26e668",
-    "cacheRevision": "0.10"
-  },
-  "candidate": {
+    "sourceCommit": "9a5b49b82d3fb9b3ad7d5815ff213a8305bb5eb8",
     "cacheRevision": "0.11",
-    "runtimeSnapshot": "e2e/oh-hell/runtime-snapshot.json"
+    "receipt": "e2e/oh-hell/delivery.json"
   },
   "reports": [
     {
@@ -25,6 +22,25 @@
         "tricks": 27,
         "deposits": 108
       }
+    },
+    {
+      "id": "handoff-components",
+      "category": "component",
+      "path": "component/handoff/component-report.html",
+      "role": "PRIMARY",
+      "result": "PASS",
+      "validatorCommit": "9a5b49b82d3fb9b3ad7d5815ff213a8305bb5eb8",
+      "proof": "component/handoff/proof.json",
+      "scope": "Four selected component methods: 768 controlled intrinsic-measurement combinations without screenshots, portable dossier positive/negative controls, current inventory and typed catalog rejection."
+    },
+    {
+      "id": "current-governance",
+      "category": "governance",
+      "path": "governance/current/component-report.html",
+      "role": "PRIMARY",
+      "result": "PASS",
+      "validatorCommit": "9a5b49b82d3fb9b3ad7d5815ff213a8305bb5eb8",
+      "scope": "Focused follow-up after separating Web report ownership: current source quality, package cohesion, testChanges proof admission, catalog navigation and real dependency closure. Prior unrelated checks are not replayed."
     },
     {
       "id": "WEB-REPORTING",
@@ -133,6 +149,30 @@
       "path": "e2e/oh-hell/runtime-snapshot.json",
       "bytes": 3296,
       "sha256": "7f041e58a94e0a9d98c35aa56eca365a2fd17c153d7a2e5b7cdd76a4f8c8435f"
+    },
+    {
+      "path": "component/handoff/component-report.html",
+      "bytes": 2719954,
+      "sha256": "993a8ac03b3a1f7a00a058a8dc38c0c0a0eeddb3179aebbcb5b8e84e36141935"
+    },
+    {
+      "path": "component/handoff/proof.json",
+      "bytes": 1242,
+      "sha256": "dac9b22c227d0eeecc552d8467c2ee5b35a6327b3c03f8e62e7523dd53f12fc1"
+    },
+    {
+      "path": "governance/current/component-report.html",
+      "bytes": 2503475,
+      "sha256": "2906130219773315afcc6680054e7f9d983f9944bac3fc00dcfb0e5e60ad834b"
+    },
+    {
+      "path": "e2e/oh-hell/delivery.json",
+      "bytes": 8318,
+      "sha256": "18299bebde5d1bbd13d04dbe7df179882e8387ccb7e7ecd2dc1f7bf17365d780"
     }
-  ]
+  ],
+  "executedRuntime": {
+    "cacheRevision": "0.11",
+    "runtimeSnapshot": "e2e/oh-hell/runtime-snapshot.json"
+  }
 }
