@@ -102,9 +102,17 @@ public class BrowserExtentPublicationComponentTest {
         assertTrue(text.contains("Click the legal A♠") && text.contains("Observe the AI deposit"), "Observing an AI action cannot be relabelled as a driver click");
         String flowHtml = flow.outerHtml();
         int firstStep = flowHtml.indexOf("Human deposits A♠"), secondStep = flowHtml.indexOf("AI deposits K♥");
-        int firstImage = flowHtml.indexOf(BrowserReportFixture.payload(root.resolve("first.png")));
-        int secondImage = flowHtml.indexOf(BrowserReportFixture.payload(root.resolve("second.png")));
+        int firstImage = flowHtml.indexOf("DEPOSIT_CAPTURE_0"), secondImage = flowHtml.indexOf("DEPOSIT_CAPTURE_1");
         assertTrue(firstImage > firstStep && firstImage < secondStep && secondImage > secondStep, "Step images remain between their original action and the next action");
+        // Reporting may intern identical PNG bytes; the owner keeps its ordered reference.
+        var links = flow.select("a[data-atf-screenshot-ref]");
+        assertEquals(2, links.size(), "Both steps retain their own image reference");
+        for (int i = 0; i < 2; i++) {
+            String ref = links.get(i).attr("data-atf-screenshot-ref");
+            Element image = doc.getElementById("atf-screenshot-" + ref);
+            assertNotNull(image, "The step reference resolves inside the same HTML");
+            assertTrue(image.attr("href").endsWith(BrowserReportFixture.payload(root.resolve(i == 0 ? "first.png" : "second.png"))), "The referenced bytes belong to the original step");
+        }
         assertFalse(text.contains("Recorded comparisons"), "Stepped flows do not add a synthetic aggregate assertion");
         assertFalse(doc.selectFirst("#dashboard-view").text().contains("FRAME_ASSERTION"), "Overview remains standard");
     }

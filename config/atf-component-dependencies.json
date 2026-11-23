@@ -345,7 +345,7 @@
     "atf-tests/src/test/java/atf/tests/reporting/acceptance/CombinedAcceptanceReport.java": "f13ed703066f07a35581aacdf929a4d26fe6b516e00b52e53fb5e16ced366be5",
     "atf-tests/src/test/java/atf/tests/reporting/acceptance/NativeModuleResults.java": "a0a08601595a5c56a0ab4c6ba42349996f0b687e722a206951363fa8a3c0fd3c",
     "atf-tests/src/test/java/atf/tests/reporting/acceptance/NativeModuleResultsComponentTest.java": "4520398ee795dca5eaef903f95a3ca1f7585920fea8def61bb2d38c70be26cd7",
-    "atf-tests/src/test/java/atf/tests/reporting/browser/BrowserExtentPublicationComponentTest.java": "f6eea03e22375436770425e6ebbf557e0d8e5819382b89bd000608620ea3398e",
+    "atf-tests/src/test/java/atf/tests/reporting/browser/BrowserExtentPublicationComponentTest.java": "ff5236ed2b7b18e21f55b17f75115e31166e3f814e02a22a7be93ae058431f6e",
     "atf-tests/src/test/java/atf/tests/reporting/browser/BrowserReportFixture.java": "7b526134a563aa3b41209bbe6cf1eb4cd7d00acc84080f294c0dfb28eed2404c",
     "atf-tests/src/test/java/atf/tests/reporting/replay/ReplayEvidenceFiles.java": "b784f1daefb3fca8ee6cf0e70f3523a47a200cf4d414b1e10e30e1b95ab156bf",
     "atf-tests/src/test/java/atf/tests/reporting/replay/UiFlowReplay.java": "dfbbe516c85117f0888d3e0bea496f5ee6a0d9f4bb58a7ae6b481c1a2bfecd63",
