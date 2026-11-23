@@ -55,9 +55,15 @@ Implementarea verificării este legată de contractul exercitat:
 
 ## Calificarea unui producător
 
-Un E2E ilustrat în navigator urmărește un singur viewport lizibil și un flux coerent de joc. Testele de componentă dețin combinațiile de viewport, scară a textului, limbă și număr de locuri. Fiecare pas de joc înregistrat nou precizează acțiunea sau observația, starea originală înainte/după, comparațiile individuale așteptat/observat și verdictele evaluate. Compararea numai a extremelor finale nu înlocuiește verificările fiecărei depuneri.
+Un E2E ilustrat în navigator urmărește un singur viewport lizibil și un flux coerent de joc. Testele de componentă dețin combinațiile de viewport, scară a textului, limbă și număr de locuri.
 
-Consumatorul pentru navigator distinge comenzile reale ale driverului de observațiile jocului AI. Chenarele, rândurile ajustate, rezerva mâinii private și cărțile deja depuse sunt comparate independent; eliminarea unei cărți umane confirmate poate recentra intenționat evantaiul rămas. Intervalul original observat aparține acelei comparații și nu reprezintă timpul publicării. Imaginile păstrează dimensiunile originale în pixeli și pasul producător; Overview rămâne standard.
+| Înregistrare | Contract obligatoriu |
+|---|---|
+| Pas | Păstrează acțiunea sau observația, stările originale înainte/după, comparațiile individuale așteptat/observat și verdictele evaluate; extremele finale nu înlocuiesc verificările fiecărei depuneri. |
+| Responsabilitate | Distinge comenzile reale ale driverului de observațiile jocului AI. |
+| Geometrie | Compară independent chenarele, rândurile ajustate, rezerva mâinii private și cărțile depuse; o eliminare umană confirmată poate recentra intenționat evantaiul. |
+| Timp | Păstrează intervalul original observat separat de timpul execuției publicării. |
+| Capturi | Păstrează dimensiunile originale în pixeli și pasul producător, inclusiv referințele la PNG-uri identice stocate o singură dată în același HTML; Overview rămâne standard. |
 
 [Componentele publicării](../../atf-tests/src/test/java/atf/tests/reporting/browser/BrowserExtentPublicationComponentTest.java) exercită pașii ordonați, proprietatea stărilor înainte/după, imaginile inline, rândurile explicite de aserțiuni și refuzul anterior publicării. Aserțiunile goale sau lipsă, stările originale absente, ID-urile duplicate și rezultatele contradictorii ale pasului/cazului nu pot produce un raport HTML acceptat. Intrările istorice agregate sunt etichetate drept rezumate în locul prezentării retroactive ca parcursuri înregistrate.
 
