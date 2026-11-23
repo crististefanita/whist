@@ -1,0 +1,25 @@
+{
+  "schemaVersion" : 1,
+  "kind" : "ATF_TEST_CHANGE_PROOF",
+  "identity" : {
+    "id" : "WEB-INTRINSIC-FOOTPRINT",
+    "base" : "c07a11a46e2c48a25272ea81de5f63797794538b",
+    "commit" : "9ec0b560ae9c85110a07212df7035d0c019fde64",
+    "diffSha256" : "11ffc74d109eef6370f01f199e7ad2615b0afe2592a7013d13731439418c5e2b"
+  },
+  "positive" : [ {
+    "selector" : "atf.tests.governance.documentation.release.rag.nativeproof.WhistSurfaceAdapterComponentTest#mountedCardsAndLayoutOwnersSurvivePhaseAndActorChanges",
+    "verdict" : "PASS"
+  }, {
+    "selector" : "atf.tests.governance.documentation.release.rag.nativeproof.WhistSurfaceAdapterComponentTest#webAndNativePortablePortsKeepMeasuredGeometryFacesAndGesturesAligned",
+    "verdict" : "PASS"
+  }, {
+    "selector" : "atf.tests.governance.documentation.release.rag.nativeproof.WhistSurfaceAdapterComponentTest#adaptiveWebMenusKeepTextIndependentOfTheUsableViewport",
+    "verdict" : "PASS"
+  } ],
+  "negative" : [ {
+    "selector" : "atf.tests.governance.documentation.release.rag.nativeproof.WhistSurfaceAdapterComponentTest#surfaceLifecycleRejectsInvalidPagesAndCallbacksAfterDisposal",
+    "verdict" : "PASS"
+  } ],
+  "reportSha256" : "8d7b648c849811162fd7c6a77b09a6536a7c7d496aa15c8b545e18ce6768adce"
+}

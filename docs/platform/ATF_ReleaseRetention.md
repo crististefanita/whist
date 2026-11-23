@@ -39,12 +39,27 @@ release/
 - Indexul folosește `schemaVersion: 2`, `currentVersion` și cel mult două intrări în `versions`, începând cu ediția curentă și apoi ediția imediat anterioară.
 - README-ul principal și indexul identifică exclusiv versiunea curentă. Un reper anterior poate documenta auditul, dar nu înlocuiește APK-ul, linkul sau proba descărcării candidatului activ.
 - APK-ul și checksum-ul aparțin aceluiași dosar cu manifestul versiunii; nu se păstrează o a doua copie activă într-un director de distribuție. README-ul principal trimite la catalogul `release`.
-- `release` conține catalogul, indexul și cel mult două dosare de versiune. Numele fiecărui dosar și manifestul trebuie să coincidă; `currentVersion` trebuie să existe în prima poziție.
+- `release` conține catalogul, indexul, cel mult două directoare de versiune Android și dosarul Web înregistrat explicit. Numele fiecărui director Android corespunde manifestului, iar `currentVersion` este prima intrare.
 - README-ul versiunii prezintă livrarea și trimite la `reports/README.md`, care explică selecțiile, rezultatele și limitele. Manifestul și metadatele prezentării aparțin versiunii; raportul canonic și diagnosticele aparțin subdirectorului `reports`.
 - Dosarul păstrează raportul canonic și numai dovezile ori diagnosticele auxiliare justificate pentru APK. [Contractul predării](../reporting/ATF_Handoff.md#livrabil-compact-și-excepții) cere eliminarea copiilor deja încorporate și păstrarea dovezii unice până la publicarea completă. Un rezultat omis sau blocat rămâne explicit; nu se preia automat verdictul altei versiuni.
 - Build-urile, candidații intermediari și diagnosticele istorice rămân în TMP sau în arhiva externă. [Strategia comună](../testing/README.md) rămâne independentă de versiune.
 
 ## Înlocuire și recuperare
+
+### Dovezi Web independente
+
+Catalogul înregistrează exact `WEB/index.json` pentru [dosarul Web curent](../../release/WEB/README.md). Acest director tipizat are propriul inventar imuabil de rapoarte; nu schimbă retenția Android și nu pretinde calificarea APK-ului.
+
+| Categorie | Contract de retenție |
+|---|---|
+| Componente | Comparații Extent originale, precondiții controlate și cazuri negative; fără poze. |
+| E2E | Un parcurs ilustrat primar la un viewport lizibil, cu acțiuni, observații și aserțiuni individuale ordonate. |
+| Guvernanță | Verificări ale sursei și inventarului identificat, cu domeniul original. |
+| Referințe și diagnostice | Păstrați doar dovezile care explică acoperirea curentă sau o regresie activă; păstrați verdictele originale. |
+
+Rulați `node atf-tests/tools/web-release-dossier.mjs $ProjectRoot` după actualizarea legăturilor sau fișierelor. Verifică rutele relative, hash-urile, proveniența și responsabilitățile, respinge fișierele neînregistrate și exclude PNG-urile separate, XML-urile JUnit și build-urile. Integritatea indexului nu califică sursa modificată și nu înlocuiește execuțiile originale.
+
+### Rotația edițiilor Android
 
 1. Pregătiți noul dosar în afara directorului activ; fixați sursele și dependențele executate.
 2. Arhivați dosarul precedent, manifestul și indexul. Confruntați fișierele prin SHA-256 și verificați arhiva înaintea mutării surselor vechi.

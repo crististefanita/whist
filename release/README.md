@@ -4,6 +4,8 @@
 
 Catalogul urmărește ediția Android curentă și predecesoarea imediată. Un release se publică numai după ce APK-ul, dovezile legate de sursă și calificarea selectată prin diff trec procesul RAG.
 
+[Dosarul curent de teste Web](WEB/README.md) indexează separat contractele componentelor fără poze și parcursul browser focalizat ilustrat. Manifestul păstrează identitatea rapoartelor și starea publicării; dovezile Web nu reprezintă o ediție Android.
+
 ## Versiunea curentă
 
 [0.23.2 — Release Android de mentenanță](0.23.2/README.md) este publicat; APK-ul și checksum-ul au trecut verificarea descărcării directe.

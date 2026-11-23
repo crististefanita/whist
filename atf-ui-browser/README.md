@@ -14,7 +14,7 @@ Whist folosește motorul Java și contractele portabile ale mesei atât în APK,
 |---|---|
 | Eticheta actorului | Un `actorLabel` opțional, furnizat de consumator, păstrează acțiunea vizibilă a jocului, inclusiv la locul uman. Antetele ascunse sunt excluse înainte de layout. |
 | Textul locului | `SeatTypography` furnizează rolurile; textul măsurat se încadrează orizontal fără schimbarea înălțimii rândului. |
-| Măsurarea chenarului | Numele și valorile încadrate ca în interfața nativă păstrează un singur rând, textul complet și înălțimea intrinsecă stabilă la valori necunoscute, cu una sau două cifre. Valorile vechi cu mai multe rânduri sunt limitate la copii direcți neîncadrați. Culorile stării active nu schimbă dimensiunile. |
+| Măsurarea chenarului | Numele și informațiile încadrate în stil nativ păstrează un rând, textul complet și o înălțime intrinsecă stabilă pentru valori necunoscute, cu una sau două cifre. Probele intrinseci resetează toate ancorele, inclusiv ancora inferioară moștenită, înaintea măsurării înălțimii automate. Chenarele pregătite și cele montate folosesc astfel aceeași măsurare. |
 | Textul scorului | `ScoreTypography` transmite dimensiuni logice adaptoarelor sp native și rem Web; mărirea accesibilă se aplică o singură dată. |
 | Identitatea chenarului | Reafișările pregătite păstrează montate vederea, tabla, antetul, atuul, rândurile compatibile și fețele depuse. O mână delegată neschimbată păstrează evantaiul, nodurile cărților și derularea; mesele incompatibile și mâinile schimbate montează conținut nou. |
 | Responsabilitatea intrării | Adaptorul eliberează responsabilul mâinii anterioare înaintea pregătirii vederii și leagă un singur responsabil de evantaiul confirmat. Răspunsurile și ridicările eliberate nu pot desena sau trimite comenzi; anularea obișnuită păstrează utilizabil ascultătorul curent. Acțiunile actuale ale meniului păstrează starea deschisă. |
@@ -299,6 +299,10 @@ Whist folosește aceeași politică nativă a mesei prin [WhistBoardAdapter](whi
 [Componentele adaptorului](tests/whist-surface-contract.test.mjs) compilează numai dependențele portabile cu JDK, fără Gradle, SDK sau emulator. [Responsabilul JUnit](../atf-tests/src/test/java/atf/tests/governance/documentation/release/rag/nativeproof/WhistSurfaceAdapterComponentTest.java) capturează observațiile reale în Extent. Scara implicită a textului rămâne neschimbată; intrările de scară invalide sunt refuzate la frontiera geometriei.
 
 ## Verificare
+
+- Componentele dețin combinațiile, cu precondiții explicite și date controlate ale rendererului, fără capturi. [Regresia trecerii între jucători](tests/seat-handoff.test.mjs) variază scara textului, lățimea, ancora, înălțimea anterioară și starea activă prin adaptorul de măsurare din producție; compară cerința intrinsecă cu o probă independentă fără ancore.
+
+- Păstrați puține E2E-uri ilustrate: un viewport lizibil și un parcurs relevant manual/AutoGame, cu observații ordonate înainte/după și aserțiuni individuale. [Dosarul Web curent](../release/WEB/README.md) leagă rapoartele originale prin căi relative și separă parcursul activ, componentele refolosite, referințele și diagnosticele respinse. Componentele califică combinațiile; parcursul browser confirmă integrarea fără a pretinde acceptanță nativă APK.
 
 Meniul mesei expune direct istoricul scorului în Whist și Rentz prin adaptorul comun de meniu. Deschiderea istoricului suspendă programarea automată; închiderea dialogului reia aceeași masă fără repetarea comenzilor. Componentele verifică etichetele localizate, un callback per alegere, închiderea la click în exterior și planurile de meniu imuabile.
 
