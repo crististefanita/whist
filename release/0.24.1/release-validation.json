@@ -1,7 +1,7 @@
 {
   "schemaVersion": 2,
   "publication": {
-    "state": "QUALIFIED",
+    "state": "PUBLISHED",
     "channel": "TEST",
     "repository": "crististefanita/whist",
     "accessMode": "AUTHENTICATED",
@@ -57,6 +57,10 @@
           "signing": {
             "status": "PASS",
             "receipt": "reports/diagnostics/signing-compatibility.json"
+          },
+          "distributionDownload": {
+            "status": "PASS",
+            "receipt": "reports/distribution-verification.json"
           }
         }
       }
@@ -225,7 +229,7 @@
   "integrity": {
     "schemaVersion": 1,
     "kind": "OBSERVED_PAYLOAD_HASHES",
-    "observedUtc": "2026-11-23T19:06:01.615Z",
+    "observedUtc": "2026-11-23T19:09:13.016Z",
     "files": [
       {
         "path": "README.md",
@@ -241,6 +245,21 @@
         "path": "WhistLab-0.24.1.apk.sha256",
         "bytes": 86,
         "sha256": "66f06a1bafa79a76c754754e5ff8febbe76325ba5934a1e850621702653af57c"
+      },
+      {
+        "path": "github-release.json",
+        "bytes": 873,
+        "sha256": "ab2242db13c5fa75f9df7868a2d5786d6be6be788815a928a819a321ec22c669"
+      },
+      {
+        "path": "release-notes.md",
+        "bytes": 572,
+        "sha256": "8f2cb578177b6c383de27e31fb148bca9a2e934fb7e04a59a2a9d22925cd97dd"
+      },
+      {
+        "path": "release-presentation.json",
+        "bytes": 508,
+        "sha256": "a3bcee008f522c68578df567307b8b25e35795e59d797c9247908c0912977d76"
       },
       {
         "path": "reports/README.md",
@@ -546,6 +565,11 @@
         "path": "reports/diagnostics/zipalign.log",
         "bytes": 1088,
         "sha256": "6ba05c153fd66fbb41debd3ea9e00567c19bce2ee777b108b0792e9b18766f68"
+      },
+      {
+        "path": "reports/distribution-verification.json",
+        "bytes": 1167,
+        "sha256": "bdbb34577721e64e168049d50181d2e67b638b29121e1dc5bb4e5229c5d066d2"
       },
       {
         "path": "reports/e2e/README.md",

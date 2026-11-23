@@ -1,0 +1,11 @@
+{
+  "version": "0.24.1",
+  "mode": "changes",
+  "previousVersion": "0.24.0",
+  "points": [
+    "Preserve exhaustive geometry and history coverage with audit inputs aggregated by invariant.",
+    "Separate units without Extent from auditable components without product captures.",
+    "Reuse unchanged component evidence while retaining its original provenance."
+  ],
+  "evidenceUrl": "https://github.com/crististefanita/whist/blob/3992a95d32739c6947009a45e2ec785dfd5119af/release/0.24.1/reports/README.md"
+}
