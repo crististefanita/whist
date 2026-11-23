@@ -87,6 +87,8 @@ Folosiți un director extern pentru build și cache. `whist.auditOutput` selecte
 
 [Strategia de testare](README.md) · [Matrice modul × nivel](ATF_TestingGuide.md) · [Continuitatea comună a mesei](ATF_TableContinuity.md) · [Suite Web curente](../../release/WEB/README.md)
 
+<a id="bounded-matrix-inputs"></a>
+
 ## Intrări limitate pentru matrice
 
 Matricele reușite agregă comparațiile pe invariantă.
@@ -95,3 +97,4 @@ Matricele reușite agregă comparațiile pe invariantă.
 - Înghețați contextul mutabil înaintea evaluării și publicați-l complet la prima abatere.
 - Matricele de înregistrări, geometrie fină, animație și pixeli rămân componente, fără imagini de produs sau ale desenărilor sintetice; verificările pixelilor se execută în continuare pe rastere în memorie sau trecute prin fișier.
 - Unitarele izolate păstrează diagnosticele JUnit fără Extent.
+- Păstrați semantica suprasarcinilor numerice folosind tipul primitiv lărgit original. Numărați independent perechile matricii și cazurile separate de intrare invalidă.

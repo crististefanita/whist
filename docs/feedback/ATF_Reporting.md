@@ -45,9 +45,7 @@ Consumatorul deține momentul validării și datele transmise. Dacă API-ul publ
 
 ## Costul intrărilor consumatorului
 
-Matricile de proiecție Whist, încadrare a mesei, spațiere între faze, evantai, coloane de scor și serii decontate folosesc registrul exhaustiv: fiecare pereche este evaluată, populația așteptată este verificată, iar prima nepotrivire păstrează contextul complet. Producătorii mari rămași cer aceeași analiză înaintea agregării; un mesaj PASS scurt, fără acoperire sau oracol independent, nu este suficient. Resursele comune ale rendererului și fixture-urile PNG sintetice se măsoară separat de capturile produsului.
-
-- [ ] Extinde inputurile limitate ale matricilor la producătorii rămași de înregistrări, raster și layout detaliat, păstrând fiecare identitate de scenariu, invariant și context de eșec. Compară octeții corpurilor pentru selecții identice și păstrează rapoartele release-urilor calificate originale. Verificările strict unitare rămân în afara Extent; contractele adaptoarelor de componentă își păstrează rapoartele auditate.
+[Ghidul componentelor Gradle](../testing/ATF_GradleComponents.md#bounded-matrix-inputs) definește agregarea intrărilor matricilor, populațiile independente și contextul primei abateri. Optimizările ulterioare păstrează aceleași oracole și măsoară separat corpurile cazurilor, resursele comune și imaginile observațiilor E2E.
 
 | Prioritate | Responsabil și calificare rămasă | Nivel și criteriu de închidere |
 |---|---|---|
