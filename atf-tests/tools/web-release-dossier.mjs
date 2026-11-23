@@ -30,7 +30,7 @@ export function verifyWebDossier(project){
   requireValue(typeof report.id==='string'&&report.id&&!ids.has(report.id),'DUPLICATE_REPORT');ids.add(report.id);
   requireValue(categories.includes(report.category)&&report.path.startsWith(report.category+'/')&&report.path.endsWith('.html')&&!reports.has(report.path),'REPORT_PATH');reports.add(report.path);
   requireValue(files.has(report.path)&&guide.includes('('+report.path+')'),'REPORT_LINK');
-  requireValue(['PRIMARY','REUSED','REFERENCE','REJECTED'].includes(report.role)&&['PASS','FAIL'].includes(report.result)&&typeof report.scope==='string'&&report.scope.length>15,'SCOPE');
+  requireValue(['PRIMARY','REUSED','REFERENCE','REJECTED','SUPPLEMENTAL'].includes(report.role)&&['PASS','FAIL'].includes(report.result)&&typeof report.scope==='string'&&report.scope.length>15,'SCOPE');
   requireValue(/^[a-f0-9]{40}$/.test(report.validatorCommit??''),'PROVENANCE');
   const html=read(report.path).toString('utf8');
   requireValue(html.includes('id="dashboard-view"')&&html.includes('helm-validation-table'),'EXTENT');
@@ -43,7 +43,9 @@ export function verifyWebDossier(project){
  }
  requireValue(primary===1,'PRIMARY_E2E');
  requireValue([...files.keys()].filter(n=>n.endsWith('.html')).every(n=>reports.has(n)),'UNREGISTERED_REPORT');
- const expected=new Set(['index.json','README.md',...categories.map(n=>n+'/README.md'),...files.keys()]);
+ const indexedCategories=categories.filter(category=>category!=='reference'
+  ||index.reports.some(report=>report.category===category)||fs.existsSync(path.join(root,category,'README.md')));
+ const expected=new Set(['index.json','README.md',...indexedCategories.map(n=>n+'/README.md'),...files.keys()]);
  const actual=[];const walk=prefix=>{for(const entry of fs.readdirSync(path.join(root,prefix),{withFileTypes:true})){const name=prefix+entry.name;requireValue(!entry.isSymbolicLink(),'INDIRECT_PATH');if(entry.isDirectory())walk(name+'/');else{requireValue(entry.isFile(),'REGULAR_FILE');actual.push(name);}}};walk('');
  requireValue(actual.length===expected.size&&actual.every(n=>expected.has(n)),'UNREGISTERED_FILE');
  for(const file of expected)if(file.endsWith('.md'))read(file);
