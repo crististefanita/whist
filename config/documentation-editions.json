@@ -2,8 +2,8 @@
   "schemaVersion": 2,
   "englishBranch": "main",
   "romanianBranch": "main_RO",
-  "documents": 111,
-  "englishSha256": "ebfc5b16f30f4df3b70ebcb2ba886a7b1b097f433cf616d9e386cbfa20b672b3",
-  "romanianSha256": "7162821461d8388842ff4ba46150efcefcae5b369b937fa6f317538723927fd3",
-  "romanianCommit": "2e758f56f6d7e05e8077a2fe01abd65794a78ec1"
+  "documents": 117,
+  "englishSha256": "7db7915bc3602d9e9c7119c85910a73bb9ab8aeb1816dd974c9b0454585cadf9",
+  "romanianSha256": "94b5f10f5412e0bf82a77d2757cf3a1c8702c51359a60cdaa8240de955ecb49d",
+  "romanianCommit": "57f844a75dc2fcd0fe41233182ba4c4a7804bdba"
 }
