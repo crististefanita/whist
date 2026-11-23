@@ -17,6 +17,10 @@ Proiectul deține perimetrul Android și adaptarea verificatoarelor. Contractul 
 
 [Guvernanța calității](../governance/README.md) · [Bune practici documentare](../governance/ATF_Documentation.md)
 
+| ID | Graniță rămasă | Criteriu de închidere |
+|---|---|---|
+| GOV-06 | [BrowserUi](../../atf-ui-browser/tests/BrowserUi.java) combină găzduirea locală, ciclul de viață al browserului, conducerea scenariilor și emiterea rezultatelor. | Extrageți responsabilitățile în colaboratori mici, păstrând ID-urile scenariilor, identitatea sursei, curățarea profilurilor proprii și ieșirea Extent standard în engleză. Separați componentele de ciclu de viață/erori de fluxurile jocului și comparați inventarul cazurilor selectate înainte și după extragere; nicio acoperire nu poate fi eliminată. |
+
 ## Calificarea afirmațiilor și lansatoarelor
 
 Legarea dovezilor de sursa calificată este verificată de [regresiile evaluatorului RAG](../testing/ATF_ReleaseQualification.md#regresiile-evaluatorului). Integritatea APK-ului și a payload-ului din dosarele înregistrate rămâne verificată de [guvernanța integrității release-ului](../../atf-tests/src/test/java/atf/tests/governance/documentation/release/ReleaseIntegrityGovernanceTest.java).
