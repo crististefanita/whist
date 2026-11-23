@@ -62,7 +62,10 @@ GameSession validates the controls before changing state; the UI renders the cap
 | Component | Responsibility |
 |---|---|
 | [game-core](game-core/README.md) | Rules, session, scoring, persistence and application AI policy; JVM tests. |
-| [atf-card-table-ui](atf-card-table-ui/README.md) | Reusable Android Core: menu/profile, widgets, cards, theme and hand geometry; without game engine or ATF libraries. |
+| [card-table-core](card-table-core/README.md) | Portable geometry, content, text roles, deterministic effects and neutral component fixtures. |
+| [card-table-android](atf-card-table-ui/README.md) | Native widgets, resources and measurements; consumes core and keeps its existing physical directory. |
+| [card-table-web](../atf-ui-browser/README.md) | Browser renderer and JVM/compiled-page adapter; consumes the same core contracts. |
+| [whist-presentation](whist-presentation/README.md) | Game-owned portable setup, labels, public content, achievements, score rows and checkpoint codecs for both renderers. |
 | [card-table-names](card-table-names/README.md) | Shared Java policy for seat-name assignment and human-name validation. |
 | [app](app/src/main/java/ro/whistlab/app/) | Android activity, table configuration, game presentation and local persistence. |
 | [ai-lab](ai-lab/README.md) | JVM module of independent player, tools and experiments offline; consumed only on testing. |

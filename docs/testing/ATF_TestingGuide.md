@@ -66,7 +66,7 @@ These rows describe executable boundaries, not Maven annotations. Source-set own
 | `card-table-web` | — | ✅ | ✅ | ✅ | Shared Java projection plus controlled DOM/clock components; one explicit short browser sanity flow checks wiring. [Web renderer](../../atf-ui-browser/README.md#verification) |
 | `whist-presentation` | — | ✅ | — | — | Game-specific portable projection; existing APK/Web component providers preserve catalog, checkpoint and presentation case identities. |
 | `whist-lab-app/app` | — | ✅ | — | — | Commands, bidding, display, history and achievement primary tasks test Whist projections and lifecycle without a device. Installed-app journeys are owned by Maven's Android E2E module. |
-| `whist-lab-app/game-core` | ✅ | ✅ | — | — | Rules, score and checkpoints; release rule collections exclude AI learning experiments. |
+| `whist-lab-app/game-core` | — | ✅ | — | — | Rules, score and checkpoints; release rule collections exclude AI learning experiments. |
 | `whist-lab-app/ai-lab` | — | ✅ | — | — | Independent player and offline policy comparisons on legal fixtures and reserved deals. |
 | `test-audit` | — | ✅ | — | — | Capture, evaluated assertions and report/JUnit reconciliation; test-only dependency. |
 
