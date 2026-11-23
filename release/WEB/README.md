@@ -51,7 +51,7 @@ Components own combinations and deliberate negative cases without photos. Unit p
 
 The [manifest](index.json) binds exact bytes, SHA-256, source and scope. [Core execution](component/core/execution.json) reconciles 50 component invocations; [unit metadata](component/core/unit-execution.json) records three isolated units without retaining XML or creating Extent. [Original source inventory](component/core/source-provenance.json) retains its relative input manifests.
 
-[Interactive report review](governance/browser-review/execution.json) observed standard Overview charts, no Overview gallery, component reports without photos, and the E2E's ordered steps and captures. [Previous public delivery](e2e/oh-hell/delivery.json) stays a reference to revision 0.11, not proof of the local 0.12 runtime.
+[Interactive report review](governance/browser-review/execution.json) observed standard `Overview` charts, no Overview gallery, component reports without photos, and the E2E's ordered steps and captures. [Previous public delivery](e2e/oh-hell/delivery.json) stays a reference to revision 0.11, not proof of the local 0.12 runtime.
 
 ```powershell
 node .\atf-tests\tools\web-release-dossier.mjs $ProjectRoot
