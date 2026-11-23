@@ -35,8 +35,12 @@ Folosiți directorul extern de construire și cache-urile configurate în proiec
 | `src/main/java` | Modele, geometrie, tipografie și efecte deterministe. | JAR de execuție. |
 | `src/test/java` | Contracte publice de componentă, precondiții, comparații și controale negative. | Extent canonic reconciliat cu JUnit; fără poze de continuitate. |
 | `src/testFixtures/java` | Măsurători imuabile și oracol neutru de continuitate; fără importuri din joc sau raportare. | JAR de fixture-uri pentru componentele adaptoarelor. |
-| `src/unitTest/java` | Calcule izolate și proprietatea snapshoturilor. | Diagnostice JUnit; fără Extent. |
+| `src/unitTest/java` | Praguri de viewport, potrivirea textului din atu, calcule izolate și proprietatea snapshoturilor. | Diagnostice JUnit; fără Extent. |
 
-Rulați `:card-table-core:test` pentru componente și `:card-table-core:unitTest` pentru unitare. `:card-table-core:check` le selectează pe ambele. Matricele de rezoluție, scară a textului, toate locurile și cazurile furnizate de joc aparțin componentelor; E2E de platformă păstrează doar parcursuri scurte de navigare și interacțiune.
+Rulați `:card-table-core:test` pentru componente și `:card-table-core:unitTest` pentru unitare. `:card-table-core:check` le selectează pe ambele.
+
+- Axele politicilor izolate și potrivirea glifelor rămân în unitare; matricile geometriei combinate, rolurilor textului, locurilor și furnizorilor jocului aparțin componentelor.
+- Adaptoarele refolosesc aceste contracte publice, fără să dubleze calculele pure.
+- E2E de platformă păstrează doar parcursuri scurte de navigare și interacțiune.
 
 [Matrice modul × nivel](../../docs/testing/ATF_TestingGuide.md) · [Contractul comun al mesei](../../docs/testing/ATF_TableContinuity.md) · [Dovezi Web curente](../../release/WEB/README.md)

@@ -61,7 +61,7 @@ Rândurile descriu granițe executabile, nu adnotări Maven. Proprietatea setulu
 
 | Modul | Unitar | Componentă | Integrare | E2E | Proprietate și selecție executabilă |
 |---|---|---|---|---|---|
-| `whist-lab-app/card-table-core` | ✅ | ✅ | — | — | `unitTest` verifică normalizarea izolată și proprietatea snapshoturilor; `test` deține modelele portabile, geometria, rolurile de text și controalele negative. [Core](../../whist-lab-app/card-table-core/README.md) |
+| `whist-lab-app/card-table-core` | ✅ | ✅ | — | — | `unitTest` verifică pragurile de viewport, potrivirea glifelor, normalizarea și proprietatea snapshoturilor; `test` deține modelele portabile, geometria combinată, rolurile de text și controalele negative. [Core](../../whist-lab-app/card-table-core/README.md) |
 | `whist-lab-app/atf-card-table-ui` | — | ✅ | ✅ | — | `testDebugUnitTest` verifică contractele adaptorului nativ. Instrumentarea focalizată califică separat widgeturile reale; fără matrice E2E completă de rezoluții. [Renderer Android](../../whist-lab-app/atf-card-table-ui/README.md) |
 | `atf-ui-browser` | — | ✅ | ✅ | ✅ | Proiecție Java comună și componente cu DOM/ceas controlat; un parcurs browser scurt, explicit, verifică legăturile. [Renderer Web](../../atf-ui-browser/README.md#verificare) |
 | `whist-lab-app/whist-presentation` | — | ✅ | — | — | Proiecție portabilă specifică jocului; furnizorii existenți de componente APK/Web păstrează identitățile cazurilor de catalog, checkpoint și prezentare. |

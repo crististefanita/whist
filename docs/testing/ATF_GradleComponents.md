@@ -9,7 +9,7 @@ Gradle separă unitarele izolate, componentele auditate și observațiile opțio
 | Responsabil | Selecție primară | Graniță |
 |---|---|---|
 | Prezentare portabilă | `:card-table-core:test` | Geometrie, conținut, roluri de text, feedbackul mâinii și efecte deterministe; fără pornire Android sau browser. |
-| Unitare izolate | `:card-table-core:unitTest` | Normalizare, snapshoturi imuabile și intrări invalide; numai JUnit, fără Extent sau dependențe de raportare. |
+| Unitare izolate | `:card-table-core:unitTest` | Praguri de viewport, potrivirea textului din atu, normalizare, snapshoturi imuabile și intrări invalide; numai JUnit, fără Extent sau dependențe de raportare. |
 | Renderer Android | `:card-table-android:testDebugUnitTest` | Contractele adaptorului nativ și proprietatea surselor; widgeturile reale cer instrumentare separată. |
 | Proiecții Whist | Colecțiile de componentă ale aplicației și contractele browserului | Conținutul comun al jocului, configurarea, realizările și codec-urile checkpointurilor din `whist-presentation`. |
 | Motorul jocului | Colecțiile de reguli ale release-ului | Comenzi legale, punctaj, checkpointuri și programe de joc; măsurătorile AI rămân separate. |
@@ -67,7 +67,15 @@ Ieșirea JUnit este un oracol temporar independent al populației. Verificatorul
 | Dimensiune | Măsoară corpurile decodificate și numărul comparațiilor separat de resursele HTML comune încorporate. |
 | Niveluri | Unitarele verifică izolat calcule, fără Extent; componentele păstrează contractele auditate, oracolele independente, acoperirea și cazurile negative. |
 
-[Catalogul nivelurilor](../../config/gradle-audit-collections.properties) declară fiecare responsabil executabil. Mutarea unei clase îi păstrează identitatea cazurilor. Contractele comune și controalele negative trebuie să treacă înainte să retragem o verificare duplicată de platformă.
+[Catalogul nivelurilor](../../config/gradle-audit-collections.properties) declară fiecare responsabil executabil.
+
+| Graniță | Responsabilitate impusă |
+|---|---|
+| Surse unitare | O intrare `unit` folosește `src/unitTest`; inspecția arborelui sintactic respinge importurile sau apelurile de audit/raportare fără potriviri în comentarii. |
+| Surse componente | O clasă auditată din `src/test` rămâne componentă chiar dacă verifică un model mic. |
+| Politici pure | Pragurile de viewport și potrivirea glifelor din atu aparțin unitarelor core. |
+| Colaborare | Componentele Whist combină politica de viewport, geometria locurilor, țintele licitării și spațiul mâinii. |
+| Migrare | Păstrați axele și aserțiunile originale; validați contractele comune și controalele negative înainte să retrageți duplicate. Nu repetați matricile pure de politici în APK și Web. |
 
 RAG înregistrează independent fiecare task validat înainte să înceapă următorul. Refolosirea cere intrări de producție relevante, dependențe tranzitive, teste, resurse, unelte și selecție neschimbate. Un caz eșuat se rerulează după corecție; colecțiile valide neafectate rămân reutilizabile. [Checkpoint și reutilizare](ATF_ReleaseQualification.md#reluarea-etapelor-validate)
 

@@ -7,6 +7,42 @@ Acest registru definește controalele revizuite, baza Git și căile lor exacte.
 ## Controale verificate
 
 <details>
+<summary>Unitare de politici comune și admiterea gazdei statice</summary>
+
+```yaml
+testChanges:
+  - id: WHIST-SHIFT-LEFT-HOST
+    status: VERIFIED
+    base: 7ea1ac3d32b5abf313db445217f36fcadd8a1d61
+    expires: 2026-12-24
+    reason: Mută oracolele izolate de viewport și potrivire a textului din atu în unitare JUnit comune, păstrând matricile colaborării Whist. Impune granițele seturilor de surse și raportării. Admite modulele și fonturile livrate înainte de browser, respinge cererile HTTP invalide și păstrează un parcurs sanity limitat pe jocul compilat.
+    proof: 'mvn -o -pl atf-tests -am -Dtest=GradleAuditGovernanceTest,WhistSurfaceAdapterComponentTest -Dsurefire.failIfNoSpecifiedTests=false test'
+    checks:
+      positive:
+        - atf.tests.governance.source.gradle.GradleAuditGovernanceTest#everyGradleTestClassHasOneExplicitLayerAndAnAuditedBase
+        - atf.tests.governance.source.gradle.GradleAuditGovernanceTest#rawJunitUnitsAndAuditedComponentsRetainTheirDeclaredBoundaries
+        - atf.tests.governance.source.gradle.GradleAuditGovernanceTest#productTestsDoNotKeepRawJUnitAssertionsBesideTheAuditFacade
+        - atf.tests.governance.documentation.release.rag.nativeproof.WhistSurfaceAdapterComponentTest#deliveredSiteModulesAndFontsAreAdmittedBeforeBrowserStartup
+        - atf.tests.governance.documentation.release.rag.nativeproof.WhistSurfaceAdapterComponentTest#adaptiveWebMenusKeepTextIndependentOfTheUsableViewport
+      negative:
+        - atf.tests.governance.source.gradle.GradleAuditGovernanceTest#unitDeclarationsCannotHideAnAuditedComponentOrReportingDependency
+    paths:
+      - atf-tests/src/test/java/atf/tests/governance/source/gradle/GradleAuditGovernanceTest.java
+      - atf-tests/src/test/java/atf/tests/governance/documentation/release/rag/nativeproof/WhistSurfaceAdapterComponentTest.java
+      - atf-ui-browser/tests/BrowserUi.java
+      - atf-ui-browser/tests/Run-BrowserUi.ps1
+      - atf-ui-browser/tests/ro/cardtable/testing/browser/StaticSiteHost.java
+      - atf-ui-browser/tests/static-host.test.mjs
+      - config/gradle-audit-collections.properties
+      - config/atf-component-dependencies.json
+      - whist-lab-app/app/src/test/java/ro/whistlab/app/table/TableViewportPolicyTest.java
+      - whist-lab-app/card-table-core/src/unitTest/java/ro/cardtable/ui/table/TableViewportPolicyTest.java
+      - whist-lab-app/card-table-core/src/unitTest/java/ro/cardtable/ui/table/TrumpTileTextFitTest.java
+```
+
+</details>
+
+<details>
 <summary>Readmiterea pe responsabil după deriva editorială concurentă</summary>
 
 ```yaml

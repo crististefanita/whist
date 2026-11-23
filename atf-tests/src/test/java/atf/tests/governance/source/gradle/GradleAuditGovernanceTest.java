@@ -2,6 +2,10 @@ package atf.tests.governance.source.gradle;
 
 import atf.testkit.AtfComponentTest;
 import atf.tests.governance.support.GovernanceProject;
+import atf.tests.jvm.JavaSourceParser;
+import com.sun.source.tree.IdentifierTree;
+import com.sun.source.tree.MemberSelectTree;
+import com.sun.source.util.TreeScanner;
 import java.nio.file.Files;
 import java.util.List;
 import java.util.TreeMap;
@@ -16,6 +20,7 @@ public final class GradleAuditGovernanceTest {
 
     @Test void everyGradleTestClassHasOneExplicitLayerAndAnAuditedBase() throws Exception {
         var root = GovernanceProject.locateProjectRoot(); var found = new TreeMap<String, String>();
+        var sources = new TreeMap<String, String>();
         for (var file : GovernanceProject.sources(root)) {
             if (!file.test() || !file.module().startsWith("whist-lab-app/")) continue;
             String name = file.file().getFileName().toString();
@@ -29,6 +34,7 @@ public final class GradleAuditGovernanceTest {
             assertTrue(isolatedUnit || source.matches("(?s).*\\bextends\\s+(?:atf\\.gradle\\.audit\\.)?GradleAuditedTest\\b.*"),
                     "Every component must capture inputs and assertions; isolated unit tests use the declared unit source set: " + owner);
             found.put(owner, isolatedUnit ? "unit" : "audited");
+            sources.put(owner, source);
         }
         var catalog = new TreeMap<String, String>();
         for (String line : Files.readAllLines(root.resolve("config/gradle-audit-collections.properties"))) {
@@ -41,8 +47,56 @@ public final class GradleAuditGovernanceTest {
         assertFalse(found.isEmpty(), "The Gradle source perimeter cannot be empty");
         assertEquals(found.keySet(), catalog.keySet(), "The catalog includes every test class exactly once, including opt-in collections");
         found.forEach((owner, layer) -> {
-            if (layer.equals("unit")) assertEquals("unit", catalog.get(owner), "An isolated unit cannot be published as a component");
+            assertEquals(List.of(), unitBoundaryViolations(layer.equals("unit"), sources.get(owner), catalog.get(owner)),
+                    "Source-set and reporting boundaries for " + owner);
         });
+    }
+
+    @Test void unitDeclarationsCannotHideAnAuditedComponentOrReportingDependency() {
+        assertEquals(List.of("unit outside isolated source set"),
+                unitBoundaryViolations(false, "class Case extends GradleAuditedTest {}", "unit"));
+        assertEquals(List.of("isolated source must declare unit"),
+                unitBoundaryViolations(true, "import org.junit.Test; class Case {}", "component"));
+        for (String source : List.of("import static atf.gradle.audit.assertions.GradleAssertions.*;",
+                "class Case extends GradleAuditedTest {}", "class Case { void check() { atf.gradle.audit.GradleInputs.fixture(\"data\"); } }",
+                "import atf.reporting.extent.session.ExtentReportSession;")) {
+            assertEquals(List.of("isolated unit uses component reporting"), unitBoundaryViolations(true, source, "unit"), source);
+        }
+    }
+
+    @Test void rawJunitUnitsAndAuditedComponentsRetainTheirDeclaredBoundaries() {
+        assertEquals(List.of(), unitBoundaryViolations(true, "import org.junit.Test; import static org.junit.Assert.*;", "unit"));
+        assertEquals(List.of(), unitBoundaryViolations(true,
+                "// atf.reporting is absent\nclass Case { String message = \"GradleAuditedTest and atf.gradle.audit are unavailable\"; }", "unit"));
+        assertEquals(List.of(), unitBoundaryViolations(false, "class Case extends GradleAuditedTest {}", "component"));
+        assertEquals(List.of(), unitBoundaryViolations(false, "class Case extends GradleAuditedTest {}", "governance"));
+    }
+
+    private static List<String> unitBoundaryViolations(boolean isolated, String source, String declared) {
+        var violations = new java.util.ArrayList<String>();
+        if (!isolated && "unit".equals(declared)) violations.add("unit outside isolated source set");
+        if (isolated && !"unit".equals(declared)) violations.add("isolated source must declare unit");
+        if (isolated && usesComponentReporting(source))
+            violations.add("isolated unit uses component reporting");
+        return violations;
+    }
+
+    private static boolean usesComponentReporting(String source) {
+        boolean[] found = {false};
+        try (var parser = new JavaSourceParser()) {
+            new TreeScanner<Void, Void>() {
+                @Override public Void visitMemberSelect(MemberSelectTree node, Void ignored) {
+                    String name = node.toString();
+                    if (name.startsWith("atf.gradle.audit.") || name.startsWith("atf.reporting.")) found[0] = true;
+                    return super.visitMemberSelect(node, ignored);
+                }
+                @Override public Void visitIdentifier(IdentifierTree node, Void ignored) {
+                    if (node.getName().contentEquals("GradleAuditedTest")) found[0] = true;
+                    return super.visitIdentifier(node, ignored);
+                }
+            }.scan(parser.parse(source), null);
+        }
+        return found[0];
     }
     @Test void inventoryRecognizesExplicitAndWildcardJUnit4ImportsWithoutTreatingJupiterAsJUnit4() {
         assertTrue(usesJUnit4Test("import org.junit.Test; class Explicit {}"));

@@ -21,7 +21,13 @@ $log = Join-Path $root 'playwright-dependencies.log'
     'org.apache.maven.plugins:maven-dependency-plugin:3.8.1:build-classpath' "-Dmdep.outputFile=$dependencies" *> $log
 if ($LASTEXITCODE -ne 0) { throw "Could not resolve Playwright. See $log." }
 $classpath = (Get-Content -Raw -LiteralPath $dependencies).Trim()
+$classes = Join-Path $root 'playwright-classes'
+$null = New-Item -ItemType Directory -Path $classes
+& javac -encoding UTF-8 -cp $classpath -d $classes (Join-Path $PSScriptRoot 'BrowserUi.java') `
+    (Join-Path $PSScriptRoot 'ro/cardtable/testing/browser/StaticSiteHost.java')
+if ($LASTEXITCODE -ne 0) { throw 'Could not compile the browser runner and its shared static host.' }
+$classpath = @($classes, $classpath) -join [IO.Path]::PathSeparator
 $arguments = @((Resolve-Path -LiteralPath $Site).ProviderPath, (Resolve-Path -LiteralPath $HandFixture).ProviderPath, $root)
 if ($BrowserExecutable) { $arguments += (Resolve-Path -LiteralPath $BrowserExecutable).ProviderPath }
-& java "-Djava.io.tmpdir=$root" "-Dwhist.browserCheck=$Check" -cp $classpath (Join-Path $PSScriptRoot 'BrowserUi.java') @arguments
+& java "-Djava.io.tmpdir=$root" "-Dwhist.browserCheck=$Check" -cp $classpath BrowserUi @arguments
 if ($LASTEXITCODE -ne 0) { throw 'Playwright UI verification failed. See browser-ui-checks.json.' }

@@ -126,4 +126,15 @@ class WhistSurfaceAdapterComponentTest {
         assertTrue(output.contains("Flow budget observations:"), "A selected two-hand flow reconciles actual hands and captures");
         assertTrue(output.contains("Flow budget rejection observations:"), "Long plans, mismatched execution and extra captures are rejected");
     }
+
+    @Test void deliveredSiteModulesAndFontsAreAdmittedBeforeBrowserStartup(ComponentInputs inputs) throws Exception {
+        var root = GovernanceProject.locateProjectRoot();
+        String output = NodeReleaseContracts.runNode(List.of("node", "--test", "--test-concurrency=1",
+                root.resolve("atf-ui-browser/tests/static-host.test.mjs").toString()), root, Duration.ofSeconds(60),
+                value -> inputs.add("Controlled static-site inputs, original HTTP bytes and admission failures", value));
+        assertTrue(output.contains("Static site HTTP observations:"), "Every delivered module and font retains its bytes and MIME");
+        assertTrue(output.contains("Static site admission observations:"), "Missing dependencies reject startup before the browser callback");
+        assertTrue(output.contains("Static site rejection observations:"), "Unknown paths, methods and traversal remain rejected");
+        assertTrue(output.contains("Static site snapshot observations:"), "Post-admission file changes cannot alter the active host");
+    }
 }
