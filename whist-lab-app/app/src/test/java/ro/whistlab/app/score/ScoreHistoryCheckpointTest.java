@@ -1,5 +1,9 @@
 package ro.whistlab.app.score;
 
+import atf.gradle.audit.input.CapturedValue;
+
+import atf.gradle.audit.matrix.ExhaustiveMatrixChecks;
+
 import ro.whistlab.app.localization.WhistUiText;
 import ro.whistlab.app.persistence.GameSessionStore;
 
@@ -122,6 +126,8 @@ public class ScoreHistoryCheckpointTest extends atf.gradle.audit.GradleAuditedTe
     }
 
     @Test public void everyModeKeepsEverySeatThroughTheLastHandAndAFreshMatchStartsEmpty() throws Exception {
+        var matrixChecks = new ExhaustiveMatrixChecks();
+        atf.gradle.audit.GradleInputs.fixture("Exhaustive matrix scope", "scenario", "everyModeKeepsEverySeatThroughTheLastHandAndAFreshMatchStartsEmpty", "expected pairs", 2622);
         for (GameMode mode : GameMode.values()) {
             for (int seats : List.of(3, 6)) {
                 GameConfig config = new GameConfig(seats, mode, AiDifficulty.NORMAL, 866);
@@ -133,23 +139,25 @@ public class ScoreHistoryCheckpointTest extends atf.gradle.audit.GradleAuditedTe
                     var history = game.scoreHistory();
                     var result = game.snapshot();
 
-                    atf.gradle.audit.GradleInputs.fixture("Fixture before first assertion", "before", before, "config", config, "game", game, "hand", hand, "history", history, "mode", mode, "result", result, "seats", seats);
-                    assertEquals("history.completedHands() must equal hand", hand, history.completedHands());
+                    matrixChecks.at(CapturedValue.text(new Object[]{"Fixture before first assertion", "before", before, "config", config, "game", game, "hand", hand, "history", history, "mode", mode, "result", result, "seats", seats}));
+                    matrixChecks.equal("history.completedHands() must equal hand", hand, history.completedHands());
                     for (var player : result.players()) {
                         int bid = player.bid(), won = player.tricksWon();
                         int earned = mode.isRomanian() ? (won == bid ? 5 + won : -Math.abs(won - bid))
                                 : won + (won == bid ? 10 : 0);
-                        assertEquals("history.points(hand, player.seat()) must equal earned", earned, history.points(hand, player.seat()));
-                        assertEquals("history.total(hand, player.seat()) must equal before.get(player.seat()) + earned", before.get(player.seat()) + earned, history.total(hand, player.seat()));
+                        matrixChecks.equal("history.points(hand, player.seat()) must equal earned", earned, history.points(hand, player.seat()));
+                        matrixChecks.equal("history.total(hand, player.seat()) must equal before.get(player.seat()) + earned", before.get(player.seat()) + earned, history.total(hand, player.seat()));
                     }
                     if (result.finalHand()) break;
                     before = history.latestTotals();
                     game.startNextHand();
-                    assertEquals("game.scoreHistory() must equal history", history, game.scoreHistory());
+                    matrixChecks.equal("game.scoreHistory() must equal history", history, game.scoreHistory());
                 }
-                assertEquals("GameSession.newGame(atf.gradle.audit.GradleInputs.created(\"Game configuration before creation\", config)).scoreHistory().completedHands() must equal 0", 0, GameSession.newGame(atf.gradle.audit.GradleInputs.created("Game configuration before creation", config)).scoreHistory().completedHands());
+                matrixChecks.equal("GameSession.newGame(atf.gradle.audit.GradleInputs.created(\"Game configuration before creation\", config)).scoreHistory().completedHands() must equal 0", 0, GameSession.newGame(atf.gradle.audit.GradleInputs.created("Game configuration before creation", config)).scoreHistory().completedHands());
             }
         }
+        assertEquals("The original matrix population remains complete", 2622L, matrixChecks.checkedPairs());
+        matrixChecks.publish();
     }
 
     @Test public void v4RecoversOnlyProvableBidsAndV5RejectsLostOrContradictoryContracts() throws Exception {

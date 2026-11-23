@@ -1,5 +1,7 @@
 package ro.whistlab.app.seat;
 
+import atf.gradle.audit.matrix.ExhaustiveMatrixChecks;
+
 import java.util.List;
 import static atf.gradle.audit.assertions.GradleAssertions.*;
 import org.junit.Test;
@@ -50,8 +52,16 @@ public final class PlayerSeatMetricsComponentTest extends atf.gradle.audit.Gradl
         atf.gradle.audit.GradleInputs.fixture("Localized action layout matrix", "profiles", profiles.length,
                 "playerCounts", List.of(3, 4, 5, 6), "fontScales", List.of(1f, 1.3f, 1.5f, 2f),
                 "languages", List.of(HowToPlay.Language.values()), "scenarios", observed.size());
-        assertEquals("Every full phase label fits above its reference frame without clipping",
-                expected, observed);
+        var checks = new ExhaustiveMatrixChecks();
+        assertEquals("All five profiles, four seat counts, four font scales and both languages remain covered", 160, observed.size());
+        assertEquals("The independent oracle covers the complete population", expected.size(), observed.size());
+        for (int index = 0; index < expected.size(); index++) {
+            checks.at("Localized action case " + index);
+            checks.equal("Every full phase label fits above its reference frame without clipping",
+                    expected.get(index), observed.get(index));
+        }
+        assertEquals("Every planned action case was evaluated", 160L, checks.checkedPairs());
+        checks.publish();
     }
 
     @Test public void multiLineActionExpandsItsOwnRegionAndCannotIntersectTheFrame() {

@@ -1,5 +1,9 @@
 package ro.whistlab.app.score.award;
 
+import atf.gradle.audit.input.CapturedValue;
+
+import atf.gradle.audit.matrix.ExhaustiveMatrixChecks;
+
 import static atf.gradle.audit.assertions.GradleAssertions.*;
 import org.junit.Test;
 
@@ -13,6 +17,8 @@ public final class SeriesPointsFrameComponentTest extends atf.gradle.audit.Gradl
     }
 
     @Test public void everySeatAndFractionalDensityKeepsItsRectangleOutOfBidsAndNeighbours() {
+        var matrixChecks = new ExhaustiveMatrixChecks();
+        atf.gradle.audit.GradleInputs.fixture("Exhaustive matrix scope", "scenario", "everySeatAndFractionalDensityKeepsItsRectangleOutOfBidsAndNeighbours", "expected pairs", 648);
         for (int players = 3; players <= 6; players++) for (int seat = 0; seat < players; seat++)
             for (float density : new float[]{.75f, 1, 1.5f, 2.25f, 2.625f, 3.5f}) {
                 int unit = Math.max(1, Math.round(density)), text = (int) Math.ceil(42 * density);
@@ -21,14 +27,16 @@ public final class SeriesPointsFrameComponentTest extends atf.gradle.audit.Gradl
                 int pointsStart = seat * (bidWidth + pointsWidth) + bidWidth;
                 var rectangle = SeriesPointsFrame.inside(pointsWidth, frameHeight + 5, frameHeight, unit);
 
-                atf.gradle.audit.GradleInputs.fixture("Fixture before first assertion", "bidWidth", bidWidth, "density", density, "frameHeight", frameHeight, "players", players, "pointsStart", pointsStart, "pointsWidth", pointsWidth, "rectangle", rectangle, "seat", seat, "text", text, "unit", unit);
-                assertNotNull("rectangle is available", rectangle);
-                assertEquals(pointsStart, pointsStart + rectangle.left() - unit / 2f, .0001f);
-                assertEquals(pointsStart + pointsWidth, pointsStart + rectangle.right() + unit / 2f, .0001f);
-                assertTrue("rectangle.top() - unit / 2.0F >= 0 must hold", rectangle.top() - unit / 2f >= 0);
-                assertTrue("rectangle.bottom() + unit / 2.0F <= frameHeight + 5 must hold", rectangle.bottom() + unit / 2f <= frameHeight + 5);
-                assertTrue("(pointsWidth - text) / 2.0F - unit >= 2 * unit must hold", (pointsWidth - text) / 2f - unit >= 2 * unit);
+                matrixChecks.at(CapturedValue.text(new Object[]{"Fixture before first assertion", "bidWidth", bidWidth, "density", density, "frameHeight", frameHeight, "players", players, "pointsStart", pointsStart, "pointsWidth", pointsWidth, "rectangle", rectangle, "seat", seat, "text", text, "unit", unit}));
+                matrixChecks.equal("rectangle is available", true, rectangle != null);
+                matrixChecks.within("Numeric boundary: pointsStart", pointsStart, pointsStart + rectangle.left() - unit / 2f, .0001f);
+                matrixChecks.within("Numeric boundary: pointsStart + pointsWidth", pointsStart + pointsWidth, pointsStart + rectangle.right() + unit / 2f, .0001f);
+                matrixChecks.equal("rectangle.top() - unit / 2.0F >= 0 must hold", true, rectangle.top() - unit / 2f >= 0);
+                matrixChecks.equal("rectangle.bottom() + unit / 2.0F <= frameHeight + 5 must hold", true, rectangle.bottom() + unit / 2f <= frameHeight + 5);
+                matrixChecks.equal("(pointsWidth - text) / 2.0F - unit >= 2 * unit must hold", true, (pointsWidth - text) / 2f - unit >= 2 * unit);
             }
+        assertEquals("The original matrix population remains complete", 648L, matrixChecks.checkedPairs());
+        matrixChecks.publish();
     }
 
     @Test public void longTotalsAndEnlargedFontsReserveBothDimensionsBeforeDrawing() {

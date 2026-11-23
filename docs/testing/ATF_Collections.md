@@ -219,6 +219,7 @@ Compilation and execution have separate identities. The [compiler inventory](../
 | Compiler key | Non-editorial source inventory, JDK binaries, Maven installation, user settings and supported environment options must match. Unknown external argument overrides disable reuse. |
 | Compiled output | [Output admission](../../scripts/AtfComponentMaven.ps1) verifies classes, resources, dependency JAR/POM bytes, frozen input inventory and classpath destinations. Missing or altered data selects fresh preparation. |
 | Another run | [Borrowing](../../scripts/AtfComponentMavenReuse.ps1) resolves the original compiler workspace inside the configured external temp root and holds its exclusive lease throughout execution. No repository or class tree is copied. |
+| Proof generation | `-CompilerReuseFrom <compiler-run>` may borrow admitted compilation in single-control or batch generation. Every selected control runs freshly; no proof or report is borrowed. Failed or incomplete execution never promotes a proof. `-ReuseFrom` remains forbidden for proof generation. |
 | Execution snapshot | The current source and release snapshots remain mandatory. Reusing compilation does not credit a test; owner selection and original report validation remain independent. |
 | Lifetime | References work only while the verified compiler workspace survives. Busy, missing, indirect, foreign or legacy workspaces trigger fresh compilation; retained reports can still be reused independently. |
 

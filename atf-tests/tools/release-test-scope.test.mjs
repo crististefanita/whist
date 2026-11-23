@@ -8,6 +8,23 @@ const build = 'whist-lab-app/app/build.gradle';
 const bid = 'whist-lab-app/app/src/main/java/ro/whistlab/app/bidding/BidPolicy.java';
 const digest = value => createHash('sha256').update(value).digest('hex');
 
+test('application collection wiring keeps raster coverage offline without invalidating independent modules', () => {
+  const catalog=['atf-tests','whist-lab-app-commands','whist-lab-app-bidding','whist-lab-app-display',
+    'whist-lab-app-history','whist-lab-app-achievements','whist-lab-app-card-table-core',
+    'whist-lab-app-atf-card-table-ui','whist-lab-app-rules'];
+  const scope=file=>deriveReleaseTestScope(new Map(),new Map([[file,'changed']]),catalog);
+  const wiring=scope('whist-lab-app/gradle/app-component-collections.gradle');
+  assert.deepEqual(wiring.requiredE2eGroups,[]);
+  assert.deepEqual(wiring.components.filter(row=>row.decision!=='RUN').map(row=>row.group),
+    ['whist-lab-app-card-table-core','whist-lab-app-atf-card-table-ui','whist-lab-app-rules']);
+  const raster=scope('whist-lab-app/app/src/rasterTest/java/ro/whistlab/app/score/raster/Fixture.java');
+  assert.deepEqual(raster.runComponentGroups,['atf-tests','whist-lab-app-history']);
+  assert.deepEqual(raster.requiredE2eGroups,[]);
+  const unknown=scope('whist-lab-app/gradle/unknown-runtime.gradle');
+  assert.deepEqual(unknown.requiredE2eGroups,[...allFlows].sort());
+  assert.equal(unknown.components.every(row=>row.decision==='RUN'),true);
+});
+
 test('presentation module ownership preserves core reuse and excludes unit fixtures from Android journeys', () => {
   const all=['atf-tests','atf-validation','atf-test-android','whist-lab-app-card-table-core',
     'whist-lab-app-atf-card-table-ui','whist-lab-app-bidding','whist-lab-app-display','whist-lab-app-rules'];

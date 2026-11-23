@@ -2663,3 +2663,57 @@ testChanges:
 ```
 
 </details>
+
+<details>
+<summary>Bounded matrices and fresh proof controls</summary>
+
+```yaml
+testChanges:
+  - id: WHIST-0242-MATRIX-COMPILER
+    status: VERIFIED
+    base: 7db8d301596e32384f5d7940a41654ee2fadf552
+    expires: 2026-12-23
+    reason: Preserve matrix loops, original oracles and independent populations while bounding passing record, raster, fine-layout and animation inputs. Include raster tests in the history primary owner without duplicate reporting. Separate admitted Maven compiler reuse from fresh proof execution, including failure, incomplete output and changed bytecode. Prepare a maintenance APK with unchanged gameplay and presentation.
+    proof: 'mvn -o -pl atf-tests -am -Dtest=GradleAuditGovernanceTest,ComponentEvidenceScopeComponentTest,AtfCollectionOwnershipComponentTest -Dsurefire.failIfNoSpecifiedTests=false test'
+    checks:
+      positive:
+        - atf.tests.governance.source.gradle.GradleAuditGovernanceTest#everyGradleTestClassHasOneExplicitLayerAndAnAuditedBase
+        - atf.tests.governance.documentation.release.rag.scope.ComponentEvidenceScopeComponentTest#editorialChangesReuseVerifiedMavenCompilationAndKeepFreshExecutionInputs
+      negative:
+        - atf.tests.governance.suites.AtfCollectionOwnershipComponentTest#missingOrUnreviewedDependenciesCannotAuthorizeReuse
+    paths:
+      - atf-tests/src/test/java/atf/tests/governance/documentation/release/rag/scope/ComponentEvidenceScopeComponentTest.java
+      - atf-tests/src/test/java/atf/tests/governance/source/gradle/GradleAuditGovernanceTest.java
+      - atf-tests/tools/component-evidence-scope.mjs
+      - atf-tests/tools/component-proof-compiler-reuse.test.mjs
+      - atf-tests/tools/release-test-scope.mjs
+      - atf-tests/tools/release-test-scope.test.mjs
+      - config/atf-component-dependencies.json
+      - scripts/run-component-suites.ps1
+      - whist-lab-app/app/build.gradle
+      - whist-lab-app/app/src/rasterTest/java/ro/whistlab/app/score/raster/HistoryRasterAudit.java
+      - whist-lab-app/app/src/rasterTest/java/ro/whistlab/app/score/raster/ScoreHistoryCumulativeComponentTest.java
+      - whist-lab-app/app/src/rasterTest/java/ro/whistlab/app/score/raster/ScoreHistoryPhoneRasterComponentTest.java
+      - whist-lab-app/app/src/rasterTest/java/ro/whistlab/app/score/raster/ScoreHistoryRecoveryRasterComponentTest.java
+      - whist-lab-app/app/src/rasterTest/java/ro/whistlab/app/score/raster/ScoreHistoryResponsiveRasterComponentTest.java
+      - whist-lab-app/app/src/test/java/ro/whistlab/app/animation/TrickCollectionMotionComponentTest.java
+      - whist-lab-app/app/src/test/java/ro/whistlab/app/animation/TrickCollectionRequestComponentTest.java
+      - whist-lab-app/app/src/test/java/ro/whistlab/app/animation/TrickCollectionResizeComponentTest.java
+      - whist-lab-app/app/src/test/java/ro/whistlab/app/animation/TrickCollectionRunComponentTest.java
+      - whist-lab-app/app/src/test/java/ro/whistlab/app/bidding/AutoGameBidActionComponentTest.java
+      - whist-lab-app/app/src/test/java/ro/whistlab/app/lifecycle/CompletedTrickOwnershipComponentTest.java
+      - whist-lab-app/app/src/test/java/ro/whistlab/app/score/ScoreHistoryCheckpointTest.java
+      - whist-lab-app/app/src/test/java/ro/whistlab/app/score/ScoreHistoryGridMetricsComponentTest.java
+      - whist-lab-app/app/src/test/java/ro/whistlab/app/score/ScoreHistorySeriesComponentTest.java
+      - whist-lab-app/app/src/test/java/ro/whistlab/app/score/ScoreHistoryTableComponentTest.java
+      - whist-lab-app/app/src/test/java/ro/whistlab/app/score/award/SeriesPointsFrameComponentTest.java
+      - whist-lab-app/app/src/test/java/ro/whistlab/app/seat/PlayerSeatMetricsComponentTest.java
+      - whist-lab-app/app/src/test/java/ro/whistlab/app/table/GameTableLayoutComponentTest.java
+      - whist-lab-app/app/src/test/java/ro/whistlab/app/table/TableSeatOrderComponentTest.java
+      - whist-lab-app/app/src/test/java/ro/whistlab/app/table/TableViewportPolicyTest.java
+      - whist-lab-app/app/src/test/java/ro/whistlab/app/table/TrickCardMetricsComponentTest.java
+      - whist-lab-app/app/src/test/java/ro/whistlab/app/table/TrumpIndicatorComponentTest.java
+      - whist-lab-app/gradle/app-component-collections.gradle
+```
+
+</details>

@@ -125,7 +125,7 @@ Primary suites own disjoint populations. Focused selections retain their primary
 Configure the [external evidence and temporary roots](../../scripts/README.md) before invoking a launcher. Build output, test profiles and intermediate snapshots stay outside the checkout; use machine-local settings rather than hard-coded paths. [Collections and commands](ATF_Collections.md) lists the supported launchers and per-owner selection.
 
 - Component and E2E gates publish separate canonical English Extent reports through the reporting library. Capture inputs, expected/actual comparisons, original causes and invocation identities during execution.
-- Inline Base64 images belong to a real raster or browser observation. A numeric layout check is reported as a component assertion, without inventing a screenshot.
+- Inline Base64 images belong to focused E2E observations. Component geometry and JVM raster oracles publish their preconditions and comparisons without images; isolated units have no Extent report.
 - JUnit output reconciles the executed population. Republishing or replaying an archived journal does not qualify a new interaction.
 - Record concrete counts, hashes, timings, failures and reuse decisions in the external audit. Generic guides describe mechanisms and remain valid for future releases.
 

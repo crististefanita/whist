@@ -1,5 +1,9 @@
 package ro.whistlab.app.score;
 
+import atf.gradle.audit.input.CapturedValue;
+
+import atf.gradle.audit.matrix.ExhaustiveMatrixChecks;
+
 import static atf.gradle.audit.assertions.GradleAssertions.*;
 import java.util.List;
 import org.junit.Test;
@@ -16,8 +20,12 @@ import ro.whistlab.core.session.ScoreHistory;
 
 public class ScoreHistoryTableComponentTest extends atf.gradle.audit.GradleAuditedTest {
     @Test public void allVariantsAndSeatsExposeTheWholeScheduleAndExactRecordedCells() {
-        var checks = new atf.gradle.audit.matrix.ExhaustiveMatrixChecks();
+        var checks = new ExhaustiveMatrixChecks();
+        long expectedPairs = 0;
+        atf.gradle.audit.GradleInputs.fixture("Complete history matrix", "modes", GameMode.values(),
+                "player counts", List.of(3, 4, 5, 6), "languages", HowToPlay.Language.values());
         for (GameMode mode : GameMode.values()) for (int seats = 3; seats <= 6; seats++) {
+            expectedPairs += 11L + GameRules.handSizes(mode, seats).size() * (4L + 8L * seats);
             var config = GameConfig.newMatch(seats, mode, AiDifficulty.NORMAL, 8, mode.isRomanian(), 10);
             var game = GameSession.newGame(atf.gradle.audit.GradleInputs.created("Game configuration before creation", config),
                     atf.gradle.audit.GradleInputs.created("Human name before creation", "Cristi"));
@@ -56,14 +64,14 @@ public class ScoreHistoryTableComponentTest extends atf.gradle.audit.GradleAudit
                 checks.equal("Restoration preserves the complete table", table, ScoreHistoryTable.forMatch(
                         GameSession.restoreComplete(checkpoint).snapshot(), game.scoreHistory(), new WhistUiText(HowToPlay.Language.RO)));
                 if (snapshot.finalHand()) {
-                    assertEquals("Every scheduled hand is complete before publishing the final table",
+                    checks.equal("Every scheduled hand is complete before publishing the final table",
                             GameRules.handSizes(mode, seats).size(), game.scoreHistory().completedHands());
-                    atf.gradle.audit.GradleInputs.fixture("Complete final score history", "configuration", config, "table", table);
                     break;
                 }
                 game.startNextHand();
             } while (true);
         }
+        assertEquals("Every original hand, cell and language invariant remains covered", expectedPairs, checks.checkedPairs());
         checks.publish();
     }
     @Test public void currentBidsAreVisibleButUnfinishedPointsStayUnknown() {
@@ -81,6 +89,8 @@ public class ScoreHistoryTableComponentTest extends atf.gradle.audit.GradleAudit
     }
 
     @Test public void onlyPositiveAndNegativeSeriesPaymentsRectangleTheRecordedTotal() {
+        var matrixChecks = new ExhaustiveMatrixChecks();
+        atf.gradle.audit.GradleInputs.fixture("Exhaustive matrix scope", "scenario", "onlyPositiveAndNegativeSeriesPaymentsRectangleTheRecordedTotal", "expected pairs", 176);
         for (GameMode mode : List.of(GameMode.ROMANIAN_WHIST, GameMode.LONG_ROMANIAN)) {
             for (int bonus : List.of(5, 10)) for (int penalty : List.of(5, 10)) {
                 var game = GameSession.newGame(atf.gradle.audit.GradleInputs.created("Game configuration before creation", new GameConfig(4, mode, AiDifficulty.NORMAL, 8, true, bonus, penalty)));
@@ -90,21 +100,23 @@ public class ScoreHistoryTableComponentTest extends atf.gradle.audit.GradleAudit
                     var table = ScoreHistoryTable.forMatch(game.snapshot(), history, copy);
                     var cells = table.rows().get(8).cells();
 
-                    atf.gradle.audit.GradleInputs.fixture("Fixture before first assertion", "bonus", bonus, "cells", cells, "copy", copy, "game", game, "history", history, "language", language, "mode", mode, "penalty", penalty, "table", table);
-                    assertEquals("cells.stream().map(ScoreHistoryTable.Cell::seriesPoints).toList() must equal List.of(bonus, -penalty, 0, 0)", List.of(bonus, -penalty, 0, 0), cells.stream().map(ScoreHistoryTable.Cell::seriesPoints).toList());
-                    assertEquals("cells.stream().map(ScoreHistoryTable.Cell::boxPoints).toList() must equal List.of(true, true, false, false)", List.of(true, true, false, false), cells.stream().map(ScoreHistoryTable.Cell::boxPoints).toList());
-                    assertEquals("cells.get(0).points() must equal \"+\" + (5 + bonus)", "+" + (5 + bonus), cells.get(0).points());
-                    assertEquals("cells.get(1).points() must equal Integer.toString(-1 - penalty)", Integer.toString(-1 - penalty), cells.get(1).points());
-                    assertEquals("cells.get(2).points() must equal \"-1\"", "-1", cells.get(2).points());
-                    assertEquals("cells.get(3).points() must equal \"+\" + (4 + GameRules.handSizes(mode, 4).get(8))", "+" + (4 + GameRules.handSizes(mode, 4).get(8)), cells.get(3).points());
-                    assertTrue("cells.get(0).description().contains(copy.historySeriesAdjustment(bonus)) must hold", cells.get(0).description().contains(copy.historySeriesAdjustment(bonus)));
-                    assertTrue("cells.get(1).description().contains(copy.historySeriesAdjustment(-penalty)) must hold", cells.get(1).description().contains(copy.historySeriesAdjustment(-penalty)));
-                    assertFalse("cells.get(3).description().contains(copy.historySeriesAdjustment(bonus)) must remain false", cells.get(3).description().contains(copy.historySeriesAdjustment(bonus)));
-                    assertTrue("table.rows().get(7).cells().stream().noneMatch(ScoreHistoryTable.Cell::boxPoints) must hold", table.rows().get(7).cells().stream().noneMatch(ScoreHistoryTable.Cell::boxPoints));
-                    assertTrue("table.rows().get(9).cells().stream().noneMatch(ScoreHistoryTable.Cell::boxPoints) must hold", table.rows().get(9).cells().stream().noneMatch(ScoreHistoryTable.Cell::boxPoints));
+                    matrixChecks.at(CapturedValue.text(new Object[]{"Fixture before first assertion", "bonus", bonus, "cells", cells, "copy", copy, "game", game, "history", history, "language", language, "mode", mode, "penalty", penalty, "table", table}));
+                    matrixChecks.equal("cells.stream().map(ScoreHistoryTable.Cell::seriesPoints).toList() must equal List.of(bonus, -penalty, 0, 0)", List.of(bonus, -penalty, 0, 0), cells.stream().map(ScoreHistoryTable.Cell::seriesPoints).toList());
+                    matrixChecks.equal("cells.stream().map(ScoreHistoryTable.Cell::boxPoints).toList() must equal List.of(true, true, false, false)", List.of(true, true, false, false), cells.stream().map(ScoreHistoryTable.Cell::boxPoints).toList());
+                    matrixChecks.equal("cells.get(0).points() must equal \"+\" + (5 + bonus)", "+" + (5 + bonus), cells.get(0).points());
+                    matrixChecks.equal("cells.get(1).points() must equal Integer.toString(-1 - penalty)", Integer.toString(-1 - penalty), cells.get(1).points());
+                    matrixChecks.equal("cells.get(2).points() must equal \"-1\"", "-1", cells.get(2).points());
+                    matrixChecks.equal("cells.get(3).points() must equal \"+\" + (4 + GameRules.handSizes(mode, 4).get(8))", "+" + (4 + GameRules.handSizes(mode, 4).get(8)), cells.get(3).points());
+                    matrixChecks.equal("cells.get(0).description().contains(copy.historySeriesAdjustment(bonus)) must hold", true, cells.get(0).description().contains(copy.historySeriesAdjustment(bonus)));
+                    matrixChecks.equal("cells.get(1).description().contains(copy.historySeriesAdjustment(-penalty)) must hold", true, cells.get(1).description().contains(copy.historySeriesAdjustment(-penalty)));
+                    matrixChecks.equal("cells.get(3).description().contains(copy.historySeriesAdjustment(bonus)) must remain false", false, cells.get(3).description().contains(copy.historySeriesAdjustment(bonus)));
+                    matrixChecks.equal("table.rows().get(7).cells().stream().noneMatch(ScoreHistoryTable.Cell::boxPoints) must hold", true, table.rows().get(7).cells().stream().noneMatch(ScoreHistoryTable.Cell::boxPoints));
+                    matrixChecks.equal("table.rows().get(9).cells().stream().noneMatch(ScoreHistoryTable.Cell::boxPoints) must hold", true, table.rows().get(9).cells().stream().noneMatch(ScoreHistoryTable.Cell::boxPoints));
                 }
             }
         }
+        assertEquals("The original matrix population remains complete", 176L, matrixChecks.checkedPairs());
+        matrixChecks.publish();
     }
 
     @Test public void missingContractsOrTricksNeverInventASeriesPaymentFromItsSign() {
@@ -149,7 +161,7 @@ public class ScoreHistoryTableComponentTest extends atf.gradle.audit.GradleAudit
     @Test public void settledSeriesMarkersSurviveJsonReloadForEveryHistoricalSeat() throws Exception {
         int positive = 0, negative = 0;
         long expectedPairs = 0;
-        var checks = new atf.gradle.audit.matrix.ExhaustiveMatrixChecks();
+        var checks = new ExhaustiveMatrixChecks();
         for (int points : List.of(5, 10)) {
             var game = seriesPaymentGame(points);
             int firstRecordedIndex = game.snapshot().handIndex();

@@ -1,5 +1,9 @@
 package ro.whistlab.app.animation;
 
+import atf.gradle.audit.input.CapturedValue;
+
+import atf.gradle.audit.matrix.ExhaustiveMatrixChecks;
+
 import ro.cardtable.ui.animation.CollectionTarget;
 import ro.cardtable.ui.animation.TrickCollectionMotion;
 import ro.cardtable.ui.animation.TrickCollectionRun;
@@ -70,6 +74,8 @@ public class TrickCollectionResizeComponentTest extends atf.gradle.audit.GradleA
     }
 
     @Test public void portraitLandscapeAndResizeBurstsUseOnlyTheLatestGeometryForEveryWinningSeat() {
+        var matrixChecks = new ExhaustiveMatrixChecks();
+        atf.gradle.audit.GradleInputs.fixture("Exhaustive matrix scope", "scenario", "portraitLandscapeAndResizeBurstsUseOnlyTheLatestGeometryForEveryWinningSeat", "expected pairs", 316);
         for (int count = 3; count <= 6; count++) for (int winner = 0; winner < count; winner++) {
             var h = new Harness(CollectionFixtures.completed(count, winner, 2, true));
             var before = h.game.saveState();
@@ -83,25 +89,27 @@ public class TrickCollectionResizeComponentTest extends atf.gradle.audit.GradleA
             h.viewport = new Viewport(1600, 900);
             h.refresh.request();
 
-            atf.gradle.audit.GradleInputs.fixture("Fixture before first assertion", "before", before, "count", count, "h", h, "old", old, "winner", winner);
-            assertEquals("h.queue.size() must equal 1", 1, h.queue.size());
+            matrixChecks.at(CapturedValue.text(new Object[]{"Fixture before first assertion", "before", before, "count", count, "h", h, "old", old, "winner", winner}));
+            matrixChecks.equal("h.queue.size() must equal 1", 1, h.queue.size());
             h.drain();
-            assertEquals("h.surfaces.size() must equal 2", 2, h.surfaces.size());
-            assertEquals("h.display.remainingMillis() must equal 300", 300, h.display.remainingMillis());
-            assertEquals(.4f, h.surface().timing.startFraction(), .00001f);
+            matrixChecks.equal("h.surfaces.size() must equal 2", 2, h.surfaces.size());
+            matrixChecks.equal("h.display.remainingMillis() must equal 300", 300, h.display.remainingMillis());
+            matrixChecks.within("Numeric boundary: .4f", .4f, h.surface().timing.startFraction(), .00001f);
             var current = h.surface();
             int freshDraws = current.draws.size();
             old.frame.accept(1f);
             old.becameReady.run();
             old.finished.run();
             old.resized.run();
-            assertEquals("current.draws.size() must equal freshDraws", freshDraws, current.draws.size());
-            assertEquals("current.released must equal 0", 0, current.released);
+            matrixChecks.equal("current.draws.size() must equal freshDraws", freshDraws, current.draws.size());
+            matrixChecks.equal("current.released must equal 0", 0, current.released);
             current.frame.accept(1f);
             current.finished.run();
             assertTarget(current, h.viewport, winner, count);
-            assertEquals("h.game.saveState() must equal before", before, h.game.saveState());
+            matrixChecks.equal("h.game.saveState() must equal before", before, h.game.saveState());
         }
+        assertEquals("The original matrix population remains complete", 316L, matrixChecks.checkedPairs());
+        matrixChecks.publish();
     }
 
     @Test public void orientationInsideNestedDialogsDefersUntilTheLastValidClosureInEitherOrder() {

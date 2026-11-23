@@ -1,5 +1,9 @@
 package ro.whistlab.app.animation;
 
+import atf.gradle.audit.input.CapturedValue;
+
+import atf.gradle.audit.matrix.ExhaustiveMatrixChecks;
+
 import ro.cardtable.ui.animation.CollectionTarget;
 import ro.cardtable.ui.animation.TrickCollectionMotion;
 import ro.cardtable.ui.animation.TrickCollectionRun;
@@ -11,6 +15,8 @@ import org.junit.Test;
 
 public class TrickCollectionRunComponentTest extends atf.gradle.audit.GradleAuditedTest {
     @Test public void everyFaceReachesTheEnginesWinnerAndCompletesOnlyOnce() {
+        var matrixChecks = new ExhaustiveMatrixChecks();
+        atf.gradle.audit.GradleInputs.fixture("Exhaustive matrix scope", "scenario", "everyFaceReachesTheEnginesWinnerAndCompletesOnlyOnce", "expected pairs", 402);
         for (int count = 3; count <= 6; count++) for (int winner = 0; winner < count; winner++) {
             var game = CollectionFixtures.completed(count, winner, 2, true);
             var before = game.snapshot();
@@ -27,24 +33,26 @@ public class TrickCollectionRunComponentTest extends atf.gradle.audit.GradleAudi
             var last = surface.draws.get(draws - 1);
             for (int card = 0; card < count; card++) {
 
-                atf.gradle.audit.GradleInputs.fixture("Fixture before first assertion", "before", before, "card", card, "count", count, "draws", draws, "game", game, "last", last, "request", request, "run", run, "surface", surface, "winner", winner);
-                assertEquals(surface.geometry.target().x(), surface.geometry.cards().get(card).x() + last.get(card).translationX(), .001f);
-                assertEquals(surface.geometry.target().y(), surface.geometry.cards().get(card).y() + last.get(card).translationY(), .001f);
-                assertEquals(0, last.get(card).alpha(), 0);
+                matrixChecks.at(CapturedValue.text(new Object[]{"Fixture before first assertion", "before", before, "card", card, "count", count, "draws", draws, "game", game, "last", last, "request", request, "run", run, "surface", surface, "winner", winner}));
+                matrixChecks.within("Numeric boundary: surface.geometry.target().x()", surface.geometry.target().x(), surface.geometry.cards().get(card).x() + last.get(card).translationX(), .001f);
+                matrixChecks.within("Numeric boundary: surface.geometry.target().y()", surface.geometry.target().y(), surface.geometry.cards().get(card).y() + last.get(card).translationY(), .001f);
+                matrixChecks.within("Numeric boundary: 0", 0, last.get(card).alpha(), 0);
             }
             run.cancel();
             surface.frame.accept(.5f);
             surface.finished.run();
             surface.invalidated.run();
-            assertEquals("surface.draws.size() must equal draws", draws, surface.draws.size());
-            assertTrue("surface.completed must hold", surface.completed);
-            assertEquals("surface.animations must equal 1", 1, surface.animations);
-            assertEquals("surface.watches must equal 1", 1, surface.watches);
-            assertEquals("surface.stopped must equal 1", 1, surface.stopped);
-            assertEquals("surface.unwatched must equal 1", 1, surface.unwatched);
-            assertEquals("surface.released must equal 1", 1, surface.released);
-            assertEquals("game.snapshot() must equal before", before, game.snapshot());
+            matrixChecks.equal("surface.draws.size() must equal draws", draws, surface.draws.size());
+            matrixChecks.equal("surface.completed must hold", true, surface.completed);
+            matrixChecks.equal("surface.animations must equal 1", 1, surface.animations);
+            matrixChecks.equal("surface.watches must equal 1", 1, surface.watches);
+            matrixChecks.equal("surface.stopped must equal 1", 1, surface.stopped);
+            matrixChecks.equal("surface.unwatched must equal 1", 1, surface.unwatched);
+            matrixChecks.equal("surface.released must equal 1", 1, surface.released);
+            matrixChecks.equal("game.snapshot() must equal before", before, game.snapshot());
         }
+        assertEquals("The original matrix population remains complete", 402L, matrixChecks.checkedPairs());
+        matrixChecks.publish();
     }
 
     @Test public void anUnmeasuredLayoutCanBecomeReadyWithoutStartingTwiceOrExtendingTime() {

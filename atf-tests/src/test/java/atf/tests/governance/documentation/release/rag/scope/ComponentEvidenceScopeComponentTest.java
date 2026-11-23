@@ -33,12 +33,20 @@ class ComponentEvidenceScopeComponentTest {
                 "Failed owners, altered reports and later code changes remain ineligible for reuse");
     }
 
-    @Test void editorialChangesReuseVerifiedMavenCompilationAndKeepFreshExecutionInputs() throws Exception {
-        String output = runContracts(PUBLICATION_TIMEOUT, "component-compiler-inputs.test.mjs", "component-maven-reuse.test.mjs");
+    @Test @ExtendWith(GameReportAudit.class)
+    void editorialChangesReuseVerifiedMavenCompilationAndKeepFreshExecutionInputs(ComponentInputs inputs) throws Exception {
+        String output = runContracts(PUBLICATION_TIMEOUT,
+                value -> inputs.add("Compiler admission, fresh proof executions and controlled rejection outcomes", value),
+                "component-compiler-inputs.test.mjs", "component-maven-reuse.test.mjs", "component-proof-compiler-reuse.test.mjs");
         AuditedAssertions.assertTrue(output.contains("documentation preserves verified compilation without copying"),
                 "Editorial inputs preserve compiled classes while reports remain bound to the new execution snapshot");
         AuditedAssertions.assertTrue(output.contains("changed compiler inputs and unverified workspaces reject"),
                 "Source, tool, bytecode, dependency, lock and path admission remain mandatory");
+        AuditedAssertions.assertTrue(output.contains("proof compiler reuse keeps every control fresh"),
+                "Two generation runs borrow compilation but execute their controls independently");
+        for (String rejected : List.of("failure", "partial", "tampered"))
+            AuditedAssertions.assertTrue(output.contains("proof compiler reuse rejects " + rejected),
+                    "Failed or incomplete execution and altered compiler output cannot promote a proof: " + rejected);
     }
 
     @Test void compilerInventoriesKeepPayloadsAndRejectInvalidSourceIdentities() throws Exception {
@@ -64,6 +72,8 @@ class ComponentEvidenceScopeComponentTest {
                 "workflow-test-change-admission.test.mjs");
         AuditedAssertions.assertTrue(output.contains("Gradle component checkpoint and audit changes keep qualification offline"),
                 "A change limited to Gradle reporting must select offline qualification.");
+        AuditedAssertions.assertTrue(output.contains("application collection wiring keeps raster coverage offline"),
+                "History includes raster fixtures once, while unrelated modules retain their own evidence");
         AuditedAssertions.assertTrue(output.contains("a bidding change requires the native bidding and AutoGame selections"),
                 "The Extent component group must include the executable RAG selection contract");
         AuditedAssertions.assertTrue(output.contains("a changed app package reruns its declared owner while unchanged suites reuse hash-bound evidence"),

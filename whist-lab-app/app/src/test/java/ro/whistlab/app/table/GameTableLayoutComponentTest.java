@@ -1,5 +1,9 @@
 package ro.whistlab.app.table;
 
+import atf.gradle.audit.input.CapturedValue;
+
+import atf.gradle.audit.matrix.ExhaustiveMatrixChecks;
+
 import ro.whistlab.app.bidding.BidGridMetrics;
 import ro.whistlab.app.hand.HandLayoutMetrics;
 import ro.whistlab.app.localization.WhistUiText;
@@ -31,7 +35,7 @@ public final class GameTableLayoutComponentTest extends atf.gradle.audit.GradleA
     }
 
     @Test public void allHandCountsRemainCenteredWithoutGapsAtActualWindowDensities() {
-        var checks = new atf.gradle.audit.matrix.ExhaustiveMatrixChecks();
+        var checks = new ExhaustiveMatrixChecks();
         atf.gradle.audit.GradleInputs.fixture("Private fan matrix", "widthsDp", new int[]{280, 313, 353, 560, 760},
                 "densities", new float[]{1, 2, 2.625f, 2.75f}, "fontScales", new float[]{1, 1.3f, 1.5f},
                 "cards", "1–17", "expectedPairs", 3300);
@@ -57,17 +61,21 @@ public final class GameTableLayoutComponentTest extends atf.gradle.audit.GradleA
     }
 
     @Test public void thirteenStandardFacesFitWithoutAccumulatingFractionalPixelAdvanceRounding() {
+        var matrixChecks = new ExhaustiveMatrixChecks();
+        atf.gradle.audit.GradleInputs.fixture("Exhaustive matrix scope", "scenario", "thirteenStandardFacesFitWithoutAccumulatingFractionalPixelAdvanceRounding", "expected pairs", 384);
         for (int width : new int[]{280,313,353,560}) for (float density : new float[]{1f,1.5f,2.25f,2.625f,2.75f,3.5f}) {
             int viewport=Math.round(width*density),glyph=Math.round(17*density);
             var fan=HandLayoutMetrics.fan(13,viewport,density,1f,glyph);
 
-            atf.gradle.audit.GradleInputs.fixture("Fixture before first assertion", "density", density, "fan", fan, "glyph", glyph, "viewport", viewport, "width", width);
-            assertEquals("All thirteen faces fit the first viewport",viewport,fan.width());
-            assertEquals("fan.cardWidth() must equal Math.round(63 * density)", Math.round(63*density),fan.cardWidth());
-            assertTrue("fan.first() >= 0 must hold", fan.first()>=0);
-            assertTrue("fan.left(12) + fan.cardWidth() <= viewport must hold", fan.left(12)+fan.cardWidth()<=viewport);
-            for(int card=1;card<13;card++)assertTrue("fan.left(card) - fan.left(card - 1) >= glyph must hold", fan.left(card)-fan.left(card-1)>=glyph);
+            matrixChecks.at(CapturedValue.text(new Object[]{"Fixture before first assertion", "density", density, "fan", fan, "glyph", glyph, "viewport", viewport, "width", width}));
+            matrixChecks.equal("All thirteen faces fit the first viewport", viewport, fan.width());
+            matrixChecks.equal("fan.cardWidth() must equal Math.round(63 * density)", Math.round(63*density), fan.cardWidth());
+            matrixChecks.equal("fan.first() >= 0 must hold", true, fan.first()>=0);
+            matrixChecks.equal("fan.left(12) + fan.cardWidth() <= viewport must hold", true, fan.left(12)+fan.cardWidth()<=viewport);
+            for(int card=1;card<13;card++)matrixChecks.equal("fan.left(card) - fan.left(card - 1) >= glyph must hold", true, fan.left(card)-fan.left(card-1)>=glyph);
         }
+        assertEquals("The original matrix population remains complete", 384L, matrixChecks.checkedPairs());
+        matrixChecks.publish();
     }
 
     @Test public void invalidScalesAndMeasuredExtentsCannotInventAValidHand() {
@@ -96,7 +104,7 @@ public final class GameTableLayoutComponentTest extends atf.gradle.audit.GradleA
     }
 
     @Test public void everyMeasuredTableRegionFitsWithoutCoveringAnotherRegion() {
-        var checks = new atf.gradle.audit.matrix.ExhaustiveMatrixChecks();
+        var checks = new ExhaustiveMatrixChecks();
         int[] widths = {280, 313, 353, 560, 760}, gaps = {1, 8}, seatHeights = {62, 82, 110}, extras = {0, 80, 240};
         float[] fontScales = {1f, 1.3f, 1.5f, 2f};
         atf.gradle.audit.GradleInputs.fixture("Complete measured table parameter grid", "widths", widths,
@@ -170,19 +178,23 @@ public final class GameTableLayoutComponentTest extends atf.gradle.audit.GradleA
     }
 
     @Test public void handIndicesReserveTheMeasuredGlyphBandAtEverySupportedWidth() {
+        var matrixChecks = new ExhaustiveMatrixChecks();
+        atf.gradle.audit.GradleInputs.fixture("Exhaustive matrix scope", "scenario", "handIndicesReserveTheMeasuredGlyphBandAtEverySupportedWidth", "expected pairs", 198);
         for (int width : new int[]{280, 313, 353, 560}) {
             for (int count = 2; count <= 17; count++) {
                 for (int measuredIndex : new int[]{19, 25, 31}) {
                     int advance = HandLayoutMetrics.horizontalAdvanceDp(count, width, 1f, measuredIndex);
 
-                    atf.gradle.audit.GradleInputs.fixture("Fixture before first assertion", "advance", advance, "count", count, "measuredIndex", measuredIndex, "width", width);
-                    assertTrue("advance >= measuredIndex must hold", advance >= measuredIndex);
+                    matrixChecks.at(CapturedValue.text(new Object[]{"Fixture before first assertion", "advance", advance, "count", count, "measuredIndex", measuredIndex, "width", width}));
+                    matrixChecks.equal("advance >= measuredIndex must hold", true, advance >= measuredIndex);
                 }
             }
-            assertFalse("HandLayoutMetrics.requiresHorizontalScroll(13, width, 1.0F) must remain false", HandLayoutMetrics.requiresHorizontalScroll(13, width, 1f));
+            matrixChecks.equal("HandLayoutMetrics.requiresHorizontalScroll(13, width, 1.0F) must remain false", false, HandLayoutMetrics.requiresHorizontalScroll(13, width, 1f));
         }
-        assertTrue("HandLayoutMetrics.requiresHorizontalScroll(17, 280, 1.0F) must hold", HandLayoutMetrics.requiresHorizontalScroll(17, 280, 1f));
-        assertTrue("HandLayoutMetrics.horizontalAdvanceDp(13, 280, 1.5F, 31) >= 31 must hold", HandLayoutMetrics.horizontalAdvanceDp(13, 280, 1.5f, 31) >= 31);
+        matrixChecks.equal("HandLayoutMetrics.requiresHorizontalScroll(17, 280, 1.0F) must hold", true, HandLayoutMetrics.requiresHorizontalScroll(17, 280, 1f));
+        matrixChecks.equal("HandLayoutMetrics.horizontalAdvanceDp(13, 280, 1.5F, 31) >= 31 must hold", true, HandLayoutMetrics.horizontalAdvanceDp(13, 280, 1.5f, 31) >= 31);
+        assertEquals("The original matrix population remains complete", 198L, matrixChecks.checkedPairs());
+        matrixChecks.publish();
     }
 
     @Test public void oneCardHasNoArtificialNeighbourOffsetAndEmptyHandsAreSeparate() {

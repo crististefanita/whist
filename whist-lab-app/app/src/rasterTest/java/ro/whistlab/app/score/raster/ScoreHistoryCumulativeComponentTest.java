@@ -1,5 +1,7 @@
 package ro.whistlab.app.score.raster;
 
+import atf.gradle.audit.input.CapturedValue;
+
 import static atf.gradle.audit.assertions.GradleAssertions.*;
 import java.util.Collections;
 import java.util.List;
@@ -25,51 +27,65 @@ import ro.whistlab.core.session.ScoreHistory;
 public final class ScoreHistoryCumulativeComponentTest extends atf.gradle.audit.GradleAuditedTest {
     @Rule public final TemporaryFolder temporary = new TemporaryFolder();
     @Test public void everyHistoricalRowShowsItsOwnClosingBalanceForEverySeatAndLanguage() {
-        var balances = List.of(List.of(12, -9, 0, 3, -7, 15),
-                List.of(10, -7, -2, 7, -13, 0), List.of(17, -16, 2, 12, -10, -5));
-        for (GameMode mode : GameMode.values()) for (int seats = 3; seats <= 6; seats++) {
-            var game = newGame(mode, seats);
-            int seatCount = seats;
-            var totals = balances.stream().map(row -> row.subList(0, seatCount)).toList();
-            var history = new ScoreHistory(0, Collections.nCopies(seats, 0), totals);
-            for (var language : HowToPlay.Language.values()) {
-                var table = HistoryRasterProjection.all(game.snapshot(), history, language, 1, 1);
-                for (int hand = 0; hand < totals.size(); hand++) for (int seat = 0; seat < seats; seat++) {
-                    var cell = table.rows().get(hand).cells().get(seat);
+        String lastRasterContext = "Raster fixture not evaluated";
+        try {
+            var balances = List.of(List.of(12, -9, 0, 3, -7, 15),
+                    List.of(10, -7, -2, 7, -13, 0), List.of(17, -16, 2, 12, -10, -5));
+            for (GameMode mode : GameMode.values()) for (int seats = 3; seats <= 6; seats++) {
+                var game = newGame(mode, seats);
+                int seatCount = seats;
+                var totals = balances.stream().map(row -> row.subList(0, seatCount)).toList();
+                var history = new ScoreHistory(0, Collections.nCopies(seats, 0), totals);
+                for (var language : HowToPlay.Language.values()) {
+                    var table = HistoryRasterProjection.all(game.snapshot(), history, language, 1, 1);
+                    for (int hand = 0; hand < totals.size(); hand++) for (int seat = 0; seat < seats; seat++) {
+                        var cell = table.rows().get(hand).cells().get(seat);
 
-                    atf.gradle.audit.GradleInputs.fixture("Fixture before first assertion", "balances", balances, "cell", cell, "game", game, "hand", hand, "history", history, "language", language, "mode", mode, "seat", seat, "seatCount", seatCount, "seats", seats, "table", table, "totals", totals);
-                    assertEquals("cell.points() must equal totals.get(hand).get(seat).toString()", totals.get(hand).get(seat).toString(), cell.points());
-                    assertEquals("table.rows().get(hand).status() must equal \"RECORDED\"", "RECORDED", table.rows().get(hand).status());
-                    assertEquals("cell.series() must equal 0", 0, cell.series());
+                        lastRasterContext = CapturedValue.text(new Object[]{"Fixture before first assertion", "balances", balances, "cell", cell, "game", game, "hand", hand, "history", history, "language", language, "mode", mode, "seat", seat, "seatCount", seatCount, "seats", seats, "table", table, "totals", totals});
+                        atf.gradle.audit.GradleInputs.fixture("Fixture before first assertion", "balances", balances, "cell", cell, "hand", hand, "language", language, "mode", mode, "seat", seat, "seatCount", seatCount, "seats", seats, "totals", totals, "fixture contract", "Controlled JVM projection; full immutable context retained on first failure");
+                        assertEquals("cell.points() must equal totals.get(hand).get(seat).toString()", totals.get(hand).get(seat).toString(), cell.points());
+                        assertEquals("table.rows().get(hand).status() must equal \"RECORDED\"", "RECORDED", table.rows().get(hand).status());
+                        assertEquals("cell.series() must equal 0", 0, cell.series());
+                    }
+                    assertEquals("table.rows().get(1).cells().get(0).points() must equal \"10\"", "10", table.rows().get(1).cells().get(0).points());
+                    assertEquals("table.rows().get(1).cells().get(0).handPoints() must equal \"-2\"", "-2", table.rows().get(1).cells().get(0).handPoints());
+                    assertTrue("table.rows().subList(totals.size(), table.rows().size()).stream().flatMap((row)->row.cells().stream()).allMatch((cell)->cell.points().equals(\"\\u2014\")) must hold", table.rows().subList(totals.size(), table.rows().size()).stream()
+                            .flatMap(row -> row.cells().stream()).allMatch(cell -> cell.points().equals("—")));
                 }
-                assertEquals("table.rows().get(1).cells().get(0).points() must equal \"10\"", "10", table.rows().get(1).cells().get(0).points());
-                assertEquals("table.rows().get(1).cells().get(0).handPoints() must equal \"-2\"", "-2", table.rows().get(1).cells().get(0).handPoints());
-                assertTrue("table.rows().subList(totals.size(), table.rows().size()).stream().flatMap((row)->row.cells().stream()).allMatch((cell)->cell.points().equals(\"\\u2014\")) must hold", table.rows().subList(totals.size(), table.rows().size()).stream()
-                        .flatMap(row -> row.cells().stream()).allMatch(cell -> cell.points().equals("—")));
             }
+        } catch (Exception | AssertionError failure) {
+            atf.gradle.audit.GradleInputs.note("Full first raster failure context", lastRasterContext);
+            throw failure;
         }
     }
 
     @Test public void aLegacyPrefixDisplaysOnlyTheKnownBoundaryBalanceAndSubsequentTotals() {
-        for (int seats = 3; seats <= 6; seats++) {
-            var opening = List.of(10, -10, 0, 5, -5, 100).subList(0, seats);
-            var closing = List.of(15, -11, -1, 10, 0, 99).subList(0, seats);
-            var history = new ScoreHistory(2, opening, List.of(closing));
-            for (var language : HowToPlay.Language.values()) {
-                var table = HistoryRasterProjection.all(newGame(GameMode.ROMANIAN_WHIST, seats).snapshot(), history,
-                        language, 1, 1);
-                for (int seat = 0; seat < seats; seat++) {
+        String lastRasterContext = "Raster fixture not evaluated";
+        try {
+            for (int seats = 3; seats <= 6; seats++) {
+                var opening = List.of(10, -10, 0, 5, -5, 100).subList(0, seats);
+                var closing = List.of(15, -11, -1, 10, 0, 99).subList(0, seats);
+                var history = new ScoreHistory(2, opening, List.of(closing));
+                for (var language : HowToPlay.Language.values()) {
+                    var table = HistoryRasterProjection.all(newGame(GameMode.ROMANIAN_WHIST, seats).snapshot(), history,
+                            language, 1, 1);
+                    for (int seat = 0; seat < seats; seat++) {
 
-                    atf.gradle.audit.GradleInputs.fixture("Fixture before first assertion", "closing", closing, "history", history, "language", language, "opening", opening, "seat", seat, "seats", seats, "table", table);
-                    assertEquals("table.rows().get(0).cells().get(seat).points() must equal \"\\u2014\"", "—", table.rows().get(0).cells().get(seat).points());
-                    var boundary = table.rows().get(1).cells().get(seat);
-                    assertEquals("boundary.points() must equal opening.get(seat).toString()", opening.get(seat).toString(), boundary.points());
-                    assertEquals("boundary.bid() must equal \"\\u2014\"", "—", boundary.bid());
-                    assertEquals("boundary.handPoints() must equal \"\\u2014\"", "—", boundary.handPoints());
-                    assertEquals("table.rows().get(2).cells().get(seat).points() must equal closing.get(seat).toString()", closing.get(seat).toString(), table.rows().get(2).cells().get(seat).points());
-                    assertEquals("table.rows().get(3).cells().get(seat).points() must equal \"\\u2014\"", "—", table.rows().get(3).cells().get(seat).points());
+                        lastRasterContext = CapturedValue.text(new Object[]{"Fixture before first assertion", "closing", closing, "history", history, "language", language, "opening", opening, "seat", seat, "seats", seats, "table", table});
+                        atf.gradle.audit.GradleInputs.fixture("Fixture before first assertion", "closing", closing, "language", language, "opening", opening, "seat", seat, "seats", seats, "fixture contract", "Controlled JVM projection; full immutable context retained on first failure");
+                        assertEquals("table.rows().get(0).cells().get(seat).points() must equal \"\\u2014\"", "—", table.rows().get(0).cells().get(seat).points());
+                        var boundary = table.rows().get(1).cells().get(seat);
+                        assertEquals("boundary.points() must equal opening.get(seat).toString()", opening.get(seat).toString(), boundary.points());
+                        assertEquals("boundary.bid() must equal \"\\u2014\"", "—", boundary.bid());
+                        assertEquals("boundary.handPoints() must equal \"\\u2014\"", "—", boundary.handPoints());
+                        assertEquals("table.rows().get(2).cells().get(seat).points() must equal closing.get(seat).toString()", closing.get(seat).toString(), table.rows().get(2).cells().get(seat).points());
+                        assertEquals("table.rows().get(3).cells().get(seat).points() must equal \"\\u2014\"", "—", table.rows().get(3).cells().get(seat).points());
+                    }
                 }
             }
+        } catch (Exception | AssertionError failure) {
+            atf.gradle.audit.GradleInputs.note("Full first raster failure context", lastRasterContext);
+            throw failure;
         }
     }
 
@@ -78,47 +94,61 @@ public final class ScoreHistoryCumulativeComponentTest extends atf.gradle.audit.
     }
 
     @Test public void rasterShowsRectanglesOnlyInAwardedPointsAndRedEvenForAPositiveRunningTotal() throws Exception {
-        for (int players = 3; players <= 6; players++) for (var pattern : AwardRasterFixture.Pattern.values()) {
-            var game = AwardRasterFixture.create(players, pattern);
-            if (pattern == AwardRasterFixture.Pattern.PENALTY_WITH_POSITIVE_TOTAL) {
+        String lastRasterContext = "Raster fixture not evaluated";
+        try {
+            for (int players = 3; players <= 6; players++) for (var pattern : AwardRasterFixture.Pattern.values()) {
+                var game = AwardRasterFixture.create(players, pattern);
+                if (pattern == AwardRasterFixture.Pattern.PENALTY_WITH_POSITIVE_TOTAL) {
 
-                atf.gradle.audit.GradleInputs.fixture("Fixture before first assertion", "game", game, "pattern", pattern, "players", players);
-                assertEquals("game.snapshot().players().get(0).streakPoints() must equal -10", -10, game.snapshot().players().get(0).streakPoints());
-                assertTrue("game.snapshot().players().get(0).totalScore() > 0 must hold", game.snapshot().players().get(0).totalScore() > 0);
+                    lastRasterContext = CapturedValue.text(new Object[]{"Fixture before first assertion", "game", game, "pattern", pattern, "players", players});
+                    atf.gradle.audit.GradleInputs.fixture("Fixture before first assertion", "pattern", pattern, "players", players, "fixture contract", "Controlled JVM projection; full immutable context retained on first failure");
+                    assertEquals("game.snapshot().players().get(0).streakPoints() must equal -10", -10, game.snapshot().players().get(0).streakPoints());
+                    assertTrue("game.snapshot().players().get(0).totalScore() > 0 must hold", game.snapshot().players().get(0).totalScore() > 0);
+                }
+                if (pattern == AwardRasterFixture.Pattern.ISOLATED_BONUS) {
+                    assertEquals("game.snapshot().players().get(0).streakPoints() must equal 0", 0, game.snapshot().players().get(0).streakPoints());
+                    assertEquals("game.snapshot().players().get(1).streakPoints() must equal 0", 0, game.snapshot().players().get(1).streakPoints());
+                    assertEquals("game.snapshot().players().get(2).streakPoints() must equal 10", 10, game.snapshot().players().get(2).streakPoints());
+                }
+                for (var language : HowToPlay.Language.values()) for (float scale : new float[]{1, 1.5f}) {
+                    var spec = raster(game, language, 2, scale);
+                    var baseline = HistoryRaster.render(spec, false);
+                    var image = HistoryRaster.render(spec, true);
+                    HistoryRasterAudit.rectanglesOnlyCoverTheirAwardedPointsCells(spec, baseline, image);
+                    HistoryRasterAudit.separatorPixels(spec, image, 4);
+                    var saved = temporary.newFile("raster-" + players + "-" + pattern + "-" + language + "-" + scale + ".png");
+                    assertTrue("ImageIO.write(image, \"png\", saved) must hold", ImageIO.write(image, "png", saved));
+                    var reloaded = ImageIO.read(saved);
+                    HistoryRasterAudit.rectanglesOnlyCoverTheirAwardedPointsCells(spec, baseline, reloaded);
+                    if (players == 4 && language == HowToPlay.Language.RO && scale == 1.5f)
+                        publish(pattern.name().toLowerCase(Locale.ROOT), spec, reloaded);
+                }
             }
-            if (pattern == AwardRasterFixture.Pattern.ISOLATED_BONUS) {
-                assertEquals("game.snapshot().players().get(0).streakPoints() must equal 0", 0, game.snapshot().players().get(0).streakPoints());
-                assertEquals("game.snapshot().players().get(1).streakPoints() must equal 0", 0, game.snapshot().players().get(1).streakPoints());
-                assertEquals("game.snapshot().players().get(2).streakPoints() must equal 10", 10, game.snapshot().players().get(2).streakPoints());
-            }
-            for (var language : HowToPlay.Language.values()) for (float scale : new float[]{1, 1.5f}) {
-                var spec = raster(game, language, 2, scale);
-                var baseline = HistoryRaster.render(spec, false);
-                var image = HistoryRaster.render(spec, true);
-                HistoryRasterAudit.rectanglesOnlyCoverTheirAwardedPointsCells(spec, baseline, image);
-                HistoryRasterAudit.separatorPixels(spec, image, 4);
-                var saved = temporary.newFile("raster-" + players + "-" + pattern + "-" + language + "-" + scale + ".png");
-                assertTrue("ImageIO.write(image, \"png\", saved) must hold", ImageIO.write(image, "png", saved));
-                var reloaded = ImageIO.read(saved);
-                HistoryRasterAudit.rectanglesOnlyCoverTheirAwardedPointsCells(spec, baseline, reloaded);
-                if (players == 4 && language == HowToPlay.Language.RO && scale == 1.5f)
-                    publish(pattern.name().toLowerCase(Locale.ROOT), spec, reloaded);
-            }
+        } catch (Exception | AssertionError failure) {
+            atf.gradle.audit.GradleInputs.note("Full first raster failure context", lastRasterContext);
+            throw failure;
         }
     }
 
     @Test public void rasterSeparatorsUseTheThirtyPercentThinnerDpPolicyAtFractionalDensities() throws Exception {
-        float[] density = {1, 1.5f, 2, 2.25f, 2.625f, 2.75f, 3.5f};
-        int[] pixels = {2, 3, 4, 5, 6, 6, 7};
-        for (int players = 3; players <= 6; players++) {
-            var game = AwardRasterFixture.create(players, AwardRasterFixture.Pattern.ISOLATED_BONUS);
-            for (int index = 0; index < density.length; index++) {
-                var spec = raster(game, HowToPlay.Language.RO, density[index], 1);
+        String lastRasterContext = "Raster fixture not evaluated";
+        try {
+            float[] density = {1, 1.5f, 2, 2.25f, 2.625f, 2.75f, 3.5f};
+            int[] pixels = {2, 3, 4, 5, 6, 6, 7};
+            for (int players = 3; players <= 6; players++) {
+                var game = AwardRasterFixture.create(players, AwardRasterFixture.Pattern.ISOLATED_BONUS);
+                for (int index = 0; index < density.length; index++) {
+                    var spec = raster(game, HowToPlay.Language.RO, density[index], 1);
 
-                atf.gradle.audit.GradleInputs.fixture("Fixture before first assertion", "density", density, "game", game, "index", index, "pixels", pixels, "players", players, "spec", spec);
-                assertEquals("spec.grid().separator() must equal pixels[index]", pixels[index], spec.grid().separator());
-                HistoryRasterAudit.separatorPixels(spec, HistoryRaster.render(spec, true), pixels[index]);
+                    lastRasterContext = CapturedValue.text(new Object[]{"Fixture before first assertion", "density", density, "game", game, "index", index, "pixels", pixels, "players", players, "spec", spec});
+                    atf.gradle.audit.GradleInputs.fixture("Fixture before first assertion", "density", density, "index", index, "pixels", pixels, "players", players, "fixture contract", "Controlled JVM projection; full immutable context retained on first failure");
+                    assertEquals("spec.grid().separator() must equal pixels[index]", pixels[index], spec.grid().separator());
+                    HistoryRasterAudit.separatorPixels(spec, HistoryRaster.render(spec, true), pixels[index]);
+                }
             }
+        } catch (Exception | AssertionError failure) {
+            atf.gradle.audit.GradleInputs.note("Full first raster failure context", lastRasterContext);
+            throw failure;
         }
     }
 

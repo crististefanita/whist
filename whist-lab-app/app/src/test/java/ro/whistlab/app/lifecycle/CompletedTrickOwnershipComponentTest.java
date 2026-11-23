@@ -1,5 +1,9 @@
 package ro.whistlab.app.lifecycle;
 
+import atf.gradle.audit.input.CapturedValue;
+
+import atf.gradle.audit.matrix.ExhaustiveMatrixChecks;
+
 import static atf.gradle.audit.assertions.GradleAssertions.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -16,22 +20,26 @@ import ro.whistlab.core.session.GameSession;
 
 public class CompletedTrickOwnershipComponentTest extends atf.gradle.audit.GradleAuditedTest {
     @Test public void collectionRetainsEveryCardAndTheEnginesWinnerAtEveryTableSize() {
+        var matrixChecks = new ExhaustiveMatrixChecks();
+        atf.gradle.audit.GradleInputs.fixture("Exhaustive matrix scope", "scenario", "collectionRetainsEveryCardAndTheEnginesWinnerAtEveryTableSize", "expected pairs", 144);
         for (int count = 3; count <= 6; count++) for (int winner = 0; winner < count; winner++) {
             var game = completedTrick(count, winner, 2);
             var before = game.snapshot();
             var pause = new CompletedTrickPause();
             var display = pause.evaluate(game, 1000);
 
-            atf.gradle.audit.GradleInputs.fixture("Fixture before first assertion", "before", before, "count", count, "display", display, "game", game, "pause", pause, "winner", winner);
-            assertTrue("display.active() must hold", display.active());
-            assertEquals("display.remainingMillis() must equal 1500", 1500, display.remainingMillis());
-            assertEquals("display.cards().size() must equal count", count, display.cards().size());
-            assertEquals("before.lastTrickWinnerSeat() must equal winner", winner, before.lastTrickWinnerSeat());
-            assertEquals("display.cards() must equal before.lastTrick()", before.lastTrick(), display.cards());
-            assertFalse("pause.evaluate(game, 2500).active() must remain false", pause.evaluate(game, 2500).active());
-            assertFalse("pause.evaluate(game, 2501).active() must remain false", pause.evaluate(game, 2501).active());
-            assertEquals("game.snapshot() must equal before", before, game.snapshot());
+            matrixChecks.at(CapturedValue.text(new Object[]{"Fixture before first assertion", "before", before, "count", count, "display", display, "game", game, "pause", pause, "winner", winner}));
+            matrixChecks.equal("display.active() must hold", true, display.active());
+            matrixChecks.equal("display.remainingMillis() must equal 1500", 1500, display.remainingMillis());
+            matrixChecks.equal("display.cards().size() must equal count", count, display.cards().size());
+            matrixChecks.equal("before.lastTrickWinnerSeat() must equal winner", winner, before.lastTrickWinnerSeat());
+            matrixChecks.equal("display.cards() must equal before.lastTrick()", before.lastTrick(), display.cards());
+            matrixChecks.equal("pause.evaluate(game, 2500).active() must remain false", false, pause.evaluate(game, 2500).active());
+            matrixChecks.equal("pause.evaluate(game, 2501).active() must remain false", false, pause.evaluate(game, 2501).active());
+            matrixChecks.equal("game.snapshot() must equal before", before, game.snapshot());
         }
+        assertEquals("The original matrix population remains complete", 144L, matrixChecks.checkedPairs());
+        matrixChecks.publish();
     }
 
     @Test public void anEqualStateFromAnotherSessionStartsItsOwnCollectionWindow() {
