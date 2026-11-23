@@ -32,7 +32,6 @@ Scorul 1–100 exprimă ordinea recomandată de lucru, nu calitatea sau procentu
 | AND-01 | P1 | 93 | Demonstrează recuperarea checkpoint-ului după corupere sau întrerupere, păstrând datele utilizatorului ori raportând eroarea explicit. [Registru](ATF_Android.md) |
 | AND-02 | P1 | 92 | Califică pe APK actorul, geometria stabilă și mâna vizibilă în licitație/joc/AutoGame pentru 3–6 locuri, RO/EN și text mărit. [Registru](ATF_Android.md) |
 | AI-01 | P1 | 91 | Calibrează inferența Hard pentru 2–8 cărți din licitații și cărți jucate pe loturi noi; separă exactitatea probabilităților de scorul simulat. [Registru](ATF_Ai.md) |
-| RAG-27 | P1 | 91 | Reduce costul snapshot-ului la rece și al sigilării compilatorului prin I/O grupat și măsurat, păstrând verificările de octeți exacți, linkuri și corupere. [Registru](ATF_Governance.md#framework-selection-boundaries) |
 | RAG-29 | P1 | 90 | Fixați explicit contextul catalogului calificat; separați verificările livrării de rapoartele care își modifică propriul inventar. [Registru](ATF_Governance.md#framework-selection-boundaries) |
 | UI-04 | P1 | 90 | Furnizați măsurătorile native reale portului neutru de observații; respingeți fonturile tăiate și redesenarea veche independent de egalitatea planurilor. [Registru](ATF_CardUi_Extraction.md#ui-three-module-plan) |
 | ACH-01 | P1 | 90 | Califică pe APK restaurarea poziției și selecției din Realizări, apoi reluarea notificărilor după recrearea activității. [Registru](ATF_Achievements.md) |

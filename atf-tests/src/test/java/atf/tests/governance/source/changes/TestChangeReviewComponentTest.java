@@ -116,6 +116,15 @@ class TestChangeReviewComponentTest {
         AuditedAssertions.assertEquals(List.of(), check(repo).diagnostics());
     }
 
+    @Test void contentDigestsCannotBypassSourceChangeReview(@TempDir Path root) throws Exception {
+        var repo = new TestChangeGitFixture(root);
+        String path = "scripts/AtfFileDigest.ps1";
+        repo.put(path, "# controlled content and copy boundary\n");
+        AuditedAssertions.assertEquals(List.of(uncovered("A", path, repo.base)), check(repo).diagnostics());
+        repo.put(FEEDBACK, repo.control("CONTENT-DIGEST", "ACTIVE", repo.base, VALID, false, path));
+        AuditedAssertions.assertEquals(List.of(), check(repo).diagnostics());
+    }
+
     @Test void theComponentJvmProfileCannotChangeWithoutAReviewedControl(@TempDir Path root) throws Exception {
         var repo = new TestChangeGitFixture(root);
         var launchers = List.of("scripts/AtfComponentJvm.ps1", "scripts/AtfStandaloneJava.ps1", "scripts/AtfTestChangeAdmission.ps1");

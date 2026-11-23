@@ -7,6 +7,52 @@ Acest registru definește controalele revizuite, baza Git și căile lor exacte.
 ## Controale verificate
 
 <details>
+<summary>I/O pentru snapshot și compilator fără scurtături prin metadate</summary>
+
+```yaml
+testChanges:
+  - id: RAG-SNAPSHOT-NATIVE-IO
+    status: VERIFIED
+    base: 3b28996f3e818558d237eca5989f12df48502c0c
+    expires: 2026-12-24
+    reason: Păstrează manifestele exacte ale surselor/release-urilor și sigiliile compilării prin citiri native noi, copiere verificată limitată și faze de snapshot numite. Păstrează admiterea completă înaintea mutației și refuzurile pentru drift, corupere, material privat, destinații duplicate și linkuri. Guvernează separat responsabilitățile primare și reutilizarea compilatorului.
+    proof: 'mvn -o -pl atf-tests -am -Dtest=SnapshotIoComponentTest,LauncherSourceInventoryComponentTest,SigningSourceIsolationComponentTest,ComponentEvidenceScopeComponentTest,SuiteOwnershipGovernanceTest,AtfCollectionOwnershipComponentTest,TestChangeReviewComponentTest -Dsurefire.failIfNoSpecifiedTests=false test'
+    checks:
+      positive:
+        - atf.tests.governance.documentation.release.rag.scope.io.SnapshotIoComponentTest#byteInventoriesAndNamedSnapshotPhasesRemainEquivalent
+        - atf.tests.governance.support.LauncherSourceInventoryComponentTest#outputBoundariesKeepLegalPackagesAndDetectSourceChanges
+        - atf.tests.governance.documentation.release.rag.scope.ComponentEvidenceScopeComponentTest#editorialChangesReuseVerifiedMavenCompilationAndKeepFreshExecutionInputs
+        - atf.tests.governance.documentation.release.rag.scope.ComponentEvidenceScopeComponentTest#documentationDriftReadmitsOnlyUnchangedOwnersAndPreservesRejectedEvidence
+        - atf.tests.governance.suites.SuiteOwnershipGovernanceTest#everyMavenExecutableHasOnePrimaryOwnerAndEveryFocusedGateIsDeclared
+        - atf.tests.governance.suites.AtfCollectionOwnershipComponentTest#realDependencyClosuresSelectOnlyTheirConsumers
+      negative:
+        - atf.tests.governance.documentation.release.rag.scope.io.SnapshotIoComponentTest#sameMetadataDriftCorruptionAndIndirectPathsCannotQualify
+        - atf.tests.governance.support.SigningSourceIsolationComponentTest#aPublicPathCannotFollowALinkToPrivateMaterial
+        - atf.tests.governance.support.SigningSourceIsolationComponentTest#aForgedManifestCannotCopyPrivateMaterialOrPartiallyExportPublicFiles
+        - atf.tests.governance.source.changes.TestChangeReviewComponentTest#contentDigestsCannotBypassSourceChangeReview
+        - atf.tests.governance.suites.AtfCollectionOwnershipComponentTest#missingOrUnreviewedDependenciesCannotAuthorizeReuse
+    paths:
+      - scripts/AtfFileDigest.ps1
+      - scripts/Get-AtfSourceInputs.ps1
+      - scripts/Copy-AtfSourceInputs.ps1
+      - scripts/AtfQualificationSnapshot.ps1
+      - scripts/AtfComponentMaven.ps1
+      - scripts/run-component-suites.ps1
+      - scripts/run-atf-governance.ps1
+      - atf-tests/src/main/java/atf/tests/testchange/TestChangeReview.java
+      - atf-tests/src/test/java/atf/tests/governance/source/changes/TestChangeReviewComponentTest.java
+      - atf-tests/src/test/java/atf/tests/governance/documentation/release/rag/scope/io/SnapshotIoComponentTest.java
+      - atf-tests/src/test/java/atf/tests/suites/components/AtfOrchestrationComponentSuite.java
+      - atf-tests/tools/snapshot-io.test.mjs
+      - atf-tests/tools/component-source-check.test.mjs
+      - atf-tests/tools/release-test-scope.mjs
+      - config/atf-component-collections.json
+      - config/atf-component-dependencies.json
+```
+
+</details>
+
+<details>
 <summary>Responsabilitatea compilării Maven și execuție nouă</summary>
 
 ```yaml

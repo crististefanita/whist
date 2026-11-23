@@ -12,6 +12,7 @@ test('the real snapshot checker captures rejected observations and admits only l
   t.after(() => fs.rm(root, {recursive:true, force:true}));
   const helper = new URL('../../scripts/AtfQualificationSnapshot.ps1', import.meta.url);
   await fs.copyFile(helper, path.join(root, 'AtfQualificationSnapshot.ps1'));
+  await fs.copyFile(new URL('../../scripts/AtfFileDigest.ps1', import.meta.url), path.join(root, 'AtfFileDigest.ps1'));
   // The inventory neighbour is controlled; comparison, capture, hashes and release traversal are real.
   await fs.writeFile(path.join(root, 'Get-AtfSourceInputs.ps1'), `param([string]$SourceRoot)
 if(Test-Path -LiteralPath (Join-Path $SourceRoot 'reader-error')) { throw 'controlled inventory failure' }

@@ -229,6 +229,21 @@ Compilarea și execuția au identități separate. [Inventarul compilatorului](.
 
 Runnerul înregistrează identitatea compilatorului, admiterea cache-ului și sigilarea ieșirii ca etape de timp distincte. O compilare împrumutată are receipt-ul original și o referință legată prin hash în noul spațiu; proveniența sursei și rapoartele vechi nu se rescriu.
 
+### I/O pentru snapshot și compilator
+
+[Suportul pentru fișiere](../../scripts/AtfFileDigest.ps1) citește octeții SHA-256 din nou și folosește enumerarea nativă a directoarelor; data și mărimea fișierelor nu autorizează reutilizarea.
+
+| Graniță | Contract |
+|---|---|
+| Admiterea copierii | Validați manifestul complet, granița semnării publice și căile directe înainte de directoare sau copiere; respingeți destinațiile duplicate. |
+| Lot limitat | Cel mult patru lucrători reverifică sursa/destinația la utilizare și calculează independent hash-ul octeților scriși. Windows folosește fluxuri cu buffer, păstrând data modificării și atributele; celelalte platforme păstrează copierea nativă. |
+| Validare nouă | Reinventariați sursele/release-urile din staging și live după copiere și după compilare; adăugările, ștergerile, schimbările cu metadate identice și căile indirecte rămân refuzuri. |
+| Sigiliul compilării | Sortați ordinal aceleași înregistrări de clase, resurse și dependențe și calculați hash-ul conținutului exact; un cache de metadate nu înlocuiește citirea. |
+| Observabilitate | Înregistrați separat `snapshot.inventory`, `snapshot.copy`, `snapshot.verify`, `snapshot.artifact-preflight` și `components.post-compile-snapshot`. Etapele copil ale snapshotului se suprapun cu durata părintelui și nu se adună de două ori. |
+| Măsurare | Comparați manifeste și sigilii identice, declarați prima trecere față de citirile repetate și limitele cache-ului OS, păstrând timpii originali. Un câștig I/O local este distinct de accelerarea întregului release. |
+
+Inventarierea și sigilarea nu inițializează compilatorul copierii. Inițializarea lotului aparține etapei măsurate de copiere; un eșec de copiere sau preflight păstrează cauza originală și blochează calificarea.
+
 ```mermaid
 flowchart LR
     SOURCE[Snapshot actual al sursei] -->|admite perimetrul Maven| FILTER[Păstrează dependențele compilării]

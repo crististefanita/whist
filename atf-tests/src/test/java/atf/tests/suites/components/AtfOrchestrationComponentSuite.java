@@ -16,6 +16,7 @@ import org.junit.platform.suite.api.*;
     "^atf\\.tests\\.governance\\.documentation\\.release\\.rag\\.scope\\.ComponentEvidencePortabilityComponentTest$",
     "^atf\\.tests\\.governance\\.documentation\\.release\\.rag\\.scope\\.ComponentEvidenceScopeComponentTest$",
     "^atf\\.tests\\.governance\\.documentation\\.release\\.rag\\.scope\\.QualificationLauncherComponentTest$",
+    "^atf\\.tests\\.governance\\.documentation\\.release\\.rag\\.scope\\.io\\.SnapshotIoComponentTest$",
     "^atf\\.tests\\.governance\\.support\\.JvmInventoryCliComponentTest$",
     "^atf\\.tests\\.governance\\.support\\.LauncherSourceInventoryComponentTest$",
     "^atf\\.tests\\.governance\\.support\\.SigningSourceIsolationComponentTest$",

@@ -6,6 +6,7 @@ param(
 )
 $ErrorActionPreference = 'Stop'
 . (Join-Path $PSScriptRoot 'AtfSigningSourcePolicy.ps1')
+. (Join-Path $PSScriptRoot 'AtfFileDigest.ps1')
 $root = [IO.Path]::GetFullPath($SourceRoot)
 $stage = [IO.Path]::GetFullPath($Destination)
 if ($stage.Equals($root,[StringComparison]::OrdinalIgnoreCase) -or
@@ -26,17 +27,9 @@ foreach ($inputFile in $inputs) {
     if (Test-AtfPrivateSigningInput $relative) {
         throw 'SOURCE-STAGE-PRIVATE-SIGNING: private signing material is not a source input.'
     }
-    Assert-AtfDirectSourcePath $source
-    Assert-AtfDirectSourcePath $target
     $copies.Add([pscustomobject]@{source=$source;target=$target;sha256=$inputFile.sha256;path=$relative})
 }
 # Validate the whole manifest before creating any staging directory or copying files.
-foreach ($copy in $copies) {
-    $source = $copy.source
-    $target = $copy.target
-    $null = New-Item -ItemType Directory -Path (Split-Path -Parent $target) -Force
-    Copy-Item -LiteralPath $source -Destination $target
-    if ((Get-FileHash -LiteralPath $target -Algorithm SHA256).Hash -ine $copy.sha256) {
-        throw "SOURCE-STAGE-CHANGED: $($copy.path)"
-    }
-}
+Initialize-AtfCheckedFileCopy
+try { [Atf.CheckedFileIo]::Copy([string[]]$copies.source,[string[]]$copies.target,[string[]]$copies.sha256,[string[]]$copies.path) }
+catch { throw $_.Exception.GetBaseException() }

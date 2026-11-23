@@ -1,11 +1,12 @@
 #requires -Version 7.0
+. (Join-Path $PSScriptRoot 'AtfFileDigest.ps1')
 
 # Maven output admission; snapshot recovery and execution remain with their owners.
 function Assert-AtfCompilerDirectPath([string]$Path) {
     $current = [IO.Path]::GetFullPath($Path)
     while ($current) {
-        if ((Test-Path -LiteralPath $current) -and
-                ((Get-Item -LiteralPath $current -Force).Attributes -band [IO.FileAttributes]::ReparsePoint)) {
+        if (([IO.File]::Exists($current) -or [IO.Directory]::Exists($current)) -and
+                ([IO.File]::GetAttributes($current) -band [IO.FileAttributes]::ReparsePoint)) {
             throw 'COMPONENT_MAVEN_INDIRECT'
         }
         $parent = Split-Path -Parent $current
@@ -21,17 +22,17 @@ function Get-AtfComponentMavenFingerprint([string]$Work, [string]$Repository, [s
     })
     $records = [Collections.Generic.List[string]]::new()
     foreach ($root in $roots) {
-        if (!(Test-Path -LiteralPath $root -PathType Container)) { continue }
+        if (![IO.Directory]::Exists($root)) { continue }
         Assert-AtfCompilerDirectPath $root
         $pending = [Collections.Generic.Stack[string]]::new()
         $pending.Push($root)
         while ($pending.Count) {
-          foreach ($file in Get-ChildItem -LiteralPath $pending.Pop() -Force) {
+          foreach ($file in [IO.DirectoryInfo]::new($pending.Pop()).EnumerateFileSystemInfos()) {
             if ($file.Attributes -band [IO.FileAttributes]::ReparsePoint) { throw 'COMPONENT_MAVEN_INDIRECT' }
-            if ($file.PSIsContainer) { $pending.Push($file.FullName); continue }
+            if ($file.Attributes -band [IO.FileAttributes]::Directory) { $pending.Push($file.FullName); continue }
             if ($root -eq $Repository -and $file.Extension -cnotin @('.jar','.pom')) { continue }
             $relative = [IO.Path]::GetRelativePath($Work,$file.FullName).Replace('\','/')
-            $records.Add($relative + ':' + (Get-FileHash -LiteralPath $file.FullName).Hash.ToLowerInvariant())
+            $records.Add($relative + ':' + (Get-AtfFileSha256 $file.FullName))
           }
         }
     }

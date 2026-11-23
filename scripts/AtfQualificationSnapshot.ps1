@@ -1,4 +1,5 @@
 #requires -Version 7.0
+. (Join-Path $PSScriptRoot 'AtfFileDigest.ps1')
 
 function Get-AtfQualificationTempRoot([string]$SourceRoot) {
     $checker = Join-Path $PSScriptRoot '../atf-tests/tools/qualification-temp-root.mjs'
@@ -14,16 +15,16 @@ function Get-AtfReleaseInputs([string]$Root) {
     $release = Join-Path $Root 'release'
     $rows = [Collections.Generic.List[object]]::new()
     function Visit-ReleaseDirectory([string]$Path) {
-        $directory = Get-Item -LiteralPath $Path -Force
-        if (-not $directory.PSIsContainer -or ($directory.Attributes -band [IO.FileAttributes]::ReparsePoint)) {
+        $directory = [IO.DirectoryInfo]::new($Path)
+        if (-not $directory.Exists -or ($directory.Attributes -band [IO.FileAttributes]::ReparsePoint)) {
             throw "RELEASE-SNAPSHOT-DIRECTORY: $Path"
         }
-        foreach ($entry in Get-ChildItem -LiteralPath $Path -Force) {
+        foreach ($entry in $directory.EnumerateFileSystemInfos()) {
             $relative = [IO.Path]::GetRelativePath($Root, $entry.FullName).Replace('\', '/')
             if ($entry.Attributes -band [IO.FileAttributes]::ReparsePoint) { throw "RELEASE-SNAPSHOT-INDIRECT: $relative" }
-            if ($entry.PSIsContainer) { Visit-ReleaseDirectory $entry.FullName }
+            if ($entry.Attributes -band [IO.FileAttributes]::Directory) { Visit-ReleaseDirectory $entry.FullName }
             else {
-                $rows.Add([pscustomobject]@{path=$relative;sha256=(Get-FileHash -LiteralPath $entry.FullName -Algorithm SHA256).Hash.ToLowerInvariant()})
+                $rows.Add([pscustomobject]@{path=$relative;sha256=(Get-AtfFileSha256 $entry.FullName)})
             }
         }
     }
@@ -112,9 +113,18 @@ function Assert-AtfQualificationSnapshot($Snapshot, [string]$Stage, [string]$Sou
     if ($differences.Count) { throw "QUALIFICATION-SNAPSHOT-CHANGED: $($differences -join ', ')" }
 }
 
-function New-AtfQualificationSnapshot([string]$SourceRoot, [string]$Stage, [string]$RunRoot, [string]$PinnedSourceInputs) {
-    $sources = @(& (Join-Path $PSScriptRoot 'Get-AtfSourceInputs.ps1') -SourceRoot $SourceRoot)
-    $release = @(Get-AtfReleaseInputs $SourceRoot)
+function Invoke-AtfSnapshotPhase($Timing, [string]$Name, [scriptblock]$Action) {
+    if ($Timing) { Invoke-AtfQualificationPhase $Timing $Name $Action }
+    else { & $Action }
+}
+
+function New-AtfQualificationSnapshot([string]$SourceRoot, [string]$Stage, [string]$RunRoot, [string]$PinnedSourceInputs, $Timing = $null) {
+    $inventory = Invoke-AtfSnapshotPhase $Timing 'snapshot.inventory' {
+        [pscustomobject]@{sources=@(& (Join-Path $PSScriptRoot 'Get-AtfSourceInputs.ps1') -SourceRoot $SourceRoot)
+            release=@(Get-AtfReleaseInputs $SourceRoot)}
+    }
+    $sources = $inventory.sources
+    $release = $inventory.release
     $snapshot = [pscustomobject]@{
         source=ConvertTo-AtfInputJson $sources
         release=ConvertTo-AtfInputJson $release
@@ -134,12 +144,16 @@ function New-AtfQualificationSnapshot([string]$SourceRoot, [string]$Stage, [stri
     [IO.File]::WriteAllText($releaseManifest, $snapshot.release)
     $copyManifest = Join-Path (Split-Path -Parent $Stage) 'qualification-copy-inputs.json'
     [IO.File]::WriteAllText($copyManifest, (ConvertTo-AtfInputJson ($sources + $release)))
-    & (Join-Path $PSScriptRoot 'Copy-AtfSourceInputs.ps1') -SourceRoot $SourceRoot -Destination $Stage -InputManifest $copyManifest
-    Assert-AtfQualificationSnapshot $snapshot $Stage $SourceRoot
-    $preflight = Join-Path $Stage 'atf-tests/tools/check-release-artifacts.mjs'
-    & node $preflight $Stage *> (Join-Path $RunRoot 'release-preflight.log')
-    if ($LASTEXITCODE -ne 0) {
-        throw "RELEASE-PREFLIGHT: $(Get-Content -LiteralPath (Join-Path $RunRoot 'release-preflight.log') -Raw)"
+    Invoke-AtfSnapshotPhase $Timing 'snapshot.copy' {
+        & (Join-Path $PSScriptRoot 'Copy-AtfSourceInputs.ps1') -SourceRoot $SourceRoot -Destination $Stage -InputManifest $copyManifest
+    }
+    Invoke-AtfSnapshotPhase $Timing 'snapshot.verify' { Assert-AtfQualificationSnapshot $snapshot $Stage $SourceRoot }
+    Invoke-AtfSnapshotPhase $Timing 'snapshot.artifact-preflight' {
+        $preflight = Join-Path $Stage 'atf-tests/tools/check-release-artifacts.mjs'
+        & node $preflight $Stage *> (Join-Path $RunRoot 'release-preflight.log')
+        if ($LASTEXITCODE -ne 0) {
+            throw "RELEASE-PREFLIGHT: $(Get-Content -LiteralPath (Join-Path $RunRoot 'release-preflight.log') -Raw)"
+        }
     }
     $snapshot
 }
