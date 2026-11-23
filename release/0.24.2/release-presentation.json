@@ -8,5 +8,5 @@
     "Reuse unchanged component evidence while retaining its original provenance.",
     "Reuse sealed Maven compilation while executing testChanges controls freshly."
   ],
-  "evidenceUrl": "https://github.com/crististefanita/whist/blob/3505edb1aeb73162d543fd4a5686366c0f2b11cc/release/0.24.2/reports/README.md"
+  "evidenceUrl": "https://github.com/crististefanita/whist/blob/ef58b72f1b26b2c8e000516f04245ce183b45c7a/release/0.24.2/reports/README.md"
 }

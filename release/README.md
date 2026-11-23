@@ -8,18 +8,18 @@ The catalog tracks the current Android edition and its immediate predecessor. A 
 
 ## Current version
 
-[0.24.1 — Android maintenance release](0.24.1/README.md) is published; the APK and checksum passed direct-download verification.
+[0.24.2 — Android maintenance release](0.24.2/README.md) is published; the APK and checksum passed direct-download verification.
 
 ## Previous version
 
-[0.24.0 — Android release and evidence](0.24.0/README.md) is the immediately preceding published edition.
+[0.24.1 — Android release and evidence](0.24.1/README.md) is the immediately preceding published edition.
 
 ## Available versions
 
 | Version | State | Dossier |
 |---|---|---|
-| 0.24.1 | Published; APK and checksum verified | [APK and evidence](0.24.1/README.md) |
-| 0.24.0 | Previous published edition | [APK and evidence](0.24.0/README.md) |
+| 0.24.2 | Published; APK and checksum verified | [APK and evidence](0.24.2/README.md) |
+| 0.24.1 | Previous published edition | [APK and evidence](0.24.1/README.md) |
 
 ## Publication and verification
 

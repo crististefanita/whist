@@ -99,13 +99,17 @@ Start with the main report and qualification status. Keep details schematic, wit
 The RAG evaluator consumes the evidence already produced and issues a readonly verdict.
 
 - Inputs: JSON plan, candidate manifest, selected Extent reports and source-snapshot root.
-- It doesn't build, run tests, call Git, or move or publish files.
+- It reads committed Git objects; it does not build, run tests, move or publish files.
 - Write only the JSON verdict, outside the project, candidate and snapshot directories.
 - Each check cites its evidence path, SHA-256 and JSON Pointer or line.
 - The verdict embeds the exact plan as UTF-8 Base64 in `qualificationPlan.contentBase64`; its hash supports review without a separate temporary plan copy.
 - Unresolved gaps are tracked in [feedback register](../feedback/README.md#prioritized-todos).
 
 Before publication, [audit admission](../../atf-tests/tools/publication-audit.mjs) reads the exact dossier commit through Git. A source-bound `QUALIFIED` snapshot retains passing evidence without claiming delivery; missing sources, another APK, changed report bytes and an indirect index stop before any GitHub mutation.
+
+1. Seal APK and canonical-report hashes in the manifest before recording the qualified Git audit commit.
+2. Create the immutable audit commit and use its URL in publication notes.
+3. Seal final notes and presentation, evaluate RAG in the same pinned context and publish through the journal identity.
 
 The plan declares version, channel (`LOCAL`, `TEST` or `PRODUCTION`), risk, platforms, component groups, flow-change status and a justified E2E decision.
 

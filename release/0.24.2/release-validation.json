@@ -1,7 +1,7 @@
 {
   "schemaVersion": 2,
   "publication": {
-    "state": "QUALIFIED",
+    "state": "PUBLISHED",
     "channel": "TEST",
     "repository": "crististefanita/whist",
     "accessMode": "AUTHENTICATED",
@@ -57,6 +57,10 @@
           "signing": {
             "status": "PASS",
             "receipt": "reports/diagnostics/signing-compatibility.json"
+          },
+          "distributionDownload": {
+            "status": "PASS",
+            "receipt": "reports/distribution-verification.json"
           }
         }
       }
@@ -218,7 +222,7 @@
   "integrity": {
     "schemaVersion": 1,
     "kind": "OBSERVED_PAYLOAD_HASHES",
-    "observedUtc": "2026-11-23T21:03:09.254Z",
+    "observedUtc": "2026-11-23T21:08:07.154Z",
     "files": [
       {
         "path": "README.md",
@@ -236,14 +240,19 @@
         "sha256": "aaa460d5c000ead8b2262ee01d6845e37c5f96ec1a73385f29bc1f63e50af39c"
       },
       {
+        "path": "github-release.json",
+        "bytes": 873,
+        "sha256": "1b5dd5c9ff69998a9b50c96ef39e26f60bbcb5d36455b195fce7404910861b97"
+      },
+      {
         "path": "release-notes.md",
         "bytes": 651,
-        "sha256": "a8c0957ab7f3cfb650ac7e521f357d191666749d5bc0d7fb766ca936c5157a11"
+        "sha256": "ddbdd4f5e5ac4c7e1721eaf19a0d59b39f63fb9b5c4092c6a6641948ffcdf8c9"
       },
       {
         "path": "release-presentation.json",
         "bytes": 592,
-        "sha256": "68e8b505f23cdee522541d506a08e08b9ab8b62201af79208e44689a32233f55"
+        "sha256": "abe76195e91cfc6470a3b4e6558c8c532b573f83f4dec74dbea78bc84fd4dcab"
       },
       {
         "path": "reports/README.md",
@@ -574,6 +583,11 @@
         "path": "reports/diagnostics/zipalign.log",
         "bytes": 1088,
         "sha256": "50ecfefe775770a8e141b6cbc6876609a6599dc99028e271448a7c63bea3b297"
+      },
+      {
+        "path": "reports/distribution-verification.json",
+        "bytes": 1167,
+        "sha256": "aac11e8e310dd84c080f9b31cc7e0004c8bff8484556ce49c9b4495692665676"
       },
       {
         "path": "reports/e2e/README.md",

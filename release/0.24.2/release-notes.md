@@ -11,4 +11,4 @@ Maintenance release reducing repeated geometry and score-history audit inputs wi
 
 ## Audit
 
-[Extent qualification audit](https://github.com/crististefanita/whist/blob/3505edb1aeb73162d543fd4a5686366c0f2b11cc/release/0.24.2/reports/README.md)
+[Extent qualification audit](https://github.com/crististefanita/whist/blob/ef58b72f1b26b2c8e000516f04245ce183b45c7a/release/0.24.2/reports/README.md)

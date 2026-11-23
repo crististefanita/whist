@@ -42,4 +42,4 @@ Components own combinations and deliberate negative cases without photos. Unit p
 
 ## Limits
 
-The focused matrix report supplements its parent controls; do not count overlapping methods twice. Current APK qualification has its own [release index](../0.24.0/reports/README.md).
+The focused matrix report supplements its parent controls; do not count overlapping methods twice. Current APK qualification has its own [release index](../README.md).

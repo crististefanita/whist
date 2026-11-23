@@ -1,9 +1,9 @@
 {
   "schemaVersion": 2,
-  "currentVersion": "0.24.1",
+  "currentVersion": "0.24.2",
   "versions": [
-    "0.24.1",
-    "0.24.0"
+    "0.24.2",
+    "0.24.1"
   ],
   "webDossier": "WEB/index.json"
 }
