@@ -113,3 +113,16 @@ test('action bands measure both phase labels and always remove their probe',()=>
   badge.cloneNode=()=>probe={style:{},set textContent(value){throw failure;},remove(){this.removed=true;}};
   assert.throws(()=>measureSeatActionClearance(seat,['PLAY NOW']),error=>error===failure);assert.equal(probe.removed,true);
 });
+
+test('short native dialogs retain natural height and the scene zoom while the catalogue fills its frame',t=>{
+  const e=environment(t);e.dialog.open=true;e.dialog.scrollHeight=176;
+  const fitting=surfaceFitter(e.stage,e.dialog,()=>{});
+  const scene={width:393,height:626,scale:720/626};
+  fitting.fitDialog(1280,720,false,scene);
+  assert.equal(e.dialog.style['--modal-height'],'178px');
+  assert.equal(e.dialog.style['--modal-scale'],scene.scale,'Short dialogs do not magnify independently');
+  e.dialog.className='achievement-catalogue';fitting.fitDialog(1280,720,false,scene);
+  assert.equal(e.dialog.style['--modal-height'],'626px','The native catalogue retains its full scene');
+  assert.equal(e.dialog.style.height,undefined);
+  fitting.dispose();
+});

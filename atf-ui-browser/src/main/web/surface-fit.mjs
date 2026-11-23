@@ -1,4 +1,4 @@
-import {ADAPTIVE_SURFACE,adaptiveViewport} from './viewport.mjs?v=0.5';
+import {adaptiveViewport} from './viewport.mjs?v=0.5';
 
 /** Read-only collections use pages; interactive forms keep all their fields together. */
 export function boundedPages(host, groups) {
@@ -55,23 +55,17 @@ export function surfaceFitter(stage,profileDialog,resize) {
     for(const host of stage.querySelectorAll('.surface-reader'))paginate(host);
     if(profileDialog.open)for(const host of profileDialog.querySelectorAll('.goals,.ranking-list,.whist-dialog-copy'))paginate(host);
   }
-  function fitDialog(width,height,mobile=false){
+  function fitDialog(width,height,mobile=false,scene){
     if(disposed||!profileDialog.open)return;
-    const apply=result=>{
-      profileDialog.style.setProperty('--modal-width',result.width*.94+'px');
-      profileDialog.style.setProperty('--modal-height',result.height+'px');
-      profileDialog.style.setProperty('--modal-scale',result.scale);
-    };
-    let needed=mobile?height:ADAPTIVE_SURFACE.height;
-    for(let pass=0;pass<4;pass++){
-      apply(adaptiveViewport(width,height,needed,mobile));
-      profileDialog.style.height='auto';
-      const natural=profileDialog.scrollHeight+2;
-      profileDialog.style.removeProperty('height');
-      if(natural<=needed)break;
-      needed=natural;
-    }
-    apply(adaptiveViewport(width,height,needed,mobile));
+    scene??=adaptiveViewport(width,height,undefined,mobile);
+    profileDialog.style.setProperty('--modal-width',scene.width*.94+'px');
+    profileDialog.style.height='auto';
+    let natural;
+    try { natural=profileDialog.scrollHeight+2; }
+    finally { profileDialog.style.removeProperty('height'); }
+    const needed=Math.max(natural,profileDialog.matches('.achievement-catalogue')?scene.height:0);
+    profileDialog.style.setProperty('--modal-height',needed+'px');
+    profileDialog.style.setProperty('--modal-scale',Math.min(scene.scale,height/needed));
   }
   function schedule(){
     if(disposed||requested)return;

@@ -426,7 +426,7 @@
     "atf-ui-browser/pages/web/local-transport.mjs": "3748dbfb5c81911692a1413e823a836bd176ce2b6814538fb0679a7dc23434c3",
     "atf-ui-browser/src/main/java/ro/cardtable/browser/BrowserServer.java": "ad786a89aceb41a590dbe95c06631c9ecd07332e9a91cc120239e2825faef3e0",
     "atf-ui-browser/src/main/java/ro/cardtable/browser/tool/BrowserBuild.java": "59dcf9b673ee8e25f89d1ff0dadebc447f8332d7f6ef874a1fe7650f243f0898",
-    "atf-ui-browser/src/main/web/table.mjs": "290a36be9b5aa51e4dd41c675470f1f979fa242db85d392e772d473c4ffdfcfc",
+    "atf-ui-browser/src/main/web/table.mjs": "5aa0f951dff8351a08badd6dadf65f5477d88d21fd95179364f80f3886201ca0",
     "atf-ui-browser/tests/BrowserExtent.java": "1a057a22b75b37f0d48d392afe0e8c021b258f425c67b9dcf1a6fcb180bf8071",
     "atf-ui-browser/tests/BrowserUi.java": "a9a2e91e231803834873530e2b36258478b95c7fddfc2de14c4f5790e9a64bf3",
     "atf-ui-browser/tests/Publish-BrowserExtent.ps1": "7735e3fce2abe37ef413311a7a091390a5a7a7fcb09f0942e3a055ea66bae3e6",
