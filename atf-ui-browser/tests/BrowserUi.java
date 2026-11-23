@@ -3,25 +3,19 @@ import com.google.gson.JsonParser;
 import com.microsoft.playwright.*;
 import com.microsoft.playwright.options.AriaRole;
 import com.microsoft.playwright.options.BoundingBox;
-import com.sun.net.httpserver.HttpServer;
+import ro.cardtable.testing.browser.StaticSiteHost;
 import java.io.IOException;
-import java.net.InetSocketAddress;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.regex.Pattern;
 import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertThat;
 
 /** Browser acceptance of the compiled adapter, served from an owned loopback origin. */
 class BrowserUi {
-    private static final String SITE_PATH = "/whist/";
-    private static final Set<String> ASSETS = Set.of("index.html", "table.css", "table.mjs", "viewport.mjs",
-            "profile.mjs", "records.mjs", "auto-game.mjs", "collection.mjs", "hand-feedback.mjs", "table-menu.mjs",
-            "local-transport.mjs", "engine-worker.mjs", "whist-engine.mjs", "card-suits.woff2", "menu-footer.png");
     private static final String MOBILE_AGENT =
             "Mozilla/5.0 (Linux; Android 14; Mobile) AppleWebKit/537.36 Chrome/131.0.0.0 Mobile Safari/537.36";
     private static final Gson JSON = new Gson();
@@ -36,11 +30,8 @@ class BrowserUi {
         Path output = Path.of(args[2]).toRealPath();
         Path resultsFile = output.resolve("browser-ui-checks.json");
         if (Files.exists(resultsFile)) throw new IllegalArgumentException("Use a new Playwright evidence directory");
-        for (String asset : ASSETS) if (!Files.isRegularFile(site.resolve(asset))) {
-            throw new IllegalArgumentException("Missing site asset: " + asset);
-        }
-        HttpServer server = serve(site);
-        String url = "http://127.0.0.1:" + server.getAddress().getPort() + SITE_PATH;
+        StaticSiteHost server = StaticSiteHost.open(site);
+        String url = server.url();
         List<Result> results = new ArrayList<>();
         String check = System.getProperty("whist.browserCheck", "all");
         try (Playwright playwright = Playwright.create()) {
@@ -49,30 +40,30 @@ class BrowserUi {
             try (Browser browser = playwright.chromium().launch(launch)) {
                 if (check.equals("all") || check.equals("playback")) {
                     results.add(run(browser, mobile(), output, "WEB-COMPONENT-PLAYBACK-PAINT",
-                            "Tabla rămâne stabilă când adversarul redă rândul jucătorului",
-                            "După colectare și cartea adversarului, tabla rămâne așezată până devine disponibilă mutarea legală.",
+                            "The table stays stable when an opponent returns control to the human",
+                            "After collection and an opponent's deposit, the board stays settled until a legal human move is available.",
                             (page, images) -> stablePlaybackPaint(page, url, checkpoint, output, images)));
                 }
                 if (check.equals("all") || check.equals("seats")) {
                     for (int players : List.of(5, 6)) {
                         var viewport = players == 5 ? mobile() : mobile().setViewportSize(360, 800);
                         results.add(run(browser, viewport, output, "WEB-COMPONENT-SEATS-" + players,
-                                "Chenare stabile la " + players + " jucători",
-                                "Coordonate egale la licitare, joc și colectare, în două mâini de o carte.",
+                                "Stable frames with " + players + " players",
+                                "Coordinates remain equal across bidding, play and collection in two one-card hands.",
                                 (page, images) -> stableSeats(page, url, players, output, images)));
                     }
                 }
                 if (check.equals("all") || check.equals("card-face")) {
                     results.add(run(browser, mobile().setViewportSize(360, 800), output, "WEB-COMPONENT-TEXT",
-                            "Fonturile Whist pe un panou de probă",
-                            "Toate cele 13 ranguri sunt mărite cu 50%. Simbolurile și atuul își păstrează mărimea.",
+                            "Whist fonts on a controlled probe panel",
+                            "All thirteen ranks are enlarged by 50 percent; suits and trump retain their size.",
                             (page, images) -> rankTypography(page, url)));
                     results.add(run(browser, mobile(), output, "WEB-COMPONENT-CARD-INK",
-                            "Culoarea simbolurilor rămâne aceeași în mână, pe masă și la colectare",
-                            "Fiecare dintre cele patru simboluri folosește aceeași cerneală și randare text.",
+                            "Suit colors remain equal in the hand, on the table and during collection",
+                            "Each of the four suits retains its ink and text rendering.",
                             (page, images) -> cardInk(page, url)));
-                    results.add(run(browser, mobile(), output, "WEB-UI-AUTO", "Fața cărții în mână, la depunere și colectare",
-                            "Rangul, simbolurile și pozițiile lor rămân proporționale când cartea trece între suprafețe.",
+                    results.add(run(browser, mobile(), output, "WEB-UI-AUTO", "Card faces in the hand, at deposit and during collection",
+                            "Ranks, suits and their positions remain proportional across surfaces.",
                             (page, images) -> autoGame(page, url, checkpoint, output, images)));
                 }
                 if (check.equals("typography")) {
@@ -83,56 +74,56 @@ class BrowserUi {
                 if (check.equals("all") || check.equals("header")) {
                     for (int width : List.of(414, 360)) {
                         results.add(run(browser, mobile().setViewportSize(width, 896), output, "WEB-12-HEADER-" + width,
-                                "Antet la text 200% și lățime " + width,
-                                "Licitațiile ocupă două rânduri fără decupare și încep imediat sub progres.",
+                                "Header at 200 percent text scale and width " + width,
+                                "Bid facts occupy two unclipped lines immediately below progress.",
                                 (page, images) -> enlargedHeader(page, url, wideCheckpoint)));
                     }
                 }
                 if (check.equals("all") || check.equals("dedication")) {
                     results.add(run(browser, mobile(), output, "WEB-COMPONENT-HOME-DEDICATION",
-                            "Dedicația din meniul principal în română și engleză",
-                            "Fotografia apare sub regulile de joc și textul se traduce imediat la schimbarea limbii.",
+                            "Home dedication in Romanian and English",
+                            "The photo follows game rules and the caption changes immediately with the language.",
                             (page, images) -> homeDedication(page, url, output, images)));
                 }
                 if (check.equals("all") || check.equals("viewport")) {
                     results.add(run(browser, mobile().setViewportSize(400, 860), output, "WEB-VIEWPORT-PHONE",
-                            "Viewport mobil păstrează geometria 1:1 la portret și landscape",
-                            "Cadrul urmează viewport-ul CSS disponibil, fără scalare secundară.",
+                            "Mobile viewport fits the adaptive scene in portrait and landscape",
+                            "The logical width follows available CSS space and content demand determines the uniform fit.",
                             (page, images) -> responsiveViewport(page, url, output, true, images)));
                     results.add(run(browser, new Browser.NewContextOptions().setViewportSize(1280, 720), output,
                             "WEB-VIEWPORT-DESKTOP",
-                            "Viewport desktop scalează uniform după spațiul util și se centrează la redimensionare",
-                            "Înălțimea determină scara când lățimea permite; ferestrele înguste nu depășesc lățimea.",
+                            "Desktop viewport scales uniformly and stays centered after resize",
+                            "Height determines scale when width permits; narrow windows remain within available width.",
                             (page, images) -> responsiveViewport(page, url, output, false, images)));
                 }
                 if (check.equals("all") || check.equals("trump")) {
                     results.add(run(browser, mobile(), output, "WEB-COMPONENT-TRUMP",
-                            "Chenarul de atu în Whist Descrescător",
-                            "Culoarea, conturul, dimensiunile și textul rămân identice la activarea și oprirea AutoPlay.",
+                            "Trump frame in Descending Whist",
+                            "Color, border, dimensions and text remain identical when AutoPlay is enabled or disabled.",
                             (page, images) -> descendingTrump(page, url)));
                 }
                 if (check.equals("all") || check.equals("numbers") || check.equals("typography")) {
                     results.add(run(browser, mobile().setViewportSize(360, 800), output, "WEB-UI-NUMBERS",
-                            "Rangul 10 în mâna de 17 cărți, la text 200%",
-                            "Cifrele și figurile păstrează aceeași ancoră. Antetul respectă scara de text.",
+                            "Rank 10 in a seventeen-card hand at 200 percent text scale",
+                            "Numeric and face ranks retain one anchor; the header respects text scale.",
                             (page, images) -> enlargedNumbers(page, url, wideCheckpoint, output, images)));
                 }
                 if (check.equals("all")) {
-                    results.add(run(browser, mobile(), output, "WEB-UI-17", "Evantaiul și licitarea la 414×896",
-                            "17 cărți accesibile și aceleași locuri după licitarea de la tastatură",
+                    results.add(run(browser, mobile(), output, "WEB-UI-17", "Hand fan and bidding at 414×896",
+                            "Seventeen accessible cards and unchanged seats after keyboard bidding",
                             (page, images) -> responsiveHand(page, url)));
                     results.add(run(browser, new Browser.NewContextOptions().setViewportSize(535, 760), output,
-                            "WEB-UI-HEADER-DESKTOP", "Antet Oh Hell în cadrul scalat pe desktop",
-                            "Titlul și progresul au aceeași ancoră, iar atuul rămâne la marginea utilă",
+                            "WEB-UI-HEADER-DESKTOP", "Oh Hell header in the scaled desktop frame",
+                            "Title and progress retain one anchor while trump stays at the useful edge",
                             (page, images) -> desktopHeader(page, url)));
                     results.add(run(browser, new Browser.NewContextOptions().setViewportSize(1280, 720), output,
-                            "WEB-UI-DESKTOP", "Profil local și centrare pe desktop",
-                            "Anularea și salvarea se văd în meniu, iar cadrul portrait se centrează la redimensionare",
+                            "WEB-UI-DESKTOP", "Local profile and desktop centering",
+                            "Cancel and save update the menu while the portrait frame stays centered after resize",
                             (page, images) -> desktop(page, url)));
                 }
             }
         } finally {
-            server.stop(0);
+            server.close();
         }
         require(!results.isEmpty(), "Unknown browser check: " + check);
         Files.writeString(resultsFile, JSON.toJson(results));
@@ -215,20 +206,22 @@ class BrowserUi {
             double actualScale = ((Number) measured.get("scale")).doubleValue();
             double expectedScale;
             if (mobile) {
-                expectedScale = 1;
+                double logicalHeight = ((Number) measured.get("logicalHeight")).doubleValue();
+                require(logicalHeight >= availableHeight, "Mobile content height cannot discard the useful viewport");
+                expectedScale = Math.min(1, availableHeight / logicalHeight);
                 near(availableWidth, ((Number) ((Map<?, ?>) measured.get("frame")).get("width")).doubleValue());
-                near(availableHeight, ((Number) ((Map<?, ?>) measured.get("frame")).get("height")).doubleValue());
+
                 require("phone".equals(measured.get("kind")), "The phone adapter must remain in 1:1 mode");
             } else {
-                double fitScale = Math.min(availableHeight / 896.0, availableWidth / 414.0);
-                boolean readableFloorFits = availableWidth >= 414.0 * .68 && availableHeight >= 896.0 * .68;
-                expectedScale = fitScale >= .68 || !readableFloorFits ? fitScale : .68;
+                double logicalHeight = ((Number) measured.get("logicalHeight")).doubleValue();
+                require(logicalHeight >= 626, "The adaptive scene retains its approved minimum height");
+                expectedScale = Math.min(availableHeight / logicalHeight, availableWidth / 393.0);
                 require("desktop".equals(measured.get("kind")), "The desktop adapter must use the scaled frame");
             }
             require(Math.abs(expectedScale - actualScale) <= .002,
                     "Expected scale " + expectedScale + ", observed " + actualScale + " at " + width + "×" + height);
-            near(mobile ? availableWidth : 414, ((Number) measured.get("logicalWidth")).doubleValue());
-            near(mobile ? availableHeight : 896, ((Number) measured.get("logicalHeight")).doubleValue());
+            near(mobile ? availableWidth : 393, ((Number) measured.get("logicalWidth")).doubleValue());
+            require(((Number) measured.get("logicalHeight")).doubleValue() >= (mobile ? availableHeight : 626), "Content retains its minimum logical height");
             require(Math.abs(expectedScale - ((Number) measured.get("matrixScaleX")).doubleValue()) <= .002,
                     "The horizontal CSS transform scale differs from the viewport contract");
             require(Math.abs(expectedScale - ((Number) measured.get("matrixScaleY")).doubleValue()) <= .002,
@@ -835,12 +828,14 @@ class BrowserUi {
 
     private static List<Long> centered(Page page, int width, int height) {
         var frame = page.locator("#frame[data-viewport=desktop]");
-        assertThat(frame).hasCSS("height", height + "px");
         var box = frame.boundingBox();
-        double expectedWidth = 414.0 * height / 896;
-        near(expectedWidth, box.width);
-        near((width - expectedWidth) / 2, box.x);
-        near(0, box.y);
+        double logicalHeight = ((Number) page.locator("#table").evaluate("node => parseFloat(getComputedStyle(node).getPropertyValue('--stage-height'))")).doubleValue();
+        require(logicalHeight >= 626, "The desktop scene retains the adaptive content minimum");
+        double scale = Math.min(height / logicalHeight, width / 393.0);
+        near(393 * scale, box.width);
+        near(logicalHeight * scale, box.height);
+        near((width - box.width) / 2, box.x);
+        near((height - box.height) / 2, box.y);
         return dimensions(box);
     }
 
@@ -871,26 +866,4 @@ class BrowserUi {
         if (!condition) throw new AssertionError(message);
     }
 
-    private static HttpServer serve(Path site) throws IOException {
-        HttpServer server = HttpServer.create(new InetSocketAddress("127.0.0.1", 0), 0);
-        server.createContext(SITE_PATH, exchange -> {
-            try (exchange) {
-                String name = exchange.getRequestURI().getRawPath().substring(SITE_PATH.length());
-                if (name.isEmpty()) name = "index.html";
-                if (!ASSETS.contains(name) || !exchange.getRequestMethod().equals("GET")) {
-                    exchange.sendResponseHeaders(404, -1);
-                    return;
-                }
-                String type = name.endsWith(".woff2") ? "font/woff2" : name.endsWith(".mjs") ? "text/javascript" :
-                        name.endsWith(".css") ? "text/css" : name.endsWith(".png") ? "image/png" : "text/html";
-                exchange.getResponseHeaders().set("Content-Type", type.startsWith("text/") ? type + "; charset=utf-8" : type);
-                exchange.getResponseHeaders().set("Cache-Control", "no-store");
-                byte[] bytes = Files.readAllBytes(site.resolve(name));
-                exchange.sendResponseHeaders(200, bytes.length);
-                exchange.getResponseBody().write(bytes);
-            }
-        });
-        server.start();
-        return server;
-    }
 }

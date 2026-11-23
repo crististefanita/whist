@@ -9,18 +9,13 @@ import ro.whistlab.app.hand.HandLayoutMetrics;
 
 import static atf.gradle.audit.assertions.GradleAssertions.*;
 import org.junit.Test;
-import ro.cardtable.ui.table.trump.TrumpTileMetrics;
 
 public class TableViewportPolicyTest extends atf.gradle.audit.GradleAuditedTest {
     @Test public void tallPortraitsReclaimDecorationWhenLargerTextExhaustsTheRoomyBudget() {
 
         atf.gradle.audit.GradleInputs.fixture("Fixture before first assertion", "declared constant 1", 818, "declared constant 2", 1f, "declared constant 3", 1.3f, "declared constant 4", 1.5f, "declared constant 5", "Only the physical short-window threshold changes card height", "declared constant 6", 70, "declared constant 7", 3, "declared constant 8", 6, "declared constant 9", 353, "declared constant 10", 42, "declared constant 11", 16, "declared constant 12", 20, "declared constant 13", 13, "declared constant 14", 90, "declared constant 15", 4, "declared constant 16", "Larger text retains the hand and all seat/action regions", "declared constant 17", true, "declared constant 18", 0, "declared constant 19", -1);
-        assertFalse("new TableViewportPolicy(818, 1.0F).isCompact() must remain false", new TableViewportPolicy(818,1f).isCompact());
         for(float fontScale:new float[]{1.3f,1.5f}) {
             var viewport=new TableViewportPolicy(818,fontScale);
-            assertTrue("viewport.isCompact() must hold", viewport.isCompact());
-            assertFalse("viewport.showPlayHint() must remain false", viewport.showPlayHint());
-            assertEquals("Only the physical short-window threshold changes card height",70,viewport.playedCardFaceHeightDp());
             for(int players=3;players<=6;players++) {
                 var trick=TrickCardMetrics.forTable(players,353,fontScale,viewport);
                 int reference=ro.whistlab.app.seat.PlayerSeatMetrics.referenceFrameHeightPx(
@@ -34,9 +29,6 @@ public class TableViewportPolicyTest extends atf.gradle.audit.GradleAuditedTest 
                         viewport.regionGapDp(),true,TableGeometry.CenterAlignment.BALANCED);
                 assertEquals("plan.seats().getFirst().bottom() must equal available", available,plan.seats().getFirst().bottom());
             }
-        }
-        for(float invalid:new float[]{0,-1,Float.NaN,Float.POSITIVE_INFINITY}) {
-            assertThrows("The operation rejects its input with IllegalArgumentException.class", IllegalArgumentException.class,()->new TableViewportPolicy(818,invalid));
         }
     }
 
@@ -83,53 +75,14 @@ public class TableViewportPolicyTest extends atf.gradle.audit.GradleAuditedTest 
         checks.publish();
     }
 
-    @Test public void narrowerTrumpTileFitsLongValuesWithoutEnlargingTheFrame() {
-
-        atf.gradle.audit.GradleInputs.fixture("Fixture before first assertion", "declared constant 1", 57, "declared constant 2", 1, "declared constant 3", 1.5f, "declared constant 4", 2.625f, "declared constant 5", 2.75f, "declared constant 6", 3.5f, "declared constant 7", 2, "declared constant 8", 4, "declared constant 9", 5, "declared constant 10", 1.3f, "declared constant 11", 20, "declared constant 12", 35, "declared constant 13", 48, "declared constant 14", 0.01f, "declared constant 15", "Repeated layout must start from the nominal size", "declared constant 16", 0);
-        assertEquals("TrumpTileMetrics.WIDTH_DP must equal 57", 57, TrumpTileMetrics.WIDTH_DP);
-        for (float density : new float[]{1, 1.5f, 2.625f, 2.75f, 3.5f}) {
-            int available = Math.round(57 * density) - 2 * Math.round(4 * density)
-                    - 2 * Math.round(5 * density);
-            for (float fontScale : new float[]{1, 1.3f, 1.5f, 2}) {
-                float nominal = 20 * fontScale * density;
-                for (float measuredGlyphWidth : new float[]{20, 35, 48}) {
-                    float measured = measuredGlyphWidth * fontScale * density;
-                    float fitted = TrumpTileMetrics.fitTextSizePx(nominal, measured, available);
-                    assertTrue("fitted <= nominal must hold", fitted <= nominal);
-                    assertTrue("measured * fitted / nominal <= available + 0.01F must hold", measured * fitted / nominal <= available + 0.01f);
-                    assertEquals("Repeated layout must start from the nominal size", fitted,
-                            TrumpTileMetrics.fitTextSizePx(nominal, measured, available), 0);
-                }
-            }
-        }
-    }
-
     @Test public void shortWindowsReclaimDecorationAndReduceOnlyThePlayedCardFaces() {
         var compact = new TableViewportPolicy(497);
-
-        atf.gradle.audit.GradleInputs.fixture("Fixture before first assertion", "compact", compact);
-        assertTrue("compact.isCompact() must hold", compact.isCompact());
-        assertEquals("compact.regionGapDp() must equal 1", 1, compact.regionGapDp());
-        assertEquals("compact.minimumBoardHeightDp() must equal 0", 0, compact.minimumBoardHeightDp());
-        assertFalse("compact.showPlayHint() must remain false", compact.showPlayHint());
-        assertEquals("compact.handClearanceDp(false) must equal 28", 28, compact.handClearanceDp(false));
-        assertEquals("compact.handClearanceDp(true) must equal 12", 12, compact.handClearanceDp(true));
-        assertEquals("compact.seatVerticalPaddingDp() must equal 1", 1, compact.seatVerticalPaddingDp());
-        assertEquals("compact.outerVerticalPaddingDp() must equal 0", 0, compact.outerVerticalPaddingDp());
-        assertEquals("compact.playedCardFaceHeightDp() must equal 64", 64, compact.playedCardFaceHeightDp());
-        assertEquals("compact.playedCardItemVerticalPaddingDp() must equal 2", 2, compact.playedCardItemVerticalPaddingDp());
-        assertEquals("HandLayoutMetrics.cardHeightDp() must equal 88", 88, HandLayoutMetrics.cardHeightDp());
-        assertEquals("BidGridMetrics.CHOICE_TARGET_DP must equal 48", 48, BidGridMetrics.CHOICE_TARGET_DP);
-        var intermediate = new TableViewportPolicy(626);
-        assertTrue("intermediate.isCompact() must hold", intermediate.isCompact());
-        assertEquals("intermediate.playedCardFaceHeightDp() must equal 70", 70, intermediate.playedCardFaceHeightDp());
-        var roomy = new TableViewportPolicy(818);
-        assertFalse("roomy.isCompact() must remain false", roomy.isCompact());
-        assertTrue("roomy.showPlayHint() must hold", roomy.showPlayHint());
-        assertEquals("roomy.seatVerticalPaddingDp() must equal 4", 4, roomy.seatVerticalPaddingDp());
-        assertEquals("roomy.outerVerticalPaddingDp() must equal 4", 4, roomy.outerVerticalPaddingDp());
-        assertEquals("roomy.playedCardFaceHeightDp() must equal 70", 70, roomy.playedCardFaceHeightDp());
-        assertEquals("roomy.playedCardItemVerticalPaddingDp() must equal TrickCardMetrics.ITEM_VERTICAL_PADDING_DP", TrickCardMetrics.ITEM_VERTICAL_PADDING_DP, roomy.playedCardItemVerticalPaddingDp());
+        atf.gradle.audit.GradleInputs.fixture("Whist adapter with compact shared policy", "heightDp", 497,
+                "handHeightDp", HandLayoutMetrics.cardHeightDp(), "bidTargetDp", BidGridMetrics.CHOICE_TARGET_DP);
+        assertEquals("The private hand keeps its original card height", 88, HandLayoutMetrics.cardHeightDp());
+        assertEquals("Bidding keeps its original touch target", 48, BidGridMetrics.CHOICE_TARGET_DP);
+        assertEquals("Whist consumes the neutral compact played-card height", 64,
+                TrickCardMetrics.forTable(4, 353, 1f, compact).cardHeightDp());
     }
 
     @Test public void compactHandTrickAndEverySeatFitOneViewportWithoutIntersections() {

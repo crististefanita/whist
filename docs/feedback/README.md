@@ -31,7 +31,6 @@ The 1–100 score expresses work priority, not quality or completion percentage.
 | TEST-04 | P1 | 93 | Pair APK/Web sanity scenario identities and enforce the APK capture budget; Web admission/publication and native hand limits are implemented. [Register](ATF_CardUi_Extraction.md#ui-minimal-e2e-plan) |
 | AND-01 | P1 | 93 | Prove checkpoint recovery after corruption or interruption, preserving user data or reporting an explicit error. [Register](ATF_Android.md) |
 | AND-02 | P1 | 92 | Qualify the active actor, stable geometry and visible hand in bidding, play and AutoGame on the APK, for 3–6 players, RO/EN and enlarged text. [Register](ATF_Android.md) |
-| TEST-03 | P1 | 92 | Restore current module/font routes and adaptive desktop expectations in the legacy Playwright harness; qualify HTTP admission before startup and one compiled-game move. [Register](ATF_Governance.md#qualification-of-claims-and-launchers) |
 | AI-01 | P1 | 91 | Calibrate Hard inference for bidding with 2–8 cards and cards played on new lots; separate the accuracy of probabilities from the simulated score. [Register](ATF_Ai.md) |
 | RAG-27 | P1 | 91 | Reduce cold snapshot and compiler-seal cost through measured batch I/O, retaining exact-byte, link and corruption checks. [Register](ATF_Governance.md#framework-selection-boundaries) |
 | RAG-29 | P1 | 90 | Pin the qualified catalog context explicitly; separate live delivery checks from reports that change their own inventory. [Register](ATF_Governance.md#framework-selection-boundaries) |
@@ -47,7 +46,7 @@ The 1–100 score expresses work priority, not quality or completion percentage.
 | RAG-21 | P2 | 84 | The plan-only pilot proves source-bound restart and selector parity; full report/JUnit parity and the recovery-time gate remain open. [Register](ATF_Governance.md#langgraph-shadow-pilot) |
 | DOC-02 | P2 | 83 | Review inherited English operational terms against code and Romanian meaning; require editorial acceptance as well as executable diagnostics and edition parity. [Register](ATF_Governance.md#improving-guidance-guides) |
 | AI-02 | P2 | 82 | Measure opportunities, conversions to 500, ranking impact and latency on new batches; separate natural play from controlled prefixes. [Register](ATF_Ai.md#playing-for-zero) |
-| GOV-06 | P2 | 80 | Separate browser hosting, lifecycle, scenarios and evidence emission without losing case identities, cleanup or English reporting. [Register](ATF_Governance.md#cohesion-and-package-development) |
+| GOV-06 | P2 | 80 | Separate the remaining browser lifecycle, scenario drivers and result emission; hosting is isolated. Preserve identities, cleanup and English reporting. [Register](ATF_Governance.md#cohesion-and-package-development) |
 | WEB-07 | P2 | 79 | Qualify settings, resume, Play again and history in APK and Chrome on the same Android in RO/EN and with increased text. [Register](ATF_UiBrowser.md#qualification-on-the-same-device) |
 | WEB-11 | P2 | 78 | Qualify ranks and suit glyphs in a 17-card hand with enlarged text in Android Chrome. [Register](ATF_UiBrowser.md#qualification-on-the-same-device) |
 | WEB-15 | P2 | 77 | Complete adoption qualification in remaining consumers, preserving matching runtime/test JAR hashes and game-specific adapters. [Register](ATF_UiBrowser.md#shared-package-adoption) |

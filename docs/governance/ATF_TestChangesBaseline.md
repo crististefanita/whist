@@ -7,6 +7,42 @@ This register defines reviewed controls, their Git base and exact paths. The [te
 ## Verified controls
 
 <details>
+<summary>Shared policy units and static browser admission</summary>
+
+```yaml
+testChanges:
+  - id: WHIST-SHIFT-LEFT-HOST
+    status: VERIFIED
+    base: 7ea1ac3d32b5abf313db445217f36fcadd8a1d61
+    expires: 2026-12-24
+    reason: Move isolated viewport and trump-fit oracles into common JUnit units while preserving Whist collaboration matrices. Enforce source-set and reporting boundaries. Admit delivered browser modules and fonts before startup, reject invalid HTTP requests and retain bounded compiled-game sanity evidence.
+    proof: 'mvn -o -pl atf-tests -am -Dtest=GradleAuditGovernanceTest,WhistSurfaceAdapterComponentTest -Dsurefire.failIfNoSpecifiedTests=false test'
+    checks:
+      positive:
+        - atf.tests.governance.source.gradle.GradleAuditGovernanceTest#everyGradleTestClassHasOneExplicitLayerAndAnAuditedBase
+        - atf.tests.governance.source.gradle.GradleAuditGovernanceTest#rawJunitUnitsAndAuditedComponentsRetainTheirDeclaredBoundaries
+        - atf.tests.governance.source.gradle.GradleAuditGovernanceTest#productTestsDoNotKeepRawJUnitAssertionsBesideTheAuditFacade
+        - atf.tests.governance.documentation.release.rag.nativeproof.WhistSurfaceAdapterComponentTest#deliveredSiteModulesAndFontsAreAdmittedBeforeBrowserStartup
+        - atf.tests.governance.documentation.release.rag.nativeproof.WhistSurfaceAdapterComponentTest#adaptiveWebMenusKeepTextIndependentOfTheUsableViewport
+      negative:
+        - atf.tests.governance.source.gradle.GradleAuditGovernanceTest#unitDeclarationsCannotHideAnAuditedComponentOrReportingDependency
+    paths:
+      - atf-tests/src/test/java/atf/tests/governance/source/gradle/GradleAuditGovernanceTest.java
+      - atf-tests/src/test/java/atf/tests/governance/documentation/release/rag/nativeproof/WhistSurfaceAdapterComponentTest.java
+      - atf-ui-browser/tests/BrowserUi.java
+      - atf-ui-browser/tests/Run-BrowserUi.ps1
+      - atf-ui-browser/tests/ro/cardtable/testing/browser/StaticSiteHost.java
+      - atf-ui-browser/tests/static-host.test.mjs
+      - config/gradle-audit-collections.properties
+      - config/atf-component-dependencies.json
+      - whist-lab-app/app/src/test/java/ro/whistlab/app/table/TableViewportPolicyTest.java
+      - whist-lab-app/card-table-core/src/unitTest/java/ro/cardtable/ui/table/TableViewportPolicyTest.java
+      - whist-lab-app/card-table-core/src/unitTest/java/ro/cardtable/ui/table/TrumpTileTextFitTest.java
+```
+
+</details>
+
+<details>
 <summary>Per-owner readmission after concurrent editorial drift</summary>
 
 ```yaml

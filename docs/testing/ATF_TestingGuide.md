@@ -61,7 +61,7 @@ These rows describe executable boundaries, not Maven annotations. Source-set own
 
 | Module | Unit | Component | Integration | E2E | Ownership and executable selection |
 |---|---|---|---|---|---|
-| `whist-lab-app/card-table-core` | ✅ | ✅ | — | — | `unitTest` checks isolated normalization and snapshot ownership; `test` owns portable models, geometry, text roles and negative controls. [Core](../../whist-lab-app/card-table-core/README.md) |
+| `whist-lab-app/card-table-core` | ✅ | ✅ | — | — | `unitTest` checks viewport thresholds, glyph fitting, normalization and snapshot ownership; `test` owns portable models, combined geometry, text roles and negative controls. [Core](../../whist-lab-app/card-table-core/README.md) |
 | `whist-lab-app/atf-card-table-ui` | — | ✅ | ✅ | — | `testDebugUnitTest` checks native adapter contracts. Focused instrumentation qualifies real widgets separately; no full resolution E2E matrix. [Android renderer](../../whist-lab-app/atf-card-table-ui/README.md) |
 | `atf-ui-browser` | — | ✅ | ✅ | ✅ | Shared Java projection plus controlled DOM/clock components; one explicit short browser sanity flow checks wiring. [Web renderer](../../atf-ui-browser/README.md#verification) |
 | `whist-lab-app/whist-presentation` | — | ✅ | — | — | Game-specific portable projection; existing APK/Web component providers preserve catalog, checkpoint and presentation case identities. |

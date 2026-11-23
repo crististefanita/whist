@@ -35,8 +35,12 @@ Use the repository's configured external build directory and caches. [Execution 
 | `src/main/java` | Models, geometry, typography and deterministic effects. | Runtime JAR. |
 | `src/test/java` | Public component contracts, preconditions, comparisons and negative controls. | Canonical Extent reconciled with JUnit; no continuity pictures. |
 | `src/testFixtures/java` | Immutable measurements and a neutral continuity oracle; no game or reporting imports. | Test-fixtures JAR for adapter components. |
-| `src/unitTest/java` | Small isolated calculations and snapshot ownership. | JUnit diagnostics; no Extent. |
+| `src/unitTest/java` | Viewport boundaries, trump text fitting, isolated calculations and snapshot ownership. | JUnit diagnostics; no Extent. |
 
-Run `:card-table-core:test` for components and `:card-table-core:unitTest` for units. `:card-table-core:check` selects both. Resolution, text scale, all seats and game-provider matrices belong to components; platform E2E retains only short navigation and interaction sanity flows.
+Run `:card-table-core:test` for components and `:card-table-core:unitTest` for units. `:card-table-core:check` selects both.
+
+- Isolated policy and glyph-fit axes stay in units; combined layout, text-role, seat and game-provider matrices belong to components.
+- Adapters reuse these public contracts rather than duplicating their pure calculations.
+- Platform E2E retains only short navigation and interaction sanity flows.
 
 [Module × level matrix](../../docs/testing/ATF_TestingGuide.md) · [Shared table contract](../../docs/testing/ATF_TableContinuity.md) · [Current Web evidence](../../release/WEB/README.md)

@@ -9,7 +9,7 @@ Gradle separates isolated units, audited components and optional platform observ
 | Owner | Primary selection | Boundary |
 |---|---|---|
 | Portable presentation | `:card-table-core:test` | Geometry, content, text roles, hand feedback and deterministic effects; no Android or browser startup. |
-| Isolated units | `:card-table-core:unitTest` | Normalization, immutable snapshots and invalid inputs; JUnit only, without Extent or reporting dependencies. |
+| Isolated units | `:card-table-core:unitTest` | Viewport thresholds, trump text fitting, normalization, immutable snapshots and invalid inputs; JUnit only, without Extent or reporting dependencies. |
 | Android renderer | `:card-table-android:testDebugUnitTest` | Native adapter contracts and source ownership; real widgets require separate instrumentation. |
 | Whist projections | Application component collections and browser contracts | Shared game content, setup, achievements and checkpoint codecs from `whist-presentation`. |
 | Game engine | Release rule collections | Legal commands, scoring, checkpoints and game schedules; AI measurements remain separate. |
@@ -67,7 +67,15 @@ The [matrix ledger](../../whist-lab-app/test-audit/src/testFixtures/java/atf/gra
 | Size | Measure decoded input bodies and comparison counts separately from shared embedded HTML resources. |
 | Levels | Units verify isolated calculations without Extent; components retain audited adapter contracts, independent oracles, coverage and negative cases. |
 
-The [layer catalog](../../config/gradle-audit-collections.properties) declares every executable owner. Moving a class preserves its case identity. Shared contracts and negative controls must pass before retiring a duplicate platform check.
+The [layer catalog](../../config/gradle-audit-collections.properties) declares every executable owner.
+
+| Boundary | Enforced responsibility |
+|---|---|
+| Unit source | A `unit` entry uses `src/unitTest`; syntax-tree inspection rejects audit/reporting imports or calls without matching comments. |
+| Component source | An audited class in `src/test` remains a component even when it checks a small model. |
+| Pure policies | Viewport boundaries and trump glyph fitting belong to core units. |
+| Collaboration | Whist components combine viewport policy, seat layout, bidding targets and hand reservation. |
+| Migration | Preserve original axes and assertions; pass shared contracts and negative controls before retiring duplicates. Do not repeat pure policy matrices in APK and Web. |
 
 RAG records each validated task independently before starting the next task. Reuse requires unchanged relevant production inputs, transitive dependencies, tests, resources, toolchain and selection. A failed case is rerun after correction; unrelated valid collections remain reusable. [Checkpoint and reuse](ATF_ReleaseQualification.md#resume-validated-steps)
 
