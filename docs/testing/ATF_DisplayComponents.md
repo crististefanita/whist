@@ -28,6 +28,8 @@ Fixture-ul descrie regiuni măsurate, fără să apeleze algoritmul de layout al
 
 | Nivel | Intrare controlată | Proprietate verificată | Proprietar |
 |---|---|---|---|
+| Geometrie întreagă | Înălțimi CSS fracționare produse de zoom sau comenzile browserului | Rotunjește în jos o singură dată înălțimea validă înaintea politicii compacte și a limitei Java întregi; intrările malformate și nepozitive păstrează eroarea explicită | Adaptorul geometric Web |
+| Coordonate vizibile | Dreptunghiuri DOM și deplasările observate ale viewport-ului vizual | Compară pozițiile față de viewport-ul vizibil când zoomul sau tastatura deplasează viewport-ul de layout; păstrează deplasările brute în observație | Adaptorul observației de platformă |
 | Politici ale aplicației | Lățime, înălțime, densitate, font, număr de jucători și cărți | Distribuirea regiunilor, dimensiuni minime, spațiu disponibil, rotunjire și insets calculate | `app.table`, `app.hand`, `app.window` |
 | Nume și acțiune | Înălțimi de text măsurate sau simulate, conținutul chenarului și locul egalizat | Acțiune completă deasupra numelui, spațiu rezervat între ture, chenar mărit fără scalare repetată | `app.seat` |
 | Atu | Lățimile de glifuri din [fixture-ul Android și Web](../../whist-lab-app/app/src/test/resources/whist-trump-text-fit.tsv) | Încadrare în același chenar pentru carte, simbol și textul fără atu, inclusiv cu font mărit. [Paleta de referință](../../whist-lab-app/app/src/test/resources/whist-trump-palette.properties) și geometria se păstrează la activarea și oprirea AutoPlay și în timpul colectării levatei | [TrumpTileMetrics](../../whist-lab-app/card-table-core/src/main/java/ro/cardtable/ui/table/trump/TrumpTileMetrics.java) |

@@ -93,6 +93,7 @@ LangGraph oferă noduri explicite, stare partajată și limite de checkpoint, da
 | Prioritate | Lipsă delimitată | Criteriu de închidere |
 |---|---|---|
 | P2 | RAG-26: actualizarea unui singur sigiliu de cititor revizuit invalidează toate colecțiile ATF prin identitatea globală a politicii. | Separați amprenta topologiei de corpurile cititorilor revizuiți și de domeniile consumatorilor lor. Actualizarea delimitată doar la un sigiliu trebuie să selecteze responsabilii afectați. Schimbările topologiei, domeniile necunoscute, sigiliile lipsă și modificările neadmise ale cititorilor păstrează calificarea completă. Acoperiți limitele prin cazuri de componentă pozitive și negative; păstrați identitățile probelor originale și expuneți motivele selecției și timpii etapelor. |
+| P1 | RAG-27: pregătirea la rece și validarea repetată a sistemului de fișiere pot domina release-ul înainte de testele selectate. | Măsurați separat subetapele snapshot-ului, validarea după compilare și sigilarea compilatorului; grupați inspecția și hashing-ul fără a slăbi refuzul linkurilor, coruperii sau schimbării surselor, apoi comparați rulările la rece și la cald păstrând manifestele exacte și identitățile rapoartelor originale. |
 
 Măsurați separat pregătirea snapshot-ului, compilarea și execuția. Diagnosticul focalizat rămâne distinct de calificarea unei colecții primare complete; recuperarea eșecurilor dintr-un responsabil aparține punctului deschis pentru reconcilierea invocărilor de mai sus.
 

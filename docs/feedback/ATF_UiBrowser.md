@@ -8,7 +8,9 @@
 
 ## Calificarea pe același dispozitiv
 
-Măsurătorile fracționare ale viewport-ului mobil trebuie normalizate o singură dată la limita geometriei întregi, înaintea politicii compacte și a proiecției API. Regresia de componentă acoperă fracțiile generate de zoom, textul mărit și tranzițiile licitație/joc; intrările malformate și nepozitive trebuie să rămână erori explicite. Diagnosticul mobil original a reprodus eroarea vizibilă raportată. Acceptanța în Chrome Android nativ rămâne separată de emularea mobilă pe desktop și nu poate fi închisă prin aceasta.
+Limita pentru înălțimi fracționare și sanity-ul public de două mâini trec. [Contractul de afișare](../testing/ATF_DisplayComponents.md) deține normalizarea întregilor și coordonatele viewport-ului vizibil.
+
+Acceptanța în Chrome Android pe același dispozitiv rămâne deschisă; emularea mobilă pe desktop nu închide această limită.
 
 | ID | Probă rămasă | Criteriu de închidere |
 |---|---|---|
