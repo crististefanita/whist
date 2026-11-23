@@ -2179,7 +2179,7 @@ testChanges:
     status: VERIFIED
     base: 6cd3958315261c95218de7f724fdc4a7ad907960
     expires: 2026-12-23
-    reason: Preserve ordered before/after deposit evidence, individual assertion rows and action-versus-observation ownership, rejecting incomplete or contradictory input without rewriting historical reports.
+    reason: Păstrează dovezile ordonate înainte/după depunere, aserțiunile individuale și distincția dintre acțiune și observație, refuzând intrările incomplete sau contradictorii fără rescrierea rapoartelor istorice.
     proof: 'mvn -o -pl atf-tests -am -Dtest=BrowserExtentPublicationComponentTest,WhistSurfaceAdapterComponentTest -Dsurefire.failIfNoSpecifiedTests=false test'
     checks:
       positive:
