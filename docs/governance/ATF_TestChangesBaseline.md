@@ -3358,7 +3358,7 @@ testChanges:
     base: ed9473ee05bd6780a6dce6da86e262533570ca79
     expires: 2026-12-24
     reason: Preserve original passing comparisons and retry only unresolved static invocations under the same Git review, selectors, source/catalog context, compiled byte seal and toolchain. Keep original failed attempts immutable, reject altered or foreign inputs, and retain independent primary-owner recovery and final Extent population checks.
-    proof: "scripts/run-component-suites.ps1 -TestChangeControl RAG-STATIC-PROOF-RECOVERY"
+    proof: "mvn -o -pl atf-tests -am -Dtest=StaticProofRecoveryComponentTest,InvocationRecoveryComponentTest,ComponentEvidenceScopeComponentTest,AtfSourceQualityGovernanceTest,PackageCohesionGovernanceTest,TestLayerGovernanceTest,SuiteOwnershipGovernanceTest,AtfCollectionOwnershipComponentTest,TestChangeProofComponentTest -Dsurefire.failIfNoSpecifiedTests=false test"
     checks:
       positive:
         - atf.tests.execution.proofs.StaticProofRecoveryComponentTest#failedProofRetriesOnlyItsFailedBodyAndRetainsOriginalComparisons
