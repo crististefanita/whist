@@ -3066,6 +3066,7 @@ testChanges:
 testChanges:
   - id: RAG-COMPILER-BROWSER-COHESION
     status: VERIFIED
+    allowDelete: true
     base: 19929344b76cfbeee3bf810193469ef4393949fa
     expires: 2026-12-24
     reason: Admiteți pointerele moderne și vechi printr-un contract legat de context; păstrați sigiliile, rezervările, controalele noi și refuzul observabil. Separați selecția Browser, ciclul de viață, scenariile și rezultatele fără eliminări de cazuri ori schimbări de joc.
