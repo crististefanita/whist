@@ -85,6 +85,11 @@
       "source": "atf-tests/src/test/java/atf/tests/contracts/AndroidInlineScreenshotReportContractTest.java",
       "role": "fixture",
       "contracts": []
+    },
+    {
+      "source": "atf-tests/src/test/java/atf/tests/reporting/acceptance/heap/BoundedReportProbe.java",
+      "role": "fixture",
+      "contracts": []
     }
   ]
 }
