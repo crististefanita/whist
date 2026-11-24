@@ -6,7 +6,7 @@ Implementarea folosește engleza pe ambele ramuri documentare. Identificatorii, 
 
 ## Perimetru și clasificare
 
-[Verificatorul](../../atf-tests/tools/source-language.mjs) inventariază intrările de implementare versionate și neignorate, precum și sursele ignorate din responsabilitățile declarate din checkout-ul Git configurat. Verifică Java, JavaScript, PowerShell, Python, shell și scripturile de construire, plus comentariile din configurare, marcaj, CSS și `.gitignore`. 
+[Verificatorul](../../atf-tests/tools/source-language.mjs) inventariază intrările de implementare versionate și neignorate, precum și sursele ignorate din responsabilitățile declarate din checkout-ul Git configurat. Verifică Java, JavaScript, PowerShell, Python, shell și scripturile de construire, plus comentariile din configurare, marcaj, CSS și `.gitignore`.
 
 Livrabilele de release rămân observații imuabile, nu implementarea curentă. Adaptorul iOS parcat este în afara calificării acestei iterații.
 
