@@ -3302,7 +3302,7 @@ testChanges:
     status: VERIFIED
     base: 0f63cef42900a5c0df278c966de206fe8adf1a62
     expires: 2026-12-24
-    reason: Separate controlled process expiry from fixture readiness and watchdogs without changing public transport semantics. Measure production and JDK-default syntax parsing on one frozen source inventory with paired order and identical AST fingerprints; retain independent annotation, ambiguity, syntax and lifecycle controls without a speed threshold.
+    reason: Separate controlled process expiry from fixture readiness and watchdogs without changing public transport semantics. Measure production and JDK-default-path syntax parsing on one frozen source inventory with paired order and identical AST fingerprints; retain independent annotation, ambiguity, syntax and lifecycle controls without a speed threshold.
     proof: "mvn -o -pl atf-tests -am -Dtest=CommandProcessComponentTest,TestLayerSyntaxTest,AtfSourceQualityGovernanceTest,PackageCohesionGovernanceTest,TestLayerGovernanceTest,SuiteOwnershipGovernanceTest,AtfCollectionOwnershipComponentTest -Dsurefire.failIfNoSpecifiedTests=false test"
     checks:
       positive:
