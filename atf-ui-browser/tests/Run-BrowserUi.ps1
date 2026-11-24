@@ -23,8 +23,8 @@ if ($LASTEXITCODE -ne 0) { throw "Could not resolve Playwright. See $log." }
 $classpath = (Get-Content -Raw -LiteralPath $dependencies).Trim()
 $classes = Join-Path $root 'playwright-classes'
 $null = New-Item -ItemType Directory -Path $classes
-& javac -encoding UTF-8 -cp $classpath -d $classes (Join-Path $PSScriptRoot 'BrowserUi.java') `
-    (Join-Path $PSScriptRoot 'ro/cardtable/testing/browser/StaticSiteHost.java')
+$support = @(Get-ChildItem -LiteralPath (Join-Path $PSScriptRoot '../src/test/java/ro/cardtable/testing/browser') -Filter '*.java' -File | ForEach-Object FullName)
+& javac -encoding UTF-8 -cp $classpath -d $classes (Join-Path $PSScriptRoot 'BrowserUi.java') @support
 if ($LASTEXITCODE -ne 0) { throw 'Could not compile the browser runner and its shared static host.' }
 $classpath = @($classes, $classpath) -join [IO.Path]::PathSeparator
 $arguments = @((Resolve-Path -LiteralPath $Site).ProviderPath, (Resolve-Path -LiteralPath $HandFixture).ProviderPath, $root)

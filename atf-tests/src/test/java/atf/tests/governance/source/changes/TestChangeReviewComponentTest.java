@@ -27,6 +27,14 @@ class TestChangeReviewComponentTest {
     private static final String NEW_TEST = "nested/module/src/test/java/demo/Test nou ș.java";
     private static final String GATE = "config/atf-test-suites.json";
 
+    @Test void theSharedCompilerWorkspaceContractRequiresAReviewedControl(@TempDir Path root) throws Exception {
+        var repo=new TestChangeGitFixture(root);String path="scripts/AtfComponentWorkspace.ps1";
+        repo.put(path,"// controlled workspace contract\n");
+        AuditedAssertions.assertEquals(List.of(uncovered("A",path,repo.base)),check(repo).diagnostics(),"A shared compiler admission contract cannot bypass change review");
+        repo.put(FEEDBACK,repo.control("WORKSPACE-CONTEXT","ACTIVE",repo.base,VALID,false,path));
+        AuditedAssertions.assertEquals(List.of(),check(repo).diagnostics(),"The exact reviewed path admits this controlled change");
+    }
+
     @Test void sourceReadmesRemainEditorialAcrossGitStates(@TempDir Path root) throws Exception {
         var repo = new TestChangeGitFixture(root);
         String changed = "nested/module/src/test/java/demo/README.md";

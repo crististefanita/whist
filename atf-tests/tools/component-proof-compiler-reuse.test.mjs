@@ -96,20 +96,28 @@ $repo=Join-Path $build 'maven-repository';$jar=Join-Path $repo 'dependency.jar'
 Put $jar 'controlled bytecode';Put (Join-Path $repo 'dependency.pom') '<project/>'
 $classpath=Join-Path $build 'component-classpath.txt';Put $classpath $jar
 Write-AtfComponentJson (Join-Path $build 'component-maven.json') @{schemaVersion=2;identity=$identity.identity;repo='maven-repository';compilerFingerprint=$identity.compilerFingerprint;toolFingerprint=$identity.toolFingerprint;inputManifestSha256=(Get-FileHash (Join-Path $build 'compiler-source-inputs.json')).Hash.ToLowerInvariant();buildFingerprint=(Get-AtfComponentMavenFingerprint $build $repo @());classpathSha256=(Get-FileHash $classpath).Hash}
-Write-AtfComponentJson (Join-Path $previous 'component-workspace.json') @{schemaVersion=1;path=$build}
+Write-AtfComponentJson (Join-Path $previous 'source-inputs.json') $rows
+Write-AtfComponentJson (Join-Path $previous 'release-inputs.json') @((Get-AtfReleaseInputs $source))
+$qualified=[pscustomobject]@{source=[IO.File]::ReadAllText((Join-Path $previous 'source-inputs.json'));release=[IO.File]::ReadAllText((Join-Path $previous 'release-inputs.json'))}
+Write-AtfComponentWorkspace $previous $build $qualified
 if($Mode -eq 'tampered'){Put $jar 'changed bytecode'}
 $env:PROOF_RUN_MARKER=Join-Path $Root 'controls.marker';$env:MAVEN_RUN_MARKER=Join-Path $Root 'maven.marker';$env:PROOF_RUN_MODE=$Mode
 $env:WHIST_QUALIFICATION_TEMP_ROOT=$Root;$env:TEMP=$Root;$env:TMP=$Root
-$runs=@();$count=if($Mode -in @('success','gradle')){2}else{1}
+$runs=@();$count=if($Mode -in @('success','gradle','catalog')){2}else{1}
 for($n=0;$n -lt $count;$n++){
  if($Mode -eq 'gradle') {
   Put (Join-Path $source 'gradle/src/test/java/OnlyTest.java') "changed Gradle test $n"
   $null=& git -C $source -c user.name=Fixture -c user.email=fixture@example.invalid add .
   $null=& git -C $source -c user.name=Fixture -c user.email=fixture@example.invalid commit -q -m "Changed Gradle test $n"
  }
+ if($Mode -eq 'catalog') {
+  Write-AtfComponentJson (Join-Path $source 'release/index.json') @{schemaVersion=2;currentVersion='1.2.3';versions=@('1.2.3');fixtureRevision=$n}
+  $null=& git -C $source -c user.name=Fixture -c user.email=fixture@example.invalid add .
+  $null=& git -C $source -c user.name=Fixture -c user.email=fixture@example.invalid commit -q -m "Changed catalog observation $n"
+ }
  $output=Join-Path $Root "run-$n";$log=Join-Path $Root "run-$n.log"
  & pwsh -NoProfile -NonInteractive -File (Join-Path $scripts 'run-component-suites.ps1') -SourceRoot $source -RunRoot $output -TestChangeControl FIXTURE-COMPILER -TestChangeBaseRef $base -CompilerReuseFrom $previous -JavaHome $javaHome -Maven $maven -MavenCache $cache *> $log
- $runs+=@{exit=$LASTEXITCODE;proof=(Test-Path (Join-Path $output 'FIXTURE-COMPILER/proof.json'));sourceFingerprint=if(Test-Path (Join-Path $output 'source-provenance.json')){(Get-Content (Join-Path $output 'source-provenance.json') -Raw|ConvertFrom-Json).sourceFingerprint}else{''};phases=if(Test-Path (Join-Path $output 'timing.json')){(Get-Content (Join-Path $output 'timing.json') -Raw|ConvertFrom-Json).stages}else{@()};log=(Get-Content $log -Raw)}
+ $runs+=@{exit=$LASTEXITCODE;proof=(Test-Path (Join-Path $output 'FIXTURE-COMPILER/proof.json'));sourceFingerprint=if(Test-Path (Join-Path $output 'source-provenance.json')){(Get-Content (Join-Path $output 'source-provenance.json') -Raw|ConvertFrom-Json).sourceFingerprint}else{''};releaseFingerprint=if(Test-Path (Join-Path $output 'source-provenance.json')){(Get-Content (Join-Path $output 'source-provenance.json') -Raw|ConvertFrom-Json).releaseFingerprint}else{''};phases=if(Test-Path (Join-Path $output 'timing.json')){(Get-Content (Join-Path $output 'timing.json') -Raw|ConvertFrom-Json).stages}else{@()};log=(Get-Content $log -Raw)}
 }
 @{runs=$runs;maven=(Test-Path $env:MAVEN_RUN_MARKER);controls=if(Test-Path $env:PROOF_RUN_MARKER){@(Get-Content $env:PROOF_RUN_MARKER).Count}else{0}}|ConvertTo-Json -Depth 8
 `);
@@ -131,9 +139,16 @@ test('isolated Gradle test changes reuse Maven while two source snapshots execut
  for(const run of result.runs){assert.equal(run.exit,0,run.log);assert.equal(run.proof,true);assert.equal(run.phases.find(row=>row.stage==='components.maven-compile').status,'REUSED');}
  observe('gradle',result);
 });
+test('later catalog observations reuse the compiler without relabeling its original context',async t=>{
+ const result=await exercise(t,'catalog');assert.equal(result.maven,false);assert.equal(result.controls,2);
+ assert.equal(new Set(result.runs.map(run=>run.releaseFingerprint)).size,2);
+ for(const run of result.runs){assert.equal(run.exit,0,run.log);assert.equal(run.proof,true);assert.equal(run.phases.find(row=>row.stage==='components.maven-compile').status,'REUSED');}
+ observe('catalog',result);
+});
 for(const mode of ['failure','partial','tampered'])test(`proof compiler reuse rejects ${mode} execution without promoting a proof`,async t=>{
   const result=await exercise(t,mode);assert.equal(result.runs[0].proof,false);assert.notEqual(result.runs[0].exit,0,result.runs[0].log);
   assert.equal(result.maven,mode==='tampered');assert.equal(result.controls,mode==='tampered'?0:1);
+  if(mode==='tampered')assert.match(result.runs[0].phases.find(row=>row.stage==='components.compiler-reuse').reason,/COMPONENT_COMPILER_OUTPUTS_UNQUALIFIED/);
   observe(mode,result);
 });
 function observe(mode,result){process.stdout.write(JSON.stringify({fixture:'Mocked Java transport; real launcher, snapshot and compiler admission',mode,mavenStarted:result.maven,freshControlExecutions:result.controls,runs:result.runs.map(run=>({exit:run.exit,proofPromoted:run.proof,compilerStages:run.phases.filter(row=>row.stage.includes('compiler')||row.stage.includes('maven')).map(({stage,status})=>({stage,status}))}))})+'\n');}

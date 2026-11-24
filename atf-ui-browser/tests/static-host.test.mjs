@@ -26,7 +26,7 @@ before(async () => {
   root = await fs.mkdtemp(path.join(parent,'whist-static-host-'));
   classes = path.join(root,'classes'); await fs.mkdir(classes);
   execFileSync('javac',['--release','17','-encoding','UTF-8','-d',classes,
-    fileURLToPath(new URL('./ro/cardtable/testing/browser/StaticSiteHost.java',import.meta.url))],{windowsHide:true});
+    fileURLToPath(new URL('../src/test/java/ro/cardtable/testing/browser/StaticSiteHost.java',import.meta.url))],{windowsHide:true});
 });
 after(async () => {
   if (root) {assert.equal(path.dirname(await fs.realpath(root)),parent); await fs.rm(root,{recursive:true,force:true});}

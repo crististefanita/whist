@@ -129,7 +129,9 @@
         "atf.tests.governance.support.JvmInventoryCliComponentTest",
         "atf.tests.governance.support.LauncherSourceInventoryComponentTest",
         "atf.tests.governance.support.SigningSourceIsolationComponentTest",
-        "atf.tests.governance.support.SourceInventoryContractTest"
+        "atf.tests.governance.support.SourceInventoryContractTest",
+        "atf.tests.browser.runner.BrowserRunnerComponentTest",
+        "atf.tests.browser.runner.WhistBrowserChecksComponentTest"
       ]
     },
     {

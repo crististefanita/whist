@@ -19,6 +19,19 @@ class ComponentEvidenceScopeComponentTest {
     private static final Duration PUBLICATION_TIMEOUT = Duration.ofMinutes(2);
 
     @Test @ExtendWith(GameReportAudit.class)
+    void modernCompilerPointersAndLegacyInputsPreserveSealsAndExplicitRefusals(ComponentInputs inputs) throws Exception {
+        String output=runContracts(PUBLICATION_TIMEOUT,value->inputs.add("Original compiler admission observations",value),"component-maven-reuse.test.mjs");
+        AuditedAssertions.assertTrue(output.contains("modern emitted pointer and qualified context"),"The actual pointer writer and reader agree on the current schema");
+        AuditedAssertions.assertTrue(output.contains("modern context omissions, foreign identities"),"Modern context and original output seals are admitted independently");
+        AuditedAssertions.assertTrue(output.contains("changed compiler inputs and unverified workspaces reject"),"Legacy compatibility preserves all original negative controls");
+    }
+
+    @Test @ExtendWith(GameReportAudit.class)
+    void changedCatalogKeepsCompilerIdentityAndExecutesControlsWithFreshContext(ComponentInputs inputs) throws Exception {
+        proofCompilerContract("later catalog",inputs);
+    }
+
+    @Test @ExtendWith(GameReportAudit.class)
     void documentationDriftReadmitsOnlyUnchangedOwnersAndPreservesRejectedEvidence(ComponentInputs inputs) throws Exception {
         String output = runContracts(PUBLICATION_TIMEOUT,
                 value -> inputs.add("Original owner decisions, snapshot capture and rejection outcomes", value),

@@ -15,6 +15,11 @@
   "additionalSourceRoots": [
     {
       "module": "atf-ui-browser",
+      "test": true,
+      "path": "atf-ui-browser/src/test/java"
+    },
+    {
+      "module": "atf-ui-browser",
       "test": false,
       "path": "atf-ui-browser/src/main/java"
     },

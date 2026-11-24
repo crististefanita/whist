@@ -89,7 +89,7 @@ test('PowerShell snapshot and restart reconstruct the same context and refuse mi
   const f = fixture();
   await fs.writeFile(path.join(root, 'source-inputs.json'), JSON.stringify(f.source.value));
   await fs.writeFile(path.join(root, 'release-inputs.json'), JSON.stringify(f.release.value));
-  const workspace = {schemaVersion: 2, sourceFingerprint: f.source.sha256, releaseFingerprint: f.release.sha256,
+  const workspace = {schemaVersion: 2, path: root, sourceFingerprint: f.source.sha256, releaseFingerprint: f.release.sha256,
     qualificationContext: f.context};
   const project = fileURLToPath(new URL('../../', import.meta.url));
   const program = path.join(root, 'resume.ps1');
@@ -100,14 +100,15 @@ function Assert-AtfQualificationSnapshot { }
 $snapshot=Restore-AtfComponentSnapshot $Root $Root $Root ''
 Get-AtfQualifiedCatalogContext $snapshot | ConvertTo-Json -Compress
 `);
-  for (const mutation of ['valid', 'foreign', 'missing']) {
+  for (const mutation of ['valid', 'foreign', 'missing', 'foreign-path']) {
     const value = structuredClone(workspace);
     if (mutation === 'foreign') value.qualificationContext.sourceSha256 = digest('foreign');
     if (mutation === 'missing') delete value.qualificationContext;
+    if (mutation === 'foreign-path') value.path=path.join(root,'foreign-workspace');
     await fs.writeFile(path.join(root, 'component-workspace.json'), JSON.stringify(value));
     const invoke = () => execFileSync('pwsh', ['-NoProfile', '-NonInteractive', '-File', program, project, root],
       {encoding: 'utf8', timeout: 15000, stdio: ['pipe', 'pipe', 'pipe']});
     if (mutation === 'valid') assert.deepEqual(JSON.parse(invoke()), f.context);
-    else assert.throws(invoke, error => /COMPONENT_RESUME_CONTEXT/.test(error.stderr.toString()), mutation);
+    else assert.throws(invoke, error => /COMPONENT_RESUME_(?:CONTEXT|WORKSPACE_RECEIPT)/.test(error.stderr.toString()), mutation);
   }
 });

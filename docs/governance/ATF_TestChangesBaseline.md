@@ -3058,3 +3058,76 @@ testChanges:
 ```
 
 </details>
+
+<details>
+<summary>Qualified compiler borrowing and separated browser diagnostics</summary>
+
+```yaml
+testChanges:
+  - id: RAG-COMPILER-BROWSER-COHESION
+    status: VERIFIED
+    base: 19929344b76cfbeee3bf810193469ef4393949fa
+    expires: 2026-12-24
+    reason: Admit modern and legacy compiler pointers through one context-bound contract; preserve byte seals, leases, fresh controls and observable refusal. Separate browser selection, lifecycle, scenario drivers and results without removing cases or changing game behavior.
+    proof: 'mvn -o -pl atf-tests -am -Dtest=BrowserRunnerComponentTest,WhistBrowserChecksComponentTest,ComponentEvidenceScopeComponentTest,QualifiedCatalogContextComponentTest,WhistSurfaceAdapterComponentTest,AtfSourceQualityGovernanceTest,PackageCohesionGovernanceTest,TestLayerGovernanceTest,SuiteOwnershipGovernanceTest,TestChangeReviewComponentTest -Dsurefire.failIfNoSpecifiedTests=false test'
+    checks:
+      positive:
+        - atf.tests.browser.runner.BrowserRunnerComponentTest#ownedLifecyclePreservesOrderingMutedHeadlessOptionsAndResultSchema
+        - atf.tests.browser.runner.WhistBrowserChecksComponentTest#everyDiagnosticSelectionRetainsItsOrderedCaseIdentitiesAndViewports
+        - atf.tests.browser.runner.WhistBrowserChecksComponentTest#offlineComponentsAndStandaloneDiagnosticsUseTheSamePinnedClientWithoutBundledBrowsers
+        - atf.tests.governance.documentation.release.rag.scope.ComponentEvidenceScopeComponentTest#modernCompilerPointersAndLegacyInputsPreserveSealsAndExplicitRefusals
+        - atf.tests.governance.documentation.release.rag.scope.ComponentEvidenceScopeComponentTest#changedCatalogKeepsCompilerIdentityAndExecutesControlsWithFreshContext
+        - atf.tests.governance.documentation.release.rag.scope.ComponentEvidenceScopeComponentTest#borrowedCompilerDoesNotCacheControlExecution
+        - atf.tests.governance.documentation.release.rag.scope.ComponentEvidenceScopeComponentTest#gradleOnlyChangesReuseCompilationWithoutReusingControlVerdicts
+        - atf.tests.governance.documentation.release.rag.scope.context.QualifiedCatalogContextComponentTest#sourceAndCatalogIdentitySurvivesRestartWithoutRelabelingHistoricalReports
+        - atf.tests.governance.documentation.release.rag.nativeproof.WhistSurfaceAdapterComponentTest#deliveredSiteModulesAndFontsAreAdmittedBeforeBrowserStartup
+        - atf.tests.governance.source.AtfSourceQualityGovernanceTest#sourcesRespectPackagePathsImportsAndProductionBoundaries
+        - atf.tests.governance.source.PackageCohesionGovernanceTest#currentProjectUsesNoCohesionExceptions
+        - atf.tests.governance.source.TestLayerGovernanceTest#executableMavenClassesHaveOneLayerAndTheGuideMatchesTheirDeclarations
+        - atf.tests.governance.source.TestLayerGovernanceTest#theGuideMapsEveryGovernedSourceModuleWithoutClaimingBinarySourceSuites
+        - atf.tests.governance.suites.SuiteOwnershipGovernanceTest#everyMavenExecutableHasOnePrimaryOwnerAndEveryFocusedGateIsDeclared
+      negative:
+        - atf.tests.browser.runner.BrowserRunnerComponentTest#failedCaptureBodyAndCleanupCannotMaskTheOriginalOrHideTheNextCase
+        - atf.tests.browser.runner.BrowserRunnerComponentTest#launchAndShutdownFailuresPreserveThePrimaryCauseAndCloseOnlyOwnedResources
+        - atf.tests.browser.runner.BrowserRunnerComponentTest#earlyContextFailuresAndJavascriptErrorsCannotBecomePassingCases
+        - atf.tests.browser.runner.WhistBrowserChecksComponentTest#invalidSelectionsDuplicateOwnersAndInterruptedFlowsCannotInventSuccessfulCases
+        - atf.tests.browser.runner.WhistBrowserChecksComponentTest#aClosedWriterCannotCreditLaterRowsOrRewritePublishedEvidence
+        - atf.tests.governance.documentation.release.rag.scope.ComponentEvidenceScopeComponentTest#failedControlsCannotPromoteAProof
+        - atf.tests.governance.documentation.release.rag.scope.ComponentEvidenceScopeComponentTest#incompleteControlsCannotPromoteAProof
+        - atf.tests.governance.documentation.release.rag.scope.ComponentEvidenceScopeComponentTest#tamperedCompilerCannotQualifyProofGeneration
+        - atf.tests.governance.source.changes.TestChangeReviewComponentTest#theSharedCompilerWorkspaceContractRequiresAReviewedControl
+    paths:
+      - atf-tests/pom.xml
+      - atf-tests/src/main/java/atf/tests/testchange/TestChangeReview.java
+      - atf-tests/src/test/java/atf/tests/browser/runner/BrowserRunnerComponentTest.java
+      - atf-tests/src/test/java/atf/tests/browser/runner/BrowserSessionFixture.java
+      - atf-tests/src/test/java/atf/tests/browser/runner/WhistBrowserChecksComponentTest.java
+      - atf-tests/src/test/java/atf/tests/governance/documentation/release/rag/scope/ComponentEvidenceScopeComponentTest.java
+      - atf-tests/src/test/java/atf/tests/governance/source/changes/TestChangeReviewComponentTest.java
+      - atf-tests/src/test/java/atf/tests/suites/components/AtfOrchestrationComponentSuite.java
+      - atf-tests/tools/component-maven-reuse.test.mjs
+      - atf-tests/tools/component-proof-compiler-reuse.test.mjs
+      - atf-tests/tools/component-qualification-context.test.mjs
+      - atf-ui-browser/src/test/java/ro/cardtable/testing/browser/BrowserAcceptanceSession.java
+      - atf-ui-browser/src/test/java/ro/cardtable/testing/browser/BrowserCheckResults.java
+      - atf-ui-browser/src/test/java/ro/cardtable/testing/browser/BrowserCheckSupport.java
+      - atf-ui-browser/src/test/java/ro/cardtable/testing/browser/StaticSiteHost.java
+      - atf-ui-browser/src/test/java/ro/cardtable/testing/browser/WhistBrowserCardScenarios.java
+      - atf-ui-browser/src/test/java/ro/cardtable/testing/browser/WhistBrowserChecks.java
+      - atf-ui-browser/src/test/java/ro/cardtable/testing/browser/WhistBrowserLayoutScenarios.java
+      - atf-ui-browser/src/test/java/ro/cardtable/testing/browser/WhistBrowserTableScenarios.java
+      - atf-ui-browser/tests/BrowserUi.java
+      - atf-ui-browser/tests/ro/cardtable/testing/browser/StaticSiteHost.java
+      - atf-ui-browser/tests/Run-BrowserUi.ps1
+      - atf-ui-browser/tests/static-host.test.mjs
+      - config/atf-component-collections.json
+      - config/atf-component-dependencies.json
+      - config/atf-component-reader-seals.json
+      - config/atf-governance-policy.json
+      - scripts/AtfComponentMavenReuse.ps1
+      - scripts/AtfComponentResume.ps1
+      - scripts/AtfComponentWorkspace.ps1
+      - scripts/run-component-suites.ps1
+```
+
+</details>

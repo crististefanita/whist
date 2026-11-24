@@ -31,7 +31,8 @@
     "whist-lab-app/card-table-core/src/test/java",
     "whist-lab-app/card-table-core/src/testFixtures/java",
     "whist-lab-app/card-table-core/src/unitTest/java",
-    "whist-lab-app/whist-presentation/src/main/java"
+    "whist-lab-app/whist-presentation/src/main/java",
+    "atf-ui-browser/src/test/java"
   ],
   "scriptRoots": [
     "atf-tests/tools",
@@ -127,5 +128,5 @@
     }
   ],
   "readerSealsPath": "config/atf-component-reader-seals.json",
-  "topologySha256": "c91899c42053925975dc7d3c4abbf7b2d05069f73f546c2764ae416deec131dc"
+  "topologySha256": "da4f1c801fc57d5b7560606176eaab42e915766f43306f4f3548c55728eb6d49"
 }
