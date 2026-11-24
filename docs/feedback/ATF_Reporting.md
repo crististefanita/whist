@@ -11,14 +11,6 @@ The consumer holds the game records, selection, oracle and external indexation. 
 - [ ] After delivery of the common capability, qualify the actual adapter and the report produced with the actual consumed library. Check the owner of the capture, inventory expected/actual and refusal to remove the declared capture.
 
 
-## Early validation of checkpoint
-
-| Priority | Gap and source | Level and criterion of closure |
-|---|---|---|
-| P2 | [AndroidUiFlowTrace.checkpoint](../../atf-test-android/src/test/java/atf/android/e2e/support/AndroidUiFlowTrace.java) keeps assertions that [publisher](../../atf-test-android/src/test/java/atf/android/e2e/support/AndroidUiFlowReportPublisher.java) later checks against library policy; too long a summary can be refused only when published. | Component: validated by the same effective policy before the next capture, with a precise refusal and without truncating the full values in the observations and XML. |
-
-The consumer shall have the time of validation and the data transmitted. If the public API does not expose the necessary policy, the reusable contract is required by the library's manager; the limit is not recopied as an independent local rule.
-
 <a id="bounded-component-inputs"></a>
 
 ## Cost of consumer inputs
