@@ -41,6 +41,8 @@ Un raport de componentă califică intrările și comparațiile JVM. Sanity-ul c
 
 Înaintea execuției, receipt-urile moderne fixează `qualificationContext` în proveniență, checkpoint și rularea rădăcină. Identitatea se reconstruiește din SHA-256 al manifestului sursei, SHA-256 al inventarului complet al release-ului și hash-ul înregistrat pentru `release/index.json`. Reluarea refuză un context lipsă sau străin înaintea reutilizării rezultatelor.
 
+Sigilați manifestul candidatului, notele ediției și commitul imuabil de audit înaintea avansării ramurii publicate. Evaluați mai întâi contextul original al calificării; după publicare, observați separat catalogul live și descărcările. Reconstruiți sursa calificată din Git și repetați verificarea din rețeta salvată înaintea ștergerii datelor intermediare.
+
 | Moment | Contract |
 |---|---|
 | Calificare | Inventarele copiate și live coincid cu snapshot-ul fixat; modificările reale sau fișierele corupte blochează admiterea. |
