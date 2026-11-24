@@ -6,7 +6,7 @@
 
 ## Pe scurt
 
-Contract comun pentru componente și E2E. Adaptorul deține protocolul platformei; sursa comună deține matricea și aserțiunile.
+Contract comun pentru componente și E2E. Adaptorul deține protocolul platformei; sursa comună deține matricea și aserțiunile. [Suportul Java](../src/test/README.md) documentează responsabilitățile sesiunii și dovezilor.
 
 ## Contract
 

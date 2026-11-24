@@ -8,7 +8,7 @@ Un pachet grupează tipuri care se schimbă pentru același contract. [Politica 
 
 ## Limba surselor
 
-Codul este scris în engleză pe ambele ramuri documentare: identificatori, comentarii, Javadoc, explicații din surse și diagnostice pentru dezvoltatori. Ediția română traduce ghidurile, nu implementările. Textele localizate pentru utilizatori, numele proprii din domeniu și fixture-urile lingvistice identificate explicit rămân date; acestea nu autorizează comentarii sau identificatori de implementare în română.
+Codul de implementare trebuie scris în engleză pe ambele ramuri documentare: identificatori, comentarii, Javadoc, explicații din surse și diagnostice pentru dezvoltatori. Ediția română traduce ghidurile, nu implementările. Textele localizate pentru utilizatori, numele proprii din domeniu și fixture-urile lingvistice identificate explicit rămân date; acestea nu autorizează comentarii sau identificatori de implementare în română.
 
 Revizia surselor trebuie să verifice sensul, nu doar ortografia. Guvernanța automată trebuie să identifice populația de surse inspectată și să respingă abaterile lingvistice revizuite, acceptând resursele localizate și literalii fixture-urilor. Impunerea executabilă rămasă este urmărită în [registrul de guvernanță](../feedback/ATF_Governance.md#source-language-governance).
 
