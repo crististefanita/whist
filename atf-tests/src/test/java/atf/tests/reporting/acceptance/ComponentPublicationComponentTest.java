@@ -40,6 +40,11 @@ class ComponentPublicationComponentTest {
                     staged->{if(mode.equals("verify"))throw cause;if(mode.equals("mutate"))Files.writeString(staged,"changed");}));
             if(mode.equals("render")||mode.equals("verify"))assertSame(cause,failure);
             if(mode.equals("heap"))assertSame(heap,failure);
+            if(mode.equals("limit")||mode.equals("mutate")){
+                assertEquals(IOException.class,failure.getClass(),"The intended guard, not an unrelated error, refuses the candidate");
+                assertTrue(failure.getMessage().startsWith(mode.equals("limit")?"COMPONENT_REPORT_BYTE_LIMIT":"COMPONENT_REPORT_CHANGED_DURING_VERIFICATION"),
+                        "The refusal identifies its exact boundary");
+            }
             assertEquals("qualified",Files.readString(report),"A failed publication cannot replace prior accepted bytes");
             assertEquals("<testsuite tests='1' failures='1'/>",Files.readString(xml),"Publication never rewrites original JUnit outcomes");
             var receipt=receipt(report);inputs.add("Original refusal — "+mode,receipt.toPrettyString());

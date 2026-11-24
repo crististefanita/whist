@@ -3593,3 +3593,52 @@ testChanges:
 ```
 
 </details>
+
+<details>
+<summary>Measured native content and verified report promotion</summary>
+
+```yaml
+testChanges:
+  - id: UI-CONTENT-REPORT-PUBLICATION
+    status: VERIFIED
+    base: a51c9ab5889ea1d5f167ad4f60de44a76dc3d93d
+    expires: 2026-12-24
+    reason: Qualify actual Android measurement API adaptation and transactional bounded-heap report publication. Keep pure value matrices in units and preserve native raster and opaque library-stage limits.
+    proof: "mvn -o -pl atf-tests -am -Dtest=WhistSurfaceAdapterComponentTest,ComponentPublicationComponentTest,ReportHeapComponentTest,AtfSourceQualityGovernanceTest,SourceLanguageGovernanceTest,SuiteOwnershipGovernanceTest -Dsurefire.failIfNoSpecifiedTests=false test"
+    checks:
+      positive:
+        - atf.tests.governance.documentation.release.rag.nativeproof.WhistSurfaceAdapterComponentTest#nativeContentMeasurementsRejectClippingAndLateOwners
+        - atf.tests.reporting.acceptance.ComponentPublicationComponentTest#verificationMustPassBeforeCanonicalReplacement
+        - atf.tests.reporting.acceptance.heap.ReportHeapComponentTest#boundedSmallMediumAndLargeReportsKeepEveryComparisonUnderTheDeclaredHeap
+        - atf.tests.governance.source.AtfSourceQualityGovernanceTest#sourcesRespectPackagePathsImportsAndProductionBoundaries
+        - atf.tests.governance.source.language.SourceLanguageGovernanceTest#implementationCommentsAndDiagnosticsUseEnglish
+        - atf.tests.governance.suites.SuiteOwnershipGovernanceTest#everyMavenExecutableHasOnePrimaryOwnerAndEveryFocusedGateIsDeclared
+        - atf.tests.governance.suites.AtfCollectionOwnershipComponentTest#positiveInventoriesPartitionEveryAtfComponentWithoutChangingLeafNames
+      negative:
+        - atf.tests.reporting.acceptance.ComponentPublicationComponentTest#failedVerificationLimitsAndOriginalErrorsPreserveThePreviousReportAndJUnit
+        - atf.tests.governance.suites.SuiteOwnershipGovernanceTest#newOmittedClassOverlapWrongLayerAndHiddenSelectionAreRejected
+    paths:
+      - atf-test-android/src/main/java/atf/android/evidence/component/AndroidComponentRun.java
+      - atf-test-android/src/main/java/atf/android/evidence/component/publication/ComponentReportPublication.java
+      - atf-tests/src/test/java/atf/tests/reporting/acceptance/ComponentPublicationComponentTest.java
+      - atf-tests/src/test/java/atf/tests/reporting/acceptance/heap/BoundedReportProbe.java
+      - atf-tests/src/test/java/atf/tests/reporting/acceptance/heap/CapturedTextProbe.java
+      - atf-tests/src/test/java/atf/tests/reporting/acceptance/heap/ReportHeapComponentTest.java
+      - atf-tests/src/test/java/atf/tests/reporting/acceptance/heap/ReportHeapUnitTest.java
+      - atf-tests/src/test/java/atf/tests/governance/documentation/release/rag/nativeproof/WhistSurfaceAdapterComponentTest.java
+      - atf-tests/src/test/java/atf/tests/suites/components/AtfReportingComponentSuite.java
+      - atf-ui-browser/tests/native-observation-fixture.mjs
+      - atf-ui-browser/tests/native-observation.test.mjs
+      - config/atf-component-collections.json
+      - config/atf-component-dependencies.json
+      - config/atf-component-reader-seals.json
+      - config/report-heap-profile.json
+      - whist-lab-app/card-table-core/src/main/java/ro/cardtable/ui/observation/RenderedSurface.java
+      - whist-lab-app/card-table-core/src/main/java/ro/cardtable/ui/observation/SurfaceEpoch.java
+      - whist-lab-app/card-table-core/src/testFixtures/java/ro/cardtable/testing/RenderedSurfaceAudit.java
+      - whist-lab-app/card-table-core/src/unitTest/java/ro/cardtable/testing/RenderedSurfaceUnitTest.java
+      - whist-lab-app/atf-card-table-ui/src/main/java/ro/cardtable/ui/observation/AndroidSurfaceObservation.java
+      - whist-lab-app/atf-card-table-ui/src/main/java/ro/cardtable/ui/table/android/BoardLayout.java
+```
+
+</details>

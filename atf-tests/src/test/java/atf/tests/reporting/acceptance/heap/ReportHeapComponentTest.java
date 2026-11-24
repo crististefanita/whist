@@ -25,7 +25,10 @@ class ReportHeapComponentTest {
         assertEquals(atf.android.evidence.component.publication.ComponentReportPublication.DEFAULT_MAX_BYTES,
                 profile.path("maximumReportBytes").asLong(),"The fixture qualifies the actual default artifact guard");
         inputs.add("Qualification limits","Real pinned Reporting JAR; isolated child per population; repeated synthetic PNG bytes, no product screenshots, emulator or APK. Rendering and navigation are one opaque J24 phase. Pool peaks are cumulative upper bounds.");
+        int previous=0;
         for(var population:profile.path("populations")){
+            assertTrue(population.canConvertToInt()&&population.asInt()>previous,"Declared small, medium and large populations are positive and strictly increasing");
+            previous=population.asInt();
             Path directory=Files.createDirectory(root.resolve("population-"+population.asInt()));
             Path log=directory.resolve("child.log");String java=Path.of(System.getProperty("java.home"),"bin",
                     System.getProperty("os.name").startsWith("Windows")?"java.exe":"java").toString();

@@ -166,8 +166,9 @@ Gradle selection of the application, engine and graphic library uses [Gradle aud
 ```mermaid
 flowchart LR
     NATIVE["Android View and Layout"] -->|measure| PORT["RenderedSurface"]
-    DOM["DOM measurement adapter"] -->|measure| PORT
     PORT -->|inspect| ORACLE["Visibility and continuity oracle"]
+    DOM["Existing DOM measurements"] -->|compare geometry| GEOMETRY["SurfaceContinuity"]
+    ORACLE -->|normalize measured frames| GEOMETRY
     EPOCH["Owner and revision ticket"] -->|admit| NATIVE
 ```
 
