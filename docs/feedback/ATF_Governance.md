@@ -88,15 +88,14 @@ The [early-admission contract](../governance/ATF_TestChanges.md#early-source-con
 
 The [independent ATF owners](../testing/ATF_Collections.md#independent-atf-component-owners) separate editorial and payload checks from provenance, mocked Android, mocked GitHub, orchestration and reporting. Each primary collection has a positive class inventory, one canonical Extent and its own source-bound receipt.
 
-The [dependency selection contract](../testing/ATF_Collections.md#executable-dependency-selection) derives consumers from current executable references and explicit repository-observer scopes. Reviewed reader bodies and generated providers bound what the analysis can admit. Unknown inputs, missing populations and changed reader contracts retain complete ATF qualification.
+The [dependency selection contract](../testing/ATF_Collections.md#executable-dependency-selection) derives consumers from current executable references and explicit repository-observer scopes. Reviewed reader bodies and generated providers bound what the analysis can admit. Unknown inputs, missing populations and unadmitted reader changes retain complete ATF qualification.
 
 - Markdown-only changes select the documentation owner without replaying independent launcher fixtures. Shared helpers, dependencies and unknown inputs still invalidate their consumers conservatively.
 - Reuse retains original JUnit identities, outcomes, comparisons and report hashes. Historical monolithic reports remain immutable and cannot qualify new partition identities.
 
 | Priority | Bounded gap | Closure criterion |
 |---|---|---|
-| P2 | RAG-26: updating one reviewed reader seal invalidates all ATF collections through the global policy identity. | Separate the topology fingerprint from reviewed reader bodies and their consumer scopes. A bounded seal-only update must select its affected owners. Topology changes, unknown scopes, missing seals and unadmitted reader changes retain complete qualification. Cover these boundaries with positive and negative component cases; preserve original evidence identities and expose selection reasons and stage timings. |
-| P1 | RAG-29: qualification context becomes implicit when audit or publication adds outputs to the catalog observed by the documentation component. | Persist and reconstruct qualified source and catalog identities before promotion. Resume against the same verified context and verify live catalog, links, download and retention separately after publication. Cover wrong or missing context, actual catalog drift and corrupt assets; do not hide real drift or label pre-publication evidence as current-catalog qualification. |
+| P1 | RAG-29: source/catalog context is explicit and verified offline; complete promotion qualification remains open. | During the next promotion, reconcile the context captured before execution, restart reconstruction and separate live catalog, link, download and retention checks. Preserve pre-publication reports as observations of their original catalog; the [context contract](../testing/ATF_ReleaseQualification.md#qualified-catalog-context) and negative components do not substitute this complete flow. |
 
 Measure snapshot preparation, compilation and execution separately. A focused diagnostic remains distinct from qualification of a complete primary collection; failure recovery within an owner is covered by the open invocation-reconciliation item above.
 

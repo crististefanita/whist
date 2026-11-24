@@ -176,16 +176,24 @@ Edges describe executable dependencies at class or module granularity, not metho
 
 </details>
 
-File readers and all their transitive callers have reviewed source-body seals. New or changed reader contracts require a reviewed policy and full qualification; recording a new seal does not authorize reuse across a changed reader input. Line endings are normalized only for these bilingual-checkout seals; original source manifests and reused evidence still retain their exact byte hashes.
+The topology policy pins provider populations, executable edges, observer patterns and reader roles. The separate [reader-seal inventory](../../config/atf-component-reader-seals.json) pins reviewed bodies; its hash does not become a global dependency. Line endings are normalized only for body seals; source manifests and original evidence retain exact byte hashes.
 
-The read-only proposal command uses a freshly captured source inventory and writes a new file outside the checkout:
+| Change or admission boundary | Selection |
+|---|---|
+| Reviewed body and matching seal, with the same admitted topology | Changed reader consumers and observers of the seal inventory. |
+| Several reviewed readers | Union of every affected consumer and inventory observer. |
+| Changed topology policy, roots, edges, provider population or reader role | Complete ATF qualification. |
+| Missing, stale or foreign seal; unknown consumer; unexplained inventory change | Complete ATF qualification. |
+| Historical origin without the separate seal inventory | Conservative admission; never relabel old reports. |
+
+The read-only proposal command uses a freshly captured source inventory and writes two new files outside the checkout:
 
 ```powershell
 .\scripts\Get-AtfSourceInputs.ps1 -SourceRoot (Get-Location).Path -AsJson > '<scratch-root>/source-inputs.json'
 node .\atf-tests\tools\atf-dependency-cli.mjs '<scratch-root>/source-inputs.json' '<scratch-root>/reader-policy-proposal.json'
 ```
 
-Review the declared reader scopes and generated providers before adopting the proposed policy. The command neither updates the checked-in policy nor grants a qualification verdict; changed readers or selection machinery require the reviewed positive and negative test-change controls. The reuse plan records the dependency chain or observer scope behind each selection; immutable receipt, JUnit identity and Extent admission remain mandatory.
+Review the declared reader scopes and generated providers before adopting both proposals: the requested topology file and its sibling `atf-component-reader-seals.json`. The command neither updates the checked-in policy nor grants a qualification verdict; changed readers or selection machinery require the reviewed positive and negative test-change controls. The reuse plan records the topology hash, seal hash, changed readers and dependency chain or observer scope behind each selection; immutable receipt, JUnit identity and Extent admission remain mandatory.
 
 - `prepare-component-reuse.mjs` verifies the original source, release snapshot, root run, JUnit identities and report hashes before copying unchanged bytes. The evaluator requires every new ATF owner whenever the candidate source contains the new descriptor, independently of the claimed release version. Historical sources without that descriptor retain the monolithic contract; their reports cannot be relabeled as partition evidence.
 

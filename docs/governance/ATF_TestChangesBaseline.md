@@ -7,6 +7,61 @@ This register defines reviewed controls, their Git base and exact paths. The [te
 ## Verified controls
 
 <details>
+<summary>Independent reader seals and qualified source/catalog context</summary>
+
+```yaml
+testChanges:
+  - id: RAG-READER-SEAL-OWNERS
+    status: VERIFIED
+    base: 99ca70c73f007730dadd4b76f7aab283ddc0fc2d
+    expires: 2026-12-24
+    reason: Separate admitted topology from reviewed reader bodies; select real consumers and inventory observers while retaining complete qualification for topology, missing seals and unknown scopes. Preserve original reports and verify explicit source/catalog context at restart and rejection of foreign provenance.
+    proof: 'mvn -o -pl atf-tests -am -Dtest=AtfCollectionOwnershipComponentTest,QualifiedCatalogContextComponentTest,SuiteOwnershipGovernanceTest,TestChangeReviewComponentTest,ComponentEvidenceScopeComponentTest,ReleaseRagProvenanceComponentTest,AtfSourceQualityGovernanceTest,PackageCohesionGovernanceTest,TestLayerGovernanceTest -Dsurefire.failIfNoSpecifiedTests=false test'
+    checks:
+      positive:
+        - atf.tests.governance.suites.AtfCollectionOwnershipComponentTest#reviewedReaderSealsSelectOnlyTheirConsumersAndPreserveOriginalReports
+        - atf.tests.governance.suites.AtfCollectionOwnershipComponentTest#realDependencyClosuresSelectOnlyTheirConsumers
+        - atf.tests.governance.documentation.release.rag.scope.context.QualifiedCatalogContextComponentTest#sourceAndCatalogIdentitySurvivesRestartWithoutRelabelingHistoricalReports
+        - atf.tests.governance.suites.SuiteOwnershipGovernanceTest#everyMavenExecutableHasOnePrimaryOwnerAndEveryFocusedGateIsDeclared
+        - atf.tests.governance.source.AtfSourceQualityGovernanceTest#sourcesRespectPackagePathsImportsAndProductionBoundaries
+        - atf.tests.governance.source.PackageCohesionGovernanceTest#currentProjectUsesNoCohesionExceptions
+        - atf.tests.governance.source.TestLayerGovernanceTest#executableMavenClassesHaveOneLayerAndTheGuideMatchesTheirDeclarations
+        - atf.tests.governance.documentation.release.rag.scope.ComponentEvidenceScopeComponentTest#documentationDriftReadmitsOnlyUnchangedOwnersAndPreservesRejectedEvidence
+      negative:
+        - atf.tests.governance.suites.AtfCollectionOwnershipComponentTest#topologyMissingSealsAndUnknownReaderScopesCannotNarrowQualification
+        - atf.tests.governance.suites.AtfCollectionOwnershipComponentTest#missingOrUnreviewedDependenciesCannotAuthorizeReuse
+        - atf.tests.governance.documentation.release.rag.scope.context.QualifiedCatalogContextComponentTest#missingForeignContextAndLiveCatalogCorruptionCannotQualify
+        - atf.tests.governance.source.changes.TestChangeReviewComponentTest#readerSealsAndCatalogContextCannotBypassSourceChangeReview
+        - atf.tests.governance.documentation.release.rag.ReleaseRagProvenanceComponentTest#componentReportsFromAnotherSourceInventoryCannotQualifyTheApk
+    paths:
+      - atf-tests/src/main/java/atf/tests/testchange/TestChangeReview.java
+      - atf-tests/src/test/java/atf/tests/governance/documentation/release/rag/scope/context/QualifiedCatalogContextComponentTest.java
+      - atf-tests/src/test/java/atf/tests/governance/source/changes/TestChangeReviewComponentTest.java
+      - atf-tests/src/test/java/atf/tests/governance/suites/AtfCollectionOwnershipComponentTest.java
+      - atf-tests/src/test/java/atf/tests/suites/components/AtfProvenanceComponentSuite.java
+      - atf-tests/tools/atf-component-dependencies.mjs
+      - atf-tests/tools/atf-dependency-references.mjs
+      - atf-tests/tools/atf-component-dependencies.test.mjs
+      - atf-tests/tools/atf-component-ownership.test.mjs
+      - atf-tests/tools/atf-dependency-cli.mjs
+      - atf-tests/tools/atf-dependency-fixture.mjs
+      - atf-tests/tools/atf-reader-seals.test.mjs
+      - atf-tests/tools/component-qualification-context.mjs
+      - atf-tests/tools/component-qualification-context.test.mjs
+      - atf-tests/tools/evaluate-release-rag.mjs
+      - atf-tests/tools/prepare-component-reuse.mjs
+      - atf-tests/tools/release-test-scope.mjs
+      - config/atf-component-collections.json
+      - config/atf-component-dependencies.json
+      - config/atf-component-reader-seals.json
+      - scripts/AtfComponentResume.ps1
+      - scripts/AtfQualificationSnapshot.ps1
+      - scripts/run-component-suites.ps1
+```
+
+</details>
+
+<details>
 <summary>Snapshot and compiler I/O without metadata shortcuts</summary>
 
 ```yaml

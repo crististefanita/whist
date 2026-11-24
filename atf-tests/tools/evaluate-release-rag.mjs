@@ -1,4 +1,5 @@
 import {atfCollections, atfComponentGroups, hasAtfCollections, releaseSnapshotRequired} from './atf-component-ownership.mjs';
+import {verifyQualificationContext} from './component-qualification-context.mjs';
 import {componentInputMap, digest, inputFingerprint, safeRelative} from './source-input-identity.mjs';
 export {componentInputMap, digest, inputFingerprint} from './source-input-identity.mjs';
 import fs from 'node:fs/promises';
@@ -57,6 +58,11 @@ export function verifyComponentOrigin(inputs, run, provenance, inputManifest = '
   if (!matchesInputs(run) || !componentRunRows(run)
       || !matchesInputs(provenance.value) || run.provenanceReceiptSha256 !== provenance.sha256)
     throw Error('Receipt-ul de proveniență sau rularea rădăcină nu corespunde manifestului intrărilor.');
+  if ([run, provenance.value].some(row => row.schemaVersion !== undefined && row.schemaVersion !== 1)
+      && ![run, provenance.value].every(row => row.schemaVersion === 2 && row.qualificationContext
+        && row.releaseInputManifest === 'release-inputs.json' && /^[a-f\d]{64}$/.test(row.releaseFingerprint ?? ''))) {
+    throw Error('COMPONENT_CONTEXT_DECLARATION');
+  }
   const readmission = stableComponentRun(run) ? null : verifyDocumentationDrift(inputs, run, provenance, sourceCheck);
   return {sourceSet, sourceFingerprint: inputs.sha256, run, provenance, ...(readmission ? {readmission} : {})};
 }
@@ -70,6 +76,7 @@ export function verifyReleaseInputs(origin, document) {
   if (!files.has('release/index.json') || [...files.keys()].some(file => !file.startsWith('release/'))) {
     throw Error('COMPONENT_RELEASE_SNAPSHOT_INVENTORY');
   }
+  origin.qualificationContext = verifyQualificationContext(origin, document);
   return files;
 }
 
@@ -263,7 +270,7 @@ const scopePolicy = {
   versionMetadataReuseRequiresExactReconstruction: true
 };
 
-async function verifyGovernanceReleaseSnapshot(project, inputs) {
+export async function verifyGovernanceReleaseSnapshot(project, inputs) {
   if (!inputs) throw Error('COMPONENT_RELEASE_SNAPSHOT_REQUIRED');
   const releaseRoot = path.dirname(await regularFile(project, 'release/index.json'));
   const paths = (await inventory(releaseRoot)).map(file => 'release/' + file);
@@ -874,6 +881,12 @@ export async function evaluateRelease({projectRoot, candidateDir, sourceRoot, pl
         reason: scope.reason, affectedGroups: scope.affectedGroups,
         changedInputCount: scope.changed.length, affectedInputs: scope.affected.slice(0, 30),
         ...(origin.readmission ? {readmission: origin.readmission} : {}),
+        ...(releaseSnapshotRequired(name, origin.sourceSet) ? {
+          qualificationContext: origin.qualificationContext,
+          catalogObservation: testScope?.catalogued === false ? 'CURRENT_CATALOG_MATCHED'
+            : 'ORIGINAL_QUALIFIED_CATALOG_ONLY',
+          liveDeliveryGate: manifest.publication?.state === 'PUBLISHED' ? 'GITHUB_RETENTION' : 'NOT_PUBLISHED'
+        } : {}),
         ...(origin.releaseFingerprint ? {releaseFingerprint: origin.releaseFingerprint} : {})};
       if (scope.decision === 'RUN') {
         result.status = 'BLOCKED';

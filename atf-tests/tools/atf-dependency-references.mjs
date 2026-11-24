@@ -38,8 +38,8 @@ export function javaDescription(file, text) {
 }
 
 // Opaque readers are not inferred from a green run. Their reviewed body is
-// sealed by the dependency policy; a new or changed reader requires admission
-// of that policy and a complete qualification before narrowing is available.
+// sealed separately from topology. New reader roles require global admission;
+// reviewed body-only changes retain the same graph and select their consumers.
 export const opaqueReader = text => /\b(?:readFile(?:Sync)?|readString|readAllBytes|readAllLines|newInputStream|getResource(?:AsStream)?|walk|readdir(?:Sync)?|listFiles|FileInputStream|FileReader)\s*\(|\bFiles\s*\.\s*(?:list|lines|find|newByteChannel|newBufferedReader)\s*\(|\bGet-(?:Content|ChildItem|FileHash)\b|\b(?:from\s*|(?:require|import)\s*\(\s*)['"](?:node:)?fs(?:\/promises)?['"]/.test(text);
 export const readerBody = text => text.replaceAll('\r\n', '\n');
 

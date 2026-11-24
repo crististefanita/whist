@@ -1,36 +1,14 @@
 import assert from 'node:assert/strict';
-import {createHash} from 'node:crypto';
 import test from 'node:test';
 import fs from 'node:fs';
 import path from 'node:path';
 import {fileURLToPath} from 'node:url';
 import {execFileSync} from 'node:child_process';
 import os from 'node:os';
-import {analyzeAtfDependencies, buildAtfDependencyModel, dependencyDecision, atfDependencyPolicyPath, dependencyPattern} from './atf-component-dependencies.mjs';
-import {readerBody} from './atf-dependency-references.mjs';
+import {buildAtfDependencyModel, dependencyDecision, atfDependencyPolicyPath, dependencyPattern} from './atf-component-dependencies.mjs';
 import {atfCollections} from './atf-component-ownership.mjs';
 
-const digest = value => createHash('sha256').update(value).digest('hex');
-function fixture() {
-  const sources = new Map([
-    ['src/first/First.java', 'package first; import shared.Helper; class First { Helper value; String tool="entry.test.mjs"; }'],
-    ['src/second/Second.java', 'package second; class Second { String tool="isolated.mjs"; }'],
-    ['src/shared/Helper.java', 'package shared; class Helper { Peer value; }'],
-    ['src/shared/Peer.java', 'package shared; class Peer {}'],
-    ['tools/entry.test.mjs', "import './middle.mjs';"],
-    ['tools/middle.mjs', "import './entry.test.mjs'; execFileSync('pwsh', ['bridge.ps1']);"],
-    ['tools/isolated.mjs', 'export const isolated = 1;'],
-    ['scripts/bridge.ps1', 'Get-SharedValue'],
-    ['scripts/helper.ps1', 'function Get-SharedValue { 1 }'],
-    ['scripts/unowned.ps1', 'function Get-UnownedValue { 2 }']
-  ]);
-  const policy = {schemaVersion: 1, javaRoots: ['src'], scriptRoots: ['tools', 'scripts'],
-    globalInputs: [atfDependencyPolicyPath], observers: [], readerSeals: {}};
-  const collections = [{group: 'first', classes: ['first.First']}, {group: 'second', classes: ['second.Second']}];
-  const inputs = () => new Map([...sources].map(([file, text]) => [file, digest(text)]));
-  const model = (rows = inputs()) => buildAtfDependencyModel(rows, file => Buffer.from(sources.get(file)), policy, collections);
-  return {sources, policy, collections, inputs, model};
-}
+import {dependencyFixture as fixture, dependencyDigest as digest} from './atf-dependency-fixture.mjs';
 
 test('dependency graph selects actual Java, Node and PowerShell consumers through transitive edges and cycles', () => {
   const {model} = fixture();
@@ -43,29 +21,33 @@ test('dependency graph selects actual Java, Node and PowerShell consumers throug
 });
 
 test('classifier path labels and nested Java type names do not create unrelated dependencies', () => {
-  const {sources, model} = fixture();
+  const {sources, model, qualify} = fixture();
   sources.set('tools/isolated.mjs', "const label = 'bridge.ps1'; const example = \"import './middle.mjs';\";");
   sources.set('src/first/First.java', 'package first; import shared.Helper; class First { record Run(int value) {} Helper value; String tool="entry.test.mjs"; }');
   sources.set('src/second/Second.java', 'package second; class Second { record Run(int value) {} Run value; String tool="isolated.mjs"; }');
+  qualify();
   assert.deepEqual(model().owners('scripts/helper.ps1'), ['first']);
   assert.deepEqual(model().owners('src/shared/Helper.java'), ['first']);
 });
 
 test('shared dependencies and declared repository readers invalidate every real consumer', () => {
-  const {model, sources, policy} = fixture();
+  const {model, sources, policy, qualify} = fixture();
   sources.set('src/second/Second.java', 'package second; import shared.Helper; class Second { Helper value; }');
+  qualify();
   assert.deepEqual(model().owners('src/shared/Peer.java'), ['first', 'second']);
   policy.observers.push({source: 'src/second/Second.java', inputs: ['scripts/**']});
-  policy.readerSeals['src/second/Second.java'] = digest(readerBody(sources.get('src/second/Second.java')));
+  qualify();
   assert.deepEqual(model().owners('scripts/helper.ps1'), ['first', 'second']);
   assert.deepEqual(model().owners('scripts/unowned.ps1'), ['second']);
 });
 
 test('changed import edges update the consumer closure without trusting the previous graph', () => {
-  const {model, sources} = fixture();
+  const {model, sources, qualify} = fixture();
   sources.set('src/second/Second.java', 'package second; import shared.Peer; class Second { Peer value; }');
+  qualify();
   assert.deepEqual(model().owners('src/shared/Peer.java'), ['first', 'second']);
   sources.set('src/first/First.java', 'package first; class First {}');
+  qualify();
   assert.deepEqual(model().owners('src/shared/Peer.java'), ['second']);
 });
 
@@ -97,22 +79,22 @@ test('missing roots, malformed scopes and stale source hashes cannot authorize s
   assert.throws(() => dependencyPattern('C:/outside/**'), /DEPENDENCY_PATTERN/);
 });
 
-test('new or changed opaque readers and their callers require reviewed body seals and a fresh full qualification', () => {
-  const {sources, policy, model, inputs, collections} = fixture();
+test('new opaque readers require topology admission and changed bodies require reviewed seals', () => {
+  const {sources, policy, model, qualify} = fixture();
   sources.set('tools/middle.mjs', "import fs from 'node:fs'; export const read = file => fs.readFileSync(file);");
-  assert.throws(() => model(), /DEPENDENCY_READER_NOT_QUALIFIED/);
-  policy.readerSeals = analyzeAtfDependencies(inputs(), file => Buffer.from(sources.get(file)), policy, collections).requiredReaderSeals;
+  assert.throws(() => model(), /DEPENDENCY_TOPOLOGY_NOT_QUALIFIED/);
+  qualify();
   assert.deepEqual(model().owners('tools/middle.mjs'), ['first']);
   sources.set('tools/middle.mjs', sources.get('tools/middle.mjs') + '\n// changed reader');
   assert.throws(() => model(), /DEPENDENCY_READER_NOT_QUALIFIED/);
 });
 
 test('generated module providers retain their producer inputs while undeclared imports are rejected', () => {
-  const {sources, policy, model, inputs, collections} = fixture();
+  const {sources, policy, model, qualify} = fixture();
   sources.set('tools/isolated.mjs', "import './generated.mjs';");
   assert.throws(() => model(), /DEPENDENCY_IMPORT_MISSING/);
   policy.generatedModules = [{source: 'tools/isolated.mjs', specifier: './generated.mjs', inputs: ['src/shared/**']}];
-  policy.readerSeals = analyzeAtfDependencies(inputs(), file => Buffer.from(sources.get(file)), policy, collections).requiredReaderSeals;
+  qualify();
   assert.deepEqual(model().owners('src/shared/Peer.java'), ['first', 'second']);
   policy.generatedModules[0].source = 'tools/absent.mjs';
   assert.throws(() => model(), /DEPENDENCY_GENERATED_MODULE/);
@@ -139,7 +121,10 @@ test('live dependency graph admits the complete catalog and keeps unrelated docu
   const cli = path.join(root, 'atf-tests/tools/atf-dependency-cli.mjs');
   const result = execFileSync(process.execPath, [cli, manifest, proposal], {encoding: 'utf8', timeout: 30000});
   assert.equal(JSON.parse(result).kind, 'ATF_DEPENDENCY_POLICY_PROPOSAL');
-  assert.deepEqual(JSON.parse(fs.readFileSync(proposal)).readerSeals, model.requiredReaderSeals);
+  assert.equal(JSON.parse(fs.readFileSync(proposal)).topologySha256, model.topologySha256);
+  assert.deepEqual(JSON.parse(fs.readFileSync(path.join(scratch, 'atf-component-reader-seals.json'))).readerSeals, model.requiredReaderSeals);
+  assert.throws(() => execFileSync(process.execPath, [cli, manifest, proposal], {stdio: 'pipe'}),
+    error => error.status === 1 && /DEPENDENCY_PROPOSAL_OUTPUT_EXISTS/.test(error.stderr.toString()));
   const forbidden = path.join(root, 'config/dependency-proposal-must-not-exist.json');
   assert.throws(() => execFileSync(process.execPath, [cli, manifest, forbidden], {stdio: 'pipe'}),
     error => error.status === 1 && /DEPENDENCY_PROPOSAL_IN_CHECKOUT/.test(error.stderr.toString()));

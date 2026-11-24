@@ -35,6 +35,35 @@ The component report validates JVM inputs and comparisons. The sanity check vali
 | 6. Android | Acquire the device lease; run focused changed-flow scenarios and risk-relevant profiles. Restore data and configuration. Do not repeat a full match at every resolution. |
 | 7. Handoff | Verify the relevant live sources, reports, executed tests, links and governance. Record the previously qualified release before replacing the active dossier and APK. |
 
+<a id="qualified-catalog-context"></a>
+
+## Qualified catalog context
+
+Before execution, modern receipts pin `qualificationContext` in provenance, checkpoint and root run. Its identity is reconstructed from the source-manifest SHA-256, complete release-inventory SHA-256 and recorded hash of `release/index.json`. Restart rejects missing or foreign context before reusing results.
+
+| Moment | Contract |
+|---|---|
+| Qualification | Copied and live inventories match the pinned snapshot; actual drift or corrupt files block admission. |
+| Reuse | Reports and receipts keep their original context; the new plan does not rewrite them. |
+| Promotion and publication | Original context never becomes a current-catalog check; GitHub retention, links and downloaded hashes are verified separately. |
+| Historical evidence | Remains explicitly without modern context; never invent a retrospective qualification identity. |
+
+```mermaid
+flowchart LR
+    SNAP[Source and catalog snapshot] -->|pins| CONTEXT[Qualified identity]
+    CONTEXT -->|binds| REPORT[Original reports]
+    CONTEXT -->|verifies the same identity| RESUME[Restart]
+    REPORT -->|preserves original observation| DELIVERY[Publication]
+    DELIVERY -->|observes separately| LIVE[Live catalog, links and downloads]
+```
+
+<details>
+<summary>Legend: qualification and delivery have separate observations</summary>
+
+A result describes the source and catalog observed during execution. Publication can add reports; earlier evidence is never relabeled as a current observation.
+
+</details>
+
 ## Candidate dossier layout
 
 | Entry | Canonical content |

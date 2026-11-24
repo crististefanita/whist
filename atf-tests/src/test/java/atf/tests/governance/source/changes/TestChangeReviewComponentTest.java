@@ -125,6 +125,17 @@ class TestChangeReviewComponentTest {
         AuditedAssertions.assertEquals(List.of(), check(repo).diagnostics());
     }
 
+    @Test void readerSealsAndCatalogContextCannotBypassSourceChangeReview(@TempDir Path root) throws Exception {
+        var repo = new TestChangeGitFixture(root);
+        for (String path : List.of("config/atf-component-reader-seals.json", "atf-tests/tools/component-qualification-context.mjs")) {
+            repo.put(path, "controlled selection and provenance boundary\n");
+        }
+        AuditedAssertions.assertEquals(2, check(repo).diagnostics().size(), "Each new selection boundary requires explicit review");
+        repo.put(FEEDBACK, repo.control("READER-SEALS", "ACTIVE", repo.base, VALID, false,
+                "config/atf-component-reader-seals.json", "atf-tests/tools/component-qualification-context.mjs"));
+        AuditedAssertions.assertEquals(List.of(), check(repo).diagnostics(), "Both boundaries are covered by the reviewed Git-diff control");
+    }
+
     @Test void theComponentJvmProfileCannotChangeWithoutAReviewedControl(@TempDir Path root) throws Exception {
         var repo = new TestChangeGitFixture(root);
         var launchers = List.of("scripts/AtfComponentJvm.ps1", "scripts/AtfStandaloneJava.ps1", "scripts/AtfTestChangeAdmission.ps1");
