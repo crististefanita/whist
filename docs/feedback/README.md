@@ -36,6 +36,7 @@ The 1–100 score expresses work priority, not quality or completion percentage.
 | WEB-16 | P1 | 88 | Qualify native-calibrated scene zoom, seat text, dropdowns, score typography and action bands on one Android, RO/EN and enlarged text; score history is the sole vertical-scroll exception. [Register](ATF_UiBrowser.md#web-16-responsive-game-surface-and-menu-typography) |
 | UI-01 | P1 | 86 | Qualify headers, player boxes and notifications on consumer APKs, including Unicode name entry. [Register](ATF_CardUi_Extraction.md#priorities-and-closing-conditions) |
 | UI-02 | P2 | 84 | Qualify enlarged result actions and scrolling on the consumer APKs in RO/EN with enlarged text. [Register](ATF_CardUi_Extraction.md#result-action-acceptance) |
+| RAG-30 | P2 | 85 | Align compiler-workspace pointer schemas and qualify safe compilation reuse with explicit refusal reasons. [Register](ATF_Governance.md) |
 | RAG-21 | P2 | 84 | The plan-only pilot proves source-bound restart and selector parity; full report/JUnit parity and the recovery-time gate remain open. [Register](ATF_Governance.md#langgraph-shadow-pilot) |
 | DOC-02 | P2 | 83 | Review inherited English operational terms against code and Romanian meaning; require editorial acceptance as well as executable diagnostics and edition parity. [Register](ATF_Governance.md#improving-guidance-guides) |
 | AI-02 | P2 | 82 | Measure opportunities, conversions to 500, ranking impact and latency on new batches; separate natural play from controlled prefixes. [Register](ATF_Ai.md#playing-for-zero) |

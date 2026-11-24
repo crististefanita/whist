@@ -108,3 +108,13 @@ The evaluator applies one reporting admission rule before readiness and preserve
 - XML-only, unknown, missing-modern or mixed-format declarations block readiness. JUnit XML remains a temporary oracle, never the canonical report.
 
 The policy is in `config/release-platform-rag-policy.json`, admission is enforced by `atf-tests/tools/evaluate-release-rag.mjs`, and component coverage belongs to `ReleaseRagProvenanceComponentTest` and `ReleaseRagPlatformGovernanceTest`.
+
+## Compiler workspace pointer compatibility
+
+The component runner emits a schema-2 workspace pointer with qualified source/catalog context, while the borrowed-compiler reader currently accepts schema 1 only. This safely refuses reuse but causes avoidable recompilation even when a valid compiler receipt is available.
+
+- [ ] RAG-30: admit the current pointer through one shared contract; preserve context, compiler identity, classpath, output hashes and exclusive ownership before reuse.
+- [ ] Cover valid schema 2 and legacy input explicitly; reject missing or foreign context, changed output bytes and incomplete classpaths with component mocks.
+- [ ] Record the reuse refusal reason in timing. Demonstrate reuse on unchanged compiler inputs and a rebuild on changed inputs without weakening snapshot admission.
+
+[Pointer producer](../../scripts/run-component-suites.ps1) · [Borrowed compiler reader](../../scripts/AtfComponentMavenReuse.ps1)
