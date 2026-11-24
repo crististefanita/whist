@@ -96,7 +96,7 @@ O inspecție deține și închide propriul manager de fișiere JDK, reutilizat �
 | Frontieră | Contractul măsurării |
 |---|---|
 | Intrări | Citiți sursele UTF-8 o singură dată, păstrați căile și amprentați inventarul complet ordonat. |
-| Proprietate | Un JVM de măsurare temporar are bugete explicite de memorie, CPU și proces; fiecare încercare deține un manager de fișiere și fiecare sursă primește o sarcină de parsare și diagnostice noi. Resursele compilatorului nu rămân în proprietarul funcțional. |
+| Proprietate | Un JVM de măsurare temporar are limită explicită de heap, număr declarat de procesoare și termen de proces; fiecare încercare deține un manager de fișiere și fiecare sursă primește o sarcină de parsare și diagnostice noi. Resursele compilatorului nu rămân în proprietarul funcțional. |
 | Referință | Ambele moduri dezactivează procesarea adnotărilor; producția folosește căi goale pentru clase și procesoare, iar referința folosește căile implicite JDK. |
 | Ordine | Încălziți ambele moduri, apoi alternați ordinea perechilor măsurate. |
 | Cost | Păstrați timpul brut al parsării separat de totalul deținerii, normalizării AST și amprentării; înregistrați JDK, VM, sistemul de operare și numărul de procesoare. |

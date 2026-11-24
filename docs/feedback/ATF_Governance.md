@@ -4,13 +4,6 @@
 
 Proiectul deține perimetrul Android și adaptarea verificatoarelor. Contractul comun reutilizabil se solicită prin [responsabilitățile bibliotecilor](README.md), fără introducerea în consumator a implementărilor acestora.
 
-## Costul inspecției sintactice
-
-| Prioritate | Observație și sursă | Criteriu de închidere |
-|---|---|---|
-| P2 | [Parserul sintactic](../../atf-tests/src/test/java/atf/tests/governance/source/JavaTestDeclarations.java) dezactivează deja procesarea adnotărilor și folosește căi goale pentru clase și procesoare. Costul acestei configurări nu a fost măsurat pe același inventar. | Măsurați costul parsării pe un mediu și inventar identificate. Păstrați controale independente pentru adnotări compuse, importuri ambigue, erori de sintaxă și ciclul de viață al parserului; configurarea singură nu dovedește accelerarea. |
-
-
 ## Coeziunea și evoluția pachetelor
 
 [Politica executabilă](../../config/atf-governance-policy.json) aplică limita fără derogări pentru structura curentă. [Responsabilitățile pachetelor](../governance/ATF_Packages.md) delimitează API-urile, suportul comun și selecțiile testelor.
@@ -26,7 +19,7 @@ Legarea dovezilor de sursa calificată este verificată de [regresiile evaluator
 | Prioritate | Responsabil și lacună | Nivel și criteriu de închidere |
 |---|---|---|
 | P2 | Coordonarea: lansatoarele verifică precondițiile în moduri diferite. | Componente controlate pentru Java, Maven, Gradle, Node și Python: capabilitățile cerute intrării sunt verificate înaintea operației costisitoare, iar lipsa lor produce diagnostic și identitate de sursă explicite. Pentru Python, detectați aliasul de instalare separat de un interpretor executabil; pentru [modulul PowerShell ADB](../../atf-test-android/tools/AndroidDeviceSetup.psm1), verificați disponibilitatea, refuzul, timeout-ul și starea transportului cu proces controlat, separat de parsare și de clientul Java. |
-| P2 | Costul calificării: pregătirea snapshot-urilor sursei și release-ului încă recopiază și recalculează hash-uri pentru rapoartele păstrate. | Separați admiterea rapoartelor păstrate de pregătirea surselor și evitați recopierea payload-urilor fără legătură; păstrați hash-urile exacte, contextul sursei/catalogului și admiterea conservatoare a cititorilor necunoscuți. [Contractele implementate de compilare și recuperare după curățare](../testing/ATF_Collections.md#reutilizarea-compilării-maven) sunt limite de regresie, nu sarcini de implementare deschise. Măsurați inventarul sursei/release-ului și copierea separat de compilare și execuție; confruntați duratele etapelor cu timpul total înainte de a declara accelerarea, inclusiv etapa numită de verificare după compilare. |
+| P2 | Costul calificării: pregătirea snapshot-urilor sursei și release-ului încă recopiază și recalculează hash-uri pentru rapoartele păstrate. | Separați admiterea rapoartelor păstrate de pregătirea surselor și evitați recopierea payload-urilor fără legătură; păstrați hash-urile exacte, contextul sursei/catalogului și admiterea conservatoare a cititorilor necunoscuți. [Contractele implementate de compilare și recuperare după curățare](../testing/ATF_Collections.md#reutilizarea-compilării-maven) sunt limite de regresie, nu sarcini de implementare deschise. Măsurați inventarul sursei/release-ului și copierea separat de compilare și execuție; confruntați duratele etapelor cu timpul total înainte de a declara accelerarea, inclusiv etapa numită de verificare după compilare. Profilați separat parcurgerea, amprentarea octeților și serializarea receipt-ului în compiler-output-seal; păstrați verificările alterării octeților și claselor lipsă. |
 
 [Retenția copiilor inline](../../atf-tests/src/test/java/atf/tests/governance/documentation/release/ReleaseEvidenceRetentionGovernanceTest.java) verifică separat lipsa PNG-urilor identice lângă HTML. Această gardă nu dovedește autonomia datelor, lizibilitatea imaginilor sau integritatea APK-ului; [criteriul adaptorului](../reporting/ATF_Audit.md) rămâne distinct.
 
@@ -76,6 +69,14 @@ LangGraph oferă noduri explicite, stare partajată și limite de checkpoint, da
 |---|---|---|
 | P2 | Metadatele calificării ajung la unele diagnostice numai după pregătirea snapshot-ului. | Validați inventarul E2E al dosarului activ, linkurile catalogului și limitele editoriale printr-o verificare ieftină a metadatelor, înaintea colecției lungi. Păstrați dovezile eșuate și demonstrați că o reverificare focalizată nu poate califica un grup primar eșuat; acest criteriu este distinct de admiterea probelor de control al sursei. |
 
+
+<a id="source-bound-proof-recovery"></a>
+
+## Recuperarea probelor legate de sursă
+
+| Prioritate | Lacună și responsabil | Criteriu de închidere |
+|---|---|---|
+| P1 | [Execuția probelor testChanges](../../atf-tests/src/test/java/atf/tests/execution/components/TestChangeProofExecution.java) reia întregul control declarat după o singură invocare eșuată; recuperarea responsabililor primari de componente nu acoperă încă acest runner de probe. | Salvați checkpoint-ul fiecărei invocări statice și reutilizați comparațiile originale reușite numai pentru aceeași sursă, bază, ID de control, selecție, octeți compilați și toolchain. Reluați invocările eșuate ori lipsă; refuzați capturile alterate și identitățile străine. Confruntați populația completă Extent finală cu proba și păstrați încercările originale eșuate fără slăbirea limitelor de protecție. Măsurați separat planificarea/descoperirea, corpurile testelor și publicarea. |
 
 <a id="framework-selection-boundaries"></a>
 
