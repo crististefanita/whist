@@ -27,8 +27,8 @@ class OneCardDomainComponentTest {
 
     @Test void theManifestMatchesTheRuntimeDomainAndKeepsItsSetsImmutable(ComponentInputs inputs) throws Exception {
         var manifest = manifest();
-        inputs.add("Declared one-card model", manifest);
-        inputs.add("Runtime one-card domain", OneCardBidBelief.domain());
+        inputs.add("Declared one-card model", manifest.toPrettyString());
+        inputs.add("Runtime one-card domain", OneCardBidBelief.domain().toString());
         assertEquals(List.of(), differences(manifest), "The manifest names the current owner, entry, conditioned support and fallback");
         assertThrows(UnsupportedOperationException.class, () -> OneCardBidBelief.domain().conditionedModes().clear(), "Callers cannot mutate the shared domain");
     }
@@ -54,8 +54,8 @@ class OneCardDomainComponentTest {
                     cases++;
                 }
         inputs.add("Matrix preconditions", "Every declared mode; 3–6 seats; 1–8 own cards; exposed card present/absent; table and history empty/nonempty. No game simulation, device or pictures.");
-        inputs.add("Matrix population", cases);
-        inputs.add("All domain disagreements", mismatches);
+        inputs.add("Matrix population", Integer.toString(cases));
+        inputs.add("All domain disagreements", mismatches.toString());
         assertEquals(1536, cases, "The complete declared boundary matrix is visited");
         assertEquals(List.of(), mismatches, "Runtime predicates and descriptive domain agree on every observation shape");
     }
@@ -76,7 +76,7 @@ class OneCardDomainComponentTest {
                 default -> throw new IllegalArgumentException(mutation);
             }
             var errors = differences(altered);
-            inputs.add("Controlled domain mutation: " + mutation, errors);
+            inputs.add("Controlled domain mutation: " + mutation, errors.toString());
             assertFalse(errors.isEmpty(), "The independent contract comparison rejects " + mutation);
         }
         assertEquals(List.of(), differences(original), "Negative controls do not mutate the live manifest");

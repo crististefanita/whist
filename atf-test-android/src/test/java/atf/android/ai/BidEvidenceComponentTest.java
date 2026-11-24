@@ -26,7 +26,7 @@ class BidEvidenceComponentTest {
             evidence.add(points, exact, first ? 1 : 3); facade.add(points, exact, first ? 1 : 3);
         }
         inputs.add("Evaluated worlds and independent oracle", "Weights 1:3; score vectors [10,0] and [0,10]; exact vectors [.9,.1] and [.1,.9]. Means: [2.5,7.5], [.3,.7]; ESS=(1+3)^2/(1+9)=1.6.");
-        inputs.add("Original evaluated estimates", evidence.options());
+        inputs.add("Original evaluated estimates", evidence.options().toString());
         assertEquals(2.5, evidence.options().getFirst().expectedPoints(), 1e-12, "Weighted score for bid zero");
         assertEquals(.7, evidence.options().getLast().exactContractProbability(), 1e-12, "Weighted exact support for bid one");
         assertEquals(1.6, evidence.effectiveSamples(), 1e-12, "Concentration reduces effective sample size");
@@ -75,7 +75,7 @@ class BidEvidenceComponentTest {
             for (String row : new String(resource.readAllBytes(), StandardCharsets.UTF_8).lines().filter(line -> !line.startsWith("#") && !line.isBlank()).toList()) {
                 String[] fields = row.split("\t");
                 var view = AiBidFixtures.view(GameMode.valueOf(fields[0]), Integer.parseInt(fields[1]), 4, true);
-                inputs.add("Frozen public observation " + fields[0] + "/" + fields[1], view);
+                inputs.add("Frozen public observation " + fields[0] + "/" + fields[1], view.toString());
                 try (var work = SearchWork.measure(Long.MAX_VALUE)) {
                     var actual = MonteCarloAi.chooseBid(view, ro.whistlab.core.ai.profile.HardStrategyProfile.CURRENT);
                     assertEquals(fields[2], Long.toString(MonteCarloAi.seed(view, 0)), "Original first-world seed");
@@ -92,7 +92,7 @@ class BidEvidenceComponentTest {
 
     @Test void independentDecisionsKeepCancellationAndWorkBudgetOwnership(ComponentInputs inputs) {
         var view = AiBidFixtures.view(GameMode.ROMANIAN_WHIST, 2, 4, true);
-        inputs.add("Public decision input", view);
+        inputs.add("Public decision input", view.toString());
         var first = MonteCarloAi.chooseBid(view, ro.whistlab.core.ai.profile.HardStrategyProfile.CURRENT);
         assertEquals(first, MonteCarloAi.chooseBid(view, ro.whistlab.core.ai.profile.HardStrategyProfile.CURRENT), "A second decision starts with fresh evidence and reproduces the original result");
         try (var work = SearchWork.measure(0)) {
