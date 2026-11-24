@@ -11,6 +11,7 @@ import atf.reporting.model.ReportScreenshot;
 import atf.reporting.ui.UiExtentReportSession;
 import atf.reporting.ui.model.AtfUiActionRecord;
 import atf.reporting.ui.model.AtfUiEvidenceSource;
+import atf.android.evidence.flow.UiSanityPlan;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.nio.file.Files;
@@ -40,6 +41,9 @@ class BrowserExtent {
         if (Files.isRegularFile(parity)) checks.add(check(mapper.readTree(parity.toFile()), "component", directory));
         readCases(mapper, directory, "paired-android.json", "android-comparison", checks);
         if (checks.isEmpty()) throw new IllegalArgumentException("No recorded cases");
+        var identities = new HashSet<String>();
+        for (var check : checks) if (!identities.add(check.layer() + ":" + text(check.result(), "id")))
+            throw new IllegalArgumentException("Duplicate recorded case identity");
         var profile = ReportEvidenceProfile.forScreenshotPolicy(ReportScreenshotPolicy.EACH_CHECKPOINT);
         // Keep standard comparison previews; original bodies must remain complete in their disclosures.
         var settings = new ReportingSettings(ReportingSettings.DEFAULT_ASSERTION_MAX_DISPLAY_CHARACTERS,
@@ -90,8 +94,9 @@ class BrowserExtent {
         if (!test.isObject() || test.required("name").asText().isBlank())
             throw new IllegalArgumentException("Recorded case name is required");
         AtfReportStatus.valueOf(test.required("status").asText());
+        text(test, "id");
         test.required("expected"); test.required("observed");
-        if (test.path("id").asText().startsWith("MATCH-ANCHORS-") && test.path("status").asText().equals("PASS"))
+        if (test.path("id").asText().startsWith("MATCH-ANCHORS-"))
             verifyFlowBudget(test);
         String layer = test.path("layer").asText(defaultLayer);
         suite(layer);
@@ -140,15 +145,19 @@ class BrowserExtent {
                 List.of(), List.of(), step.status());
     }
 
-    private static void verifyFlowBudget(JsonNode test) {
+    private static void verifyFlowBudget(JsonNode test) throws Exception {
         var observed = test.required("observed");
         var rounds = observed.required("rounds");
         var deals = observed.required("profile").required("deals");
         var budget = observed.required("flowBudget");
-        if (!rounds.isArray() || rounds.isEmpty() || rounds.size() > 2 || !deals.isArray()
-                || deals.size() != rounds.size() || !budget.path("contract").asText().equals("MINIMAL_TABLE_FLOW_V1")
+        var plan = UiSanityPlan.parse(budget.required("plan").toString());
+        boolean completed = test.required("status").asText().equals("PASS");
+        if (!rounds.isArray() || rounds.size() > plan.deals().size() || !deals.equals(plan.specification().get("deals"))
+                || (completed && rounds.size() != plan.deals().size())
+                || !budget.path("contract").asText().equals("MINIMAL_TABLE_FLOW_V1")
+                || !budget.path("scenarioId").asText().equals(plan.id())
                 || budget.path("hands").asInt(-1) != rounds.size() || budget.path("maximumHands").asInt(-1) != 2
-                || budget.path("maximumNormalCaptures").asInt(-1) != 4)
+                || budget.path("maximumNormalCaptures").asInt(-1) != plan.maximumNormalCaptures())
             throw new IllegalArgumentException("E2E_HAND_BUDGET");
         for (int i = 0; i < rounds.size(); i++) {
             var round = rounds.get(i);
@@ -163,7 +172,24 @@ class BrowserExtent {
         var files = new HashSet<String>();
         for (var image : images) if (!files.add(image.path("file").asText()))
             throw new IllegalArgumentException("E2E_CAPTURE_BUDGET");
-        if (images.size() > 4 || budget.path("normalCaptures").asInt(-1) != images.size())
+        var frames = new ArrayList<UiSanityPlan.Frame>();
+        if (!budget.required("frames").isArray()) throw new IllegalArgumentException("E2E_EXECUTION_SEQUENCE");
+        for (var frame : budget.get("frames")) frames.add(new UiSanityPlan.Frame(text(frame, "id"),
+                frame.path("capture").isNull() ? null : text(frame, "capture")));
+        plan.verify(frames, completed);
+        var declaredRoles = frames.stream().map(UiSanityPlan.Frame::id).filter(plan.steps()::contains).toList();
+        var publishedRoles = new ArrayList<String>();
+        for (var step : test.path("steps")) if (step.path("id").asText().startsWith("FLOW-"))
+            publishedRoles.add(step.get("id").asText().substring(5));
+        if (!declaredRoles.equals(publishedRoles)) throw new IllegalArgumentException("E2E_EXECUTION_SEQUENCE");
+        var frameFiles = new HashSet<String>();
+        for (var frame : frames) if (frame.capture() != null) frameFiles.add(frame.capture());
+        if (!files.equals(frameFiles)) throw new IllegalArgumentException("E2E_CAPTURE_OWNERSHIP");
+        for (var image : images) if (frames.stream().noneMatch(f -> image.path("file").asText().equals(f.capture())
+                && image.path("role").asText().equals(f.id()))) throw new IllegalArgumentException("E2E_CAPTURE_OWNERSHIP");
+        long failures = frames.stream().filter(f -> f.id().equals("failure") && f.capture() != null).count();
+        if (budget.path("normalCaptures").asInt(-1) != images.size() - failures
+                || budget.path("failureCaptures").asInt(-1) != failures)
             throw new IllegalArgumentException("E2E_CAPTURE_BUDGET");
     }
 

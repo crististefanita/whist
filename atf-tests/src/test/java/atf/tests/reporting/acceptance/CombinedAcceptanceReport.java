@@ -37,6 +37,7 @@ public final class CombinedAcceptanceReport {
     private CombinedAcceptanceReport() {}
 
     public static void publish(List<String> moduleNames) throws Exception {
+        if (Boolean.getBoolean("atf.deep.publish")) rejectUnqualifiedLegacyComposition();
         assumeTrue(
                 Boolean.getBoolean("atf.deep.publish"),
                 "Set -Datf.deep.publish=true after component runs to publish the final Extent report");
@@ -315,6 +316,11 @@ public final class CombinedAcceptanceReport {
                 }
             }
         }
+    }
+
+    /** Aggregate JUnit counts cannot reconstruct original component comparisons. */
+    private static void rejectUnqualifiedLegacyComposition() {
+        throw new IllegalStateException("UNQUALIFIED_LEGACY_REPORT: use canonical component reports and captured UI traces; aggregate XML is not comparison evidence");
     }
 
     public static Path requiredPath(String property) {

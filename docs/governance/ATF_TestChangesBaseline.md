@@ -2929,3 +2929,69 @@ testChanges:
 ```
 
 </details>
+
+<details>
+<summary>Sanity pereche și producători de rapoarte calificați</summary>
+
+```yaml
+testChanges:
+  - id: WHIST-PAIRED-PRODUCER-20261124
+    status: VERIFIED
+    base: 546a46db4c8957c53619f2f1260ea7c8d6165c21
+    expires: 2026-12-24
+    reason: Folosim o intenție comună APK/Web, păstrăm fiecare checkpoint semantic cu capturi limitate, inventariem rendererii, menținem eșecurile și identitățile parametrice originale și refuzăm calificarea bazată numai pe totaluri.
+    proof: 'scripts/run-component-suites.ps1 -TestChangeControl WHIST-PAIRED-PRODUCER-20261124'
+    checks:
+      positive:
+        - atf.android.e2e.support.journal.PairedSanityComponentTest#sharedPlanExecutesTheSameRolesInBothAdaptersAndPreservesFailure
+        - atf.android.e2e.support.journal.PairedSanityComponentTest#nativeSemanticStepsAndFourCapturesSurviveReplayAndDetachedPublication
+        - atf.android.component.AndroidComponentReportContractTest#bothRenderersRetainOutcomesInvocationsAndOriginalComparisons
+        - atf.tests.reporting.browser.BrowserExtentPublicationComponentTest#pairedSanityPublishesEverySemanticRoleAndItsOwnFourImages
+        - atf.tests.reporting.inventory.ReportProducerInventoryComponentTest#everyRendererBoundaryHasAnExplicitOwnerAndExistingQualification
+        - atf.tests.governance.source.AtfSourceQualityGovernanceTest#sourcesRespectPackagePathsImportsAndProductionBoundaries
+        - atf.tests.governance.suites.SuiteOwnershipGovernanceTest#everyMavenExecutableHasOnePrimaryOwnerAndEveryFocusedGateIsDeclared
+        - atf.tests.governance.source.PackageCohesionGovernanceTest#currentProjectUsesNoCohesionExceptions
+        - atf.tests.governance.suites.AtfCollectionOwnershipComponentTest#realDependencyClosuresSelectOnlyTheirConsumers
+      negative:
+        - atf.android.e2e.support.journal.PairedSanityComponentTest#missingExtraOrReorderedEvidenceIsRejectedBeforeChangingTheJournal
+        - atf.tests.reporting.browser.BrowserExtentPublicationComponentTest#passingTableFlowsCannotUnderstateTheirHandOrCaptureBudget
+        - atf.tests.reporting.browser.BrowserExtentPublicationComponentTest#incompleteOrContradictoryStepEvidenceIsRejectedBeforePublication
+        - atf.tests.reporting.inventory.ReportProducerInventoryComponentTest#missingDuplicateOrMisclassifiedProducersAndLostContractsAreRejected
+        - atf.tests.reporting.inventory.ReportProducerInventoryComponentTest#legacyAggregateCannotQualifyMissingOriginalComparisons
+        - atf.tests.governance.documentation.release.integrity.html.HtmlInvocationIntegrityComponentTest#missingComparisonsFailureSkipAndMissingFixtureCannotQualify
+    paths:
+      - atf-test-android/src/main/java/atf/android/evidence/flow/UiSanityPlan.java
+      - atf-test-android/src/test/java/atf/android/component/AndroidComponentReportContractTest.java
+      - atf-test-android/src/test/java/atf/android/e2e/release/autogame/AutoGameReleaseScenario.java
+      - atf-test-android/src/test/java/atf/android/e2e/release/ReleaseBidContext.java
+      - atf-test-android/src/test/java/atf/android/e2e/release/WhistReleaseBidE2eTest.java
+      - atf-test-android/src/test/java/atf/android/e2e/support/AndroidUiFlowReportPublisher.java
+      - atf-test-android/src/test/java/atf/android/e2e/support/AndroidUiFlowTrace.java
+      - atf-test-android/src/test/java/atf/android/e2e/support/flow/AndroidUiFlowEvidence.java
+      - atf-test-android/src/test/java/atf/android/e2e/support/flow/WhistLabScenario.java
+      - atf-test-android/src/test/java/atf/android/e2e/support/journal/AndroidUiFlowJournal.java
+      - atf-test-android/src/test/java/atf/android/e2e/support/journal/PairedSanityComponentTest.java
+      - atf-test-android/src/test/java/atf/android/e2e/support/replay/CapturedAndroidFlow.java
+      - atf-test-android/src/test/java/atf/android/evidence/flow/UiSanityPlanUnitTest.java
+      - atf-tests/src/main/java/atf/tests/testchange/TestChangeReview.java
+      - atf-tests/src/test/java/atf/tests/reporting/acceptance/CombinedAcceptanceReport.java
+      - atf-tests/src/test/java/atf/tests/reporting/browser/BrowserExtentPublicationComponentTest.java
+      - atf-tests/src/test/java/atf/tests/reporting/browser/BrowserReportFixture.java
+      - atf-tests/src/test/java/atf/tests/reporting/inventory/ReportProducerInventoryComponentTest.java
+      - atf-tests/src/test/java/atf/tests/suites/components/AtfReportingComponentSuite.java
+      - atf-tests/tools/release-test-scope.mjs
+      - atf-ui-browser/tests/BrowserExtent.java
+      - atf-ui-browser/tests/flow-budget.mjs
+      - atf-ui-browser/tests/flow-budget.test.mjs
+      - atf-ui-browser/tests/match-continuity.mjs
+      - atf-ui-browser/tests/Publish-BrowserExtent.ps1
+      - atf-ui-browser/tests/sanity-plan.mjs
+      - atf-ui-browser/tests/sanity-plan.test.mjs
+      - config/atf-component-collections.json
+      - config/atf-component-dependencies.json
+      - config/atf-component-reader-seals.json
+      - config/report-producers.json
+      - config/table-sanity-plan.json
+```
+
+</details>

@@ -149,7 +149,8 @@
         "atf.tests.reporting.GameReportTextAuditContractTest",
         "atf.tests.reporting.acceptance.NativeModuleResultsComponentTest",
         "atf.tests.reporting.browser.BrowserExtentPublicationComponentTest",
-        "atf.tests.reporting.text.ReportTextValueMatcherTest"
+        "atf.tests.reporting.text.ReportTextValueMatcherTest",
+        "atf.tests.reporting.inventory.ReportProducerInventoryComponentTest"
       ]
     }
   ]

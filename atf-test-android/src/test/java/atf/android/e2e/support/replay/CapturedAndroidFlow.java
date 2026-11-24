@@ -17,11 +17,18 @@ import java.util.Properties;
 /** Reads captured verdicts and timing without executing ADB, assertions, clocks or trace writes. */
 public record CapturedAndroidFlow(Path manifest, String id, String name, String testClass, String testPackage,
         String appPackage, List<String> tags, AtfReportStatus status, String failure,
-        List<AtfUiActionRecord> pendingActions, List<AndroidUiFlowTrace.PhaseSnapshot> phaseSnapshots) implements AndroidUiFlowEvidence {
+        List<AtfUiActionRecord> pendingActions, List<AndroidUiFlowTrace.PhaseSnapshot> phaseSnapshots,
+        java.util.Optional<atf.android.evidence.flow.UiSanityPlan> sanityPlan) implements AndroidUiFlowEvidence {
     public CapturedAndroidFlow {
         tags = List.copyOf(tags);pendingActions = List.copyOf(pendingActions);phaseSnapshots = List.copyOf(phaseSnapshots);
+        java.util.Objects.requireNonNull(sanityPlan);
     }
     @Override public boolean hasOpenPhase() { return false; }
+    public CapturedAndroidFlow(Path manifest, String id, String name, String testClass, String testPackage,
+            String appPackage, List<String> tags, AtfReportStatus status, String failure,
+            List<AtfUiActionRecord> pendingActions, List<AndroidUiFlowTrace.PhaseSnapshot> phaseSnapshots) {
+        this(manifest, id, name, testClass, testPackage, appPackage, tags, status, failure, pendingActions, phaseSnapshots, java.util.Optional.empty());
+    }
     public static CapturedAndroidFlow read(Path manifest) throws IOException {
         manifest = manifest.toAbsolutePath().normalize();var input = new Properties();
         try (var stream = Files.newInputStream(manifest)) { input.load(stream); }
@@ -42,7 +49,8 @@ public record CapturedAndroidFlow(Path manifest, String id, String name, String 
                 for (int a = 0; a < count(input, key + ".artifactCount"); a++)
                     artifacts.add(artifact(manifest, required(input, key + ".artifact." + a)));
                 checkpoints.add(new AndroidUiFlowTrace.CheckpointSnapshot(required(input, key + ".keyword"),
-                        required(input, key + ".title"), required(input, key + ".target"), artifact(manifest, required(input, key + ".screenshot")),
+                        required(input, key + ".title"), required(input, key + ".target"),
+                        value(input, key + ".screenshot").isEmpty() ? null : artifact(manifest, required(input, key + ".screenshot")),
                         actions(input, key + ".action", count(input, key + ".actionCount")), assertions,
                         AtfReportStatus.valueOf(required(input, key + ".status")), artifacts));
             }
@@ -53,7 +61,8 @@ public record CapturedAndroidFlow(Path manifest, String id, String name, String 
         return new CapturedAndroidFlow(manifest, id, required(input, "flow.name"), required(input, "flow.testClass"),
                 required(input, "flow.testPackage"), required(input, "flow.appPackage"), tags,
                 AtfReportStatus.valueOf(required(input, "flow.status")), value(input, "flow.failure"),
-                actions(input, "flow.pendingAction", count(input, "flow.pendingActionCount")), phases);
+                actions(input, "flow.pendingAction", count(input, "flow.pendingActionCount")), phases,
+                input.containsKey("flow.sanityPlan") ? java.util.Optional.of(atf.android.evidence.flow.UiSanityPlan.parse(input.getProperty("flow.sanityPlan"))) : java.util.Optional.empty());
     }
     private static List<AtfUiActionRecord> actions(Properties input, String prefix, int count) {
         var values = new ArrayList<AtfUiActionRecord>();

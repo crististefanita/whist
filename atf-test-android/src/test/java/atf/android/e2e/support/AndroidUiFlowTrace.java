@@ -34,6 +34,7 @@ public final class AndroidUiFlowTrace implements atf.android.e2e.support.flow.An
     private int actionSequence;
     private AtfReportStatus status = AtfReportStatus.WARNING;
     private String failure = "";
+    private atf.android.evidence.flow.UiSanityPlan sanityPlan;
 
     public AndroidUiFlowTrace(Path outputDirectory, String id, String name,
             String testClass, String testPackage, String appPackage, List<String> tags) throws IOException {
@@ -66,6 +67,15 @@ public final class AndroidUiFlowTrace implements atf.android.e2e.support.flow.An
     }
 
     public synchronized AndroidPhaseClock.Scope capture() { return clock.capture(); }
+    public synchronized void useSanityPlan(atf.android.evidence.flow.UiSanityPlan plan) throws IOException {
+        if (sanityPlan != null || phases.values().stream().anyMatch(steps -> !steps.isEmpty()))
+            throw new IllegalStateException("E2E_PLAN_ALREADY_STARTED");
+        sanityPlan = Objects.requireNonNull(plan);
+        flush();
+    }
+    @Override public synchronized java.util.Optional<atf.android.evidence.flow.UiSanityPlan> sanityPlan() {
+        return java.util.Optional.ofNullable(sanityPlan);
+    }
     public synchronized boolean hasOpenPhase() { return phases.keySet().stream().anyMatch(clock::running); }
 
     public synchronized int nextActionSequence() {
@@ -94,6 +104,12 @@ public final class AndroidUiFlowTrace implements atf.android.e2e.support.flow.An
         var checkpoint = new Checkpoint(required(keyword, "keyword"), required(title, "title"),
                 required(target, "target"), screenshotName, List.copyOf(checkpointActions),
                 List.copyOf(assertions), Objects.requireNonNull(checkpointStatus), artifactNames);
+        if (sanityPlan != null) {
+            var frames = new ArrayList<>(phaseSnapshots().stream().flatMap(p -> p.checkpoints().stream())
+                    .map(c -> new atf.android.evidence.flow.UiSanityPlan.Frame(c.target(), c.screenshot() == null ? null : c.screenshot().toString())).toList());
+            frames.add(new atf.android.evidence.flow.UiSanityPlan.Frame(checkpoint.target(), screenshotName.isBlank() ? null : resolveArtifact(screenshotName).toString()));
+            sanityPlan.verify(frames, false);
+        }
         appendCheckpoint(phaseName, checkpoint);
     }
 

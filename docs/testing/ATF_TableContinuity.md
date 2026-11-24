@@ -60,7 +60,25 @@ Politica de livrare cere una sau două mâini per joc E2E, la un singur viewport
 | Final de partidă | Folosiți un checkpoint legal aproape de final, validat în componente, apoi jucați mâna finală reală. |
 | Livrarea suitei | Indexul curent din `release/` leagă prin căi relative rapoartele canonice ale componentelor, rendererelor, guvernanței și E2E, cu selecție și proveniență explicite. |
 | Referințe istorice | Păstrați verdictele și octeții originali; un parcurs vechi peste buget nu devine o calificare primară curentă. |
-| Selecția imaginilor | Admiterea și publicarea Web impun cel mult patru capturi normale; păstrați suplimentar primul eșec vizual. Nu fotografiați fiecare carte sau combinație de afișaj și nu ascundeți datele unei aserțiuni eșuate. |
-| Gol de implementare | Admiterea Web respinge planurile lungi înainte de pornire, iar publicatorul reconciliază rundele/capturile reale. Admiterea nativă acceptă una sau două; `TEST-04` păstrează închiderea driverelor pereche și a capturilor native. |
+| Selecția imaginilor | Ambele adaptoare și publicatoare impun cel mult patru capturi normale și o imagine terminală de eșec. Checkpoint-urile semantice păstrează acțiunile, observațiile și aserțiunile originale fără o imagine suplimentară. |
+| Intenție executabilă comună | [Planul sanity](../../config/table-sanity-plan.json) furnizează ID-ul scenariului, rolurile ordonate, două mâini de câte o carte și proprietatea imaginilor pentru driverele Java și Web. Admiterea precedă interacțiunea cu dispozitivul sau browserul. |
+
+### Rolurile sanity pereche
+
+| Rol | Tranziție reală | Captură |
+|---|---|---|
+| `bidding` | Pornește Românesc 1–8–1, patru jucători, Dificil, control manual. | Da |
+| `before-human` | Depune o licitație legală și așteaptă cartea legală a omului. | Da |
+| `after-human` | Joacă efectiv cartea și ajunge la ecranul stabil de scor. | Da |
+| `manual-score` | Înregistrează prima mână încheiată. | Nu |
+| `auto-bidding` | Continuă la a doua mână de o carte, cu AutoGame debifat. | Nu |
+| `auto-score` | Activează AutoGame și ajunge la al doilea ecran de scor. | Da |
+| `return-control` | Continuă la licitația manuală fără să joace o a treia mână. | Nu |
+
+- Driverele furnizează observațiile platformei; nu injectează un ecran de scor finalizat.
+- Notificările opționale de realizări păstrează propriile observații semantice.
+- O rulare eșuată păstrează prefixul încheiat, cauza originală și prima imagine de diagnostic; publicarea nu o poate transforma într-un parcurs complet trecut.
+
+Jurnalul nativ păstrează planul original la reluare. Cadrele lipsă, suplimentare, reordonate sau atribuite greșit sunt refuzate înaintea următoarei modificări a jurnalului ori publicării HTML finale. Componentele verifică aceste controale fără dispozitiv; un parcurs ilustrat califică numai platforma și viewport-ul executate efectiv.
 
 [Implementare și acceptanță rămasă](../feedback/ATF_CardUi_Extraction.md#ui-three-module-plan) separă core portabil, adaptorul Android și adaptorul Web. Cazurile specifice jocului rămân la joc; suportul neutru pentru fixture-uri și oracle-uri aparține testelor core.

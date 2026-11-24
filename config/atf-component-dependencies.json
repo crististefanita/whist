@@ -97,6 +97,14 @@
         "release/WEB/**",
         "release/index.json"
       ]
+    },
+    {
+      "source": "atf-tests/src/test/java/atf/tests/reporting/inventory/ReportProducerInventoryComponentTest.java",
+      "inputs": [
+        "**/src/**/*.java",
+        "atf-ui-browser/tests/**/*.java",
+        "config/report-producers.json"
+      ]
     }
   ],
   "readerContract": "Reviewed body seals are separate from global topology. Regenerate both proposals; narrowing requires the same admitted topology, complete source population and valid reader seals in both evidence generations.",
@@ -119,5 +127,5 @@
     }
   ],
   "readerSealsPath": "config/atf-component-reader-seals.json",
-  "topologySha256": "63c752833c4f66047d3ef3cc0081809d26d4eef8990632a21776835407884b13"
+  "topologySha256": "3b8ab5b640c7c3dfa47ffd7331b4f6ce86f1ba3c6fd7f86b769103d945a1c194"
 }

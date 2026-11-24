@@ -1,0 +1,90 @@
+{
+  "schemaVersion": 1,
+  "producers": [
+    {
+      "source": "atf-test-android/src/main/java/atf/android/evidence/component/AndroidComponentRun.java",
+      "role": "primary",
+      "contracts": [
+        {
+          "source": "atf-test-android/src/test/java/atf/android/component/AndroidComponentReportContractTest.java",
+          "method": "bothRenderersRetainOutcomesInvocationsAndOriginalComparisons"
+        }
+      ]
+    },
+    {
+      "source": "whist-lab-app/test-audit/src/testFixtures/java/atf/gradle/audit/GradleReport.java",
+      "role": "primary",
+      "contracts": [
+        {
+          "source": "whist-lab-app/test-audit/src/test/java/atf/gradle/audit/GradleAuditBridgeComponentTest.java",
+          "method": "failureErrorAndAssumptionRetainTheirOutcomeAndDoNotHideTheNextInvocation"
+        }
+      ]
+    },
+    {
+      "source": "atf-tests/src/main/java/atf/tests/reporting/GameReportSession.java",
+      "role": "primary",
+      "contracts": [
+        {
+          "source": "atf-tests/src/test/java/atf/tests/reporting/GameReportPublicationContractTest.java",
+          "method": "individualAndSuiteRetainEveryComparisonAndPng"
+        }
+      ]
+    },
+    {
+      "source": "atf-test-android/src/test/java/atf/android/e2e/support/AndroidUiFlowReportPublisher.java",
+      "role": "primary",
+      "contracts": [
+        {
+          "source": "atf-test-android/src/test/java/atf/android/e2e/support/AndroidUiFlowReportPublisherTest.java",
+          "method": "publishesObservationOnlyCheckpointWithoutInventingADispatchedUiAction"
+        }
+      ]
+    },
+    {
+      "source": "atf-ui-browser/tests/BrowserExtent.java",
+      "role": "primary",
+      "contracts": [
+        {
+          "source": "atf-tests/src/test/java/atf/tests/reporting/browser/BrowserExtentPublicationComponentTest.java",
+          "method": "incompleteOrContradictoryStepEvidenceIsRejectedBeforePublication"
+        }
+      ]
+    },
+    {
+      "source": "atf-tests/src/test/java/atf/tests/reporting/acceptance/CombinedAcceptanceReport.java",
+      "role": "retired",
+      "contracts": [
+        {
+          "source": "atf-tests/src/test/java/atf/tests/reporting/inventory/ReportProducerInventoryComponentTest.java",
+          "method": "legacyAggregateCannotQualifyMissingOriginalComparisons"
+        }
+      ]
+    },
+    {
+      "source": "atf-tests/src/test/java/atf/tests/reporting/GameReportPublicationContractTest.java",
+      "role": "fixture",
+      "contracts": []
+    },
+    {
+      "source": "atf-tests/src/test/java/atf/tests/publishing/CoreReportingConsumerContractTest.java",
+      "role": "fixture",
+      "contracts": []
+    },
+    {
+      "source": "atf-tests/src/test/java/atf/tests/governance/documentation/release/download/PublishedApkDownloadAcceptanceTest.java",
+      "role": "fixture",
+      "contracts": []
+    },
+    {
+      "source": "atf-tests/src/test/java/atf/tests/contracts/AndroidPhaseTraceReplayContractTest.java",
+      "role": "fixture",
+      "contracts": []
+    },
+    {
+      "source": "atf-tests/src/test/java/atf/tests/contracts/AndroidInlineScreenshotReportContractTest.java",
+      "role": "fixture",
+      "contracts": []
+    }
+  ]
+}

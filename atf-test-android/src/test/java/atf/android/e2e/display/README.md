@@ -20,6 +20,8 @@ Componentele verifică toate combinațiile legale, actorii și câștigătorii, 
 
 Selectați puține parcursuri reprezentative, cu Given/When/Then, comparații înainte/după și poze inline. Nu repetați matricea de rezoluții în E2E.
 
+[Planul pereche APK/Web](../../../../../../../../config/table-sanity-plan.json) conduce două mâini de o carte: manuală, apoi AutoGame, apoi revenire la licitația manuală. Patru checkpoint-uri planificate au imagini; ceilalți pași păstrează observații și aserțiuni. Jurnalul și publicatorul refuză rolurile lipsă, capturile suplimentare și dovezile reordonate sau atribuite greșit.
+
 ## Artefacte
 
 [Catalogul și starea APK](../../../../../../../../release/README.md)

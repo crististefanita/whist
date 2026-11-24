@@ -67,33 +67,41 @@ public class BrowserExtentPublicationComponentTest {
 
     @Test void passingTableFlowsCannotUnderstateTheirHandOrCaptureBudget(ComponentInputs inputs) throws Exception {
         inputs.add("Synthetic flow admission", "Publisher independently checks rounds, deal order and actual image references before creating HTML.");
-        for (String mutation : java.util.List.of("long", "sequence", "captures", "missing")) {
+        for (String mutation : java.util.List.of("long", "sequence", "captures", "missing", "owner", "omitted-step")) {
             Path evidence = root.resolve(mutation);
-            var test = BrowserReportFixture.steps(evidence);
-            test.put("id", "MATCH-ANCHORS-fixture");
-            var observed = test.putObject("observed");
-            observed.putObject("profile").putArray("deals").add(1).add(1);
-            var rounds = observed.putArray("rounds");
-            rounds.addObject().put("hand", 1).put("cards", 1);
-            rounds.addObject().put("hand", 2).put("cards", 1);
-            var budget = observed.putObject("flowBudget").put("contract", "MINIMAL_TABLE_FLOW_V1")
-                    .put("hands", 2).put("normalCaptures", 2).put("maximumHands", 2).put("maximumNormalCaptures", 4);
+            var test = BrowserReportFixture.sanity(evidence);
+            var observed = (com.fasterxml.jackson.databind.node.ObjectNode) test.get("observed");
+            var rounds = (com.fasterxml.jackson.databind.node.ArrayNode) observed.get("rounds");
+            var budget = (com.fasterxml.jackson.databind.node.ObjectNode) observed.get("flowBudget");
             switch (mutation) {
                 case "long" -> rounds.addObject().put("hand", 3).put("cards", 1);
                 case "sequence" -> ((com.fasterxml.jackson.databind.node.ObjectNode) rounds.get(1)).put("cards", 2);
                 case "captures" -> budget.put("normalCaptures", 1);
                 case "missing" -> observed.remove("flowBudget");
+                case "owner" -> ((com.fasterxml.jackson.databind.node.ObjectNode) test.get("steps").get(0).get("images").get(0)).put("role", "foreign");
+                case "omitted-step" -> ((com.fasterxml.jackson.databind.node.ArrayNode) budget.get("frames")).remove(3);
             }
             BrowserReportFixture.writeSteps(evidence, test);
             var failure = assertThrows(IllegalArgumentException.class, () -> BrowserReportFixture.publish(publisher, evidence));
             assertTrue(failure.getMessage().contains(switch (mutation) {
                 case "sequence" -> "E2E_EXECUTION_SEQUENCE";
+                case "omitted-step" -> "E2E_EXECUTION_SEQUENCE";
+                case "owner" -> "E2E_CAPTURE_OWNERSHIP";
                 case "captures" -> "E2E_CAPTURE_BUDGET";
                 case "missing" -> "flowBudget";
                 default -> "E2E_HAND_BUDGET";
             }), "Original rejection cause is retained for " + mutation);
             assertFalse(Files.exists(evidence.resolve("report.html")), "Invalid flow cannot leave a report");
         }
+    }
+
+    @Test void pairedSanityPublishesEverySemanticRoleAndItsOwnFourImages(ComponentInputs inputs) throws Exception {
+        var test = BrowserReportFixture.sanity(root);
+        inputs.add("Synthetic paired scenario", test.get("observed").toString());
+        BrowserReportFixture.publish(publisher, root);
+        var flow = scenario(Jsoup.parse(Files.readString(root.resolve("report.html"))), "Observed four-player flow");
+        for (var step : test.get("steps")) assertTrue(flow.text().contains(step.get("id").asText()), "Every role retains an ordered assertion owner");
+        assertEquals(4, flow.select("a[data-atf-screenshot-ref]").size(), "Only the four planned checkpoints carry images");
     }
 
     @Test void externalCaptureAndInvalidPngCannotBePublished(ComponentInputs inputs) throws Exception {

@@ -75,6 +75,30 @@ Fiecare producător se califică pe suprafața API efectiv folosită. Trecerea u
 4. Verificați separat navigarea, secțiunile pliabile, imaginile și revenirea cu contextul păstrat pe HTML-ul identificat prin hash.
 5. Păstrați nivelurile executate și limitele în înregistrarea externă; [predarea rezultatelor](ATF_Handoff.md) decide acceptanța scopului.
 
+### Inventarul guvernat al producătorilor
+
+[Inventarul producătorilor](../../config/report-producers.json) identifică fiecare constructor direct al rendererului Extent sau de rezervă din sursele Java guvernate. [Componentele inventarului](../../atf-tests/src/test/java/atf/tests/reporting/inventory/ReportProducerInventoryComponentTest.java) parsează sintaxa, reconciliază populația exactă și verifică metodele de calificare declarate. Emitenții noi, duplicați, expirați sau necalificați opresc controlul; rendererii sintetici ai testelor sunt clasificați explicit drept fixture-uri.
+
+| Graniță | Contract de calificare și refuz |
+|---|---|
+| Producătorul comun Jupiter | [Controalele de execuție reală](../../atf-test-android/src/test/java/atf/android/component/AndroidComponentReportContractTest.java) acoperă PASS, aserțiune eșuată, eroare de execuție, execuție abandonată, lipsa aserțiunilor din corp și invocări parametrice distincte prin Extent și rendererul de rezervă. Valorile și cauzele originale integrale rămân în HTML. |
+| Puntea Gradle | [Componentele punții](../../whist-lab-app/test-audit/src/test/java/atf/gradle/audit/GradleAuditBridgeComponentTest.java) reconciliază identitățile JUnit independente cu HTML și refuză adaptoarele lipsă, invocările pierdute, comparațiile șterse și chitanțele duplicate. |
+| Decoratorul raportului de joc | [Componentele publicării](../../atf-tests/src/test/java/atf/tests/reporting/GameReportPublicationContractTest.java) păstrează comparațiile integrale ale fiecărui proprietar, eșecul final și corpul obligatoriu pentru fiecare politică de detaliu și renderer declarate. |
+| Publicatorul traseului Android | [Componentele traseului](../../atf-test-android/src/test/java/atf/android/e2e/support/AndroidUiFlowReportPublisherTest.java) păstrează acțiunile, observațiile, comparațiile și cauzele de eșec originale; imaginile și intrările obligatorii lipsă sunt refuzate. |
+| Publicatorul browserului | [Componentele browserului](../../atf-tests/src/test/java/atf/tests/reporting/browser/BrowserExtentPublicationComponentTest.java) păstrează stările înainte/după ordonate, comparațiile și proprietarii imaginilor; intrările incorecte sau contradictorii sunt refuzate înainte de crearea HTML. |
+| Agregatul XML vechi | Intrarea de compatibilitate refuză calificarea: totalurile nu pot reconstitui comparațiile originale ale componentelor. Folosiți HTML-ul canonic al suitelor și traseele capturate. |
+
+| Rezultat sau identitate | Regula de păstrare |
+|---|---|
+| Eroare de execuție | Păstrează execuția eșuată cu excepția originală; nu o transforma în refuz așteptat trecut. |
+| Abandonare | Păstrează SKIP. |
+| Refuz controlat | Trece numai când refuzul așteptat este comparat și capturat. |
+| Parametri | Păstrează identități independente ale invocărilor chiar dacă valorile afișate se repetă. |
+
+Calificarea cere comparații utile: o valoare Boolean sau un tip de excepție au nevoie de o descriere a invariantului când valorile singure nu explică proprietatea. Locațiile din sursă ajută trasabilitatea fără să înlocuiască sensul. O componentă fără aserțiuni capturate în corp este necalificată; reconcilierea independentă JUnit/HTML refuză o invocare omisă integral de adaptor.
+
+Calificarea inventarului nu certifică interactivitatea browserului, pixelii nativi, costul memoriei pentru suite mari sau rapoartele istorice. Aceste granițe de acceptanță rămân explicite și își păstrează dovezile originale.
+
 ## Agregarea componentelor pe sursa live
 
 [Lansatorul componentelor](../../scripts/run-component-suites.ps1) execută intrările primare de componentă din [catalogul Maven](../../config/atf-test-suites.json), colecțiile Gradle declarate ale aplicației și selecția distinctă a bibliotecii UI comune. Compilarea și cache-ul Maven aparțin unei copii TMP; fiecare modul și selecție Gradle produce propriul HTML Extent cu invocări distincte, comparațiile evaluate și proveniența surselor. Rapoartele Gradle nu se concatenează într-un raport sintetic.
