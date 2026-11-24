@@ -17,9 +17,7 @@ The project owns Android-boundary and adapter checks. Reusable contracts are req
 
 [Quality governance](../governance/README.md) · [Good documentation practices](../governance/ATF_Documentation.md)
 
-| ID | Remaining boundary | Closure criterion |
-|---|---|---|
-| GOV-06 | [BrowserUi](../../atf-ui-browser/tests/BrowserUi.java) still combines browser lifecycle, scenario drivers and result emission; static hosting has its own tested collaborator. | Separate the remaining responsibilities while preserving scenario IDs, source identity, owned-profile cleanup and standard English Extent output. Keep lifecycle/error components independent of gameplay flows and compare the selected case inventory before and after extraction; no coverage may be removed. |
+The [browser test index](../../atf-ui-browser/tests/README.md#diagnostic-runner-boundaries) owns the selection, lifecycle, scenario and result boundaries. Mocked components preserve case identities, resource ownership and failure causes; the short rendered journey remains separate.
 
 ## Qualification of claims and launchers
 
@@ -28,7 +26,7 @@ The project owns Android-boundary and adapter checks. Reusable contracts are req
 | Priority | Owner and gap | Verification level and closure criterion |
 |---|---|---|
 | P2 | Launcher coordination: entry points check preconditions inconsistently. | Controlled components for Java, Maven, Gradle, Node and Python must check required capabilities before costly operations and report missing capabilities with source identity. Distinguish the Python installation alias from an executable interpreter. For the [PowerShell ADB module](../../atf-test-android/tools/AndroidDeviceSetup.psm1), verify availability, refusal, timeout and process state separately from parsing and the Java client. |
-| P2 | Qualification cost: source/release snapshot preparation still copies and hashes retained reports repeatedly. | Reduce repeated snapshot work without weakening input admission. The implemented [compiler and cleanup recovery contracts](../testing/ATF_Collections.md#maven-compiler-reuse) are regression boundaries, not open implementation tasks. Measure source/release inventory and copying separately from compilation and execution; reconcile recorded stage durations with wall time before claiming further savings. Time the post-compilation snapshot check before output sealing explicitly rather than leaving it between named phases. |
+| P2 | Qualification cost: source/release snapshot preparation still copies and hashes retained reports repeatedly. | Reduce repeated snapshot work without weakening input admission. The implemented [compiler and cleanup recovery contracts](../testing/ATF_Collections.md#maven-compiler-reuse) are regression boundaries, not open implementation tasks. Measure source/release inventory and copying separately from compilation and execution; reconcile recorded stage durations with wall time before claiming further savings. Use the named post-compilation snapshot phase when comparing preparation and sealing costs. |
 | P1 | Failed-test recovery is only selection-level: one failing JUnit invocation invalidates the complete owner-group receipt, so its already passing siblings cannot be reused safely. | Persist every JUnit unique ID, outcome and source/provenance binding. On restart rerun only failed or incomplete identities, then publish a reconciliation Extent linking the original and retry reports. Reject missing, duplicate, foreign or source-changed identities and any failed retry; never promote by editing the original report. |
 
 [Inline-image retention governance](../../atf-tests/src/test/java/atf/tests/governance/documentation/release/ReleaseEvidenceRetentionGovernanceTest.java) separately checks for duplicated PNG files beside HTML. It does not prove data autonomy, image readability or APK integrity; the [adapter criterion](../reporting/ATF_Audit.md) remains separate.
@@ -108,13 +106,3 @@ The evaluator applies one reporting admission rule before readiness and preserve
 - XML-only, unknown, missing-modern or mixed-format declarations block readiness. JUnit XML remains a temporary oracle, never the canonical report.
 
 The policy is in `config/release-platform-rag-policy.json`, admission is enforced by `atf-tests/tools/evaluate-release-rag.mjs`, and component coverage belongs to `ReleaseRagProvenanceComponentTest` and `ReleaseRagPlatformGovernanceTest`.
-
-## Compiler workspace pointer compatibility
-
-The component runner emits a schema-2 workspace pointer with qualified source/catalog context, while the borrowed-compiler reader currently accepts schema 1 only. This safely refuses reuse but causes avoidable recompilation even when a valid compiler receipt is available.
-
-- [ ] RAG-30: admit the current pointer through one shared contract; preserve context, compiler identity, classpath, output hashes and exclusive ownership before reuse.
-- [ ] Cover valid schema 2 and legacy input explicitly; reject missing or foreign context, changed output bytes and incomplete classpaths with component mocks.
-- [ ] Record the reuse refusal reason in timing. Demonstrate reuse on unchanged compiler inputs and a rebuild on changed inputs without weakening snapshot admission.
-
-[Pointer producer](../../scripts/run-component-suites.ps1) · [Borrowed compiler reader](../../scripts/AtfComponentMavenReuse.ps1)
