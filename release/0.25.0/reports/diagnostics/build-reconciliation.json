@@ -1,0 +1,15 @@
+{
+  "schemaVersion": 1,
+  "status": "PASS",
+  "originalSourceCommit": "cff5f7f3400817cd4e0771156425995687ce42ad",
+  "finalSourceCommit": "4b98139a1414fa0305d5978bca3ab38ef6aea67d",
+  "sourceFingerprint": "d99e5931b8807dc18bdb01dd0c6e877e3ac07d9ca2a0dfe5bccf638789afc829",
+  "unsignedSha256Before": "ff4d72bcc0145f5a0988731f6ca6ea5ae53c7618f0b8e2d1d3de7c449fbb2fee",
+  "unsignedSha256After": "ff4d72bcc0145f5a0988731f6ca6ea5ae53c7618f0b8e2d1d3de7c449fbb2fee",
+  "signedApkSha256": "b3fbfeaccfc3509e853793b3899c1e96d740fe17b983d87e75ecf255ad3c3b4b",
+  "startedUtc": "2026-11-24T18:27:31.7025505+00:00",
+  "endedUtc": "2026-11-24T18:32:41.6447567+00:00",
+  "elapsedMs": 305142,
+  "log": "build-final.log",
+  "nativeEvidence": "Original executions retain their source commit; the APK bytes and runtime remain unchanged."
+}

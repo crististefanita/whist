@@ -1,0 +1,54 @@
+{
+  "schemaVersion": 2,
+  "releaseVersion": "0.25.0",
+  "catalogued": false,
+  "channel": "TEST",
+  "changeRisk": "behaviorChange",
+  "declaredPlatforms": [
+    "android"
+  ],
+  "componentGroups": [
+    "atf-validation",
+    "atf-test-android",
+    "atf-tests",
+    "whist-lab-app-bidding",
+    "whist-lab-app-commands",
+    "whist-lab-app-display",
+    "whist-lab-app-history",
+    "whist-lab-app-achievements",
+    "whist-lab-app-atf-card-table-ui",
+    "whist-lab-app-rules",
+    "whist-lab-app-card-table-core",
+    "atf-tests-documentation",
+    "atf-tests-provenance",
+    "atf-tests-android",
+    "atf-tests-github",
+    "atf-tests-orchestration",
+    "atf-tests-reporting"
+  ],
+  "userFlowChanged": true,
+  "e2e": {
+    "status": "PASS",
+    "groups": [
+      "history-release-sanity",
+      "responsive-ui-sanity",
+      "signed-release-achievements",
+      "signed-release-auto-game",
+      "signed-release-bidding",
+      "signed-release-home-profile",
+      "signed-release-smoke"
+    ],
+    "executionProfile": {
+      "api": 28,
+      "responsiveProfiles": "1080x1920@440",
+      "displayProfile": "1080x1920@440"
+    },
+    "rationale": "All seven diff-selected signed-APK flows passed on API 28. Every disposable Android user was removed and the original user and device profile were restored."
+  },
+  "scope": {
+    "baselineVersion": "0.24.2",
+    "baselineCommit": "e18de2eea56ebbccddeabd48082ff18bef4706eb",
+    "baselineFingerprint": "82cf70e5111ae29ee3d04f33e136c6a8c6cedc8f3a71e1fac0cba1f3eef8c1c7",
+    "candidateFingerprint": "d99e5931b8807dc18bdb01dd0c6e877e3ac07d9ca2a0dfe5bccf638789afc829"
+  }
+}

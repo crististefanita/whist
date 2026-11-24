@@ -1,0 +1,14 @@
+{
+  "schemaVersion": 1,
+  "kind": "ATF_RELEASE_TIMING",
+  "owner": "apk-final",
+  "stages": [
+    {
+      "stage": "apk.final-build-reconciliation",
+      "status": "PASS",
+      "startedUtc": "2026-11-24T18:27:31.7025505+00:00",
+      "endedUtc": "2026-11-24T18:32:41.6447567+00:00",
+      "elapsedMs": 305142
+    }
+  ]
+}

@@ -1,0 +1,64 @@
+{
+  "schemaVersion": 1,
+  "kind": "ATF_RELEASE_TIMING",
+  "owner": "signed-e2e",
+  "stages": [
+    {
+      "stage": "e2e.source-inventory",
+      "status": "PASS",
+      "startedUtc": "2026-11-24T17:58:19.6997102+00:00",
+      "endedUtc": "2026-11-24T17:58:24.3471738+00:00",
+      "elapsedMs": 4336
+    },
+    {
+      "stage": "e2e.reuse-check",
+      "status": "PASS",
+      "startedUtc": "2026-11-24T17:58:24.6913747+00:00",
+      "endedUtc": "2026-11-24T17:58:26.7870710+00:00",
+      "elapsedMs": 1956
+    },
+    {
+      "stage": "e2e.maven-compile",
+      "status": "REUSED",
+      "startedUtc": "2026-11-24T17:58:27.0900000+00:00",
+      "endedUtc": "2026-11-24T17:58:27.0900000+00:00",
+      "elapsedMs": 0,
+      "reason": "Verified previously compiled classes and libraries."
+    },
+    {
+      "stage": "e2e.lease",
+      "status": "PASS",
+      "startedUtc": "2026-11-24T17:58:32.6664587+00:00",
+      "endedUtc": "2026-11-24T17:58:32.7089093+00:00",
+      "elapsedMs": 36
+    },
+    {
+      "stage": "e2e.prepare-device",
+      "status": "PASS",
+      "startedUtc": "2026-11-24T17:58:32.7109162+00:00",
+      "endedUtc": "2026-11-24T18:00:11.1122035+00:00",
+      "elapsedMs": 68993
+    },
+    {
+      "stage": "e2e.run.responsive-ui-sanity",
+      "status": "PASS",
+      "startedUtc": "2026-11-24T18:00:11.7871234+00:00",
+      "endedUtc": "2026-11-24T18:03:53.7851517+00:00",
+      "elapsedMs": 198321
+    },
+    {
+      "stage": "e2e.restore-device",
+      "status": "PASS",
+      "startedUtc": "2026-11-24T18:03:53.7886465+00:00",
+      "endedUtc": "2026-11-24T18:03:55.9708782+00:00",
+      "elapsedMs": 4117
+    },
+    {
+      "stage": "e2e.extent-evidence",
+      "status": "PASS",
+      "startedUtc": "2026-11-24T18:03:56.1862663+00:00",
+      "endedUtc": "2026-11-24T18:03:57.0649013+00:00",
+      "elapsedMs": 1680
+    }
+  ]
+}

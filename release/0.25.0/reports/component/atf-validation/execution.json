@@ -1,0 +1,74 @@
+{
+  "schemaVersion" : 1,
+  "kind" : "live-source-components",
+  "apkQualification" : false,
+  "suite" : "atf.validation.suites.ValidationComponentSuite",
+  "tests" : 19,
+  "outcomes" : {
+    "PASS" : 19
+  },
+  "coverageErrors" : [ ],
+  "containerFailures" : [ ],
+  "junitIdentitySha256" : "f72e31ccbd6501227471e60204428a2f203bad173b06dc72e872f5a4d8ef40fa",
+  "invocations" : [ {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.validation.suites.ValidationComponentSuite]/[engine:junit-jupiter]/[class:atf.validation.ai.AiEvaluationEvaluatorTest]/[method:rejectsUndeclaredOutputFieldsByDefaultWithAnEvidenceLinkedHardFail()]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.validation.suites.ValidationComponentSuite]/[engine:junit-jupiter]/[class:atf.validation.ai.AiEvaluationEvaluatorTest]/[method:mockAndFallbackNeverReceiveAiQualityScores()]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.validation.suites.ValidationComponentSuite]/[engine:junit-jupiter]/[class:atf.validation.ai.AiEvaluationEvaluatorTest]/[method:distinguishesMissingCriticalFromInventedCriticalAndHardFailsBoth()]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.validation.suites.ValidationComponentSuite]/[engine:junit-jupiter]/[class:atf.validation.ai.AiEvaluationEvaluatorTest]/[method:rejectsExpectedMissingWhenTheSourceActuallyContainsTheCriticalField()]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.validation.suites.ValidationComponentSuite]/[engine:junit-jupiter]/[class:atf.validation.ai.AiEvaluationEvaluatorTest]/[method:criticalMismatchFailsEvenWhenAggregateScoreIsHigh()]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.validation.suites.ValidationComponentSuite]/[engine:junit-jupiter]/[class:atf.validation.ai.AiEvaluationEvaluatorTest]/[method:failsBelowConfiguredScoreThresholdWithoutCallingItHardFail()]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.validation.suites.ValidationComponentSuite]/[engine:junit-jupiter]/[class:atf.validation.ai.AiEvaluationEvaluatorTest]/[method:comparesNormalizedSetOrderedRangeAndAllowedVariants()]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.validation.suites.ValidationComponentSuite]/[engine:junit-jupiter]/[class:atf.validation.ai.AiEvaluationEvaluatorTest]/[method:reportsMissingAndInventedValuesSeparately()]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.validation.suites.ValidationComponentSuite]/[engine:junit-jupiter]/[class:atf.validation.ai.AiEvaluationEvaluatorTest]/[method:rejectsAReferenceOutsideTheExpectedSourceAllowlist()]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.validation.suites.ValidationComponentSuite]/[engine:junit-jupiter]/[class:atf.validation.ai.AiEvaluationEvaluatorTest]/[method:keepsApprovedExpectationsIndependentAndImmutable()]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.validation.suites.ValidationComponentSuite]/[engine:junit-jupiter]/[class:atf.validation.ai.AiEvaluationEvaluatorTest]/[method:missingCriticalGroundingFailsEvenWhenTheFieldValueMatches()]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.validation.suites.ValidationComponentSuite]/[engine:junit-jupiter]/[class:atf.validation.ai.AiEvaluationEvaluatorTest]/[method:evaluatesExpectedFieldsAndScoresWeightedMatches()]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.validation.suites.ValidationComponentSuite]/[engine:junit-jupiter]/[class:atf.validation.ai.AiEvaluationEvaluatorTest]/[method:realInvocationWithoutCompleteEvidenceHardFailsInsteadOfScoring()]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.validation.suites.ValidationComponentSuite]/[engine:junit-jupiter]/[class:atf.validation.ai.AiEvaluationEvaluatorTest]/[method:preservesTypedInvocationEvidenceOnTheEvaluationResult()]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.validation.suites.ValidationComponentSuite]/[engine:junit-jupiter]/[class:atf.validation.ai.AiEvaluationEvaluatorTest]/[method:completesAnImmutableSnapshotWithAnInjectedClock()]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.validation.suites.ValidationComponentSuite]/[engine:junit-jupiter]/[class:atf.validation.ai.AiEvaluationEvaluatorTest]/[method:recordsSupportedGroundingPerFieldWithoutEmbeddingSourcePayload()]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.validation.suites.ValidationComponentSuite]/[engine:junit-jupiter]/[class:atf.validation.ai.AiEvaluationEvaluatorTest]/[method:explicitlyAllowedUndeclaredOutputIsStillVisibleAndLowersTheScore()]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.validation.suites.ValidationComponentSuite]/[engine:junit-jupiter]/[class:atf.validation.ai.AiEvaluationEvaluatorTest]/[method:rejectsDuplicateExpectedFieldPaths()]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.validation.suites.ValidationComponentSuite]/[engine:junit-jupiter]/[class:atf.validation.ai.AiEvaluationEvaluatorTest]/[method:freezesNestedExpectedAndObservedValuesAtTheBoundary()]",
+    "outcome" : "PASS"
+  } ],
+  "invocationCheckpointSha256" : "f92fe71d7ae10d2c50ee2815ce720095afab9ce47b1d8dd92f65344bfbd38d3a",
+  "provenanceSha256" : "00223aec1ddc3258a74a0f0275e1ab677fd1cb0d28e791bdf78005de0211a433",
+  "reportSha256" : "5d9442d3d72c008135e7d4fc0ac3d1fa44caa388f818a326353b817d2377cc12"
+}

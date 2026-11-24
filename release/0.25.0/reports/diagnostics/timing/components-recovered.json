@@ -1,0 +1,221 @@
+{
+  "schemaVersion": 1,
+  "kind": "ATF_RELEASE_TIMING",
+  "owner": "components",
+  "stages": [
+    {
+      "stage": "components.test-change-admission",
+      "status": "PASS",
+      "startedUtc": "2026-11-24T18:16:05.1547475+00:00",
+      "endedUtc": "2026-11-24T18:16:34.7178682+00:00",
+      "elapsedMs": 27590
+    },
+    {
+      "stage": "components.resume-validation",
+      "status": "PASS",
+      "startedUtc": "2026-11-24T18:16:35.1276720+00:00",
+      "endedUtc": "2026-11-24T18:16:42.3183776+00:00",
+      "elapsedMs": 5708
+    },
+    {
+      "stage": "components.snapshot-preflight",
+      "status": "REUSED",
+      "startedUtc": "2026-11-24T18:16:42.3662986+00:00",
+      "endedUtc": "2026-11-24T18:16:42.3662986+00:00",
+      "elapsedMs": 0,
+      "reason": "Verified live and staged snapshot."
+    },
+    {
+      "stage": "components.test-change-recheck",
+      "status": "PASS",
+      "startedUtc": "2026-11-24T18:16:42.3770725+00:00",
+      "endedUtc": "2026-11-24T18:17:14.5545727+00:00",
+      "elapsedMs": 22731
+    },
+    {
+      "stage": "components.reuse-check",
+      "status": "PASS",
+      "startedUtc": "2026-11-24T18:17:14.9897846+00:00",
+      "endedUtc": "2026-11-24T18:17:19.1271361+00:00",
+      "elapsedMs": 2758
+    },
+    {
+      "stage": "components.run.atf-validation",
+      "status": "REUSED",
+      "startedUtc": "2026-11-24T18:17:19.1872030+00:00",
+      "endedUtc": "2026-11-24T18:17:19.1872030+00:00",
+      "elapsedMs": 0,
+      "reason": "MATCH"
+    },
+    {
+      "stage": "components.run.atf-test-android",
+      "status": "REUSED",
+      "startedUtc": "2026-11-24T18:17:19.1945908+00:00",
+      "endedUtc": "2026-11-24T18:17:19.1945908+00:00",
+      "elapsedMs": 0,
+      "reason": "MATCH"
+    },
+    {
+      "stage": "components.run.atf-tests",
+      "status": "REUSED",
+      "startedUtc": "2026-11-24T18:17:19.1988073+00:00",
+      "endedUtc": "2026-11-24T18:17:19.1988073+00:00",
+      "elapsedMs": 0,
+      "reason": "MATCH"
+    },
+    {
+      "stage": "components.run.whist-lab-app-bidding",
+      "status": "REUSED",
+      "startedUtc": "2026-11-24T18:17:19.2003094+00:00",
+      "endedUtc": "2026-11-24T18:17:19.2003094+00:00",
+      "elapsedMs": 0,
+      "reason": "MATCH"
+    },
+    {
+      "stage": "components.run.whist-lab-app-commands",
+      "status": "REUSED",
+      "startedUtc": "2026-11-24T18:17:19.2097435+00:00",
+      "endedUtc": "2026-11-24T18:17:19.2097435+00:00",
+      "elapsedMs": 0,
+      "reason": "MATCH"
+    },
+    {
+      "stage": "components.run.whist-lab-app-display",
+      "status": "REUSED",
+      "startedUtc": "2026-11-24T18:17:19.2122019+00:00",
+      "endedUtc": "2026-11-24T18:17:19.2122019+00:00",
+      "elapsedMs": 0,
+      "reason": "MATCH"
+    },
+    {
+      "stage": "components.run.whist-lab-app-history",
+      "status": "REUSED",
+      "startedUtc": "2026-11-24T18:17:19.2148564+00:00",
+      "endedUtc": "2026-11-24T18:17:19.2148564+00:00",
+      "elapsedMs": 0,
+      "reason": "MATCH"
+    },
+    {
+      "stage": "components.run.whist-lab-app-achievements",
+      "status": "REUSED",
+      "startedUtc": "2026-11-24T18:17:19.2181545+00:00",
+      "endedUtc": "2026-11-24T18:17:19.2181545+00:00",
+      "elapsedMs": 0,
+      "reason": "MATCH"
+    },
+    {
+      "stage": "components.run.whist-lab-app-atf-card-table-ui",
+      "status": "REUSED",
+      "startedUtc": "2026-11-24T18:17:19.2212650+00:00",
+      "endedUtc": "2026-11-24T18:17:19.2212650+00:00",
+      "elapsedMs": 0,
+      "reason": "MATCH"
+    },
+    {
+      "stage": "components.run.whist-lab-app-rules",
+      "status": "REUSED",
+      "startedUtc": "2026-11-24T18:17:19.2245422+00:00",
+      "endedUtc": "2026-11-24T18:17:19.2245422+00:00",
+      "elapsedMs": 0,
+      "reason": "MATCH"
+    },
+    {
+      "stage": "components.run.whist-lab-app-card-table-core",
+      "status": "REUSED",
+      "startedUtc": "2026-11-24T18:17:19.2461381+00:00",
+      "endedUtc": "2026-11-24T18:17:19.2461381+00:00",
+      "elapsedMs": 0,
+      "reason": "MATCH"
+    },
+    {
+      "stage": "components.run.atf-tests-provenance",
+      "status": "REUSED",
+      "startedUtc": "2026-11-24T18:17:19.2484069+00:00",
+      "endedUtc": "2026-11-24T18:17:19.2484069+00:00",
+      "elapsedMs": 0,
+      "reason": "MATCH"
+    },
+    {
+      "stage": "components.run.atf-tests-github",
+      "status": "REUSED",
+      "startedUtc": "2026-11-24T18:17:19.2509001+00:00",
+      "endedUtc": "2026-11-24T18:17:19.2509001+00:00",
+      "elapsedMs": 0,
+      "reason": "MATCH"
+    },
+    {
+      "stage": "components.run.atf-tests-reporting",
+      "status": "REUSED",
+      "startedUtc": "2026-11-24T18:17:19.2544735+00:00",
+      "endedUtc": "2026-11-24T18:17:19.2544735+00:00",
+      "elapsedMs": 0,
+      "reason": "MATCH"
+    },
+    {
+      "stage": "components.compiler-identity",
+      "status": "PASS",
+      "startedUtc": "2026-11-24T18:17:19.3113115+00:00",
+      "endedUtc": "2026-11-24T18:17:23.6545509+00:00",
+      "elapsedMs": 2895
+    },
+    {
+      "stage": "components.compiler-admission",
+      "status": "PASS",
+      "startedUtc": "2026-11-24T18:17:23.6610538+00:00",
+      "endedUtc": "2026-11-24T18:18:22.6443670+00:00",
+      "elapsedMs": 48896
+    },
+    {
+      "stage": "components.preparation-snapshot",
+      "status": "PASS",
+      "startedUtc": "2026-11-24T18:18:22.6498427+00:00",
+      "endedUtc": "2026-11-24T18:18:27.0972481+00:00",
+      "elapsedMs": 5021
+    },
+    {
+      "stage": "components.maven-cache",
+      "status": "REUSED",
+      "startedUtc": "2026-11-24T18:18:27.1128773+00:00",
+      "endedUtc": "2026-11-24T18:18:27.1128773+00:00",
+      "elapsedMs": 0,
+      "reason": "Verified Maven preparation and classpath."
+    },
+    {
+      "stage": "components.maven-compile",
+      "status": "REUSED",
+      "startedUtc": "2026-11-24T18:18:27.1165736+00:00",
+      "endedUtc": "2026-11-24T18:18:27.1165736+00:00",
+      "elapsedMs": 0,
+      "reason": "Verified Maven preparation and classpath."
+    },
+    {
+      "stage": "components.maven-classpath",
+      "status": "REUSED",
+      "startedUtc": "2026-11-24T18:18:27.1192552+00:00",
+      "endedUtc": "2026-11-24T18:18:27.1192552+00:00",
+      "elapsedMs": 0,
+      "reason": "Verified classpath."
+    },
+    {
+      "stage": "components.run.atf-tests-android",
+      "status": "PASS",
+      "startedUtc": "2026-11-24T18:18:27.1715893+00:00",
+      "endedUtc": "2026-11-24T18:18:56.7145989+00:00",
+      "elapsedMs": 40268
+    },
+    {
+      "stage": "components.run.atf-tests-orchestration",
+      "status": "PASS",
+      "startedUtc": "2026-11-24T18:18:56.7302533+00:00",
+      "endedUtc": "2026-11-24T18:20:39.5747109+00:00",
+      "elapsedMs": 117031
+    },
+    {
+      "stage": "components.snapshot-recheck",
+      "status": "PASS",
+      "startedUtc": "2026-11-24T18:20:39.6277783+00:00",
+      "endedUtc": "2026-11-24T18:20:42.5873173+00:00",
+      "elapsedMs": 4142
+    }
+  ]
+}

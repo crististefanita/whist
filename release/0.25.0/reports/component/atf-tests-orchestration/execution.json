@@ -1,0 +1,360 @@
+{
+  "schemaVersion" : 1,
+  "kind" : "live-source-components",
+  "apkQualification" : false,
+  "suite" : "atf.tests.suites.components.AtfOrchestrationComponentSuite",
+  "tests" : 108,
+  "outcomes" : {
+    "PASS" : 108
+  },
+  "coverageErrors" : [ ],
+  "containerFailures" : [ ],
+  "junitIdentitySha256" : "ce169beb65543dfb36289aa3bffd50b39ac29c8ca36b42cb53b8f957d258a405",
+  "invocations" : [ {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfOrchestrationComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.cli.DocumentationGovernanceCliComponentTest]/[method:aSelectedDocumentHasExactlyTheFullScanDiagnosticsForThatFile()]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfOrchestrationComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.cli.DocumentationGovernanceCliComponentTest]/[method:usesTheSameContentAndFeedbackPoliciesOnExplicitFiles()]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfOrchestrationComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.cli.DocumentationGovernanceCliComponentTest]/[method:translationArtifactsHaveTheSameFullAndSelectedDiagnostics()]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfOrchestrationComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.cli.DocumentationGovernanceCliComponentTest]/[method:acceptsSeveralExplicitFilesAndExcludesAnUnselectedDefect()]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfOrchestrationComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.cli.DocumentationGovernanceCliComponentTest]/[method:languageChecksIncludeNonReadmeGuidesAndUppercaseMarkdownExtensions()]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfOrchestrationComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.cli.DocumentationGovernanceCliComponentTest]/[method:rejectsWrongRootsAndMissingOrOutOfScopeFiles()]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfOrchestrationComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.cli.DocumentationGovernanceCliComponentTest]/[method:theStandaloneEntrypointPreservesUnicodePathsFromStdin()]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfOrchestrationComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.browser.runner.BrowserRunnerComponentTest]/[method:launchAndShutdownFailuresPreserveThePrimaryCauseAndCloseOnlyOwnedResources(atf.android.evidence.component.ComponentInputs)]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfOrchestrationComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.browser.runner.BrowserRunnerComponentTest]/[method:failedCaptureBodyAndCleanupCannotMaskTheOriginalOrHideTheNextCase(atf.android.evidence.component.ComponentInputs)]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfOrchestrationComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.browser.runner.BrowserRunnerComponentTest]/[method:ownedLifecyclePreservesOrderingMutedHeadlessOptionsAndResultSchema(atf.android.evidence.component.ComponentInputs)]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfOrchestrationComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.browser.runner.BrowserRunnerComponentTest]/[method:earlyContextFailuresAndJavascriptErrorsCannotBecomePassingCases(atf.android.evidence.component.ComponentInputs)]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfOrchestrationComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.rag.scope.ComponentEvidencePortabilityComponentTest]/[method:androidSdkDoesNotSilentlyFallBackWhenNoMachinePathIsConfigured()]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfOrchestrationComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.rag.scope.ComponentEvidencePortabilityComponentTest]/[method:aMissingEvidenceRootIsCreatedAndACheckoutRootIsRejected()]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfOrchestrationComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.rag.scope.ComponentEvidencePortabilityComponentTest]/[method:temporaryMachinePathsAreNormalizedAcrossCaseAndSlashVariants()]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfOrchestrationComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.rag.scope.ComponentEvidencePortabilityComponentTest]/[method:relativeEvidenceRootIsRejectedInsteadOfResolvingAgainstTheCheckout()]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfOrchestrationComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.rag.scope.ComponentEvidencePortabilityComponentTest]/[method:evidenceAndSdkRootsResolveFromMachineConfiguration()]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfOrchestrationComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.support.SigningSourceIsolationComponentTest]/[method:publicIdentityAndUnexpectedSourcesRemainFingerprintInputs(java.nio.file.Path)]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfOrchestrationComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.support.SigningSourceIsolationComponentTest]/[method:aPublicPathCannotFollowALinkToPrivateMaterial(java.nio.file.Path)]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfOrchestrationComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.support.SigningSourceIsolationComponentTest]/[method:gitReconstructionMatchesACheckoutContainingALocalKey(java.nio.file.Path)]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfOrchestrationComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.support.SigningSourceIsolationComponentTest]/[method:localKeysAndTheirRotationDoNotChangeThePublicSourceSnapshot(java.nio.file.Path)]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfOrchestrationComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.support.SigningSourceIsolationComponentTest]/[method:aForgedManifestCannotCopyPrivateMaterialOrPartiallyExportPublicFiles(java.nio.file.Path)]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfOrchestrationComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.execution.recovery.InvocationRecoveryComponentTest]/[method:aFailedRetryStaysFailedUntilOnlyItsRemainingIdentitiesPass(atf.android.evidence.component.ComponentInputs)]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfOrchestrationComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.execution.recovery.InvocationRecoveryComponentTest]/[method:currentSuiteDiscoveryRefusesMissingAndForeignOriginalIdentities(atf.android.evidence.component.ComponentInputs)]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfOrchestrationComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.execution.recovery.InvocationRecoveryComponentTest]/[method:interruptedStaticPopulationResumesTheMissingBodiesFromDurableCaptures(atf.android.evidence.component.ComponentInputs)]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfOrchestrationComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.execution.recovery.InvocationRecoveryComponentTest]/[method:changedSourcesUnknownPopulationsAndTamperedEvidenceAreRefused(atf.android.evidence.component.ComponentInputs)]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfOrchestrationComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.execution.recovery.InvocationRecoveryComponentTest]/[method:retryRunsOnlyFailedAndAbortedIdsAndRepublishesOriginalComparisons(atf.android.evidence.component.ComponentInputs)]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfOrchestrationComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.execution.recovery.InvocationRecoveryComponentTest]/[method:successfulOwnerReusePreservesItsOriginalSealedAttemptArtifacts(atf.android.evidence.component.ComponentInputs)]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfOrchestrationComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.rag.scope.QualificationLauncherComponentTest]/[method:validTestChangeProofPrecedesSourceCopyAndMavenInBothLaunchers()]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfOrchestrationComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.rag.scope.QualificationLauncherComponentTest]/[method:governancePassesWithAnIsolatedRootAndThePinnedInputManifest()]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfOrchestrationComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.rag.scope.QualificationLauncherComponentTest]/[method:unsupportedProofSelectorsStopBothLaunchersBeforeCopyCacheOrMaven()]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfOrchestrationComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.rag.scope.QualificationLauncherComponentTest]/[method:invalidTestChangeProofStopsBothLaunchersBeforeCopyOrMaven()]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfOrchestrationComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.rag.scope.QualificationLauncherComponentTest]/[method:anEvidenceRootInsideTheCheckoutStopsBeforeMavenOrStaging()]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfOrchestrationComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.rag.scope.QualificationLauncherComponentTest]/[method:aMissingConfiguredEvidenceRootIsReadyBeforeTheMavenChildStarts()]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfOrchestrationComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.rag.scope.QualificationLauncherComponentTest]/[method:aJunctionInTempCannotHideAGitWorktree()]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfOrchestrationComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.rag.scope.QualificationLauncherComponentTest]/[method:checkoutTmpStopsBothLaunchersBeforeStagingOrMaven()]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfOrchestrationComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.rag.scope.QualificationLauncherComponentTest]/[method:governanceLauncherAllowsTheBoundedRagSuiteAndRejectsUnknownSelectorsBeforeStaging()]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfOrchestrationComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.execution.components.ComponentSuiteExecutionComponentTest]/[method:provenanceReceiptHashesTheExactJsonFileBytes()]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfOrchestrationComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.execution.proofs.StaticProofRecoveryComponentTest]/[method:foreignReviewSelectionCompilerOrToolchainCannotReuseAProof(atf.android.evidence.component.ComponentInputs)]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfOrchestrationComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.execution.proofs.StaticProofRecoveryComponentTest]/[method:interruptionResumesOnlyMissingBodiesFromTheKnownStaticPopulation(atf.android.evidence.component.ComponentInputs)]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfOrchestrationComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.execution.proofs.StaticProofRecoveryComponentTest]/[method:unresolvedRootCauseRemainsAFailedProof(atf.android.evidence.component.ComponentInputs)]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfOrchestrationComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.execution.proofs.StaticProofRecoveryComponentTest]/[method:failedProofRetriesOnlyItsFailedBodyAndRetainsOriginalComparisons(atf.android.evidence.component.ComponentInputs)]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfOrchestrationComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.execution.proofs.StaticProofRecoveryComponentTest]/[method:alteredCapturesAndOriginalReportsCannotAuthorizeReuse(atf.android.evidence.component.ComponentInputs)]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfOrchestrationComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.rag.scope.ComponentEvidenceScopeComponentTest]/[method:verboseNodeRunDrainsBothStreamsFromTheSelectedDirectory()]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfOrchestrationComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.rag.scope.ComponentEvidenceScopeComponentTest]/[method:nonZeroNodeExitKeepsTheChildDiagnostic()]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfOrchestrationComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.rag.scope.ComponentEvidenceScopeComponentTest]/[method:gradleOnlyChangesReuseCompilationWithoutReusingControlVerdicts(atf.android.evidence.component.ComponentInputs)]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfOrchestrationComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.rag.scope.ComponentEvidenceScopeComponentTest]/[method:staticProofResumeKeepsItsOriginalControlAndVerifiedCompilation(atf.android.evidence.component.ComponentInputs)]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfOrchestrationComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.rag.scope.ComponentEvidenceScopeComponentTest]/[method:editorialChangesReuseVerifiedMavenCompilationAndKeepFreshExecutionInputs()]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfOrchestrationComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.rag.scope.ComponentEvidenceScopeComponentTest]/[method:githubPublicationResumesByIdAndVerifiesDownloadsBeforeRotation()]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfOrchestrationComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.rag.scope.ComponentEvidenceScopeComponentTest]/[method:nodeContractTestsKeepReuseClassificationInsideTheRealBuildBoundary()]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfOrchestrationComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.rag.scope.ComponentEvidenceScopeComponentTest]/[method:sharedDependenciesAndUnknownInputsCannotReuseTheirConsumers()]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfOrchestrationComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.rag.scope.ComponentEvidenceScopeComponentTest]/[method:componentResumeImportsOnlyVerifiedEvidenceFromTheInterruptedSnapshot()]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfOrchestrationComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.rag.scope.ComponentEvidenceScopeComponentTest]/[method:failedControlsCannotPromoteAProof(atf.android.evidence.component.ComponentInputs)]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfOrchestrationComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.rag.scope.ComponentEvidenceScopeComponentTest]/[method:documentationDriftReadmitsOnlyUnchangedOwnersAndPreservesRejectedEvidence(atf.android.evidence.component.ComponentInputs)]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfOrchestrationComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.rag.scope.ComponentEvidenceScopeComponentTest]/[method:tamperedCompilerCannotQualifyProofGeneration(atf.android.evidence.component.ComponentInputs)]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfOrchestrationComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.rag.scope.ComponentEvidenceScopeComponentTest]/[method:modernCompilerPointersAndLegacyInputsPreserveSealsAndExplicitRefusals(atf.android.evidence.component.ComponentInputs)]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfOrchestrationComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.rag.scope.ComponentEvidenceScopeComponentTest]/[method:changedCatalogKeepsCompilerIdentityAndExecutesControlsWithFreshContext(atf.android.evidence.component.ComponentInputs)]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfOrchestrationComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.rag.scope.ComponentEvidenceScopeComponentTest]/[method:borrowedCompilerDoesNotCacheControlExecution(atf.android.evidence.component.ComponentInputs)]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfOrchestrationComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.rag.scope.ComponentEvidenceScopeComponentTest]/[method:incompleteControlsCannotPromoteAProof(atf.android.evidence.component.ComponentInputs)]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfOrchestrationComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.rag.scope.ComponentEvidenceScopeComponentTest]/[method:localReleaseSyncKeepsOnlyQualifiedPublishedBytesAndRejectsLocalEdits()]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfOrchestrationComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.rag.scope.ComponentEvidenceScopeComponentTest]/[method:disposablePackageRegistrationReconcilesObservedBytesAndPreservesTheOriginalCause()]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfOrchestrationComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.rag.scope.ComponentEvidenceScopeComponentTest]/[method:compilerInventoriesKeepPayloadsAndRejectInvalidSourceIdentities()]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfOrchestrationComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.rag.scope.ComponentEvidenceScopeComponentTest]/[method:literalMavenRootsKeepSharedProvidersAndRejectUnknownOrUnboundRecipes(atf.android.evidence.component.ComponentInputs)]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfOrchestrationComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.execution.components.TestChangeBatchComponentTest]/[method:failedControlDoesNotStopTheRemainingControlsOrPublishTheirProofs()]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfOrchestrationComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.execution.components.TestChangeBatchComponentTest]/[method:changedReviewPreventsPublicationOfPassingControls()]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfOrchestrationComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.execution.components.TestChangeBatchComponentTest]/[method:changedSourcePreventsPublicationOfPassingControls()]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfOrchestrationComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.execution.components.TestChangeBatchComponentTest]/[method:publishesBothControlsAfterCheckingTheSnapshot()]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfOrchestrationComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.execution.jvm.ComponentJvmLauncherComponentTest]/[method:theSuiteNonzeroExitIsNotConvertedToSuccess()]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfOrchestrationComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.execution.jvm.ComponentJvmLauncherComponentTest]/[method:whitespaceGlobalOptionsAreStillRejected()]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfOrchestrationComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.execution.jvm.ComponentJvmLauncherComponentTest]/[method:scopeBelongsToTheSuiteAndChildBytesStreamsAndExitRemainOriginal()]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfOrchestrationComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.rag.scope.io.SnapshotIoComponentTest]/[method:byteInventoriesAndNamedSnapshotPhasesRemainEquivalent(atf.android.evidence.component.ComponentInputs)]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfOrchestrationComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.rag.scope.io.SnapshotIoComponentTest]/[method:sameMetadataDriftCorruptionAndIndirectPathsCannotQualify(atf.android.evidence.component.ComponentInputs)]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfOrchestrationComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.support.SourceInventoryContractTest]/[method:emptyEscapingAndUnresolvedConfiguredRootsCannotHideSources(java.nio.file.Path)]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfOrchestrationComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.support.SourceInventoryContractTest]/[method:mavenDiscoveryHonoursCustomRootsAndKeepsOutputNamedSourcePackages(java.nio.file.Path)]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfOrchestrationComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.support.SourceInventoryContractTest]/[method:additionalRootMetadataCannotBeCoercedOrAssignedToAnotherModule(java.nio.file.Path)]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfOrchestrationComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.support.SourceInventoryContractTest]/[method:duplicatedOrOverlappingRootsCannotChangeSourceOwnership(java.nio.file.Path)]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfOrchestrationComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.support.SourceInventoryContractTest]/[method:projectInventoryKeepsDeclaredRootsAndNestedModuleOwnership(java.nio.file.Path)]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfOrchestrationComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.support.LauncherSourceInventoryComponentTest]/[method:aDeclaredBuildRootWithoutItsSettingsIsRefused(java.nio.file.Path)]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfOrchestrationComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.support.LauncherSourceInventoryComponentTest]/[method:outputBoundariesKeepLegalPackagesAndDetectSourceChanges(java.nio.file.Path)]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfOrchestrationComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.support.LauncherSourceInventoryComponentTest]/[method:gitWorktreePointerDoesNotEnterTheSourceFingerprint(java.nio.file.Path)]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfOrchestrationComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.support.LauncherSourceInventoryComponentTest]/[method:alternateGradleEntriesExcludeOnlyTheirDeclaredGeneratedBoundaries(java.nio.file.Path)]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfOrchestrationComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.support.LauncherSourceInventoryComponentTest]/[method:liveManifestCoversEveryDeclaredJavaSourceAndExtensionRegistration(java.nio.file.Path)]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfOrchestrationComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.AtfRagGovernanceSuiteContractTest]/[method:theTargetedEntryPointSelectsOnlyOfflineReleaseGovernance()]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfOrchestrationComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.browser.runner.WhistBrowserChecksComponentTest]/[method:invalidSelectionsDuplicateOwnersAndInterruptedFlowsCannotInventSuccessfulCases(atf.android.evidence.component.ComponentInputs)]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfOrchestrationComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.browser.runner.WhistBrowserChecksComponentTest]/[method:offlineComponentsAndStandaloneDiagnosticsUseTheSamePinnedClientWithoutBundledBrowsers(atf.android.evidence.component.ComponentInputs)]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfOrchestrationComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.browser.runner.WhistBrowserChecksComponentTest]/[method:everyDiagnosticSelectionRetainsItsOrderedCaseIdentitiesAndViewports(atf.android.evidence.component.ComponentInputs)]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfOrchestrationComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.browser.runner.WhistBrowserChecksComponentTest]/[method:aClosedWriterCannotCreditLaterRowsOrRewritePublishedEvidence(atf.android.evidence.component.ComponentInputs)]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfOrchestrationComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.support.JvmInventoryCliComponentTest]/[method:cohesionExceptionsRequireAnExactOversizedInventory(java.nio.file.Path)]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfOrchestrationComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.support.JvmInventoryCliComponentTest]/[method:rejectsMissingAndEscapingRootsAndMissingModule(java.nio.file.Path)]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfOrchestrationComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.support.JvmInventoryCliComponentTest]/[method:localDiagnosticsAndCliMatchAndOnlyExactCurrentAdaptersAreAccepted(java.nio.file.Path)]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfOrchestrationComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.support.JvmInventoryCliComponentTest]/[method:rejectsOverlappingRootsBeforeAnyJavaFileCanBeAssignedTwice(java.nio.file.Path)]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfOrchestrationComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.support.JvmInventoryCliComponentTest]/[method:externalCheckoutReportsLiteralMavenAndExplicitGradleSets(java.nio.file.Path)]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfOrchestrationComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.cli.DocumentationGovernanceCliComponentTest]/[test-template:localizedHeadingFailuresHaveTheSameFullAndSelectedDiagnostics(java.lang.String, java.lang.String, java.lang.String)]/[test-template-invocation:#1]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfOrchestrationComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.cli.DocumentationGovernanceCliComponentTest]/[test-template:localizedHeadingFailuresHaveTheSameFullAndSelectedDiagnostics(java.lang.String, java.lang.String, java.lang.String)]/[test-template-invocation:#2]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfOrchestrationComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.rag.scope.QualificationLauncherComponentTest]/[test-template:aBuildEditAfterPlanningStopsBothLaunchers(java.lang.String)]/[test-template-invocation:#1]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfOrchestrationComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.rag.scope.QualificationLauncherComponentTest]/[test-template:aBuildEditAfterPlanningStopsBothLaunchers(java.lang.String)]/[test-template-invocation:#2]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfOrchestrationComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.rag.scope.QualificationLauncherComponentTest]/[test-template:driftInReleaseEvidenceInvalidatesAnOtherwisePassingRun(java.lang.String, java.lang.String)]/[test-template-invocation:#1]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfOrchestrationComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.rag.scope.QualificationLauncherComponentTest]/[test-template:driftInReleaseEvidenceInvalidatesAnOtherwisePassingRun(java.lang.String, java.lang.String)]/[test-template-invocation:#2]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfOrchestrationComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.rag.scope.QualificationLauncherComponentTest]/[test-template:driftInReleaseEvidenceInvalidatesAnOtherwisePassingRun(java.lang.String, java.lang.String)]/[test-template-invocation:#3]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfOrchestrationComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.rag.scope.QualificationLauncherComponentTest]/[test-template:anInvalidArtifactStopsTheRealLauncherBeforeMaven(java.lang.String, java.lang.String, java.lang.String)]/[test-template-invocation:#1]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfOrchestrationComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.rag.scope.QualificationLauncherComponentTest]/[test-template:anInvalidArtifactStopsTheRealLauncherBeforeMaven(java.lang.String, java.lang.String, java.lang.String)]/[test-template-invocation:#2]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfOrchestrationComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.rag.scope.QualificationLauncherComponentTest]/[test-template:anInvalidArtifactStopsTheRealLauncherBeforeMaven(java.lang.String, java.lang.String, java.lang.String)]/[test-template-invocation:#3]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfOrchestrationComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.rag.scope.QualificationLauncherComponentTest]/[test-template:anInvalidArtifactStopsTheRealLauncherBeforeMaven(java.lang.String, java.lang.String, java.lang.String)]/[test-template-invocation:#4]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfOrchestrationComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.rag.scope.QualificationLauncherComponentTest]/[test-template:anInvalidArtifactStopsTheRealLauncherBeforeMaven(java.lang.String, java.lang.String, java.lang.String)]/[test-template-invocation:#5]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfOrchestrationComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.execution.jvm.ComponentJvmLauncherComponentTest]/[test-template:inheritedOptionsStopTheRealLauncherBeforeOutputPreparationOrMaven(java.lang.String)]/[test-template-invocation:#1]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfOrchestrationComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.execution.jvm.ComponentJvmLauncherComponentTest]/[test-template:inheritedOptionsStopTheRealLauncherBeforeOutputPreparationOrMaven(java.lang.String)]/[test-template-invocation:#2]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfOrchestrationComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.execution.jvm.ComponentJvmLauncherComponentTest]/[test-template:inheritedOptionsStopTheRealLauncherBeforeOutputPreparationOrMaven(java.lang.String)]/[test-template-invocation:#3]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfOrchestrationComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.execution.components.ComponentAggregateAcceptanceTest]/[test-template:realParameterizedFailuresAndAbortsHaveExactlyOneCanonicalOwner(java.lang.String)]/[test-template-invocation:#1]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfOrchestrationComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.execution.components.ComponentAggregateAcceptanceTest]/[test-template:realParameterizedFailuresAndAbortsHaveExactlyOneCanonicalOwner(java.lang.String)]/[test-template-invocation:#2]",
+    "outcome" : "PASS"
+  } ],
+  "invocationCheckpointSha256" : "1b7edee729b793a40b3c33f7058c4987224214141f1b2051fa5c2bc20a4b6d34",
+  "recovery" : {
+    "schemaVersion" : 1,
+    "reusedInvocationIds" : [ "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfOrchestrationComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.cli.DocumentationGovernanceCliComponentTest]/[method:aSelectedDocumentHasExactlyTheFullScanDiagnosticsForThatFile()]", "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfOrchestrationComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.cli.DocumentationGovernanceCliComponentTest]/[method:usesTheSameContentAndFeedbackPoliciesOnExplicitFiles()]", "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfOrchestrationComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.cli.DocumentationGovernanceCliComponentTest]/[method:translationArtifactsHaveTheSameFullAndSelectedDiagnostics()]", "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfOrchestrationComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.cli.DocumentationGovernanceCliComponentTest]/[method:acceptsSeveralExplicitFilesAndExcludesAnUnselectedDefect()]", "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfOrchestrationComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.cli.DocumentationGovernanceCliComponentTest]/[method:languageChecksIncludeNonReadmeGuidesAndUppercaseMarkdownExtensions()]", "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfOrchestrationComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.cli.DocumentationGovernanceCliComponentTest]/[method:rejectsWrongRootsAndMissingOrOutOfScopeFiles()]", "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfOrchestrationComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.cli.DocumentationGovernanceCliComponentTest]/[method:theStandaloneEntrypointPreservesUnicodePathsFromStdin()]", "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfOrchestrationComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.browser.runner.BrowserRunnerComponentTest]/[method:launchAndShutdownFailuresPreserveThePrimaryCauseAndCloseOnlyOwnedResources(atf.android.evidence.component.ComponentInputs)]", "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfOrchestrationComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.browser.runner.BrowserRunnerComponentTest]/[method:failedCaptureBodyAndCleanupCannotMaskTheOriginalOrHideTheNextCase(atf.android.evidence.component.ComponentInputs)]", "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfOrchestrationComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.browser.runner.BrowserRunnerComponentTest]/[method:ownedLifecyclePreservesOrderingMutedHeadlessOptionsAndResultSchema(atf.android.evidence.component.ComponentInputs)]", "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfOrchestrationComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.browser.runner.BrowserRunnerComponentTest]/[method:earlyContextFailuresAndJavascriptErrorsCannotBecomePassingCases(atf.android.evidence.component.ComponentInputs)]", "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfOrchestrationComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.rag.scope.ComponentEvidencePortabilityComponentTest]/[method:androidSdkDoesNotSilentlyFallBackWhenNoMachinePathIsConfigured()]", "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfOrchestrationComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.rag.scope.ComponentEvidencePortabilityComponentTest]/[method:aMissingEvidenceRootIsCreatedAndACheckoutRootIsRejected()]", "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfOrchestrationComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.rag.scope.ComponentEvidencePortabilityComponentTest]/[method:temporaryMachinePathsAreNormalizedAcrossCaseAndSlashVariants()]", "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfOrchestrationComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.rag.scope.ComponentEvidencePortabilityComponentTest]/[method:relativeEvidenceRootIsRejectedInsteadOfResolvingAgainstTheCheckout()]", "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfOrchestrationComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.rag.scope.ComponentEvidencePortabilityComponentTest]/[method:evidenceAndSdkRootsResolveFromMachineConfiguration()]", "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfOrchestrationComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.support.SigningSourceIsolationComponentTest]/[method:publicIdentityAndUnexpectedSourcesRemainFingerprintInputs(java.nio.file.Path)]", "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfOrchestrationComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.support.SigningSourceIsolationComponentTest]/[method:aPublicPathCannotFollowALinkToPrivateMaterial(java.nio.file.Path)]", "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfOrchestrationComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.support.SigningSourceIsolationComponentTest]/[method:gitReconstructionMatchesACheckoutContainingALocalKey(java.nio.file.Path)]", "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfOrchestrationComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.support.SigningSourceIsolationComponentTest]/[method:localKeysAndTheirRotationDoNotChangeThePublicSourceSnapshot(java.nio.file.Path)]", "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfOrchestrationComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.support.SigningSourceIsolationComponentTest]/[method:aForgedManifestCannotCopyPrivateMaterialOrPartiallyExportPublicFiles(java.nio.file.Path)]", "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfOrchestrationComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.execution.recovery.InvocationRecoveryComponentTest]/[method:aFailedRetryStaysFailedUntilOnlyItsRemainingIdentitiesPass(atf.android.evidence.component.ComponentInputs)]", "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfOrchestrationComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.execution.recovery.InvocationRecoveryComponentTest]/[method:currentSuiteDiscoveryRefusesMissingAndForeignOriginalIdentities(atf.android.evidence.component.ComponentInputs)]", "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfOrchestrationComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.execution.recovery.InvocationRecoveryComponentTest]/[method:interruptedStaticPopulationResumesTheMissingBodiesFromDurableCaptures(atf.android.evidence.component.ComponentInputs)]", "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfOrchestrationComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.execution.recovery.InvocationRecoveryComponentTest]/[method:changedSourcesUnknownPopulationsAndTamperedEvidenceAreRefused(atf.android.evidence.component.ComponentInputs)]", "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfOrchestrationComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.execution.recovery.InvocationRecoveryComponentTest]/[method:retryRunsOnlyFailedAndAbortedIdsAndRepublishesOriginalComparisons(atf.android.evidence.component.ComponentInputs)]", "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfOrchestrationComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.execution.recovery.InvocationRecoveryComponentTest]/[method:successfulOwnerReusePreservesItsOriginalSealedAttemptArtifacts(atf.android.evidence.component.ComponentInputs)]", "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfOrchestrationComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.rag.scope.QualificationLauncherComponentTest]/[method:governancePassesWithAnIsolatedRootAndThePinnedInputManifest()]", "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfOrchestrationComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.rag.scope.QualificationLauncherComponentTest]/[method:unsupportedProofSelectorsStopBothLaunchersBeforeCopyCacheOrMaven()]", "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfOrchestrationComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.rag.scope.QualificationLauncherComponentTest]/[method:invalidTestChangeProofStopsBothLaunchersBeforeCopyOrMaven()]", "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfOrchestrationComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.rag.scope.QualificationLauncherComponentTest]/[method:anEvidenceRootInsideTheCheckoutStopsBeforeMavenOrStaging()]", "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfOrchestrationComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.rag.scope.QualificationLauncherComponentTest]/[method:aMissingConfiguredEvidenceRootIsReadyBeforeTheMavenChildStarts()]", "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfOrchestrationComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.rag.scope.QualificationLauncherComponentTest]/[method:aJunctionInTempCannotHideAGitWorktree()]", "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfOrchestrationComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.rag.scope.QualificationLauncherComponentTest]/[method:checkoutTmpStopsBothLaunchersBeforeStagingOrMaven()]", "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfOrchestrationComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.rag.scope.QualificationLauncherComponentTest]/[method:governanceLauncherAllowsTheBoundedRagSuiteAndRejectsUnknownSelectorsBeforeStaging()]", "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfOrchestrationComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.execution.components.ComponentSuiteExecutionComponentTest]/[method:provenanceReceiptHashesTheExactJsonFileBytes()]", "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfOrchestrationComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.execution.proofs.StaticProofRecoveryComponentTest]/[method:foreignReviewSelectionCompilerOrToolchainCannotReuseAProof(atf.android.evidence.component.ComponentInputs)]", "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfOrchestrationComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.execution.proofs.StaticProofRecoveryComponentTest]/[method:interruptionResumesOnlyMissingBodiesFromTheKnownStaticPopulation(atf.android.evidence.component.ComponentInputs)]", "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfOrchestrationComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.execution.proofs.StaticProofRecoveryComponentTest]/[method:unresolvedRootCauseRemainsAFailedProof(atf.android.evidence.component.ComponentInputs)]", "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfOrchestrationComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.execution.proofs.StaticProofRecoveryComponentTest]/[method:failedProofRetriesOnlyItsFailedBodyAndRetainsOriginalComparisons(atf.android.evidence.component.ComponentInputs)]", "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfOrchestrationComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.execution.proofs.StaticProofRecoveryComponentTest]/[method:alteredCapturesAndOriginalReportsCannotAuthorizeReuse(atf.android.evidence.component.ComponentInputs)]", "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfOrchestrationComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.rag.scope.ComponentEvidenceScopeComponentTest]/[method:verboseNodeRunDrainsBothStreamsFromTheSelectedDirectory()]", "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfOrchestrationComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.rag.scope.ComponentEvidenceScopeComponentTest]/[method:nonZeroNodeExitKeepsTheChildDiagnostic()]", "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfOrchestrationComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.rag.scope.ComponentEvidenceScopeComponentTest]/[method:gradleOnlyChangesReuseCompilationWithoutReusingControlVerdicts(atf.android.evidence.component.ComponentInputs)]", "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfOrchestrationComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.rag.scope.ComponentEvidenceScopeComponentTest]/[method:staticProofResumeKeepsItsOriginalControlAndVerifiedCompilation(atf.android.evidence.component.ComponentInputs)]", "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfOrchestrationComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.rag.scope.ComponentEvidenceScopeComponentTest]/[method:editorialChangesReuseVerifiedMavenCompilationAndKeepFreshExecutionInputs()]", "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfOrchestrationComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.rag.scope.ComponentEvidenceScopeComponentTest]/[method:githubPublicationResumesByIdAndVerifiesDownloadsBeforeRotation()]", "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfOrchestrationComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.rag.scope.ComponentEvidenceScopeComponentTest]/[method:nodeContractTestsKeepReuseClassificationInsideTheRealBuildBoundary()]", "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfOrchestrationComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.rag.scope.ComponentEvidenceScopeComponentTest]/[method:sharedDependenciesAndUnknownInputsCannotReuseTheirConsumers()]", "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfOrchestrationComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.rag.scope.ComponentEvidenceScopeComponentTest]/[method:componentResumeImportsOnlyVerifiedEvidenceFromTheInterruptedSnapshot()]", "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfOrchestrationComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.rag.scope.ComponentEvidenceScopeComponentTest]/[method:failedControlsCannotPromoteAProof(atf.android.evidence.component.ComponentInputs)]", "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfOrchestrationComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.rag.scope.ComponentEvidenceScopeComponentTest]/[method:tamperedCompilerCannotQualifyProofGeneration(atf.android.evidence.component.ComponentInputs)]", "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfOrchestrationComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.rag.scope.ComponentEvidenceScopeComponentTest]/[method:modernCompilerPointersAndLegacyInputsPreserveSealsAndExplicitRefusals(atf.android.evidence.component.ComponentInputs)]", "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfOrchestrationComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.rag.scope.ComponentEvidenceScopeComponentTest]/[method:changedCatalogKeepsCompilerIdentityAndExecutesControlsWithFreshContext(atf.android.evidence.component.ComponentInputs)]", "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfOrchestrationComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.rag.scope.ComponentEvidenceScopeComponentTest]/[method:borrowedCompilerDoesNotCacheControlExecution(atf.android.evidence.component.ComponentInputs)]", "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfOrchestrationComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.rag.scope.ComponentEvidenceScopeComponentTest]/[method:incompleteControlsCannotPromoteAProof(atf.android.evidence.component.ComponentInputs)]", "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfOrchestrationComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.rag.scope.ComponentEvidenceScopeComponentTest]/[method:localReleaseSyncKeepsOnlyQualifiedPublishedBytesAndRejectsLocalEdits()]", "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfOrchestrationComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.rag.scope.ComponentEvidenceScopeComponentTest]/[method:disposablePackageRegistrationReconcilesObservedBytesAndPreservesTheOriginalCause()]", "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfOrchestrationComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.rag.scope.ComponentEvidenceScopeComponentTest]/[method:compilerInventoriesKeepPayloadsAndRejectInvalidSourceIdentities()]", "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfOrchestrationComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.rag.scope.ComponentEvidenceScopeComponentTest]/[method:literalMavenRootsKeepSharedProvidersAndRejectUnknownOrUnboundRecipes(atf.android.evidence.component.ComponentInputs)]", "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfOrchestrationComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.execution.components.TestChangeBatchComponentTest]/[method:failedControlDoesNotStopTheRemainingControlsOrPublishTheirProofs()]", "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfOrchestrationComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.execution.components.TestChangeBatchComponentTest]/[method:changedReviewPreventsPublicationOfPassingControls()]", "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfOrchestrationComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.execution.components.TestChangeBatchComponentTest]/[method:changedSourcePreventsPublicationOfPassingControls()]", "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfOrchestrationComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.execution.components.TestChangeBatchComponentTest]/[method:publishesBothControlsAfterCheckingTheSnapshot()]", "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfOrchestrationComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.execution.jvm.ComponentJvmLauncherComponentTest]/[method:theSuiteNonzeroExitIsNotConvertedToSuccess()]", "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfOrchestrationComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.execution.jvm.ComponentJvmLauncherComponentTest]/[method:whitespaceGlobalOptionsAreStillRejected()]", "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfOrchestrationComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.execution.jvm.ComponentJvmLauncherComponentTest]/[method:scopeBelongsToTheSuiteAndChildBytesStreamsAndExitRemainOriginal()]", "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfOrchestrationComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.rag.scope.io.SnapshotIoComponentTest]/[method:byteInventoriesAndNamedSnapshotPhasesRemainEquivalent(atf.android.evidence.component.ComponentInputs)]", "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfOrchestrationComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.rag.scope.io.SnapshotIoComponentTest]/[method:sameMetadataDriftCorruptionAndIndirectPathsCannotQualify(atf.android.evidence.component.ComponentInputs)]", "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfOrchestrationComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.support.SourceInventoryContractTest]/[method:emptyEscapingAndUnresolvedConfiguredRootsCannotHideSources(java.nio.file.Path)]", "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfOrchestrationComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.support.SourceInventoryContractTest]/[method:mavenDiscoveryHonoursCustomRootsAndKeepsOutputNamedSourcePackages(java.nio.file.Path)]", "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfOrchestrationComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.support.SourceInventoryContractTest]/[method:additionalRootMetadataCannotBeCoercedOrAssignedToAnotherModule(java.nio.file.Path)]", "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfOrchestrationComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.support.SourceInventoryContractTest]/[method:duplicatedOrOverlappingRootsCannotChangeSourceOwnership(java.nio.file.Path)]", "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfOrchestrationComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.support.SourceInventoryContractTest]/[method:projectInventoryKeepsDeclaredRootsAndNestedModuleOwnership(java.nio.file.Path)]", "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfOrchestrationComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.support.LauncherSourceInventoryComponentTest]/[method:aDeclaredBuildRootWithoutItsSettingsIsRefused(java.nio.file.Path)]", "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfOrchestrationComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.support.LauncherSourceInventoryComponentTest]/[method:outputBoundariesKeepLegalPackagesAndDetectSourceChanges(java.nio.file.Path)]", "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfOrchestrationComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.support.LauncherSourceInventoryComponentTest]/[method:gitWorktreePointerDoesNotEnterTheSourceFingerprint(java.nio.file.Path)]", "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfOrchestrationComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.support.LauncherSourceInventoryComponentTest]/[method:alternateGradleEntriesExcludeOnlyTheirDeclaredGeneratedBoundaries(java.nio.file.Path)]", "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfOrchestrationComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.support.LauncherSourceInventoryComponentTest]/[method:liveManifestCoversEveryDeclaredJavaSourceAndExtensionRegistration(java.nio.file.Path)]", "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfOrchestrationComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.AtfRagGovernanceSuiteContractTest]/[method:theTargetedEntryPointSelectsOnlyOfflineReleaseGovernance()]", "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfOrchestrationComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.browser.runner.WhistBrowserChecksComponentTest]/[method:invalidSelectionsDuplicateOwnersAndInterruptedFlowsCannotInventSuccessfulCases(atf.android.evidence.component.ComponentInputs)]", "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfOrchestrationComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.browser.runner.WhistBrowserChecksComponentTest]/[method:offlineComponentsAndStandaloneDiagnosticsUseTheSamePinnedClientWithoutBundledBrowsers(atf.android.evidence.component.ComponentInputs)]", "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfOrchestrationComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.browser.runner.WhistBrowserChecksComponentTest]/[method:everyDiagnosticSelectionRetainsItsOrderedCaseIdentitiesAndViewports(atf.android.evidence.component.ComponentInputs)]", "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfOrchestrationComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.browser.runner.WhistBrowserChecksComponentTest]/[method:aClosedWriterCannotCreditLaterRowsOrRewritePublishedEvidence(atf.android.evidence.component.ComponentInputs)]", "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfOrchestrationComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.support.JvmInventoryCliComponentTest]/[method:cohesionExceptionsRequireAnExactOversizedInventory(java.nio.file.Path)]", "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfOrchestrationComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.support.JvmInventoryCliComponentTest]/[method:rejectsMissingAndEscapingRootsAndMissingModule(java.nio.file.Path)]", "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfOrchestrationComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.support.JvmInventoryCliComponentTest]/[method:localDiagnosticsAndCliMatchAndOnlyExactCurrentAdaptersAreAccepted(java.nio.file.Path)]", "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfOrchestrationComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.support.JvmInventoryCliComponentTest]/[method:rejectsOverlappingRootsBeforeAnyJavaFileCanBeAssignedTwice(java.nio.file.Path)]", "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfOrchestrationComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.support.JvmInventoryCliComponentTest]/[method:externalCheckoutReportsLiteralMavenAndExplicitGradleSets(java.nio.file.Path)]", "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfOrchestrationComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.cli.DocumentationGovernanceCliComponentTest]/[test-template:localizedHeadingFailuresHaveTheSameFullAndSelectedDiagnostics(java.lang.String, java.lang.String, java.lang.String)]/[test-template-invocation:#1]", "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfOrchestrationComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.cli.DocumentationGovernanceCliComponentTest]/[test-template:localizedHeadingFailuresHaveTheSameFullAndSelectedDiagnostics(java.lang.String, java.lang.String, java.lang.String)]/[test-template-invocation:#2]", "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfOrchestrationComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.rag.scope.QualificationLauncherComponentTest]/[test-template:aBuildEditAfterPlanningStopsBothLaunchers(java.lang.String)]/[test-template-invocation:#1]", "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfOrchestrationComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.rag.scope.QualificationLauncherComponentTest]/[test-template:aBuildEditAfterPlanningStopsBothLaunchers(java.lang.String)]/[test-template-invocation:#2]", "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfOrchestrationComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.rag.scope.QualificationLauncherComponentTest]/[test-template:driftInReleaseEvidenceInvalidatesAnOtherwisePassingRun(java.lang.String, java.lang.String)]/[test-template-invocation:#1]", "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfOrchestrationComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.rag.scope.QualificationLauncherComponentTest]/[test-template:driftInReleaseEvidenceInvalidatesAnOtherwisePassingRun(java.lang.String, java.lang.String)]/[test-template-invocation:#2]", "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfOrchestrationComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.rag.scope.QualificationLauncherComponentTest]/[test-template:driftInReleaseEvidenceInvalidatesAnOtherwisePassingRun(java.lang.String, java.lang.String)]/[test-template-invocation:#3]", "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfOrchestrationComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.rag.scope.QualificationLauncherComponentTest]/[test-template:anInvalidArtifactStopsTheRealLauncherBeforeMaven(java.lang.String, java.lang.String, java.lang.String)]/[test-template-invocation:#1]", "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfOrchestrationComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.rag.scope.QualificationLauncherComponentTest]/[test-template:anInvalidArtifactStopsTheRealLauncherBeforeMaven(java.lang.String, java.lang.String, java.lang.String)]/[test-template-invocation:#2]", "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfOrchestrationComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.rag.scope.QualificationLauncherComponentTest]/[test-template:anInvalidArtifactStopsTheRealLauncherBeforeMaven(java.lang.String, java.lang.String, java.lang.String)]/[test-template-invocation:#3]", "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfOrchestrationComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.rag.scope.QualificationLauncherComponentTest]/[test-template:anInvalidArtifactStopsTheRealLauncherBeforeMaven(java.lang.String, java.lang.String, java.lang.String)]/[test-template-invocation:#4]", "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfOrchestrationComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.rag.scope.QualificationLauncherComponentTest]/[test-template:anInvalidArtifactStopsTheRealLauncherBeforeMaven(java.lang.String, java.lang.String, java.lang.String)]/[test-template-invocation:#5]", "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfOrchestrationComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.execution.jvm.ComponentJvmLauncherComponentTest]/[test-template:inheritedOptionsStopTheRealLauncherBeforeOutputPreparationOrMaven(java.lang.String)]/[test-template-invocation:#1]", "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfOrchestrationComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.execution.jvm.ComponentJvmLauncherComponentTest]/[test-template:inheritedOptionsStopTheRealLauncherBeforeOutputPreparationOrMaven(java.lang.String)]/[test-template-invocation:#2]", "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfOrchestrationComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.execution.jvm.ComponentJvmLauncherComponentTest]/[test-template:inheritedOptionsStopTheRealLauncherBeforeOutputPreparationOrMaven(java.lang.String)]/[test-template-invocation:#3]", "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfOrchestrationComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.execution.components.ComponentAggregateAcceptanceTest]/[test-template:realParameterizedFailuresAndAbortsHaveExactlyOneCanonicalOwner(java.lang.String)]/[test-template-invocation:#1]", "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfOrchestrationComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.execution.components.ComponentAggregateAcceptanceTest]/[test-template:realParameterizedFailuresAndAbortsHaveExactlyOneCanonicalOwner(java.lang.String)]/[test-template-invocation:#2]" ],
+    "executedInvocationIds" : [ "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfOrchestrationComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.rag.scope.QualificationLauncherComponentTest]/[method:validTestChangeProofPrecedesSourceCopyAndMavenInBothLaunchers()]", "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfOrchestrationComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.rag.scope.ComponentEvidenceScopeComponentTest]/[method:documentationDriftReadmitsOnlyUnchangedOwnersAndPreservesRejectedEvidence(atf.android.evidence.component.ComponentInputs)]" ],
+    "originalCheckpointSha256" : "bdef798daa1c7be8c179d3062c1a859e80d9e31aaf4b3b1237fb6506645895d6",
+    "artifacts" : [ {
+      "path" : "attempts/original-report.html",
+      "sha256" : "25650f680d9a89572347e0a7cc47d77946116d8057aa08f206f05caf5b5fc546"
+    }, {
+      "path" : "attempts/retry-report.html",
+      "sha256" : "5ab4cd5ade3bf511864d6def979c9db481f8debb6d428cf9d23546afad5f431b"
+    }, {
+      "path" : "attempts/original-checkpoint.json",
+      "sha256" : "bdef798daa1c7be8c179d3062c1a859e80d9e31aaf4b3b1237fb6506645895d6"
+    }, {
+      "path" : "README.md",
+      "sha256" : "89a507f8a565bc8ec1471b274221ea1eb8def7919691cd068ef2d3216a79ad8b"
+    } ]
+  },
+  "provenanceSha256" : "fa09730a2079f2c7b27d8e15d0f4191f341e2707ffc5245b29c26208dc3fdacc",
+  "reportSha256" : "fb9ccd88a5e849aef1ba674db29abe159014ffb943959d6b2315d0d589d11626"
+}

@@ -1,0 +1,12 @@
+{
+  "schemaVersion": 1,
+  "recordedAtUtc": "2026-11-24T18:55:44.637Z",
+  "canonicalReport": "reports/component/atf-tests/component-report.html",
+  "canonicalReportSha256": "1a147664759cd340910505d7e6def45c6b179bed2faccef5e0ea24bf473ae6df",
+  "automatedContracts": "reports/component/atf-tests-reporting/component-report.html",
+  "interactiveReview": {
+    "status": "NOT_RUN",
+    "browser": "Browser MCP",
+    "reason": "The browser URL policy denied the file protocol. No alternate surface or proxy was used to open the blocked local report."
+  }
+}

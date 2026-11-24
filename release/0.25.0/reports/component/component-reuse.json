@@ -1,0 +1,526 @@
+{
+  "schemaVersion": 2,
+  "comparison": {
+    "baselineRelease": null,
+    "androidVersionMetadataOnly": false
+  },
+  "decisions": [
+    {
+      "group": "atf-validation",
+      "decision": "REUSE",
+      "reason": "RAG_GATE_ONLY",
+      "affectedGroups": [
+        "atf-tests-documentation"
+      ],
+      "changedInputs": [
+        "atf-ui-browser/src/test/README.md",
+        "atf-ui-browser/tests/README.md",
+        "config/documentation-editions.json",
+        "docs/feedback/ATF_Governance.md",
+        "docs/feedback/README.md",
+        "docs/governance/ATF_Packages.md"
+      ],
+      "affectedInputs": [],
+      "alwaysEvaluatedRagChecks": [
+        "DOCUMENTATION_EDITIONS"
+      ],
+      "qualificationContext": {
+        "schemaVersion": 1,
+        "kind": "QUALIFIED_SOURCE_AND_CATALOG",
+        "sourceSha256": "987cbd6e114f11f6fa320d3d97490f1896fd02ddeda748a36ea8ed0101c02bf4",
+        "releaseSha256": "9ab37211f82321fafa74f7e23dfd54504209bc59b4b6eac28a459b185f479781",
+        "catalogSha256": "2aa0941223dd9fbee6ba291e5bc5b39289d6705c15814fe816ab772e7f3e8472",
+        "identitySha256": "f251814960c11fbd529442241a3a5c57436db978760ca94e8771cec2c11ff653"
+      },
+      "componentEvidenceOrigin": "00223aec1ddc3258a74a0f0275e1ab677fd1cb0d28e791bdf78005de0211a433",
+      "tests": 19,
+      "reportSha256": "5d9442d3d72c008135e7d4fc0ac3d1fa44caa388f818a326353b817d2377cc12",
+      "executionSha256": "826fd5f8e3e3605813bd4485e1dacc314f1eb194fa933247d1fb53860167bb61"
+    },
+    {
+      "group": "atf-test-android",
+      "decision": "REUSE",
+      "reason": "RAG_GATE_ONLY",
+      "affectedGroups": [
+        "atf-tests-documentation"
+      ],
+      "changedInputs": [
+        "atf-ui-browser/src/test/README.md",
+        "atf-ui-browser/tests/README.md",
+        "config/documentation-editions.json",
+        "docs/feedback/ATF_Governance.md",
+        "docs/feedback/README.md",
+        "docs/governance/ATF_Packages.md"
+      ],
+      "affectedInputs": [],
+      "alwaysEvaluatedRagChecks": [
+        "DOCUMENTATION_EDITIONS"
+      ],
+      "qualificationContext": {
+        "schemaVersion": 1,
+        "kind": "QUALIFIED_SOURCE_AND_CATALOG",
+        "sourceSha256": "987cbd6e114f11f6fa320d3d97490f1896fd02ddeda748a36ea8ed0101c02bf4",
+        "releaseSha256": "9ab37211f82321fafa74f7e23dfd54504209bc59b4b6eac28a459b185f479781",
+        "catalogSha256": "2aa0941223dd9fbee6ba291e5bc5b39289d6705c15814fe816ab772e7f3e8472",
+        "identitySha256": "f251814960c11fbd529442241a3a5c57436db978760ca94e8771cec2c11ff653"
+      },
+      "componentEvidenceOrigin": "00223aec1ddc3258a74a0f0275e1ab677fd1cb0d28e791bdf78005de0211a433",
+      "tests": 300,
+      "reportSha256": "3a0a66d9bdb9dd17f1950874b644b075ccb394c350f4c70cc8c91b4da03abaee",
+      "executionSha256": "b6e69d27aed03a5d96d0492ca552407f553e37273fde854c5b3fe6039cccb4f3"
+    },
+    {
+      "group": "atf-tests",
+      "decision": "REUSE",
+      "reason": "RAG_GATE_ONLY",
+      "affectedGroups": [
+        "atf-tests-documentation"
+      ],
+      "changedInputs": [
+        "atf-ui-browser/src/test/README.md",
+        "atf-ui-browser/tests/README.md",
+        "config/documentation-editions.json",
+        "docs/feedback/ATF_Governance.md",
+        "docs/feedback/README.md",
+        "docs/governance/ATF_Packages.md"
+      ],
+      "affectedInputs": [],
+      "alwaysEvaluatedRagChecks": [
+        "DOCUMENTATION_EDITIONS"
+      ],
+      "qualificationContext": {
+        "schemaVersion": 1,
+        "kind": "QUALIFIED_SOURCE_AND_CATALOG",
+        "sourceSha256": "987cbd6e114f11f6fa320d3d97490f1896fd02ddeda748a36ea8ed0101c02bf4",
+        "releaseSha256": "9ab37211f82321fafa74f7e23dfd54504209bc59b4b6eac28a459b185f479781",
+        "catalogSha256": "2aa0941223dd9fbee6ba291e5bc5b39289d6705c15814fe816ab772e7f3e8472",
+        "identitySha256": "f251814960c11fbd529442241a3a5c57436db978760ca94e8771cec2c11ff653"
+      },
+      "componentEvidenceOrigin": "00223aec1ddc3258a74a0f0275e1ab677fd1cb0d28e791bdf78005de0211a433",
+      "tests": 108,
+      "reportSha256": "1a147664759cd340910505d7e6def45c6b179bed2faccef5e0ea24bf473ae6df",
+      "executionSha256": "25ce25aad4c5c7606c56fa6a0acfaf201cc481caef1bff1f55c0bdc64acbbda8"
+    },
+    {
+      "group": "whist-lab-app-bidding",
+      "decision": "REUSE",
+      "reason": "RAG_GATE_ONLY",
+      "affectedGroups": [
+        "atf-tests-documentation"
+      ],
+      "changedInputs": [
+        "atf-ui-browser/src/test/README.md",
+        "atf-ui-browser/tests/README.md",
+        "config/documentation-editions.json",
+        "docs/feedback/ATF_Governance.md",
+        "docs/feedback/README.md",
+        "docs/governance/ATF_Packages.md"
+      ],
+      "affectedInputs": [],
+      "alwaysEvaluatedRagChecks": [
+        "DOCUMENTATION_EDITIONS"
+      ],
+      "qualificationContext": {
+        "schemaVersion": 1,
+        "kind": "QUALIFIED_SOURCE_AND_CATALOG",
+        "sourceSha256": "987cbd6e114f11f6fa320d3d97490f1896fd02ddeda748a36ea8ed0101c02bf4",
+        "releaseSha256": "9ab37211f82321fafa74f7e23dfd54504209bc59b4b6eac28a459b185f479781",
+        "catalogSha256": "2aa0941223dd9fbee6ba291e5bc5b39289d6705c15814fe816ab772e7f3e8472",
+        "identitySha256": "f251814960c11fbd529442241a3a5c57436db978760ca94e8771cec2c11ff653"
+      },
+      "componentEvidenceOrigin": "00223aec1ddc3258a74a0f0275e1ab677fd1cb0d28e791bdf78005de0211a433",
+      "tests": 255,
+      "reportSha256": "732fad40e6c7fae975705be052610125917d7e181d40948acfd43994241ba148",
+      "executionSha256": "414efa321f6d908b7637f6a22ba9b3ba1967fb563794f7b52b960946c14ee7a8"
+    },
+    {
+      "group": "whist-lab-app-commands",
+      "decision": "REUSE",
+      "reason": "RAG_GATE_ONLY",
+      "affectedGroups": [
+        "atf-tests-documentation"
+      ],
+      "changedInputs": [
+        "atf-ui-browser/src/test/README.md",
+        "atf-ui-browser/tests/README.md",
+        "config/documentation-editions.json",
+        "docs/feedback/ATF_Governance.md",
+        "docs/feedback/README.md",
+        "docs/governance/ATF_Packages.md"
+      ],
+      "affectedInputs": [],
+      "alwaysEvaluatedRagChecks": [
+        "DOCUMENTATION_EDITIONS"
+      ],
+      "qualificationContext": {
+        "schemaVersion": 1,
+        "kind": "QUALIFIED_SOURCE_AND_CATALOG",
+        "sourceSha256": "987cbd6e114f11f6fa320d3d97490f1896fd02ddeda748a36ea8ed0101c02bf4",
+        "releaseSha256": "9ab37211f82321fafa74f7e23dfd54504209bc59b4b6eac28a459b185f479781",
+        "catalogSha256": "2aa0941223dd9fbee6ba291e5bc5b39289d6705c15814fe816ab772e7f3e8472",
+        "identitySha256": "f251814960c11fbd529442241a3a5c57436db978760ca94e8771cec2c11ff653"
+      },
+      "componentEvidenceOrigin": "00223aec1ddc3258a74a0f0275e1ab677fd1cb0d28e791bdf78005de0211a433",
+      "tests": 127,
+      "reportSha256": "85c63c03425a35b7747dd3754f5c27e5cb7f222e8eef395c6b6ada626f627c24",
+      "executionSha256": "b636b7c5c0a30d643d76fb3b62a1626d4b6587ab0591c3949a4604e483447015"
+    },
+    {
+      "group": "whist-lab-app-display",
+      "decision": "REUSE",
+      "reason": "RAG_GATE_ONLY",
+      "affectedGroups": [
+        "atf-tests-documentation"
+      ],
+      "changedInputs": [
+        "atf-ui-browser/src/test/README.md",
+        "atf-ui-browser/tests/README.md",
+        "config/documentation-editions.json",
+        "docs/feedback/ATF_Governance.md",
+        "docs/feedback/README.md",
+        "docs/governance/ATF_Packages.md"
+      ],
+      "affectedInputs": [],
+      "alwaysEvaluatedRagChecks": [
+        "DOCUMENTATION_EDITIONS"
+      ],
+      "qualificationContext": {
+        "schemaVersion": 1,
+        "kind": "QUALIFIED_SOURCE_AND_CATALOG",
+        "sourceSha256": "987cbd6e114f11f6fa320d3d97490f1896fd02ddeda748a36ea8ed0101c02bf4",
+        "releaseSha256": "9ab37211f82321fafa74f7e23dfd54504209bc59b4b6eac28a459b185f479781",
+        "catalogSha256": "2aa0941223dd9fbee6ba291e5bc5b39289d6705c15814fe816ab772e7f3e8472",
+        "identitySha256": "f251814960c11fbd529442241a3a5c57436db978760ca94e8771cec2c11ff653"
+      },
+      "componentEvidenceOrigin": "00223aec1ddc3258a74a0f0275e1ab677fd1cb0d28e791bdf78005de0211a433",
+      "tests": 107,
+      "reportSha256": "4851cadb91f51584776b4c3e522ba71bcba4a363d9efec1583da7acaf49d76e2",
+      "executionSha256": "8eaba695af65f735624945a9aa58d56649ae8acdd37a1726629910c011a8e806"
+    },
+    {
+      "group": "whist-lab-app-history",
+      "decision": "REUSE",
+      "reason": "RAG_GATE_ONLY",
+      "affectedGroups": [
+        "atf-tests-documentation"
+      ],
+      "changedInputs": [
+        "atf-ui-browser/src/test/README.md",
+        "atf-ui-browser/tests/README.md",
+        "config/documentation-editions.json",
+        "docs/feedback/ATF_Governance.md",
+        "docs/feedback/README.md",
+        "docs/governance/ATF_Packages.md"
+      ],
+      "affectedInputs": [],
+      "alwaysEvaluatedRagChecks": [
+        "DOCUMENTATION_EDITIONS"
+      ],
+      "qualificationContext": {
+        "schemaVersion": 1,
+        "kind": "QUALIFIED_SOURCE_AND_CATALOG",
+        "sourceSha256": "987cbd6e114f11f6fa320d3d97490f1896fd02ddeda748a36ea8ed0101c02bf4",
+        "releaseSha256": "9ab37211f82321fafa74f7e23dfd54504209bc59b4b6eac28a459b185f479781",
+        "catalogSha256": "2aa0941223dd9fbee6ba291e5bc5b39289d6705c15814fe816ab772e7f3e8472",
+        "identitySha256": "f251814960c11fbd529442241a3a5c57436db978760ca94e8771cec2c11ff653"
+      },
+      "componentEvidenceOrigin": "00223aec1ddc3258a74a0f0275e1ab677fd1cb0d28e791bdf78005de0211a433",
+      "tests": 70,
+      "reportSha256": "37038cd8de9bc397e59121b2b08be2a1b2be06f802315e0951e2e3a328b4a70e",
+      "executionSha256": "3215905a744a6ce27de8ebdb28caa61a4a3e4b64fb31e2bcc17797dee2b0148f"
+    },
+    {
+      "group": "whist-lab-app-achievements",
+      "decision": "REUSE",
+      "reason": "RAG_GATE_ONLY",
+      "affectedGroups": [
+        "atf-tests-documentation"
+      ],
+      "changedInputs": [
+        "atf-ui-browser/src/test/README.md",
+        "atf-ui-browser/tests/README.md",
+        "config/documentation-editions.json",
+        "docs/feedback/ATF_Governance.md",
+        "docs/feedback/README.md",
+        "docs/governance/ATF_Packages.md"
+      ],
+      "affectedInputs": [],
+      "alwaysEvaluatedRagChecks": [
+        "DOCUMENTATION_EDITIONS"
+      ],
+      "qualificationContext": {
+        "schemaVersion": 1,
+        "kind": "QUALIFIED_SOURCE_AND_CATALOG",
+        "sourceSha256": "987cbd6e114f11f6fa320d3d97490f1896fd02ddeda748a36ea8ed0101c02bf4",
+        "releaseSha256": "9ab37211f82321fafa74f7e23dfd54504209bc59b4b6eac28a459b185f479781",
+        "catalogSha256": "2aa0941223dd9fbee6ba291e5bc5b39289d6705c15814fe816ab772e7f3e8472",
+        "identitySha256": "f251814960c11fbd529442241a3a5c57436db978760ca94e8771cec2c11ff653"
+      },
+      "componentEvidenceOrigin": "00223aec1ddc3258a74a0f0275e1ab677fd1cb0d28e791bdf78005de0211a433",
+      "tests": 28,
+      "reportSha256": "b759f8a47497addeb3efd2a67368549fab9c104bcf17fff1309fc0d66bcc3a82",
+      "executionSha256": "e4f591d1ab4234554a690cac17b49883811e81bb0f773047107b12dedff53118"
+    },
+    {
+      "group": "whist-lab-app-atf-card-table-ui",
+      "decision": "REUSE",
+      "reason": "RAG_GATE_ONLY",
+      "affectedGroups": [
+        "atf-tests-documentation"
+      ],
+      "changedInputs": [
+        "atf-ui-browser/src/test/README.md",
+        "atf-ui-browser/tests/README.md",
+        "config/documentation-editions.json",
+        "docs/feedback/ATF_Governance.md",
+        "docs/feedback/README.md",
+        "docs/governance/ATF_Packages.md"
+      ],
+      "affectedInputs": [],
+      "alwaysEvaluatedRagChecks": [
+        "DOCUMENTATION_EDITIONS"
+      ],
+      "qualificationContext": {
+        "schemaVersion": 1,
+        "kind": "QUALIFIED_SOURCE_AND_CATALOG",
+        "sourceSha256": "987cbd6e114f11f6fa320d3d97490f1896fd02ddeda748a36ea8ed0101c02bf4",
+        "releaseSha256": "9ab37211f82321fafa74f7e23dfd54504209bc59b4b6eac28a459b185f479781",
+        "catalogSha256": "2aa0941223dd9fbee6ba291e5bc5b39289d6705c15814fe816ab772e7f3e8472",
+        "identitySha256": "f251814960c11fbd529442241a3a5c57436db978760ca94e8771cec2c11ff653"
+      },
+      "componentEvidenceOrigin": "00223aec1ddc3258a74a0f0275e1ab677fd1cb0d28e791bdf78005de0211a433",
+      "tests": 8,
+      "reportSha256": "919aceaa9e0ddd840cb37304e7201718e3f75d7d442aeb75904a49a06101ce62",
+      "executionSha256": "4ec15a445480117d716a34b38175067158c2e57f54a257b8fda23d171d0782bd"
+    },
+    {
+      "group": "whist-lab-app-rules",
+      "decision": "REUSE",
+      "reason": "RAG_GATE_ONLY",
+      "affectedGroups": [
+        "atf-tests-documentation"
+      ],
+      "changedInputs": [
+        "atf-ui-browser/src/test/README.md",
+        "atf-ui-browser/tests/README.md",
+        "config/documentation-editions.json",
+        "docs/feedback/ATF_Governance.md",
+        "docs/feedback/README.md",
+        "docs/governance/ATF_Packages.md"
+      ],
+      "affectedInputs": [],
+      "alwaysEvaluatedRagChecks": [
+        "DOCUMENTATION_EDITIONS"
+      ],
+      "qualificationContext": {
+        "schemaVersion": 1,
+        "kind": "QUALIFIED_SOURCE_AND_CATALOG",
+        "sourceSha256": "987cbd6e114f11f6fa320d3d97490f1896fd02ddeda748a36ea8ed0101c02bf4",
+        "releaseSha256": "9ab37211f82321fafa74f7e23dfd54504209bc59b4b6eac28a459b185f479781",
+        "catalogSha256": "2aa0941223dd9fbee6ba291e5bc5b39289d6705c15814fe816ab772e7f3e8472",
+        "identitySha256": "f251814960c11fbd529442241a3a5c57436db978760ca94e8771cec2c11ff653"
+      },
+      "componentEvidenceOrigin": "00223aec1ddc3258a74a0f0275e1ab677fd1cb0d28e791bdf78005de0211a433",
+      "tests": 40,
+      "reportSha256": "ee5bc73afac1bd7f5a4b2eccbe661f7b4b0fa71b0795350a2194a440e9546cd4",
+      "executionSha256": "670e9e1d1a328b814a198aa78152fd87822fe8de585f55d4c9c3a748317ae685"
+    },
+    {
+      "group": "whist-lab-app-card-table-core",
+      "decision": "REUSE",
+      "reason": "RAG_GATE_ONLY",
+      "affectedGroups": [
+        "atf-tests-documentation"
+      ],
+      "changedInputs": [
+        "atf-ui-browser/src/test/README.md",
+        "atf-ui-browser/tests/README.md",
+        "config/documentation-editions.json",
+        "docs/feedback/ATF_Governance.md",
+        "docs/feedback/README.md",
+        "docs/governance/ATF_Packages.md"
+      ],
+      "affectedInputs": [],
+      "alwaysEvaluatedRagChecks": [
+        "DOCUMENTATION_EDITIONS"
+      ],
+      "qualificationContext": {
+        "schemaVersion": 1,
+        "kind": "QUALIFIED_SOURCE_AND_CATALOG",
+        "sourceSha256": "987cbd6e114f11f6fa320d3d97490f1896fd02ddeda748a36ea8ed0101c02bf4",
+        "releaseSha256": "9ab37211f82321fafa74f7e23dfd54504209bc59b4b6eac28a459b185f479781",
+        "catalogSha256": "2aa0941223dd9fbee6ba291e5bc5b39289d6705c15814fe816ab772e7f3e8472",
+        "identitySha256": "f251814960c11fbd529442241a3a5c57436db978760ca94e8771cec2c11ff653"
+      },
+      "componentEvidenceOrigin": "00223aec1ddc3258a74a0f0275e1ab677fd1cb0d28e791bdf78005de0211a433",
+      "tests": 50,
+      "reportSha256": "d148a71619b146e3bf063ee4f56af826054f4bb9390d090f96cdbe89802aa971",
+      "executionSha256": "7ea444faa89deeb7d2cc35a9f68cdc0f9a5ea8000a21f309244a8716b64eed0f"
+    },
+    {
+      "group": "atf-tests-documentation",
+      "decision": "INVALID",
+      "reason": "ENOENT: no such file or directory, lstat 'C:\\work\\whist_back\\rag30-20261124\\release-components-recovered\\atf-tests-documentation'"
+    },
+    {
+      "group": "atf-tests-provenance",
+      "decision": "REUSE",
+      "reason": "RAG_GATE_ONLY",
+      "affectedGroups": [
+        "atf-tests-documentation"
+      ],
+      "changedInputs": [
+        "atf-ui-browser/src/test/README.md",
+        "atf-ui-browser/tests/README.md",
+        "config/documentation-editions.json",
+        "docs/feedback/ATF_Governance.md",
+        "docs/feedback/README.md",
+        "docs/governance/ATF_Packages.md"
+      ],
+      "affectedInputs": [],
+      "alwaysEvaluatedRagChecks": [
+        "DOCUMENTATION_EDITIONS"
+      ],
+      "qualificationContext": {
+        "schemaVersion": 1,
+        "kind": "QUALIFIED_SOURCE_AND_CATALOG",
+        "sourceSha256": "987cbd6e114f11f6fa320d3d97490f1896fd02ddeda748a36ea8ed0101c02bf4",
+        "releaseSha256": "9ab37211f82321fafa74f7e23dfd54504209bc59b4b6eac28a459b185f479781",
+        "catalogSha256": "2aa0941223dd9fbee6ba291e5bc5b39289d6705c15814fe816ab772e7f3e8472",
+        "identitySha256": "f251814960c11fbd529442241a3a5c57436db978760ca94e8771cec2c11ff653"
+      },
+      "componentEvidenceOrigin": "00223aec1ddc3258a74a0f0275e1ab677fd1cb0d28e791bdf78005de0211a433",
+      "tests": 124,
+      "reportSha256": "ef6687175437f13744e4e210170065b9d7e5dc13fb633cd0e48529eb0ec06fa5",
+      "executionSha256": "7050e5b34bb706350c75a03ddd929fe6c0b3fb3cacb7608f0d661c3763c9a797"
+    },
+    {
+      "group": "atf-tests-android",
+      "decision": "REUSE",
+      "reason": "RAG_GATE_ONLY",
+      "affectedGroups": [
+        "atf-tests-documentation"
+      ],
+      "changedInputs": [
+        "atf-ui-browser/src/test/README.md",
+        "atf-ui-browser/tests/README.md",
+        "config/documentation-editions.json",
+        "docs/feedback/ATF_Governance.md",
+        "docs/feedback/README.md",
+        "docs/governance/ATF_Packages.md"
+      ],
+      "affectedInputs": [],
+      "alwaysEvaluatedRagChecks": [
+        "DOCUMENTATION_EDITIONS"
+      ],
+      "qualificationContext": {
+        "schemaVersion": 1,
+        "kind": "QUALIFIED_SOURCE_AND_CATALOG",
+        "sourceSha256": "987cbd6e114f11f6fa320d3d97490f1896fd02ddeda748a36ea8ed0101c02bf4",
+        "releaseSha256": "9ab37211f82321fafa74f7e23dfd54504209bc59b4b6eac28a459b185f479781",
+        "catalogSha256": "2aa0941223dd9fbee6ba291e5bc5b39289d6705c15814fe816ab772e7f3e8472",
+        "identitySha256": "f251814960c11fbd529442241a3a5c57436db978760ca94e8771cec2c11ff653"
+      },
+      "componentEvidenceOrigin": "fa09730a2079f2c7b27d8e15d0f4191f341e2707ffc5245b29c26208dc3fdacc",
+      "tests": 54,
+      "reportSha256": "0afd5ccc5309a5f4861f778ce0a7486027858b4de09878391aa180c93070eb89",
+      "executionSha256": "ee68868379be80feef984e4d6588faa72c31af2fe4a0d47cb478457ba5636c4f"
+    },
+    {
+      "group": "atf-tests-github",
+      "decision": "REUSE",
+      "reason": "RAG_GATE_ONLY",
+      "affectedGroups": [
+        "atf-tests-documentation"
+      ],
+      "changedInputs": [
+        "atf-ui-browser/src/test/README.md",
+        "atf-ui-browser/tests/README.md",
+        "config/documentation-editions.json",
+        "docs/feedback/ATF_Governance.md",
+        "docs/feedback/README.md",
+        "docs/governance/ATF_Packages.md"
+      ],
+      "affectedInputs": [],
+      "alwaysEvaluatedRagChecks": [
+        "DOCUMENTATION_EDITIONS"
+      ],
+      "qualificationContext": {
+        "schemaVersion": 1,
+        "kind": "QUALIFIED_SOURCE_AND_CATALOG",
+        "sourceSha256": "987cbd6e114f11f6fa320d3d97490f1896fd02ddeda748a36ea8ed0101c02bf4",
+        "releaseSha256": "9ab37211f82321fafa74f7e23dfd54504209bc59b4b6eac28a459b185f479781",
+        "catalogSha256": "2aa0941223dd9fbee6ba291e5bc5b39289d6705c15814fe816ab772e7f3e8472",
+        "identitySha256": "f251814960c11fbd529442241a3a5c57436db978760ca94e8771cec2c11ff653"
+      },
+      "componentEvidenceOrigin": "00223aec1ddc3258a74a0f0275e1ab677fd1cb0d28e791bdf78005de0211a433",
+      "tests": 33,
+      "reportSha256": "9f9b6a48c32bc12c83d025d5fc7f3dd0e417108bde98d15b82748e81617339a3",
+      "executionSha256": "6a0505ea415bb2e691f09215dc081d8d2e9cfb170485aaeb9fb4d186dfcf5470"
+    },
+    {
+      "group": "atf-tests-orchestration",
+      "decision": "REUSE",
+      "reason": "RAG_GATE_ONLY",
+      "affectedGroups": [
+        "atf-tests-documentation"
+      ],
+      "changedInputs": [
+        "atf-ui-browser/src/test/README.md",
+        "atf-ui-browser/tests/README.md",
+        "config/documentation-editions.json",
+        "docs/feedback/ATF_Governance.md",
+        "docs/feedback/README.md",
+        "docs/governance/ATF_Packages.md"
+      ],
+      "affectedInputs": [],
+      "alwaysEvaluatedRagChecks": [
+        "DOCUMENTATION_EDITIONS"
+      ],
+      "qualificationContext": {
+        "schemaVersion": 1,
+        "kind": "QUALIFIED_SOURCE_AND_CATALOG",
+        "sourceSha256": "987cbd6e114f11f6fa320d3d97490f1896fd02ddeda748a36ea8ed0101c02bf4",
+        "releaseSha256": "9ab37211f82321fafa74f7e23dfd54504209bc59b4b6eac28a459b185f479781",
+        "catalogSha256": "2aa0941223dd9fbee6ba291e5bc5b39289d6705c15814fe816ab772e7f3e8472",
+        "identitySha256": "f251814960c11fbd529442241a3a5c57436db978760ca94e8771cec2c11ff653"
+      },
+      "componentEvidenceOrigin": "fa09730a2079f2c7b27d8e15d0f4191f341e2707ffc5245b29c26208dc3fdacc",
+      "tests": 108,
+      "reportSha256": "fb9ccd88a5e849aef1ba674db29abe159014ffb943959d6b2315d0d589d11626",
+      "executionSha256": "569e73139aecedd632d72ca348d2e2fbc8ff2b9becc88c98993717b9edee5130"
+    },
+    {
+      "group": "atf-tests-reporting",
+      "decision": "REUSE",
+      "reason": "RAG_GATE_ONLY",
+      "affectedGroups": [
+        "atf-tests-documentation"
+      ],
+      "changedInputs": [
+        "atf-ui-browser/src/test/README.md",
+        "atf-ui-browser/tests/README.md",
+        "config/documentation-editions.json",
+        "docs/feedback/ATF_Governance.md",
+        "docs/feedback/README.md",
+        "docs/governance/ATF_Packages.md"
+      ],
+      "affectedInputs": [],
+      "alwaysEvaluatedRagChecks": [
+        "DOCUMENTATION_EDITIONS"
+      ],
+      "qualificationContext": {
+        "schemaVersion": 1,
+        "kind": "QUALIFIED_SOURCE_AND_CATALOG",
+        "sourceSha256": "987cbd6e114f11f6fa320d3d97490f1896fd02ddeda748a36ea8ed0101c02bf4",
+        "releaseSha256": "9ab37211f82321fafa74f7e23dfd54504209bc59b4b6eac28a459b185f479781",
+        "catalogSha256": "2aa0941223dd9fbee6ba291e5bc5b39289d6705c15814fe816ab772e7f3e8472",
+        "identitySha256": "f251814960c11fbd529442241a3a5c57436db978760ca94e8771cec2c11ff653"
+      },
+      "componentEvidenceOrigin": "00223aec1ddc3258a74a0f0275e1ab677fd1cb0d28e791bdf78005de0211a433",
+      "tests": 75,
+      "reportSha256": "2f32c98d25d8b8d863a85f033d19565d9d0c4cb0dceea5631f97f5c3729a752f",
+      "executionSha256": "5051292552783a4cbfdd4103ff4e4b61e54e16adc81b3107e3ac0a1df99b0458"
+    }
+  ]
+}

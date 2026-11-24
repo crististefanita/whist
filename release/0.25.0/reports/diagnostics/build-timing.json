@@ -1,0 +1,21 @@
+{
+  "schemaVersion": 1,
+  "kind": "ATF_RELEASE_TIMING",
+  "owner": "apk-build",
+  "stages": [
+    {
+      "stage": "apk.source-copy",
+      "status": "PASS",
+      "startedUtc": "2026-11-24T17:05:49.0298250+00:00",
+      "endedUtc": "2026-11-24T17:06:06.7815639+00:00",
+      "elapsedMs": 14146
+    },
+    {
+      "stage": "apk.assemble-and-lint",
+      "status": "PASS",
+      "startedUtc": "2026-11-24T17:06:06.8518424+00:00",
+      "endedUtc": "2026-11-24T17:14:04.0469655+00:00",
+      "elapsedMs": 453228
+    }
+  ]
+}
