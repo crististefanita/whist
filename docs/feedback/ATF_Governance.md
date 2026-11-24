@@ -91,7 +91,6 @@ The [dependency selection contract](../testing/ATF_Collections.md#executable-dep
 
 | Priority | Bounded gap | Closure criterion |
 |---|---|---|
-| P1 | RAG-29: source/catalog context is explicit and verified offline; complete promotion qualification remains open. | During the next promotion, reconcile the context captured before execution, restart reconstruction and separate live catalog, link, download and retention checks. Preserve pre-publication reports as observations of their original catalog; the [context contract](../testing/ATF_ReleaseQualification.md#qualified-catalog-context) and negative components do not substitute this complete flow. |
 | P1 | RAG-31: launcher qualification pays repeated process/bootstrap costs, and fixture cleanup can remove child diagnostics after a timeout. | Retain bounded stdout/stderr and per-invocation timing before cleanup. Move exhaustive pure matrices to units while preserving representative real-launcher components and every rejection contract. Declare the resource profile; compare cold, warm and resumed costs without increasing deadlines to hide contention. Keep source/catalog admission, original comparisons and exact invocation parity. |
 
 Measure snapshot preparation, compilation and execution separately. A focused diagnostic remains distinct from qualification of a complete primary collection; Maven/Jupiter recovery within an owner follows the [invocation-recovery contract](../testing/ATF_Collections.md#recovery-within-a-maven-selection).

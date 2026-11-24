@@ -41,6 +41,8 @@ The component report validates JVM inputs and comparisons. The sanity check vali
 
 Before execution, modern receipts pin `qualificationContext` in provenance, checkpoint and root run. Its identity is reconstructed from the source-manifest SHA-256, complete release-inventory SHA-256 and recorded hash of `release/index.json`. Restart rejects missing or foreign context before reusing results.
 
+Seal the candidate manifest, release notes and immutable audit commit before advancing the published branch. Evaluate the original qualification context first; after publication, observe the live catalog and downloads separately. Reconstruct the qualified source from Git and repeat the check from its saved recipe before deleting staging data.
+
 | Moment | Contract |
 |---|---|
 | Qualification | Copied and live inventories match the pinned snapshot; actual drift or corrupt files block admission. |
