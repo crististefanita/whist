@@ -12,6 +12,15 @@ import static atf.testkit.assertions.AuditedAssertions.*;
 @AtfComponentTest
 public final class HtmlInvocationIntegrityComponentTest {
     @TempDir Path temporary;
+    @Test void anExternalEvidenceAttachmentCannotQualifyAnOtherwisePassingReceipt() throws Exception {
+        Path file = html("PASS", 1, true, false);
+        String original = Files.readString(file);
+        for (String external : java.util.List.of("<a href='original.xml'>Supporting input</a>", "<img src='outside.png'>")) {
+            Files.writeString(file, original.replace("</body>", external + "</body>"));
+            assertThrows(java.io.IOException.class, () -> HtmlInvocationIntegrity.inspect(file, "GRADLE_COMPONENT_V1", new HashSet<>()),
+                    "A valid invocation cannot hide an external audit dependency");
+        }
+    }
     @Test void aPassingOwnedReceiptMatchesItsActualRowsAndCannotBeCountedTwice() throws Exception {
         Path file = html("PASS", 1, true, false);
         var identities = new HashSet<String>();

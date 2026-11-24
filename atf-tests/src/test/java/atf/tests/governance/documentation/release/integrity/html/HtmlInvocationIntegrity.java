@@ -45,7 +45,9 @@ public final class HtmlInvocationIntegrity {
     }
     static long inspect(Path file, String protocol, Set<String> identities) throws IOException {
         require(Set.of("GRADLE_COMPONENT_V1", "JUPITER_COMPONENT_V1", "ATF_J24_COMPONENT_EXTENT").contains(protocol), "HTML-PROTOCOL", protocol);
-        var doc = Jsoup.parse(file.toFile(), "UTF-8"); doc.select("template,noscript").remove();
+        var doc = Jsoup.parse(file.toFile(), "UTF-8");
+        atf.tests.reporting.autonomy.StandaloneReportContract.verifyReferences(doc);
+        doc.select("template,noscript").remove();
         require(atf.reporting.artifact.resources.ReportArtifactResources.inspect(doc).isAutonomous(), "HTML-AUTONOMY", file);
         boolean currentAtfReceipt = protocol.equals("ATF_J24_COMPONENT_EXTENT");
         String expectedTitle = protocol.equals("GRADLE_COMPONENT_V1") ? "JUnit invocation receipt" : "Component invocation receipt";

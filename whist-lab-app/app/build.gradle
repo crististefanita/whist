@@ -12,7 +12,13 @@ android {
         targetSdk 36
         versionCode 52
         versionName "0.24.2"
-        testInstrumentationRunner "ro.whistlab.app.score.nativecomponent.HistoryMarksComponentInstrumentation"
+        def nativeRunner = providers.gradleProperty('atf.nativeRunner').getOrElse(
+                'ro.whistlab.app.score.nativecomponent.HistoryMarksComponentInstrumentation')
+        if (!(nativeRunner in ['ro.whistlab.app.score.nativecomponent.HistoryMarksComponentInstrumentation',
+                              'ro.whistlab.app.persistence.nativecomponent.StorageRecoveryInstrumentation'])) {
+            throw new GradleException('Unknown native component runner')
+        }
+        testInstrumentationRunner nativeRunner
     }
 
     buildFeatures {

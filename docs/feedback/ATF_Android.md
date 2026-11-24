@@ -50,7 +50,6 @@ For Achievements, the presentation component reopens the progress in simulated s
 
 | Priority | Gap and source | Verification level and closure criterion |
 |---|---|---|
-| P1 | Recovery of Android storage: checkpoint `SharedPreferences` and ranking `AtomicFile` do not have native acceptance after corruption or interruption. | Android on APK identified: controlled interruption, recovery or explicit error, user data stored; serialisation components and storage ports remain separate checks. |
 | P2 | Synchronous checkpoint latency is not qualified on-device; component ordering does not establish responsiveness. | Identify environment and state; measure writing separately from AI computation and rendering. Preserve ordering and original errors before moving I/O between executors. |
 
 ## Qualification of visual changes

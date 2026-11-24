@@ -51,8 +51,9 @@ public final class GameSessionStore {
     }
 
     public static GameSession load(Context context) {
-        String encoded = preferences(context).getString(SAVE_KEY, null);
-        if (encoded == null || encoded.isBlank()) return null;
+        String encoded = CheckpointPreferenceIntegrity.read(() -> preferences(context).getString(SAVE_KEY, null),
+                new java.io.File(context.getApplicationInfo().dataDir, "shared_prefs/" + PREFERENCES + ".xml"), SAVE_KEY);
+        if (encoded == null) return null;
         return fromJson(encoded);
     }
 

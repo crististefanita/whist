@@ -77,7 +77,7 @@ The target of handoff is an auditable HTML that includes mandatory information, 
 
 - **History: ** Native reports produced prior to this incorporation keep the annexes unique; the change of the publisher does not update them retrospectively.
 - **Moment: ** hash and text body come from the same reading on publication; this moment remains distinct from the Android execution and subsequent revision.
-- **Closure:** [the consolidation criterion](../feedback/ATF_Reporting.md#rpt-android-html-only---audit-delivery-without-auxiliary-copies) require the qualification of the inventory and associations of each producer prior to the removal of single proof.
+- **Admission:** [the audit contract](ATF_Audit.md) requires qualification of each producer's inventory, bytes and associations before unique evidence is removed.
 
 ## Execution and limits
 

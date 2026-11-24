@@ -150,7 +150,9 @@
         "atf.tests.reporting.GameReportTextAuditContractTest",
         "atf.tests.reporting.acceptance.NativeModuleResultsComponentTest",
         "atf.tests.reporting.browser.BrowserExtentPublicationComponentTest",
-        "atf.tests.reporting.text.ReportTextValueMatcherTest"
+        "atf.tests.reporting.text.ReportTextValueMatcherTest",
+        "atf.tests.reporting.autonomy.StandaloneReportContractComponentTest",
+        "atf.tests.reporting.autonomy.DetachedReviewComponentTest"
       ]
     }
   ]

@@ -21,6 +21,13 @@ import ro.whistlab.core.rules.HowToPlay;
 import ro.whistlab.core.model.Suit;
 
 public final class WhistUiTextTest extends atf.gradle.audit.GradleAuditedTest {
+    @Test public void unreadableSaveExplainsPreservationInBothLanguages() {
+        atf.gradle.audit.GradleInputs.fixture("Unreadable checkpoint", "Recovery", "Preserve stored bytes and distinguish corruption from absence");
+        assertEquals("English recovery message", "The saved game could not be read. Stored data was kept.",
+                new WhistUiText(HowToPlay.Language.EN).savedGameReadError());
+        assertEquals("Romanian recovery message", "Partida salvată nu a putut fi citită. Datele au fost păstrate.",
+                new WhistUiText(HowToPlay.Language.RO).savedGameReadError());
+    }
     @Test public void historyExplainsBidAndCumulativePointsAndBothSeriesMarkers() {
         var en = new WhistUiText(HowToPlay.Language.EN);
         var ro = new WhistUiText(HowToPlay.Language.RO);

@@ -10,15 +10,6 @@ The consumer holds the game records, selection, oracle and external indexation. 
 
 - [ ] After delivery of the common capability, qualify the actual adapter and the ratio produced with the actual consumed library. Check the owner of the catch, inventory expected/actual and refusal to remove the declared catch.
 
-## RPT-ANDROID-HTML-ONLY - Audit delivery without auxiliary copies
-
-**P1 · responsible Android adapter.** For each modified producer, inventory the bodies and mandatory observations. The component files already have HTML per selection, inline images and provenance. The remaining criterion concerns the data of each producer, including native observations and unique historical data. [Handoff contract](../reporting/ATF_Handoff.md#compact-handoff-and-exceptions)
-
-- Confront the inventory, times and bodies of each checkpoint with the original captures. Inject missing, modified, external or misassigned content. Check long text, HTML and Base64-like content.
-- Identify each external exception by file, purpose and consumer. Keep the unique data up to the migration qualification. A crash log or signature check may be aimed separately from the test audit.
-- Open the final HTML identified by SHA-256, with auxiliary sources and network not available. Check navigation, last row, tables and return from the full image. Inject an XML link and an external image. [The audit contract posted](../reporting/ATF_Audit.md#qualification-of-a-producer)
-
-Incomplete publication keeps diagnosis and unique material. The historical play keeps the original identity, times and verdict. [Lifetime retention governance](../../atf-tests/src/test/java/atf/tests/governance/documentation/release/ReleaseEvidenceRetentionGovernanceTest.java)
 
 ## Early validation of checkpoint
 

@@ -39,6 +39,26 @@ The scenario identifies the application and initial status prior to the actions.
 
 [run-whist-ai-validation.ps1](../../scripts/run-whist-ai-validation.ps1) is a separate orchestrator of construction, components and integration, with its own device options. His use shall be decided after the actual selection in the script; the acceptance of the IU and the strategic promotion shall retain separate criteria.
 
+## Storage recovery
+
+Checkpoint loading distinguishes absence from corruption. Invalid JSON, a wrong preference type or unreadable XML raises an explicit read error and retains the stored bytes.
+
+- The application explains preservation in the selected language; opening or closing the menu must not erase the failed checkpoint.
+- Ranking errors likewise preserve the original file instead of replacing it with sample entries.
+
+| Layer | Responsibility |
+|---|---|
+| JVM components | Empty and invalid preference documents, typed provider errors, original causes, Unicode values and localized messages. |
+| Native components | Actual `SharedPreferences` and `AtomicFile`: committed backups, interrupted writes, a fresh process, exact state and identity recovery, corrupt bytes and the application's RO/EN error notification. |
+| Host restoration | Exclusive device lease, isolated Android user, original package hash, user teardown and restoration of the original APK binary. |
+
+Build the instrumentation APK with `-Patf.nativeRunner=ro.whistlab.app.persistence.nativecomponent.StorageRecoveryInstrumentation`; the default remains the history component runner. Run [the native storage launcher](../../scripts/run-native-storage-components.ps1) with a new external `RunRoot`, `ApkPath`, `TestApkPath` and `OriginalApkPath`. The original APK must match the installed binary before preparation; Android shares package code across users, so removing the temporary user alone is insufficient restoration.
+
+[The phase plan](../../config/native-storage-components.json) defines the ordered case inventory. Each phase records its actual inputs, expected and observed values; the receipt verifier rejects omissions, foreign phases and contradictory verdicts.
+
+- Components have no screenshots.
+- The source-validation APK and native results remain separate from published release qualification, display acceptance and checkpoint latency.
+
 ## Whist Lab E2E
 
 | Runner | Mechanism |

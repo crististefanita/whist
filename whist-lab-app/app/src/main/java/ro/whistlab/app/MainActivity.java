@@ -162,10 +162,9 @@ public final class MainActivity extends Activity {
             Toast.makeText(this, copy.unsupportedSavedMode(), Toast.LENGTH_LONG).show();
             return;
         } catch (IllegalStateException invalidSave) {
-            GameSessionStore.clear(this);
             game = null;
             lastConfig = null;
-            Toast.makeText(this, copy.noSavedGame(), Toast.LENGTH_LONG).show();
+            Toast.makeText(this, copy.savedGameReadError(), Toast.LENGTH_LONG).show();
             return;
         }
         persistGame();

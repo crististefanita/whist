@@ -29,7 +29,7 @@ public final class TestChangeReview {
     private static final Pattern GRADLE = Pattern.compile("^(?:whist-lab-app/(?:.*/)?|atf-ui-browser/)(?:build|settings)\\.gradle(?:\\.kts)?$");
     private static final Set<String> OUTPUTS = Set.of(".git", "target", "build", ".gradle", "artifacts", "node_modules", "release");
     private static final List<String> GATES = List.of(
-            "config/table-sanity-plan.json", "config/report-producers.json",
+            "config/table-sanity-plan.json", "config/report-producers.json", "config/native-storage-components.json",
             "atf-tests/src/main/java/atf/tests/jvm/JavaSourceParser.java",
             "atf-tests/src/main/java/atf/tests/documentation/policy/DocumentationContentPolicy.java",
             "config/atf-governance-policy.json", "config/atf-test-suites.json", "config/atf-component-collections.json", "config/gradle-app-collections.properties",

@@ -179,6 +179,16 @@ The dossier's README shall first indicate the canonical report, the purpose and 
 
 The review shall cover the branches declared. The reduction to a representative sample requires the same presentation implementation; a new branch, failure or access problem receives its own sample.
 
+## Detached handoff admission
+
+[StandaloneReportContract](../../atf-tests/src/main/java/atf/tests/reporting/autonomy/StandaloneReportContract.java) verifies the detached file against the original qualified SHA-256 and rejects external audit resources, XML attachments and unresolved inline captures. Recomputing the hash of a modified report cannot authorize an external dependency. Altered values or reassigned owners invalidate the original seal.
+
+[The offline reader](../../atf-ui-browser/tests/review-detached-reports.mjs) consumes a manifest covering every primary producer in [the inventory](../../config/report-producers.json). It copies only HTML, blocks network access and checks the standard `Overview`, original owner, last comparison, full final body, inline image and return to the same owner. The reader records its own review outcome without changing the producer's PASS, FAIL, error or abort.
+
+- **Execution:** a new external directory, explicit browser, Java executable and qualified classpath; UTF-8 at the Java/Node boundary.
+- **Separate evidence:** supporting logs or signature receipts require a declared purpose and cannot substitute values required for the HTML audit.
+- **History:** immutable reports retain unique material not yet qualified for removal.
+
 ## Limits
 
 The passage of the structural audit does not demonstrate the legibility or interactive navigation alone. Checking the publication does not certify a new Android execution or the power of game policy.

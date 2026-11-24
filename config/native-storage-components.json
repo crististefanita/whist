@@ -1,0 +1,11 @@
+{
+  "schemaVersion": 1,
+  "applicationId": "ro.whistlab.app",
+  "instrumentation": "ro.whistlab.app.test/ro.whistlab.app.persistence.nativecomponent.StorageRecoveryInstrumentation",
+  "phases": [
+    {"id": "prepare", "cases": ["interrupted-checkpoint", "interrupted-ranking"]},
+    {"id": "recover", "cases": ["checkpoint-recovered", "checkpoint-identity", "checkpoint-bytes", "ranking-recovered", "valid-empty-preferences", "invalid-json", "invalid-json-kept", "invalid-type", "invalid-ranking", "invalid-ranking-kept", "profile-after-recovery"]},
+    {"id": "corrupt-xml", "cases": ["xml-corruption-prepared"]},
+    {"id": "verify-xml", "cases": ["invalid-xml", "read-error-en", "read-error-ro", "invalid-xml-kept", "profile-after-error"]}
+  ]
+}

@@ -317,6 +317,7 @@ public final class WhistUiText {
     public String highScoreHint() { return choose("Local top 20 · sample entries are marked · AI scores included",
             "Top 20 local · exemplele sunt marcate · include scoruri AI"); }
     public String storageError() { return choose("Could not save locally. Please try again.", "Salvarea locală a eșuat. Încearcă din nou."); }
+    public String savedGameReadError() { return choose("The saved game could not be read. Stored data was kept.", "Partida salvată nu a putut fi citită. Datele au fost păstrate."); }
     public String historyPending() { return choose("not completed", "neîncheiată"); }
     public String cardsHeading() { return choose("Cards", "Cărți"); }
 

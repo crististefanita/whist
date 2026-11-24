@@ -26,8 +26,6 @@ The 1–100 score expresses work priority, not quality or completion percentage.
 
 | ID | Priority | Score | ToDo remaining and short closing criterion |
 |---|---:|---:|---|
-| RPT-01 | P1 | 95 | Check each producer via detached HTML and negative controls for missing, external or misassigned content. [Register](ATF_Reporting.md#rpt-android-html-only---audit-delivery-without-auxiliary-copies) |
-| AND-01 | P1 | 93 | Prove checkpoint recovery after corruption or interruption, preserving user data or reporting an explicit error. [Register](ATF_Android.md) |
 | AND-02 | P1 | 92 | Qualify the active actor, stable geometry and visible hand in bidding, play and AutoGame on the APK, for 3–6 players, RO/EN and enlarged text. [Register](ATF_Android.md) |
 | AI-01 | P1 | 91 | Calibrate Hard inference for bidding with 2–8 cards and cards played on new lots; separate the accuracy of probabilities from the simulated score. [Register](ATF_Ai.md) |
 | RAG-29 | P1 | 90 | Qualify explicit source/catalog context during the next complete promotion and post-publication restart; identity and refusal contracts are implemented in components. [Register](ATF_Governance.md#framework-selection-boundaries) |
