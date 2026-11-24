@@ -6,7 +6,7 @@ Implementation uses English on both documentation branches. Identifiers, comment
 
 ## Scope and classification
 
-The [governor](../../atf-tests/tools/source-language.mjs) inventories tracked and nonignored implementation inputs, plus ignored sources within declared owners from the configured Git checkout. It checks Java, JavaScript, PowerShell, Python, shell and build scripts, plus comments in configuration, markup, CSS and `.gitignore`. 
+The [governor](../../atf-tests/tools/source-language.mjs) inventories tracked and nonignored implementation inputs, plus ignored sources within declared owners from the configured Git checkout. It checks Java, JavaScript, PowerShell, Python, shell and build scripts, plus comments in configuration, markup, CSS and `.gitignore`.
 
 Release payloads remain immutable observations, not current implementation. The parked iOS adapter is outside this iteration's qualification.
 
