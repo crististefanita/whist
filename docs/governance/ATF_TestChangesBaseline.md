@@ -3564,3 +3564,32 @@ testChanges:
 ```
 
 </details>
+
+<details>
+<summary>Java launcher timeout diagnostics</summary>
+
+```yaml
+testChanges:
+  - id: RAG-JAVA-FIXTURE-TAIL
+    status: VERIFIED
+    base: 1a1b4c8cff2cfa0472a331b5800513ae3f94d5e8
+    expires: 2026-12-24
+    reason: Retain bounded combined child output in the Java timeout assertion before fixture cleanup. Preserve the original timeout identity when diagnostic capture fails and keep stream-size matrices in unit tests.
+    proof: "mvn -o -pl atf-tests -am -Dtest=LauncherFixtureComponentTest,SourceLanguageGovernanceTest,AtfSourceQualityGovernanceTest -Dsurefire.failIfNoSpecifiedTests=false test"
+    checks:
+      positive:
+        - atf.tests.governance.documentation.release.rag.scope.launcher.LauncherFixtureComponentTest#javaTimeoutRetainsCombinedOutputBeforeFixtureCleanup
+        - atf.tests.governance.source.language.SourceLanguageGovernanceTest#implementationCommentsAndDiagnosticsUseEnglish
+        - atf.tests.governance.source.AtfSourceQualityGovernanceTest#sourcesRespectPackagePathsImportsAndProductionBoundaries
+      negative:
+        - atf.tests.governance.documentation.release.rag.scope.launcher.LauncherFixtureComponentTest#missingJavaLogDoesNotMaskTheOriginalTimeout
+    paths:
+      - config/atf-component-dependencies.json
+      - config/atf-component-reader-seals.json
+      - atf-tests/src/test/java/atf/tests/governance/documentation/release/rag/scope/launcher/LauncherFailureLog.java
+      - atf-tests/src/test/java/atf/tests/governance/documentation/release/rag/scope/launcher/LauncherFixtureComponentTest.java
+      - atf-tests/src/test/java/atf/tests/governance/documentation/release/rag/scope/launcher/LauncherFixtureUnitTest.java
+      - atf-tests/src/test/java/atf/tests/governance/documentation/release/rag/scope/QualificationLauncherComponentTest.java
+```
+
+</details>
