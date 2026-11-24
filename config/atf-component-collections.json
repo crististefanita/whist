@@ -116,10 +116,13 @@
       "owner": "orchestration",
       "releaseSnapshot": false,
       "classes": [
+        "atf.tests.browser.runner.BrowserRunnerComponentTest",
+        "atf.tests.browser.runner.WhistBrowserChecksComponentTest",
         "atf.tests.execution.components.ComponentAggregateAcceptanceTest",
         "atf.tests.execution.components.ComponentSuiteExecutionComponentTest",
         "atf.tests.execution.components.TestChangeBatchComponentTest",
         "atf.tests.execution.jvm.ComponentJvmLauncherComponentTest",
+        "atf.tests.execution.proofs.StaticProofRecoveryComponentTest",
         "atf.tests.execution.recovery.InvocationRecoveryComponentTest",
         "atf.tests.governance.AtfRagGovernanceSuiteContractTest",
         "atf.tests.governance.documentation.cli.DocumentationGovernanceCliComponentTest",
@@ -130,9 +133,7 @@
         "atf.tests.governance.support.JvmInventoryCliComponentTest",
         "atf.tests.governance.support.LauncherSourceInventoryComponentTest",
         "atf.tests.governance.support.SigningSourceIsolationComponentTest",
-        "atf.tests.governance.support.SourceInventoryContractTest",
-        "atf.tests.browser.runner.BrowserRunnerComponentTest",
-        "atf.tests.browser.runner.WhistBrowserChecksComponentTest"
+        "atf.tests.governance.support.SourceInventoryContractTest"
       ]
     },
     {

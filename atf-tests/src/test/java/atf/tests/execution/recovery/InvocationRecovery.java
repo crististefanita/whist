@@ -42,6 +42,10 @@ public final class InvocationRecovery {
         }
     }
     public static Plan admit(Path previous,String suite,byte[] currentProvenance) throws IOException {
+        return admit(previous,suite,currentProvenance,previous.getParent().resolve("source-provenance.json"),List.of());
+    }
+    public static Plan admit(Path previous,String suite,byte[] currentProvenance,Path provenance,
+                             List<String> additionalIdentityFields) throws IOException {
         Path checkpoint=previous.resolve("invocation-checkpoint.json"); ComponentCaptureJournal.direct(checkpoint);
         byte[] checkpointBytes=Files.readAllBytes(checkpoint);
         JsonNode prior=JSON.readTree(checkpointBytes),current=JSON.readTree(currentProvenance);
@@ -49,11 +53,13 @@ public final class InvocationRecovery {
         if(!prior.path("invocations").isArray() || !prior.path("containerFailures").isArray() || !prior.path("populationComplete").isBoolean()) throw invalid("SCHEMA","");
         if(!prior.path("suite").asText().equals(suite)) throw invalid("SUITE",suite);
         JsonNode source=prior.required("sourceContext");
-        Path originalProvenance=previous.getParent().resolve("source-provenance.json");ComponentCaptureJournal.direct(originalProvenance);
+        Path originalProvenance=provenance;ComponentCaptureJournal.direct(originalProvenance);
         byte[] oldProvenance=Files.readAllBytes(originalProvenance);
         if(!prior.required("provenanceSha256").asText().equals(ComponentCaptureJournal.sha256(oldProvenance))
                 || !source.equals(JSON.readTree(oldProvenance))) throw invalid("PROVENANCE","");
         for(String field:List.of("sourceFingerprint","releaseFingerprint","qualificationContext","inputPartCharacters"))
+            if(!source.hasNonNull(field) || !source.get(field).equals(current.get(field))) throw invalid("SOURCE",field);
+        for(String field:additionalIdentityFields)
             if(!source.hasNonNull(field) || !source.get(field).equals(current.get(field))) throw invalid("SOURCE",field);
         if(!prior.path("populationComplete").asBoolean() || !prior.required("containerFailures").isEmpty()) throw invalid("INCOMPLETE_POPULATION","");
         var original=new ArrayList<Invocation>();var captured=new ArrayList<CapturedInvocation>();var reused=new ArrayList<CapturedInvocation>();var retry=new ArrayList<String>();

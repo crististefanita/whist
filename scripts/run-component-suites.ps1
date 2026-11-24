@@ -33,11 +33,12 @@ $evidenceRoot = if (-not [string]::IsNullOrWhiteSpace($env:WHIST_EVIDENCE_ROOT) 
     Ensure-AtfEvidenceRoot $sourceRoot
 } else { $null }
 if ($ResumeFrom) {
-    if ($ReuseFrom -or $TestChangeControl -or $AllTestChangeControls) {
-        throw 'ResumeFrom cere o rulare normală de componentă și propria sursă validată de dovezi.'
+    if ($ReuseFrom -or $AllTestChangeControls) {
+        throw 'ResumeFrom requires a normal component run or one static proof control and its own validated evidence source.'
     }
     $ResumeFrom = (Resolve-Path -LiteralPath $ResumeFrom).ProviderPath
-    $ReuseFrom = $ResumeFrom
+    if (-not $TestChangeControl) { $ReuseFrom = $ResumeFrom }
+    elseif (-not $CompilerReuseFrom) { $CompilerReuseFrom = $ResumeFrom }
 }
 $proofCommit = ''
 if ($TestChangeControl -or $AllTestChangeControls) {
@@ -150,6 +151,9 @@ function Invoke-MavenSelections($selections, $stage, $provenanceFile) {
         $entries += @($policy.mavenModules | ForEach-Object { Join-Path $buildWork "project/$_/target/classes" })
         $classpath = ($entries + @((Get-Content -LiteralPath $classpathFile -Raw).Trim())) -join [IO.Path]::PathSeparator
         $suiteJvm = @(Get-AtfComponentJvmArguments -InputPartCharacters $InputPartCharacters -SourceRoot $sourceRoot)
+        if ($TestChangeControl -or $AllTestChangeControls) {
+            Write-AtfComponentJson (Join-Path $workspace 'proof-compiler-context.json') $mavenReceipt
+        }
         if ($AllTestChangeControls) {
             $proofRunner = 'atf.tests.execution.components.TestChangeProofExecution'
             $proofJvm = $suiteJvm + @('-cp', $classpath, $proofRunner)
@@ -177,6 +181,9 @@ function Invoke-MavenSelections($selections, $stage, $provenanceFile) {
                     $provenanceFile, $TestChangeBaseRef, $TestChangeControl, $proofCommit)
             } else {
                 @('atf.tests.execution.components.ComponentSuiteExecution', $gate.suite, $destination, $provenanceFile, $stage)
+            }
+            if ($TestChangeControl -and $ResumeFrom) {
+                $arguments += (Join-Path $ResumeFrom $TestChangeControl)
             }
             if (!$TestChangeControl -and $ResumeFrom) {
                 $previousSelection = Join-Path $ResumeFrom $gate.group

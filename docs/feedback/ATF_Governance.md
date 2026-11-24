@@ -4,6 +4,14 @@
 
 Proiectul deține perimetrul Android și adaptarea verificatoarelor. Contractul comun reutilizabil se solicită prin [responsabilitățile bibliotecilor](README.md), fără introducerea în consumator a implementărilor acestora.
 
+<a id="source-language-governance"></a>
+
+## Guvernanța limbii surselor
+
+| Prioritate | Lacună și responsabil | Criteriu de închidere |
+|---|---|---|
+| P1 | GOV-06: comentariile și explicațiile pentru dezvoltatori încă includ română, deși contractul implementării cere engleză. Verificările limbii documentației nu inspectează comentariile implementării. | Guvernați inventarul real de surse Java, JavaScript, PowerShell și scripturi de construire, independent de ediția documentației. Cereți engleză pentru identificatori, comentarii, Javadoc și diagnostice pentru dezvoltatori. Adăugați componente negative pentru identificatori și comentarii românești revizuite, inclusiv scrierea ASCII; acceptați textele localizate pentru utilizatori, fixture-urile citate și numele proprii fără exceptarea largă a fișierelor. Păstrați diagnosticele localizate pe linie, codul comun EN/RO și limitele explicite ale reviziei semantice; o euristică de cuvinte-cheie nu poate certifica singură proză engleză arbitrară. Traduceți abaterile existente înaintea închiderii criteriului. |
+
 ## Coeziunea și evoluția pachetelor
 
 [Politica executabilă](../../config/atf-governance-policy.json) aplică limita fără derogări pentru structura curentă. [Responsabilitățile pachetelor](../governance/ATF_Packages.md) delimitează API-urile, suportul comun și selecțiile testelor.

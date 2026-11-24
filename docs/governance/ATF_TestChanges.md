@@ -154,6 +154,20 @@ $env:ATF_TEST_CHANGE_PROOF_ROOT = Join-Path $runRoot 'proofs'
 
 La eșec sau schimbarea sursei, inspectați jurnalele fiecărui control și dosarul diagnostic `proofs.pending`. Pentru o rulare focalizată, `-TestChangeControl` păstrează receipt-ul în `<RunRoot>/<ID>`. Reutilizați receipt-ul și raportul pentru commitul și diff-ul originale sau pentru o continuare editorială verificată care le păstrează identitatea.
 
+### Reluarea unui control static al probei
+
+Folosiți un director extern nou al rulării și rularea originală ca `-ResumeFrom`, împreună cu același `-TestChangeControl` și aceeași bază Git. Lansatorul admite întâi snapshot-ul complet sursă/release și compilarea verificată. Generarea unui lot nou rămâne separată; `-AllTestChangeControls` nu acceptă reluarea.
+
+```powershell
+.\scripts\run-component-suites.ps1 -TestChangeControl $control -TestChangeBaseRef $reviewBase -ResumeFrom $previousRun -RunRoot $newRun
+```
+
+[Executorul probelor statice](../../atf-tests/src/test/java/atf/tests/execution/proofs/StaticProofRun.java) salvează înregistrarea și rezultatele prin porturile comune de capturi neutre. Recuperarea cere suplimentar același ID de control, bază Git, commit, diff brut, selectori pozitivi/negativi, ieșire compilată sigilată, classpath și identitate JVM/toolchain. Descoperirea compilată curentă trebuie să coincidă exact cu populația statică originală de invocări.
+
+Rulează din nou numai corpurile eșuate sau lipsă. Comparațiile originale trecute și timpii fazelor sunt republicate cu hash-urile checkpoint-ului/raportului originale; o reluare eșuată rămâne eșuată. Capturile alterate, identitățile străine ori lipsă și containerele eșuate ale responsabilului nu pot autoriza o probă. Publicarea finală cere în continuare reconcilierea completă Extent, reverificarea sursei/diff-ului și promovarea probei în așteptare de către lansator.
+
+[Componentele controlate de recuperare](../../atf-tests/src/test/java/atf/tests/execution/proofs/StaticProofRecoveryComponentTest.java) numără corpurile executate efectiv în JVM-uri copil, injectează întreruperea procesului și alterează dovezile. Acestea sunt componente offline fără poze; fixture-urile lor nu reprezintă acceptanță E2E a aplicației.
+
 ## Mutarea proprietății unei verificări
 
 Transferul unei implementări într-o bibliotecă păstrează toate contractele native la producător. Consumatorul păstrează acceptarea API-ului folosit, identitatea JAR-ului încărcat și verificările negative pentru metadate sau livrări inconsistente.

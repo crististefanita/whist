@@ -3347,3 +3347,52 @@ testChanges:
 ```
 
 </details>
+
+<details>
+<summary>Recuperarea invocărilor unei probe statice pe aceeași revizie calificată</summary>
+
+```yaml
+testChanges:
+  - id: RAG-STATIC-PROOF-RECOVERY
+    status: VERIFIED
+    base: ed9473ee05bd6780a6dce6da86e262533570ca79
+    expires: 2026-12-24
+    reason: Păstrează comparațiile originale trecute și reia numai invocările statice nerezolvate pe aceeași revizie Git, selectori, context sursă/catalog, sigiliu al octeților compilați și toolchain. Menține încercările originale eșuate imuabile, refuză intrări alterate sau străine și păstrează controalele independente ale recuperării responsabililor primari și ale populației Extent finale.
+    proof: "mvn -o -pl atf-tests -am -Dtest=StaticProofRecoveryComponentTest,InvocationRecoveryComponentTest,ComponentEvidenceScopeComponentTest,AtfSourceQualityGovernanceTest,PackageCohesionGovernanceTest,TestLayerGovernanceTest,SuiteOwnershipGovernanceTest,AtfCollectionOwnershipComponentTest,TestChangeProofComponentTest -Dsurefire.failIfNoSpecifiedTests=false test"
+    checks:
+      positive:
+        - atf.tests.execution.proofs.StaticProofRecoveryComponentTest#failedProofRetriesOnlyItsFailedBodyAndRetainsOriginalComparisons
+        - atf.tests.execution.proofs.StaticProofRecoveryComponentTest#interruptionResumesOnlyMissingBodiesFromTheKnownStaticPopulation
+        - atf.tests.governance.documentation.release.rag.scope.ComponentEvidenceScopeComponentTest#staticProofResumeKeepsItsOriginalControlAndVerifiedCompilation
+        - atf.tests.execution.recovery.InvocationRecoveryComponentTest#retryRunsOnlyFailedAndAbortedIdsAndRepublishesOriginalComparisons
+        - atf.tests.execution.recovery.InvocationRecoveryComponentTest#interruptedStaticPopulationResumesTheMissingBodiesFromDurableCaptures
+        - atf.tests.governance.source.AtfSourceQualityGovernanceTest#sourcesRespectPackagePathsImportsAndProductionBoundaries
+        - atf.tests.governance.source.PackageCohesionGovernanceTest#currentProjectUsesNoCohesionExceptions
+        - atf.tests.governance.source.TestLayerGovernanceTest#executableMavenClassesHaveOneLayerAndTheGuideMatchesTheirDeclarations
+        - atf.tests.governance.suites.SuiteOwnershipGovernanceTest#everyMavenExecutableHasOnePrimaryOwnerAndEveryFocusedGateIsDeclared
+        - atf.tests.governance.suites.AtfCollectionOwnershipComponentTest#positiveInventoriesPartitionEveryAtfComponentWithoutChangingLeafNames
+      negative:
+        - atf.tests.execution.proofs.StaticProofRecoveryComponentTest#unresolvedRootCauseRemainsAFailedProof
+        - atf.tests.execution.proofs.StaticProofRecoveryComponentTest#foreignReviewSelectionCompilerOrToolchainCannotReuseAProof
+        - atf.tests.execution.proofs.StaticProofRecoveryComponentTest#alteredCapturesAndOriginalReportsCannotAuthorizeReuse
+        - atf.tests.execution.recovery.InvocationRecoveryComponentTest#changedSourcesUnknownPopulationsAndTamperedEvidenceAreRefused
+        - atf.tests.governance.source.changes.TestChangeProofComponentTest#proofFromAnotherCommitCannotBeReused
+        - atf.tests.governance.source.changes.TestChangeProofComponentTest#proofWithoutPassingNegativeControlIsRefused
+    paths:
+      - atf-tests/src/test/java/atf/tests/execution/proofs/ProofRecoveryFixture.java
+      - atf-tests/src/test/java/atf/tests/execution/proofs/StaticProofRecoveryComponentTest.java
+      - atf-tests/src/test/java/atf/tests/execution/proofs/StaticProofRun.java
+      - atf-tests/src/test/java/atf/tests/execution/proofs/StaticProofSelectors.java
+      - atf-tests/src/test/java/atf/tests/execution/components/TestChangeProofExecution.java
+      - atf-tests/src/test/java/atf/tests/execution/recovery/InvocationRecovery.java
+      - atf-tests/src/test/java/atf/tests/execution/recovery/RecoveryPublication.java
+      - atf-tests/src/test/java/atf/tests/suites/components/AtfOrchestrationComponentSuite.java
+      - atf-tests/src/test/java/atf/tests/governance/documentation/release/rag/scope/ComponentEvidenceScopeComponentTest.java
+      - atf-tests/tools/component-proof-compiler-reuse.test.mjs
+      - scripts/run-component-suites.ps1
+      - config/atf-component-collections.json
+      - config/atf-component-dependencies.json
+      - config/atf-component-reader-seals.json
+```
+
+</details>
