@@ -36,6 +36,24 @@ class DocumentationTerminologyComponentTest {
         assertEquals(List.of(1, 2), inspect(List.of("[READMEM](https://example.invalid)",
                 "| Source | source snack |"), "en").stream().map(Violation::line).toList());
     }
+    @Test @org.junit.jupiter.api.extension.ExtendWith(atf.tests.reporting.GameReportAudit.class)
+    void domainTermsRetainMeaningWithoutRejectingCodeOrExceptionTerminology(atf.android.evidence.component.ComponentInputs inputs) {
+        var terms=List.of("invoicing","parametritions","pointeres","Immunobable","republican descriptor",
+                "old republican","GNP","NGPs","KSPE","Book incidence","Manifesto components","deplete the head");
+        for(String term:terms) {
+            var findings=inspect(List.of("# Guide","","| Contract | "+term+" |"),"en");
+            assertEquals(1,findings.size(),"Reviewed mistranslation is rejected in visible prose: "+term);
+            assertEquals("DOC-EN-TERMINOLOGY",findings.getFirst().code());
+            assertEquals(3,findings.getFirst().line());
+            assertEquals(List.of(),inspect(List.of("`"+term+"`","```text",term,"```"),"en"),"Technical literals remain literal");
+            assertEquals(List.of(),inspect(List.of(term),"ro"),"English terminology rules do not rewrite the Romanian edition");
+        }
+        assertEquals(List.of(),inspect(List.of("A catch block preserves the original exception.",
+                "The invocation retains its PNG capture and original comparisons.",
+                "Republication preserves the receipt; heap bounds do not qualify native pixels."),"en"));
+        inputs.add("Reviewed semantic distinctions","invocation/capture; republication/new execution; heap/report size; PNG/source; technical literals/visible prose");
+        inputs.add("Rejected translation artifacts",String.join(", ",terms));
+    }
 
     private static List<Violation> inspect(List<String> lines, String language) {
         Path root = Path.of(".").toAbsolutePath();

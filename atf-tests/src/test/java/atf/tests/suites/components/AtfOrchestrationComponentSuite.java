@@ -13,6 +13,7 @@ import org.junit.platform.suite.api.*;
     "^atf\\.tests\\.execution\\.components\\.ComponentSuiteExecutionComponentTest$",
     "^atf\\.tests\\.execution\\.components\\.TestChangeBatchComponentTest$",
     "^atf\\.tests\\.execution\\.jvm\\.ComponentJvmLauncherComponentTest$",
+    "^atf\\.tests\\.execution\\.recovery\\.InvocationRecoveryComponentTest$",
     "^atf\\.tests\\.governance\\.AtfRagGovernanceSuiteContractTest$",
     "^atf\\.tests\\.governance\\.documentation\\.cli\\.DocumentationGovernanceCliComponentTest$",
     "^atf\\.tests\\.governance\\.documentation\\.release\\.rag\\.scope\\.ComponentEvidencePortabilityComponentTest$",

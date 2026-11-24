@@ -90,6 +90,38 @@ async function fixture(t, options = {}) {
   return {root, previous, target, provenanceSha256};
 }
 
+test('recovery preserves sealed attempt reports and rejects missing, altered or foreign lineage', async t => {
+  const group='whist-lab-app-display', observations=[];
+  for(const mode of ['valid','changed','missing','duplicate','traversal','population']) {
+    const {previous,target}=await fixture(t,{groups:[group]});
+    const files={'README.md':'# Recovery\n\n[Original](attempts/original-report.html)\n',
+      'attempts/original-report.html':'<html>original rejected attempt</html>',
+      'attempts/retry-report.html':'<html>retry observations</html>',
+      'attempts/original-checkpoint.json':'{"original":"checkpoint"}'};
+    const artifacts=[];
+    for(const [file,body] of Object.entries(files)) {
+      await fs.mkdir(path.dirname(path.join(previous,group,file)),{recursive:true});
+      await fs.writeFile(path.join(previous,group,file),body);artifacts.push({path:file,sha256:digest(body)});
+    }
+    const receipt=JSON.parse(await read(previous,group+'/execution.json'));
+    receipt.invocations=[{id:'controlled-invocation',outcome:'PASS'}];
+    receipt.recovery={schemaVersion:1,originalCheckpointSha256:digest(files['attempts/original-checkpoint.json']),reusedInvocationIds:[],executedInvocationIds:['controlled-invocation'],artifacts};
+    if(mode==='changed') await fs.appendFile(path.join(previous,group,'attempts/retry-report.html'),'altered');
+    if(mode==='missing') await fs.unlink(path.join(previous,group,'attempts/original-report.html'));
+    if(mode==='duplicate') artifacts.push({...artifacts[0]});
+    if(mode==='traversal') artifacts[0].path='../foreign.html';
+    if(mode==='population') receipt.recovery.reusedInvocationIds=['controlled-invocation'];
+    await writeJson(previous,group+'/execution.json',receipt);
+    const run=JSON.parse(await read(previous,runReceipt));run.results[0].receipt=receipt;await writeJson(previous,runReceipt,run);
+    const [decision]=await prepareComponentReuse(target,previous,[group]);
+    assert.equal(decision.decision,mode==='valid'?'MATCH':'INVALID',mode);
+    if(mode==='valid') for(const [file,body] of Object.entries(files)) assert.equal((await read(target,group+'/'+file)).toString(),body,file);
+    else await assert.rejects(fs.access(path.join(target,group)));
+    observations.push(mode+': '+decision.decision);
+  }
+  process.stdout.write('Recovery artifact observations: '+observations.join('; ')+'\n');
+});
+
 test('identical inputs preserve the original bytes and a single snapshot across reuse runs', async t => {
   const {root, previous, target, provenanceSha256} = await fixture(t);
   const results = await prepareComponentReuse(target, previous, groups);

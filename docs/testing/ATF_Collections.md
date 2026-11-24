@@ -238,6 +238,33 @@ Compilarea și execuția au identități separate. [Inventarul compilatorului](.
 
 Runnerul înregistrează identitatea compilatorului, admiterea cache-ului și sigilarea ieșirii ca etape de timp distincte. Împrumutul refuzat înregistrează motivul înaintea pregătirii noi; compilarea împrumutată păstrează recipisa originală și referința legată prin hash. Contextul curent al sursei/catalogului și execuția nouă a controalelor rămân independente de contextul original al compilării.
 
+### Reluarea în interiorul unei selecții Maven
+
+[Lansatorul componentelor](../../scripts/run-component-suites.ps1) admite același snapshot de sursă/release prin `-ResumeFrom` înaintea citirii checkpoint-urilor invocărilor. Responsabilii complet trecuți își păstrează rapoartele originale. Într-un responsabil Maven eșuat, [contractul reluării](../../atf-tests/src/test/java/atf/tests/execution/recovery/InvocationRecovery.java) admite exact ID-urile JUnit, observațiile neutre și sigiliile originale ale octeților înaintea păstrării invocărilor trecute.
+
+```mermaid
+flowchart LR
+    CHECKPOINT[Checkpoint JUnit original] -->|leagă| ADMIT[Admiterea sursei și dovezilor]
+    ADMIT -->|păstrează| PASS[Comparații originale trecute]
+    ADMIT -->|selectează| RETRY[ID-uri eșuate sau incomplete]
+    RETRY -->|execută| JUNIT[Rezultate JUnit proaspete]
+    PASS -->|furnizează| REPORT[Extent reconciliat]
+    JUNIT -->|furnizează| REPORT
+```
+
+<details>
+<summary>Legendă: execuția și republicarea rămân distincte</summary>
+
+- Invocările finalizate păstrează intrările neutre, comparațiile evaluate, temporizarea originală a fazelor și diagnosticele în fișiere de captură imuabile. Un checkpoint JUnit independent sigilează acei octeți după evenimentele de înregistrare și rezultat.
+- Reluarea execută numai ID-urile unice nerezolvate. Descoperirea suitei curente admite populația originală, inclusiv identitățile parametrizate și imbricate; populațiile dinamice necunoscute, capturile lipsă, schimbările sursei și erorile responsabilului refuză reluarea.
+- [Publicatorul](../../atf-tests/src/test/java/atf/tests/execution/recovery/RecoveryPublication.java) republică valorile originale admise prin Reporting, alături de rezultatele proaspete ale reluării. O reluare eșuată rămâne FAIL; raportul original nu este editat niciodată.
+- Extent-ul canonic rămâne autonom, cu valori complete și hash-urile provenienței. Indexul însoțitor leagă încercările imuabile prin căi relative; un prefix reconstruit după întreruperea procesului este etichetat explicit ca republicare.
+- Reutilizarea unui responsabil recuperat și trecut verifică și păstrează artefactele sigilate ale încercărilor. Compilarea, responsabilul complet și invocările au reguli separate de reutilizare; generarea probelor testChanges execută în continuare proaspăt fiecare control declarat.
+
+</details>
+
+[Componentele controlate](../../atf-tests/src/test/java/atf/tests/execution/recovery/InvocationRecoveryComponentTest.java) folosesc JVM-uri copil, contoare independente ale corpurilor, întrerupere reală de proces și fișiere corupte. Califică reluarea fără interacțiune Android sau poze. Rulările istorice fără checkpoint-uri de invocare păstrează reluarea selecției întregi.
+
 ### I/O pentru snapshot și compilator
 
 [Suportul pentru fișiere](../../scripts/AtfFileDigest.ps1) citește octeții SHA-256 din nou și folosește enumerarea nativă a directoarelor; data și mărimea fișierelor nu autorizează reutilizarea.

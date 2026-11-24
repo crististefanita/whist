@@ -28,6 +28,7 @@ Scorul 1–100 exprimă ordinea recomandată de lucru, nu calitatea sau procentu
 |---|---:|---:|---|
 | AND-02 | P1 | 92 | Califică pe APK actorul, geometria stabilă și mâna vizibilă în licitație/joc/AutoGame pentru 3–6 locuri, RO/EN și text mărit. [Registru](ATF_Android.md) |
 | AI-01 | P1 | 91 | Calibrează inferența Hard pentru 2–8 cărți din licitații și cărți jucate pe loturi noi; separă exactitatea probabilităților de scorul simulat. [Registru](ATF_Ai.md) |
+| RAG-31 | P1 | 90 | Califică reluarea invocărilor legată de sursă, păstrând comparațiile originale trecute și rerulând numai identitățile eșuate sau incomplete. [Registru](ATF_Governance.md#calificarea-afirmațiilor-și-lansatoarelor) |
 | RAG-29 | P1 | 90 | Calificați contextul explicit sursă/catalog la următoarea promovare completă și reluare după publicare; identitatea și refuzurile sunt implementate în componente. [Registru](ATF_Governance.md#framework-selection-boundaries) |
 | UI-04 | P1 | 90 | Furnizați măsurătorile native reale portului neutru de observații; respingeți fonturile tăiate și redesenarea veche independent de egalitatea planurilor. [Registru](ATF_CardUi_Extraction.md#ui-three-module-plan) |
 | ACH-01 | P1 | 90 | Califică pe APK restaurarea poziției și selecției din Realizări, apoi reluarea notificărilor după recrearea activității. [Registru](ATF_Achievements.md) |

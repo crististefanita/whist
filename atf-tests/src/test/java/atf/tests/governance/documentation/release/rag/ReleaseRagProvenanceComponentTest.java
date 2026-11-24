@@ -38,6 +38,41 @@ class ReleaseRagProvenanceComponentTest {
     @TempDir Path temporary;
 
     @Test @ExtendWith(GameReportAudit.class)
+    void recoveredComponentAttemptsMustRemainDeclaredSealedAndReadable(ComponentInputs inputs) throws Exception {
+        var fixture=create(temporary);String group="whist-lab-app-history";
+        Path component=fixture.candidate().resolve("reports/component"),directory=component.resolve(group);
+        var execution=(ObjectNode)JSON.readTree(directory.resolve("execution.json").toFile());
+        var ids=execution.putArray("invocations");for(int i=0;i<4;i++) ids.addObject().put("id","controlled-"+i).put("outcome","PASS");
+        var recovery=execution.putObject("recovery").put("schemaVersion",1);
+        recovery.putArray("reusedInvocationIds").add("controlled-0").add("controlled-1");
+        recovery.putArray("executedInvocationIds").add("controlled-2").add("controlled-3");
+        var artifacts=recovery.putArray("artifacts");Files.createDirectories(directory.resolve("attempts"));
+        var files=java.util.Map.of("README.md","# Recovery\n","attempts/original-report.html","<html>original failed attempt</html>",
+                "attempts/retry-report.html","<html>fresh retry</html>","attempts/original-checkpoint.json","{\"checkpoint\":\"original\"}");
+        for(var entry:files.entrySet()) {
+            Path file=directory.resolve(entry.getKey());Files.writeString(file,entry.getValue());
+            artifacts.addObject().put("path",entry.getKey()).put("sha256",hash(file));
+        }
+        recovery.put("originalCheckpointSha256",hash(directory.resolve("attempts/original-checkpoint.json")));
+        JSON.writeValue(directory.resolve("execution.json").toFile(),execution);
+        Path runFile=component.resolve("source-component-run.json");var run=(ObjectNode)JSON.readTree(runFile.toFile());
+        for(var row:run.path("results")) if(row.path("module").asText().equals(group)) ((ObjectNode)row).set("receipt",execution.deepCopy());
+        JSON.writeValue(runFile.toFile(),run);refreshPayload(fixture.candidate());
+        var valid=evaluateAndRead(fixture);AuditedAssertions.assertEquals("PASS",check(valid,"COMPONENT_SOURCE_BINDING"),"Declared lineage belongs to the source-bound component receipt");
+        Files.delete(directory.resolve("attempts/retry-report.html"));refreshPayload(fixture.candidate());
+        var missing=evaluateAndRead(fixture);AuditedAssertions.assertEquals("BLOCKED",check(missing,"COMPONENT_SOURCE_BINDING"),"Removing a retry artifact cannot preserve qualification");
+        Files.writeString(directory.resolve("attempts/retry-report.html"),files.get("attempts/retry-report.html"));
+        Files.writeString(directory.resolve("README.md"),"changed");refreshPayload(fixture.candidate());
+        var changed=evaluateAndRead(fixture);AuditedAssertions.assertEquals("BLOCKED",check(changed,"COMPONENT_SOURCE_BINDING"),"Rehashing the payload cannot replace an original lineage seal");
+        Files.writeString(directory.resolve("README.md"),files.get("README.md"));refreshPayload(fixture.candidate());
+        var manifest=readCandidate(fixture);var declared=(com.fasterxml.jackson.databind.node.ArrayNode)manifest.at("/integrity/files");
+        for(int i=declared.size()-1;i>=0;i--) if(declared.get(i).path("path").asText().endsWith(group+"/attempts/original-report.html")) declared.remove(i);
+        writeCandidate(fixture,manifest);
+        var undeclared=evaluateAndRead(fixture);AuditedAssertions.assertEquals("BLOCKED",check(undeclared,"COMPONENT_SOURCE_BINDING"),"Unlisted lineage cannot enter qualification even when its bytes are readable");
+        inputs.add("Final recovery artifact admission","valid: PASS; missing retry: BLOCKED; altered index: BLOCKED; undeclared original: BLOCKED");
+    }
+
+    @Test @ExtendWith(GameReportAudit.class)
     void documentationDriftReadmissionKeepsTheRejectedAggregateAndOriginalReports(ComponentInputs inputs) throws Exception {
         RagCandidateFixture fixture = create(temporary);
         Path component = fixture.candidate().resolve("reports/component");

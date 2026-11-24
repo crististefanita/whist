@@ -1,5 +1,6 @@
 import {atfCollections, atfComponentGroups, hasAtfCollections, releaseSnapshotRequired} from './atf-component-ownership.mjs';
 import {verifyQualificationContext} from './component-qualification-context.mjs';
+import {recoveryArtifactRows, readRecoveryArtifacts} from './component-recovery-artifacts.mjs';
 import {componentInputMap, digest, inputFingerprint, safeRelative} from './source-input-identity.mjs';
 export {componentInputMap, digest, inputFingerprint} from './source-input-identity.mjs';
 import fs from 'node:fs/promises';
@@ -102,6 +103,7 @@ export function verifyComponentExecution(origin, name, execution, tests, reportH
       && execution.reportSha256 === reportHash
       && receipt?.exitCode === 0 && isDeepStrictEqual(receipt.receipt, execution);
   if (!receiptPass) throw Error('Receipt-ul execuției, numărătoarea sau hash-ul Extent nu corespunde rulării rădăcină.');
+  recoveryArtifactRows(execution);
 }
 
 // A small strict JSON reader keeps duplicate keys and trailing data from changing a receipt silently.
@@ -872,6 +874,14 @@ export async function evaluateRelease({projectRoot, candidateDir, sourceRoot, pl
       const relative = binding.executionReceiptPattern.replace('{group}', name);
       const execution = (await readPayloadJson(relative)).value;
       verifyComponentExecution(origin, name, execution, group.tests, componentReportHashes.get(name));
+      await readRecoveryArtifacts(execution, async artifact => {
+        const relative = path.posix.join(path.posix.dirname(group.report), artifact);
+        const bytes = await fs.readFile(await regularFile(candidate, relative));
+        const sha256 = digest(bytes);
+        if (declared.get(relative)?.sha256 !== sha256) throw Error('RECOVERY_ARTIFACT_NOT_DECLARED:' + relative);
+        bindingEvidence.push(citation(relative, sha256));
+        return bytes;
+      });
       if (releaseSnapshotRequired(name, origin.sourceSet) && testScope?.catalogued === false) {
         await verifyGovernanceReleaseSnapshot(project, origin.releaseInputs);
       }
