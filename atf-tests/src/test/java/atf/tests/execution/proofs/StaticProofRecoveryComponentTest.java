@@ -40,7 +40,9 @@ class StaticProofRecoveryComponentTest {
         assertEquals(1, count("preserved"));
         assertEquals(2, count("resumable"));
         assertEquals(1, count("pending"));
-        assertArrayEquals(original, Files.readAllBytes(root.resolve("initial/component-report.html")), "The original failure report is immutable");
+        assertEquals(ComponentCaptureJournal.sha256(original),
+                ComponentCaptureJournal.sha256(Files.readAllBytes(root.resolve("initial/component-report.html"))),
+                "The original failure report remains byte-identical without duplicating its HTML in assertion inputs");
         var receipt = JSON.readTree(root.resolve("retry/execution.json").toFile());
         assertEquals(2, receipt.at("/recovery/reusedInvocationIds").size());
         assertEquals(1, receipt.at("/recovery/executedInvocationIds").size());

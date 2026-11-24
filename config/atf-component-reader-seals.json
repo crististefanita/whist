@@ -188,7 +188,7 @@
     "atf-tests/src/test/java/atf/tests/execution/jvm/ComponentJvmFixture.java": "3ad46963747d70d5979430174845af9246b2ba4836b33ce96f23413c53dee338",
     "atf-tests/src/test/java/atf/tests/execution/jvm/ComponentJvmLauncherComponentTest.java": "0851f5fac1cce51b4233412c959c1a8e9a83a78f219f0d380fe8077db011b100",
     "atf-tests/src/test/java/atf/tests/execution/proofs/ProofRecoveryFixture.java": "331c7c4f1587d047f9ea307fefde81dab4a6a67d269f0cf7b34960d0f218399f",
-    "atf-tests/src/test/java/atf/tests/execution/proofs/StaticProofRecoveryComponentTest.java": "7c78c91d739f726f316d15a6a001a22c923ab82060cdcea2599bb9d6a7e97a0d",
+    "atf-tests/src/test/java/atf/tests/execution/proofs/StaticProofRecoveryComponentTest.java": "cc6d753784b0967e668cf5efa6c281d6cad5e60f7b508ec1a30eb5e783118536",
     "atf-tests/src/test/java/atf/tests/execution/proofs/StaticProofRun.java": "db4c9235833214b8612780870a8addb334a7d40cad67221e7378b25b4927433b",
     "atf-tests/src/test/java/atf/tests/execution/proofs/StaticProofSelectors.java": "897dba31cd3e9043b2d50f67b709c09118a7fd3c040b01b393f908de04958f42",
     "atf-tests/src/test/java/atf/tests/execution/recovery/InvocationCaptureUnitTest.java": "bc997aea4c23050f5e3eda933cb16e299afc40a3767041149e52a4aadab51cb5",
