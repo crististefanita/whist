@@ -7,6 +7,44 @@ This register defines reviewed controls, their Git base and exact paths. The [te
 ## Verified controls
 
 <details>
+<summary>Checkpoint ownership and separated journal</summary>
+
+```yaml
+testChanges:
+  - id: RPT-CHECKPOINT-TRANSACTION
+    status: VERIFIED
+    base: 4caf2294d3a2bf3abce7aaa8a624546a8620cabb
+    expires: 2026-12-24
+    reason: Validate the checkpoint before transferring actions, preserve the prior journal and original cause across refusal and retry without duplicate registration. Separate pure encoding from coordination and preserve format, timing, replay and standalone HTML.
+    proof: 'mvn -o -pl atf-tests -am -Dtest=AndroidUiFlowCheckpointComponentTest,AndroidUiFlowTraceTest,AndroidUiFlowTimingComponentTest,CapturedAndroidFlowComponentTest,AndroidUiFlowReportPublisherTest,AtfSourceQualityGovernanceTest,PackageCohesionGovernanceTest,TestLayerGovernanceTest,SuiteOwnershipGovernanceTest -Dsurefire.failIfNoSpecifiedTests=false test'
+    checks:
+      positive:
+        - atf.android.e2e.support.journal.AndroidUiFlowCheckpointComponentTest#originalDispatchAndFailureSurviveReplayAndDetachedHtml
+        - atf.android.e2e.support.AndroidUiFlowTraceTest#assertionsKeepCheckpointOrderContextAndVerdicts
+        - atf.android.e2e.support.AndroidUiFlowTimingComponentTest#individualPublicationUsesCapturedPhaseIntervalsAndPreservesFullPngs
+        - atf.android.e2e.support.replay.CapturedAndroidFlowComponentTest#immutableReplayRetainsOriginalOwnersValuesVerdictsActionsAndTiming
+        - atf.android.e2e.support.AndroidUiFlowReportPublisherTest#embedsCompleteSupportingTextSafelyFromTheFingerprintedBytes
+        - atf.tests.governance.source.AtfSourceQualityGovernanceTest#sourcesRespectPackagePathsImportsAndProductionBoundaries
+        - atf.tests.governance.source.PackageCohesionGovernanceTest#currentProjectUsesNoCohesionExceptions
+        - atf.tests.governance.source.TestLayerGovernanceTest#executableMavenClassesHaveOneLayerAndTheGuideMatchesTheirDeclarations
+        - atf.tests.governance.suites.SuiteOwnershipGovernanceTest#everyMavenExecutableHasOnePrimaryOwnerAndEveryFocusedGateIsDeclared
+      negative:
+        - atf.android.e2e.support.journal.AndroidUiFlowCheckpointComponentTest#rejectedInputsPreservePendingActionsExistingPhasesAndOriginalManifest
+        - atf.android.e2e.support.journal.AndroidUiFlowCheckpointComponentTest#failedJournalWriteRollsBackOnlyTheUncommittedCheckpointAndRetriesOnce
+        - atf.android.e2e.support.journal.AndroidUiFlowCheckpointComponentTest#timingFailureAfterReplacementCannotRollBackCommittedEvidence
+        - atf.android.e2e.support.AndroidUiFlowReportPublisherTest#refusesFalseDriverTitleWithIdenticalRowsComparisonsAndPng
+    paths:
+      - atf-test-android/src/test/java/atf/android/e2e/support/AndroidUiFlowTrace.java
+      - atf-test-android/src/test/java/atf/android/e2e/support/journal/AndroidUiFlowJournal.java
+      - atf-test-android/src/test/java/atf/android/e2e/support/journal/AndroidUiFlowJournalUnitTest.java
+      - atf-test-android/src/test/java/atf/android/e2e/support/journal/AndroidUiFlowCheckpointComponentTest.java
+      - config/atf-component-dependencies.json
+      - config/atf-component-reader-seals.json
+```
+
+</details>
+
+<details>
 <summary>Independent reader seals and qualified source/catalog context</summary>
 
 ```yaml

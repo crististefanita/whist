@@ -56,6 +56,21 @@ The action table shall keep the operation dispatched, the semantic target, the w
 - HTTP, SQL, component comparisons and UI actions use the semantic surface of the actual fact.
 - Titles and summaries shall not substitute for detailed comparisons.
 
+<a id="checkpoint-transaction"></a>
+
+### Checkpoint transaction
+
+The [coordinator](../../atf-test-android/src/test/java/atf/android/e2e/support/AndroidUiFlowTrace.java) fully validates a checkpoint before changing action ownership. The [journal](../../atf-test-android/src/test/java/atf/android/e2e/support/journal/AndroidUiFlowJournal.java) owns pure encoding and file replacement; serialization never reconstructs outcomes.
+
+| Boundary | Preserved data |
+|---|---|
+| Rejected input | Pending actions, phases and the previous journal stay unchanged. |
+| Write refused before replacement | Only the uncommitted checkpoint is withdrawn; actions can be retried without duplicate registration. |
+| Replacement succeeds, then timing fails | Committed evidence keeps its owner; the original cause stays visible. |
+| Replay and publication | Original identities, comparisons and failures reach the manifest and standalone HTML. |
+
+Units verify format, statuses and Unicode fields without Extent. Components verify refusal, interrupted writing, retry and publication without a device; they do not qualify Android pixels.
+
 ### Full bodies and display budget
 
 Preview of the assertions and the body ceiling are independent settings. [EvidenceTextParts](../../atf-test-android/src/main/java/atf/android/evidence/text/EvidenceTextParts.java) divides the text already written into consecutive parts that respect the actual budget without separating a unicode pair.

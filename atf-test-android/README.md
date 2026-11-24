@@ -65,6 +65,8 @@ mvn -B -pl atf-test-android -am '-Dtest=AndroidUnitSuite,AndroidComponentSuite' 
 
 The launcher’s `-ComponentsOnly` option selects the display collection without the device. The [display-component guide](../docs/testing/ATF_DisplayComponents.md) defines simulated inputs, controlled defects and verification limits.
 
+The [checkpoint transaction](../docs/reporting/ATF_Android.md#checkpoint-transaction) separates coordination, encoding and journal commit. Units verify format and fields without Extent; components verify refusal, retry and standalone HTML without a device.
+
 ## Android flows
 
 [Android guide](../docs/testing/ATF_Android.md) defines the device, exclusive booking, activation and initial status. [Screen matrix](../docs/testing/ATF_Display.md) holds the profiles, controlled distributions and optional game flow; [game verification](../docs/testing/ATF_Gameplay.md) holds the rules and score.

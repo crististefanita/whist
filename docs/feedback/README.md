@@ -27,7 +27,7 @@ The 1–100 score expresses work priority, not quality or completion percentage.
 | ID | Priority | Score | ToDo remaining and short closing criterion |
 |---|---:|---:|---|
 | RPT-01 | P1 | 95 | Check each producer via detached HTML and negative controls for missing, external or misassigned content. [Register](ATF_Reporting.md#rpt-android-html-only---audit-delivery-without-auxiliary-copies) |
-| RPT-02 | P1 | 94 | Qualify remaining producers against missing assertions and unusable original comparisons, including FAIL, ERROR and SKIP. [Register](ATF_Reporting.md#rpt-android-component-html---captured-comparisons-not-just-junit-xml) |
+| RPT-02 | P1 | 94 | Qualify remaining producer boundaries against missing assertions and unusable original comparisons, including FAIL, ERROR and SKIP. [Register](ATF_Reporting.md#rpt-android-component-html---captured-comparisons-not-just-junit-xml) |
 | TEST-04 | P1 | 93 | Pair APK/Web sanity scenario identities and enforce the APK capture budget; Web admission/publication and native hand limits are implemented. [Register](ATF_CardUi_Extraction.md#ui-minimal-e2e-plan) |
 | AND-01 | P1 | 93 | Prove checkpoint recovery after corruption or interruption, preserving user data or reporting an explicit error. [Register](ATF_Android.md) |
 | AND-02 | P1 | 92 | Qualify the active actor, stable geometry and visible hand in bidding, play and AutoGame on the APK, for 3–6 players, RO/EN and enlarged text. [Register](ATF_Android.md) |
