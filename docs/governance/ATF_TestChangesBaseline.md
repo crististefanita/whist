@@ -3188,3 +3188,49 @@ testChanges:
 ```
 
 </details>
+
+<details>
+<summary>Responsabilitatea probelor de licitație și domeniul executabil de o carte</summary>
+
+```yaml
+testChanges:
+  - id: AI-BID-EVIDENCE-DOMAIN
+    status: VERIFIED
+    base: 3e071bba4d2123ad355d0e57b9e39c741d1af4de
+    expires: 2026-12-24
+    reason: Păstrează ordinea actualizărilor numerice și fațada publică a probelor de licitație, refuză probe invalide și păstrează deciziile sursei fixate, semințele, bugetul și anularea. Compară domeniul YAML de o carte cu intrarea și condiționarea runtime, inclusiv câmpuri omise sau inversate.
+    proof: "mvn -o -pl atf-tests -am -Dtest=BidEvidenceComponentTest,OneCardDomainComponentTest,AtfSourceQualityGovernanceTest,PackageCohesionGovernanceTest,TestLayerGovernanceTest,SuiteOwnershipGovernanceTest,AtfCollectionOwnershipComponentTest -Dsurefire.failIfNoSpecifiedTests=false test"
+    checks:
+      positive:
+        - atf.android.ai.BidEvidenceComponentTest#weightedEstimatesRetainIndependentArithmeticAndFacadeCompatibility
+        - atf.android.ai.BidEvidenceComponentTest#stoppingKeepsTheMinimumEffectivePopulationAndPairedVariance
+        - atf.android.ai.BidEvidenceComponentTest#frozenBidOutputsSeedsAndWorkOrderRemainByteIdentical
+        - atf.android.ai.BidEvidenceComponentTest#independentDecisionsKeepCancellationAndWorkBudgetOwnership
+        - atf.android.ai.OneCardDomainComponentTest#theManifestMatchesTheRuntimeDomainAndKeepsItsSetsImmutable
+        - atf.android.ai.OneCardDomainComponentTest#everyModeTableSizeAndPublicShapeKeepsEntrySeparateFromConditioning
+        - atf.android.ai.OneCardDomainComponentTest#unsupportedTablesModesAndMissingTrumpKeepTheOriginalFallback
+        - atf.tests.governance.source.AtfSourceQualityGovernanceTest#sourcesRespectPackagePathsImportsAndProductionBoundaries
+        - atf.tests.governance.source.PackageCohesionGovernanceTest#currentProjectUsesNoCohesionExceptions
+        - atf.tests.governance.source.TestLayerGovernanceTest#executableMavenClassesHaveOneLayerAndTheGuideMatchesTheirDeclarations
+        - atf.tests.governance.source.TestLayerGovernanceTest#theGuideMapsEveryGovernedSourceModuleWithoutClaimingBinarySourceSuites
+        - atf.tests.governance.suites.SuiteOwnershipGovernanceTest#everyMavenExecutableHasOnePrimaryOwnerAndEveryFocusedGateIsDeclared
+        - atf.tests.governance.suites.AtfCollectionOwnershipComponentTest#realDependencyClosuresSelectOnlyTheirConsumers
+      negative:
+        - atf.android.ai.BidEvidenceComponentTest#invalidWeightsAndUtilitiesCannotClaimCompletedEvidence
+        - atf.android.ai.OneCardDomainComponentTest#missingOrReversedDomainFieldsFailInsteadOfSilentlyChangingTheContract
+        - atf.tests.governance.suites.AtfCollectionOwnershipComponentTest#missingOrUnreviewedDependenciesCannotAuthorizeReuse
+    paths:
+      - atf-test-android/pom.xml
+      - atf-test-android/src/test/java/atf/android/ai/AiBidFixtures.java
+      - atf-test-android/src/test/java/atf/android/ai/BidEvidenceComponentTest.java
+      - atf-test-android/src/test/java/atf/android/ai/OneCardDomainComponentTest.java
+      - atf-test-android/src/test/resources/ai/bid-evidence-baseline.tsv
+      - whist-lab-app/game-core/src/main/java/ro/whistlab/core/ai/engine/MonteCarloAi.java
+      - whist-lab-app/game-core/src/main/java/ro/whistlab/core/ai/engine/OneCardBidBelief.java
+      - whist-lab-app/game-core/src/main/java/ro/whistlab/core/ai/engine/inference/BidSampleEvidence.java
+      - config/whist-play-objectives.yaml
+      - config/atf-component-dependencies.json
+      - config/atf-component-reader-seals.json
+```
+
+</details>

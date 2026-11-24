@@ -2,17 +2,35 @@ package ro.whistlab.core.ai.engine;
 
 import ro.whistlab.core.model.Card;
 import ro.whistlab.core.rules.GameRules;
+import ro.whistlab.core.rules.GameMode;
 
 import java.util.*;
 
 /** Public bid evidence only. Calibrated from development games; no heldout or hidden runtime cards. */
 public final class OneCardBidBelief {
+    /** Entry and conditioning are separate: unsupported tables keep the unconditioned model. */
+    public record Domain(int handSize, int privateCards, int trickCards, int historyCards,
+                         Set<GameMode> conditionedModes, int conditionedSeats, boolean turnedCardRequired) {
+        public Domain { conditionedModes = Set.copyOf(conditionedModes); }
+    }
+    private static final Domain DOMAIN = new Domain(1, 1, 0, 0,
+            Set.of(GameMode.ROMANIAN_WHIST, GameMode.LONG_ROMANIAN), 4, true);
+
+    public static Domain domain() { return DOMAIN; }
+    public static boolean isOneCardAuction(MonteCarloAi.View view) {
+        return view.handSize() == DOMAIN.handSize() && view.hand().size() == DOMAIN.privateCards()
+                && view.trick().size() == DOMAIN.trickCards() && view.history().size() == DOMAIN.historyCards();
+    }
+    public static boolean usesConditionedBids(MonteCarloAi.View view) {
+        return view.seats().size() == DOMAIN.conditionedSeats() && DOMAIN.conditionedModes().contains(view.mode())
+                && (!DOMAIN.turnedCardRequired() || view.turnedCard() != null);
+    }
     static final String TRAINING_DIGEST="e676fd9778a9459d8c3528e8f8193c24c07e2fecd0cf1009fb9c9e42b8e986f2";
     private static final double[][] BID_ONE={{0.50000000000000000,0.50000000000000000,0.01,0.01,0.01,0.01,0.099173553719008267,0.074074074074074070,0.16071428571428573,0.66666666666666663,0.50000000000000000,0.88095238095238093,0.94545454545454544,0.50000000000000000,0.93548387096774188,0.50000000000000000,0.99,0.50000000000000000,0.99,0.99},
         {0.01,0.01,0.01,0.50000000000000000,0.50000000000000000,0.50000000000000000,0.50000000000000000,0.50000000000000000,0.50000000000000000,0.77272727272727271,0.50000000000000000,0.94936708860759489,0.92857142857142860,0.50000000000000000,0.99,0.50000000000000000,0.99,0.50000000000000000,0.99,0.99}};
     private OneCardBidBelief(){}
     public static double probability(MonteCarloAi.View v){
-        if(v.seats().size()!=4||!v.mode().isRomanian()||v.turnedCard()==null)return MonteCarloAi.oneCardWinProbability(v);
+        if(!usesConditionedBids(v))return MonteCarloAi.oneCardWinProbability(v);
         int own=id(v.hand().get(0)),turned=id(v.turnedCard()),leader=(v.dealer()+1)%4;int[] actor=new int[3];int at=0;
         for(int s=0;s<4;s++)if(s!=v.seat())actor[at++]=s;
         double[][] likelihood=new double[4][52];boolean evidence=false;

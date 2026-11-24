@@ -4,6 +4,16 @@ status: "ACTIVE_CODE_BOUND_RULES"
 runtime_influence: "Implemented by AiPolicy, HandTrickPotential, NormalBidPolicy, NormalPlayPolicy, MonteCarloAi, BidConditioning, PublicSalvage, and ZeroMatchSearch."
 profile: "Romanian Whist, legal moves only, four seats, public information."
 information: ["own hand", "public bids", "tricks already won", "current trick", "public card history", "turned card", "remaining opportunities", "public scores"]
+one_card_bid_model:
+  owner: "OneCardBidBelief"
+  auction: { hand_size: 1, private_cards: 1, trick_cards: 0, history_cards: 0 }
+  conditioning:
+    modes: ["ROMANIAN_WHIST", "LONG_ROMANIAN"]
+    seats: 4
+    turned_card_required: true
+  fallback: "UNCONDITIONED_ONE_CARD_PROBABILITY"
+  forced_dealer_bid: "NO_STRENGTH_EVIDENCE"
+  limit: "Entry selection and conditioned-bid support are distinct. This descriptive contract does not change coefficients, priors or calibrated scope."
 normal:
   objective: "Pursue the player's own bid through the entire hand unless the optional match-level zero objective activates."
   remaining_need: "own bid - own tricks already won; preserve the sign."

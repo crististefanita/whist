@@ -62,6 +62,7 @@ Observarea în laborator distinge prima alegere pentru zero de o decizie eligibi
 |---|---|
 | [MonteCarloAi](../../whist-lab-app/game-core/src/main/java/ro/whistlab/core/ai/engine/MonteCarloAi.java) | API-ul observației, generarea și agregarea comparațiilor, apoi gărzile finite. |
 | [BidConditioning](https://github.com/crististefanita/whist/blob/main/whist-lab-app/game-core/src/main/java/ro/whistlab/core/ai/engine/inference/BidConditioning.java) | Reponderează mâinile inițiale ipotetice folosind dovezi limitate din licitații al căror prefix legal este cunoscut. |
+| [BidSampleEvidence](../../whist-lab-app/game-core/src/main/java/ro/whistlab/core/ai/engine/inference/BidSampleEvidence.java) | Deține mediile ponderate, diferențele perechi și numărul efectiv de probe ale unei decizii; primește utilități evaluate, fără stare aleatoare sau distribuiri ascunse. |
 | [HandTrickPotential](../../whist-lab-app/game-core/src/main/java/ro/whistlab/core/ai/policy/HandTrickPotential.java) | Scor de potențial pentru onoruri, acoperirea în aceeași culoare și scurtime cu sprijin de atu, consumat doar de condiționarea licitațiilor; estimarea licitației pentru Normal rămâne neschimbată. |
 | [DecisionEvaluation](../../whist-lab-app/game-core/src/main/java/ro/whistlab/core/ai/engine/DecisionEvaluation.java) | Transformă continuările ipotetice în utilitate, folosind aceleași ținte și reguli de scor; nu selectează lumi sau acțiuni. |
 | [DecisionOrdering](../../whist-lab-app/game-core/src/main/java/ro/whistlab/core/ai/engine/DecisionOrdering.java) | Ordonează alternativele deja evaluate după profil și toleranțele consacrate; nu consumă numere aleatoare. |
@@ -76,6 +77,8 @@ Calea de evaluare depinde de domeniu. [MonteCarloAi](../../whist-lab-app/game-co
 | Finaluri mici | Enumerarea lumilor și căutarea continuărilor au domenii distincte; enumerarea completă nu transformă modelul continuării într-un certificat universal. |
 
 Modelul de o carte are [implementare în motor](../../whist-lab-app/game-core/src/main/java/ro/whistlab/core/ai/engine/OneCardBidBelief.java) și [implementare independentă](../../whist-lab-app/ai-lab/src/main/java/ro/whistlab/coach/OneCardBidBelief.java). Enumerarea este exactă pentru modelul de plauzibilitate fixat; calibrarea lui față de orice adversar real nu rezultă automat.
+
+Contractul tipizat `OneCardBidBelief.domain()` separă intrarea în licitație de domeniul condiționării. Intrarea cere o carte distribuită, o carte proprie și masa/istoricul goale; condiționarea cere suplimentar patru locuri, o variantă românească și atu întors. Secțiunea `one_card_bid_model` din [manifestul obiectivelor](../../config/whist-play-objectives.yaml) este descriptivă și guvernată față de predicatele runtime; nu încarcă alți coeficienți și nu extinde calibrarea.
 
 Pentru alternativele simulate, vectorul terminal conține punctele proprii, scorul rivalului principal, indicatorul contractului exact și numărul ratărilor adverse:
 

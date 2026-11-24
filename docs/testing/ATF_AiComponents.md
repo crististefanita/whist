@@ -84,3 +84,9 @@ Un parcurs Android rămâne E2E numai când execută interacțiuni noi în aplic
 - Agregatele generează idei de ecranare; comparațiile pereche cu același seed și regresiile de componentă rămân necesare înainte de promovarea unei schimbări de politică.
 
 [Colecții](ATF_Collections.md) · [Guvernanța schimbărilor](../governance/ATF_TestChanges.md) · [Modelul deciziei](../ai/ATF_DecisionModel.md)
+
+## Verificări de adoptare la granița deciziei
+
+[Componentele Maven pentru probele licitației](../../atf-test-android/src/test/java/atf/android/ai/BidEvidenceComponentTest.java) compară fațada publică cu aritmetica ponderată independentă și rezultate din sursa fixată, inclusiv semințe, evenimente de lucru, oprire și anulare. [Componentele domeniului](../../atf-test-android/src/test/java/atf/android/ai/OneCardDomainComponentTest.java) confruntă YAML-ul descriptiv cu predicatele runtime și introduc câmpuri lipsă sau inversate.
+
+Aceste verificări folosesc numai proiecția publică a actorului și publică intrările și comparațiile originale, fără poze. Regresiile existente ale motorului păstrează responsabilitatea legalității cărților, continuărilor simulate și probabilităților implementate independent; echivalența sursei și concordanța domeniului nu dovedesc progres strategic.
