@@ -2940,7 +2940,7 @@ testChanges:
     base: 95d0bab317302507d12c2bab47450e168af20dd3
     expires: 2026-12-24
     reason: Folosim o intenție comună APK/Web, păstrăm fiecare checkpoint semantic cu capturi limitate, inventariem rendererii, menținem eșecurile și identitățile parametrice originale și refuzăm calificarea bazată numai pe totaluri.
-    proof: 'scripts/run-component-suites.ps1 -TestChangeControl WHIST-PAIRED-PRODUCER-20261124'
+    proof: 'mvn -o -pl atf-tests -am -Dtest=PairedSanityComponentTest,AndroidComponentReportContractTest,BrowserExtentPublicationComponentTest,ReportProducerInventoryComponentTest,AtfSourceQualityGovernanceTest,SuiteOwnershipGovernanceTest,PackageCohesionGovernanceTest,AtfCollectionOwnershipComponentTest,HtmlInvocationIntegrityComponentTest -Dsurefire.failIfNoSpecifiedTests=false test'
     checks:
       positive:
         - atf.android.e2e.support.journal.PairedSanityComponentTest#sharedPlanExecutesTheSameRolesInBothAdaptersAndPreservesFailure
