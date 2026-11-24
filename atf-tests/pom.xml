@@ -20,7 +20,7 @@
 <dependency><groupId>atf.api</groupId><artifactId>atf-mock</artifactId><version>${atf.mock.version}</version><scope>test</scope></dependency>
 </dependencies>
     <build><plugins><plugin>
-        <groupId>org.codehaus.mojo</groupId><artifactId>build-helper-maven-plugin</artifactId>
+        <groupId>org.codehaus.mojo</groupId><artifactId>build-helper-maven-plugin</artifactId><version>3.6.2</version>
         <executions><execution><id>browser-runner-components</id><phase>generate-test-sources</phase><goals><goal>add-test-source</goal></goals>
             <configuration><sources><source>${project.basedir}/../atf-ui-browser/src/test/java</source></sources></configuration>
         </execution></executions>
