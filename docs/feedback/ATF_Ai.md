@@ -17,7 +17,6 @@ Responsabilul politicilor Whist deține aceste criterii de cercetare și calific
 
 | Prioritate | Lacună demonstrabilă în sursă | Criteriu de închidere |
 |---|---|---|
-| P2 | [Manifestul obiectivelor](../../config/whist-play-objectives.yaml) distinge modelul de o carte, dar coerența lui cu domeniul runtime nu are control automat propriu. | Componentă care detectează omiterea sau inversarea domeniului, cu sursa și testele modelului identificate; coeficienții și comportamentul calificat se păstrează. |
 | P2 | Selecția generică de focus după categorii nu are un consumator calificat în sursele curente. | Selector cu manifest părinte, subset și hash-uri verificate, criterii de acoperire și refuzul loturilor rezervate; până atunci rămâne propunere. |
 
 Contractele implementate sunt explicate în [modelul deciziei](../ai/ATF_DecisionModel.md), [colecții](../testing/ATF_Collections.md) și [selecția pentru învățare](../learning/ATF_Selection.md). Aceste criterii rămân deschise până la verificarea mecanismului cerut.
@@ -56,7 +55,6 @@ Activarea condiționată de doi adversari garantați înainte, egalitatea posibi
 | Prioritate | Responsabil și lucrare | Criteriu de închidere |
 |---|---|---|
 | P2 | Motorul: calificarea frontierelor prin mutanți semantici. | Inversarea obligației de atu, a câștigătorului sau a întreruperii seriei este detectată independent; acoperirea JaCoCo se interpretează separat de corectitudine. |
-| P2 | Motorul: [MonteCarloAi](../../whist-lab-app/game-core/src/main/java/ro/whistlab/core/ai/engine/MonteCarloAi.java) coordonează licitarea, selecția cărții și stocarea mostrelor de licitație. | Extrageți gestionarea și reutilizarea mostrelor într-un colaborator intern, păstrând fațada publică și observația actorului. Componentele fixează ordinea consumului aleator, repetarea cu aceeași inițializare, anularea și bugetul; o refactorizare nu se declară progres strategic. |
 
 ## Contractele calificării
 
