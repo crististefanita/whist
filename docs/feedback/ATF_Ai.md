@@ -17,7 +17,6 @@ Whist policy manager holds these research and qualification criteria. The rules 
 
 | Priority | Source demonstrable gap | Closure criterion |
 |---|---|---|
-| P2 | [Objective manifest](../../config/whist-play-objectives.yaml) distinguishes the one-card model, but its consistency with the runtime domain has no self-control. | Component detecting the omission or reversal of the domain, with the source and test of the model identified; the coefficients and qualified behaviour shall be maintained. |
 | P2 | Generic choice of focus by category does not have a qualified consumer in current sources. | Selector with parent manifest, subset and checked hashes, coverage criteria and refusal of reserved lots; until then, the proposal remains. |
 
 The contracts implemented are explained in [decision model](../ai/ATF_DecisionModel.md), [collections](../testing/ATF_Collections.md) and [selection for learning](../learning/ATF_Selection.md). These criteria remain open until the mechanism required is verified.
@@ -56,7 +55,6 @@ The conditional activation of two adversaries guaranteed forward, the possible e
 | Priority | Responsible and responsible for the work | Closure criterion |
 |---|---|---|
 | P2 | Engine: qualification of borders by semantic mutants. | The reversal of the obligation to trump, win or break the series is independently detected; the JaCoCo coverage is interpreted separately from correctness. |
-| P2 | Engine: [MonteCarloAi](../../whist-lab-app/game-core/src/main/java/ro/whistlab/core/ai/engine/MonteCarloAi.java) coordinates the bid, card selection and storage of the bid samples. | Extract sample management and reuse in an internal collaborator, keeping the facade public and the actor's observation. Components set random consumption order, repeat with the same initialisation, cancellation and budget; a refactorisation is not declared strategic progress. |
 
 ## Qualification contracts
 
