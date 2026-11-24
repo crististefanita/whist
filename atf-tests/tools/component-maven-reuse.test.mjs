@@ -5,12 +5,12 @@ import os from 'node:os';
 import path from 'node:path';
 import test from 'node:test';
 
-async function exercise(t, negative) {
+async function exercise(t, negative, modern = false) {
   const root=await fs.mkdtemp(path.join(os.tmpdir(),'whist-compiler-reuse-'));
   t.after(()=>fs.rm(root,{recursive:true,force:true}));
   const script=path.join(root,'exercise.ps1');
   await fs.writeFile(script,String.raw`
-param($Root,$Scripts,[switch]$Negative)
+param($Root,$Scripts,[switch]$Negative,[switch]$Modern)
 $ErrorActionPreference='Stop'
 . (Join-Path $Scripts 'AtfQualificationSnapshot.ps1')
 . (Join-Path $Scripts 'AtfQualificationTiming.ps1')
@@ -45,8 +45,16 @@ $receipt=[ordered]@{schemaVersion=2;identity=$compiler.identity;repo='maven-repo
  toolFingerprint=$compiler.toolFingerprint;inputManifestSha256=(Get-FileHash $manifest).Hash.ToLowerInvariant()
  buildFingerprint=(Get-AtfComponentMavenFingerprint $build $repo @('demo'));classpathSha256=(Get-FileHash $classpath).Hash}
 $receiptFile=Join-Path $build 'component-maven.json';Write-AtfComponentJson $receiptFile $receipt
-Write-AtfComponentJson (Join-Path $previous 'component-workspace.json') @{schemaVersion=1;path=$build}
-function Borrow { Read-AtfBorrowedComponentMaven $previous $target $compiler.identity @('demo') $Root }
+function Point($Directory,$Workspace) {
+ if(!$Modern){Write-AtfComponentJson (Join-Path $Directory 'component-workspace.json') @{schemaVersion=1;path=$Workspace};return}
+ Copy-Item $manifest (Join-Path $Directory 'source-inputs.json')
+ Write-AtfComponentJson (Join-Path $Directory 'release-inputs.json') @(@{path='release/index.json';sha256=('f'*64)})
+ $snapshot=[pscustomobject]@{source=[IO.File]::ReadAllText((Join-Path $Directory 'source-inputs.json'));release=[IO.File]::ReadAllText((Join-Path $Directory 'release-inputs.json'))}
+ Write-AtfComponentWorkspace $Directory $Workspace $snapshot
+}
+Point $previous $build
+$decision=@{}
+function Borrow { Read-AtfBorrowedComponentMaven $previous $target $compiler.identity @('demo') $Root -Decision $decision }
 $outcomes=[Collections.Generic.List[string]]::new()
 if(!$Negative) {
  $rows[1].sha256=('c'*64);$rows+=@{path='config/documentation-editions.json';sha256=('d'*64)}
@@ -62,12 +70,39 @@ if(!$Negative) {
   Expect $blocked 'the build lease must stay held during consumption'
   Write-AtfComponentMavenReference $target $borrowed $new.identity
  } finally { $borrowed.lease.Dispose() }
- Write-AtfComponentJson (Join-Path $next 'component-workspace.json') @{schemaVersion=1;path=$target}
+ Point $next $target
  $borrowed=Read-AtfBorrowedComponentMaven $next $chain $new.identity @('demo') $Root
  Expect ($null -ne $borrowed) 'reference chains must resolve to the original build'
  $borrowed.lease.Dispose()
  $outcomes.Add('documentation preserves compiler identity, output bytes and a leased reference chain')
+ Expect ($decision.status -ceq 'REUSED') 'successful admission must explain reuse'
+ if($Modern){$outcomes.Add('modern emitted pointer and qualified context admit the original sealed compiler')}
 } else {
+ if($Modern) {
+  $pointerFile=Join-Path $previous 'component-workspace.json';$originalPointer=[IO.File]::ReadAllText($pointerFile)
+  foreach($mutation in @('missing-context','foreign-source','foreign-release','catalog','identity','extra','unknown-schema','downgraded-context')) {
+   $changed=$originalPointer|ConvertFrom-Json
+   switch($mutation) {
+    'missing-context' {$changed.PSObject.Properties.Remove('qualificationContext')}
+    'foreign-source' {$changed.qualificationContext.sourceSha256=('d'*64)}
+    'foreign-release' {$changed.qualificationContext.releaseSha256=('d'*64)}
+    'catalog' {$changed.qualificationContext.catalogSha256=('d'*64)}
+    'identity' {$changed.qualificationContext.identitySha256=('d'*64)}
+    'extra' {$changed.qualificationContext|Add-Member -NotePropertyName foreign -NotePropertyValue 'unbound'}
+    'unknown-schema' {$changed.schemaVersion=3}
+    'downgraded-context' {$changed.schemaVersion=1}
+   }
+   Write-AtfComponentJson $pointerFile $changed
+   Expect ($null -eq (Borrow)) "modern pointer accepted: $mutation"
+   Expect ($decision.status -ceq 'REFUSED' -and $decision.reason) 'modern refusal must be observable'
+  }
+  Write-Fixture $pointerFile $originalPointer
+  $bound=Join-Path $previous 'source-inputs.json';$originalBound=[IO.File]::ReadAllText($bound)
+  Write-Fixture $bound '[]'
+  Expect ($null -eq (Borrow)) 'altered bound inventory accepted'
+  Write-Fixture $bound $originalBound
+  $outcomes.Add('modern context omissions, foreign identities, schemas and changed inventories are refused before borrowing')
+ }
  foreach($file in @('demo/src/main/Probe.java','pom.xml','lib/api.jar','module/src/test/resources/README.md','unknown.bin')) {
   $changed=@(@{path=$file;sha256=('e'*64)})
   Write-Fixture $source (ConvertTo-Json -InputObject $changed -Compress)
@@ -98,9 +133,9 @@ if(!$Negative) {
  Write-Fixture $classpath $jar;Write-Fixture $receiptFile $saved
  $lock=Open-AtfQualificationWorkspace $build
  try { Expect ($null -eq (Borrow)) 'busy compilation workspace accepted' } finally {$lock.Dispose()}
- Write-AtfComponentJson (Join-Path $previous 'component-workspace.json') @{schemaVersion=1;path=$Root}
+ Point $previous $Root
  Expect ($null -eq (Borrow)) 'workspace outside the configured perimeter accepted'
- Write-AtfComponentJson (Join-Path $previous 'component-workspace.json') @{schemaVersion=1;path=$build}
+ Point $previous $build
  $file=Join-Path $build 'project/demo/target/classes/nested';$foreign=Join-Path $Root 'foreign-classes'
  $null=New-Item -ItemType Directory $foreign
  $null=New-Item -ItemType Junction -Path $file -Target $foreign
@@ -113,9 +148,9 @@ if(!$Negative) {
  $restored=Borrow
  Expect ($null -ne $restored) 'restored classpath must admit the original compilation again'
  $restored.lease.Dispose()
- Write-AtfComponentJson (Join-Path $previous 'component-workspace.json') @{schemaVersion=1;path=(Join-Path $Root ('whist-component-suites-'+('d'*32)))}
+ Point $previous (Join-Path $Root ('whist-component-suites-'+('d'*32)))
  Expect ($null -eq (Borrow)) 'cleaned compiler workspace must trigger cold preparation'
- Write-AtfComponentJson (Join-Path $previous 'component-workspace.json') @{schemaVersion=1;path=$build}
+ Point $previous $build
  Remove-Item -LiteralPath $class
  Expect ($null -eq (Borrow)) 'missing bytecode accepted'
  $outcomes.Add('changed sources, tools, outputs, foreign receipts, classpaths, locks and links are rejected')
@@ -123,7 +158,7 @@ if(!$Negative) {
 $outcomes|ConvertTo-Json -Compress
 `);
   return execFileSync('pwsh',['-NoProfile','-NonInteractive','-File',script,root,
-    path.resolve(import.meta.dirname,'../../scripts'),...(negative?['-Negative']:[])],{
+    path.resolve(import.meta.dirname,'../../scripts'),...(negative?['-Negative']:[]),...(modern?['-Modern']:[])],{
     encoding:'utf8',timeout:90000,env:{...process.env,MAVEN_ARGS:'',JAVACMD:'',MAVEN_OPTS:''}
   });
 }
@@ -133,4 +168,15 @@ test('documentation preserves verified compilation without copying the repositor
 });
 test('changed compiler inputs and unverified workspaces reject compilation reuse', async t=>{
   assert.match(await exercise(t,true),/changed sources, tools, outputs/);
+});
+
+test('modern qualified pointers reuse the emitted compiler contract and reference chain',async t=>{
+  const output=await exercise(t,false,true);process.stdout.write(output);
+  assert.match(output,/modern emitted pointer and qualified context/);
+});
+
+test('modern foreign contexts and incomplete outputs retain explicit refusal reasons',async t=>{
+  const output=await exercise(t,true,true);process.stdout.write(output);
+  assert.match(output,/modern context omissions, foreign identities/);
+  assert.match(output,/changed sources, tools, outputs/);
 });

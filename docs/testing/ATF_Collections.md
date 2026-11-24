@@ -220,7 +220,7 @@ Fixture-urile de guvernanță determină release-ul activ prin `release/index.js
 
 ## Reutilizarea compilării Maven
 
-Compilarea și execuția au identități separate. [Inventarul compilatorului](../../atf-tests/tools/component-compiler-inputs.mjs) omite Markdown-ul editorial, revizia bilingvă și sursele Java de test admise ca exclusive Gradle. Inventarul execuției rămâne complet.
+Compilarea și execuția au identități separate. [Inventarul compilatorului](../../atf-tests/tools/component-compiler-inputs.mjs) omite Markdown-ul editorial, revizia bilingvă și sursele Java admise numai pentru teste din afara rădăcinilor Maven. Inventarul execuției rămâne complet.
 
 | Limită | Admitere și rezultat |
 |---|---|
@@ -228,14 +228,15 @@ Compilarea și execuția au identități separate. [Inventarul compilatorului](.
 | Perimetru Maven | [Admiterea rețetei](../../scripts/AtfCompilerIdentity.ps1) leagă octeții politicii și POM-urilor, inclusiv rădăcinile literale, adăugirile build-helper și resursele profilurilor. Numai Java dintr-o rădăcină suplimentară declarată de test, în afara tuturor rădăcinilor Maven de compilare/resurse, poate ieși din cheia compilării. |
 | Graniță conservatoare | Furnizorii comuni, resursele, POM-urile, binarele, lansatoarele și fișierele necunoscute rămân incluse. Pluginurile, extensiile, reactoarele imbricate sau rădăcinile nerezolvate nesuportate păstrează cheia needitorială completă; rețetele nelegate de inventar sau indirecte sunt respinse. |
 | Ieșirea compilată | [Admiterea ieșirii](../../scripts/AtfComponentMaven.ps1) verifică clasele, resursele, octeții dependențelor JAR/POM, inventarul înghețat al intrărilor și destinațiile classpath-ului. Datele lipsă sau alterate selectează pregătirea nouă. |
+| Pointerul spațiului | [Contractul comun](../../scripts/AtfComponentWorkspace.ps1) leagă schema 2 de manifestele originale ale sursei/release-ului și contextul catalogului. Pointerele vechi schema 1 rămân explicite și nu pot primi context modern ori califica rezultate de teste reutilizate. |
 | Altă rulare | [Împrumutul](../../scripts/AtfComponentMavenReuse.ps1) determină spațiul original al compilatorului în rădăcina temporară externă configurată și păstrează rezervarea exclusivă pe toată execuția. Nu se copiază depozitul sau arborele claselor. |
 | Generarea probelor | `-CompilerReuseFrom <compiler-run>` poate împrumuta compilarea admisă la generarea unui control sau a lotului. Fiecare control selectat rulează din nou; nicio probă sau raport nu se împrumută. Execuția eșuată ori incompletă nu promovează o probă. `-ReuseFrom` rămâne interzis la generarea probelor. |
 | Snapshot-ul execuției | Snapshot-urile actuale ale sursei și release-ului rămân obligatorii. Reutilizarea compilării nu creditează un test; selecția responsabililor și validarea rapoartelor originale rămân independente. |
-| Durata de viață | Referințele funcționează numai cât supraviețuiește spațiul verificat al compilatorului. Spațiile ocupate, lipsă, indirecte, străine ori vechi declanșează compilarea nouă; rapoartele păstrate se pot reutiliza independent. |
+| Durata de viață | Referințele funcționează numai cât supraviețuiește spațiul verificat al compilatorului. Spațiile ocupate, lipsă, indirecte ori străine și recipisele nesigilate declanșează compilarea nouă; rapoartele păstrate se pot reutiliza independent. |
 
 - Modificările de documentație și de teste exclusive Gradle admise pot păstra compilatorul Maven, iar responsabilul afectat rulează pe snapshot-ul actual. Sigiliile octeților și rezervările spațiului rămân obligatorii; după curățare, pregătirea reîncepe din sursă.
 
-Runnerul înregistrează identitatea compilatorului, admiterea cache-ului și sigilarea ieșirii ca etape de timp distincte. O compilare împrumutată are receipt-ul original și o referință legată prin hash în noul spațiu; proveniența sursei și rapoartele vechi nu se rescriu.
+Runnerul înregistrează identitatea compilatorului, admiterea cache-ului și sigilarea ieșirii ca etape de timp distincte. Împrumutul refuzat înregistrează motivul înaintea pregătirii noi; compilarea împrumutată păstrează recipisa originală și referința legată prin hash. Contextul curent al sursei/catalogului și execuția nouă a controalelor rămân independente de contextul original al compilării.
 
 ### I/O pentru snapshot și compilator
 

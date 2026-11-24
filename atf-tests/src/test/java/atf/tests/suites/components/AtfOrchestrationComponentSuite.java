@@ -7,6 +7,8 @@ import org.junit.platform.suite.api.*;
 @Suite
 @SelectPackages({"atf.tests", "atf.libraries"})
 @IncludeClassNamePatterns({
+    "^atf\\.tests\\.browser\\.runner\\.BrowserRunnerComponentTest$",
+    "^atf\\.tests\\.browser\\.runner\\.WhistBrowserChecksComponentTest$",
     "^atf\\.tests\\.execution\\.components\\.ComponentAggregateAcceptanceTest$",
     "^atf\\.tests\\.execution\\.components\\.ComponentSuiteExecutionComponentTest$",
     "^atf\\.tests\\.execution\\.components\\.TestChangeBatchComponentTest$",

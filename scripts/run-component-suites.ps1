@@ -74,14 +74,18 @@ function Invoke-MavenSelections($selections, $stage, $provenanceFile) {
         Get-AtfComponentCompilerIdentity (Join-Path $RunRoot 'source-inputs.json') $java $command.Source $stage
     }
     $identity = $compiler.identity
+    $reuseDecision = @{status='NOT_REQUESTED';reason='Compiler reuse was not requested or the environment is ineligible.'}
     $prepared = Invoke-AtfQualificationPhase $timing 'components.compiler-admission' {
         if ($compiler.eligible) {
             $own = Read-AtfPreparedComponentMaven $workspace $identity $policy.mavenModules
             if ($own) { $own } else {
                 $compilerSource = if ($CompilerReuseFrom) { $CompilerReuseFrom } else { $ReuseFrom }
-                Read-AtfBorrowedComponentMaven $compilerSource $workspace $identity $policy.mavenModules $tempRoot
+                Read-AtfBorrowedComponentMaven $compilerSource $workspace $identity $policy.mavenModules $tempRoot -Decision $reuseDecision
             }
         }
+    }
+    if (!$prepared -and ($CompilerReuseFrom -or $ReuseFrom)) {
+        Write-AtfQualificationDecision $timing 'components.compiler-reuse' 'NOT_RUN' $reuseDecision.reason
     }
     $buildWork = if ($prepared -and $prepared.buildWorkspace) { $prepared.buildWorkspace } else { $workspace }
     Push-Location $stage
@@ -271,9 +275,7 @@ try {
     $provenanceReceipt = Join-Path $RunRoot 'source-provenance.json'
     $provenance | ConvertTo-Json -Depth 8 | Set-Content -LiteralPath $provenanceReceipt -Encoding utf8
     $provenanceFingerprint = (Get-FileHash -LiteralPath $provenanceReceipt -Algorithm SHA256).Hash.ToLowerInvariant()
-    Write-AtfComponentJson (Join-Path $RunRoot 'component-workspace.json') ([ordered]@{
-        schemaVersion=2;qualificationContext=$qualificationContext;path=$work;sourceFingerprint=$fingerprint;releaseFingerprint=$releaseFingerprint
-    })
+    Write-AtfComponentWorkspace $RunRoot $work $snapshot
     $completedComponents = [Collections.Generic.List[object]]::new()
     $checkpointFile = Join-Path $RunRoot 'component-checkpoint.json'
     function Save-AtfComponentCheckpoint([object[]]$Rows) {
