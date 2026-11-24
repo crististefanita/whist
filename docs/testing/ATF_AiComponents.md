@@ -68,7 +68,7 @@ An Android path remains E2E only when performing new interactions in the install
 
 [ObservedPositionJson](../../whist-lab-app/game-core/src/test/java/ro/whistlab/core/testing/codec/ObservedPositionJson.java) adapts public captures to the current model without rewriting the original document. The absence of the penalty field retains the historical profile of five points; an explicit value remains explicit and an invalid one is refused.
 
-[Adapter components](../../whist-lab-app/game-core/src/test/java/ro/whistlab/core/testing/codec/ObservedPositionJsonComponentTest.java) distinguish the absence, current value and data corruption. The compatibility of the catch is the responsibility of the archive reader and the engine remains independent of the JSON test parser.
+[Adapter components](../../whist-lab-app/game-core/src/test/java/ro/whistlab/core/testing/codec/ObservedPositionJsonComponentTest.java) distinguish the absence, current value and data corruption. The compatibility of the capture is the responsibility of the archive reader and the engine remains independent of the JSON test parser.
 
 ## Organisation of collections
 

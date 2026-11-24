@@ -2,7 +2,7 @@
 
 ## Overview
 
-Publication must retain the assessed result and the relationship between invoicing, comparison and catch. The verification shall follow the typed input, the transformation to HTML and the interactive behaviour of the presentation separately.
+Publication must retain the assessed result and the relationship between invocation, comparison and capture. Verify typed inputs, HTML publication and interactive presentation as separate boundaries.
 
 ## Control areas
 
@@ -18,7 +18,7 @@ flowchart LR
 <details>
 <summary>Legend: same content, separate checks</summary>
 
-The data audit shall verify the property and published values. The interactive review checks access to those values, captures and status of the presentation; it does not execute the game again.
+The data audit verifies ownership and published values. The interactive review checks access to those values, captures and status of the presentation; it does not execute the game again.
 
 </details>
 
@@ -26,7 +26,7 @@ The data audit shall verify the property and published values. The interactive r
 
 The verified contracts have explicit owners; the audit shall confront them with the data captured:
 
-| Contract | Responsible source |
+| Contract | Owning source |
 |---|---|
 | Invocation, action, comparison and PNG | [Android contract](ATF_Android.md). |
 | Population, full values, grouping and rejection | [Presentation policy](ATF_Presentation.md). |
@@ -37,7 +37,7 @@ For each property, the audit oracle reads the original source and locates the ow
 
 ## Controls and mutations
 
-| Property | Control negative |
+| Property | Negative control |
 |---|---|
 | Comparison identity | The transfer of a value or verdict to another owner is denied. |
 | Completeness | A missing, reordered or modified fragment does not pass the audit. |
@@ -45,7 +45,7 @@ For each property, the audit oracle reads the original source and locates the ow
 | Time | The range assigned to another flow or phases is rejected. |
 | Semantics of action | False assignment of the driver and confusion of the display with the success of the IU are denied. |
 | Navigation | Values and images shall be accessible after opening, closing and changing the owner. |
-| Population | A JUnit claim removed from HTML or re-associated with another parametric finding is detected; equality of single totals is insufficient. |
+| Population | A JUnit invocation removed from HTML or assigned to another parameterized case is detected; equality of single totals is insufficient. |
 
 The implementation of the verification shall be linked to the contract exercised:
 
@@ -67,13 +67,13 @@ An illustrated browser E2E follows one readable viewport and a coherent game flo
 
 The [publisher components](../../atf-tests/src/test/java/atf/tests/reporting/browser/BrowserExtentPublicationComponentTest.java) exercise ordered steps, before/after ownership, inline images, explicit assertion rows and rejection before publication. Empty or missing assertions, absent original states, duplicate IDs and contradictory step/case outcomes cannot produce an accepted HTML report. Aggregate historical inputs are labelled as summaries rather than being retroactively presented as recorded journeys.
 
-Each producer shall qualify for API area actually used. The passage of a publisher does not necessarily qualify any other adapter or its interactive revision.
+Each producer shall qualify for API area actually used. Qualification of one publisher does not qualify another adapter or its interactive review.
 
-1. Identify the entry, native invoicing, sources, libraries and owner of each catch.
+1. Identify the entry, native invocation, sources, libraries and owner of each capture.
 2. Face all original comparisons, including the last row and group sequels; full values and verdicts remain associated with the same claim.
 3. Inject gaps, wrong owners, impossible intervals and altered references; publication or audit must refuse corrupt data.
 4. Check separately navigation, folding sections, images and return with the context kept on the HTML identified by hash.
-5. Keep the levels executed and limits in the external registration; [handing over results](ATF_Handoff.md) decides the acceptance of the purpose.
+5. Keep executed levels and limitations in the external audit; [handing over results](ATF_Handoff.md) decides the acceptance of the purpose.
 
 ### Governed producer inventory
 
@@ -101,7 +101,7 @@ Inventory qualification does not certify browser interactivity, native pixels, l
 
 ## Aggregation of components on live source
 
-[Component Launcher](../../scripts/run-component-suites.ps1) Perform primary component inputs from [Catalog Maven](../../config/atf-test-suites.json), The declared Gradle collections of the application and the distinct selection of the common UI library. The compilation and cache of Maven belong to a TMP copy; each Gradle module and selection produces its own HTML Extent with distinct invokes, assessed comparisons and source provenance. Gradle reports do not concatenate in a synthetic report.
+[Component Launcher](../../scripts/run-component-suites.ps1) Perform primary component inputs from [Catalog Maven](../../config/atf-test-suites.json), the declared Gradle collections of the application and the distinct selection of the common UI library. Maven compilation and its isolated cache belong to external staging; each Gradle module and selection produces its own HTML Extent with distinct invocations, assessed comparisons and source provenance. Gradle reports do not concatenate in a synthetic report.
 
 ```mermaid
 flowchart LR
@@ -113,22 +113,22 @@ flowchart LR
 ```
 
 <details>
-<summary>Legend: New execution and original catch</summary>
+<summary>Legend: New execution and original capture</summary>
 
-JUnit Receipt is independent of the Receipt published in HTML. [Comparison](../../atf-tests/src/main/java/atf/tests/reporting/aggregate/ComponentReportCoverage.java) refuses missing, additional or duplicate identities and different verdicts; equal totals are not sufficient.
+JUnit receipt is independent of the receipt published in HTML. [Comparison](../../atf-tests/src/main/java/atf/tests/reporting/aggregate/ComponentReportCoverage.java) refuses missing, additional or duplicate identities and different verdicts; equal totals are not sufficient.
 
 Each of the three primary ATF suites has a canonical HTML, its own Receipt and the shared source inventory. The Receipt of components per source declares separately `apkQualification`; association with APK requires candidate qualification. [Active version index](../../release/README.md) keep the reports and the identities concrete.
 
 </details>
 
-| Border | Contract |
+| Boundary | Contract |
 |---|---|
-| Catch | The audited assertions shall keep the evaluation of JUnit; the phases and causes shall be the original declaration. A component without audited comparisons in the body fails explicitly. |
+| Capture | Audited assertions retain JUnit's evaluated outcome, original phases and failure causes. A component without audited comparisons in its body fails explicitly. |
 | Adaptor | Explicit records by method, class or external class `@Nested` shall be given priority. The launcher complements the lack of adaptor, and independent JUnit launches retain their context and population. |
-| Publication | A common owner per suite; the controlled name combines method and ordinary, and the original JUnit nameplate remains a full textual input. Receipts keep the IDs of parametric, result and number of comparisons; long bodies are reconstructed from ordered parts. |
-| HTML qualification | The expected profile comes from the catch, independent of the published file. Visible labels face the spaces normalized according to HTML; published labels, original values and bodies remain preserved. |
-| Provenance | HTML indicates the source footprint, inventory configuration and cardinality; the unique manifest hash is technical metadata of the distribution. Comparison and input of the test remains in HTML without XML copies. |
-| Dimension of the Parties | `InputPartCharacters` configures the aggregate's entire bodies, keeping the pre-view of the assertions and values evaluated. The larger parts avoid multiplying HTML markings; do not remove text or change the semantic budget of the tested component. |
+| Publication | A common owner per suite; the controlled name combines method and invocation ordinal, and the original JUnit display name remains a full textual input. Receipts keep parameterized invocation IDs, outcomes and comparison counts; long bodies are reconstructed from ordered parts. |
+| HTML qualification | The expected profile comes from the capture, independent of the published file. Visible labels are compared using HTML whitespace normalization; published labels, original values and bodies remain preserved. |
+| Provenance | HTML retains the source fingerprint, configuration and inventory size; the manifest hash identifies the source snapshot. Original comparisons and inputs remain inside HTML rather than external XML copies. |
+| Body part size | `InputPartCharacters` sets the aggregate's complete body-part size while preserving assertion previews and evaluated values. Larger parts reduce repeated markup; they cannot remove text or change the tested component's semantic budget. |
 | Scope | The execution qualifies the source and suite of Maven and Gradle as declared. Do not qualify an APK and do not execute Android interactions; E2E remains separate selection. |
 
 From the project root, with JDK, Android SDK 36 and the Maven/Gradle caches prepared:
@@ -151,30 +151,30 @@ A subsequent correction of the inventory produces a new identity; does not rewri
 
 ## Reading a report
 
-[Bridge Gradle](../testing/ATF_GradleComponents.md) applies the same contracts to JUnit 4, with the original identity of the parametric and context captured prior to comparison. The publication intent is metadata from execution and is checked separately from HTML; a profile without HTTP does not invent transport. The XMLs remain only temporary oracle for migrated selections.
+[Bridge Gradle](../testing/ATF_GradleComponents.md) applies the same contracts to JUnit 4, with the original parameterized invocation identity and context captured prior to comparison. The publication intent is metadata from execution and is checked separately from HTML; a profile without HTTP does not invent transport. The XMLs remain only temporary oracle for migrated selections.
 
-The dossier's README shall first indicate the canonical report, the purpose and the identity verified. HTML maintains the data required for the verdict; READMES directs the reader and explains the selection, overlaps and supporting evidence justified.
+The dossier's README shall first indicate the canonical report, the purpose and the identity verified. HTML maintains the data required for the verdict; the README guides the reader and explains the selection, overlaps and supporting evidence justified.
 
-| Order | What are we facing? |
+| Order | What to inspect |
 |---|---|
 | Context | Type of verification, sources and libraries, profile and, for Android, actual APK/device. The timing of the publication is distinguished from the execution. |
 | Invocation | The chosen class, method and parameters; the setup or restoration occurs only if they have occurred and are delimited by the body. |
-| Component | Full input and `Component assertions` from the evaluation phase: invariant name, independently expected, current and verdict. |
-| Android | The action dispatched, the fresh observation, the comparison and the PNG of the same state. The acceptance of the DBD and the success of the transition have separate evidence. |
+| Component | Full input and `Component assertions` from the evaluation phase: invariant name, independent expected value, actual value and verdict. |
+| Android | The dispatched action, fresh observation, comparison and PNG of the same state. ADB command acceptance and successful application transition have separate evidence. |
 | Failed | The primary cause, past comparisons and secondary cleaning errors; Fails keeps access to the original owner. |
 | Closure | The population executed / published, the cases omitted and the limits of the revision; the duration of the scenarios is not confused with the total time of the suite. |
 
-- **Meaning: ** when `true/false`, a number or an exceptional class does not explain the property, the comparison has declaratory message about the object and the invariant. The reference to the source line helps traceability without replacing the explanation.
-- **Refusal expected: ** `assertThrows` can pass when the operation refuses exactly the required entry; the report shows the assessed expectation. A intentionally injected failure of the plea remains FAIL, even though the publicist's acceptance awaits that failure.
+- **Meaning:** when a Boolean, number or exception type does not explain the property, the comparison needs a caption naming the object and invariant. Source locations support traceability without replacing that explanation.
+- **Expected refusal:** `assertThrows` passes only when the operation rejects the specified input. A deliberately failing invocation remains FAIL even when the publisher's acceptance test expects that failure.
 - **Environment: ** the instrument inspecting HTML is the report auditor. Using Playwright for this revision does not transform Android interaction into Playwright automation.
 
 ## Minimum interactive revision
 
-1. Identify the final HTML hasher and copy it yourself into an empty directory; block external resources and declare the browser used.
+1. Record the final HTML hash and copy only that file into an empty directory; block external resources and identify the browser.
 2. Start from the initial status of the report and choose a representative owner; for a large tree, open the required branch.
 3. Check the opening and closure of the group of assertions, access to the last comparison and the independence of the neighbor; add Enter/Space and focus when the change affects these controls.
-4. Open the full input, including values over preview and text that looks like HTML; it remains safe text, at correct invoicing.
-5. When there is catch, open the whole GNP and return to the same branch. The sample shall retain proportions, original resolution and context.
+4. Open the full input, including values over preview and text that looks like HTML; it remains safe text, under the correct invocation.
+5. When a capture is present, open the full PNG and return to the same branch. Preserve its aspect ratio, original dimensions and owning context.
 6. Record the owners and checked controls, verdict and limits. Qualify Extent and fallback separately when the change affects both surfaces.
 
 The review shall cover the branches declared. The reduction to a representative sample requires the same presentation implementation; a new branch, failure or access problem receives its own sample.
@@ -191,7 +191,7 @@ The review shall cover the branches declared. The reduction to a representative 
 
 ## Limits
 
-The passage of the structural audit does not demonstrate the legibility or interactive navigation alone. Checking the publication does not certify a new Android execution or the power of game policy.
+Passing structural checks alone does not prove readability or interactive navigation. Publication verification does not certify a new Android execution or an AI policy's playing strength.
 
 [Presentation policy](ATF_Presentation.md) · [Android contract](ATF_Android.md) · [Reporting architecture](README.md)
 

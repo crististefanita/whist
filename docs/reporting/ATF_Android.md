@@ -2,7 +2,7 @@
 
 ## Overview
 
-Publication provides an autonomous presentation of the purpose, inputs and results evaluated. The consumer provides the semantics of the domain and typed records; the common library provides presentation through the Public API.
+Publication provides a standalone presentation of the declared scope, original inputs and evaluated outcomes. The consumer owns domain semantics and typed records; the common library renders them through its public API.
 
 ## Responsibilities
 
@@ -19,7 +19,7 @@ flowchart LR
 <details>
 <summary>Legend: data ownership</summary>
 
-The action, observation, comparison and capture are distinct facts associated with the same claim and status. The Renderer designs the result evaluated without performing the oracle again or deducting success from a picture.
+The action, observation, comparison and capture are distinct facts associated with the same claim and status. The renderer presents the evaluated outcome without rerunning the oracle or inferring success from a picture.
 
 </details>
 
@@ -27,23 +27,23 @@ The action, observation, comparison and capture are distinct facts associated wi
 |---|---|
 | Consumer | Capture, state extraction, independent oracle, rules, selection and composition. |
 | Library | Neutral types, tables, disclosure, timing and image viewer. |
-| Acceptor | Integrity, property, completeness and interactive verification of the stated purpose. |
+| Acceptor | Integrity, ownership, completeness and interactive verification of the declared scope. |
 
 ## Invocations and phases
 
 | Level | Required content |
 |---|---|
 | Invocation | Actual class identity, method and parameters with effective profile. |
-| Setup | Input and preconditions assessed; training does not replace body verification. |
-| Body | Previous status, input, resulting status, expected independent, current and verdict. |
+| Setup | Evaluated inputs and preconditions; setup does not replace assertions in the test body. |
+| Body | Before state, input, after state, independent expected value, actual value and verdict. |
 | Teardown | Actual cleaning and secondary cause without replacement of initial error. |
 | Population | Cases, games, pairs, moves and comparisons delimited as distinct units. |
 
-- Each actual claim shall be identifiable, including parametritions of the same name.
-- The set, context or aggregated statistics shall not generate fictitious PASS invokes.
+- Each executed invocation must be identifiable, including parameterized invocations of the same name.
+- The set, context or aggregated statistics shall not generate fictitious PASS invocations.
 - PASS, FAIL, ERROR and SKIP results are kept distinct.
-- The partial catch at failure shall retain the last safe context and original cause.
-- The JUnit result without captured comparisons does not allow for their subsequent reconstruction by text.
+- The partial capture at failure shall retain the last safe context and original cause.
+- A JUnit outcome without captured comparisons cannot be repaired by inventing assertions in a later narrative.
 
 ## Action, observation and result
 
@@ -75,13 +75,13 @@ Units verify format, statuses and Unicode fields without Extent. Components veri
 
 Preview of the assertions and the body ceiling are independent settings. [EvidenceTextParts](../../atf-test-android/src/main/java/atf/android/evidence/text/EvidenceTextParts.java) divides the text already written into consecutive parts that respect the actual budget without separating a unicode pair.
 
-- Each body shall retain the source's host, hash and order `part i/N`; the concatenation of the parts shall fully reconstruct the design allowed.
-- The division does not increase the ceiling or reassess the comparisons. A character that does not fit into the budget produces explicit refusal without hidden trunks.
+- Each body must retain its source owner, hash and order `part i/N`; the concatenation of the parts shall fully reconstruct the admitted source text.
+- The division does not increase the ceiling or reassess the comparisons. A character that does not fit into the budget produces explicit refusal without silent truncation.
 - The same mechanism publishes component inputs, whole expected/actual and Android text annexes; tests include the tail of a hierarchy larger than the ceiling.
 
 ### Republishing without Android interaction
 
-[CapturedAndroidFlow](../../atf-test-android/src/test/java/atf/android/e2e/support/replay/CapturedAndroidFlow.java) reads the existing manifest through the readonly publication contract. It keeps comparisons, verdicts, checkpoints and original intervals; it refuses unknown verdicts, artifacts leaving the host and times attributed to another stream.
+[CapturedAndroidFlow](../../atf-test-android/src/test/java/atf/android/e2e/support/replay/CapturedAndroidFlow.java) reads the existing manifest through the readonly publication contract. It keeps comparisons, verdicts, checkpoints and original intervals; it refuses unknown verdicts, artifacts outside the owning directory and times attributed to another stream.
 
 The publication shall be labelled `offline-republication` and shall be made explicit. The new HTML does not become new Android execution; the original manifest remains unchanged and the browser checks the new presentation separately.
 - A false allocation of the driver is refused even when the other values coincide.
@@ -89,10 +89,10 @@ The publication shall be labelled `offline-republication` and shall be made expl
 ## Capture and ownership
 
 - Each published checkpoint may contain the original PNG of the entire physical screen, with the guidance and the preserved edges.
-- The analysis of a region may derive a separate image without replacing the original catch.
+- The analysis of a region may derive a separate image without replacing the original capture.
 - Base64 is incorporated into HTML; identical payloads can be canonical, with exact references for each checkpoint.
 - The local status of the checkpoint is maintained; the final result does not retrospectively recolour all states.
-- If more than one catch takes place, the window observed shall be explicitly declared.
+- If more than one capture takes place, the window observed shall be explicitly declared.
 - Components without device use status data and comparisons without manufactured Android captures.
 
 The viewer keeps the image proportions and provides access to the original size. The return keeps the current owner, the dischargers, the running and the focus; the consumer's verification confronts the original payload with the exact reference.
@@ -101,7 +101,7 @@ The viewer keeps the image proportions and provides access to the original size.
 
 HTML shall allow understanding of the verification without access to checkout: rule, units, comparative input, observation and limit of claim remain associated to the owner.
 
-[Presentation policy](ATF_Presentation.md) has the selection of invokes, groups, fragments and budgets. The original catch and the values justifying the result are mandatory data; the optional diagnosis is explicitly framed.
+[Presentation policy](ATF_Presentation.md) has the selection of invokes, groups, fragments and budgets. The original capture and the values justifying the result are mandatory data; the optional diagnosis is explicitly framed.
 
 A hash proves the identity of the bytes without replacing the oracle of the domain. An external link or summary of the reply shall not replace the comparisons necessary for the purpose published.
 
@@ -115,9 +115,9 @@ A hash proves the identity of the bytes without replacing the oracle of the doma
 
 [Timing contract](ATF_PhaseTiming.md) holds the original ranges, axes and treatment of incomplete logs. [Teaching results](ATF_Handoff.md) holds the acceptance of an end and identity of republishing.
 
-- Failure to act, compare or catch is not cancelled by subsequent successful completion.
+- Failure to act, compare or capture is not cancelled by subsequent successful completion.
 - The functional verdict and the result of the publication are distinct facts.
-- Zero appeals, missing mandatory data or only the KSPE shall not close a purpose as verified.
+- Zero invocations, missing mandatory data or an all-SKIP result cannot qualify a scope as verified.
 
 ## Execution and verification
 

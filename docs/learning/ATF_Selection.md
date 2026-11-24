@@ -10,7 +10,7 @@ The selection of data for analysis has distinct mechanisms with explicit status:
 
 | Mechanism | Execution and limit |
 |---|---|
-| Corpus active | [whist-active-corpus](../../whist-lab-app/ai-lab/tools/corpus/whist-active-corpus.mjs): reshoring of traces, protected origins, rarity-weighted coverage and exchanges with strict progress in the declared budget. |
+| Corpus active | [whist-active-corpus](../../whist-lab-app/ai-lab/tools/corpus/whist-active-corpus.mjs): trace re-scoring, protected origins, rarity-weighted coverage and exchanges with strict progress in the declared budget. |
 | Diagnostic examples | [whist-casebook](../../whist-lab-app/ai-lab/tools/corpus/whist-casebook.mjs): selects family gains and regressions, plus contract errors in the size of the hand; the chosen games extract the first eligible observations of the actor by size and type of decision. |
 | Sub-set by category | Extension contract without generic selection qualified in the project; ask parent manifest, explicit criteria and [self-acceptance](../feedback/ATF_Ai.md). |
 
@@ -25,7 +25,7 @@ flowchart LR
 <details>
 <summary>Legend: data variety and fairness of decision</summary>
 
-The curator produces the active corpus, and the casebook consumes separately declared claims and development games. Both preserve provenance; the categories and examples extracted are not code coating and do not label an action as optimal.
+The curator produces the active corpus, and the casebook consumes separately declared claims and development games. Both preserve provenance; the categories and examples extracted are not code coverage and do not label an action as optimal.
 
 </details>
 

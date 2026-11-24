@@ -238,6 +238,33 @@ Compilation and execution have separate identities. The [compiler inventory](../
 
 The runner records compiler identity, cache admission and output sealing as named timing stages. Rejected borrowing records its refusal reason before fresh preparation; a borrowed build retains its original receipt and a hash-bound reference. Current source/catalog context and fresh control execution remain independent of that original compiler context.
 
+### Recovery within a Maven selection
+
+The [component runner](../../scripts/run-component-suites.ps1) admits the same source/release snapshot through `-ResumeFrom` before reading invocation checkpoints. Whole passing owners retain their original reports. Within a failed Maven owner, the [recovery contract](../../atf-tests/src/test/java/atf/tests/execution/recovery/InvocationRecovery.java) admits exact JUnit IDs, neutral observations and original byte seals before retaining passing invocations.
+
+```mermaid
+flowchart LR
+    CHECKPOINT[Original JUnit checkpoint] -->|binds| ADMIT[Source and evidence admission]
+    ADMIT -->|retains| PASS[Original passing comparisons]
+    ADMIT -->|selects| RETRY[Failed or incomplete IDs]
+    RETRY -->|executes| JUNIT[Fresh JUnit outcomes]
+    PASS -->|supplies| REPORT[Reconciled Extent]
+    JUNIT -->|supplies| REPORT
+```
+
+<details>
+<summary>Legend: execution and republication remain distinct</summary>
+
+- Completed invocations store neutral inputs, evaluated comparisons, original phase timing and diagnostics in immutable capture files. An independent JUnit checkpoint seals those bytes after registration and outcome events.
+- Recovery executes only unresolved unique IDs. Current suite discovery admits the original population, including parameterized and nested identities; unknown dynamic populations, missing captures, source changes and owner failures reject recovery.
+- The [publisher](../../atf-tests/src/test/java/atf/tests/execution/recovery/RecoveryPublication.java) republishes admitted original values through Reporting alongside fresh retry outcomes. A failed retry remains FAIL; the original report is never edited.
+- Canonical Extent remains standalone with complete values and lineage hashes. Its companion index links immutable attempts through relative paths; a prefix rebuilt after process interruption is explicitly labeled as republication.
+- Reuse of a recovered passing owner verifies and retains its sealed attempt artifacts. Compiler, whole-owner and invocation reuse have separate admission rules; testChanges proof generation still executes every declared control freshly.
+
+</details>
+
+[Controlled components](../../atf-tests/src/test/java/atf/tests/execution/recovery/InvocationRecoveryComponentTest.java) use child JVMs, independent body counters, actual process interruption and corrupted files. They qualify recovery without Android interaction or pictures. Historical runs without invocation checkpoints retain whole-selection recovery.
+
 ### Snapshot and compiler I/O
 
 [Filesystem support](../../scripts/AtfFileDigest.ps1) reads fresh SHA-256 bytes and uses native directory enumeration; timestamps and file sizes never authorize reuse.

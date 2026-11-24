@@ -12,7 +12,8 @@ public final class DocumentationTerminologyRules {
     private static final Pattern FENCE = Pattern.compile("^\\s*(`{3,}|~{3,})(.*)$");
     private static final Pattern ARTIFACT = Pattern.compile(
             "\\b(?:SHAA-256|SHA- 256|checksumes|READMEM|READMEL|Caache|assetates|assetses|assetons|assetas|assetos|"
-            + "processor charger|classpathin|Lacquer delimited|source snack|Unbug|Quotts)\\b",
+            + "processor charger|classpathin|Lacquer delimited|source snack|Unbug|Quotts|invoicing|parametritions|pointeres|"
+            + "Immunobable|republican descriptor|old republican|GNP|NGPs|KSPE|Book incidence|Manifesto components|deplete the head)\\b",
             Pattern.CASE_INSENSITIVE);
 
     private DocumentationTerminologyRules() { }
@@ -37,7 +38,7 @@ public final class DocumentationTerminologyRules {
             if (ARTIFACT.matcher(visible).find()) violations.add(violation("DOC-EN-TERMINOLOGY", root, file,
                     index + 1, "visible English contains a reviewed translation artifact",
                     "operational terms must describe the owning code accurately",
-                    "use directory, checksum, asset, receipt, source snapshot or annotation processor as appropriate"));
+                    "use the owning code's term: invocation, capture, republication, heap, PNG, manifest, directory or annotation processor"));
         }
     }
 }

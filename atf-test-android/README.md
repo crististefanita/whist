@@ -97,7 +97,7 @@ Geometric oracle and nodes have different limits to visibility in the PNG and ob
 
 [The suite of history](src/test/java/atf/android/suites/AndroidHistoryComponentSuite.java) is a JVM entry without SDK or device. [Component Guide](../docs/testing/ATF_DisplayComponents.md#reporting-of-historical-components) holds the selection, output in TMP and modes Extent/fallback.
 
-- The reusable catch and publication support is in [evidence.component](src/main/java/atf/android/evidence/component/); Kit holds JUnit protocol and comparisons and Reporting holds rendering.
+- The reusable capture and publication support is in [evidence.component](src/main/java/atf/android/evidence/component/); Kit holds JUnit protocol and comparisons and Reporting holds rendering.
 - Liaison with JUnit metadata remains in [AndroidComponentAudit](src/test/java/atf/android/component/AndroidComponentAudit.java), without XML JUnit parsing for rebuilding assertions.
 - Kit is a compilation dependency for captured models used in the main; the Android adapter does not introduce JUnit types directly into its main sources.
 - The `history-components` profile compiles only this frontier. Profiles `display-components` and `responsive-sanity` select execution; do not remove from compilation the classes indirectly required by the suite.
@@ -118,7 +118,7 @@ The driver composes these mechanisms and records the actions. Components control
 | Catch, transfer and interval | [AndroidUiDriverCaptureTimingTest](src/test/java/atf/android/e2e/driver/AndroidUiDriverCaptureTimingTest.java), with processes and files controlled. |
 | Start, finish, drain and clean | [CommandProcessComponentTest](src/test/java/atf/android/process/CommandProcessComponentTest.java), with controlled local processes. |
 
-Transport, intervals and catch data may support another application. The card selectors, table interpretation and score check keep the Whist semantics; [Transfer to another game](../docs/learning/ATF_GameTransfer.md) requires adaptor and own oracle.
+Transport, intervals and capture data may support another application. The card selectors, table interpretation and score check keep the Whist semantics; [Transfer to another game](../docs/learning/ATF_GameTransfer.md) requires adaptor and own oracle.
 
 <details>
 <summary>Contract of passive waiting and diagnosis of expiry</summary>
@@ -151,7 +151,7 @@ delimit the mechanism for interaction and capture of evidence.
 interactions and stock log. [Capture](src/test/java/atf/android/e2e/driver/UiDeviceCapture.java)
 holds the transfer of the hierarchy and PNG, retesting and closing the range
 measured. A hierarchy left over from another screen or prior PNG cannot demonstrate
-success of current catch; interruption retains the cause and marking of the wire.
+success of current capture; interruption retains the cause and marking of the wire.
 
 [AdbClient](src/main/java/atf/android/AdbClient.java) delegates [execution of the process](src/main/java/atf/android/process/CommandProcess.java) with a single monotonous term for starting, finishing and drainage exits. The interruption shall retain the wire marking and the reading errors must not be converted into success.
 

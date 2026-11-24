@@ -2,7 +2,7 @@
 
 ## Overview
 
-An immutable policy controls AUTO, SUMMARY and FULL selection and the limits of presentation. The consumer prepares the data; the binary library provides the APIs, tables, folding sections and catch viewer.
+An immutable policy controls AUTO, SUMMARY and FULL selection and the limits of presentation. The consumer prepares the data; the binary library provides the APIs, tables, folding sections and capture viewer.
 
 ## Configuration captured at first
 
@@ -10,9 +10,9 @@ An immutable policy controls AUTO, SUMMARY and FULL selection and the limits of 
 |---|---|
 | `config/game-evidence.yml` | Consumer specific selection and limits; explicit route through `atf.evidence.policy`. |
 | `atf.yaml` or `atf.yml` | Preview of comparisons and content budget; explicit route through `atf.report.config`. |
-| `EvidencePolicy` and `GameReportConfiguration` | Solving configuration once for publication. |
+| `EvidencePolicy` and `GameReportConfiguration` | Resolve configuration once for publication. |
 
-The subsequent change of configuration does not alter the object already captured. [GameReportConfiguration](../../atf-tests/src/main/java/atf/tests/reporting/GameReportConfiguration.java) requires previsualization of comparisons of 240 characters and a positive body budget; another preview value is denied by the current adapter.
+The subsequent change of configuration does not alter the object already captured. [GameReportConfiguration](../../atf-tests/src/main/java/atf/tests/reporting/GameReportConfiguration.java) requires assertion previews of 240 characters and a positive body budget; another preview value is denied by the current adapter.
 
 Unknown or duplicate keys, multiple documents, invalid types, numerical overruns and negative limits are refused to load. Default values shall be consulted in the [actual configuration](../../config/game-evidence.yml).
 
@@ -27,47 +27,47 @@ flowchart LR
 <details>
 <summary>Legend: selection and completeness</summary>
 
-The selection shall decide which pleas are presented and declare the omissions. The grouping shall keep all mandatory comparisons of the selected invokes with the original identity and verdict.
+Selection determines which invocations are presented and declares omissions. Grouping retains all mandatory comparisons of selected invocations with their original identities and verdicts.
 
 </details>
 
 ## Modes of presentation
 
-| Mode | Claims held | Background and presentation |
+| Mode | Retained invocations | Context and presentation |
 |---|---|---|
-| AUTO | All population provided within inclusive limits; otherwise full deterministic examples, different results from PASS and mandatory checks. | Optional context in the captured budget and all selected comparisons. |
-| SUMMARY | Successful complete examples, different results of PASS and mandatory checks. | Observe the optional context and fingerprints; declare the original inventory, retained and omitted. |
-| FULL | All the submissions and control points provided. | The budgets remain active; the pre-selected diagnosis and the optional observation required for the session have distinct behaviors defined below. |
+| AUTO | The full supplied population within inclusive limits; otherwise complete deterministic examples, non-PASS outcomes and mandatory checks. | Optional context in the captured budget and all selected comparisons. |
+| SUMMARY | Complete passing examples, non-PASS outcomes and mandatory checks. | Observe the optional context and fingerprints; declare the original inventory, retained and omitted. |
+| FULL | All supplied invocations and checkpoints. | The budgets remain active; the pre-selected diagnosis and the optional observation required for the session have distinct behaviors defined below. |
 
-Collections explicitly marked for full storage shall be kept in accordance with policy in each way. The presentation mode does not extend the population provided by the producer and does not execute the game or oracle.
+Collections explicitly marked for full storage shall be kept in accordance with policy in every mode. The presentation mode does not extend the population provided by the producer and does not execute the game or oracle.
 
 ## Grouping and full content
 
 | Surface | Contract |
 |---|---|
-| Comparison | Natives with no more than `rowsPerGroup` rows; sequels indicate the original range. |
+| Comparison | Native tables with at most `rowsPerGroup` rows; continuations identify the original range. |
 | Fragment Verdict | Derived from retained rows; the terminal fragment also retains the result of the explicitly provided group. |
 | Long values | Native preview of 240 characters and access to complete values associated with the original group. |
 | Remarks | Not more than `fieldsPerGroup` rows; long values keep the content complete. |
 | TEXT | Ordered parts, preferably for the end of the line and keeping CR/LF, Unicode and literal entities. |
-| JSON | Full documents at object or painting limits; an indivisible element over budget is denied. |
+| JSON | Full documents at object or array boundaries; an indivisible element over budget is denied. |
 | Captures Android | The original whole PNG associated with the control point; the selection does not replace or cut the image. |
 | Observation without comparison | The explicit API for attached materials without invented domain assertions. |
 
-Every JSON fragment is a complete document. The original numerical forms shall be maintained by formatting and fragmentation; the lack or reordering of a game invalidates completeness.
+Every JSON fragment is a complete document. The original numerical forms shall be maintained by formatting and fragmentation; a missing or reordered fragment invalidates completeness.
 
 ## Optional data and refusal of publication
 
-The optional character is declared by the caller. The file name or label shall not convert the comparative inputs, causes and captures into non-usable data.
+The optional character is declared by the caller. The file name or label shall not convert the comparative inputs, causes and captures into optional data.
 
 | Step | Implemented behaviour |
 |---|---|
-| [EvidenceSelection](../../atf-tests/src/main/java/atf/tests/learning/EvidenceSelection.java) | It deducts diagnostic fingerprints, keeps entire records in the budget and declares omissions including in FULL; SUMMARY omits them. |
+| [EvidenceSelection](../../atf-tests/src/main/java/atf/tests/learning/EvidenceSelection.java) | Deduplicates diagnostic fingerprints, keeps entire records in the budget and declares omissions including in FULL; SUMMARY omits them. |
 | [GameReportPresentation](../../atf-tests/src/main/java/atf/tests/reporting/GameReportPresentation.java) | For optional comments requested for the session: AUTO omits that do not fit, SUMMARY omits the context and FULL refuses to exceed the budget. |
-| [GameReportSession](../../atf-tests/src/main/java/atf/tests/reporting/GameReportSession.java) | Book the selected context before the scenarios and check the cumulative limit; the reservation does not restore the selection. |
-| [GameReportPhase](../../atf-tests/src/main/java/atf/tests/reporting/GameReportPhase.java) | Keep INCOMPLETE at bay, including when the caller intercepts the error before closing. |
+| [GameReportSession](../../atf-tests/src/main/java/atf/tests/reporting/GameReportSession.java) | Reserve the selected context before the scenarios and check the cumulative limit; reservation does not recompute the selection. |
+| [GameReportPhase](../../atf-tests/src/main/java/atf/tests/reporting/GameReportPhase.java) | Preserve INCOMPLETE, including when the caller intercepts the error before closing. |
 
-External diagnostic references are inventoried and omitted from HTML; mandatory information remains incorporated. The content is measured in UTF- 16, units and HTML markings add volume: the text budget is not a total file or memory limit.
+External diagnostic references are inventoried and omitted from HTML; mandatory information remains incorporated. The content is measured in UTF-16 units and HTML markings add volume: the text budget is not a total file or memory limit.
 
 [EvidenceSelectionContractTest](../../atf-tests/src/test/java/atf/tests/learning/EvidenceSelectionContractTest.java) checks selection before the session. [GameReportPublicationContractTest](../../atf-tests/src/test/java/atf/tests/reporting/GameReportPublicationContractTest.java) checks its publication and refusal; the two contracts are not confused.
 
@@ -91,13 +91,13 @@ flowchart LR
 <details>
 <summary>Legend: Input and rendering have different owners</summary>
 
-The selection shall retain full claims and explicit omissions. The change of owner displayed, the opening of a group or catch shall keep access to the full content; generic implementation and optimisation shall qualify as the library's manager.
+The selection shall retain complete invocations and explicit omissions. The change of owner displayed, the opening of a group or capture shall keep access to the full content; generic implementation and optimization remain owned and qualified by the library producer.
 
 </details>
 
 ### Mechanisms
 
-- Limit the optional diagnosis by the policy captured and keep mandatory comparisons of selected invokes.
+- Limit the optional diagnosis by the policy captured and keep mandatory comparisons of selected invocations.
 - Measure separately the generation, opening and navigation operations on an identified input.
 - Confront values, order and owner of captures after interaction.
 - Check the return from the viewer without losing the reader's context.

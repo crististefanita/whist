@@ -33,11 +33,29 @@ public final class AndroidComponentRun implements AutoCloseable {
     private final String provenance = System.getProperty(AndroidComponentReports.PROVENANCE, "");
     private boolean provenancePublished;
     private boolean closed;
+    private final atf.android.evidence.component.snapshot.ComponentCaptureJournal journal;
+    private List<ReportObservation.Artifact> lineage=List.of();
 
     public AndroidComponentRun(Path file, boolean fallback, ReportingSettings settings) {
         this.file = java.util.Objects.requireNonNull(file);
         this.fallback = fallback;
         this.settings = java.util.Objects.requireNonNull(settings);
+        try {
+            String directory=System.getProperty(atf.android.evidence.component.snapshot.ComponentCaptureJournal.DIRECTORY,"");
+            journal=directory.isBlank() || !Path.of(directory).toAbsolutePath().getParent().equals(file.toAbsolutePath().getParent())
+                    ? null : new atf.android.evidence.component.snapshot.ComponentCaptureJournal(Path.of(directory));
+        } catch(java.io.IOException failure) {throw new java.io.UncheckedIOException(failure);}
+    }
+    /** Scoped republication of admitted original observations; this method never executes or evaluates a test. */
+    public synchronized void includeCaptured(List<atf.android.evidence.component.snapshot.CapturedInvocation> saved,
+            List<ReportObservation.Artifact> lineage) {
+        if(closed || !invocations.isEmpty()) throw new IllegalStateException("Captured republication requires a new report owner");
+        var ids=new java.util.HashSet<String>();
+        for(var row:saved) {
+            if(!ids.add(row.id())) throw new IllegalArgumentException("Duplicate captured invocation: "+row.id());
+            invocations.add(new Invocation(row.identity(),row.result(),row.inputs(),row.scenarioName()));
+        }
+        this.lineage=List.copyOf(lineage);
     }
     public AssertionValueDisplay display() {
         return new AssertionValueDisplay(settings.assertionMaxDisplayCharacters(), redactor::redactField);
@@ -55,7 +73,11 @@ public final class AndroidComponentRun implements AutoCloseable {
                 && invocation.identity().method().equals(identity.method())).count() + 1;
         var captured = new ArrayList<>(inputs.snapshot());
         captured.add(new ComponentInputs.Entry("JUnit display name", identity.scenario()));
-        invocations.add(new Invocation(identity, result, List.copyOf(captured), identity.method() + " [" + ordinal + "]"));
+        String scenarioName=identity.method() + " [" + ordinal + "]";
+        if(journal!=null) try {
+            journal.append(atf.android.evidence.component.snapshot.CapturedInvocation.capture(identity,scenarioName,captured,result,redactor));
+        } catch(java.io.IOException failure) {throw new java.io.UncheckedIOException(failure);}
+        invocations.add(new Invocation(identity, result, List.copyOf(captured), scenarioName));
     }
     @Override public synchronized void close() {
         if (closed) return;
@@ -113,8 +135,13 @@ public final class AndroidComponentRun implements AutoCloseable {
                         if (!provenancePublished && !provenance.isBlank()) {
                             observation.accept(new ReportObservation("Live source execution provenance", List.of(),
                                     inputBodies(new ComponentInputs.Entry("Execution provenance", provenance)), List.of()));
-                            provenancePublished = true;
                         }
+                        if(!provenancePublished && !lineage.isEmpty()) observation.accept(new ReportObservation(
+                                "Recovery report lineage",List.of(new ReportField("Meaning","Original attempt and retry; no original verdict is edited")),
+                                inputBodies(new ComponentInputs.Entry("Attempt identities and immutable report hashes",new com.fasterxml.jackson.databind.ObjectMapper()
+                                        .valueToTree(lineage.stream().map(a -> java.util.Map.of("label",a.label(),"path",
+                                                file.toAbsolutePath().getParent().relativize(Path.of(a.location())).toString().replace('\\','/'),"sha256",a.sha256())).toList()).toPrettyString())),List.of()));
+                        provenancePublished = true;
                     }
                     observed.timing().ifPresent(time -> phase.executionTiming(new ReportPhaseTiming(time.elapsed(), time.intervals())));
                     if (observed.phase() == ComponentAssertionAudit.Phase.TEST_BODY) {

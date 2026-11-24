@@ -28,6 +28,7 @@ The 1–100 score expresses work priority, not quality or completion percentage.
 |---|---:|---:|---|
 | AND-02 | P1 | 92 | Qualify the active actor, stable geometry and visible hand in bidding, play and AutoGame on the APK, for 3–6 players, RO/EN and enlarged text. [Register](ATF_Android.md) |
 | AI-01 | P1 | 91 | Calibrate Hard inference for bidding with 2–8 cards and cards played on new lots; separate the accuracy of probabilities from the simulated score. [Register](ATF_Ai.md) |
+| RAG-31 | P1 | 90 | Qualify source-bound invocation recovery, retaining original passing comparisons and rerunning only failed or incomplete identities. [Register](ATF_Governance.md#qualification-of-claims-and-launchers) |
 | RAG-29 | P1 | 90 | Qualify explicit source/catalog context during the next complete promotion and post-publication restart; identity and refusal contracts are implemented in components. [Register](ATF_Governance.md#framework-selection-boundaries) |
 | UI-04 | P1 | 90 | Feed actual native content measurements into the neutral observation port; reject font clipping and stale repaint independently of policy-plan equality. [Register](ATF_CardUi_Extraction.md#ui-three-module-plan) |
 | ACH-01 | P1 | 90 | Qualify restoration of Achievements scroll position and selection on the APK, and notification resumption after activity recreation. [Register](ATF_Achievements.md) |

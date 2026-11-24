@@ -69,7 +69,7 @@ The requirement uses the geometry and Android settings, separated from the comme
 | High reference profile | Portrait 1080×2448 px; useful width depends on the insets and logical DPIs observed. |
 | Density | 420/440/480 dpi offers about 411/393/360 dp before the sets; test settings do not assume default density of the device. |
 | Text | Scale 1,0/1,15/1,3/1,5 in components; native sanity check selects normally and increases after risk. |
-| Identitate | The names of the scenarios and requirements use geometry; the raw observations keep the device and settings effectively captured. |
+| Identity | Scenario names and requirements describe geometry; original observations retain the device and settings actually captured. |
 
 Full action, hand and all places face in the same state. [History](../game/ATF_ScoreHistory.md) holds the semantics of columns; [Feedback Android](../feedback/ATF_Android.md) only keeps the qualifications still required.
 
@@ -97,14 +97,14 @@ The selection shall cover differences that may produce another geometry or inter
 - Bidding does not cover players' seats; semantic selection distinguishes duplicate labels.
 - Each action is confronted with the state observed after it.
 - The resume shall keep the score register and the known information.
-- The catch keeps the native PNG unchanged. Depending on the device, the raster coincides exactly with the physical dimensions or the logically active dimensions of `wm size`; the logic profile is checked separately.
+- The capture keeps the native PNG unchanged. Depending on the device, the raster coincides exactly with the physical dimensions or the logically active dimensions of `wm size`; the logic profile is checked separately.
 - [RasterOracle](../../atf-test-android/src/main/java/atf/android/evidence/DisplayRaster.java) explicitly identifies the physical or logical way. A mixed axis, a pixel cut or arbitrary scaling are rejected; the coordinates are mapped at the observed raster.
 - The faces use the common ratio 5: 7: the hand has 63×88 dp, and the cards played have 46×64 or 50×70 dp, by the height of the window. The number of cards changes the hand overlap; the number of players changes positions without thinning the faces.
 - In four players, the opponents occupy a superior bow and release the trick band; the cards keep the cross with the man to the south. At 3–6 seats, the names and cards follow circular engine indices, including the resumption from the player who starts trick.
 - The band between the boxes reserves the maximum height between the bid grid and levelled on the entire game schedule, not just for the current hand. Three players have the booking of the maximum hand of 17 cards; the bid and game keep the same anchors in all rounds. The table requires a space of 28 dp above the hand, but uses only the available surplus; the low windows can run the page. The Tactile Tasks of the bid shall remain at least 48 dp.
 - The occupied region of a place also includes action above the box. The distance and intersections of the bid use this complete region; the comparison of the boxes after selection keeps the contour of each player separately.
 - The frame of the card uses the same background and contour factory as the active place. E2E compares raster filling and verifies the legibility of the title and value; the full identity remains in the accessible description.
-- The audit of filling compares the dominant color inside the frames after mapping the coordinates to the raster. The components shall check the text superimposed on the sampling point, different colours and change in the catch scale.
+- The audit of filling compares the dominant color inside the frames after mapping the coordinates to the raster. The components shall check the text superimposed on the sampling point, different colours and change in the capture scale.
 - [TableViewportAudit](../../atf-test-android/src/main/java/atf/android/whist/evidence/TableViewportAudit.java) has the geometric comparisons reused by E2E and components. The simulated samples shall introduce missing frames, cut faces, scroll, overlaps and a single card that is not in use.
 - The components validate the oracle on controlled observations; the raster verification and native acceptance remain separate levels. Abstracts are confronted with the actual limit of preview, and complete geometry remains in the capture XMLs.
 - The maximum fixed is 13 whole faces of 88 dp and all boxes in the same condition. A second fixture plays a trick legally: the four cards are displayed together with the 12 left in the hand.

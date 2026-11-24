@@ -72,7 +72,7 @@ On Windows, give the launcher a `RunRoot` in the external evidence director of W
 [Responsive display contract](ATF_Display.md) defines the profile boundaries and execution configuration.
 
 Product E2Es selects the displayed items semantically, checks after
-action the transition observed and keeps the catch of the same state. A ADB tap
+action the transition observed and keeps the capture of the same state. A ADB tap
 successfully alone does not certify acceptance of the move. Test result, acceptance
 the visual and objective of the match remain distinct verdicts.
 
@@ -119,7 +119,7 @@ The `WhistRecordsE2eTest#historyLegendWrapsWithinTheDialogAndStaysFixedWhileColu
 - **Format: ** `WIDTHxHEIGHT@DPI:SCALE:EN|RO`, separated by comma; maximum eight unique cases, scales 1,0–1,5.
 - **Refuses: ** invalid configuration is rejected prior to the construction of Android context.
 
-- Each navigation or running has fresh observation; the report retains the original actions, comparisons and GNP.
+- Each navigation or running has fresh observation; the report retains the original actions, comparisons and PNG.
 - The oracle checks the legend's property outside the columns, the line-to-line closure and the frame stability after running. The actual movement of columns shall be observed in text 1,5.
 - The full register remains unchanged. The PNG review confirms the division and end of the explanation; the test does not require a full match played through IU.
 - The validation of the plan, the duplicates, limits and interpretation of XML qualify for components. The restricted sanity check keeps the native font, the actual rewind and the PNG; they are not replaced by simulated rendering.

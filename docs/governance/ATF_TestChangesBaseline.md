@@ -3132,3 +3132,59 @@ testChanges:
 ```
 
 </details>
+
+<details>
+<summary>Source-bound invocation recovery and reviewed English terminology</summary>
+
+```yaml
+testChanges:
+  - id: RAG-INVOCATION-RECOVERY-TERMINOLOGY
+    status: VERIFIED
+    base: a1dfdbf9dd1afe9adbe9659201c4863e73f12d10
+    expires: 2026-12-24
+    reason: Retain original passing comparisons through neutral capture files, admit current JUnit identities and rerun unresolved invocations only. Preserve failed retries, source and report seals, standalone Extent, relative attempt indexes and literal technical text.
+    proof: 'mvn -o -pl atf-tests -am -Dtest=ReleaseRagProvenanceComponentTest,InvocationRecoveryComponentTest,AtfSourceQualityGovernanceTest,PackageCohesionGovernanceTest,TestLayerGovernanceTest,SuiteOwnershipGovernanceTest,DocumentationTerminologyComponentTest,DocumentationGovernanceCliComponentTest -Dsurefire.failIfNoSpecifiedTests=false test'
+    checks:
+      positive:
+        - atf.tests.execution.recovery.InvocationRecoveryComponentTest#retryRunsOnlyFailedAndAbortedIdsAndRepublishesOriginalComparisons
+        - atf.tests.execution.recovery.InvocationRecoveryComponentTest#interruptedStaticPopulationResumesTheMissingBodiesFromDurableCaptures
+        - atf.tests.execution.recovery.InvocationRecoveryComponentTest#successfulOwnerReusePreservesItsOriginalSealedAttemptArtifacts
+        - atf.tests.governance.source.AtfSourceQualityGovernanceTest#sourcesRespectPackagePathsImportsAndProductionBoundaries
+        - atf.tests.governance.source.PackageCohesionGovernanceTest#currentProjectUsesNoCohesionExceptions
+        - atf.tests.governance.source.TestLayerGovernanceTest#executableMavenClassesHaveOneLayerAndTheGuideMatchesTheirDeclarations
+        - atf.tests.governance.source.TestLayerGovernanceTest#theGuideMapsEveryGovernedSourceModuleWithoutClaimingBinarySourceSuites
+        - atf.tests.governance.suites.SuiteOwnershipGovernanceTest#everyMavenExecutableHasOnePrimaryOwnerAndEveryFocusedGateIsDeclared
+      negative:
+        - atf.tests.execution.recovery.InvocationRecoveryComponentTest#aFailedRetryStaysFailedUntilOnlyItsRemainingIdentitiesPass
+        - atf.tests.execution.recovery.InvocationRecoveryComponentTest#changedSourcesUnknownPopulationsAndTamperedEvidenceAreRefused
+        - atf.tests.execution.recovery.InvocationRecoveryComponentTest#currentSuiteDiscoveryRefusesMissingAndForeignOriginalIdentities
+        - atf.tests.governance.documentation.language.DocumentationTerminologyComponentTest#domainTermsRetainMeaningWithoutRejectingCodeOrExceptionTerminology
+        - atf.tests.governance.documentation.cli.DocumentationGovernanceCliComponentTest#translationArtifactsHaveTheSameFullAndSelectedDiagnostics
+        - atf.tests.governance.documentation.release.rag.ReleaseRagProvenanceComponentTest#recoveredComponentAttemptsMustRemainDeclaredSealedAndReadable
+    paths:
+      - atf-tests/tools/component-recovery-artifacts.mjs
+      - atf-tests/tools/evaluate-release-rag.mjs
+      - atf-tests/src/test/java/atf/tests/governance/documentation/release/rag/ReleaseRagProvenanceComponentTest.java
+      - atf-test-android/src/main/java/atf/android/evidence/component/AndroidComponentRun.java
+      - atf-test-android/src/main/java/atf/android/evidence/component/snapshot/CapturedInvocation.java
+      - atf-test-android/src/main/java/atf/android/evidence/component/snapshot/ComponentCaptureJournal.java
+      - atf-tests/src/main/java/atf/tests/documentation/policy/DocumentationTerminologyRules.java
+      - atf-tests/src/test/java/atf/tests/execution/components/ComponentExecutionListener.java
+      - atf-tests/src/test/java/atf/tests/execution/components/ComponentSuiteExecution.java
+      - atf-tests/src/test/java/atf/tests/execution/recovery/InvocationCaptureUnitTest.java
+      - atf-tests/src/test/java/atf/tests/execution/recovery/InvocationCheckpoint.java
+      - atf-tests/src/test/java/atf/tests/execution/recovery/InvocationRecovery.java
+      - atf-tests/src/test/java/atf/tests/execution/recovery/InvocationRecoveryComponentTest.java
+      - atf-tests/src/test/java/atf/tests/execution/recovery/RecoveryFixture.java
+      - atf-tests/src/test/java/atf/tests/execution/recovery/RecoveryPublication.java
+      - atf-tests/src/test/java/atf/tests/governance/documentation/language/DocumentationTerminologyComponentTest.java
+      - atf-tests/src/test/java/atf/tests/suites/components/AtfOrchestrationComponentSuite.java
+      - atf-tests/tools/prepare-component-reuse.mjs
+      - atf-tests/tools/prepare-component-reuse.test.mjs
+      - config/atf-component-collections.json
+      - config/atf-component-dependencies.json
+      - config/atf-component-reader-seals.json
+      - scripts/run-component-suites.ps1
+```
+
+</details>

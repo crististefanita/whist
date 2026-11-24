@@ -33,7 +33,7 @@ Both policies use the same variant and the permitted observation. The engine che
 | Hard drive with public impossibility | Protect first the estimated own points, then track the estimated adverse failures. |
 | Normal and Hard with playing for zero | They switch to targeting exactly zero once public score bounds rule out a top-two finish through conventional scoring and zero is still reachable in the remaining schedule. |
 
-[Decision model](../ai/ATF_DecisionModel.md#priority-objectives) holds the order of criteria, domains and runtime certificates. [Manifesto of objectives](../../config/whist-play-objectives.yaml) links the intention of implementation and components; exact parameters and conditions are read from the code.
+[Decision model](../ai/ATF_DecisionModel.md#priority-objectives) holds the order of criteria, domains and runtime certificates. [Objective manifest](../../config/whist-play-objectives.yaml) links the intention of implementation and components; exact parameters and conditions are read from the code.
 
 ## Information and adaptation
 

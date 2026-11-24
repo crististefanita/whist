@@ -4,6 +4,7 @@ import path from 'node:path';
 import {fileURLToPath} from 'node:url';
 import {componentEvidenceScope} from './component-evidence-scope.mjs';
 import {sourceCheckFiles} from './component-source-check.mjs';
+import {readRecoveryArtifacts} from './component-recovery-artifacts.mjs';
 import {
   componentInputMap, digest, inlinePngCount, regularFile, strictJson, verifyComponentExecution, verifyComponentOrigin, verifyReleaseInputs
 } from './evaluate-release-rag.mjs';
@@ -58,6 +59,8 @@ export async function prepareComponentReuse(runRoot, previousRoot, groups, {resu
       const html = report.toString('utf8');
       if (!/<html\b/i.test(html.slice(0, 8192)) || inlinePngCount(html) === 0) throw Error('INVALID_EXTENT');
       verifyComponentExecution(origin, group, execution.value, execution.value?.tests, digest(report));
+      const recoveryArtifacts = await readRecoveryArtifacts(execution.value,
+        async relative => fs.readFile(await regularFile(previous, group + '/' + relative)));
       const scope = componentEvidenceScope(group, current, origin.sourceSet, {androidVersionMetadataOnly});
       const decision = {group, decision: scope.decision, reason: scope.reason,
         affectedGroups: scope.affectedGroups, changedInputs: scope.changed, affectedInputs: scope.affected,
@@ -69,12 +72,12 @@ export async function prepareComponentReuse(runRoot, previousRoot, groups, {resu
         decisions.push(decision);
         continue;
       }
-      evidence = {origin, execution, report, decision};
+      evidence = {origin, execution, report, decision, recoveryArtifacts};
     } catch (error) {
       decisions.push({group, decision: 'INVALID', reason: error.message});
       continue;
     }
-    const {origin, execution, report, decision} = evidence;
+    const {origin, execution, report, decision, recoveryArtifacts} = evidence;
     const id = origin.provenance.sha256;
     if (!published.has(id)) {
       const originDir = path.join(target, 'snapshots', id);
@@ -89,6 +92,11 @@ export async function prepareComponentReuse(runRoot, previousRoot, groups, {resu
     await fs.mkdir(destination);
     await fs.writeFile(path.join(destination, 'component-report.html'), report, {flag: 'wx'});
     await fs.writeFile(path.join(destination, 'execution.json'), execution.bytes, {flag: 'wx'});
+    for (const artifact of recoveryArtifacts) {
+      const file = path.join(destination, artifact.path);
+      await fs.mkdir(path.dirname(file), {recursive: true});
+      await fs.writeFile(file, artifact.bytes, {flag: 'wx'});
+    }
     decisions.push({...decision, componentEvidenceOrigin: id, tests: execution.value.tests,
       reportSha256: execution.value.reportSha256, executionSha256: execution.sha256});
   }

@@ -2,12 +2,12 @@
 
 ## Overview
 
-This set of sources provides test infrastructure for Gradle modules. The component tests choose the inputs and the oracles and the adapter records the comparisons and confronts the ratio with JUnit invoicing. [Common strategy](../../../../docs/testing/README.md)
+These test fixtures provide audit infrastructure for Gradle modules. Component tests own inputs and independent oracles; the adapter captures evaluated comparisons and reconciles the report with original JUnit invocations. [Common strategy](../../../../docs/testing/README.md)
 
 | Responsibility | Contract |
 |---|---|
 | Capture | Retains the actual value and capture time for each declared input. |
-| Comparison | It associates every check with the citation that assessed it. |
-| Verification | Confront identities and results between HTML and JUnit. |
+| Comparison | Associates each evaluated check with its original invocation. |
+| Verification | Reconciles invocation identities and outcomes between HTML and JUnit. |
 
 The fixtures enter the consumer test variants. Their own verification is in [component catalogue](../test/README.md).

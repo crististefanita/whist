@@ -27,7 +27,7 @@ The level depends on the actual collaboration required for verification. An arch
 | Unit — `unit` | Pure policy, model, calculation, parsing or formatting | Typed inputs, watch controlled, no service | It does not certify integration between modules. |
 | Component - `component` | Public API of an adaptor or module | Controlled doubles, local data, temporary files | It does not certify a new journey into the installed app. |
 | Integration — `integration` | Real collaboration between components or modules | Physical libraries, configuration and controlled resources | Don't repeat all the variants already covered at the lower level. |
-| Head to head - `e2e` | Observed course in Android app | Reserved device, identified application, explicit initial status | Ask for new actions and observations; it shall be activated separately. |
+| End-to-end - `e2e` | Observed course in Android app | Reserved device, identified application, explicit initial status | Ask for new actions and observations; it shall be activated separately. |
 
 An auxiliary function, a data producer, a charger or an oracle is a support. A class executable from a support package declares its own level.
 
@@ -110,7 +110,7 @@ The results shall be kept out of the source. Unit tests shall not be required to
 | Extract property | The appropriate component | What remains on Android |
 |---|---|---|
 | Geometry, crossings and centering | Typed, extreme legal measurements, increased text and neighbors who violate a single limit. | The actual font, the thirst, the tactile target and the same composition in raster. |
-| Interpretation of the hierarchy | XML controlled: valid status, missing node, duplicate, cut region and malformed document. | Fresh catch after action and the identity of the screen observed. |
+| Interpretation of the hierarchy | XML controlled: valid status, missing node, duplicate, cut region and malformed document. | Fresh capture after action and the identity of the screen observed. |
 | Transition or resumption | Small ports, actual engine and controlled delivered events, including after cancellation. | Command through displayed control, callbacks and platform persistence. |
 | Localised rules and persistence options | Text provided to the application in each language, configuration options, actual codec and invalid inputs. | Change of language and reopening of aid, a action for the selector and the check, resumption after the process has stopped. |
 | Bidding under overlapping dialogues | The components play the closure of history and score with a recommendation already in the queue. The manual choice remains selected and the score does not change prior to confirmation. | Bidding on APK checks the score dialogue, confirmation and restoration after restart. Legend and rendering remain in the historic route. |

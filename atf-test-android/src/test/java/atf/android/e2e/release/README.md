@@ -2,26 +2,26 @@
 
 ## Overview
 
-The collection checks the binding of the recommendation to the actual Android interface. IA policy and exhaustive cases remain in the components of the application; this path verifies visible selection, manual choice, dialogue and saved contract.
+This collection verifies how the AI recommendation reaches the Android interface. Application components cover AI policy and exhaustive combinations; this journey checks visible selection, manual choice, dialogs and the saved contract.
 
 | Level | Entry and contract | Limit |
 |---|---|---|
 | Component | [Decoder](turn/BidChoiceObservation.java) reads a single XML observation; [its component checks](turn/BidChoiceObservationComponentTest.java) refuses multiple selections, contradictory confirmations and illegal values. | It does not read a device and it does not estimate the bid. |
-| E2E | [Scenario](ReleaseBidScenario.java) config through Romanian Whist UI, four seats and Hard; check the recommendation and choice of an alternative first hand with two legal options. Play a pre-filled hand if the dealer has only one option. | Do not inject checkpoints or debug extracts or read side hands. |
+| E2E | The [scenario](ReleaseBidScenario.java) configures Romanian Whist through the UI with four players and Hard opponents; it checks the recommendation and a manual alternative on the first hand with two legal bids. Complete a preceding hand when the dealer has only one option. | Do not inject checkpoints or debug data or inspect opponents' private hands. |
 | Manual choice under dialogue | [Returning component](../../../../../../../../whist-lab-app/app/src/test/java/ro/whistlab/app/bidding/HumanBidResumeComponentTest.java) checks the overlapping dialogues and the AI reply late. | On APK, the bidding scenario keeps the passage through the score dialog and manual confirmation. The historical test has a native check of the legend. |
 | E2E AutoGame | [Scenario](autogame/AutoGameReleaseScenario.java) checks the tick position, automatic completion of the score and return to manual control. The next hand compares the boxes between the bidding and the game, the unique actor's marking and the visibility of the card. | Expect stable status of the interface. The marking check during the rapid shifts belongs to the projection components. |
-| E 2E table with three seats | The nested script of [WhistReleaseBidE2eTest](WhistReleaseBidE2eTest.java) checks the first contract of 17 cards in the Descent and Ascension, access to all 17 cards, by running the hand when the width demands it, then compares the rectangle of the places after the transition to the game. | Use one Android profile and do not substitute the matrix of components for resolutions, densities and increased fonts. |
-| E2E responsive pe release | The same real shift from bidding to playing runs on the configured profiles, with the restoration of the display at the end. | The matrix with synthetic fixtures remains in the responsive test on the debug building. |
+| E2E table with three players | The nested scenario in [WhistReleaseBidE2eTest](WhistReleaseBidE2eTest.java) checks the first 17-card contract in Descending and Ascending games, access to every card and horizontal hand movement when required, then compares seat bounds after entering play. | Use one Android profile; component matrices retain combinations of resolution, density and enlarged fonts. |
+| Signed-release responsive E2E | The same real transition from bidding to play uses configured profiles and restores the display afterward. | Synthetic fixture matrices remain in the debug responsive tests. |
 | Menu, achievements, profile and history | [Common interface test](WhistReleaseHomeE2eTest.java) checks RO/EN, resuming the same hand in the score history, saving the name through Android dialogue and displaying after the recovery and opening the catalogue and details of a achievement. The component of the presentation checks order, counting, recharged progress and the texts RO/EN. The component of the profile checks cancellation, simulated persistence and refusal of writing. | Flows use the same data isolation limit; the catalogue does not start a game or change progress. |
-| Handoff | [Test](WhistReleaseBidE2eTest.java) keeps the original cause and publishes observations, comparisons and NGPs by reporting the joint UI. | The publication of the report does not substitute the restoration of data by the runner. |
+| Handoff | The [test](WhistReleaseBidE2eTest.java) preserves the original cause and publishes observations, comparisons and PNGs through the shared UI reporting API. | Publishing a report does not replace the runner's data restoration. |
 
 ## Waiting for the turn
 
-[Awaiting the bid and game](turn/ReleaseTurnWaits.java) Use [Controlled driver clock](../driver/waiting/UiStateAwaiter.java). The recommendation even uses the observation that satisfies the condition. The wallpaper searches the card in the latest hierarchy, and after ordering the driver reads again.
+[Bid and play waits](turn/ReleaseTurnWaits.java) use the [controlled driver clock](../driver/waiting/UiStateAwaiter.java). Bidding uses the observation that satisfied the wait predicate. Card lookup uses the latest hierarchy, and the driver reads a fresh observation after dispatch.
 
 The dialogue on achievements may renew the time limit for waiting for the score once.
 
-[Simulated ADB component](turn/ReleaseTurnWaitsComponentTest.java) checks order of orders, time limit, last observation and propagation of the original case. The APK scenario checks the visible passage between bidding, game and score.
+[Mocked ADB components](turn/ReleaseTurnWaitsComponentTest.java) verify command order, timeout, final observation and propagation of the original cause. The APK scenario observes the visible transitions between bidding, play and score.
 
 ## Data isolation and teardown
 

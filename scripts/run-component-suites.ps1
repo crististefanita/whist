@@ -178,6 +178,12 @@ function Invoke-MavenSelections($selections, $stage, $provenanceFile) {
             } else {
                 @('atf.tests.execution.components.ComponentSuiteExecution', $gate.suite, $destination, $provenanceFile, $stage)
             }
+            if (!$TestChangeControl -and $ResumeFrom) {
+                $previousSelection = Join-Path $ResumeFrom $gate.group
+                if (Test-Path -LiteralPath (Join-Path $previousSelection 'invocation-checkpoint.json') -PathType Leaf) {
+                    $arguments += $previousSelection
+                }
+            }
             Push-Location (Join-Path $stage $gate.module)
             try {
                 $exit = Invoke-AtfQualificationPhase $timing ("components.run." + $gate.group) {

@@ -41,7 +41,7 @@ The selected data remains the same objects evaluated in the declared order. [Pre
 node atf-tests/tools/record-release-integrity.mjs
 ```
 
-`--project <root>` and `--version <version>` allow an explicit root and edition. The tool does not perform tests and does not promote qualification; [verifier Java](../src/test/java/atf/tests/governance/documentation/release/integrity/ReleaseIntegrity.java) face the bytes and results of JUnit separately. [Manifesto components](../src/test/java/atf/tests/governance/documentation/release/integrity/ManifestIntegrityComponentTest.java) exercise the actual launcher on temporary files, including paths with spaces and diacritics.
+`--project <root>` and `--version <version>` allow an explicit root and edition. The tool does not perform tests and does not promote qualification; [verifier Java](../src/test/java/atf/tests/governance/documentation/release/integrity/ReleaseIntegrity.java) face the bytes and results of JUnit separately. [Manifest components](../src/test/java/atf/tests/governance/documentation/release/integrity/ManifestIntegrityComponentTest.java) exercise the actual launcher on temporary files, including paths with spaces and diacritics.
 
 ## Candidate RAG evaluation
 

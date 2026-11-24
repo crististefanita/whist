@@ -34,8 +34,8 @@ A range belongs to a flow, phase and position. Returning to a phase creates a se
 [AndroidPhaseClock](../../atf-test-android/src/main/java/atf/android/evidence/timing/AndroidPhaseClock.java) measures monotonous time. [AndroidPhaseTiming](../../atf-test-android/src/main/java/atf/android/evidence/timing/AndroidPhaseTiming.java) validates ranges and axes; these components do not perform ADB commands or game checks.
 
 - [AndroidUiFlowTrace](../../atf-test-android/src/test/java/atf/android/e2e/support/AndroidUiFlowTrace.java) opens the phase before the first action.
-- The catch measures the entire image and hierarchy; a subsequent checkpoint does not rebuild a missing beginning.
-- Scheme `phase.<ordinal>.timing` shall retain the identity of the flow, phase and order, ranges, length of catch and persistence, plus condition COMPLETE/PARTIAL.
+- The capture measures the entire image and hierarchy; a subsequent checkpoint does not rebuild a missing beginning.
+- Scheme `phase.<ordinal>.timing` shall retain the identity of the flow, phase and order, ranges, length of capture and persistence, plus condition COMPLETE/PARTIAL.
 - The additive scheme keeps the diary format compatible with old readers.
 - The PPG octets, the shares and the comparisons remain associated with the original checkpoint.
 
@@ -44,7 +44,7 @@ A range belongs to a flow, phase and position. Returning to a phase creates a se
 | Entry point | Publication policy |
 |---|---|
 | Full original interval | Transmit execution via the typical library API. |
-| Interval interrupted | Keep the partial and cause of failure, including prior to the first catch. |
+| Interval interrupted | Keep the partial and cause of failure, including prior to the first capture. |
 | Temporal data absent in an old journal | Display UNAVAILABLE; the orders' times do not substitute the complete interval. |
 | Date declared RUNNING or invalid | Refuse full publication and alert corrupt metadata. |
 | Interval assigned to another flow or phase | Refuse association before accepting the result. |
@@ -63,11 +63,11 @@ The recording explains the original axes, and the final rescue of HTML remains o
 | Serialization | Exact back-to-back conversion, missing scalars, impossible intervals and wrong owner. |
 | Individual publication | The original execution, the sending of the order and the publication shall be checked separately. |
 | Aggregated publication | Same intervals through Extent and backup presentation, with mutations of scalars and owners. |
-| Interactive revision | The original duration, tables, folding sections and full NGPs shall remain accessible. |
+| Interactive revision | The original duration, tables, folding sections and full PNGs shall remain accessible. |
 
 ```powershell
 mvn -pl atf-test-android -am '-Dtest=AndroidUiFlowTimingComponentSuite' '-Dsurefire.failIfNoSpecifiedTests=false' test
 mvn -pl atf-tests -am '-Dtest=GameReportComponentSuite' '-Dsurefire.failIfNoSpecifiedTests=false' test
 ```
 
-The compilers shall be carried out in their own temporary copy. Checking a controlled watch or archived log has a distinct purpose from a new Android interaction.
+Builds run in their own temporary copy. Checking a controlled clock or archived log has a distinct purpose from a new Android interaction.

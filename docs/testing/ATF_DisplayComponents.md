@@ -112,7 +112,7 @@ $historyRasterOutput = Join-Path ([IO.Path]::GetTempPath()) 'whist-history-raste
 .\gradlew.bat :app:historyRasterTest "-Pwhist.historyRasterOutput=$historyRasterOutput" --offline --no-daemon
 ```
 
-The exported PNG is a component-controlled rendering, not an Android catch. Labels and values come from the application projection and fonts and graphical adapter belong to the test JVM.
+The exported PNG is a component-controlled rendering, not an Android capture. Labels and values come from the application projection and fonts and graphical adapter belong to the test JVM.
 
 The sources in `src/rasterTest/java` use the JDK completely through a separate compilation task; the compilation of Android units keeps the SDK surface. `historyRasterTest` consumes the same application classes and legal fixtures already compiled; the check `check` includes both collections.
 
@@ -123,7 +123,7 @@ The sources in `src/rasterTest/java` use the JDK completely through a separate c
 | Owner | Contract |
 |---|---|
 | Test Kit | `ComponentAuditExtension` keeps the phases, duration and original cause; `TEST_BODY` requires an audited assertion. |
-| Test | Use `AuditedAssertions` and declare inputs via `ComponentInputs`; the fixture is not presented as an Android catch. |
+| Test | Use `AuditedAssertions` and declare inputs via `ComponentInputs`; the fixture is not presented as an Android capture. |
 | Android adapter | [Composition](../../atf-test-android/src/main/java/atf/android/evidence/component/AndroidComponentReports.java) captures settings once; [owner](../../atf-test-android/src/main/java/atf/android/evidence/component/AndroidComponentRun.java) publishes full inputs and comparison in HTML. |
 | Reporting | The `AssertionAuditReport.publishStep` binary API provides the standard folding group; Extent and fallback have the same comparisons captured. |
 
@@ -165,7 +165,7 @@ Gradle selection of the application, engine and graphic library uses [Gradle aud
 
 | Property | Remaining check on Android |
 |---|---|
-| Font and glyph | Actual measurement, fallback, increased text, trunks and legible catch. |
+| Font and glyph | Actual measurement, fallback, increased text, trunks and legible capture. |
 | Window | Effective consumption of the insets, keyboard, clipping and navigation of the system on the target API. |
 | Interaction | Tap accepted, focus, hit testing, animation and transition observed. |
 | Composition | The same state contains all the necessary regions in the real raster. |
