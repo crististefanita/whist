@@ -3012,6 +3012,9 @@ testChanges:
       positive:
         - atf.tests.reporting.autonomy.StandaloneReportContractComponentTest#detachedBytesRemainAuditableWithoutTheirFormerDirectory
         - atf.tests.reporting.autonomy.DetachedReviewComponentTest#producerInventoryAndOfflineObservationsRejectMissingOrForeignQualification
+        - atf.tests.governance.documentation.release.integrity.html.HtmlInvocationIntegrityComponentTest#aPassingOwnedReceiptMatchesItsActualRowsAndCannotBeCountedTwice
+        - atf.tests.governance.documentation.release.integrity.html.HtmlInvocationIntegrityComponentTest#currentAtfExtentReceiptsQualifyWithoutDuplicateJunitXml
+        - atf.tests.governance.documentation.release.integrity.html.HtmlInvocationIntegrityComponentTest#modernQualificationRefusesMissingHtmlGroupsAndDuplicateXmlReporting
         - atf.android.component.storage.NativeStoragePlanComponentTest#orderedNativeReceiptPreservesFailuresAndRejectsLostForeignOrContradictoryCases
         - atf.tests.governance.source.AtfSourceQualityGovernanceTest#sourcesRespectPackagePathsImportsAndProductionBoundaries
         - atf.tests.governance.source.PackageCohesionGovernanceTest#currentProjectUsesNoCohesionExceptions

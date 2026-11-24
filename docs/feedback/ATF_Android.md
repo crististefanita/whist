@@ -75,6 +75,8 @@ A change of geometry or style is linked to the sources and APK inspected. The de
 
 ## Native acceptance on Android 17
 
+- **Lint prerequisite:** remove inherited API-26 file operations from the API-24 debug replay fixture and qualify predictive-back handling for target API 36+. Do not waive these errors or claim a passing full Lint run; the checkpoint reader uses APIs available at the declared minimum.
+
 Window protection and calculation of useful space are implemented; the acceptance on API 37 remains distinct from the components and verification on another Android system. The comparison between versions requires the identity of both APKs and the device.
 
 | Priority | Remaining requirement | Closure criterion |
