@@ -162,9 +162,15 @@ Folosiți un director extern nou al rulării și rularea originală ca `-ResumeF
 .\scripts\run-component-suites.ps1 -TestChangeControl $control -TestChangeBaseRef $reviewBase -ResumeFrom $previousRun -RunRoot $newRun
 ```
 
-[Executorul probelor statice](../../atf-tests/src/test/java/atf/tests/execution/proofs/StaticProofRun.java) salvează înregistrarea și rezultatele prin porturile comune de capturi neutre. Recuperarea cere suplimentar același ID de control, bază Git, commit, diff brut, selectori pozitivi/negativi, ieșire compilată sigilată, classpath și identitate JVM/toolchain. Descoperirea compilată curentă trebuie să coincidă exact cu populația statică originală de invocări.
-
-Rulează din nou numai corpurile eșuate sau lipsă. Comparațiile originale trecute și timpii fazelor sunt republicate cu hash-urile checkpoint-ului/raportului originale; o reluare eșuată rămâne eșuată. Capturile alterate, identitățile străine ori lipsă și containerele eșuate ale responsabilului nu pot autoriza o probă. Publicarea finală cere în continuare reconcilierea completă Extent, reverificarea sursei/diff-ului și promovarea probei în așteptare de către lansator.
+| Frontieră | Contractul recuperării |
+|---|---|
+| Checkpoint | [Executorul probelor statice](../../atf-tests/src/test/java/atf/tests/execution/proofs/StaticProofRun.java) înregistrează invocările și rezultatele prin porturile comune de capturi neutre. |
+| Identitate | Cereți același ID de control, bază Git, commit, diff brut, selectori pozitivi/negativi, ieșire compilată sigilată, classpath și identitate JVM/toolchain. |
+| Descoperire | Descoperirea compilată curentă trebuie să coincidă exact cu populația statică originală de invocări. |
+| Selecție | Executați numai corpurile eșuate sau lipsă. |
+| Dovezi originale | Republicați comparațiile originale trecute și timpii fazelor cu hash-urile checkpoint-ului/raportului originale; o reluare eșuată rămâne eșuată. |
+| Refuz | Capturile alterate, identitățile străine ori lipsă și containerele eșuate ale responsabilului nu pot autoriza o probă. |
+| Publicare | Cereți reconcilierea completă Extent, reverificarea sursei/diff-ului și promovarea probei în așteptare de către lansator. |
 
 [Componentele controlate de recuperare](../../atf-tests/src/test/java/atf/tests/execution/proofs/StaticProofRecoveryComponentTest.java) numără corpurile executate efectiv în JVM-uri copil, injectează întreruperea procesului și alterează dovezile. Acestea sunt componente offline fără poze; fixture-urile lor nu reprezintă acceptanță E2E a aplicației.
 
