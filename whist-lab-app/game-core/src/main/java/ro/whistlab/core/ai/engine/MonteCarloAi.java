@@ -2,6 +2,7 @@ package ro.whistlab.core.ai.engine;
 
 import ro.whistlab.core.ai.profile.HardStrategyProfile;
 import ro.whistlab.core.ai.engine.inference.BidConditioning;
+import ro.whistlab.core.ai.engine.inference.BidSampleEvidence;
 import ro.whistlab.core.ai.simulation.PossibleDeals;
 import ro.whistlab.core.ai.simulation.SearchCancellation;
 import ro.whistlab.core.ai.simulation.SearchWork;
@@ -189,10 +190,7 @@ public final class MonteCarloAi {
                         == view.seats().size() - 1;
         List<Integer> allowed = GameRules.allowedBids(view.handSize(), prior, last);
         boolean safety = view.mode().isRomanian();
-        if (view.handSize() == 1
-                && view.hand().size() == 1
-                && view.trick().isEmpty()
-                && view.history().isEmpty()) {
+        if (OneCardBidBelief.isOneCardAuction(view)) {
             double win = OneCardBidBelief.probability(view);
             List<BidOption> candidates = new ArrayList<>();
             for (int bid : allowed) {
@@ -241,99 +239,23 @@ public final class MonteCarloAi {
         return DecisionOrdering.selectBid(candidates, profile, safety);
     }
 
-    /** Paired-world uncertainty, bounded to128 samples; not a formal confidence guarantee. */
+    /** Compatibility facade; each decision owns an independent evidence accumulator. */
     public static final class BidSamples {
-        private final List<Integer> allowed;
-        private final boolean safety;
-        private final double[] primary, points, exactTotals;
-        private final double[][] squaredDifferences;
-        private int count;
-        private double weightTotal;
-        private double squaredWeightTotal;
-
+        private final BidSampleEvidence evidence;
         public BidSamples(List<Integer> allowed, int size, boolean safety) {
-            this.allowed = List.copyOf(allowed);
-            if (allowed.isEmpty()) throw new IllegalArgumentException("No legal bid");
-            this.safety = safety;
-            primary = new double[size];
-            points = new double[size];
-            exactTotals = new double[size];
-            squaredDifferences = new double[size][size];
+            evidence = new BidSampleEvidence(allowed, size, safety);
         }
-
-        public void add(double[] scores, double[] exact) {
-            add(scores, exact, 1.0);
-        }
-
-        public void add(double[] scores, double[] exact, double weight) {
-            if (!Double.isFinite(weight) || weight <= 0)
-                throw new IllegalArgumentException("Sample weight must be finite and positive");
-            for (int bid : allowed) {
-                double value = safety ? exact[bid] : scores[bid];
-                if (!Double.isFinite(value)
-                        || !Double.isFinite(scores[bid])
-                        || !Double.isFinite(exact[bid]))
-                    throw new IllegalArgumentException("Non-finite sampled utility");
-                primary[bid] += value * weight;
-                points[bid] += scores[bid] * weight;
-                exactTotals[bid] += exact[bid] * weight;
-            }
-            for (int a : allowed)
-                for (int b : allowed) {
-                    double d = safety ? exact[a] - exact[b] : scores[a] - scores[b];
-                    squaredDifferences[a][b] += d * d * weight;
-                }
-            count++;
-            weightTotal += weight;
-            squaredWeightTotal += weight * weight;
-        }
-
-        public int best() {
-            int best = allowed.get(0);
-            for (int bid : allowed)
-                if (primary[bid] > primary[best] + 1e-12
-                        || Math.abs(primary[bid] - primary[best]) < 1e-12
-                                && points[bid] > points[best] + 1e-12) best = bid;
-            return best;
-        }
-
+        public void add(double[] scores, double[] exact) { evidence.add(scores, exact); }
+        public void add(double[] scores, double[] exact, double weight) { evidence.add(scores, exact, weight); }
+        public int best() { return evidence.best(); }
         List<BidOption> options() {
-            return Collections.unmodifiableList(
-                    allowed.stream()
-                            .map(
-                                    bid ->
-                                            new BidOption(
-                                                    bid,
-                                                    weightTotal == 0 ? 0.0 : exactTotals[bid] / weightTotal,
-                                                    weightTotal == 0 ? 0.0 : points[bid] / weightTotal,
-                                                    count))
-                            .collect(java.util.stream.Collectors.toList()));
+            return evidence.options().stream().map(value -> new BidOption(value.bid(),
+                    value.exactContractProbability(), value.expectedPoints(), value.samples()))
+                    .collect(java.util.stream.Collectors.toUnmodifiableList());
         }
-
-        public boolean enough() {
-            double effectiveSamples = effectiveSamples();
-            if (effectiveSamples < 32) return false;
-            if (effectiveSamples >= 128 || allowed.size() == 1) return true;
-            int leader = best();
-            for (int rival : allowed)
-                if (rival != leader) {
-                    double gap = (primary[leader] - primary[rival]) / weightTotal;
-                    double variance =
-                            Math.max(
-                                    0,
-                                    squaredDifferences[leader][rival] / weightTotal - gap * gap);
-                    if (variance > 1e-15 && gap <= 2 * Math.sqrt(variance / effectiveSamples)) return false;
-                }
-            return true;
-        }
-
-        public double effectiveSamples() {
-            return squaredWeightTotal == 0 ? 0 : weightTotal * weightTotal / squaredWeightTotal;
-        }
-
-        public int samples() {
-            return count;
-        }
+        public boolean enough() { return evidence.enough(); }
+        public double effectiveSamples() { return evidence.effectiveSamples(); }
+        public int samples() { return evidence.samples(); }
     }
 
     public static Decision chooseCard(View view) {

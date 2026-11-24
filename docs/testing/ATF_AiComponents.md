@@ -84,3 +84,9 @@ An Android path remains E2E only when performing new interactions in the install
 - Aggregates screen ideas; paired same-seed comparisons and component regressions are still required before promoting a policy change.
 
 [Collections](ATF_Collections.md) · [Governance of changes](../governance/ATF_TestChanges.md) · [Decision model](../ai/ATF_DecisionModel.md)
+
+## Decision-boundary adoption checks
+
+The [Maven bid-evidence components](../../atf-test-android/src/test/java/atf/android/ai/BidEvidenceComponentTest.java) compare the public facade with independent weighted arithmetic and frozen source results, including seeds, work events, stopping and cancellation. The [domain components](../../atf-test-android/src/test/java/atf/android/ai/OneCardDomainComponentTest.java) compare descriptive YAML with runtime predicates and inject omitted or reversed fields.
+
+These checks use only the actor’s public projection and publish original inputs and comparisons without pictures. Existing engine regressions retain ownership of card legality, simulated continuations and independently implemented probabilities; neither source equivalence nor domain agreement establishes strategic progress.

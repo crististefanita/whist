@@ -62,6 +62,7 @@ The laboratory observation distinguishes the first choice for zero from an eligi
 |---|---|
 | [MonteCarloAi](../../whist-lab-app/game-core/src/main/java/ro/whistlab/core/ai/engine/MonteCarloAi.java) | Observing API, generating and aggregation of comparisons, then the finished guards. |
 | [BidConditioning](../../whist-lab-app/game-core/src/main/java/ro/whistlab/core/ai/engine/inference/BidConditioning.java) | Reweights hypothetical original hands with bounded evidence from bids whose legal prefix is known. |
+| [BidSampleEvidence](../../whist-lab-app/game-core/src/main/java/ro/whistlab/core/ai/engine/inference/BidSampleEvidence.java) | Owns one decision’s weighted means, paired differences and effective sample count; it receives evaluated utilities and never owns random state or hidden deals. |
 | [HandTrickPotential](../../whist-lab-app/game-core/src/main/java/ro/whistlab/core/ai/policy/HandTrickPotential.java) | Soft honor, same-suit cover and trump-backed short-suit score consumed by bid conditioning only; Normal's bid estimate remains unchanged. |
 | [DecisionEvaluation](../../whist-lab-app/game-core/src/main/java/ro/whistlab/core/ai/engine/DecisionEvaluation.java) | It turns hypothetical sequels into utility using the same targets and score rules; it does not select worlds or actions. |
 | [DecisionOrdering](../../whist-lab-app/game-core/src/main/java/ro/whistlab/core/ai/engine/DecisionOrdering.java) | Ordering alternatives already assessed by profile and established tolerances; not consuming random numbers. |
@@ -76,6 +77,8 @@ The way of evaluation depends on the field. [MonteCarloAi](../../whist-lab-app/g
 | Small endings | The enumeration of worlds and the search for continuances have distinct areas; full listing does not make the model of continuation a universal certificate. |
 
 The model of a card has [implementation in engine](../../whist-lab-app/game-core/src/main/java/ro/whistlab/core/ai/engine/OneCardBidBelief.java) and [independent implementation](../../whist-lab-app/ai-lab/src/main/java/ro/whistlab/coach/OneCardBidBelief.java). The enumeration is accurate for the fixed plausible model; calibration of it against any actual opponent does not result automatically.
+
+The typed `OneCardBidBelief.domain()` separates auction entry from conditioning support. Entry requires one dealt card, one private card and an empty table/history; conditioning additionally requires four seats, a Romanian mode and exposed trump. The `one_card_bid_model` section in [the objective manifest](../../config/whist-play-objectives.yaml) is descriptive and governed against runtime predicates; it does not load new coefficients or expand calibration.
 
 For simulated alternatives, the terminal vector shall contain its own points, the main rival score, the exact contract indicator and the number of adverse failures:
 
