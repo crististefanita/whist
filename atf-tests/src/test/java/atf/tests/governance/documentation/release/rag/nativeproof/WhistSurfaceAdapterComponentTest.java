@@ -15,6 +15,15 @@ import static atf.testkit.assertions.AuditedAssertions.assertTrue;
 class WhistSurfaceAdapterComponentTest {
     @org.junit.jupiter.api.extension.RegisterExtension
     static final GameReportAudit AUDIT = new GameReportAudit();
+    @Test void nativeContentMeasurementsRejectClippingAndLateOwners(ComponentInputs inputs) throws Exception {
+        var root=GovernanceProject.locateProjectRoot();
+        inputs.add("Boundary","Real Android adapter and neutral observation oracle; controlled View/Layout responses. This does not qualify native glyph rasterization or a consumer APK.");
+        String actual=NodeReleaseContracts.runNode(List.of("node","--test",
+                root.resolve("atf-ui-browser/tests/native-observation.test.mjs").toString()),root,Duration.ofSeconds(90),
+                value->inputs.add("Original native observation producer output",value));
+        assertTrue(actual.contains("\"regions\":4"),"Header, fact row, trump and card measurements reach the neutral port");
+        assertTrue(actual.contains("\"rejected\":11"),"Clipping, ellipsis, owner replacement, pending layout and wrong-thread captures are refused");
+    }
     @Test void webAndNativePortablePortsKeepMeasuredGeometryFacesAndGesturesAligned(ComponentInputs inputs) throws Exception {
         var root = GovernanceProject.locateProjectRoot();
         String output = NodeReleaseContracts.runNode(List.of("node", "--test",

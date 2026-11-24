@@ -155,11 +155,13 @@
         "atf.tests.reporting.GameReportPolicyContractTest",
         "atf.tests.reporting.GameReportPublicationContractTest",
         "atf.tests.reporting.GameReportTextAuditContractTest",
+        "atf.tests.reporting.acceptance.ComponentPublicationComponentTest",
         "atf.tests.reporting.acceptance.NativeModuleResultsComponentTest",
-        "atf.tests.reporting.browser.BrowserExtentPublicationComponentTest",
-        "atf.tests.reporting.text.ReportTextValueMatcherTest",
+        "atf.tests.reporting.acceptance.heap.ReportHeapComponentTest",
+        "atf.tests.reporting.autonomy.DetachedReviewComponentTest",
         "atf.tests.reporting.autonomy.StandaloneReportContractComponentTest",
-        "atf.tests.reporting.autonomy.DetachedReviewComponentTest"
+        "atf.tests.reporting.browser.BrowserExtentPublicationComponentTest",
+        "atf.tests.reporting.text.ReportTextValueMatcherTest"
       ]
     }
   ]

@@ -42,6 +42,8 @@ Rulați `node atf-tests/tools/source-language.mjs <checkout>` într-un mediu cu 
 
 [Politica](../../config/source-language-policy.json) conține vocabular românesc revizuit, inclusiv forme ASCII. Câmpurile necunoscute ale politicii, vocabularele goale, intrările indirecte și fișierele lipsă nu pot autoriza o scanare goală cu succes. Schimbările politicii lingvistice și ale implementării participă la revizia protejată a modificărilor de teste.
 
+- [Profilul execuției inventarului](../../config/source-language-inventory-profile.json) declară termenul inventarului complet separat de fixture-urile mici de lansare. Expirarea rămâne eșec de execuție; bugetul configurat nu elimină fișiere și nu relaxează politica limbii.
+
 | Nivel | Responsabil și verificare independentă |
 |---|---|
 | Unitar | [Matricile lexicale](../../atf-tests/tools/source-language.test.mjs) acoperă comentarii, literali, interpolare, cuvinte din identificatori, argumente de diagnostic și respingerea politicilor fără Extent. |

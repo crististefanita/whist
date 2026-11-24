@@ -25,10 +25,12 @@ Consumatorul deține înregistrările jocului, selecția, oracolul și indexarea
 
 **P1 · responsabil biblioteci: publicarea și verificarea HTML; consumatorul: dimensiunea intrărilor.** O suită poate avea teste JUnit verzi și totuși să nu producă raportul canonic dacă injecția navigării ori verificarea DOM epuizează heap-ul. Eroarea de publicare nu trebuie să ascundă rezultatul testelor sau să lase un raport parțial prezentat ca acceptat.
 
-- [ ] Măsurați separat memoria de vârf pentru randarea inițială, injectarea navigării și verificarea raportului, în funcție de numărul comparațiilor, corpurilor și capturilor inline.
-- [ ] Evitați copiile integrale repetate ale documentului în etapele de publicare și verificare; fiecare etapă trebuie să poată procesa un raport mare valid sub limita de heap declarată.
-- [ ] Calificați limitele cu rapoarte sintetice mici, medii și mari, inclusiv payload-uri repetate și imagini inline. Verificați identitățile JUnit–HTML, toate capturile și octeții obligatorii după publicare.
-- [ ] La depășirea unei limite explicite, emiteți un diagnostic localizat care identifică etapa și păstrează rezultatul JUnit și dovezile disponibile; nu lăsați o excepție de heap să se transforme într-o lipsă ambiguă de fișier.
+- [ ] Expuneți în bibliotecă măsurători independente ale vârfurilor pentru randare și navigație. Chitanțele consumatorului observă acum granița lor comună; vârfurile cumulative din pool-uri nu substituie vârfurile izolate pe etapă.
+- [ ] Reduceți copiile integrale repetate din randarea generică și verificarea DOM. Sigiliile incrementale ale consumatorului evită o copie locală suplimentară, dar nu stabilesc alocările bibliotecii.
+- [ ] Extindeți profilul de resurse separat pentru volumul comparațiilor, corpurilor și capturilor. Profilul sintetic limitat verifică valorile complete și octeții PNG; nu califică orice raport aflat sub limita de dimensiune a artefactului.
+- [ ] Calificați epuizarea reală a heap-ului și oprirea bruscă a procesului păstrând JUnit original și ultima etapă începută. Erorile controlate și refuzul limitei de octeți stabilesc siguranța tranzacției, nu recuperarea după orice eșec de proces.
+
+[Publicarea verificată a componentelor](../reporting/ATF_Audit.md#publicarea-verificată-a-componentelor) deține pregătirea privată, inspecția înainte de promovare, înlocuirea atomică și diagnosticele cu cauza originală. Păstrați aceste granițe de regresie active; criteriile rămase țin de resursele native și alocările bibliotecii.
 
 Calificarea este comună producătorului și verificatorului: mărirea heap-ului unui singur proces nu închide criteriul și nu demonstrează că raportul rămâne publicabil în mediul standard.
 

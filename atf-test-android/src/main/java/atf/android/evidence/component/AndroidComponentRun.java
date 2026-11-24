@@ -35,6 +35,7 @@ public final class AndroidComponentRun implements AutoCloseable {
     private boolean closed;
     private final atf.android.evidence.component.snapshot.ComponentCaptureJournal journal;
     private List<ReportObservation.Artifact> lineage=List.of();
+    private atf.reporting.artifact.ReportArtifactProfile expectedProfile;
 
     public AndroidComponentRun(Path file, boolean fallback, ReportingSettings settings) {
         this.file = java.util.Objects.requireNonNull(file);
@@ -91,20 +92,33 @@ public final class AndroidComponentRun implements AutoCloseable {
     }
 
     private void publish() {
+        try {
+            atf.android.evidence.component.publication.ComponentReportPublication.publish(file,
+                    Long.parseLong(System.getProperty(atf.android.evidence.component.publication.ComponentReportPublication.MAX_BYTES,
+                            Long.toString(atf.android.evidence.component.publication.ComponentReportPublication.DEFAULT_MAX_BYTES))),
+                    this::render, this::verify);
+        } catch (java.io.IOException failure) { throw new java.io.UncheckedIOException(failure); }
+        finally { invocations.clear(); expectedProfile=null; }
+    }
+    private void render(Path staged) {
         var environment = ReportEnvironmentSnapshot.builder()
                 .put(ReportEnvironmentField.ENVIRONMENT, "JVM — no Android device")
                 .put(ReportEnvironmentField.SUITE, "Whist JVM component and unit acceptance")
                 .put(ReportEnvironmentField.REPORT_ARTIFACT, "Captured inputs and comparisons; publication after execution").build();
         var scenarios = new ArrayList<atf.reporting.artifact.ReportArtifactProfile.Scenario>();
-        try (AtfReportPorts.Session session = fallback ? new HtmlReportSession(file, settings)
-                : new ExtentReportSession(file, settings, redactor, AtfConsoleSink.noOp(), environment)) {
+        try (AtfReportPorts.Session session = fallback ? new HtmlReportSession(staged, settings)
+                : new ExtentReportSession(staged, settings, redactor, AtfConsoleSink.noOp(), environment)) {
             for (var invocation : invocations) scenarios.add(publish(session, invocation));
         } finally { invocations.clear(); }
         if (!scenarios.isEmpty()) {
-            var expectedProfile = new atf.reporting.artifact.ReportArtifactProfile(fallback
+            expectedProfile = new atf.reporting.artifact.ReportArtifactProfile(fallback
                     ? atf.reporting.artifact.ReportArtifactProfile.Renderer.FALLBACK
                     : atf.reporting.artifact.ReportArtifactProfile.Renderer.EXTENT, scenarios);
-            var inspection = atf.reporting.artifact.ReportArtifactInspector.inspect(file, expectedProfile);
+        }
+    }
+    private void verify(Path staged) {
+        if (expectedProfile != null) {
+            var inspection = atf.reporting.artifact.ReportArtifactInspector.inspect(staged, expectedProfile);
             if (!inspection.violations().isEmpty()) throw new IllegalStateException("Published component report differs from captured intent: " + inspection.violations());
         }
     }

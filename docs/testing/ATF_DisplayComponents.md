@@ -159,6 +159,31 @@ Selecțiile Gradle ale aplicației, motorului și bibliotecii grafice folosesc [
 - **Lansator:** `-ComponentsOnly -ComponentSuite History` și `-ComponentRenderer fallback` restrâng selecția; `Display` este implicit. Raportul apare în `component-reports` al rulării externe, iar `WORKING_STATE.json` identifică exemplarul și domeniul.
 - **Compilare:** profilele Maven selectează testele la execuție; profilul larg nu omite sursele de istoric din compilare.
 
+## Observații măsurate ale rendererului
+
+`AndroidSurfaceObservation` citește View-uri așezate, dreptunghiuri vizibile și linii `TextView.Layout`. `BoardLayout.observeSurface` furnizează View-urile reale ale jucătorilor; apelantul leagă explicit antetul, rândurile de valori, atuul și cărțile. Nu trimite planuri de geometrie așteptată drept observații.
+
+```mermaid
+flowchart LR
+    NATIVE["Android View și Layout"] -->|măsoară| PORT["RenderedSurface"]
+    PORT -->|inspectează| ORACLE["Oracol de vizibilitate și continuitate"]
+    DOM["Măsurători DOM existente"] -->|compară geometria| GEOMETRY["SurfaceContinuity"]
+    ORACLE -->|normalizează cadrele măsurate| GEOMETRY
+    EPOCH["Tichet cu proprietar și revizie"] -->|admite| NATIVE
+```
+
+<details>
+<summary>Legendă: observația și așteptarea rămân independente</summary>
+
+Observația portabilă păstrează cadrele în pixeli, regiunile vizibile, limitele liniilor și elidarea. Densitatea normalizează continuitatea o singură dată. Oracolul respinge conținutul tăiat chiar dacă planurile cadrelor așteptate și efective sunt egale.
+
+</details>
+
+- Capturează pe firul principal Android după așezare. Așezarea încă solicitată, View-urile ascunse sau străine și lipsa structurii textului sunt eșecuri explicite.
+- Păstrează tichetul original `SurfaceEpoch` în callback-urile întârziate. Înlocuirea sau eliminarea proprietarului îl invalidează; proprietarul se verifică înainte și după citirea View-urilor.
+- Unitarele dețin normalizarea și combinațiile de valori invalide, fără Extent. Componentele execută adaptorul Android de producție cu răspunsuri API controlate și păstrează câmpurile măsurate și refuzurile originale, fără poze.
+- Compilarea API și răspunsurile controlate nu certifică rasterizarea glifelor Android, fonturile de rezervă sau un APK consumator. Acceptanța nativă rămâne obligatorie pentru dispozitivul, limba și profilul de font identificate.
+
 ## Ce păstrează verificarea nativă
 
 [Componentele grafice native](../../whist-lab-app/app/src/androidTest/README.md) verifică desenul claselor Android într-un părinte real, fără activitate ori partidă. Sunt distincte de rasterul JVM și de fluxurile E2E; derularea internă a textului se aplică înaintea evaluării pixelilor marcajelor.

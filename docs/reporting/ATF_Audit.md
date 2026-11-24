@@ -197,12 +197,45 @@ Trecerea auditului structural nu demonstrează singură lizibilitatea sau naviga
 
 ## Interfața raportului și proprietatea dovezilor
 
-Fila `Overview` din Extent păstrează panoul standard al bibliotecii `Reporting`. Producătorii rapoartelor nu injectează galerii de capturi, controale de joc sau secțiuni proprii în această filă.
+### Publicarea verificată a componentelor
 
-PNG-urile capturate se încorporează în scenariul și faza originale prin API-ul public de dovezi UI. Cadrele doar observate nu inventează aserțiuni sau un rezultat nou al jocului.
+`ComponentReportPublication` deține tranzacția consumatorului. Randarea și finalizarea Reporting scriu un candidat privat; profilul declarat al scenariilor și valorile obligatorii se verifică înaintea promovării atomice. Eșecul randării, inspecției, limitei de dimensiune sau modificarea candidatului păstrează HTML-ul canonic anterior.
 
-Previzualizările comparațiilor păstrează limita standard de 240 de caractere; corpurile intrărilor originale rămân complete în secțiunile pliante ale cazului, cu trunchierea afișării corpurilor dezactivată pentru acest producător.
+```mermaid
+flowchart LR
+    CAPTURE["Capturi originale ale invocărilor"] -->|randează| PRIVATE["HTML privat"]
+    PRIVATE -->|inspectează intenția originală| VERIFY["Profil și sigiliu de octeți"]
+    VERIFY -->|acceptă| FINAL["HTML canonic"]
+    PRIVATE -->|respinge| DIAG["Chitanța etapei și candidatul disponibil"]
+```
 
-Structura rapoartelor este în engleză: nume de suite, faze, etichete ale dovezilor și explicații de diagnostic. Textele originale ale aplicației, capturile localizate RO/EN și valorile măsurate rămân neschimbate. Fiecare captură își păstrează titlul și cazul proprietar; toate comparațiile selectate și rezultatul original rămân accesibile în HTML-ul autonom.
+<details>
+<summary>Legendă: rezultatul testului și rezultatul publicării</summary>
 
-Componentele producătorului verifică fila standard `Overview`, structura în engleză, primul și ultimul caz, cadrele multiple, valorile lungi complete și rezultatele eșuate. Imaginile lipsă, externe sau invalide se refuză înaintea creării raportului. Dovezile release-urilor deja sigilate rămân imuabile; republicarea înregistrează separat identitatea dovezii originale și revizia producătorului.
+Publicarea nu rescrie rezultatele JUnit și nu transformă o comparație eșuată în PASS. Jurnalul capturilor și chitanța JUnit originală rămân independente de promovarea HTML. Un candidat păstrat este dovadă de diagnostic, nu raport canonic calificat.
+
+</details>
+
+| Etapa din chitanță | Semnificație |
+|---|---|
+| `RENDER_AND_FINALIZE` | Sesiunea Reporting fixată randează și injectează intern navigația; consumatorul nu poate măsura independent cele două operații. |
+| `VERIFY` | Verifică dimensiunea artefactului, inventarul declarat și octeții neschimbați. Sigiliile consumatorului citesc incremental fișierul; nu materializează încă un șir HTML complet. |
+| `PROMOTE` | Folosește coordonatorul comun de publicare atomică după verificare. |
+
+- [Profilul de memorie](../../config/report-heap-profile.json) declară heap-ul procesului copil, timeout-ul, populațiile de comparații și dimensiunea corpurilor. Procese izolate verifică suite sintetice mici, medii și mari, comparația finală eșuată, valorile complete între părțile corpurilor și payload-uri PNG inline repetate. Fixture-urile nu se numără ca invocări JUnit suplimentare sau poze ale produsului.
+
+- Producătorul împarte textul obligatoriu folosind aceeași limită transmisă rendererului. Etichetele fragmentelor nu dovedesc valorile complete: un oracol incremental independent verifică fiecare proprietar și sufix original între fragmente și respinge trunchierea la preview chiar dacă inventarul încă se potrivește.
+
+- Chitanțele păstrează durata, heap-ul folosit înainte și după fiecare etapă și limite superioare cumulative ale vârfurilor din pool-urile de memorie. Limita cumulativă nu este vârful izolat al unei etape. Diagnosticele păstrează tipul excepției originale și etapa; oprirea bruscă a procesului lasă ultima etapă începută pentru runnerul proprietar.
+
+- Limita implicită a artefactului este 64 MiB și se configurează prin `atf.component.report-max-bytes`. Limita de octeți nu garantează universal heap-ul: structura DOM, volumul corpurilor și capturile rămân dimensiuni distincte. Vârfurile separate pentru randare și navigație și reducerea copiilor generice țin de proprietarul Reporting; creșterea heap-ului nu le califică singură.
+
+- Fila `Overview` din Extent păstrează panoul standard al bibliotecii `Reporting`. Producătorii rapoartelor nu injectează galerii de capturi, controale de joc sau secțiuni proprii în această filă.
+
+- PNG-urile capturate se încorporează în scenariul și faza originale prin API-ul public de dovezi UI. Cadrele doar observate nu inventează aserțiuni sau un rezultat nou al jocului.
+
+- Previzualizările comparațiilor păstrează limita standard de 240 de caractere; corpurile intrărilor originale rămân complete în secțiunile pliante ale cazului, cu trunchierea afișării corpurilor dezactivată pentru acest producător.
+
+- Structura rapoartelor este în engleză: nume de suite, faze, etichete ale dovezilor și explicații de diagnostic. Textele originale ale aplicației, capturile localizate RO/EN și valorile măsurate rămân neschimbate. Fiecare captură își păstrează titlul și cazul proprietar; toate comparațiile selectate și rezultatul original rămân accesibile în HTML-ul autonom.
+
+- Componentele producătorului verifică fila standard `Overview`, structura în engleză, primul și ultimul caz, cadrele multiple, valorile lungi complete și rezultatele eșuate. Imaginile lipsă, externe sau invalide se refuză înaintea creării raportului. Dovezile release-urilor deja sigilate rămân imuabile; republicarea înregistrează separat identitatea dovezii originale și revizia producătorului.
