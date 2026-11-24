@@ -28,7 +28,6 @@ Scorul 1–100 exprimă ordinea recomandată de lucru, nu calitatea sau procentu
 |---|---:|---:|---|
 | AND-02 | P1 | 92 | Califică pe APK actorul, geometria stabilă și mâna vizibilă în licitație/joc/AutoGame pentru 3–6 locuri, RO/EN și text mărit. [Registru](ATF_Android.md) |
 | AI-01 | P1 | 91 | Calibrează inferența Hard pentru 2–8 cărți din licitații și cărți jucate pe loturi noi; separă exactitatea probabilităților de scorul simulat. [Registru](ATF_Ai.md) |
-| RAG-31 | P1 | 90 | Califică reluarea invocărilor legată de sursă, păstrând comparațiile originale trecute și rerulând numai identitățile eșuate sau incomplete. [Registru](ATF_Governance.md#calificarea-afirmațiilor-și-lansatoarelor) |
 | RAG-29 | P1 | 90 | Calificați contextul explicit sursă/catalog la următoarea promovare completă și reluare după publicare; identitatea și refuzurile sunt implementate în componente. [Registru](ATF_Governance.md#framework-selection-boundaries) |
 | UI-04 | P1 | 90 | Furnizați măsurătorile native reale portului neutru de observații; respingeți fonturile tăiate și redesenarea veche independent de egalitatea planurilor. [Registru](ATF_CardUi_Extraction.md#ui-three-module-plan) |
 | ACH-01 | P1 | 90 | Califică pe APK restaurarea poziției și selecției din Realizări, apoi reluarea notificărilor după recrearea activității. [Registru](ATF_Achievements.md) |
@@ -38,7 +37,6 @@ Scorul 1–100 exprimă ordinea recomandată de lucru, nu calitatea sau procentu
 | UI-01 | P1 | 86 | Califică antetul, chenarele și notificările pe APK-urile consumatorilor și verifică nativ intrarea Unicode a numelui. [Registru](ATF_CardUi_Extraction.md#priorități-și-condiții-de-închidere) |
 | UI-02 | P2 | 84 | Calificați acțiunile de rezultat mărite și derularea pe APK-urile consumatorilor în RO/EN cu text mărit. [Registru](ATF_CardUi_Extraction.md#acceptanța-acțiunilor-de-rezultat) |
 | RAG-21 | P2 | 84 | Pilotul doar de planificare demonstrează reluarea legată de sursă și paritatea selectorului; paritatea completă a rapoartelor/JUnit și pragul de timp rămân deschise. [Registru](ATF_Governance.md#pilot-langgraph-în-umbră) |
-| DOC-02 | P2 | 83 | Revizuiți termenii operaționali EN moșteniți după cod și sensul românesc; cereți acceptanță editorială împreună cu diagnosticele executabile și paritatea edițiilor. [Registru](ATF_Governance.md#îmbunătățirea-ghidurilor-de-orientare) |
 | AI-02 | P2 | 82 | Măsoară ocaziile, conversiile la 500, efectul asupra clasamentului și latența pe loturi noi, cu joc natural separat de prefixul controlat. [Registru](ATF_Ai.md#joc-la-0) |
 | WEB-07 | P2 | 79 | Califică setările, reluarea, Joacă din nou și istoricul în APK și Chrome pe același Android, în RO/EN și cu text mărit. [Registru](ATF_UiBrowser.md#calificarea-pe-același-dispozitiv) |
 | WEB-11 | P2 | 78 | Califică rangurile și glifele într-o mână de 17 cărți, la text mărit pe Chrome Android. [Registru](ATF_UiBrowser.md#calificarea-pe-același-dispozitiv) |

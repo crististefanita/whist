@@ -263,7 +263,9 @@ flowchart LR
 
 </details>
 
-[Componentele controlate](../../atf-tests/src/test/java/atf/tests/execution/recovery/InvocationRecoveryComponentTest.java) folosesc JVM-uri copil, contoare independente ale corpurilor, întrerupere reală de proces și fișiere corupte. Califică reluarea fără interacțiune Android sau poze. Rulările istorice fără checkpoint-uri de invocare păstrează reluarea selecției întregi.
+[Componentele controlate](../../atf-tests/src/test/java/atf/tests/execution/recovery/InvocationRecoveryComponentTest.java) folosesc JVM-uri copil, contoare independente ale corpurilor, întrerupere reală de proces și fișiere corupte. Califică reluarea fără interacțiune Android sau poze.
+
+Rulările istorice fără checkpoint-uri de invocare păstrează reluarea selecției întregi. Gradle păstrează protocolul checkpoint-urilor pe task; acest contract se aplică invocărilor Maven/Jupiter.
 
 ### I/O pentru snapshot și compilator
 

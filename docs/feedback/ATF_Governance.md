@@ -26,8 +26,7 @@ Legarea dovezilor de sursa calificată este verificată de [regresiile evaluator
 | Prioritate | Responsabil și lacună | Nivel și criteriu de închidere |
 |---|---|---|
 | P2 | Coordonarea: lansatoarele verifică precondițiile în moduri diferite. | Componente controlate pentru Java, Maven, Gradle, Node și Python: capabilitățile cerute intrării sunt verificate înaintea operației costisitoare, iar lipsa lor produce diagnostic și identitate de sursă explicite. Pentru Python, detectați aliasul de instalare separat de un interpretor executabil; pentru [modulul PowerShell ADB](../../atf-test-android/tools/AndroidDeviceSetup.psm1), verificați disponibilitatea, refuzul, timeout-ul și starea transportului cu proces controlat, separat de parsare și de clientul Java. |
-| P2 | Costul calificării: pregătirea snapshot-urilor sursei și release-ului încă recopiază și recalculează hash-uri pentru rapoartele păstrate. | Reduceți munca repetată a snapshot-ului fără slăbirea admiterii intrărilor. [Contractele implementate de compilare și recuperare după curățare](../testing/ATF_Collections.md#reutilizarea-compilării-maven) sunt limite de regresie, nu sarcini de implementare deschise. Măsurați inventarul sursei/release-ului și copierea separat de compilare și execuție; confruntați duratele etapelor cu timpul total înainte de alte afirmații de accelerare. Folosiți etapa numită a verificării snapshot-ului după compilare când comparați costurile pregătirii și sigilării. |
-| P1 | RAG-31: checkpoint-urile invocărilor și recuperarea capturilor neutre cer calificare finală prin lansatorul legat de sursă. | Păstrați fiecare ID unic JUnit, rezultat și legătura la sursă/proveniență. La reluare executați doar identitățile eșuate sau incomplete, păstrând comparațiile originale în Extent autonom și un index relativ care leagă încercările imuabile. Respingeți identități lipsă, duplicate, străine sau cu sursă schimbată și orice reluare eșuată; nu promovați prin editarea raportului original. |
+| P2 | Costul calificării: pregătirea snapshot-urilor sursei și release-ului încă recopiază și recalculează hash-uri pentru rapoartele păstrate. | Separați admiterea rapoartelor păstrate de pregătirea surselor și evitați recopierea payload-urilor fără legătură; păstrați hash-urile exacte, contextul sursei/catalogului și admiterea conservatoare a cititorilor necunoscuți. [Contractele implementate de compilare și recuperare după curățare](../testing/ATF_Collections.md#reutilizarea-compilării-maven) sunt limite de regresie, nu sarcini de implementare deschise. Măsurați inventarul sursei/release-ului și copierea separat de compilare și execuție; confruntați duratele etapelor cu timpul total înainte de a declara accelerarea, inclusiv etapa numită de verificare după compilare. |
 
 [Retenția copiilor inline](../../atf-tests/src/test/java/atf/tests/governance/documentation/release/ReleaseEvidenceRetentionGovernanceTest.java) verifică separat lipsa PNG-urilor identice lângă HTML. Această gardă nu dovedește autonomia datelor, lizibilitatea imaginilor sau integritatea APK-ului; [criteriul adaptorului](../reporting/ATF_Audit.md) rămâne distinct.
 
@@ -35,9 +34,7 @@ Legarea dovezilor de sursa calificată este verificată de [regresiile evaluator
 
 Grila editorială din [contractul documentației](../governance/ATF_Documentation.md#verificare-și-evaluare-editorială) evaluează documentul și limita lui, separat de maturitatea codului. Notele și inventarul evaluat rămân în auditul extern; aici păstrăm numai lucrările care pot îmbunătăți lectura sau reproducerea.
 
-| Prioritate | Responsabil și suprafață | Criteriu de închidere |
-|---|---|---|
-| P2 | Ghidurile ATF complementare în engleză încă păstrează termeni moșteniți despre joc și calificare care cer revizie semantică. | Revizuiți termenii operaționali după codul public și ediția românească. Cereți acceptanță editorială pentru scopul, intrările, rezultatele și limitele fiecărui ghid afectat înaintea reînnoirii receipt-ului bilingv; structura și verificarea termenilor, singure, nu pot dovedi sensul. |
+Terminologia operațională urmează [contractul editorial](../governance/ATF_Documentation.md#terminologia-operațională). Revizuiți sensul după cod și ediția română; diagnosticele automate impun erorile deja identificate, fără să înlocuiască revizia semantică.
 
 ## Descărcarea prin browser
 
@@ -95,7 +92,7 @@ LangGraph oferă noduri explicite, stare partajată și limite de checkpoint, da
 |---|---|---|
 | P1 | RAG-29: contextul sursă/catalog este explicit și verificat offline; calificarea completă a promovării rămâne deschisă. | La următoarea promovare, confruntați contextul capturat înaintea execuției, restaurarea după restart și verificările live separate ale catalogului, legăturilor, descărcării și retenției. Păstrați probele anterioare publicării ca observații ale catalogului original; [contractul contextului](../testing/ATF_ReleaseQualification.md#qualified-catalog-context) și componentele negative nu substituie acest flux complet. |
 
-Măsurați separat pregătirea snapshot-ului, compilarea și execuția. Diagnosticul focalizat rămâne distinct de calificarea unei colecții primare complete; recuperarea eșecurilor dintr-un responsabil aparține punctului deschis pentru reconcilierea invocărilor de mai sus.
+Măsurați separat pregătirea snapshot-ului, compilarea și execuția. Diagnosticul focalizat rămâne distinct de calificarea unei colecții primare complete; recuperarea Maven/Jupiter în interiorul unui responsabil urmează [contractul reluării invocărilor](../testing/ATF_Collections.md#reluarea-în-interiorul-unei-selecții-maven).
 
 ## Admiterea schemei de raportare
 
