@@ -24,9 +24,9 @@ if ([string]::IsNullOrWhiteSpace($RunRoot)) {
 $RunRoot = [IO.Path]::GetFullPath($RunRoot)
 if ($RunRoot.Equals($sourceRoot, [StringComparison]::OrdinalIgnoreCase) -or
     $RunRoot.StartsWith($sourceRoot + [IO.Path]::DirectorySeparatorChar, [StringComparison]::OrdinalIgnoreCase)) {
-    throw 'Rezultatele trebuie păstrate în afara proiectului.'
+    throw 'Results must remain outside the source checkout.'
 }
-if (Test-Path -LiteralPath $RunRoot) { throw 'Directorul de rezultate trebuie să fie nou.' }
+if (Test-Path -LiteralPath $RunRoot) { throw 'The results directory must be new.' }
 $tempRoot = Get-AtfQualificationTempRoot $sourceRoot
 New-Item -ItemType Directory -Path $RunRoot | Out-Null
 $timing = New-AtfQualificationTiming 'governance' (Join-Path $RunRoot 'timing.json')
@@ -53,7 +53,7 @@ New-Item -ItemType Directory -Path $mavenTempRoot | Out-Null
 Invoke-AtfQualificationPhase $timing 'governance.maven-cache' {
     if (Test-Path -LiteralPath $MavenCache -PathType Container) {
         & robocopy $MavenCache $localRepository /E /R:1 /W:1 /XD atf .locks /XF *.lock *.tmp *.lastUpdated /NFL /NDL /NJH /NJS /NP *> (Join-Path $RunRoot 'copy-maven-cache.log')
-        if ($LASTEXITCODE -gt 7) { throw 'Copierea cache-ului Maven a eșuat.' }
+        if ($LASTEXITCODE -gt 7) { throw 'Maven cache copying failed.' }
     }
 }
 $savedJavaHome = $env:JAVA_HOME
@@ -125,6 +125,6 @@ $result = [ordered]@{ root=$sourceRoot; stage=$stage; mavenRepository=$localRepo
     status=if ($stable -and $testExit -eq 0 -and $extentPass) {'PASS'} else {'FAIL'} }
 $result | ConvertTo-Json | Set-Content -LiteralPath (Join-Path $RunRoot 'governance-result.json') -Encoding utf8
 Write-Output ($result | ConvertTo-Json -Compress)
-if (-not $stable) { throw 'Snapshot-ul de calificare s-a schimbat în timpul verificării. Consultați $RunRoot/governance-result.json.' }
-if ($testExit -ne 0) { throw "Guvernanța a eșuat. Consultați $RunRoot\maven.log și rezultatele JUnit." }
-if (-not $extentPass) { throw "Raportul Extent al suitei RAG lipsește sau este invalid. Consultați $RunRoot\governance-report-manifest.json." }
+if (-not $stable) { throw 'The qualification snapshot changed during verification. Inspect $RunRoot/governance-result.json.' }
+if ($testExit -ne 0) { throw "Governance failed. Inspect $RunRoot\maven.log and JUnit results." }
+if (-not $extentPass) { throw "The RAG suite Extent report is missing or invalid. Inspect $RunRoot\governance-report-manifest.json." }

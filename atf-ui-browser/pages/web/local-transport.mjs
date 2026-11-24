@@ -1,4 +1,5 @@
 const profileKey = "whistlab:pages:profile:v1";
+const engineLoadFailureRo = "Motorul Whist nu s-a încărcat. Reîncarcă pagina pentru a încerca din nou.";
 
 export function localTransport() {
   const worker = new Worker(new URL("./engine-worker.mjs", import.meta.url), { type: "module" });
@@ -17,7 +18,7 @@ export function localTransport() {
     else command.resolve(data);
   });
   worker.addEventListener("error", () => {
-    workerFailure = new Error("Motorul Whist nu s-a încărcat. Reîncarcă pagina pentru a încerca din nou.");
+    workerFailure = new Error(engineLoadFailureRo);
     for (const command of pending.values()) command.reject(workerFailure);
     pending.clear();
   });

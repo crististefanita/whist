@@ -52,7 +52,7 @@ const stateOf = browser => browser.request("/api/state");
 const start = (browser, state, options = {}) => browser.request("/api/start", { revision: state.revision, mode: "ROMANIAN_WHIST", ...options });
 const step = (browser, state, action) => browser.request("/api/action", { revision: state.revision, action });
 
-await check("WEB-04", "Checkpoint după licitare, în joc și la scor",
+await check("WEB-04", "Checkpoint after bidding, during play and at score",
   "Aceleași cărți, scor, istoric și identitate după un worker nou; profilul vechi se păstrează", async () => {
     values.set(key, JSON.stringify({ name: "WebProbe", progress: null }));
     let browser = localTransport();
@@ -78,7 +78,7 @@ await check("WEB-04", "Checkpoint după licitare, în joc și la scor",
     return { stages, name: state.profile.name, historyRows: state.view.history.rows.length };
   });
 
-await check("WEB-04", "Checkpoint străin, depășit sau deteriorat",
+await check("WEB-04", "Foreign, stale or corrupted checkpoint",
   "Fila depășită primește conflict și datele deteriorate nu afectează profilul", async () => {
     const a = localTransport();
     const before = await start(a, await stateOf(a));
@@ -99,7 +99,7 @@ await check("WEB-04", "Checkpoint străin, depășit sau deteriorat",
     return { stale: 409, damaged: recovered.storageIssue };
   });
 
-await check("WEB-04", "Refuzul de scriere păstrează partida din fila curentă",
+await check("WEB-04", "Write refusal preserves the game in the current tab",
   "Când stocarea nu mai acceptă scrieri, următoarea mutare folosește starea din memorie", async () => {
     const browser = localTransport();
     const initial = await start(browser, await stateOf(browser));
@@ -113,7 +113,7 @@ await check("WEB-04", "Refuzul de scriere păstrează partida din fila curentă"
     return { warning: settled.storageIssue, score: settled.view.score.table.rows[0] };
   });
 
-await check("WEB-05", "Serii și ratări în istoricul APK și web",
+await check("WEB-05", "Streaks and missed contracts in APK and Web history",
   "Ambele sensuri ale ajustării, bid tăiat și total cumulativ la 3–6 jucători, în română și engleză", async () => {
     const verified = [];
     for (const fixture of fixtures) {
@@ -139,7 +139,7 @@ await check("WEB-05", "Serii și ratări în istoricul APK și web",
     return verified;
   });
 
-await check("WEB-05", "Clasament local din partida completă, fără dublarea rezultatelor",
+await check("WEB-05", "Local ranking from a complete game without duplicate results",
   "Profilul include varianta, locurile, dificultatea, seriile și regula de zero; topul include AI și exemple marcate", async () => {
     const browser = localTransport();
     const initial = await stateOf(browser);

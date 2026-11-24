@@ -12,7 +12,7 @@ import java.nio.file.Path;
 import java.time.Duration;
 import java.util.List;
 
-/** Pregătește licitația și păstrează captura turei care va fi restaurată. */
+/** Prepares bidding and preserves the captured turn to be restored. */
 final class SavedGamePreparationPhase {
     private SavedGamePreparationPhase() {}
 

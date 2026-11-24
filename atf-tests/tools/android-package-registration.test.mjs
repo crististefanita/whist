@@ -1,5 +1,5 @@
+import {runFixtureProcess} from './fixture-process.mjs';
 import assert from 'node:assert/strict';
-import {execFileSync} from 'node:child_process';
 import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
@@ -36,7 +36,7 @@ try {Invoke-AtfVerifiedPackageRegistration -Install {$calls.Add('install')} -Obs
 $rows|ConvertTo-Json -Depth 5 -Compress
 `);
   const helper=path.resolve('scripts/AtfAndroidPackageRegistration.ps1');
-  const rows=JSON.parse(execFileSync('pwsh',['-NoProfile','-File',script,helper],{encoding:'utf8',windowsHide:true,timeout:30000}));
+  const rows=JSON.parse(runFixtureProcess('pwsh',['-NoProfile','-File',script,helper],{encoding:'utf8',windowsHide:true,timeout:30000}));
   assert.equal(rows.length,7);
   for(const row of rows.slice(0,6)) assert.deepEqual(row.calls,['install','observe'],row.name);
   assert.equal(rows[0].passed,true);assert.equal(rows[0].recovered,false);

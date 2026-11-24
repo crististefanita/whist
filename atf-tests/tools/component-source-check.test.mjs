@@ -1,5 +1,5 @@
+import {runFixtureProcess} from './fixture-process.mjs';
 import assert from 'node:assert/strict';
-import {execFileSync} from 'node:child_process';
 import fs from 'node:fs/promises';
 import os from 'node:os';
 import path from 'node:path';
@@ -47,7 +47,7 @@ $rows=@(foreach($mode in @('stable','documentation','staged','code','release','r
   [ordered]@{mode=$mode;differences=$differences;captured=(Test-Path -LiteralPath (Join-Path $capture 'source-snapshot-check.json'))}
 })
 ConvertTo-Json -InputObject $rows -Depth 6 -Compress`);
-  const output = execFileSync('pwsh', ['-NoProfile','-NonInteractive','-File',script,root], {encoding:'utf8',timeout:45000});
+  const output = runFixtureProcess('pwsh', ['-NoProfile','-NonInteractive','-File',script,root], {encoding:'utf8',timeout:45000});
   const rows = JSON.parse(output.trim());
   assert.equal(rows.length,6);
   for (const row of rows) {

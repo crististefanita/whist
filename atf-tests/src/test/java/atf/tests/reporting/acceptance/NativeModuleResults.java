@@ -15,7 +15,7 @@ import java.util.List;
 import javax.xml.XMLConstants;
 import javax.xml.parsers.DocumentBuilderFactory;
 
-/** Citește rezultatele native fără a pierde eșecuri, omisiuni sau fișiere sursă. */
+/** Reads native results without losing failures, omissions or source files. */
 public final class NativeModuleResults {
     private NativeModuleResults() {}
 

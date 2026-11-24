@@ -14,7 +14,7 @@ export function verifyDisposableUser(boundary, ready, cleanup, identity, scenari
   if (boundary?.mode !== 'DISPOSABLE_SECONDARY_USER' || paths.readyReceipt !== boundary.readyReceipt
       || paths.cleanupReceipt !== boundary.cleanupReceipt || (leaseId !== undefined && !/^[a-f0-9]{32}$/.test(leaseId))
       || boundary.readyReceiptSha256 !== ready.sha256 || boundary.cleanupReceiptSha256 !== cleanup.sha256)
-    throw Error('Chitanțele utilizatorului temporar nu au căile și hash-urile canonice.');
+    throw Error('Disposable-user receipts lack canonical paths and hashes.');
 
   const start = ready.value, end = cleanup.value;
   if (start.status !== 'READY' || start.scope !== 'ANDROID_SECONDARY_USER' || start.applicationId !== identity.applicationId
@@ -25,14 +25,14 @@ export function verifyDisposableUser(boundary, ready, cleanup, identity, scenari
       || !Number.isSafeInteger(start.originalUserId) || start.originalUserId < 0
       || !Number.isSafeInteger(userId) || userId <= 0 || userId === start.originalUserId
       || start.installedApkSha256 !== identity.installedApkSha256)
-    throw Error('Chitanța de pregătire nu dovedește un utilizator secundar nou, deblocat, pentru APK-ul candidat.');
+    throw Error('The setup receipt does not prove a newly created, unlocked secondary user for the candidate APK.');
   if (end.status !== 'PASS' || end.scope !== start.scope || end.applicationId !== start.applicationId
       || end.removedByRun !== true || end.originalPackageStatePreserved !== true
       || end.originalPackageWasInstalledBefore !== start.originalPackageWasInstalledBefore
       || end.originalPackageRetained !== start.originalPackageWasInstalledBefore
       || end.originalUserId !== start.originalUserId || end.removedUserId !== start.testUserId || end.removedUserId !== userId
       || end.readyReceiptSha256 !== ready.sha256 || (leaseId !== undefined && end.leaseId !== leaseId))
-    throw Error('Chitanța teardown nu dovedește eliminarea aceluiași utilizator și păstrarea stării inițiale a instalării originale.');
+    throw Error('The teardown receipt does not prove removal of the same user and preservation of the original installation state.');
   if (scenario && (start.observedApi !== scenario.api || start.displayProfile !== scenario.displayProfile))
     throw Error('ANDROID_E2E_PROFILE_CHANGED');
   const version = String(identity.releaseVersion ?? '0.0.0').split('-')[0].split('.').map(Number);

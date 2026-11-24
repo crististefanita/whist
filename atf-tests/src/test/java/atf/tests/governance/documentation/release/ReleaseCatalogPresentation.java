@@ -12,7 +12,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import atf.tests.governance.support.GovernanceProject;
 import java.util.regex.Pattern;
 
-/** Delimitează intrarea curentă, fără a o confunda cu tabelul tuturor versiunilor. */
+/** Isolates the current entry from the table of all versions. */
 final class ReleaseCatalogPresentation {
     private ReleaseCatalogPresentation() {}
 

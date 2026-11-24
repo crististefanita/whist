@@ -11,7 +11,7 @@ import java.util.List;
 
 import javax.imageio.ImageIO;
 
-/** Verifică stabilitatea pixelilor și fereastra temporală a cadrelor capturate. */
+/** Verifies pixel stability and the time window of captured frames. */
 public final class TrickFrameAnalysis {
     private TrickFrameAnalysis() {}
 

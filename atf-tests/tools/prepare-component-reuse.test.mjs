@@ -1,5 +1,5 @@
+import {runFixtureProcess} from './fixture-process.mjs';
 import assert from 'node:assert/strict';
-import {execFileSync} from 'node:child_process';
 import fs from 'node:fs/promises';
 import os from 'node:os';
 import path from 'node:path';
@@ -445,7 +445,7 @@ test('durable Maven preparation keeps compilation when classpath is interrupted 
     "  if (!$previous) { 'RECOMPILE' } elseif ($previous.classpathReady) { 'REUSE_ALL' } else { 'REBUILD_CLASSPATH' }",
     '}'
   ].join('\n'));
-  const run = mode => execFileSync('pwsh', ['-NoProfile', '-NonInteractive', '-File', script, root, mode], {
+  const run = mode => runFixtureProcess('pwsh', ['-NoProfile', '-NonInteractive', '-File', script, root, mode], {
     encoding: 'utf8', timeout: 20000, env: {...process.env, ATF_TEST_SCRIPTS: path.resolve(import.meta.dirname, '../../scripts')}
   }).trim();
   run('seal');

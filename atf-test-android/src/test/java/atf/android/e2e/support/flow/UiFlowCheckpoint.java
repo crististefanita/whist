@@ -10,7 +10,7 @@ import atf.reporting.ui.model.AtfUiEvidenceSource;
 import java.nio.file.Path;
 import java.util.List;
 
-/** Publică un checkpoint cu sursele vizuale și aserțiunile sale. */
+/** Publishes a checkpoint with its visual sources and assertions. */
 public final class UiFlowCheckpoint {
     private UiFlowCheckpoint() {}
 

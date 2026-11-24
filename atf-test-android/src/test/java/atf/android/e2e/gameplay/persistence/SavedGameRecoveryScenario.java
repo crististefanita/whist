@@ -18,7 +18,7 @@ import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 
-/** Verifică scorul și recuperarea aceleiași partide după oprirea procesului. */
+/** Verifies scoring and recovery of the same game after process termination. */
 public final class SavedGameRecoveryScenario {
     private SavedGameRecoveryScenario() {}
 

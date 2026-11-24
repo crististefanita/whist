@@ -28,7 +28,7 @@ const files = [".nojekyll", "auto-game.mjs", "card-suits-OFL.txt", "card-suits.w
   "engine-worker.mjs", "hand-feedback.mjs", "index.html", "local-transport.mjs", "menu-footer.png",
   "profile.mjs", "records.mjs", "table.css", "table.mjs", "viewport.mjs", "whist-engine.mjs"];
 
-if (!selection) await check("Pages · inventarul public", "Doar resurse statice și legături relative în subdirectorul proiectului", async () => {
+if (!selection) await check("Pages · inventarul public", "Only static resources and relative links inside the project subdirectory", async () => {
   assert.deepEqual((await readdir(directory)).sort(), files.toSorted());
   const markup = await readFile(join(directory, "index.html"), "utf8");
   const nativePhoto = new URL("../../whist-lab-app/app/src/main/res/drawable-nodpi/teo_dedication.png", import.meta.url);
@@ -44,7 +44,7 @@ if (!selection) await check("Pages · inventarul public", "Doar resurse statice 
   assert.ok((await readFile(join(directory, "whist-engine.mjs"))).length < 2_000_000);
   return { observed: files };
 });
-if (!selection) await check("Pages · motorul compilat și profilul", "Partidă românească integrală, mutări legale, scor și profil restaurat", async () => {
+if (!selection) await check("Pages: compiled engine and profile", "Complete Romanian game, legal moves, score and restored profile", async () => {
   const { initialize, command } = await import(pathToFileURL(join(directory, "whist-engine.mjs")));
   initialize(31, 9);
   let name = null;
@@ -95,7 +95,7 @@ if (!selection) await check("Pages · motorul compilat și profilul", "Partidă 
     catalogue: reopened.profile.catalogue.summary } };
 });
 
-if (selection !== "--contract-only" && selection !== "--browser-only") await check("Pages · geometrie și ordinea cărților", "Centre rezervate, ordine reală, întârziere nativă și levată completă", async () => {
+if (selection !== "--contract-only" && selection !== "--browser-only") await check("Pages: geometry and card order", "Reserved centers, actual order, native delay and complete trick", async () => {
   const { initialize, command } = await import(pathToFileURL(join(directory, "whist-engine.mjs")));
   initialize(41, 28);
   function invoke(path, fields) {
@@ -138,8 +138,8 @@ if (selection !== "--contract-only" && selection !== "--browser-only") await che
 });
 
 if (!selection || selection === "--contract-only") await check(
-  "Contract comun · fazele mesei și cadrele de colectare",
-  "Aceleași ancore la licitare și joc. Browserul aplică mostrele Java pentru deplasare, scară și opacitate.",
+  "Shared contract: table phases and collection frames",
+  "Identical bidding and playing anchors. The browser applies Java movement, scale and opacity samples.",
   async () => {
     const { initialize, command } = await import(pathToFileURL(join(directory, "whist-engine.mjs")));
     const { collectionFrame } = await import(pathToFileURL(join(directory, "collection.mjs")));
@@ -186,7 +186,7 @@ if (!selection || selection === "--contract-only") await check(
   });
 
 if (executable && selection !== "--contract-only") {
-  await check("Pages · browser mobil la 414×896", "Joacă local din subdirector, închide pagina și recuperează profilul",
+  await check("Pages · browser mobil la 414×896", "Play from the subdirectory, close the page and recover the profile",
     () => phoneViewport(executable));
 }
 await writeFile(join(output, "whist-pages-checks.json"), JSON.stringify(checks, null, 2) + "\n");

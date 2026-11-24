@@ -38,7 +38,7 @@ import java.util.List;
 
 import javax.imageio.ImageIO;
 
-/** Parcurge jocul scurt și verifică acțiunile la masa de joc. */
+/** Executes the short game and verifies table actions. */
 public final class ResponsiveGameFlow {
     private ResponsiveGameFlow() {}
 

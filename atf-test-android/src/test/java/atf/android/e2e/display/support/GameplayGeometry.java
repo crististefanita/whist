@@ -7,7 +7,7 @@ import atf.android.e2e.driver.AndroidUiDriver;
 
 import java.util.List;
 
-/** Condițiile geometrice și de culoare ale scenariilor de prezentare. */
+/** Geometry and color conditions for presentation scenarios. */
 public final class GameplayGeometry {
     private GameplayGeometry() {}
 

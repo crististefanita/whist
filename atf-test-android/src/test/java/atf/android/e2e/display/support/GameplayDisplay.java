@@ -8,7 +8,7 @@ import atf.android.e2e.driver.AndroidUiDriver;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-/** Controlează profilul de display și verifică restaurarea stării observate. */
+/** Controls the display profile and verifies restoration of observed state. */
 public final class GameplayDisplay {
     private GameplayDisplay() {}
 

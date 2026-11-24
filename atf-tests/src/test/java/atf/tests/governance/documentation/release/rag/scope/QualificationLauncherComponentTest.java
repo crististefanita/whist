@@ -51,7 +51,7 @@ class QualificationLauncherComponentTest {
         Path components = scratch.resolve("admitted-components");
         var component = launch(COMPONENTS, source, components, "component-boundary", null);
         AuditedAssertions.assertEquals(1, component.exit());
-        AuditedAssertions.assertTrue(component.log().contains("Groups trebuie"), component.log());
+        AuditedAssertions.assertTrue(component.log().contains("Groups must"), component.log());
         AuditedAssertions.assertTrue(Files.isRegularFile(components.resolve("source-inputs.json")), "Valid proof permits the real snapshot");
         AuditedAssertions.assertEquals("PASS", JSON.readTree(components.resolve("test-change-admission-recheck.json").toFile())
                 .path("status").asText());

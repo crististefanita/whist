@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Objects;
 import ro.whistlab.core.session.GameSession;
 
-/** Persistă progresul local pe mâini complete și finalizează obiectivele de partidă o singură dată. */
+/** Persists local progress from completed hands and finalizes match objectives exactly once. */
 public final class WhistAchievementRepository {
     public interface Storage {
         String read() throws IOException;

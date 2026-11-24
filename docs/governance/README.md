@@ -150,3 +150,5 @@ Structural checks must be completed by checks on factual claims that have been e
 - [Package responsibilities](ATF_Packages.md) calls for the status, dependencies and invariance of each mechanism; moving a file alone does not demonstrate cohesion.
 - [Good documentation practices](ATF_Documentation.md) holds the editorial grid and the separation of the external result from the contract.
 - [Governance feedback](../feedback/ATF_Governance.md#qualification-of-claims-and-launchers) keeps the still necessary factual control and required level prior to closure.
+
+[Implementation language](ATF_SourceLanguage.md) governs English source explanations independently of localized game data and documentation editions.

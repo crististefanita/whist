@@ -1,0 +1,9 @@
+{
+  "schemaVersion": 1,
+  "timeoutMs": 90000,
+  "maximumRetainedBytesPerStream": 65536,
+  "maximumBufferedBytesPerStream": 1048576,
+  "concurrentChildren": 1,
+  "nodeTestConcurrency": 1,
+  "jvmHeapMiB": 768
+}

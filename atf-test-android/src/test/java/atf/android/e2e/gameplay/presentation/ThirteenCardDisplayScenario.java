@@ -24,7 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 
-/** Scenariul licitării și geometriei unei mâini lungi pe profiluri portret. */
+/** Long-hand bidding and geometry scenario on portrait profiles. */
 public final class ThirteenCardDisplayScenario {
     private ThirteenCardDisplayScenario() {}
 

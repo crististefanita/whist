@@ -22,7 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
-/** Transformă un flux capturat în intrările tipizate ale raportării comune. */
+/** Transforms a captured flow into typed inputs for shared reporting. */
 public final class UiFlowReplay {
     private UiFlowReplay() {}
 

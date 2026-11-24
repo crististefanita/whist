@@ -22,7 +22,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.Set;
 
-/** Verifică mâna, licitațiile și geometria mesei înaintea navigării. */
+/** Verifies the hand, bids and table geometry before navigation. */
 final class SixPlayerBiddingCheck {
     private SixPlayerBiddingCheck() {}
 

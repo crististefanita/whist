@@ -17,7 +17,7 @@ import java.nio.file.Path;
 import java.time.Duration;
 import java.util.List;
 
-/** Verifică centrarea mâinii de o carte la licitare și la intrarea în joc. */
+/** Verifies single-card hand centering during bidding and entry into play. */
 final class SingleCardCenteringCheck {
     private SingleCardCenteringCheck() {}
 

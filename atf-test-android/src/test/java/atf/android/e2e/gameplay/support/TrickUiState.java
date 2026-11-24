@@ -4,7 +4,7 @@ import atf.android.e2e.driver.AndroidUiDriver;
 
 import java.time.Duration;
 
-/** Așteaptă tranzițiile observabile ale levatelor fără a schimba regulile scenariului. */
+/** Awaits observable trick transitions without changing scenario rules. */
 public final class TrickUiState {
     private TrickUiState() {}
 

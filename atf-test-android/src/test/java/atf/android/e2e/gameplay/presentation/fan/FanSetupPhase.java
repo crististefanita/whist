@@ -17,7 +17,7 @@ import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 
-/** Pregătește mâna deterministă și verifică geometria inițială înaintea apăsării. */
+/** Prepares the deterministic hand and verifies geometry before a tap. */
 final class FanSetupPhase {
     record InitialState(String hierarchy, AndroidUiDriver.Bounds humanSeat) {}
 

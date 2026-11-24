@@ -21,7 +21,7 @@ import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.List;
 
-/** Verifică o singură configurație de licitare cu treisprezece cărți. */
+/** Verifies one thirteen-card bidding configuration. */
 final class ThirteenCardBiddingCheck {
     private ThirteenCardBiddingCheck() {}
 

@@ -171,7 +171,7 @@ def generateWhistAchievementCatalog = tasks.register('generateWhistAchievementCa
 
 def verifyWhistAchievementCatalogValidation = tasks.register('verifyWhistAchievementCatalogValidation') {
     group = 'verification'
-    description = 'Verifică schema, enum-urile runtime și mesajele de eroare ale catalogului Whist.'
+    description = 'Verifies the schema, runtime enums and diagnostics of the Whist catalog.'
     doLast {
         File sourceFile = file('src/main/java/ro/whistlab/app/achievements/WhistAchievementCatalog.java')
         String source = sourceFile.getText('UTF-8')

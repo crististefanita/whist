@@ -7,7 +7,7 @@ import atf.android.whist.evidence.HandIndexAudit;
 import java.awt.image.BufferedImage;
 import java.util.List;
 
-/** Măsurători de geometrie și contrast pentru verificarea responsive. */
+/** Geometry and contrast measurements for responsive verification. */
 public final class ResponsiveGeometry {
     private ResponsiveGeometry() {}
 

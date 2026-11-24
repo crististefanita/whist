@@ -12,7 +12,7 @@ import javax.imageio.ImageWriter;
 import javax.imageio.metadata.IIOMetadata;
 import javax.imageio.metadata.IIOMetadataNode;
 
-/** Păstrează pixelii la înscrierea timpului capturii în metadatele PNG. */
+/** Preserves pixels when recording capture time in PNG metadata. */
 public final class PngUptimeMetadata {
     private PngUptimeMetadata() {}
 

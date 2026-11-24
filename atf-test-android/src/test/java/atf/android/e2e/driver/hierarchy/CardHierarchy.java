@@ -9,7 +9,7 @@ import atf.android.e2e.driver.AndroidUiDriver.CardLabel;
 import atf.android.e2e.driver.hierarchy.HierarchyDocument.Node;
 import java.util.List;
 
-/** Interpretează etichetele, fețele și starea accesibilă a cărților din observație. */
+/** Interprets card labels, faces and accessible state from an observation. */
 public final class CardHierarchy {
     private CardHierarchy() {}
 

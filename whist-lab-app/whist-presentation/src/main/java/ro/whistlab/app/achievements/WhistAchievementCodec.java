@@ -6,7 +6,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-/** Codec versionat pentru progres, evenimente și notificări locale, independent de numele jucătorului. */
+/** Versioned codec for local progress, events and notifications, independent of the player name. */
 final class WhistAchievementCodec {
     private static final int VERSION = 2;
     private WhistAchievementCodec() { }

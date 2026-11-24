@@ -11,7 +11,7 @@ import java.util.Map;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 
-/** Verifică faptul că ieșirile E2E nu se pierd în checkout ori într-o locație implicită. */
+/** Verifies that E2E outputs stay outside the checkout and implicit locations. */
 @AtfComponentTest
 final class WhistLabScenarioArtifactsComponentTest {
     private static final String PROPERTY = "atf.android.artifacts";

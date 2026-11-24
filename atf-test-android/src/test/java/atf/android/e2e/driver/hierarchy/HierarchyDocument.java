@@ -10,7 +10,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
-/** Decodează o singură observație XML și coordonatele ei, fără acces la dispozitiv. */
+/** Decodes one XML observation and its coordinates without device access. */
 public final class HierarchyDocument {
     private HierarchyDocument() {}
 

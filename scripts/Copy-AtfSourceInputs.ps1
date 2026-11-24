@@ -11,7 +11,7 @@ $root = [IO.Path]::GetFullPath($SourceRoot)
 $stage = [IO.Path]::GetFullPath($Destination)
 if ($stage.Equals($root,[StringComparison]::OrdinalIgnoreCase) -or
     $stage.StartsWith($root + [IO.Path]::DirectorySeparatorChar,[StringComparison]::OrdinalIgnoreCase)) {
-    throw 'Staging-ul trebuie păstrat în afara surselor.'
+    throw 'Staging must remain outside the source checkout.'
 }
 $inputs = Get-Content -LiteralPath $InputManifest -Raw | ConvertFrom-Json
 $copies = [Collections.Generic.List[object]]::new()

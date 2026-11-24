@@ -58,7 +58,7 @@ export function verifyComponentOrigin(inputs, run, provenance, inputManifest = '
       && receipt.inputManifest === inputManifest;
   if (!matchesInputs(run) || !componentRunRows(run)
       || !matchesInputs(provenance.value) || run.provenanceReceiptSha256 !== provenance.sha256)
-    throw Error('Receipt-ul de proveniență sau rularea rădăcină nu corespunde manifestului intrărilor.');
+    throw Error('The provenance receipt or root run does not match the input manifest.');
   if ([run, provenance.value].some(row => row.schemaVersion !== undefined && row.schemaVersion !== 1)
       && ![run, provenance.value].every(row => row.schemaVersion === 2 && row.qualificationContext
         && row.releaseInputManifest === 'release-inputs.json' && /^[a-f\d]{64}$/.test(row.releaseFingerprint ?? ''))) {
@@ -102,7 +102,7 @@ export function verifyComponentExecution(origin, name, execution, tests, reportH
       && execution.provenanceSha256 === origin.provenance.sha256
       && execution.reportSha256 === reportHash
       && receipt?.exitCode === 0 && isDeepStrictEqual(receipt.receipt, execution);
-  if (!receiptPass) throw Error('Receipt-ul execuției, numărătoarea sau hash-ul Extent nu corespunde rulării rădăcină.');
+  if (!receiptPass) throw Error('The execution receipt, invocation count or Extent hash does not match the root run.');
   recoveryArtifactRows(execution);
 }
 
@@ -230,7 +230,7 @@ async function inventory(root) {
 }
 function addCheck(checks, code, pass, message, evidence = [], details = []) {
   const boundedDetails = details.length > 30
-      ? [...details.slice(0, 30), `... încă ${details.length - 30} detalii omise; consultă manifestele citate.`]
+      ? [...details.slice(0, 30), `... ${details.length - 30} further details omitted; inspect the cited manifests.`]
       : details;
   checks.push({code, status: pass ? 'PASS' : 'BLOCKED', message, evidence, ...(boundedDetails.length ? {details: boundedDetails} : {})});
 }
@@ -241,7 +241,7 @@ function summarizeListDiff(expected, actual, expectedLabel, actualLabel, limit =
     ...actual.filter(value => !expectedSet.has(value)).map(value => `${actualLabel}-only: ${value}`)
   ];
   return differences.length > limit
-      ? [...differences.slice(0, limit), `... încă ${differences.length - limit} diferențe omise`]
+      ? [...differences.slice(0, limit), `... ${differences.length - limit} further differences omitted`]
       : differences;
 }
 function summarizeMapDiff(expected, actual, limit = 30) {
@@ -252,7 +252,7 @@ function summarizeMapDiff(expected, actual, limit = 30) {
       .map(name => `SHA-256 mismatch: ${name} (APK=${expected.get(name)}, component=${actual.get(name)})`)
   ];
   return differences.length > limit
-      ? [...differences.slice(0, limit), `... încă ${differences.length - limit} diferențe omise`]
+      ? [...differences.slice(0, limit), `... ${differences.length - limit} further differences omitted`]
       : differences;
 }
 function citation(file, sha256, jsonPointer = null, line = null) {
@@ -496,7 +496,7 @@ export async function evaluateRelease({projectRoot, candidateDir, sourceRoot, pl
       && policy.rules?.ragMayExecuteCommands === false && policy.rules?.ragMayBuildOrSign === false
       && policy.rules?.ragMayPublish === false && policy.candidateLifecycle?.ragMayAdvanceLifecycle === false;
   recordCheck('RAG_POLICY', policyContract, policyContract
-      ? 'Politica activă limitează evaluatorul la citire și la revizia umană.' : 'Politica RAG lipsește sau permite o acțiune în afara contractului read-only.',
+      ? 'The active policy restricts the evaluator to read-only checks and human review.' : 'The RAG policy is missing or permits an action outside the read-only contract.',
       [citation('config/release-platform-rag-policy.json', policyDoc.sha256, '/ragEvaluator', policyDoc.lines.get('/ragEvaluator') ?? 1)]);
 
   const version = plan.releaseVersion;
@@ -516,23 +516,23 @@ export async function evaluateRelease({projectRoot, candidateDir, sourceRoot, pl
           && plan.e2e.groups.every(name => typeof name === 'string' && name.length > 0)
           && new Set(plan.e2e.groups).size === plan.e2e.groups.length
         : typeof plan.e2e.rationale === 'string' && plan.e2e.rationale.trim().length >= 12);
-  recordCheck('PLAN_SCHEMA', validPlan, validPlan ? 'Planul fixează versiunea, platforma, riscul, componentele și decizia E2E.' : 'Plan absent, incomplet sau cu enum invalid.',
+  recordCheck('PLAN_SCHEMA', validPlan, validPlan ? 'The plan pins the version, platform, risk, components and E2E decision.' : 'The plan is missing, incomplete or contains an invalid enum.',
       [planCitation('/schemaVersion')]);
 
   const versionMatches = validPlan && manifest.release?.versionName === version
       && path.basename(candidate) === version;
-  recordCheck('RELEASE_IDENTITY', versionMatches, versionMatches ? 'Planul, manifestul și directorul indică aceeași versiune.' : 'Versiunea candidatului nu coincide în plan, manifest și numele dosarului.', evidence('/release/versionName'));
+  recordCheck('RELEASE_IDENTITY', versionMatches, versionMatches ? 'The plan, manifest and directory identify the same version.' : 'The candidate version differs between the plan, manifest and directory name.', evidence('/release/versionName'));
 
   const manifestPlatforms = manifest.release?.platforms ?? (manifest.release?.artifactKind === 'apk'
       || (manifest.release?.apkName && policy.rules?.legacyApkManifestPlatforms?.includes('android')) ? ['android'] : []);
   const selectedPlatforms = Array.isArray(plan.declaredPlatforms) ? plan.declaredPlatforms : [];
   const declaredPlatforms = Array.isArray(manifestPlatforms) ? manifestPlatforms : [];
   const platformMatches = validPlan && JSON.stringify([...declaredPlatforms].sort()) === JSON.stringify([...selectedPlatforms].sort());
-  recordCheck('PLATFORM_SCOPE', platformMatches, platformMatches ? 'Platforma declarată este Android și corespunde manifestului.' : 'Planul și manifestul declară platforme diferite.', evidence('/release'));
+  recordCheck('PLATFORM_SCOPE', platformMatches, platformMatches ? 'The declared Android platform matches the manifest.' : 'The plan and manifest declare different platforms.', evidence('/release'));
 
   const qualificationPass = manifest.qualification?.state === 'PASS';
   recordCheck('QUALIFICATION_STATE', qualificationPass,
-      qualificationPass ? 'Manifestul declară starea PASS pentru calificarea înregistrată.' : 'Calificarea manifestului nu este PASS.', evidence('/qualification/state'));
+      qualificationPass ? 'The manifest declares PASS for the recorded qualification.' : 'Manifest qualification is not PASS.', evidence('/qualification/state'));
 
   const schemaAdmission = policy.reportingContract?.schemaAdmission ?? {};
   const qualificationSchemaVersion = manifest.qualification?.schemaVersion;
@@ -594,42 +594,42 @@ export async function evaluateRelease({projectRoot, candidateDir, sourceRoot, pl
       if (!payloadOkay) payloadProblem = summarizeListDiff(expected, actual, 'expected', 'actual');
     } catch (error) { payloadOkay = false; payloadProblem = [error.message]; }
   }
-  if (!Array.isArray(payloadEntries) || payloadEntries.length === 0) payloadProblem = ['integrity.files lipsește sau este gol.'];
-  recordCheck('PAYLOAD_INTEGRITY', payloadOkay, payloadOkay ? 'Inventarul candidatului și SHA-256 corespund receipt-ului.' : 'Receipt-ul nu descrie exact payload-ul existent.', evidence('/integrity'), payloadProblem ?? []);
+  if (!Array.isArray(payloadEntries) || payloadEntries.length === 0) payloadProblem = ['integrity.files is missing or empty.'];
+  recordCheck('PAYLOAD_INTEGRITY', payloadOkay, payloadOkay ? 'The candidate inventory and SHA-256 match the receipt.' : 'Receipt-ul nu descrie exact payload-ul existent.', evidence('/integrity'), payloadProblem ?? []);
 
   let sourceOkay = false, inputDoc, inputRel = manifest.source?.inputManifest;
   const sourceProblems = [];
   try {
     const inputFile = await regularFile(candidate, inputRel); inputDoc = await strictJson(inputFile);
     const rows = inputDoc.value.files;
-    if (!Array.isArray(rows) || rows.length === 0) sourceProblems.push('Manifestul de intrări nu conține un tablou files nevid.');
+    if (!Array.isArray(rows) || rows.length === 0) sourceProblems.push('The input manifest does not contain a nonempty files array.');
     const sortedRows = [...rows].sort((left, right) => left.path < right.path ? -1 : left.path > right.path ? 1 : 0);
     const ordinalOrder = rows.every((row, index) => row.path === sortedRows[index].path);
-    if (!ordinalOrder) sourceProblems.push(`Manifestul de intrări nu este în ordine ordinală; prima abatere este la indexul ${rows.findIndex((row, index) => row.path !== sortedRows[index]?.path)}.`);
+    if (!ordinalOrder) sourceProblems.push(`The input manifest is not in ordinal order; the first mismatch is at index ${rows.findIndex((row, index) => row.path !== sortedRows[index]?.path)}.`);
     const fingerprint = digest(Buffer.from(sortedRows.map(row => `${safeRelative(row.path)}\t${row.sha256}\n`).join(''), 'utf8'));
     const sourceCommit = manifest.source?.sourceCommit;
-    if (manifest.source?.fingerprintFormat !== 'SHA-256 of UTF-8 ordinal-sorted path TAB sha256 LF records') sourceProblems.push('Formatul amprentei din release-validation.json nu este cel cerut.');
-    if (!COMMIT.test(sourceCommit ?? '') || inputDoc.value.sourceCommit !== sourceCommit) sourceProblems.push('Commitul din manifestul de surse lipsește, este invalid sau diferă între receipts.');
+    if (manifest.source?.fingerprintFormat !== 'SHA-256 of UTF-8 ordinal-sorted path TAB sha256 LF records') sourceProblems.push('The fingerprint format in release-validation.json is invalid.');
+    if (!COMMIT.test(sourceCommit ?? '') || inputDoc.value.sourceCommit !== sourceCommit) sourceProblems.push('The source-manifest commit is missing, invalid or inconsistent between receipts.');
     if (!HASH.test(manifest.source?.workingTreeFingerprint ?? '') || fingerprint !== inputDoc.value.fingerprint
-        || fingerprint !== manifest.source.workingTreeFingerprint) sourceProblems.push('Amprenta calculată nu coincide cu manifestul de intrări și cu amprenta release-ului.');
+        || fingerprint !== manifest.source.workingTreeFingerprint) sourceProblems.push('The calculated fingerprint differs from the input manifest or release fingerprint.');
     const seen = new Set();
     for (const row of Array.isArray(rows) ? rows : []) {
       let relative;
       try { relative = safeRelative(row.path); }
       catch (error) { sourceProblems.push(error.message); continue; }
-      if (seen.has(relative)) { sourceProblems.push(`Intrare duplicată în manifestul sursă: ${relative}`); continue; }
+      if (seen.has(relative)) { sourceProblems.push(`Duplicate source-manifest entry: ${relative}`); continue; }
       seen.add(relative);
-      if (!HASH.test(row.sha256 ?? '')) { sourceProblems.push(`SHA-256 invalid în manifestul sursă: ${relative}`); continue; }
+      if (!HASH.test(row.sha256 ?? '')) { sourceProblems.push(`Invalid SHA-256 in source manifest: ${relative}`); continue; }
       try {
         const file = await regularFile(source, relative), actualHash = digest(await fs.readFile(file));
-        if (actualHash !== row.sha256) sourceProblems.push(`Hash diferit pentru ${relative}: manifest=${row.sha256}, sursă=${actualHash}`);
-      } catch (error) { sourceProblems.push(`Sursă lipsă sau inaccesibilă pentru ${relative}: ${error.message}`); }
+        if (actualHash !== row.sha256) sourceProblems.push(`Hash mismatch for ${relative}: manifest=${row.sha256}, source=${actualHash}`);
+      } catch (error) { sourceProblems.push(`Missing or inaccessible source ${relative}: ${error.message}`); }
     }
     sourceProblems.push(...await sourceInventoryProblems(source, componentInputMap(rows)));
     sourceOkay = sourceProblems.length === 0;
-  } catch (error) { sourceOkay = false; sourceProblems.push(`Manifestul sursă nu poate fi citit: ${error.message}`); }
+  } catch (error) { sourceOkay = false; sourceProblems.push(`The source manifest cannot be read: ${error.message}`); }
   recordCheck('SOURCE_SNAPSHOT', sourceOkay,
-      sourceOkay ? 'Commitul, manifestul de intrări, amprenta și fișierele sursă corespund.' : 'Snapshot-ul sursă nu poate fi reprodus din manifestul fixat.',
+      sourceOkay ? 'The commit, input manifest, fingerprint and source files match.' : 'The source snapshot cannot be reconstructed from the pinned manifest.',
       [...evidence('/source'), ...(inputDoc ? [citation(posix(path.relative(candidate, path.join(candidate, inputRel))), inputDoc.sha256, '/fingerprint', inputDoc.lines.get('/fingerprint') ?? 1)] : [])], sourceProblems);
 
   let testScope;
@@ -639,21 +639,21 @@ export async function evaluateRelease({projectRoot, candidateDir, sourceRoot, pl
     try {
       testScope = await readTestScope(project, source, version, componentInputMap(inputDoc.value.files), policy);
       diffEvidence.push(...testScope.evidence, citation(inputRel, inputDoc.sha256, '/fingerprint', inputDoc.lines.get('/fingerprint') ?? 1));
-      if (!isDeepStrictEqual({...plan.scope}, testScope.scope)) diffProblems.push('Legătura declarată cu sursa publicată și candidatul nu coincide cu diff-ul calculat.');
-      if (testScope.userFlowChanged && plan.userFlowChanged !== true) diffProblems.push('Diff-ul afectează fluxuri, iar planul declară flux neschimbat.');
-      if (testScope.userFlowChanged && plan.changeRisk === 'maintenanceOrRefactor') diffProblems.push('Riscul declarat nu acoperă schimbarea de flux calculată.');
+      if (!isDeepStrictEqual({...plan.scope}, testScope.scope)) diffProblems.push('The declared published-source and candidate binding differs from the calculated diff.');
+      if (testScope.userFlowChanged && plan.userFlowChanged !== true) diffProblems.push('The diff changes user flows but the plan declares an unchanged flow.');
+      if (testScope.userFlowChanged && plan.changeRisk === 'maintenanceOrRefactor') diffProblems.push('The declared risk does not cover the calculated flow change.');
     } catch (error) { diffProblems.push(error.message); }
-  } else diffProblems.push('Calculul cere un snapshot sursă valid.');
+  } else diffProblems.push('Calculation requires a valid source snapshot.');
   recordCheck('DIFF_SCOPE', Boolean(testScope) && diffProblems.length === 0,
-      diffProblems.length ? 'Selecția declarată nu se poate justifica prin diff.' : 'Selecția a fost recalculată din inventarele surselor.',
+      diffProblems.length ? 'The declared selection cannot be justified by the diff.' : 'Selection was recalculated from the source inventories.',
       diffEvidence, diffProblems);
 
   const versionTransitionApplies = releaseVersionAtLeast(version ?? '', policy.releaseVersioning?.sinceRelease ?? '999.999.999');
   const versionTransitionOkay = !versionTransitionApplies || Boolean(testScope
       && releaseIncrementAllowed(testScope.scope.baselineVersion, version, plan.changeRisk));
   recordCheck('VERSION_TRANSITION', versionTransitionOkay,
-      versionTransitionOkay ? 'Versiunea respectă incrementul permis de risc față de ultima versiune calificată.'
-        : 'Versiunea nu respectă incrementul patch/minor permis de risc sau baza nu a putut fi recalculată.',
+      versionTransitionOkay ? 'The version follows the risk-allowed increment from the last qualified version.'
+        : 'The version violates the risk-allowed patch/minor increment or the baseline could not be reconstructed.',
       diffEvidence, versionTransitionOkay ? [] : [
         `baseline=${testScope?.scope?.baselineVersion ?? 'missing'}, candidate=${version ?? 'missing'}, risk=${plan.changeRisk ?? 'missing'}`
       ]);
@@ -665,7 +665,7 @@ export async function evaluateRelease({projectRoot, candidateDir, sourceRoot, pl
   try {
     const relative = safeRelative(readmePolicy?.path);
     if (!Array.isArray(inputDoc?.value?.files) || !inputDoc.value.files.some(row => row.path === relative)) {
-      readmeProblems.push('README-ul principal lipsește din manifestul sursei fixate.');
+      readmeProblems.push('The main README is missing from the pinned source manifest.');
     }
     const file = await regularFile(source, relative);
     const bytes = await fs.readFile(file);
@@ -678,7 +678,7 @@ export async function evaluateRelease({projectRoot, candidateDir, sourceRoot, pl
     readmeProblems.push(`README-ul principal nu poate fi verificat: ${error.message}`);
   }
   recordCheck('MAIN_README_SURFACE', readmeOkay,
-      readmeOkay ? 'README-ul principal este în snapshot și nu expune un digest APK brut.' : 'README-ul principal lipsește din snapshot sau publică un digest APK brut.',
+      readmeOkay ? 'The main README belongs to the snapshot and does not expose a raw APK digest.' : 'The main README is missing from the snapshot or exposes a raw APK digest.',
       readmeEvidence, readmeProblems);
 
   let documentationEditions = null;
@@ -705,12 +705,12 @@ export async function evaluateRelease({projectRoot, candidateDir, sourceRoot, pl
   const release = manifest.release ?? {};
   let apkOkay = false;
   try { apkOkay = Boolean(await readApkArtifact(candidate, release)); } catch { apkOkay = false; }
-  recordCheck('APK_IDENTITY', apkOkay, apkOkay ? 'APK-ul, dimensiunea și sidecar-ul SHA-256 coincid.' : 'APK-ul sau sidecar-ul SHA-256 lipsește ori diferă.', evidence('/release/apkSha256'));
+  recordCheck('APK_IDENTITY', apkOkay, apkOkay ? 'The APK, byte count and SHA-256 sidecar match.' : 'The APK or SHA-256 sidecar is missing or differs.', evidence('/release/apkSha256'));
 
   const certValid = HASH.test(release.certificateSha256 ?? '') && typeof release.signingCertificate === 'string'
       && release.signingCertificate.trim().length > 0;
   const channelOkay = certValid && (plan.channel !== 'PRODUCTION' || release.productionManagedKey === true);
-  recordCheck('SIGNING_CHANNEL', channelOkay, channelOkay ? 'Certificatul este identificat și compatibil cu profilul canalului.' : 'Canalul cere un certificat identificat și, pentru producție, o cheie gestionată.', evidence('/release'));
+  recordCheck('SIGNING_CHANNEL', channelOkay, channelOkay ? 'The certificate is identified and compatible with the channel profile.' : 'The channel requires an identified certificate and, for production, a managed key.', evidence('/release'));
 
   const platform = manifest.qualification?.platforms?.android;
   const published = /^PUBLISHED/.test(manifest.publication?.state ?? '');
@@ -718,9 +718,9 @@ export async function evaluateRelease({projectRoot, candidateDir, sourceRoot, pl
     ...(published ? policy.ragEvaluator?.platformGates?.androidAfterPublication ?? [] : [])];
   let platformGatesOkay = Boolean(platform?.implemented === true && platform.artifactKind === 'apk' && requiredPlatformGates.length > 0);
   const platformGateEvidence = [], platformGateProblems = [];
-  if (platform?.implemented !== true) platformGateProblems.push('qualification.platforms.android.implemented nu este true.');
-  if (platform?.artifactKind !== 'apk') platformGateProblems.push('qualification.platforms.android.artifactKind nu este apk.');
-  if (requiredPlatformGates.length === 0) platformGateProblems.push('Politica nu a furnizat porți Android pentru etapa evaluată.');
+  if (platform?.implemented !== true) platformGateProblems.push('qualification.platforms.android.implemented is not true.');
+  if (platform?.artifactKind !== 'apk') platformGateProblems.push('qualification.platforms.android.artifactKind is not apk.');
+  if (requiredPlatformGates.length === 0) platformGateProblems.push('The policy supplied no Android gates for this stage.');
   for (const name of requiredPlatformGates) {
     const gate = platform?.gates?.[name]; let okay = gate?.status === 'PASS' && typeof gate.receipt === 'string';
     let receiptDoc;
@@ -781,7 +781,7 @@ export async function evaluateRelease({projectRoot, candidateDir, sourceRoot, pl
     }
     if (!okay) {
       platformGatesOkay = false;
-      platformGateProblems.push(`${name}: receipt absent, neinclus în payload sau invalid pentru regula porții.`);
+      platformGateProblems.push(`${name}: receipt missing, excluded from the payload or invalid for the gate rule.`);
     }
     const pointer = `/qualification/platforms/android/gates/${name}`;
     platformGateEvidence.push(...evidence(pointer));
@@ -789,8 +789,8 @@ export async function evaluateRelease({projectRoot, candidateDir, sourceRoot, pl
         receiptDoc ? '/' : null, receiptDoc ? 1 : null));
   }
   recordCheck('PLATFORM_GATES', platformGatesOkay,
-      platformGatesOkay ? `Porțile Android necesare etapei ${published ? 'publicate' : 'pre-publicare'} au receipt-uri valide și hash-uri legate de payload.`
-        : 'Lipsește o poartă Android obligatorie ori receipt-ul ei nu dovedește statusul, identitatea, semnarea, compatibilitatea sau accesul de distribuție declarat.',
+      platformGatesOkay ? `Required Android gates for the ${published ? "published" : "pre-publication"} stage have valid receipts and payload-bound hashes.`
+        : 'A required Android gate is missing or its receipt does not prove the declared status, identity, signing, compatibility or distribution access.',
       platformGateEvidence, platformGateProblems);
 
   const groups = manifest.qualification?.auditedGroups ?? {}, groupResults = [];
@@ -822,7 +822,7 @@ export async function evaluateRelease({projectRoot, candidateDir, sourceRoot, pl
     }
     if (!okay) {
       componentsOkay = false;
-      componentProblems.push(`${name}: grup, cale Extent canonică/unică sau rezultate invalide (așteptat=${expectedReport ?? 'absent'}, raport=${group?.report ?? 'absent'}, teste=${group?.tests ?? 'absent'}, failures=${group?.failures ?? 'absent'}, errors=${group?.errors ?? 'absent'}, skipped=${group?.skipped ?? 'absent'}).`);
+      componentProblems.push(`${name}: invalid group, canonical/unique Extent path or results (expected=${expectedReport ?? "absent"}, report=${group?.report ?? "absent"}, tests=${group?.tests ?? "absent"}, failures=${group?.failures ?? "absent"}, errors=${group?.errors ?? "absent"}, skipped=${group?.skipped ?? "absent"}).`);
     }
     groupResults.push({name, status: okay ? 'PASS' : 'BLOCKED', invocations: group?.tests ?? null,
       evidence: [citation('release-validation.json', manifestDoc.sha256,
@@ -830,8 +830,8 @@ export async function evaluateRelease({projectRoot, candidateDir, sourceRoot, pl
         ...(group?.report && declared.has(group.report) ? [citation(group.report, declared.get(group.report).sha256)] : [])]});
   }
   recordCheck('COMPONENT_EXTENT', componentsOkay,
-      componentsOkay ? 'Grupurile obligatorii ale aplicației și guvernanței, plus selecțiile suplimentare, au Extent canonic și zero rezultate nepromovate.'
-        : 'Lipsește un grup obligatoriu de componentă; sau un grup este duplicat, gol, nepromovat ori fără Extent în payload.',
+      componentsOkay ? 'Required application and governance groups and additional selections have canonical Extent reports and no unqualified outcomes.'
+        : 'A required component group is missing, duplicated, empty, unqualified or lacks an Extent report in the payload.',
       groupResults.flatMap(item => item.evidence), componentProblems);
 
   const binding = policy.ragEvaluator?.componentSourceBinding ?? {};
@@ -912,8 +912,8 @@ export async function evaluateRelease({projectRoot, candidateDir, sourceRoot, pl
   }
   const componentSourceBound = groupResults.length > 0 && bindingProblems.length === 0;
   recordCheck('COMPONENT_SOURCE_BINDING', componentSourceBound,
-      componentSourceBound ? 'Fiecare Extent este legat de execuția originală, iar intrările suitei coincid cu snapshot-ul APK.'
-        : 'Cel puțin o suită cere o rulare nouă sau are dovezi care nu se pot valida.',
+      componentSourceBound ? 'Every Extent report is bound to its original execution and suite inputs match the APK snapshot.'
+        : 'At least one suite requires a new execution or has evidence that cannot be validated.',
       [...evidence('/source'), ...bindingEvidence], bindingProblems);
 
   const canonical = manifest.evidenceRetention?.canonicalReport;
@@ -922,8 +922,8 @@ export async function evaluateRelease({projectRoot, candidateDir, sourceRoot, pl
       && HASH.test(manifest.evidenceRetention?.canonicalReportSha256 ?? '')
       && canonicalHash === manifest.evidenceRetention.canonicalReportSha256;
   recordCheck('CANONICAL_EXTENT', canonicalOkay,
-      canonicalOkay ? 'Raportul canonic este unul dintre grupurile Extent selectate și hash-ul său corespunde.'
-        : 'Raportul canonic lipsește, nu este selectat sau hash-ul declarat diferă.',
+      canonicalOkay ? 'The canonical report belongs to the selected Extent groups and its hash matches.'
+        : 'The canonical report is missing, unselected or has a different declared hash.',
       [...evidence('/evidenceRetention'), ...(canonicalOkay ? [citation(canonical, canonicalHash)] : [])]);
 
   const e2e = plan.e2e ?? {};
@@ -969,21 +969,21 @@ export async function evaluateRelease({projectRoot, candidateDir, sourceRoot, pl
       } catch (error) {
         e2eReceiptsOkay = false;
         e2eDecisions.push({group: name, decision: 'RUN', reason: error.message});
-        e2eProblems.push(`${name}: receipt sau raport E2E invalid (${error.message}).`);
+        e2eProblems.push(`${name}: invalid E2E receipt or report (${error.message}).`);
       }
     }
   }
   const selectedE2e = e2e.status === 'PASS' && Array.isArray(e2e.groups) ? e2e.groups : [];
   const missingE2e = (testScope?.requiredE2eGroups ?? []).filter(name => !selectedE2e.includes(name));
   e2eDecisions.push(...missingE2e.map(group => ({group, decision: 'RUN', reason: 'REQUIRED_BY_DIFF'})));
-  e2eProblems.push(...missingE2e.map(name => `Grup E2E cerut de diff și neselectat: ${name}`));
+  e2eProblems.push(...missingE2e.map(name => `Unselected E2E group required by the diff: ${name}`));
   const e2eOkay = e2eReceiptsOkay && missingE2e.length === 0 && (plan.userFlowChanged || testScope?.userFlowChanged
       ? e2e.status === 'PASS'
       : (e2e.status === 'PASS' || (['NOT_RUN', 'NOT_APPLICABLE'].includes(e2e.status)
         && typeof e2e.rationale === 'string' && e2e.rationale.trim().length >= 12)));
   recordCheck('E2E_SCOPE', e2eOkay,
-      e2eOkay ? `E2E: ${e2e.status}; decizia este explicită, cu raport Extent și receipt legați de APK, sursă, rezultate și capturi.`
-        : 'Flux de utilizator schimbat fără E2E trecut, raport E2E lipsă/nepotrivit sau omitere fără justificare.',
+      e2eOkay ? `E2E: ${e2e.status}; the explicit decision has Extent and receipt bindings to the APK, source, results and captures.`
+        : 'A changed user flow lacks passing E2E, the E2E report is missing/mismatched or an omission lacks justification.',
       [planCitation('/e2e'), ...e2eEvidence], e2eProblems);
 
   if (manifest.publication?.state === 'PUBLISHED') {
@@ -1001,7 +1001,7 @@ export async function evaluateRelease({projectRoot, candidateDir, sourceRoot, pl
       retentionProblems.push(...githubRetentionProblems(catalog, observed.value));
     } catch (error) { retentionProblems.push(error.message); }
     recordCheck('GITHUB_RETENTION', retentionProblems.length === 0,
-        retentionProblems.length ? 'Inventarul GitHub lipsește, a expirat sau nu corespunde catalogului activ.' : 'Cele două release-uri, tagurile și asset-urile descărcate corespund catalogului activ.',
+        retentionProblems.length ? 'The GitHub inventory is missing, expired or inconsistent with the active catalog.' : 'The two releases, tags and downloaded assets match the active catalog.',
         retentionEvidence, retentionProblems);
   }
 
@@ -1018,11 +1018,11 @@ export async function evaluateRelease({projectRoot, candidateDir, sourceRoot, pl
       sha256: planDoc.sha256, contentBase64: planDoc.bytes.toString('base64')},
     checks, testScope: testScope ?? null, documentationEditions, componentGroups: groupResults,
     e2e: {status: e2e.status ?? 'NOT_RUN', userFlowChanged: plan.userFlowChanged ?? null,
-      rationale: e2e.rationale ?? null, decisions: e2eDecisions, note: 'NOT_RUN/NOT_APPLICABLE nu devine PASS; această ieșire nu califică fluxurile E2E ale aplicației.'},
+      rationale: e2e.rationale ?? null, decisions: e2eDecisions, note: 'NOT_RUN/NOT_APPLICABLE does not become PASS; this output does not qualify application E2E flows.'},
     timing: timing.receipt('rag-evaluator'),
     lifecycleEffect: 'NONE', writesOnly: posix(path.relative(project, output)),
     limitations: ['The APK snapshot inventory is checked against the manifest. Git reads for documentation use committed objects and do not inspect the index.',
-      'Verdictul este o recomandare auditabilă pentru revizie umană; nu promovează, semnează sau publică.']
+      'The verdict is an auditable recommendation for human review; it does not promote, sign or publish.']
   };
   await fs.mkdir(path.dirname(output), {recursive: true});
   const temporary = output + '.' + crypto.randomUUID() + '.tmp';

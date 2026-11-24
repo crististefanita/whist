@@ -8,7 +8,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
-/** Ținta aplicației, verificarea instalării și metadatele păstrate pentru dovezi. */
+/** Application target, installation verification and retained evidence metadata. */
 public final class WhistLabScenario {
     private WhistLabScenario() {}
 

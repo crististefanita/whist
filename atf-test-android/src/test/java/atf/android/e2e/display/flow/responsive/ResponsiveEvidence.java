@@ -22,7 +22,7 @@ import java.util.regex.Pattern;
 
 import javax.imageio.ImageIO;
 
-/** Corelează capturile, măsurătorile și checkpoint-urile verificării responsive. */
+/** Correlates responsive captures, measurements and checkpoints. */
 public final class ResponsiveEvidence {
     private ResponsiveEvidence() {}
 

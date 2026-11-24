@@ -11,7 +11,7 @@ import static atf.android.e2e.display.flow.responsive.ResponsiveEvidence.record;
 import static atf.android.e2e.display.flow.responsive.ResponsiveSettings.APP;
 import static atf.android.e2e.display.flow.responsive.ResponsiveSettings.WAIT;
 
-/** Verifică o singură stare capturată; nu unește observații din viewport-uri diferite. */
+/** Verifies one captured state without combining observations from different viewports. */
 public final class SimultaneousTableChecks {
     private SimultaneousTableChecks() {}
 

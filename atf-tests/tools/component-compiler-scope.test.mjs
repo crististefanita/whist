@@ -1,9 +1,9 @@
+import {runFixtureProcess} from './fixture-process.mjs';
 import assert from 'node:assert/strict';
 import test from 'node:test';
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import os from 'node:os';
-import {execFileSync} from 'node:child_process';
 import {createHash} from 'node:crypto';
 
 async function exercise(t,negative){
@@ -37,7 +37,7 @@ if($Negative -eq 'hash') {
  try { Observe | Out-Null; throw 'Indirect recipe accepted' } catch { if($_.Exception.Message -notlike 'COMPONENT_COMPILER_RECIPE_INDIRECT*'){throw}; @{rejected='link'}|ConvertTo-Json -Compress } finally { [IO.Directory]::Delete($old) }
 } else { Observe | ConvertTo-Json -Depth 7 -Compress }
 `);
- const observe=(mode='')=>JSON.parse(execFileSync('pwsh',['-NoProfile','-NonInteractive','-File',script,
+ const observe=(mode='')=>JSON.parse(runFixtureProcess('pwsh',['-NoProfile','-NonInteractive','-File',script,
   path.resolve(import.meta.dirname,'../../scripts'),project,manifest,mode],{encoding:'utf8',windowsHide:true,timeout:20000}));
  if(!negative){
   const first=observe();assert.ok(first.scope);assert.ok(first.scope.compiledRoots.includes('shared/src/test/java'));

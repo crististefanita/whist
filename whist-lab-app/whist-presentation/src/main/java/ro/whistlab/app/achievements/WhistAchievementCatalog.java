@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-/** Catalogul stabil al realizărilor Whist; nivelul descrie dificultatea obiectivului, nu AI-ul. */
+/** Stable Whist achievement catalog; level describes objective difficulty, not AI difficulty. */
 public final class WhistAchievementCatalog {
     public enum Level { EASY, MEDIUM, HARD }
     public enum Aggregation { SUM, BEST_MATCH }

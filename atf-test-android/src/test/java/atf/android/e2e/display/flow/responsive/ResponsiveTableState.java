@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 
-/** Rezolvă starea vizibilă și navigarea în viewport-ul mesei. */
+/** Resolves visible state and navigation within the table viewport. */
 public final class ResponsiveTableState {
     private ResponsiveTableState() {}
 

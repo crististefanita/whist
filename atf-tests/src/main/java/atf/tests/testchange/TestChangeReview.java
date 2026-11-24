@@ -29,6 +29,9 @@ public final class TestChangeReview {
     private static final Pattern GRADLE = Pattern.compile("^(?:whist-lab-app/(?:.*/)?|atf-ui-browser/)(?:build|settings)\\.gradle(?:\\.kts)?$");
     private static final Set<String> OUTPUTS = Set.of(".git", "target", "build", ".gradle", "artifacts", "node_modules", "release");
     private static final List<String> GATES = List.of(
+            "config/source-language-policy.json", "config/launcher-fixture-profile.json",
+            "atf-tests/tools/source-language.mjs", "atf-tests/tools/source-language-tokens.mjs",
+            "atf-tests/tools/fixture-process.mjs",
             "config/table-sanity-plan.json", "config/report-producers.json", "config/native-storage-components.json",
             "atf-tests/src/main/java/atf/tests/jvm/JavaSourceParser.java",
             "atf-tests/src/main/java/atf/tests/documentation/policy/DocumentationContentPolicy.java",

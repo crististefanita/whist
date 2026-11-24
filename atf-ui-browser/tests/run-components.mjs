@@ -33,13 +33,13 @@ async function audit(name, check) {
   console.log(results.at(-1).status + " " + name);
 }
 
-await audit("Modele de viewport portrait și centrare", () => {
+await audit("Portrait viewport and centering models", () => {
   const observed = verifyViewportContract({ REFERENCE, MIN_DESKTOP_SCALE, isPhone, viewportGeometry });
-  return { expected: "cadru telefon 1:1; desktop limitat de înălțimea utilă, cu lățime fără depășire și prag lizibil unde încape",
+  return { expected: "A 1:1 phone frame; desktop uses available height with bounded width and a readable minimum where space permits",
     observed };
 });
 
-await audit("Componente comune · profil Unicode și animația levatei", () => {
+await audit("Shared components: Unicode profile and trick animation", () => {
   assert.equal(normalizedNameLength("  Ștefan  "), 6);
   assert.equal(normalizedNameLength("S\u0326"), 1);
   assert.equal(normalizedNameLength("𐐀".repeat(10)), 10);
@@ -49,10 +49,10 @@ await audit("Componente comune · profil Unicode și animația levatei", () => {
   assert.equal(half.y, -52.5);
   assert.ok(Math.abs(half.scale - .2825) < 1e-12);
   assert.equal(collectionFrame(100, -60, { travel: 1, scale: .18, alpha: 0 }).opacity, 0);
-  return { expected: "Lungime NFC pe code point și convergență către câștigător", observed: { half, limit: 10 } };
+  return { expected: "NFC length in code points and convergence towards the winner", observed: { half, limit: 10 } };
 });
 
-await audit("Profil pe telefon · aceeași origine și stocare dezactivată", () => {
+await audit("Phone profile: same origin and disabled storage", () => {
   const data = new Map();
   const storage = () => ({ getItem: key => data.get(key) ?? null, setItem: (key, value) => data.set(key, value) });
   const first = deviceProfile("1".repeat(32), storage);
@@ -65,13 +65,13 @@ await audit("Profil pe telefon · aceeași origine și stocare dezactivată", ()
   isolated.remember({ savedName: true, name: "Ana" });
   assert.equal(isolated.id, "3".repeat(32));
   assert.equal(isolated.name(), null);
-  return { expected: "Numele confirmat supraviețuiește filei; aplicația pornește când stocarea este refuzată",
+  return { expected: "The confirmed name survives closing the tab; the application starts when storage is denied",
     observed: { restoredName: reopened.name(), isolatedName: isolated.name() } };
 });
 
 await withServer(games[0], web, async url => {
   const request = client(url);
-  await audit("Whist · salvarea profilului și refuzul editării nevalide", async () => {
+  await audit("Whist: profile persistence and rejection of invalid edits", async () => {
     const profile = client(url, "d".repeat(32));
     const initial = await profile("/api/state");
     const accepted = "𐐀".repeat(10);
@@ -88,11 +88,11 @@ await withServer(games[0], web, async url => {
     assert.equal(firstMatch.view.seats[0].name, accepted);
     assert.equal((await second("/api/state")).view, null);
     assert.notEqual((await client(url, "f".repeat(32))("/api/state")).profile.name, accepted);
-    return { expected: "10 code points validați; profil comun pe file, meci și profiluri independente",
+    return { expected: "Ten validated code points; shared profile across tabs, independent game and profile state",
       observed: { nameLength: normalizedNameLength(current.profile.name), groups: current.profile.catalogue.groups.length,
         secondTabMatch: (await second("/api/state")).view } };
   });
-  await audit("Whist · revizie concurentă, refuz și stare fără animații reluate", async () => {
+  await audit("Whist: concurrent revision, rejection and state without repeated animations", async () => {
     await request("/api/state", null, 403, false);
     const fresh = await request("/api/state");
     assert.equal(fresh.revision, 0);
@@ -120,11 +120,11 @@ await withServer(games[0], web, async url => {
     assert.equal(acted.view.hand.length, 1);
     assert.deepEqual(await request("/api/state"), { ...acted, collections: [], playback: [] });
     assert.deepEqual(await client(url, "b".repeat(32))("/api/state"), fresh);
-    return { expected: "O singură licitație acceptată la aceeași revizie. Citirea păstrează starea și stinge evenimentele tranzitorii.",
+    return { expected: "One accepted bid per revision. Reading preserves state and clears transient events.",
       observed: { bidOptions: bids.map(b => b.key), committed: valid.key, revision: acted.revision, rejected: 409 } };
   });
 
-  await audit("Whist · proiecția evantaiului pentru 17 cărți și refuzul dimensiunilor invalide", async () => {
+  await audit("Whist: seventeen-card fan projection and invalid-dimension rejection", async () => {
     const layout = { mode: "DOWN_AND_UP", players: 3, width: 390, height: 430, viewport: 896,
       seatHeight: 64, bidOptions: 18, cards: 17, handWidth: 390 };
     const initial = await request("/api/state");
@@ -138,11 +138,11 @@ await withServer(games[0], web, async url => {
     await request("/api/layout", { ...layout, cards: 18 }, 400);
     await request("/api/layout", { ...layout, handWidth: 0 }, 400);
     assert.deepEqual(await request("/api/state"), initial);
-    return { expected: "Ultima carte încape în evantai. Pe un ecran îngust evantaiul poate derula, iar cererile invalide nu schimbă jocul.",
+    return { expected: "The last card fits the fan. Narrow screens may scroll the fan; invalid requests do not change the game.",
       observed: { compact: compact.hand, wide: wide.hand, revision: initial.revision, invalidMeasurements: 400 } };
   });
 
-  await audit("Whist · partidă integrală românească 1–8–1, patru locuri", async () => {
+  await audit("Whist: complete four-seat Romanian 1-8-1 match", async () => {
     const request = client(url, "c".repeat(32));
     let state = await request("/api/start", { revision: 0, players: 4, mode: "ROMANIAN_WHIST", difficulty: "NORMAL" });
     let notices = 0;
@@ -181,7 +181,7 @@ await withServer(games[0], web, async url => {
     assert.equal(replay.view.history.rows.length, 0);
     assert.deepEqual(replay.profile.catalogue, settled.profile.catalogue);
     completedCareer = settled.profile.catalogue.groups.flatMap(group => group.goals).filter(goal => goal.complete);
-    return { expected: "24 de mâini, confirmarea notificărilor, citire fără animații vechi și reluare cu progres păstrat",
+    return { expected: "Twenty-four hands, notification acknowledgement, reads without stale animations and resumption with retained progress",
       observed: { hands: settled.view.history.rows.length, notices, finalRow: settled.view.history.rows.at(-1),
         earned: completedCareer.map(goal => goal.id), replay: replay.view.heading } };
   });
@@ -189,19 +189,19 @@ await withServer(games[0], web, async url => {
 });
 
 await withServer(games[0], web, async url => {
-  await audit("Whist · profil și progres recuperate după repornirea serverului", async () => {
+  await audit("Whist: profile and progress recovered after server restart", async () => {
     const profile = await client(url, "d".repeat(32))("/api/state");
     const career = await client(url, "c".repeat(32))("/api/state");
     assert.equal(profile.profile.name, "𐐀".repeat(10));
     assert.ok(completedCareer?.length > 0, "The previous match must publish at least one achievement");
     const recovered = career.profile.catalogue.groups.flatMap(group => group.goals).filter(goal => goal.complete);
     assert.deepEqual(recovered, completedCareer);
-    return { expected: "Date persistente în același profil de browser", observed: career.profile.catalogue.summary };
+    return { expected: "Persistent data within the same browser profile", observed: career.profile.catalogue.summary };
   });
 });
 
 await withServer(games[1], games[1].web, async url => {
-  await audit("Rentz · dezvăluire, contract, levată și totaluri", async () => {
+  await audit("Rentz: reveal, contract, trick and totals", async () => {
     const request = client(url);
     let state = await request("/api/start", { revision: 0, players: 4, difficulty: "NORMAL" });
     assert.ok(state.view.actions.some(action => action.key === "reveal"));
@@ -224,13 +224,13 @@ await withServer(games[1], games[1].web, async url => {
     assert.equal(rows[0].status, "Levate");
     assert.equal(rows[0].cells.length, 4);
     assert.ok(rows[0].cells.every(cell => cell.bid === cell.total), "First hand deltas must equal totals");
-    return { expected: "Contractul Levate decontează o singură mână și publică totalul fiecărui jucător",
+    return { expected: "The Tricks contract settles one hand and publishes each player total",
       observed: { steps, row: rows[0] } };
   });
 });
 
 await withServer(games[2], games[2].web, async url => {
-  await audit("Hold’em · pariere încadrată de motor, showdown și mâna următoare", async () => {
+  await audit("Holdem: engine-bounded betting, showdown and the next hand", async () => {
     const request = client(url);
     let state = await request("/api/start", { revision: 0, players: 4, difficulty: "NORMAL", blinds: 3 });
     assert.equal(state.view.hand.length, 2);
@@ -250,7 +250,7 @@ await withServer(games[2], games[2].web, async url => {
     const outcome = state.view.seats.map(seat => [seat.name, seat.secondFact]);
     const next = await request("/api/action", { revision: state.revision, action: "next" });
     assert.equal(next.view.heading, "Mâna 2");
-    return { expected: "Limite de pariere, cinci cărți comune, decontare și mâna 2", observed: { steps, outcome } };
+    return { expected: "Betting limits, five community cards, settlement and hand two", observed: { steps, outcome } };
   });
 });
 

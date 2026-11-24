@@ -11,7 +11,7 @@ import java.nio.file.Path;
 import java.time.Duration;
 import java.util.List;
 
-/** Configurează masa cu șase jucători și păstrează ierarhia folosită la pornire. */
+/** Configures a six-player table and preserves the hierarchy used at startup. */
 final class SixPlayerSetupPhase {
     private SixPlayerSetupPhase() {}
 

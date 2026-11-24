@@ -11,7 +11,7 @@ import atf.android.e2e.driver.AndroidUiDriver;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-/** Aplică și restaurează profilurile verificării responsive. */
+/** Applies and restores the responsive verification profiles. */
 public final class ResponsiveDisplayActions {
     private ResponsiveDisplayActions() {}
 

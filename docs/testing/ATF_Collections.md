@@ -343,3 +343,18 @@ The observation capture proves what changed at the original boundary. Owner sele
 </details>
 
 Use `run-component-suites.ps1 -ReuseFrom <rejected-run> -RunRoot <new-external-run>` with the required `-Groups`, explicit Git review base and configured local tool/cache paths. `-ResumeFrom` remains restricted to identical complete snapshots; documentation edits require a new snapshot. Compiler reuse remains an independent byte-verified decision.
+<a id="launcher-fixtures"></a>
+
+## Launcher fixture cost and diagnostics
+
+The [resource profile](../../config/launcher-fixture-profile.json) declares the suite heap, serial child execution, stream bounds and default fixture deadline. A fixture-specific existing deadline remains explicit; it is not increased to conceal contention. JVM options belong to the suite, never a global `JAVA_TOOL_OPTIONS` variable.
+
+[Process support](../../atf-tests/tools/fixture-process.mjs) writes a uniquely named diagnostic receipt before fixture cleanup. The receipt retains the original failure identity, bounded stdout/stderr tails and measured elapsed time. A failed child also emits those bounded observations to its parent so an audit does not depend on a temporary path. Configure `WHIST_FIXTURE_DIAGNOSTICS`, `WHIST_EVIDENCE_ROOT` or `WHIST_QUALIFICATION_TEMP_ROOT` outside the checkout; no output may enter source directories.
+
+| Level | Responsibility |
+|---|---|
+| Unit | Pure compiler-input matrices, stream-size boundaries and mocked timeout/exit causes. They have no Extent report. |
+| Component | Real process lifecycle, interrupted output retention and actual compiler/proof admission, including every original rejection contract. Comparisons remain in Extent without screenshots. |
+| Measurement | Record fresh preparation, reused-compiler and resumed-selection observations separately. A process-start measurement is not a cold Maven compilation benchmark. |
+
+The compiler-input matrix has one unit owner. Real compiler admission has one component owner; removing a duplicate launcher call does not cache a verdict or remove its rejection cases. Compare actual child counts and phase durations under the declared profile; keep results in the external audit rather than historical timing claims in this guide.

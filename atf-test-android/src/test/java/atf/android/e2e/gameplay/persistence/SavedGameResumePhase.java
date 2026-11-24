@@ -15,7 +15,7 @@ import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 
-/** Verifică oprirea procesului, reluarea aceleiași ture și scorul rezultat. */
+/** Verifies process termination, resumption of the same turn and the resulting score. */
 final class SavedGameResumePhase {
     private SavedGameResumePhase() {}
 

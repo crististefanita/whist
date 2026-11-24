@@ -1,0 +1,19 @@
+{
+  "schemaVersion": 1,
+  "language": "en",
+  "reviewedRomanianWords": [
+    "acelasi", "aceeasi", "aceste", "acestui", "adauga", "adaugare", "afisare", "afiseaza",
+    "alege", "antrenare", "asteapta", "asteptare", "calificare", "calificat", "cazul", "cerinta",
+    "cerinte", "citeste", "comenzi", "componentele", "comportament", "construieste", "copiere",
+    "culoare", "culorile", "daca", "datele", "descriere", "deschide", "directorul", "dispozitiv",
+    "doar", "documentatie", "dovada", "dovezi", "dupa", "esec", "este", "etapa", "extragere",
+    "fara", "fiecare", "fisiere", "fisier", "fluxul", "foloseste", "guvernanta", "istoric",
+    "iesire", "inainte", "inchide", "intoarce", "intrare", "jocul", "jucator", "jucatori",
+    "licitatie", "licitatia", "licitatii", "limba", "margine", "masurare", "numar", "numarul",
+    "numele", "opreste", "pachetul", "pastram", "pastreaza", "pastrare", "pentru", "pozitie",
+    "proba", "probele", "punctaj", "raportul", "reguli", "reluare", "rezervare", "rezultat",
+    "rezultate", "rulare", "rulari", "salvare", "sau", "scorul", "selectia", "semnare",
+    "sursa", "surse", "tabelul", "titlul", "trebuie", "utilizator", "valoare", "valori",
+    "verifica", "verificare", "verificari", "versiunea"
+  ]
+}
