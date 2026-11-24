@@ -2996,3 +2996,62 @@ testChanges:
 ```
 
 </details>
+
+<details>
+<summary>Rapoarte detașate și recuperarea stocării native</summary>
+
+```yaml
+testChanges:
+  - id: P1-DETACHED-STORAGE
+    status: VERIFIED
+    base: 57a161faf4414207629c6819d3c2a0154de3fe5c
+    expires: 2026-12-24
+    reason: Păstrați octeții și comparațiile originale fără dependențe auxiliare; verificați fazele stocării native, erorile explicite de corupere, izolarea profilului și restaurarea pachetului.
+    proof: 'mvn -o -pl atf-tests -am -Dtest=StandaloneReportContractComponentTest,DetachedReviewComponentTest,HtmlInvocationIntegrityComponentTest,NativeStoragePlanComponentTest,AtfSourceQualityGovernanceTest,PackageCohesionGovernanceTest,TestLayerGovernanceTest,SuiteOwnershipGovernanceTest,GradleAuditGovernanceTest,AndroidJavaApiGovernanceTest,ReportProducerInventoryComponentTest,TestChangeReviewComponentTest -Dsurefire.failIfNoSpecifiedTests=false test'
+    checks:
+      positive:
+        - atf.tests.reporting.autonomy.StandaloneReportContractComponentTest#detachedBytesRemainAuditableWithoutTheirFormerDirectory
+        - atf.tests.reporting.autonomy.DetachedReviewComponentTest#producerInventoryAndOfflineObservationsRejectMissingOrForeignQualification
+        - atf.android.component.storage.NativeStoragePlanComponentTest#orderedNativeReceiptPreservesFailuresAndRejectsLostForeignOrContradictoryCases
+        - atf.tests.governance.source.AtfSourceQualityGovernanceTest#sourcesRespectPackagePathsImportsAndProductionBoundaries
+        - atf.tests.governance.source.PackageCohesionGovernanceTest#currentProjectUsesNoCohesionExceptions
+        - atf.tests.governance.source.TestLayerGovernanceTest#executableMavenClassesHaveOneLayerAndTheGuideMatchesTheirDeclarations
+        - atf.tests.governance.suites.SuiteOwnershipGovernanceTest#everyMavenExecutableHasOnePrimaryOwnerAndEveryFocusedGateIsDeclared
+      negative:
+        - atf.tests.reporting.autonomy.StandaloneReportContractComponentTest#alteredMissingAndUnsealedArtifactsCannotBeAdmitted
+        - atf.tests.reporting.autonomy.StandaloneReportContractComponentTest#aFreshHashCannotAuthorizeExternalOrBrokenEvidence
+        - atf.tests.governance.documentation.release.integrity.html.HtmlInvocationIntegrityComponentTest#anExternalEvidenceAttachmentCannotQualifyAnOtherwisePassingReceipt
+    paths:
+      - atf-test-android/src/test/java/atf/android/component/storage/NativeStoragePlanComponentTest.java
+      - atf-test-android/tools/native-storage-contract.mjs
+      - atf-test-android/tools/native-storage-contract.test.mjs
+      - atf-tests/src/main/java/atf/tests/reporting/autonomy/StandaloneReportContract.java
+      - atf-tests/src/main/java/atf/tests/testchange/TestChangeReview.java
+      - atf-tests/src/test/java/atf/tests/governance/documentation/release/integrity/html/HtmlInvocationIntegrity.java
+      - atf-tests/src/test/java/atf/tests/governance/documentation/release/integrity/html/HtmlInvocationIntegrityComponentTest.java
+      - atf-tests/src/test/java/atf/tests/reporting/autonomy/DetachedReviewComponentTest.java
+      - atf-tests/src/test/java/atf/tests/reporting/autonomy/StandaloneReportContractComponentTest.java
+      - atf-tests/src/test/java/atf/tests/suites/components/AtfReportingComponentSuite.java
+      - atf-tests/tools/release-test-scope.mjs
+      - atf-tests/tools/report-autonomy.mjs
+      - atf-tests/tools/report-autonomy.test.mjs
+      - atf-ui-browser/tests/review-detached-reports.mjs
+      - config/atf-component-collections.json
+      - config/atf-component-dependencies.json
+      - config/atf-component-reader-seals.json
+      - config/gradle-audit-collections.properties
+      - config/native-storage-components.json
+      - scripts/run-native-storage-components.ps1
+      - whist-lab-app/app/build.gradle
+      - whist-lab-app/app/src/androidTest/java/ro/whistlab/app/persistence/nativecomponent/NativeStorageChecks.java
+      - whist-lab-app/app/src/androidTest/java/ro/whistlab/app/persistence/nativecomponent/NativeStorageRecovery.java
+      - whist-lab-app/app/src/androidTest/java/ro/whistlab/app/persistence/nativecomponent/StorageRecoveryInstrumentation.java
+      - whist-lab-app/app/src/main/java/ro/whistlab/app/MainActivity.java
+      - whist-lab-app/app/src/main/java/ro/whistlab/app/persistence/CheckpointPreferenceIntegrity.java
+      - whist-lab-app/app/src/main/java/ro/whistlab/app/persistence/GameSessionStore.java
+      - whist-lab-app/app/src/test/java/ro/whistlab/app/localization/WhistUiTextTest.java
+      - whist-lab-app/app/src/test/java/ro/whistlab/app/persistence/CheckpointPreferenceIntegrityComponentTest.java
+      - whist-lab-app/whist-presentation/src/main/java/ro/whistlab/app/localization/WhistUiText.java
+```
+
+</details>

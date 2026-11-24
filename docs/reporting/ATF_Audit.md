@@ -179,6 +179,16 @@ README-ul dosarului indică întâi raportul canonic, scopul și identitatea ver
 
 Revizia acoperă ramurile declarate. Reducerea la o probă reprezentativă cere aceeași implementare de prezentare; o ramură nouă, un eșec sau o problemă de acces primește propria probă.
 
+## Admiterea livrabilului detașat
+
+[StandaloneReportContract](../../atf-tests/src/main/java/atf/tests/reporting/autonomy/StandaloneReportContract.java) verifică fișierul detașat față de SHA-256 original calificat și refuză resurse de audit externe, anexe XML și capturi încorporate fără destinație. Recalcularea hash-ului unui raport modificat nu autorizează o dependență externă. Valorile modificate sau proprietarii reasociați invalidează sigiliul original.
+
+[Cititorul offline](../../atf-ui-browser/tests/review-detached-reports.mjs) consumă un manifest care acoperă fiecare producător primar din [inventar](../../config/report-producers.json). Copiază numai HTML, blochează rețeaua și verifică fila `Overview` standard, proprietarul original, ultima comparație, ultimul corp integral, imaginea încorporată și revenirea la același proprietar. Cititorul înregistrează propriul verdict al reviziei fără să schimbe PASS, FAIL, eroarea sau abandonul producătorului.
+
+- **Execuție:** director extern nou, browser explicit, executabil Java și classpath calificat; UTF-8 la granița Java/Node.
+- **Dovezi separate:** jurnalele auxiliare ori recipisele semnăturii cer scop declarat și nu substituie valori necesare auditului HTML.
+- **Istoric:** rapoartele imuabile păstrează materialul unic încă necalificat pentru eliminare.
+
 ## Limite
 
 Trecerea auditului structural nu demonstrează singură lizibilitatea sau navigarea interactivă. Verificarea publicării nu certifică o nouă execuție Android sau puterea politicii jocului.

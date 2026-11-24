@@ -77,7 +77,7 @@ Descriptorul separă datele capturate la execuție de cele verificate la revizia
 
 - **Istoric:** rapoartele native produse înaintea acestei încorporări păstrează anexele unice; schimbarea publicatorului nu le actualizează retrospectiv.
 - **Moment:** hash-ul și corpul text provin din aceeași citire la publicare; acest moment rămâne distinct de execuția Android și de revizia ulterioară.
-- **Închidere:** [criteriul de consolidare](../feedback/ATF_Reporting.md#rpt-android-html-only--livrabilul-de-audit-fără-copii-auxiliare) cere calificarea inventarului și a asocierilor fiecărui producător înaintea eliminării dovezii unice.
+- **Admitere:** [contractul auditului](ATF_Audit.md) cere calificarea inventarului, octeților și asocierilor fiecărui producător înaintea eliminării dovezii unice.
 
 ## Implementări și limite
 

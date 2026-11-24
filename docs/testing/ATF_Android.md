@@ -39,6 +39,26 @@ Scenariul identifică aplicația și starea inițială înaintea acțiunilor. Re
 
 [run-whist-ai-validation.ps1](../../scripts/run-whist-ai-validation.ps1) este un orchestrator separat de construire, componente și integrare, cu opțiuni proprii de dispozitiv. Folosirea lui se decide după selecția efectivă din script; acceptanța UI și promovarea strategică păstrează criterii distincte.
 
+## Recuperarea stocării
+
+Citirea checkpoint-ului distinge absența de corupere. JSON-ul invalid, tipul greșit al preferinței sau XML-ul ilizibil produc o eroare explicită de citire și păstrează octeții stocați.
+
+- Aplicația explică păstrarea în limba selectată; deschiderea ori închiderea meniului nu trebuie să șteargă checkpoint-ul eșuat.
+- Erorile clasamentului păstrează de asemenea fișierul original, fără înlocuire cu înregistrări demonstrative.
+
+| Strat | Responsabilitate |
+|---|---|
+| Componente JVM | Documente de preferințe goale și invalide, erori de tip ale furnizorului, cauze originale, valori Unicode și mesaje localizate. |
+| Componente native | `SharedPreferences` și `AtomicFile` reale: copii confirmate, scrieri întrerupte, proces nou, recuperarea exactă a stării și identității, octeți corupți și notificarea de eroare RO/EN a aplicației. |
+| Restaurarea gazdei | Rezervare exclusivă, utilizator Android izolat, hash-ul pachetului original, eliminarea utilizatorului și restaurarea binarului APK original. |
+
+Construiți APK-ul de instrumentare cu `-Patf.nativeRunner=ro.whistlab.app.persistence.nativecomponent.StorageRecoveryInstrumentation`; implicit rămâne runnerul componentelor istoricului. Rulați [launcherul stocării native](../../scripts/run-native-storage-components.ps1) cu un `RunRoot` extern nou, `ApkPath`, `TestApkPath` și `OriginalApkPath`. APK-ul original trebuie să corespundă binarului instalat înaintea pregătirii; Android partajează codul pachetelor între utilizatori, deci simpla eliminare a utilizatorului temporar nu restaurează binarul.
+
+[Planul fazelor](../../config/native-storage-components.json) definește inventarul ordonat al cazurilor. Fiecare fază înregistrează intrările reale, valorile așteptate și observate; verificatorul refuză omisiuni, faze străine și verdicte contradictorii.
+
+- Componentele nu au capturi.
+- APK-ul de validare a surselor și rezultatele native rămân distincte de calificarea release-ului publicat, acceptanța afișajului și latența checkpoint-ului.
+
 ## E2E-ul Whist Lab
 
 | Runner | Mecanism |

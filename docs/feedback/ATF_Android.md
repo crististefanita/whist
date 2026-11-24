@@ -50,7 +50,6 @@ Pentru Realizări, componenta prezentării redeschide progresul din stocare simu
 
 | Prioritate | Lacună și sursă | Nivel și criteriu de închidere |
 |---|---|---|
-| P1 | Recuperarea stocării Android: checkpoint-ul `SharedPreferences` și clasamentul `AtomicFile` nu au acceptanță nativă după corupere sau întrerupere. | Android pe APK identificat: întrerupere controlată, recuperare sau eroare explicită, datele utilizatorului păstrate; componentele serializării și porturile de stocare rămân verificări separate. |
 | P2 | Latența checkpoint-ului sincron nu este calificată pe dispozitiv; ordinea componentelor nu certifică reactivitatea. | Mediu și stare identificate, costul scrierii separat de calculul AI și randare; păstrați ordinea și cauza erorii înaintea unei eventuale mutări a I/O între executori. |
 
 ## Calificarea modificărilor vizuale

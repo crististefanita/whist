@@ -10,15 +10,6 @@ Consumatorul deține înregistrările jocului, selecția, oracolul și indexarea
 
 - [ ] După livrarea capabilității comune, calificați adaptorul real și raportul produs cu biblioteca efectiv consumată. Verificați proprietarul capturii, inventarul expected/actual și refuzul la eliminarea capturii declarate.
 
-## RPT-ANDROID-HTML-ONLY — livrabilul de audit fără copii auxiliare
-
-**P1 · responsabil adaptor Android.** Pentru fiecare producător modificat, inventariați corpurile și observațiile obligatorii. Dosarele de componente au deja HTML per selecție, imagini inline și proveniență. Criteriul rămas privește datele fiecărui producător, inclusiv observațiile native și datele unice istorice. [Contractul predării](../reporting/ATF_Handoff.md#livrabil-compact-și-excepții)
-
-- Confruntați inventarul, timpii și corpurile fiecărui checkpoint cu capturile originale. Injectați conținut lipsă, modificat, extern sau atribuit greșit. Verificați text lung, conținut asemănător HTML și Base64.
-- Identificați fiecare excepție externă prin fișier, scop și consumator. Păstrați datele unice până la calificarea migrării. Un crash log sau verificarea semnăturii poate avea scop separat de auditul testului.
-- Deschideți separat HTML-ul final identificat prin SHA-256, cu sursele auxiliare și rețeaua indisponibile. Verificați navigarea, ultimul rând, tabelele și revenirea de la imaginea integrală. Injectați un link XML și o imagine externă. [Contractul auditului detașat](../reporting/ATF_Audit.md#calificarea-unui-producător)
-
-Publicarea incompletă păstrează diagnosticul și materialul unic. Replay-ul istoric păstrează identitatea, timpii și verdictul original. [Guvernanța retenției](../../atf-tests/src/test/java/atf/tests/governance/documentation/release/ReleaseEvidenceRetentionGovernanceTest.java)
 
 ## Validarea timpurie a checkpoint-ului
 

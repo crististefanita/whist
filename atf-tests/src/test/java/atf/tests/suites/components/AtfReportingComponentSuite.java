@@ -17,6 +17,8 @@ import org.junit.platform.suite.api.*;
     "^atf\\.tests\\.reporting\\.GameReportPublicationContractTest$",
     "^atf\\.tests\\.reporting\\.GameReportTextAuditContractTest$",
     "^atf\\.tests\\.reporting\\.acceptance\\.NativeModuleResultsComponentTest$",
+    "^atf\\.tests\\.reporting\\.autonomy\\.StandaloneReportContractComponentTest$",
+    "^atf\\.tests\\.reporting\\.autonomy\\.DetachedReviewComponentTest$",
     "^atf\\.tests\\.reporting\\.browser\\.BrowserExtentPublicationComponentTest$",
     "^atf\\.tests\\.reporting\\.text\\.ReportTextValueMatcherTest$"
 })

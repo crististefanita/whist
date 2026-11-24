@@ -26,8 +26,6 @@ Scorul 1–100 exprimă ordinea recomandată de lucru, nu calitatea sau procentu
 
 | ID | Prioritate | Scor | ToDo rămas și criteriul scurt de închidere |
 |---|---:|---:|---|
-| RPT-01 | P1 | 95 | Verifică fiecare producător prin HTML detașat și controale negative pentru conținut lipsă, extern ori atribuit greșit. [Registru](ATF_Reporting.md#rpt-android-html-only--livrabilul-de-audit-fără-copii-auxiliare) |
-| AND-01 | P1 | 93 | Demonstrează recuperarea checkpoint-ului după corupere sau întrerupere, păstrând datele utilizatorului ori raportând eroarea explicit. [Registru](ATF_Android.md) |
 | AND-02 | P1 | 92 | Califică pe APK actorul, geometria stabilă și mâna vizibilă în licitație/joc/AutoGame pentru 3–6 locuri, RO/EN și text mărit. [Registru](ATF_Android.md) |
 | AI-01 | P1 | 91 | Calibrează inferența Hard pentru 2–8 cărți din licitații și cărți jucate pe loturi noi; separă exactitatea probabilităților de scorul simulat. [Registru](ATF_Ai.md) |
 | RAG-29 | P1 | 90 | Calificați contextul explicit sursă/catalog la următoarea promovare completă și reluare după publicare; identitatea și refuzurile sunt implementate în componente. [Registru](ATF_Governance.md#framework-selection-boundaries) |
