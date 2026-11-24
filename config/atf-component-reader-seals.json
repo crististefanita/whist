@@ -5,7 +5,7 @@
     "atf-test-android/src/main/java/atf/android/evidence/AndroidScreenshotEvidence.java": "21c443eca1dc4f397c63abf7a5f7efb6be3ebff1571d853c784ab63b681fa0be",
     "atf-test-android/src/main/java/atf/android/evidence/component/AndroidComponentPublication.java": "fd387d7a7e305bc6770985fc1e7e03ed81033c2ef9a3e4abae129158b89f4a53",
     "atf-test-android/src/main/java/atf/android/evidence/component/AndroidComponentReports.java": "6b15e4baf83ef874ffe2c7641704a73328332c971ed12d5ecc822ea5cc5375b5",
-    "atf-test-android/src/main/java/atf/android/evidence/component/AndroidComponentRun.java": "03de8dd8e89f4e3bcc6e669a8a89741284af0e8963a5714834cc0e8573b98a94",
+    "atf-test-android/src/main/java/atf/android/evidence/component/AndroidComponentRun.java": "47ed9f78c59d81993c6215247c13684de60b02208a9851ad7809ef8b98798a48",
     "atf-test-android/src/main/java/atf/android/evidence/component/publication/ComponentReportPublication.java": "afea6ae742ae6e85cb03f696b9ae5251a97b4ca87a2303ae2f858c1330a853e8",
     "atf-test-android/src/main/java/atf/android/evidence/component/snapshot/ComponentCaptureJournal.java": "070dab646a2c33144fc7ff381179ba6596d8ddc2f9e6d26cebce6db91c118cb1",
     "atf-test-android/src/main/java/atf/android/evidence/flow/UiSanityPlan.java": "625c6ce207c43ed411f785f18285afb93c3d7fb39a4c5395e7118bfddb54792b",

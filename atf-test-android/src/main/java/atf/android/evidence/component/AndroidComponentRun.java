@@ -109,7 +109,7 @@ public final class AndroidComponentRun implements AutoCloseable {
         try (AtfReportPorts.Session session = fallback ? new HtmlReportSession(staged, settings)
                 : new ExtentReportSession(staged, settings, redactor, AtfConsoleSink.noOp(), environment)) {
             for (var invocation : invocations) scenarios.add(publish(session, invocation));
-        }
+        } finally { invocations.clear(); }
         if (!scenarios.isEmpty()) {
             expectedProfile = new atf.reporting.artifact.ReportArtifactProfile(fallback
                     ? atf.reporting.artifact.ReportArtifactProfile.Renderer.FALLBACK
