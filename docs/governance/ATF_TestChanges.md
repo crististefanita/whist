@@ -162,9 +162,15 @@ Use a new external run directory and the original run as `-ResumeFrom`, together
 .\scripts\run-component-suites.ps1 -TestChangeControl $control -TestChangeBaseRef $reviewBase -ResumeFrom $previousRun -RunRoot $newRun
 ```
 
-The [static proof executor](../../atf-tests/src/test/java/atf/tests/execution/proofs/StaticProofRun.java) checkpoints registration and outcomes through the shared neutral-capture ports. Recovery additionally requires the same control ID, Git base, commit, raw diff, positive/negative selectors, sealed compiled output, classpath and JVM/tool identity. Current compiled discovery must match the original static invocation population exactly.
-
-Only failed or missing bodies run again. Original passing comparisons and phase timing are republished with their original checkpoint/report hashes; a failed retry remains failed. Altered captures, foreign or missing identities and failed owner containers cannot authorize a proof. Final publication still requires complete Extent reconciliation, source/diff rechecking and the launcher's pending-proof promotion.
+| Boundary | Recovery contract |
+|---|---|
+| Checkpoint | The [static proof executor](../../atf-tests/src/test/java/atf/tests/execution/proofs/StaticProofRun.java) records registration and outcomes through the shared neutral-capture ports. |
+| Identity | Require the same control ID, Git base, commit, raw diff, positive/negative selectors, sealed compiled output, classpath and JVM/tool identity. |
+| Discovery | Current compiled discovery must match the original static invocation population exactly. |
+| Selection | Execute only failed or missing bodies. |
+| Original evidence | Republish original passing comparisons and phase timing with their original checkpoint/report hashes; a failed retry remains failed. |
+| Rejection | Altered captures, foreign or missing identities and failed owner containers cannot authorize a proof. |
+| Publication | Require complete Extent reconciliation, source/diff rechecking and the launcher's pending-proof promotion. |
 
 [Controlled recovery components](../../atf-tests/src/test/java/atf/tests/execution/proofs/StaticProofRecoveryComponentTest.java) count actual child-JVM body executions, inject process interruption and tamper with evidence. These are offline components without screenshots; their fixtures are not application E2E acceptance.
 
