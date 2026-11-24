@@ -25,10 +25,12 @@ The [Gradle component guide](../testing/ATF_GradleComponents.md#bounded-matrix-i
 
 **P1 · library owner: HTML publication and verification; consumer: input size.** Passing JUnit tests do not guarantee a canonical report when navigation injection or DOM verification exhausts the heap. Publication failure must preserve test outcomes and must never qualify partial HTML.
 
-- [ ] Measure the peak memory separately for initial rendering, injection of navigation and report verification, depending on the number of comparisons, bodies and inline captures.
-- [ ] Avoid repeated full copies of the document at the publication and verification stages; each step shall be capable of processing a large valid report below the declared limit of the heap.
-- [ ] Qualify the limits with small, medium and large synthetic reports, including repeated payloads and inline images. Check the identities of Junit-HTML, all mandatory captures and bytes after publication.
-- [ ] Upon crossing an explicit limit, issue a localized diagnosis identifying the stage and keeping JUnit's result and available evidence; do not let an exception of heap turn into an ambiguous lack of file.
+- [ ] Expose independent rendering and navigation peak measurements in the library. Consumer receipts currently observe their combined boundary; cumulative pool peaks cannot substitute isolated phase peaks.
+- [ ] Reduce repeated full-document copies inside generic rendering and DOM verification. Streaming consumer seals avoid an extra local copy but do not establish the library's allocation behavior.
+- [ ] Extend the declared resource envelope across comparison, body and capture volume independently. The bounded synthetic profile verifies complete values and PNG bytes; it does not qualify every report below the artifact-size guard.
+- [ ] Qualify real heap exhaustion and abrupt process termination while retaining original JUnit and the last started stage. Controlled errors and rejected byte limits establish transaction safety, not recovery from every process failure.
+
+[Verified component publication](../reporting/ATF_Audit.md#verified-component-publication) owns private staging, pre-promotion inspection, atomic replacement and original-cause diagnostics. Keep those regression boundaries active; the remaining criteria concern native resource behavior and library allocation.
 
 Both producer and verifier need qualification. Increasing one process's heap limit does not close the criterion or prove that the report is publishable in the standard environment.
 

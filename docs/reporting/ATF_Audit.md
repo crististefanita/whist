@@ -199,7 +199,7 @@ Passing structural checks alone does not prove readability or interactive naviga
 
 ### Verified component publication
 
-`ComponentReportPublication` owns the consumer transaction. Rendering and J24 finalization write a private candidate; the authored scenario profile and mandatory values are verified before atomic promotion. A failed render, inspection, size guard or changed candidate preserves the previous canonical HTML.
+`ComponentReportPublication` owns the consumer transaction. Rendering and Reporting finalization write a private candidate; the authored scenario profile and mandatory values are verified before atomic promotion. A failed render, inspection, size guard or changed candidate preserves the previous canonical HTML.
 
 ```mermaid
 flowchart LR
@@ -218,24 +218,24 @@ Publication never rewrites JUnit results or converts a failed comparison into PA
 
 | Receipt stage | Meaning |
 |---|---|
-| `RENDER_AND_FINALIZE` | The pinned J24 session renders and injects navigation internally; the consumer cannot measure these two operations independently. |
+| `RENDER_AND_FINALIZE` | The pinned Reporting session renders and injects navigation internally; the consumer cannot measure these two operations independently. |
 | `VERIFY` | Check artifact size, authored inventory and unchanged bytes. Consumer seals stream the file; they do not materialize another full HTML string. |
 | `PROMOTE` | Use the shared atomic publication coordinator after verification. |
 
-The [heap profile](../../config/report-heap-profile.json) declares child heap, timeout, comparison populations and body size. Isolated children verify small, medium and large synthetic suites, a final failed comparison, complete values across body parts and repeated inline PNG payloads. These fixtures do not count as additional JUnit invocations or product screenshots.
+- The [heap profile](../../config/report-heap-profile.json) declares child heap, timeout, comparison populations and body size. Isolated children verify small, medium and large synthetic suites, a final failed comparison, complete values across body parts and repeated inline PNG payloads. These fixtures do not count as additional JUnit invocations or product screenshots.
 
-The producer splits required text using the same body limit passed to the renderer. Fragment labels alone cannot prove complete values: an independent streaming oracle checks every original owner and suffix across fragments, and rejects preview truncation even when the inventory still matches.
+- The producer splits required text using the same body limit passed to the renderer. Fragment labels alone cannot prove complete values: an independent streaming oracle checks every original owner and suffix across fragments, and rejects preview truncation even when the inventory still matches.
 
-Receipts retain elapsed time, heap usage before/after each stage and cumulative memory-pool peak upper bounds. A cumulative upper bound is not an isolated phase peak. Failure diagnostics retain the original exception type and stage; a hard process failure leaves the last started stage for the owning runner.
+- Receipts retain elapsed time, heap usage before/after each stage and cumulative memory-pool peak upper bounds. A cumulative upper bound is not an isolated phase peak. Failure diagnostics retain the original exception type and stage; a hard process failure leaves the last started stage for the owning runner.
 
-The default artifact guard is 64 MiB and `atf.component.report-max-bytes` configures it. A byte limit is not a universal heap guarantee: DOM shape, body volume and captures remain separate input dimensions. Separate rendering/navigation peaks and generic library copy reduction require the Reporting owner; increasing heap alone does not qualify them.
+- The default artifact guard is 64 MiB and `atf.component.report-max-bytes` configures it. A byte limit is not a universal heap guarantee: DOM shape, body volume and captures remain separate input dimensions. Separate rendering/navigation peaks and generic library copy reduction require the Reporting owner; increasing heap alone does not qualify them.
 
-The Extent `Overview` keeps the standard `Reporting` dashboard. Consumer publishers must not inject screenshot galleries, game controls or custom sections into that view.
+- The Extent `Overview` keeps the standard `Reporting` dashboard. Consumer publishers must not inject screenshot galleries, game controls or custom sections into that view.
 
-Attach captured PNGs inline to their original scenario and phase through the public UI evidence API. Observation-only frames do not manufacture assertions or a new game result.
+- Attach captured PNGs inline to their original scenario and phase through the public UI evidence API. Observation-only frames do not manufacture assertions or a new game result.
 
-Comparison previews keep the standard 240-character limit; original input bodies remain complete inside the case disclosures, with body-display truncation disabled for this publisher.
+- Comparison previews keep the standard 240-character limit; original input bodies remain complete inside the case disclosures, with body-display truncation disabled for this publisher.
 
-Report narration is English: suite names, phases, evidence labels and diagnostic explanations. Original application text, localized RO/EN captures and measured values remain unchanged. Each capture retains its title and case owner; all selected comparisons and the original outcome remain available in the standalone HTML.
+- Report narration is English: suite names, phases, evidence labels and diagnostic explanations. Original application text, localized RO/EN captures and measured values remain unchanged. Each capture retains its title and case owner; all selected comparisons and the original outcome remain available in the standalone HTML.
 
-Publisher components check the standard `Overview`, English narration, the first and final case, multiple frames, complete long values and failed outcomes. Missing, external or invalid images must be rejected before a report is created. Existing sealed release evidence remains immutable; republication records the original evidence identity and the publisher revision separately.
+- Publisher components check the standard `Overview`, English narration, the first and final case, multiple frames, complete long values and failed outcomes. Missing, external or invalid images must be rejected before a report is created. Existing sealed release evidence remains immutable; republication records the original evidence identity and the publisher revision separately.

@@ -71,6 +71,6 @@ Portable models, geometry, text roles and deterministic effects belong to `card-
 
 | ID | Priority | Remaining boundary | Closure criterion |
 |---|---|---|---|
-| UI-04 | P1 | Physical renderer observations | Connect actual native fact-row, header, trump and card measurements to the neutral observation port. Reject clipping and late-owner repaint; equal portable plans cannot qualify painted fonts. Keep existing controlled DOM checks. |
+| UI-04 | P1 | Native consumer and glyph acceptance | Wire actual Whist fact-row, header, trump and card bindings into the measured observation API. Qualify font clipping, enlarged text and late-owner repaint on an identified native renderer; controlled API responses and equal portable plans cannot certify painted glyphs. |
 
-The source adapter and neutral measured-content oracle are under qualification. Controlled Android API responses remain distinct from native glyph and consumer acceptance; do not close the latter using policy geometry or mocks.
+[Measured renderer observations](../testing/ATF_DisplayComponents.md#measured-renderer-observations) owns the native API, epoch guard and independent content oracle. Controlled API fixtures check clipping and stale-owner refusals; the remaining criterion requires actual consumer bindings and native font observations.
