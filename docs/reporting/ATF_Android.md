@@ -71,7 +71,8 @@ Tabelul de acțiuni păstrează operația expediată, ținta semantică, aștept
 
 Trace-ul live capturează o singură dată setările publice Reporting. Admiterea checkpoint-ului și publicarea folosesc aceeași politică de previzualizare a aserțiunilor: o valoare expected sau actual prea lungă este refuzată înaintea scrierii jurnalului ori transferului acțiunilor, cu numele aserțiunii, câmpul, limita și lungimea măsurată în unități UTF-16. Valorile originale rămân intacte; diagnosticele complete aparțin corpurilor observațiilor, nu sumarelor trunchiate ale comparațiilor.
 
-Reluarea istorică nu inventează setări originale: aplică politica efectivă de publicare și păstrează comparațiile originale. Publicatorul verifică independent aceste înregistrări înaintea creării HTML-ului. Un sumar încadrat în limită poate fi reîncercat fără pierderea ori dublarea acțiunilor în așteptare.
+- Reluarea istorică nu inventează setări originale: aplică politica efectivă de publicare și păstrează comparațiile originale.
+- Publicatorul verifică independent aceste înregistrări înaintea creării HTML-ului. Un sumar încadrat în limită poate fi reîncercat fără pierderea ori dublarea acțiunilor în așteptare.
 
 Unitarele verifică formatul, stările și câmpurile Unicode fără Extent. Componentele verifică refuzurile, scrierea întreruptă, reluarea și publicarea fără dispozitiv; nu califică pixelii Android.
 

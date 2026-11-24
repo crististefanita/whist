@@ -3244,7 +3244,7 @@ testChanges:
     status: VERIFIED
     base: 47c07656cf806c6696467a8ba83c8fca4b4dbe1a
     expires: 2026-12-24
-    reason: Share command and supporting action roles between menus, setup and score; preserve dispatch, complete labels and touch targets. Admit checkpoint summaries with the captured public Reporting policy before journal or action ownership changes; reject legacy overflow at publication and retain original Unicode values and retry semantics.
+    reason: Unificați rolurile comenzilor și acțiunilor secundare între meniuri, setări și scor; păstrați comenzile, etichetele complete și zonele de apăsare. Admiteți sumarele checkpoint-urilor prin politica publică Reporting capturată înaintea schimbării jurnalului ori proprietarului acțiunilor; refuzați depășirile istorice la publicare și păstrați valorile Unicode originale și semantica reîncercării.
     proof: "mvn -o -pl atf-tests -am -Dtest=SharedMenuHistoryComponentTest,SharedPresentationComponentTest,AndroidUiFlowTraceTest,AndroidUiFlowReportPublisherTest,AndroidUiFlowCheckpointComponentTest,AtfSourceQualityGovernanceTest,PackageCohesionGovernanceTest,TestLayerGovernanceTest,SuiteOwnershipGovernanceTest,AtfCollectionOwnershipComponentTest -Dsurefire.failIfNoSpecifiedTests=false test"
     checks:
       positive:

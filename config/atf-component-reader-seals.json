@@ -119,7 +119,7 @@
     "atf-test-android/src/test/java/atf/android/e2e/support/AndroidUiFlowTimingComponentSuite.java": "c51145d0c515e0ad1c07329628761219b44ee4a4439be8cd108ba39283800cd6",
     "atf-test-android/src/test/java/atf/android/e2e/support/AndroidUiFlowTimingComponentTest.java": "253c127385474af393c65cd837ead2749fc433d5e1fce456e3de54902c6a4ad2",
     "atf-test-android/src/test/java/atf/android/e2e/support/AndroidUiFlowTrace.java": "ca1b653a76f7c557f3d541c82f7dd1118a35f2ee717714efa1c775e3ad470fee",
-    "atf-test-android/src/test/java/atf/android/e2e/support/AndroidUiFlowTraceTest.java": "1e963899d32eb42047b92439d835404a2f70e6fd722facea2f59d01202e6b242",
+    "atf-test-android/src/test/java/atf/android/e2e/support/AndroidUiFlowTraceTest.java": "092757a5bdeb48bfaf2931b307e7fc05434be9cd50fdf15403578ea968c4694c",
     "atf-test-android/src/test/java/atf/android/e2e/support/flow/AndroidUiFlowEvidence.java": "ea174620d63445680903eb16185af6fca57ea6bff3739a826fd707c06a45ff28",
     "atf-test-android/src/test/java/atf/android/e2e/support/flow/UiFlowCheckpoint.java": "67cae90ea5bf6b2f39070c79de1ac74958292d2480fcc83c08a1dc19987dc803",
     "atf-test-android/src/test/java/atf/android/e2e/support/flow/WhistLabScenario.java": "e0ecc0415d00e678c1253afa322c8632affb37e312031353293b773d2ad6d97e",
