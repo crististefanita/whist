@@ -78,14 +78,6 @@ LangGraph oferă noduri explicite, stare partajată și limite de checkpoint, da
 | P2 | Metadatele calificării ajung la unele diagnostice numai după pregătirea snapshot-ului. | Validați inventarul E2E al dosarului activ, linkurile catalogului și limitele editoriale printr-o verificare ieftină a metadatelor, înaintea colecției lungi. Păstrați dovezile eșuate și demonstrați că o reverificare focalizată nu poate califica un grup primar eșuat; acest criteriu este distinct de admiterea probelor de control al sursei. |
 
 
-<a id="source-bound-proof-recovery"></a>
-
-## Recuperarea probelor legate de sursă
-
-| Prioritate | Lacună și responsabil | Criteriu de închidere |
-|---|---|---|
-| P1 | [Execuția probelor testChanges](../../atf-tests/src/test/java/atf/tests/execution/components/TestChangeProofExecution.java) reia întregul control declarat după o singură invocare eșuată; recuperarea responsabililor primari de componente nu acoperă încă acest runner de probe. | Salvați checkpoint-ul fiecărei invocări statice și reutilizați comparațiile originale reușite numai pentru aceeași sursă, bază, ID de control, selecție, octeți compilați și toolchain. Reluați invocările eșuate ori lipsă; refuzați capturile alterate și identitățile străine. Confruntați populația completă Extent finală cu proba și păstrați încercările originale eșuate fără slăbirea limitelor de protecție. Măsurați separat planificarea/descoperirea, corpurile testelor și publicarea. |
-
 <a id="framework-selection-boundaries"></a>
 
 ## Limitele selecției ATF

@@ -3396,3 +3396,25 @@ testChanges:
 ```
 
 </details>
+
+<details>
+<summary>Identitatea release-ului pentru îmbunătățirea calificată a procesului</summary>
+
+```yaml
+testChanges:
+  - id: RELEASE-0-25-0-IDENTITY
+    status: VERIFIED
+    base: d8f48628e19533ea466a5a9001d5072aac2b7987
+    expires: 2026-12-24
+    reason: Avansează metadatele versiunii Android după calificarea recuperării probelor statice, fără schimbarea execuției aplicației. Păstrează verificările independente ale incrementului după risc și identitatea release-ului legată de sursă.
+    proof: "mvn -o -pl atf-tests -am -Dtest=ReleaseVersionComponentTest -Dsurefire.failIfNoSpecifiedTests=false test"
+    checks:
+      positive:
+        - atf.tests.governance.documentation.release.versioning.ReleaseVersionComponentTest#theApplicationUsesTheDeclaredPatchReleaseConvention
+      negative:
+        - atf.tests.governance.documentation.release.versioning.ReleaseVersionComponentTest#aChangeRiskCannotClaimAnIncorrectVersionIncrement
+    paths:
+      - whist-lab-app/app/build.gradle
+```
+
+</details>
