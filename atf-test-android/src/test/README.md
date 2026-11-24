@@ -40,6 +40,6 @@ Folosiți [intrările izolate ale modulului](../../README.md#verificare-fără-d
 
 - **Audit:** [AndroidComponentAudit](java/atf/android/component/AndroidComponentAudit.java) leagă invocarea de Kit. [Contractele adaptorului](java/atf/android/component/AndroidComponentReportContractTest.java) verifică publicarea și refuzurile; eșecurile intenționate sunt delimitate de rezultatul produsului.
 
-- **Rezultat:** JUnit identifică execuția, iar HTML-ul auditat păstrează inputul, expected/actual și verdictul. [Criteriul agregării](../../../docs/feedback/ATF_Reporting.md#rpt-android-component-html--comparații-capturate-nu-doar-junit-xml) rămâne distinct de trecerea JUnit.
+- **Rezultat:** JUnit identifică execuția, iar HTML-ul auditat păstrează inputul, expected/actual și verdictul. [Calificarea producătorilor](../../../docs/reporting/ATF_Audit.md#inventarul-guvernat-al-producătorilor) rămâne distinct de trecerea JUnit.
 
 [Modulul Android](../../README.md) · [Strategia comună](../../../docs/testing/README.md) · [Auditul rapoartelor](../../../docs/reporting/ATF_Audit.md)

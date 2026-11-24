@@ -20,19 +20,6 @@ Consumatorul deține înregistrările jocului, selecția, oracolul și indexarea
 
 Publicarea incompletă păstrează diagnosticul și materialul unic. Replay-ul istoric păstrează identitatea, timpii și verdictul original. [Guvernanța retenției](../../atf-tests/src/test/java/atf/tests/governance/documentation/release/ReleaseEvidenceRetentionGovernanceTest.java)
 
-## RPT-ANDROID-COMPONENT-HTML — comparații capturate, nu doar JUnit XML
-
-**P1 · responsabil adaptor Android: calificarea fiecărui producător și a predării.** [Familiile Maven](../testing/ATF_DisplayComponents.md#familii-care-folosesc-același-audit) și [puntea Gradle](../testing/ATF_GradleComponents.md) folosesc auditul Kit și publică inputuri și comparații evaluate. Gradle păstrează intrări distincte pentru aplicație, motor, bibliotecă grafică și raster; catalogul impune clasificarea și participarea claselor la audit. Migrarea mecanismului nu recalifică execuțiile istorice și nici selecțiile neexecutate.
-
-[Suita display](../../atf-test-android/src/test/java/atf/android/suites/AndroidDisplayComponentSuite.java), inclusiv [FrameFillAuditComponentTest](../../atf-test-android/src/test/java/atf/android/e2e/display/component/FrameFillAuditComponentTest.java), capturează comparațiile la evaluare. Familiile fără adaptor păstrează populația și verdictul JUnit; valorile necapturate ale unei execuții trecute nu se reconstruiesc retrospectiv.
-
-- [ ] Identificați prin inventar producătorii care mai pot pierde o invocare sau o comparație la publicare. Proba injectează o componentă fără adaptor, o invocare parametrizată pierdută și câte un rezultat FAIL, ERROR și SKIP. Diagnosticul indică invocarea exactă și diferența dintre JUnit și HTML. [Verificatorul Gradle](../testing/ATF_GradleComponents.md)
-- [ ] Revizuiți sensul rândurilor migrate: comparațiile booleene sau de excepție au mesaje declarative când valorile nu explică invariantul. Numele metodei ori linia Java nu substituie sensul fiecărei comparații în HTML; [contractul citirii](../reporting/ATF_Audit.md#citirea-unui-raport) deține regula.
-
-**Închidere:** o comparație trecută și una negativă controlată sunt auditabile exclusiv din HTML, cu ultima valoare și ownerul corect; un caz fără comparații capturate este explicit necalificat.
-
-[Publicarea ownerului](../../atf-test-android/src/main/java/atf/android/evidence/component/AndroidComponentRun.java) este amânată până la închiderea scope-ului și păstrează separat duratele originale. Costul memoriei la selecții mari și integrarea Jupiter paralelă cer calificare proprie înaintea extinderii; pilotul de istoric nu închide automat aceste frontiere.
-
 ## Validarea timpurie a checkpoint-ului
 
 | Prioritate | Lacună și sursă | Nivel și criteriu de închidere |
@@ -81,14 +68,3 @@ Măsurarea justifică investigarea reducerii redundanței; nu dovedește că toa
 - [Contractul Android](../reporting/ATF_Android.md) deține asocierea acțiune–observație–comparație și distincția dintre rezultatul funcțional și publicare.
 
 [Contractul Android](../reporting/ATF_Android.md) · [Auditul publicării](../reporting/ATF_Audit.md) · [Retenție](../learning/ATF_Retention.md)
-
-## Calificarea rămasă a producătorilor
-
-[Contractul checkpoint-ului](../reporting/ATF_Android.md#checkpoint-transaction) păstrează acum acțiunile și cauza originală la intrări respinse, scriere neconfirmată, reluare și eroare de temporizare după confirmare. Aceste limite aparțin jurnalului și publicatorului Android; ceilalți producători și acceptarea observațiilor native își păstrează criteriile de închidere.
-
-| Domeniu rămas | Criteriu de închidere |
-|---|---|
-| Structura HTML | Fila standard `Overview` și narațiune în engleză; dovezile aplicației rămân în limba originală. |
-| Cadre și proprietate | PNG-uri încorporate la cazul proprietar; refuz explicit pentru cadre lipsă sau atribuite greșit. |
-| Flux ilustrat | Checkpoint-uri înainte/după ordonate, comparații explicite și ultimul pas verificabil în HTML autonom; refuz pentru date incomplete ori contradictorii. |
-| Limita acceptării | Calificarea publicatorului pentru navigator nu califică alți producători sau ediții istorice; [contractul publicării](../reporting/ATF_Audit.md#calificarea-unui-producător) păstrează aceste limite. |

@@ -64,16 +64,3 @@ Modelele portabile, geometria, rolurile textului și efectele deterministe apar�
 | ID | Prioritate | Graniță rămasă | Criteriu de închidere |
 |---|---|---|---|
 | UI-04 | P1 | Observații ale rendererului fizic | Conectați măsurătorile native reale ale rândurilor, antetului, atuului și cărților la portul neutru de observații. Respingeți tăierea și redesenarea întârziată de un proprietar vechi; planurile portabile egale nu califică fonturile desenate. Păstrați verificările DOM controlate existente. |
-| TEST-04 | P1 | Orchestrarea parcursurilor scurte pe ambele platforme | Refolosiți o identitate de scenariu și un plan semantic de comenzi prin drivere APK/Web și aplicați bugetul declarat de capturi publicatorului APK. Admiterea și publicarea Web impun deja două mâini/patru capturi normale; limita nativă de mâini este impusă separat. |
-
-## E2E minim și livrare pe suite
-
-<a id="ui-minimal-e2e-plan"></a>
-
-- Păstrați combinațiile de rezoluție, text, mâini legale, actori și câștigători în suite de componentă fără poze. Seturile unitare nu publică Extent; componentele păstrează precondițiile și aserțiunile evaluate.
-- E2E verifică tranzițiile esențiale între ferestre la un viewport lizibil, cel mult două mâini și puține capturi inline asociate checkpointurilor. Selectați mâini scurte legale sau un checkpoint aproape de final validat în componente; fără ecran final injectat.
-- Păstrați primul eșec și cauza lui originală. Reporting rămâne rendererul rezultatelor capturate; această lucrare schimbă intrările producătorului și organizarea suitelor.
-- Păstrați HTML-ul suitelor curente și navigarea README relativă în `release/WEB/`. Dovezile refolosite păstrează sursa, identitatea artefactului și verdictul; referințele nu devin acceptanță nativă curentă.
-- Împachetați și distribuiți numai după acceptanța Whist. UIX01–UIX06 păstrează propriile condiții de închidere pentru nativ și consumatori; nu le deduceți din compilarea sursei.
-
-[Proprietatea componentelor](../../whist-lab-app/card-table-core/README.md) · [Continuitate comună](../testing/ATF_TableContinuity.md) · [Dovezi curente](../../release/WEB/README.md)

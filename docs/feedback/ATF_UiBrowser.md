@@ -4,7 +4,7 @@
 
 [Documentația adaptorului](../../atf-ui-browser/README.md) explică parcursul APK, JAR și Pages. Registrul urmărește comparația pe același dispozitiv Android.
 
-[Planul comun în trei module](ATF_CardUi_Extraction.md#ui-three-module-plan) deține extragerea și matricea principală de afișaj. E2E selectează numai navigarea și tranzițiile esențiale, cu cel mult două mâini per joc; `TEST-04` rămâne deschis pentru impunerea mecanică a limitei.
+[Planul comun în trei module](ATF_CardUi_Extraction.md#ui-three-module-plan) deține extragerea și matricea principală de afișaj. [Contractul sanity pereche](../testing/ATF_TableContinuity.md#rolurile-sanity-pereche) guvernează tranzițiile esențiale, rolurile ordonate și bugetele capturilor; acceptanța afișajului pe același dispozitiv rămâne separată.
 
 ## Calificarea pe același dispozitiv
 
