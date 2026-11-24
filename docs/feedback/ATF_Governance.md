@@ -17,9 +17,7 @@ Proiectul deține perimetrul Android și adaptarea verificatoarelor. Contractul 
 
 [Guvernanța calității](../governance/README.md) · [Bune practici documentare](../governance/ATF_Documentation.md)
 
-| ID | Graniță rămasă | Criteriu de închidere |
-|---|---|---|
-| GOV-06 | [BrowserUi](../../atf-ui-browser/tests/BrowserUi.java) încă reunește ciclul de viață al browserului, conducerea scenariilor și emiterea rezultatelor; găzduirea statică are propriul colaborator testat. | Separați responsabilitățile rămase, păstrând ID-urile scenariilor, identitatea sursei, curățarea profilurilor proprii și ieșirea Extent standard în engleză. Separați componentele de ciclu de viață/erori de fluxurile jocului și comparați inventarul cazurilor selectate înainte și după extragere; nicio acoperire nu poate fi eliminată. |
+[Indexul testelor browser](../../atf-ui-browser/tests/README.md#granițele-runnerului-de-diagnostic) deține granițele selecției, ciclului de viață, scenariilor și rezultatelor. Componentele cu mock păstrează identitățile cazurilor, proprietatea resurselor și cauzele erorilor; parcursul scurt randat rămâne separat.
 
 ## Calificarea afirmațiilor și lansatoarelor
 
@@ -28,7 +26,7 @@ Legarea dovezilor de sursa calificată este verificată de [regresiile evaluator
 | Prioritate | Responsabil și lacună | Nivel și criteriu de închidere |
 |---|---|---|
 | P2 | Coordonarea: lansatoarele verifică precondițiile în moduri diferite. | Componente controlate pentru Java, Maven, Gradle, Node și Python: capabilitățile cerute intrării sunt verificate înaintea operației costisitoare, iar lipsa lor produce diagnostic și identitate de sursă explicite. Pentru Python, detectați aliasul de instalare separat de un interpretor executabil; pentru [modulul PowerShell ADB](../../atf-test-android/tools/AndroidDeviceSetup.psm1), verificați disponibilitatea, refuzul, timeout-ul și starea transportului cu proces controlat, separat de parsare și de clientul Java. |
-| P2 | Costul calificării: pregătirea snapshot-urilor sursei și release-ului încă recopiază și recalculează hash-uri pentru rapoartele păstrate. | Reduceți munca repetată a snapshot-ului fără slăbirea admiterii intrărilor. [Contractele implementate de compilare și recuperare după curățare](../testing/ATF_Collections.md#reutilizarea-compilării-maven) sunt limite de regresie, nu sarcini de implementare deschise. Măsurați inventarul sursei/release-ului și copierea separat de compilare și execuție; confruntați duratele etapelor cu timpul total înainte de alte afirmații de accelerare. Cronometrați explicit verificarea snapshot-ului după compilare și înainte de sigilarea ieșirilor, fără a o lăsa între etapele numite. |
+| P2 | Costul calificării: pregătirea snapshot-urilor sursei și release-ului încă recopiază și recalculează hash-uri pentru rapoartele păstrate. | Reduceți munca repetată a snapshot-ului fără slăbirea admiterii intrărilor. [Contractele implementate de compilare și recuperare după curățare](../testing/ATF_Collections.md#reutilizarea-compilării-maven) sunt limite de regresie, nu sarcini de implementare deschise. Măsurați inventarul sursei/release-ului și copierea separat de compilare și execuție; confruntați duratele etapelor cu timpul total înainte de alte afirmații de accelerare. Folosiți etapa numită a verificării snapshot-ului după compilare când comparați costurile pregătirii și sigilării. |
 | P1 | Reluarea testelor eșuate este doar la nivel de selecție: o singură invocare JUnit eșuată invalidează receipt-ul întregului grup responsabil, deci testele-surori deja trecute nu pot fi reutilizate în siguranță. | Păstrați fiecare ID unic JUnit, rezultat și legătura la sursă/proveniență. La reluare executați doar identitățile eșuate sau incomplete, apoi publicați o reconciliere Extent care leagă raportul inițial de cel al reluării. Respingeți identități lipsă, duplicate, străine sau cu sursă schimbată și orice reluare eșuată; nu promovați prin editarea raportului original. |
 
 [Retenția copiilor inline](../../atf-tests/src/test/java/atf/tests/governance/documentation/release/ReleaseEvidenceRetentionGovernanceTest.java) verifică separat lipsa PNG-urilor identice lângă HTML. Această gardă nu dovedește autonomia datelor, lizibilitatea imaginilor sau integritatea APK-ului; [criteriul adaptorului](../reporting/ATF_Audit.md) rămâne distinct.
@@ -108,13 +106,3 @@ Evaluatorul aplică acum aceeași regulă de admitere a raportării înainte de 
 - Modul XML-only, valorile necunoscute, declarația modernă absentă sau formatele amestecate blochează verdictul. JUnit XML rămâne o dovadă temporară, nu raportul canonic.
 
 Politica se află în `config/release-platform-rag-policy.json`, admiterea este aplicată de `atf-tests/tools/evaluate-release-rag.mjs`, iar testele de componentă aparțin claselor `ReleaseRagProvenanceComponentTest` și `ReleaseRagPlatformGovernanceTest`.
-
-## Compatibilitatea pointerului compilării
-
-Runnerul componentelor emite un pointer schema 2 cu context calificat al surselor și catalogului, dar cititorul compilării împrumutate acceptă momentan numai schema 1. Refuzul este sigur, însă provoacă recompilare evitabilă chiar când există o recipisă validă a compilării.
-
-- [ ] RAG-30: admiteți pointerul curent printr-un contract comun; păstrați contextul, identitatea compilării, classpath-ul, hash-urile ieșirilor și proprietatea exclusivă înainte de reutilizare.
-- [ ] Acoperiți explicit schema 2 validă și intrarea veche; refuzați contextul lipsă ori străin, octeții modificați și classpath-ul incomplet prin componente cu mock.
-- [ ] Înregistrați motivul refuzului reutilizării în măsurarea etapelor. Demonstrați reutilizarea pe intrări de compilare neschimbate și reconstruirea la schimbare, fără relaxarea admiterii snapshot-ului.
-
-[Producătorul pointerului](../../scripts/run-component-suites.ps1) · [Cititorul compilării împrumutate](../../scripts/AtfComponentMavenReuse.ps1)
