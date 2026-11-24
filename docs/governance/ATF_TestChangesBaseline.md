@@ -3621,6 +3621,7 @@ testChanges:
         - atf.tests.reporting.acceptance.ComponentPublicationComponentTest#failedVerificationLimitsAndOriginalErrorsPreserveThePreviousReportAndJUnit
         - atf.tests.governance.suites.SuiteOwnershipGovernanceTest#newOmittedClassOverlapWrongLayerAndHiddenSelectionAreRejected
     paths:
+      - atf-tests/src/test/java/atf/tests/governance/source/language/SourceLanguageGovernanceTest.java
       - config/report-producers.json
       - atf-test-android/src/main/java/atf/android/evidence/component/AndroidComponentRun.java
       - atf-test-android/src/main/java/atf/android/evidence/component/publication/ComponentReportPublication.java

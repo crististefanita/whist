@@ -224,6 +224,8 @@ Publication never rewrites JUnit results or converts a failed comparison into PA
 
 The [heap profile](../../config/report-heap-profile.json) declares child heap, timeout, comparison populations and body size. Isolated children verify small, medium and large synthetic suites, a final failed comparison, complete values across body parts and repeated inline PNG payloads. These fixtures do not count as additional JUnit invocations or product screenshots.
 
+The producer splits required text using the same body limit passed to the renderer. Fragment labels alone cannot prove complete values: an independent streaming oracle checks every original owner and suffix across fragments, and rejects preview truncation even when the inventory still matches.
+
 Receipts retain elapsed time, heap usage before/after each stage and cumulative memory-pool peak upper bounds. A cumulative upper bound is not an isolated phase peak. Failure diagnostics retain the original exception type and stage; a hard process failure leaves the last started stage for the owning runner.
 
 The default artifact guard is 64 MiB and `atf.component.report-max-bytes` configures it. A byte limit is not a universal heap guarantee: DOM shape, body volume and captures remain separate input dimensions. Separate rendering/navigation peaks and generic library copy reduction require the Reporting owner; increasing heap alone does not qualify them.

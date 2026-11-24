@@ -15,10 +15,15 @@ import static atf.testkit.assertions.AuditedAssertions.*;
 @AtfComponentTest @ExtendWith(GameReportAudit.class)
 class ReportHeapComponentTest {
     @TempDir Path root;
+    static atf.reporting.contract.AtfReportPorts.Session openFixtureRenderer(Path report,
+            atf.reporting.configuration.ReportingSettings settings) {
+        return new atf.reporting.extent.session.ExtentReportSession(report,settings);
+    }
     @Test void boundedSmallMediumAndLargeReportsKeepEveryComparisonUnderTheDeclaredHeap(ComponentInputs inputs) throws Exception {
         var json=new ObjectMapper();var source=GovernanceProject.locateProjectRoot();
         var profile=json.readTree(source.resolve("config/report-heap-profile.json").toFile());
         inputs.add("Declared resource profile",profile.toPrettyString());
+        inputs.add("Independent expected population","For each index i, the full original text is owner=i; value=x repeated valueCharacters times; final=i;. Only the final primary comparison fails deliberately. Two additional PNG-signature comparisons pass. Synthetic rows are not extra JUnit tests.");
         assertEquals("WHIST_REPORT_HEAP_QUALIFICATION",profile.path("kind").asText());
         assertEquals(3,profile.path("populations").size(),"Small, medium and large populations are all declared");
         assertTrue(profile.path("childHeapMiB").asInt()>0&&profile.path("childHeapMiB").asInt()<=768,"The profile cannot silently increase the suite heap");
@@ -34,7 +39,8 @@ class ReportHeapComponentTest {
                     System.getProperty("os.name").startsWith("Windows")?"java.exe":"java").toString();
             var process=new ProcessBuilder(java,"-Xmx"+profile.path("childHeapMiB").asInt()+"m","-XX:ActiveProcessorCount=2",
                     "-Djava.io.tmpdir="+directory,"-cp",System.getProperty("java.class.path"),BoundedReportProbe.class.getName(),
-                    directory.toString(),population.asText(),profile.path("valueCharacters").asText(),profile.path("maximumReportBytes").asText())
+                    directory.toString(),population.asText(),profile.path("valueCharacters").asText(),profile.path("maximumReportBytes").asText(),
+                    profile.path("bodyPartCharacters").asText())
                     .redirectErrorStream(true).redirectOutput(log.toFile()).start();
             boolean finished;
             try { finished=process.waitFor(profile.path("timeoutSeconds").asInt(),TimeUnit.SECONDS); }
@@ -46,6 +52,7 @@ class ReportHeapComponentTest {
             String line=original.lines().filter(value->value.startsWith("{\"status\":\"PASS\"")).reduce((left,right)->right).orElseThrow();
             var observed=json.readTree(line);assertEquals(population.asInt(),observed.path("comparisons").asInt());
             assertEquals(1,observed.path("capturedFailures").asInt(),"The final deliberate mismatch remains a failed comparison");
+            assertEquals(2,observed.path("mediaComparisons").asInt(),"Synthetic PNG validations have their own authored assertion owners");
             assertTrue(observed.path("profileParity").asBoolean(),"All authored comparison identities and body labels remain in the physical HTML");
             assertTrue(observed.path("mandatoryPngRetained").asBoolean(),"The original synthetic PNG remains inline after finalization");
             assertEquals(population.asInt(),observed.path("completeValuesVerified").asInt(),"A streaming independent oracle verifies each full original value across body parts");

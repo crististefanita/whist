@@ -87,7 +87,7 @@
       "contracts": []
     },
     {
-      "source": "atf-tests/src/test/java/atf/tests/reporting/acceptance/heap/BoundedReportProbe.java",
+      "source": "atf-tests/src/test/java/atf/tests/reporting/acceptance/heap/ReportHeapComponentTest.java",
       "role": "fixture",
       "contracts": []
     }

@@ -4,7 +4,6 @@ import atf.android.evidence.component.publication.ComponentReportPublication;
 import atf.reporting.artifact.ReportArtifactProfile;
 import atf.reporting.artifact.ReportArtifactInspector;
 import atf.reporting.contract.*;
-import atf.reporting.extent.session.ExtentReportSession;
 import atf.reporting.model.ReportObservation;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.nio.file.*;
@@ -17,10 +16,11 @@ public final class BoundedReportProbe {
         Path directory=Path.of(arguments[0]);Files.createDirectories(directory);
         int population=Integer.parseInt(arguments[1]), characters=Integer.parseInt(arguments[2]);
         long maximum=Long.parseLong(arguments[3]);Path report=directory.resolve("bounded.html");
+        var settings=new atf.reporting.configuration.ReportingSettings(240,Integer.parseInt(arguments[4]));
         String png=syntheticPng();
         var required=new ArrayList<ReportArtifactProfile.Evidence>();
         ComponentReportPublication.publish(report,maximum,staged->{
-            try(var session=new ExtentReportSession(staged)){
+            try(var session=ReportHeapComponentTest.openFixtureRenderer(staged,settings)){
                 var scenario=session.startScenario("HeapContract","controlled", "bounded-"+population,List.of("synthetic-contract"));
                     try(var phase=scenario.startPhase("TEST BODY")){
                         for(int offset=0;offset<population;offset+=64){
@@ -37,7 +37,7 @@ public final class BoundedReportProbe {
                             try(var step=phase.startAssertionStep(title)){step.assertions(rows);step.complete(end==population?AtfReportStatus.FAIL:AtfReportStatus.PASS);}
                             required.add(new ReportArtifactProfile.Assertions(title,comparisons));
                             var bodies=new ArrayList<ReportObservation.Body>();var labels=new ArrayList<String>();
-                            for(String part:atf.android.evidence.text.EvidenceTextParts.split(raw.toString(),4096)){
+                            for(String part:atf.android.evidence.text.EvidenceTextParts.split(raw.toString(),settings.bodyMaxDisplayCharacters())){
                                 String label="Full values "+offset+" / "+bodies.size();labels.add(label);
                                 bodies.add(new ReportObservation.Body(label,part,ReportObservation.Format.TEXT));
                             }
@@ -52,8 +52,11 @@ public final class BoundedReportProbe {
                                 atf.reporting.evidence.ReportScreenshotPolicy.EACH_CHECKPOINT),"Synthetic PNG retention")){
                     try(var phase=media.startPhase("Synthetic media")){
                         for(int image=0;image<2;image++)phase.uiValidationAsMedia("Synthetic payload "+image,
-                                "Controlled 3 by 2 pixel image, not an application capture",png,List.of(),List.of(),AtfReportStatus.INFO);
-                        phase.complete(AtfReportStatus.INFO);
+                                "Controlled 3 by 2 pixel image, not an application capture",png,
+                                List.of(new AtfAssertion("PNG signature "+image,"true",
+                                        Boolean.toString(atf.reporting.model.ReportScreenshot.hasPngSignature(png)),
+                                        atf.reporting.model.ReportScreenshot.hasPngSignature(png))),List.of(),AtfReportStatus.PASS);
+                        phase.complete(AtfReportStatus.PASS);
                     }media.complete(AtfReportStatus.FAIL);
                 }
             }
@@ -61,7 +64,7 @@ public final class BoundedReportProbe {
             var profile=new ReportArtifactProfile(ReportArtifactProfile.Renderer.EXTENT,List.of(
                     new ReportArtifactProfile.Scenario("HeapContract","bounded-"+population,AtfReportStatus.FAIL,List.of(
                             new ReportArtifactProfile.Phase("TEST BODY",AtfReportStatus.FAIL,required),
-                            new ReportArtifactProfile.Phase("Synthetic media",AtfReportStatus.INFO,List.of())))));
+                            new ReportArtifactProfile.Phase("Synthetic media",AtfReportStatus.PASS,mediaProfile())))));
             var result=ReportArtifactInspector.inspect(staged,profile);
             if(!result.violations().isEmpty())throw new java.io.IOException("PROFILE_PARITY: "+result.violations());
             if(!contains(staged,png))throw new java.io.IOException("MANDATORY_INLINE_PNG_MISSING");
@@ -72,8 +75,17 @@ public final class BoundedReportProbe {
         output.put("comparisons",population);output.put("capturedFailures",1);output.put("valueCharacters",characters);
         output.put("profileParity",true);output.set("publication",result);
         output.put("mandatoryPngRetained",true);
+        output.put("mediaComparisons",2);
         output.put("completeValuesVerified",population);
         System.out.println(json.writeValueAsString(output));
+    }
+    private static List<ReportArtifactProfile.Evidence> mediaProfile() {
+        var required=new ArrayList<ReportArtifactProfile.Evidence>();
+        for(int image=0;image<2;image++)required.add(new ReportArtifactProfile.HttpExchange(
+                AtfGherkinKeyword.THEN.text()+" Synthetic payload "+image,false,false,List.of(),
+                List.of(new ReportArtifactProfile.Assertions("UI validation",
+                        List.of(new ReportArtifactProfile.Comparison("PNG signature "+image,true)))),AtfReportStatus.PASS));
+        return List.copyOf(required);
     }
     private static String syntheticPng() throws Exception {
         var image=new java.awt.image.BufferedImage(3,2,java.awt.image.BufferedImage.TYPE_INT_RGB);

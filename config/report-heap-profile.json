@@ -6,5 +6,6 @@
   "maximumReportBytes": 67108864,
   "populations": [32, 256, 2048],
   "valueCharacters": 512,
+  "bodyPartCharacters": 4096,
   "diagnostic": "RENDER_AND_FINALIZE includes opaque J24 rendering and navigation; VERIFY is distinct. Cumulative pool peaks are upper bounds, not isolated per-stage peaks."
 }
