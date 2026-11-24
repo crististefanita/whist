@@ -26,6 +26,7 @@ public final class AndroidUiFlowTrace implements atf.android.e2e.support.flow.An
     private final String appPackage;
     private final List<String> tags;
     private final AndroidPhaseClock clock;
+    private final atf.reporting.configuration.ReportingSettings publicationSettings;
     private final Map<String, List<Checkpoint>> phases = new LinkedHashMap<>();
     private final List<AtfUiActionRecord> pendingActions = new ArrayList<>();
     private final List<AtfUiActionRecord> failedActions = new ArrayList<>();
@@ -44,6 +45,14 @@ public final class AndroidUiFlowTrace implements atf.android.e2e.support.flow.An
     public AndroidUiFlowTrace(Path outputDirectory, String id, String name,
             String testClass, String testPackage, String appPackage, List<String> tags,
             java.util.function.LongSupplier ticks) throws IOException {
+        this(outputDirectory, id, name, testClass, testPackage, appPackage, tags, ticks,
+                atf.reporting.configuration.AtfReportConfigurationLoader.load().reportingSettings());
+    }
+
+    AndroidUiFlowTrace(Path outputDirectory, String id, String name,
+            String testClass, String testPackage, String appPackage, List<String> tags,
+            java.util.function.LongSupplier ticks, atf.reporting.configuration.ReportingSettings settings) throws IOException {
+        this.publicationSettings = Objects.requireNonNull(settings, "settings");
         this.outputDirectory = Objects.requireNonNull(outputDirectory).toAbsolutePath().normalize();
         Files.createDirectories(this.outputDirectory);
         this.id = required(id, "id");
@@ -78,6 +87,10 @@ public final class AndroidUiFlowTrace implements atf.android.e2e.support.flow.An
     }
     public synchronized boolean hasOpenPhase() { return phases.keySet().stream().anyMatch(clock::running); }
 
+    @Override public java.util.Optional<atf.reporting.configuration.ReportingSettings> publicationSettings() {
+        return java.util.Optional.of(publicationSettings);
+    }
+
     public synchronized int nextActionSequence() {
         return ++actionSequence;
     }
@@ -96,6 +109,7 @@ public final class AndroidUiFlowTrace implements atf.android.e2e.support.flow.An
         if (phases.keySet().stream().anyMatch(clock::running) && !clock.running(phaseName)) {
             throw new IllegalStateException("Checkpoint does not belong to the active Android phase: " + phaseName);
         }
+        atf.android.e2e.support.flow.CheckpointAssertionPolicy.validate(assertions, publicationSettings);
         String screenshotName = artifactName(screenshot);
         List<String> artifactNames = supportingArtifacts == null ? List.of()
                 : supportingArtifacts.stream().map(this::artifactName).filter(value -> !value.isBlank()).toList();

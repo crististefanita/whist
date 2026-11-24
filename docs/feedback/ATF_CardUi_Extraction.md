@@ -53,7 +53,15 @@ Matricea comună acoperă 3–6 locuri, ferestre compacte și înalte, font măr
 
 ## Acceptanța acțiunilor de rezultat
 
-Rolurile comune și componentele adaptoarelor califică textul logic și contractul callback-urilor. Acceptanța raster nativă trebuie să observe suplimentar etichetele împachetate complete, derularea verticală și ultima acțiune pe APK-uri Whist și Rentz identificate, cu RO/EN și text mărit. O comparație de surse sau AAR nu certifică singură lipsa tăierii pe Android.
+Tipografia acțiunilor urmează intenția, nu stilul plin sau discret. Responsabilul portabil oferă un rol pentru comenzi și unul secundar; Android și Web aplică scalarea de accesibilitate o singură dată. Titlurile, celulele scorului și zonele de apăsare își păstrează contractele independente.
+
+| Familie | Acțiuni | Mărime logică |
+|---|---|---|
+| Comandă | Acasă: Joc nou, Reia partida; setări: Începe partida, Înapoi; scor: Mâna următoare, Istoricul scorului, Meniul principal | 16 |
+| Secundar | Acasă: Clasamente, Realizări, Reguli; scor: Calculul punctajului | 14 |
+
+- Componentele trebuie să compare aceleași roluri semantice în meniul principal, setări și scor, să păstreze callback-urile și să respingă scalarea veche sau dublată în RO/EN și cu text mărit. Etichetele secundare pot fi mai mici; zona lor de apăsare rămâne de cel puțin 48 de unități logice.
+- Acceptanța raster nativă trebuie să observe suplimentar etichetele complete, încadrarea verticală și ultima acțiune pe APK-uri Whist și Rentz identificate. Rolurile comune sau măsurătorile DOM controlate nu certifică singure lipsa tăierii pe Android. Păstrați UI-02 deschis până la observarea acestei granițe.
 
 ## Acceptanța prezentării comune
 

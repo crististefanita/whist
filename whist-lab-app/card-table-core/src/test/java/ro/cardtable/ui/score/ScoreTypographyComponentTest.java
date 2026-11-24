@@ -7,7 +7,7 @@ import static atf.gradle.audit.assertions.GradleAssertions.*;
 
 public final class ScoreTypographyComponentTest extends atf.gradle.audit.GradleAuditedTest {
     @Test public void nativeScoreRolesDefineTheWebScaleExactlyOnce() {
-        var sizes = List.of(25, 12, 13, 16, 18, 14, 16, 14, 11, 13, 12, 20, 24, 21);
+        var sizes = List.of(25, 12, 13, 16, 18, 14, 16, 14, 11, 13, 12, 20, 16, 16, 14);
         atf.gradle.audit.GradleInputs.fixture("Score typography adapters", "native logical sp", sizes,
                 "Web root pixels", List.of(16, 24, 32), "desktop scale", List.of(.75, 1.0, 1.25));
         var names = new HashSet<String>();
@@ -24,15 +24,21 @@ public final class ScoreTypographyComponentTest extends atf.gradle.audit.GradleA
         assertEquals("All score roles are covered", sizes.size(), index);
     }
 
-    @Test public void resultActionsEnlargeExactlyOnceInBothPlatformUnits() {
-        atf.gradle.audit.GradleInputs.fixture("Result action typography", "baseline sizes", List.of(16, 14),
-                "enlargement", 1.5, "accessible roots", List.of(16, 20, 24, 32));
+    @Test public void menuAndResultCommandsShareOneRoleBeforeAccessibilityScaling() {
+        atf.gradle.audit.GradleInputs.fixture("Semantic action typography", "command/supporting logical units", List.of(16, 14),
+                "accessible roots", List.of(16, 20, 24, 32));
+        int command = ro.cardtable.ui.menu.MenuTypography.ACTION.logicalPixels();
+        int supporting = ro.cardtable.ui.menu.MenuTypography.HELPER.logicalPixels();
+        assertEquals("Menu commands use the shared role", 16, command);
+        assertEquals("Supporting labels use the smaller shared role", 14, supporting);
         for (int root : List.of(16, 20, 24, 32)) {
             double scale = root / 16.0;
-            assertEquals("Primary action gains 50% before accessibility scaling", 16 * 1.5 * scale,
+            assertEquals("Filled score commands match menu commands", command * scale,
                     ScoreTypography.ACTION_PRIMARY.sp() * scale, .00001);
-            assertEquals("Secondary action gains 50% before accessibility scaling", 14 * 1.5 * scale,
+            assertEquals("Quiet command styling does not reduce its role", command * scale,
                     Double.parseDouble(ScoreTypography.ACTION_SECONDARY.rem().replace("rem", "")) * root, .00001);
+            assertEquals("Scoring details match supporting home labels", supporting * scale,
+                    Double.parseDouble(ScoreTypography.ACTION_EXPLANATION.rem().replace("rem", "")) * root, .00001);
         }
     }
 

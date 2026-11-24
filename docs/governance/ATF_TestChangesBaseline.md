@@ -3234,3 +3234,61 @@ testChanges:
 ```
 
 </details>
+
+<details>
+<summary>Acțiuni semantice de meniu și politica timpurie a checkpoint-urilor</summary>
+
+```yaml
+testChanges:
+  - id: UI-ACTION-CHECKPOINT-POLICY
+    status: VERIFIED
+    base: 47c07656cf806c6696467a8ba83c8fca4b4dbe1a
+    expires: 2026-12-24
+    reason: Share command and supporting action roles between menus, setup and score; preserve dispatch, complete labels and touch targets. Admit checkpoint summaries with the captured public Reporting policy before journal or action ownership changes; reject legacy overflow at publication and retain original Unicode values and retry semantics.
+    proof: "mvn -o -pl atf-tests -am -Dtest=SharedMenuHistoryComponentTest,SharedPresentationComponentTest,AndroidUiFlowTraceTest,AndroidUiFlowReportPublisherTest,AndroidUiFlowCheckpointComponentTest,AtfSourceQualityGovernanceTest,PackageCohesionGovernanceTest,TestLayerGovernanceTest,SuiteOwnershipGovernanceTest,AtfCollectionOwnershipComponentTest -Dsurefire.failIfNoSpecifiedTests=false test"
+    checks:
+      positive:
+        - atf.tests.governance.uiadapter.SharedMenuHistoryComponentTest#semanticActionTypographyMatchesHomeSetupAndScoreWithoutChangingCommands
+        - atf.tests.governance.documentation.release.rag.nativeproof.SharedPresentationComponentTest#scoreTextAdapterKeepsLocalizedActionsAtLargerWebSizes
+        - atf.android.e2e.support.AndroidUiFlowTraceTest#assertionsKeepCheckpointOrderContextAndVerdicts
+        - atf.android.e2e.support.AndroidUiFlowTraceTest#liveCaptureKeepsItsPublicPolicyWhileLegacyReplayUsesPublicationPolicy
+        - atf.android.e2e.support.AndroidUiFlowReportPublisherTest#livePublicationUsesTheSamePublicPolicyAsCheckpointAdmission
+        - atf.tests.governance.source.AtfSourceQualityGovernanceTest#sourcesRespectPackagePathsImportsAndProductionBoundaries
+        - atf.tests.governance.source.PackageCohesionGovernanceTest#currentProjectUsesNoCohesionExceptions
+        - atf.tests.governance.source.TestLayerGovernanceTest#executableMavenClassesHaveOneLayerAndTheGuideMatchesTheirDeclarations
+        - atf.tests.governance.source.TestLayerGovernanceTest#theGuideMapsEveryGovernedSourceModuleWithoutClaimingBinarySourceSuites
+        - atf.tests.governance.suites.SuiteOwnershipGovernanceTest#everyMavenExecutableHasOnePrimaryOwnerAndEveryFocusedGateIsDeclared
+        - atf.tests.governance.suites.AtfCollectionOwnershipComponentTest#realDependencyClosuresSelectOnlyTheirConsumers
+      negative:
+        - atf.android.e2e.support.AndroidUiFlowTraceTest#overlongAssertionIsRejectedBeforeOwnershipAndJournalChange
+        - atf.android.e2e.support.AndroidUiFlowReportPublisherTest#refusesAssertionValuesThatWouldBeTruncatedInExtent
+        - atf.android.e2e.support.journal.AndroidUiFlowCheckpointComponentTest#failedJournalWriteRollsBackOnlyTheUncommittedCheckpointAndRetriesOnce
+        - atf.android.e2e.support.journal.AndroidUiFlowCheckpointComponentTest#timingFailureAfterReplacementCannotRollBackCommittedEvidence
+        - atf.tests.governance.documentation.release.rag.nativeproof.SharedPresentationComponentTest#scoreActionsRejectStaleRolesClippingAndRepeatedScaling
+        - atf.tests.governance.suites.AtfCollectionOwnershipComponentTest#missingOrUnreviewedDependenciesCannotAuthorizeReuse
+    paths:
+      - atf-test-android/src/test/java/atf/android/e2e/support/AndroidUiFlowReportPublisher.java
+      - atf-test-android/src/test/java/atf/android/e2e/support/AndroidUiFlowReportPublisherTest.java
+      - atf-test-android/src/test/java/atf/android/e2e/support/AndroidUiFlowTrace.java
+      - atf-test-android/src/test/java/atf/android/e2e/support/AndroidUiFlowTraceTest.java
+      - atf-test-android/src/test/java/atf/android/e2e/support/flow/AndroidUiFlowEvidence.java
+      - atf-test-android/src/test/java/atf/android/e2e/support/flow/CheckpointAssertionPolicy.java
+      - atf-tests/src/test/java/atf/tests/governance/uiadapter/SharedMenuHistoryComponentTest.java
+      - atf-ui-browser/src/main/web/table.css
+      - atf-ui-browser/src/main/web/table.mjs
+      - atf-ui-browser/tests/action-typography.test.mjs
+      - atf-ui-browser/tests/fixtures.mjs
+      - atf-ui-browser/tests/score-presentation.mjs
+      - atf-ui-browser/tests/shared-presentation.test.mjs
+      - config/atf-component-dependencies.json
+      - config/atf-component-reader-seals.json
+      - whist-lab-app/app/src/main/java/ro/whistlab/app/screens/ScoreScreens.java
+      - whist-lab-app/app/src/main/java/ro/whistlab/app/screens/SetupScreen.java
+      - whist-lab-app/atf-card-table-ui/src/main/java/ro/cardtable/ui/screens/ScreenViews.java
+      - whist-lab-app/card-table-core/src/main/java/ro/cardtable/ui/menu/ActionTypography.java
+      - whist-lab-app/card-table-core/src/main/java/ro/cardtable/ui/menu/MenuTypography.java
+      - whist-lab-app/card-table-core/src/main/java/ro/cardtable/ui/score/ScoreTypography.java
+      - whist-lab-app/card-table-core/src/test/java/ro/cardtable/ui/score/ScoreTypographyComponentTest.java
+```
+
+</details>

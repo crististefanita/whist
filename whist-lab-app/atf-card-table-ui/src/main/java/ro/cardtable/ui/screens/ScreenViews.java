@@ -167,6 +167,11 @@ public class ScreenViews {
             Runnable action, boolean primary) {
         var role = primary ? ro.cardtable.ui.score.ScoreTypography.ACTION_PRIMARY
                 : ro.cardtable.ui.score.ScoreTypography.ACTION_SECONDARY;
+        return scoreActionButton(label, description, enabled, action, primary, role);
+    }
+
+    public Button scoreActionButton(String label, String description, boolean enabled,
+            Runnable action, boolean primary, ro.cardtable.ui.score.ScoreTypography role) {
         Button button = actionButton(label, description, enabled, action, primary, role.sp());
         button.setSingleLine(false);
         button.setHorizontallyScrolling(false);
@@ -182,6 +187,15 @@ public class ScreenViews {
     public void addScoreAction(LinearLayout parent, String label, String description, boolean enabled,
             Runnable action, boolean primary) {
         Button button = scoreActionButton(label, description, enabled, action, primary);
+        appendScoreAction(parent, button, primary);
+    }
+
+    public void addScoreExplanation(LinearLayout parent, String label, String description, Runnable action) {
+        appendScoreAction(parent, scoreActionButton(label, description, true, action, false,
+                ro.cardtable.ui.score.ScoreTypography.ACTION_EXPLANATION), false);
+    }
+
+    private void appendScoreAction(LinearLayout parent, Button button, boolean primary) {
         LinearLayout.LayoutParams params = matchWrap();
         if (primary) params.setMargins(0, dp(8), 0, dp(3));
         parent.addView(button, params);
@@ -198,7 +212,7 @@ public class ScreenViews {
     }
 
     public void addQuietButton(LinearLayout parent, String label, Runnable action) {
-        addQuietButton(parent, label, action, 14);
+        addQuietButton(parent, label, action, MenuTypography.HELPER.logicalPixels());
     }
 
     public void addQuietButton(LinearLayout parent, String label, Runnable action, int textSize) {

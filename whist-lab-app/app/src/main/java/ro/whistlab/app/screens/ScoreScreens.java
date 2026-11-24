@@ -37,11 +37,11 @@ public final class ScoreScreens {
         LinearLayout.LayoutParams scoreTableParams = views.matchWrap();
         scoreTableParams.setMargins(0, 0, 0, views.dp(8));
         page.addView(new ScoreTableView(activity, state, copy, history), scoreTableParams);
-        views.addScoreAction(page, copy.scoringDetails(), "score_details", true, () -> new AlertDialog.Builder(activity)
+        views.addScoreExplanation(page, copy.scoringDetails(), "score_details", () -> new AlertDialog.Builder(activity)
                 .setTitle(copy.scoringDetails()).setMessage(copy.scoreRule(state)
                         + (state.streakBonuses() ? "\n\n" + copy.streakSummary(state) : "")
                         + (state.allowZeroGame() ? "\n\n" + copy.zeroGameRule() : ""))
-                .setPositiveButton(copy.close(), null).show(), false);
+                .setPositiveButton(copy.close(), null).show());
 
         if (!state.finalHand()) {
             views.addScoreAction(page, copy.nextHand(), "btn_next_hand", true, () -> {

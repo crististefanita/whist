@@ -30,6 +30,11 @@ class SharedMenuHistoryComponentTest {
         assertTrue(run("package-version.test.mjs", "new library versions", inputs).contains("Library version observations:"),
                 "The real shared packaging guard must accept 0.x and reject newly produced legacy coordinates");
     }
+    @Test void semanticActionTypographyMatchesHomeSetupAndScoreWithoutChangingCommands(ComponentInputs inputs) throws Exception {
+        assertTrue(run("action-typography.test.mjs", "home setup and score share", inputs)
+                .contains("Shared action typography observations:"),
+                "Real controlled DOM measurements retain semantic roles, complete labels and isolated callbacks");
+    }
     private static String run(String file, String selection, ComponentInputs inputs) throws Exception {
         var root = GovernanceProject.locateProjectRoot();
         return NodeReleaseContracts.runNode(List.of("node", "--test", "--test-name-pattern=" + selection,

@@ -6,7 +6,8 @@ import java.util.Map;
 
 /** Logical text sizes; platform adapters apply sp or rem exactly once. */
 public enum MenuTypography {
-    TITLE(25), EYEBROW(12), SECTION(13), ACTION(16), SELECTION(14), HELPER(14), DEDICATION(15);
+    TITLE(25), EYEBROW(12), SECTION(13), ACTION(ActionTypography.COMMAND.logicalPixels()),
+    SELECTION(14), HELPER(ActionTypography.SUPPORTING.logicalPixels()), DEDICATION(15);
 
     private final int logicalPixels;
     MenuTypography(int logicalPixels) { this.logicalPixels = logicalPixels; }

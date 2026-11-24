@@ -62,7 +62,7 @@ export function client(url, clientId = "a".repeat(32), profileId = clientId) {
 }
 
 export async function withBrowser(executable, profile, exercise) {
-  const child = spawn(executable, ["--headless=new", "--disable-gpu", "--disable-background-networking",
+  const child = spawn(executable, ["--headless=new", "--edge-skip-compat-layer-relaunch", "--disable-gpu", "--disable-background-networking",
     "--disable-extensions", "--disable-component-update", "--disable-sync",
     "--mute-audio", "--no-first-run", "--no-default-browser-check", "--remote-debugging-port=0",
     "--user-data-dir=" + profile, "about:blank"], { windowsHide: true, stdio: "ignore" });
