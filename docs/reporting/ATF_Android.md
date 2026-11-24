@@ -9,7 +9,7 @@ Publication provides a standalone presentation of the declared scope, original i
 ```mermaid
 flowchart LR
     ACTION[Real action] -->|produce| OBS[Observation]
-    OBS -->|checks through the oracle| ASSERT[Comparison assessed]
+    OBS -->|checks through the oracle| ASSERT[Evaluated comparison]
     ACTION -->|belongs to| CHECK[Checkpoint]
     ASSERT -->|belongs to| CHECK
     IMAGE[Original PNG] -->|belongs to| CHECK
@@ -47,9 +47,9 @@ The action, observation, comparison and capture are distinct facts associated wi
 
 ## Action, observation and result
 
-The action table shall keep the operation dispatched, the semantic target, the waiting, observation, time and result. The comparison table shall keep ASSERTION, EXPECTED, ACTUAL and RESULT for the assessment performed once only.
+The action table shall keep the operation dispatched, the semantic target, wait, observation, duration and outcome. The comparison table shall keep ASSERTION, EXPECTED, ACTUAL and RESULT for the assessment performed once only.
 
-- ADB is the source of the Android Display, and UI Automator provides the hierarchy.
+- ADB is the source of the Android capture, and UI Automator provides the hierarchy.
 - The browser inspecting HTML is the report auditor.
 - An accepted command and a correct semantic transition have distinct criteria.
 - OBSERVE describes a state without inventing an input.
@@ -81,39 +81,39 @@ Preview of the assertions and the body ceiling are independent settings. [Eviden
 
 ### Republishing without Android interaction
 
-[CapturedAndroidFlow](../../atf-test-android/src/test/java/atf/android/e2e/support/replay/CapturedAndroidFlow.java) reads the existing manifest through the readonly publication contract. It keeps comparisons, verdicts, checkpoints and original intervals; it refuses unknown verdicts, artifacts outside the owning directory and times attributed to another stream.
+[CapturedAndroidFlow](../../atf-test-android/src/test/java/atf/android/e2e/support/replay/CapturedAndroidFlow.java) reads the existing manifest through the read-only publication contract. It keeps comparisons, verdicts, checkpoints and original intervals; it refuses unknown verdicts, artifacts outside the owning directory and times attributed to another stream.
 
 The publication shall be labelled `offline-republication` and shall be made explicit. The new HTML does not become new Android execution; the original manifest remains unchanged and the browser checks the new presentation separately.
-- A false allocation of the driver is refused even when the other values coincide.
+- A false assignment of the driver is refused even when the other values coincide.
 
 ## Capture and ownership
 
-- Each published checkpoint may contain the original PNG of the entire physical screen, with the guidance and the preserved edges.
+- Each published checkpoint may contain the original PNG of the entire physical screen, with orientation and edges preserved.
 - The analysis of a region may derive a separate image without replacing the original capture.
 - Base64 is incorporated into HTML; identical payloads can be canonical, with exact references for each checkpoint.
 - The local status of the checkpoint is maintained; the final result does not retrospectively recolour all states.
 - If more than one capture takes place, the window observed shall be explicitly declared.
 - Components without device use status data and comparisons without manufactured Android captures.
 
-The viewer keeps the image proportions and provides access to the original size. The return keeps the current owner, the dischargers, the running and the focus; the consumer's verification confronts the original payload with the exact reference.
+The viewer keeps the image proportions and provides access to the original size. Returning from the viewer preserves the current owner, disclosure state, scroll position and focus; consumer checks compare the original payload with the exact reference.
 
 ## Autonomous content and budgets
 
 HTML shall allow understanding of the verification without access to checkout: rule, units, comparative input, observation and limit of claim remain associated to the owner.
 
-[Presentation policy](ATF_Presentation.md) has the selection of invokes, groups, fragments and budgets. The original capture and the values justifying the result are mandatory data; the optional diagnosis is explicitly framed.
+[Presentation policy](ATF_Presentation.md) owns selection of invocations, groups, fragments and budgets. The original capture and the values justifying the result are mandatory data; the optional diagnosis is explicitly framed.
 
 A hash proves the identity of the bytes without replacing the oracle of the domain. An external link or summary of the reply shall not replace the comparisons necessary for the purpose published.
 
 ### Attachment capture
 
-- [Capture text](../../atf-test-android/src/main/java/atf/android/evidence/text/CapturedTextEvidence.java) reads the bytes once and decodes strictly UTF-8; the fingerprint identifies the original, and the published body passes through the drawing up of the library.
-- The publisher shall incorporate the manifest, the annexes declared by checkpoints and additional entries, deducting the same bodies; the non-identifiable data shall be refused prior to the session.
+- [Capture text](../../atf-test-android/src/main/java/atf/android/evidence/text/CapturedTextEvidence.java) reads the bytes once and decodes strictly UTF-8; the fingerprint identifies the original, and the published body passes through the library’s redaction.
+- The publisher shall incorporate the manifest, the annexes declared by checkpoints and additional entries, deduplicating identical bodies; the non-identifiable data shall be refused prior to the session.
 - The incorporation on publication is labelled as such and does not rebuild the time of the Android capture.
 
 ## Time and status
 
-[Timing contract](ATF_PhaseTiming.md) holds the original ranges, axes and treatment of incomplete logs. [Teaching results](ATF_Handoff.md) holds the acceptance of an end and identity of republishing.
+[Timing contract](ATF_PhaseTiming.md) holds the original ranges, axes and treatment of incomplete logs. [Result handoff](ATF_Handoff.md) owns acceptance of a declared scope and republication identity.
 
 - Failure to act, compare or capture is not cancelled by subsequent successful completion.
 - The functional verdict and the result of the publication are distinct facts.
@@ -126,13 +126,13 @@ The data captured, published and audited shall have separate contracts:
 | Owner | Contract |
 |---|---|
 | [AndroidUiFlowTrace](../../atf-test-android/src/test/java/atf/android/e2e/support/AndroidUiFlowTrace.java) | It shall maintain the order and ownership of the data prior to publication. |
-| [AndroidUiFlowReportPublisher](../../atf-test-android/src/test/java/atf/android/e2e/support/AndroidUiFlowReportPublisher.java) | Design the checkpoints through the UI API of the library and manage the publication session. |
+| [AndroidUiFlowReportPublisher](../../atf-test-android/src/test/java/atf/android/e2e/support/AndroidUiFlowReportPublisher.java) | Render checkpoints through the library UI API and manage the publication session. |
 | [AndroidUiFlowReportAudit](../../atf-test-android/src/test/java/atf/android/e2e/support/AndroidUiFlowReportAudit.java) | Confronts the resulting report with the checkpoints, actions, comparisons, ranges and PNGs captured; refuses incomplete or divergent associations. |
 
-The controls shall follow the exact owner, the multiplication, the last comparison, the order of fragments and the PNG bytes. The global search for a value or hash does not demonstrate its association with the correct scenario.
+The controls shall follow the exact owner, multiplicity, the final comparison, the order of fragments and the PNG bytes. The global search for a value or hash does not demonstrate its association with the correct scenario.
 
 - The reader shall be checked on additional attributes, keeping the same labels, orders and images; the delimitation follows the DOM nodes, without depending on the serialisation of a tag.
-- Negative control changes the image link from the selected checkpoint using the exact position of the node in the source. The rest of the document shall be kept intact so that the refusal to demonstrate the defect of the association concerned.
+- Negative control changes the image link from the selected checkpoint using the exact position of the node in the source. The rest of the document shall be kept intact so that refusal demonstrates the specific association defect.
 - The preview limit shall be read from the active configuration and shall be confronted with the metadata of the published comparisons. Timing tests check the configuration effect without fixing the default value of the library.
 
-[Presentation policy](ATF_Presentation.md) · [Timing original](ATF_PhaseTiming.md) · [Publication audit](ATF_Audit.md) · [Liabilities](../feedback/README.md)
+[Presentation policy](ATF_Presentation.md) · [Original timing](ATF_PhaseTiming.md) · [Publication audit](ATF_Audit.md) · [Responsibilities](../feedback/README.md)

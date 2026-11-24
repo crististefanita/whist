@@ -2,7 +2,7 @@
 
 ## Overview
 
-The test checks a general property in her declared field. Observed match locates analysis; the expected outcome of a decision must be justified by rules, invariant or independent oracle.
+A test checks a general property within its declared domain. An observed match guides analysis; the expected decision must follow rules, an invariant or an independent oracle.
 
 ## Construction of a valid situation
 
@@ -26,18 +26,18 @@ The witness may contain the full distribution to demonstrate that the situation 
 
 | Family | Contract |
 |---|---|
-| Legality | Pack without duplicates, undivided card turned, bidding and every card played legally. |
-| Information | Modification of actual adverse hands cannot change the same observation transmitted to policy. |
+| Legality | Deck without duplicates, undealt exposed card, bidding and every card played legally. |
+| Information | Modification of actual opponent hands cannot change the same observation transmitted to policy. |
 | Context | Controlled change of needs or opportunities may change choice with other fixed inputs. |
-| Memory | Public cards and proven shortcomings properly restrict the feasible worlds. |
+| Memory | Public cards and proven suit voids properly restrict the feasible worlds. |
 | Score | Points, series and totals shall be calculated independently of the action selector. |
-| Uncertain estimate | Comparing observations that differ by one factor: trump card, return card, public bid or series. For Hard, the common translation of scores shall keep the entire vector of the estimate, including the budget consumed. |
-| Certificate | The numbers are complete, all relevant sequels are covered, and the exhausted budget keeps the fallback. |
+| Uncertain estimate | Comparing observations that differ by one factor: trump suit, exposed card, public bid or series. For Hard, the common translation of scores shall keep the entire vector of the estimate, including the budget consumed. |
+| Certificate | Enumeration is complete, all relevant continuations are covered, and the exhausted budget keeps the fallback. |
 | Comparison | Candidate actions use the same worlds and budgets; policies are compared on distributions and controlled places. |
 
 ## Verification level
 
-[Test architecture](ATF_Architecture.md) defines the common classification. Pure calculus is checked unitary, policy API as a component, and policy-policy-oracle collaboration through domain integration.
+[Test architecture](ATF_Architecture.md) defines the common classification. Pure calculations use unit tests, policy API as a component, and policy-policy-oracle collaboration through domain integration.
 
 An Android path remains E2E only when performing new interactions in the installed application. The statistical comparison has its own protocol and does not replace these contracts.
 
@@ -45,7 +45,7 @@ An Android path remains E2E only when performing new interactions in the install
 
 - The test of an ancillary function shall verify that limit; it shall not automatically certify the entire API for decision.
 - A better average in a world is not domination in all worlds.
-- The elections optimized separately after knowledge of the world can be incompatible with a single public action.
+- Choices optimized separately after seeing each world can be incompatible with a single public action.
 - A complete search per world and a universal certificate have different quantifiers.
 - Reproducibility on the same observation does not automatically imply invariance when changing scores or symmetry between places.
 - A statistical policy result and the correctness of a component have separate qualification criteria.
@@ -54,15 +54,15 @@ An Android path remains E2E only when performing new interactions in the install
 
 | Source | Responsibility |
 |---|---|
-| [ContextualHonorDiscardTest](../../whist-lab-app/game-core/src/test/java/ro/whistlab/core/ai/engine/ContextualHonorDiscardTest.java) | Legal witnesses, necessary and the effect of public cards. |
+| [ContextualHonorDiscardTest](../../whist-lab-app/game-core/src/test/java/ro/whistlab/core/ai/engine/ContextualHonorDiscardTest.java) | Legal witnesses, trick needs and the effect of public cards. |
 | [BidConditioningTest](../../whist-lab-app/game-core/src/test/java/ro/whistlab/core/ai/engine/BidConditioningTest.java) | Honor cover and ruff flexibility; soft likelihood with legal and forbidden final bids; completed/current-trick reconstruction; effective sample-size stopping; and neutral behavior for uncalibrated modes, schedules and table sizes. |
 | [ContractEndgameTest](../../whist-lab-app/game-core/src/test/java/ro/whistlab/core/ai/engine/ContractEndgameTest.java) | Public void constraints, exact small endings, card counts, exposed-trump exclusion, and current-table evidence before a trick is scored. |
 | [OfflinePerspectiveMatchTest](../../whist-lab-app/game-core/src/test/java/ro/whistlab/core/match/OfflinePerspectiveMatchTest.java) | Replays one fixed deal sequence in a selected ruleset with Normal-all, Hard-all, and each single-Hard seat; validates opaque deal commitments and the declared hand schedule within the matrix. |
-| [BlindPolicyObservationTest](../../whist-lab-app/game-core/src/test/java/ro/whistlab/core/ai/information/BlindPolicyObservationTest.java) | Separating his own hand and public information before the call for policy. |
+| [BlindPolicyObservationTest](../../whist-lab-app/game-core/src/test/java/ro/whistlab/core/ai/information/BlindPolicyObservationTest.java) | Separating the actor’s own hand and public information before the call for policy. |
 | [CertifiedContractRegressionTest](../../whist-lab-app/game-core/src/test/java/ro/whistlab/core/ai/engine/CertifiedContractRegressionTest.java) | Certificate, lack of guarantee and fallback. |
-| [HardSalvageObjectiveTest](../../whist-lab-app/game-core/src/test/java/ro/whistlab/core/ai/contract/HardSalvageObjectiveTest.java) | The order of objectives when the exact is publicly impossible. |
-| [IndependentPlayerModelTest](../../whist-lab-app/game-core/src/test/java/ro/whistlab/coach/IndependentPlayerModelTest.java) | Fesibility and independent model. |
-| [HumanUncertainBidComponentTest](../../whist-lab-app/app/src/test/java/ro/whistlab/app/bidding/HumanUncertainBidComponentTest.java) | Hard recommendation on public observation, trump, adverse bids, translation of score and independent formulas for configurable series. |
+| [HardSalvageObjectiveTest](../../whist-lab-app/game-core/src/test/java/ro/whistlab/core/ai/contract/HardSalvageObjectiveTest.java) | The order of objectives when exact completion is publicly impossible. |
+| [IndependentPlayerModelTest](../../whist-lab-app/game-core/src/test/java/ro/whistlab/coach/IndependentPlayerModelTest.java) | Feasibility and independent model. |
+| [HumanUncertainBidComponentTest](../../whist-lab-app/app/src/test/java/ro/whistlab/app/bidding/HumanUncertainBidComponentTest.java) | Hard recommendation on public observation, trump, opponent bids, translation of score and independent formulas for configurable series. |
 
 ## Reading of archived observations
 

@@ -26,8 +26,7 @@ The [browser test index](../../atf-ui-browser/tests/README.md#diagnostic-runner-
 | Priority | Owner and gap | Verification level and closure criterion |
 |---|---|---|
 | P2 | Launcher coordination: entry points check preconditions inconsistently. | Controlled components for Java, Maven, Gradle, Node and Python must check required capabilities before costly operations and report missing capabilities with source identity. Distinguish the Python installation alias from an executable interpreter. For the [PowerShell ADB module](../../atf-test-android/tools/AndroidDeviceSetup.psm1), verify availability, refusal, timeout and process state separately from parsing and the Java client. |
-| P2 | Qualification cost: source/release snapshot preparation still copies and hashes retained reports repeatedly. | Reduce repeated snapshot work without weakening input admission. The implemented [compiler and cleanup recovery contracts](../testing/ATF_Collections.md#maven-compiler-reuse) are regression boundaries, not open implementation tasks. Measure source/release inventory and copying separately from compilation and execution; reconcile recorded stage durations with wall time before claiming further savings. Use the named post-compilation snapshot phase when comparing preparation and sealing costs. |
-| P1 | RAG-31: invocation checkpoints and neutral capture recovery require final qualification on the source-bound runner. | Persist every JUnit unique ID, outcome and source/provenance binding. On restart rerun only failed or incomplete identities, retaining the original comparisons in standalone Extent and a relative index linking immutable attempts. Reject missing, duplicate, foreign or source-changed identities and any failed retry; never promote by editing the original report. |
+| P2 | Qualification cost: source/release snapshot preparation still copies and hashes retained reports repeatedly. | Separate retained-report admission from source staging and avoid recopying unrelated payloads; preserve exact hashes, source/catalog context and conservative admission of unknown readers. The implemented [compiler and cleanup recovery contracts](../testing/ATF_Collections.md#maven-compiler-reuse) are regression boundaries, not open implementation tasks. Measure source/release inventory and copying separately from compilation and execution; reconcile recorded stage durations with wall time before claiming savings, including the named post-compilation verification phase. |
 
 [Inline-image retention governance](../../atf-tests/src/test/java/atf/tests/governance/documentation/release/ReleaseEvidenceRetentionGovernanceTest.java) separately checks for duplicated PNG files beside HTML. It does not prove data autonomy, image readability or APK integrity; the [adapter criterion](../reporting/ATF_Audit.md) remains separate.
 
@@ -35,9 +34,7 @@ The [browser test index](../../atf-ui-browser/tests/README.md#diagnostic-runner-
 
 The [documentation editorial grid](../governance/ATF_Documentation.md#editorial-verification-and-evaluation) evaluates documents and their stated limits separately from code maturity. Scores and reviewed inventories belong to the external audit; this register retains only work that can improve comprehension or reproducibility.
 
-| Priority | Owner and area | Closure criterion |
-|---|---|---|
-| P2 | Complementary English ATF guides still contain inherited game and qualification terminology that needs semantic review. | Review operational terms against public code and the Romanian edition. Require editorial acceptance of purpose, inputs, outcomes and limits for each affected guide before refreshing the bilingual receipt; structural and token checks alone cannot establish meaning. |
+Operational terminology follows the [editorial contract](../governance/ATF_Documentation.md#operational-terminology). Review meaning against code and the Romanian edition; automated diagnostics enforce reviewed errors but do not replace semantic review.
 
 ## Download via browser
 
@@ -95,7 +92,7 @@ The [dependency selection contract](../testing/ATF_Collections.md#executable-dep
 |---|---|---|
 | P1 | RAG-29: source/catalog context is explicit and verified offline; complete promotion qualification remains open. | During the next promotion, reconcile the context captured before execution, restart reconstruction and separate live catalog, link, download and retention checks. Preserve pre-publication reports as observations of their original catalog; the [context contract](../testing/ATF_ReleaseQualification.md#qualified-catalog-context) and negative components do not substitute this complete flow. |
 
-Measure snapshot preparation, compilation and execution separately. A focused diagnostic remains distinct from qualification of a complete primary collection; failure recovery within an owner is covered by the open invocation-reconciliation item above.
+Measure snapshot preparation, compilation and execution separately. A focused diagnostic remains distinct from qualification of a complete primary collection; Maven/Jupiter recovery within an owner follows the [invocation-recovery contract](../testing/ATF_Collections.md#recovery-within-a-maven-selection).
 
 ## Reporting schema admission
 

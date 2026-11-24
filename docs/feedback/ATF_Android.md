@@ -10,10 +10,10 @@ The display profiles guide holds geometry and text. The common interface registr
 
 | Priority | Remaining qualification | Closure criterion |
 |---|---|---|
-| P1 | Extension of native qualification beyond the compact profile; components do not substitute the fonts and Android interaction. | High profile and increased text: 13 cards, fully levitated to 5 seats and the actors' succession to 3/5/6 places, with legible names and indices. Keep the captures, XMLs and APK hashs without repeating a full game on each profile. |
+| P1 | Extension of native qualification beyond the compact profile; components do not substitute the fonts and Android interaction. | High profile and increased text: 13 cards, a complete trick at five seats and the actors' succession to 3/5/6 places, with legible names and indices. Keep the captures, XMLs and APK hashes without repeating a full game on each profile. |
 | P1 | Extend AutoGame's compact sample to the native matrix of the actor and positions. | On the identified APK, check the bidding and the game at 3–6 places, in RO/EN and on compact profile plus increased text: only the current actor has badge, the badge remains visible when AutoGame plays the human player's seat, the manual controls remain locked, and the collection of the trick and the score screen does not mark an actor. The places do not move when the phase changes, and the face and the lifting of the card remain visible. Components check projection and geometry; only Android observation with APK/hash and capture can close the criterion. |
 
-Delivery files keep the sample compact with 13 cards and audit of the indices, as well as the AutoGame test at four places with a card, the hand-game marking and the score screen. Acceptance on hand 17 cards check horizontal roll and box stability. The marking remains open during the fast automatic move and the matrix with increased text. [Release catalog](../../release/README.md)
+Delivery files keep the sample compact with 13 cards and audit of the indices, as well as the AutoGame test at four places with a card, the hand-game marking and the score screen. Acceptance on hand 17 cards check horizontal scrolling and box stability. The marking remains open during the fast automatic move and the matrix with increased text. [Release catalog](../../release/README.md)
 
 ## The compatibility of history
 
@@ -24,11 +24,11 @@ The native prefix confirms a complete row and the resumption in Romanian and Eng
 | Surface | Closure criterion |
 |---|---|
 | Two columns | The exact bid and the total score after each hand per player; column `P` displays the balance of the row, including zero and negative values, without a third column. RO/EN, text normal and enlarged, first and last hand and all places, on an APK that includes this contract. |
-| Serial Rectangle | Normal contour only after five consecutive eligible outputs; red contours after five consecutive eligible failures, including when the total remains positive. Bonuses and penalties ± 5 / ± 10 shall be set in total only by payment row, exclusively in cell `P`; the bid, header, neighbor and unpaid results shall not be rectangle. |
+| Streak rectangle | Normal contour only after five consecutive eligible successes; red contours after five consecutive eligible failures, including when the total remains positive. Bonuses and penalties ± 5 / ± 10 shall be set in total only by payment row, exclusively in cell `P`; the bid, header, neighbor and unpaid results must not receive a rectangle. |
 | Rendering | The original capture confirms the four sides, the legibility of the number and the sign, the space to the contour and the lack of intersections, including the increased text. The presence of the node in XML does not demonstrate the rectangle and a report of an earlier APK does not qualify for the new marking. |
 | Blunt-cut | A failed bid has a visible mark in the Android raster, including zero and increased text; only the red colour or accessible description does not certify the cut. Compare with a successful contract and keep the cipher readable. |
 | Integrity | Exploration and resumption shall retain the totals and all rows; the marking shall remain in the right hand and place. |
-| separators | Target of 2,1 dp, rounded in pixels once only; all player boundaries remain aligned between headers and body. The component NGL qualifies geometry and color in JVM rendering; Android font and pixels require APK identified. |
+| separators | Target of 2,1 dp, rounded in pixels once only; all player boundaries remain aligned between headers and body. The component PNG qualifies geometry and color in JVM rendering; Android font and pixels require APK identified. |
 
 [ScoreHistory](../../whist-lab-app/game-core/src/main/java/ro/whistlab/core/session/ScoreHistory.java) keeps known suffixes of bids and tricks. The points derive from the hips and the failure compares the bid with the tricks; they do not deduce from the color or mark of the score.
 
@@ -81,9 +81,9 @@ Window protection and calculation of useful space are implemented; the acceptanc
 
 | Priority | Remaining requirement | Closure criterion |
 |---|---|---|
-| P1 | API 37: window, rerun and memory | On an identified device: navigation through gestures and three buttons, decoupage, keyboard, restart and some hands; record memory, reason of output and APK hash without changing system boundaries. |
+| P1 | API 37: window, resume and memory | On an identified device: navigation through gestures and three buttons, clipping, keyboard, restart and some hands; record memory, exit reason and APK hash without changing system boundaries. |
 
-[Delivery contract](../platform/ATF_AndroidDelivery.md) distinguishes the Padding with the IME from the measurement of the window without the IME and defines the restoration and diagnosis of memory. Components shall verify the model and the native criterion shall remain open until the callbacks and scenario are executed on the target system.
+[Delivery contract](../platform/ATF_AndroidDelivery.md) distinguishes insets with the IME from the measurement of the window without the IME and defines the restoration and diagnosis of memory. Components shall verify the model and the native criterion shall remain open until the callbacks and scenario are executed on the target system.
 
 ## Adapter memory
 
@@ -104,12 +104,12 @@ The memory limit of the adapter remains distinct from the geometry of the interf
 
 ## Cost of acceptance on device
 
-- Measure the reservation, profile preparation, ADB commands, execution and restoration separately. Face the active window to correctly assign a interruption.
+- Measure the reservation, profile preparation, ADB commands, execution and restoration separately. Check the active window to correctly assign an interruption.
 - Validate each Extent reference to the original capture. Resume the flows without accepted proof for the same APK, snapshot and profile. [Qualification of delivery](../testing/ATF_ReleaseQualification.md#work-profiles-for-resumption)
 
 ## ANI-02 · Hand of 17 cards on compact screen
 
-- Extend [APK's responsive evidence](../../release/README.md) at the remaining combinations of the matrix 3–6 places, RO/EN, text enlarged and AutoGame. Watch for access to the cards in the removable area, the actor's signaling and fixed positions between bid, game and collection. [Display strategy](../testing/ATF_Display.md)
+- Extend [APK's responsive evidence](../../release/README.md) at the remaining combinations of the matrix 3–6 places, RO/EN, text enlarged and AutoGame. Watch for access to the cards in the scrollable area, the actor's signaling and fixed positions between bid, game and collection. [Display strategy](../testing/ATF_Display.md)
 
 ## Android scenario stability
 

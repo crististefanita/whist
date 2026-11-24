@@ -15,7 +15,7 @@ The consumer holds the game records, selection, oracle and external indexation. 
 
 | Priority | Gap and source | Level and criterion of closure |
 |---|---|---|
-| P2 | [AndroidUiFlowTrace.checkpoint](../../atf-test-android/src/test/java/atf/android/e2e/support/AndroidUiFlowTrace.java) keeps assertions that [publisher](../../atf-test-android/src/test/java/atf/android/e2e/support/AndroidUiFlowReportPublisher.java) then faces library policy; too long a summary can be refused only when published. | Component: validated by the same effective policy before the next capture, with localized refusal and without truncating the full values in the observations and XML. |
+| P2 | [AndroidUiFlowTrace.checkpoint](../../atf-test-android/src/test/java/atf/android/e2e/support/AndroidUiFlowTrace.java) keeps assertions that [publisher](../../atf-test-android/src/test/java/atf/android/e2e/support/AndroidUiFlowReportPublisher.java) later checks against library policy; too long a summary can be refused only when published. | Component: validated by the same effective policy before the next capture, with a precise refusal and without truncating the full values in the observations and XML. |
 
 The consumer shall have the time of validation and the data transmitted. If the public API does not expose the necessary policy, the reusable contract is required by the library's manager; the limit is not recopied as an independent local rule.
 
@@ -42,7 +42,7 @@ Both producer and verifier need qualification. Increasing one process's heap lim
 
 ## RPT-EXTENT-REPEATED-PAYLOAD - Compaction without audit loss
 
-**P2 · component HTML compaction without reducing evidence.** Identical Payload can increase the size and navigation time of the report. Accurate profiling belongs to the external file of execution; the criterion follows the compaction mechanism and the audit maintenance. Reusable capabilities follow [common routing](README.md#change-ownership).
+**P2 · component HTML compaction without reducing evidence.** Identical Payload can increase the size and navigation time of the report. Accurate profiling belongs to the external run dossier; the criterion follows the compaction mechanism and the audit maintenance. Reusable capabilities follow [common routing](README.md#change-ownership).
 
 - [ ] The compact profile must keep each owner, comparison, verdict and fully accessible offline body in the same HTML. Do not remove values or move content to ZIP, JSON or external files.
 - [ ] Evaluate internal content-addressed references for repeated byte-identical bodies. Each invocation must expose its complete original content; the content may be stored once in the autonomous HTML.

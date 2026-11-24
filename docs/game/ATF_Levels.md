@@ -28,21 +28,21 @@ Both policies use the same variant and the permitted observation. The engine che
 |---|---|
 | Normal at bidding | Estimate the power of your own hand and choose an allowed bid. |
 | Normal before contract | Search for the tricks still needed and keep future chances when the current trick cannot be taken. |
-| Normal after contract | Avoid additional levatas and download future risk within legal limits. |
+| Normal after contract | Avoid additional tricks and discard future risk within legal limits. |
 | Hard with recoverable contract | Prioritize the estimated chance of exact, own points and the score of the main rival. |
-| Hard drive with public impossibility | Protect first the estimated own points, then track the estimated adverse failures. |
+| Hard when exact completion is publicly impossible | Protect first the estimated own points, then track the estimated adverse failures. |
 | Normal and Hard with playing for zero | They switch to targeting exactly zero once public score bounds rule out a top-two finish through conventional scoring and zero is still reachable in the remaining schedule. |
 
 [Decision model](../ai/ATF_DecisionModel.md#priority-objectives) holds the order of criteria, domains and runtime certificates. [Objective manifest](../../config/whist-play-objectives.yaml) links the intention of implementation and components; exact parameters and conditions are read from the code.
 
 ## Information and adaptation
 
-- The requirements of each place shall be recalculated after the levatates have been completed.
-- The cards, the cards played, the table and the card turned are excluded from the hypothetical poor polo.
-- Demonstrated color gaps narrow down the feasible hands.
+- The requirements of each place shall be recalculated after completed tricks.
+- The actor’s cards, played cards, current table and exposed trump are excluded from the hypothetical unseen-card pool.
+- Proven suit voids narrow down the feasible hands.
 - Known bids are contract targets in simulated continuances.
-- La 2–8 cards, general weighting after adverse behaviour remains research; the bid of a card already has the specialized conditioning model and the fallback described in the [decision model](../ai/ATF_DecisionModel.md#estimate-of-alternatives).
-- A Monte Carlo estimate and a finished certificate have different levels of certainty.
+- For 2–8-card hands, general weighting by opponent behavior remains research; one-card bidding already has the specialized conditioning model and the fallback described in the [decision model](../ai/ATF_DecisionModel.md#estimate-of-alternatives).
+- A Monte Carlo estimate and a complete certificate have different levels of certainty.
 
 ## Compatibility
 

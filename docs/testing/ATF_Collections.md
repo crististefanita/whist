@@ -263,7 +263,9 @@ flowchart LR
 
 </details>
 
-[Controlled components](../../atf-tests/src/test/java/atf/tests/execution/recovery/InvocationRecoveryComponentTest.java) use child JVMs, independent body counters, actual process interruption and corrupted files. They qualify recovery without Android interaction or pictures. Historical runs without invocation checkpoints retain whole-selection recovery.
+[Controlled components](../../atf-tests/src/test/java/atf/tests/execution/recovery/InvocationRecoveryComponentTest.java) use child JVMs, independent body counters, actual process interruption and corrupted files. They qualify recovery without Android interaction or pictures.
+
+Historical runs without invocation checkpoints retain whole-selection recovery. Gradle retains its task-level checkpoint protocol; this contract applies to Maven/Jupiter invocations.
 
 ### Snapshot and compiler I/O
 

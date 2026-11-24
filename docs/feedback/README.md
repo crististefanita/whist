@@ -28,7 +28,6 @@ The 1–100 score expresses work priority, not quality or completion percentage.
 |---|---:|---:|---|
 | AND-02 | P1 | 92 | Qualify the active actor, stable geometry and visible hand in bidding, play and AutoGame on the APK, for 3–6 players, RO/EN and enlarged text. [Register](ATF_Android.md) |
 | AI-01 | P1 | 91 | Calibrate Hard inference for bidding with 2–8 cards and cards played on new lots; separate the accuracy of probabilities from the simulated score. [Register](ATF_Ai.md) |
-| RAG-31 | P1 | 90 | Qualify source-bound invocation recovery, retaining original passing comparisons and rerunning only failed or incomplete identities. [Register](ATF_Governance.md#qualification-of-claims-and-launchers) |
 | RAG-29 | P1 | 90 | Qualify explicit source/catalog context during the next complete promotion and post-publication restart; identity and refusal contracts are implemented in components. [Register](ATF_Governance.md#framework-selection-boundaries) |
 | UI-04 | P1 | 90 | Feed actual native content measurements into the neutral observation port; reject font clipping and stale repaint independently of policy-plan equality. [Register](ATF_CardUi_Extraction.md#ui-three-module-plan) |
 | ACH-01 | P1 | 90 | Qualify restoration of Achievements scroll position and selection on the APK, and notification resumption after activity recreation. [Register](ATF_Achievements.md) |
@@ -38,7 +37,6 @@ The 1–100 score expresses work priority, not quality or completion percentage.
 | UI-01 | P1 | 86 | Qualify headers, player boxes and notifications on consumer APKs, including Unicode name entry. [Register](ATF_CardUi_Extraction.md#priorities-and-closing-conditions) |
 | UI-02 | P2 | 84 | Qualify enlarged result actions and scrolling on the consumer APKs in RO/EN with enlarged text. [Register](ATF_CardUi_Extraction.md#result-action-acceptance) |
 | RAG-21 | P2 | 84 | The plan-only pilot proves source-bound restart and selector parity; full report/JUnit parity and the recovery-time gate remain open. [Register](ATF_Governance.md#langgraph-shadow-pilot) |
-| DOC-02 | P2 | 83 | Review inherited English operational terms against code and Romanian meaning; require editorial acceptance as well as executable diagnostics and edition parity. [Register](ATF_Governance.md#improving-guidance-guides) |
 | AI-02 | P2 | 82 | Measure opportunities, conversions to 500, ranking impact and latency on new batches; separate natural play from controlled prefixes. [Register](ATF_Ai.md#playing-for-zero) |
 | WEB-07 | P2 | 79 | Qualify settings, resume, Play again and history in APK and Chrome on the same Android in RO/EN and with increased text. [Register](ATF_UiBrowser.md#qualification-on-the-same-device) |
 | WEB-11 | P2 | 78 | Qualify ranks and suit glyphs in a 17-card hand with enlarged text in Android Chrome. [Register](ATF_UiBrowser.md#qualification-on-the-same-device) |

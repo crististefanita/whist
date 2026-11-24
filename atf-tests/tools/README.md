@@ -35,13 +35,13 @@ The selected data remains the same objects evaluated in the declared order. [Pre
 
 ## Registration of delivery integrity
 
-[record-release-integrity.mjs](record-release-integrity.mjs) reads the active version of the index and records the size and the HA- 256 for all its files without the self-referential manifest. Refuse symbolic pathways and change of inventory or manifest during preparation; writing uses a temporary file and atomic replacement.
+[record-release-integrity.mjs](record-release-integrity.mjs) reads the active version of the index and records the size and SHA-256 for all its files without the self-referential manifest. Refuse symbolic paths and change of inventory or manifest during preparation; writing uses a temporary file and atomic replacement.
 
 ```powershell
 node atf-tests/tools/record-release-integrity.mjs
 ```
 
-`--project <root>` and `--version <version>` allow an explicit root and edition. The tool does not perform tests and does not promote qualification; [verifier Java](../src/test/java/atf/tests/governance/documentation/release/integrity/ReleaseIntegrity.java) face the bytes and results of JUnit separately. [Manifest components](../src/test/java/atf/tests/governance/documentation/release/integrity/ManifestIntegrityComponentTest.java) exercise the actual launcher on temporary files, including paths with spaces and diacritics.
+`--project <root>` and `--version <version>` allow an explicit root and edition. The tool does not perform tests and does not promote qualification; [Java verifier](../src/test/java/atf/tests/governance/documentation/release/integrity/ReleaseIntegrity.java) checks bytes and JUnit outcomes separately. [Manifest components](../src/test/java/atf/tests/governance/documentation/release/integrity/ManifestIntegrityComponentTest.java) exercise the actual launcher on temporary files, including paths with spaces and diacritics.
 
 ## Candidate RAG evaluation
 
@@ -64,7 +64,7 @@ The JSON verdict cites paths, SHA-256 and JSON Pointer/line. It embeds UTF-8 pla
 
 - Code `0` means `READY_FOR_HUMAN_REVIEW`; `2` means `BLOCKED`; `1` indicates invalid entry or invocation.
 - Human review requires hash-bound receipts for components, APK build, identity and signing.
-- The published status also requires a a download receipt in the declared access mode. For GitHub, the retention of the two editions, including tags and assets. [Collection command](../../docs/testing/ATF_ReleaseQualification.md#retention-on-github-after-publication)
+- The published status also requires a download receipt in the declared access mode. For GitHub, the retention of the two editions, including tags and assets. [Collection command](../../docs/testing/ATF_ReleaseQualification.md#retention-on-github-after-publication)
 - [Per-flow plan](prepare-android-e2e.mjs) and the evaluator use the same checks for HTML, PNG and receipts. [Import](apply-android-e2e.mjs) imports new evidence into the pinned candidate. [The contract of the launcher](../../docs/testing/ATF_ReleaseQualification.md#starting-and-resuming-a-game-on-the-signed-apk)
 - Unexecuted E2E remains `NOT_RUN`; changing a user flow requires passing E2E Extent groups.
 
@@ -75,6 +75,6 @@ The evaluator reconciles the complete snapshot inventory with the manifest. Oper
 ## Measurement and reproduction
 
 - [Chronology](assemble-release-timeline.mjs) combines process receipts and keeps the overlapping intervals. [Qualification procedure](../../docs/testing/ATF_ReleaseQualification.md#qualification-timeline)
-- [Git verifier](verify-release-git-snapshot.mjs) compares inventory and bytes, including EOL, and checks the payload published prior to cleaning. [Withdrawal contract](../../docs/platform/ATF_ReleaseRetention.md#local-cleaning-after-delivery)
+- [Git verifier](verify-release-git-snapshot.mjs) compares inventory and bytes, including EOL, and checks the payload published prior to cleaning. [Retention contract](../../docs/platform/ATF_ReleaseRetention.md#local-cleaning-after-delivery)
 
 - For a separate checkout, option `--local-release` synchronizes only the current edition after the check of the verdict, tag and payload in Git. [Synchronisation procedure](../../docs/platform/ATF_ReleaseRetention.md#synchronisation-of-local-file-with-current-version)

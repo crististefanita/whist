@@ -41,9 +41,9 @@ For each property, the audit oracle reads the original source and locates the ow
 |---|---|
 | Comparison identity | The transfer of a value or verdict to another owner is denied. |
 | Completeness | A missing, reordered or modified fragment does not pass the audit. |
-| Catch | The change of payload or PNG reference is detected. |
+| Capture | The change of payload or PNG reference is detected. |
 | Time | The range assigned to another flow or phases is rejected. |
-| Semantics of action | False assignment of the driver and confusion of the display with the success of the IU are denied. |
+| Semantics of action | False assignment of the driver and confusion of the display with successful UI interaction are denied. |
 | Navigation | Values and images shall be accessible after opening, closing and changing the owner. |
 | Population | A JUnit invocation removed from HTML or assigned to another parameterized case is detected; equality of single totals is insufficient. |
 
@@ -70,7 +70,7 @@ The [publisher components](../../atf-tests/src/test/java/atf/tests/reporting/bro
 Each producer shall qualify for API area actually used. Qualification of one publisher does not qualify another adapter or its interactive review.
 
 1. Identify the entry, native invocation, sources, libraries and owner of each capture.
-2. Face all original comparisons, including the last row and group sequels; full values and verdicts remain associated with the same claim.
+2. Inspect all original comparisons, including the last row and group continuations; full values and verdicts remain associated with the same claim.
 3. Inject gaps, wrong owners, impossible intervals and altered references; publication or audit must refuse corrupt data.
 4. Check separately navigation, folding sections, images and return with the context kept on the HTML identified by hash.
 5. Keep executed levels and limitations in the external audit; [handing over results](ATF_Handoff.md) decides the acceptance of the purpose.
@@ -101,7 +101,7 @@ Inventory qualification does not certify browser interactivity, native pixels, l
 
 ## Aggregation of components on live source
 
-[Component Launcher](../../scripts/run-component-suites.ps1) Perform primary component inputs from [Catalog Maven](../../config/atf-test-suites.json), the declared Gradle collections of the application and the distinct selection of the common UI library. Maven compilation and its isolated cache belong to external staging; each Gradle module and selection produces its own HTML Extent with distinct invocations, assessed comparisons and source provenance. Gradle reports do not concatenate in a synthetic report.
+[Component launcher](../../scripts/run-component-suites.ps1) runs primary component selections from the [Maven catalog](../../config/atf-test-suites.json), the declared Gradle collections of the application and the distinct selection of the common UI library. Maven compilation and its isolated cache belong to external staging; each Gradle module and selection produces its own HTML Extent with distinct invocations, assessed comparisons and source provenance. Gradle reports are not concatenated into a synthetic report.
 
 ```mermaid
 flowchart LR
@@ -117,7 +117,7 @@ flowchart LR
 
 JUnit receipt is independent of the receipt published in HTML. [Comparison](../../atf-tests/src/main/java/atf/tests/reporting/aggregate/ComponentReportCoverage.java) refuses missing, additional or duplicate identities and different verdicts; equal totals are not sufficient.
 
-Each of the three primary ATF suites has a canonical HTML, its own Receipt and the shared source inventory. The Receipt of components per source declares separately `apkQualification`; association with APK requires candidate qualification. [Active version index](../../release/README.md) keep the reports and the identities concrete.
+Each primary component owner has canonical HTML, its own receipt and the shared source inventory. The source-component receipt declares separately `apkQualification`; association with APK requires candidate qualification. [Active version index](../../release/README.md) keeps the reports and the identities concrete.
 
 </details>
 
@@ -137,15 +137,15 @@ From the project root, with JDK, Android SDK 36 and the Maven/Gradle caches prep
 .\scripts\run-component-suites.ps1 -JavaHome '<cale-JDK>' -MavenCache '<cache-Maven>'
 ```
 
-The results remain external. Selective copying in the delivery file explicitly retains the source domain, distinct from the APK qualification; the final verification confronts the detached HTML prior to the removal of any original evidence.
+The results remain external. Selective copying in the delivery dossier explicitly retains the source scope, distinct from the APK qualification; the final verification confronts the detached HTML prior to the removal of any original evidence.
 
 ### Inventory integrity
 
-[Shared inventory](../../scripts/Get-AtfSourceInputs.ps1) feeds component launchers and governance. The generated directories shall be excluded at the borders of the project and the modules declared; the delivery dossier shall be excluded only at the root of the project. The name of a package does not justify the omission of the source: segments such as `release`, `target` and `build` remain inventoried in source trees, including the configured and additional roots of the Maven policy.
+[Shared inventory](../../scripts/Get-AtfSourceInputs.ps1) feeds component launchers and governance. The generated directories shall be excluded at project boundaries and the modules declared; the delivery dossier shall be excluded only at the root of the project. The name of a package does not justify the omission of the source: segments such as `release`, `target` and `build` remain inventoried in source trees, including the configured and additional roots of the Maven policy.
 
-The manifest also includes files without extension, such as extension records. Indirect uninventoried routes are denied. [Inventory controls](../../atf-tests/src/test/java/atf/tests/governance/support/LauncherSourceInventoryComponentTest.java) confronts the declared Java population and detects additions, erasure and changes.
+The manifest also includes files without extension, such as extension records. Uninventoried indirect paths are denied. [Inventory controls](../../atf-tests/src/test/java/atf/tests/governance/support/LauncherSourceInventoryComponentTest.java) confronts the declared Java population and detect additions, deletions and changes.
 
-A subsequent correction of the inventory produces a new identity; does not rewrite the footprint of a historical execution.
+Correcting the inventory produces a new identity; it does not rewrite the fingerprint of a historical execution.
 
 [Staging copy](../../scripts/Copy-AtfSourceInputs.ps1) uses the captured manifest itself without a second list of exclusions after the directory name. The hash of each copy must coincide with the entry; a change before compilation shall be refused.
 
@@ -161,12 +161,12 @@ The dossier's README shall first indicate the canonical report, the purpose and 
 | Invocation | The chosen class, method and parameters; the setup or restoration occurs only if they have occurred and are delimited by the body. |
 | Component | Full input and `Component assertions` from the evaluation phase: invariant name, independent expected value, actual value and verdict. |
 | Android | The dispatched action, fresh observation, comparison and PNG of the same state. ADB command acceptance and successful application transition have separate evidence. |
-| Failed | The primary cause, past comparisons and secondary cleaning errors; Fails keeps access to the original owner. |
+| Failed | The primary cause, past comparisons and secondary cleaning errors; FAIL retains access to the original owner. |
 | Closure | The population executed / published, the cases omitted and the limits of the revision; the duration of the scenarios is not confused with the total time of the suite. |
 
 - **Meaning:** when a Boolean, number or exception type does not explain the property, the comparison needs a caption naming the object and invariant. Source locations support traceability without replacing that explanation.
 - **Expected refusal:** `assertThrows` passes only when the operation rejects the specified input. A deliberately failing invocation remains FAIL even when the publisher's acceptance test expects that failure.
-- **Environment: ** the instrument inspecting HTML is the report auditor. Using Playwright for this revision does not transform Android interaction into Playwright automation.
+- **Environment:** the instrument inspecting HTML is the report auditor. Using Playwright for this revision does not transform Android interaction into Playwright automation.
 
 ## Minimum interactive revision
 

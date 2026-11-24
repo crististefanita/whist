@@ -31,8 +31,8 @@ The [shared UI module](../../whist-lab-app/atf-card-table-ui/README.md) owns JVM
 | Integer geometry | Fractional CSS heights from zoom or browser controls | Floor a valid measured height once before compact-policy decisions and the integer Java boundary; malformed and non-positive input must retain an explicit error | Web geometry adapter |
 | Visible coordinates | DOM rectangles and observed visual-viewport offsets | Compare positions relative to the visible viewport when zoom or the keyboard pans the layout viewport; retain raw offsets with the observation | Platform observation adapter |
 | Application policies | Width, height, density, font, number of players and cards | Distribution of regions, minimum dimensions, available space, rounding and settings calculated | `app.table`, `app.hand`, `app.window` |
-| Name and action | Measured or simulated text heights, box contents and equalized place | Full action above the name, reserved space between shifts, increased censor without repeated scaling | `app.seat` |
-| Trump | Slide width of [Android and Web fixture](../../whist-lab-app/app/src/test/resources/whist-trump-text-fit.tsv) | Framing in the same box for card, symbol and text without trump, including enhanced font. [Reference palette](../../whist-lab-app/app/src/test/resources/whist-trump-palette.properties) and geometry is kept when AutoPlay is activated and stopped and during trick collection | [TrumpTileMetrics](../../whist-lab-app/card-table-core/src/main/java/ro/cardtable/ui/table/trump/TrumpTileMetrics.java) |
+| Name and action | Measured or simulated text heights, box contents and equalized place | Full action above the name, reserved space between shifts, enlarged text without repeated scaling | `app.seat` |
+| Trump | Glyph widths from [Android and Web fixture](../../whist-lab-app/app/src/test/resources/whist-trump-text-fit.tsv) | Framing in the same box for card, symbol and text without trump, including enhanced font. [Reference palette](../../whist-lab-app/app/src/test/resources/whist-trump-palette.properties) and geometry is kept when AutoPlay is activated and stopped and during trick collection | [TrumpTileMetrics](../../whist-lab-app/card-table-core/src/main/java/ro/cardtable/ui/table/trump/TrumpTileMetrics.java) |
 | History | Useful window, number of seats, density and font | Full spread width, minimum legible, headers aligned, vertical budget for legend and red diagonal limited to failed bids | `app.score` |
 | Trick collection | Centers, actor, public history, clock, viewport and controlled scene events | Complete trick, convergence, pause/resume and exactly one cleanup; rebuild after resize, wait for dialogs to close and reject stale callbacks without mutating the match | `app.animation`, `app.lifecycle`, `app.navigation`, `app.presentation` |
 | Observation decoding | XML and display profile | Semantic association, card faces, frames, title, trump and content window | [TableViewportObservation](../../atf-test-android/src/test/java/atf/android/e2e/display/support/TableViewportObservation.java) |
@@ -52,17 +52,17 @@ The [shared UI module](../../whist-lab-app/atf-card-table-ui/README.md) owns JVM
 - The check of the action of [decoder](../../atf-test-android/src/test/java/atf/android/e2e/display/support/TableViewportObservation.java) is common to simulated observations and E2E game and bidding checkpoints. Negative controls remove the action, change the text or move it over the name; the break has clearly zero active actions.
 - The distance to the player shall be measured from the box meeting and its action. A free space up to the box does not allow a control to cover the label above.
 - The declared dimensions of the played edge and faces have comparisons in pixels and rounding tolerance. A face higher than the one required does not pass simply because it exceeds a minimum threshold.
-- [ScoreHistoryMeasure](../../whist-lab-app/app/src/main/java/ro/whistlab/app/score/ScoreHistoryMeasure.java) receives separately the measurements of the font and header. Components check the entire table, including the last cell, signs, unknown values, long names and increased text; Android provides implementation of glider measurement.
+- [ScoreHistoryMeasure](../../whist-lab-app/app/src/main/java/ro/whistlab/app/score/ScoreHistoryMeasure.java) receives separately the measurements of the font and header. Components check the entire table, including the last cell, signs, unknown values, long names and increased text; Android provides the glyph-measurement implementation.
 - [HistoryViewportComponentTest](../../whist-lab-app/app/src/test/java/ro/whistlab/app/score/layout/HistoryViewportComponentTest.java) checks the vertical budget, the return to a larger window, fractional densities and invalid measures. Policy does not substitute the rendering of Android font.
 - [HistoryLegendAuditComponentTest](../../atf-test-android/src/test/java/atf/android/e2e/records/legend/HistoryLegendAuditComponentTest.java) reproduces the wrong property in the horizontal container, empty or intersected regions and missing evidence. The full text of XML is not enough for PASS.
 - [LegendProfilesComponentTest](../../atf-test-android/src/test/java/atf/android/e2e/records/legend/LegendProfilesComponentTest.java) qualifies offline default plan, focused selection, canonical identities and refusal of invalid configurations. E2E consumes typed cases and performs only the selected native sample.
-- [RecordsRunContractComponentTest](../../atf-test-android/src/test/java/atf/android/e2e/records/RecordsRunContractComponentTest.java) checks the selection of visible text with one observation, the re-reading after disclosure and the identity of the error. The display keeps the driver's fresh reading and a single tap; redundant reefs are not used as a synchronization mechanism.
-- The historian measures the total bid and score of each line; the difference in points of hand remains in the register and in the assisted reading. The components shall be weighed against the balances of all places, including zero, negative totals and the limit of the old prefix; series markings shall be compared to an independent arithmetic oracle after reloading, and the native rendering of the rectangle shall be distinct from the projection.
+- [RecordsRunContractComponentTest](../../atf-test-android/src/test/java/atf/android/e2e/records/RecordsRunContractComponentTest.java) checks the selection of visible text with one observation, the re-reading after disclosure and the identity of the error. The display keeps the driver's fresh reading and a single tap; redundant reads are not used as a synchronization mechanism.
+- History measures the total bid and score of each line; the difference in points of hand remains in the register and in the assisted reading. The components shall be weighed against the balances of all places, including zero, negative totals and the limit of the old prefix; series markings shall be compared to an independent arithmetic oracle after reloading, and the native rendering of the rectangle shall be distinct from the projection.
 - The `score.award` family keeps the exclusive rectangle in cell `P`; the number, font and contour participate in the measurement. The components cover the set-up bonuses and penalties, payment on the last eligible hand, disabled series, change of meaning of the series and complete history after resumption, at 3–6 places.
-- The `score.raster` test family is providing real projection and geometry with JVM fonts without a device. The oracle compares pixels with an identical image without contours: bids, letterheads and neighbours must remain identical and each marking must have four sides and the colour of the series adjustment.
-- Raster recovery writes and reads JSON checkpoints through the application codex, then fully compares PNG pixels decoded before and after restoration. At 3–6 seats, RO/EN and enlarged text, check the keeping of historical markings in the bidding, game, closing of hand and end of match. The last row and last eligible payment shall be checked separately when the final hand has a single card; the file saving does not qualify the port of Android `SharedPreferences`.
+- The `score.raster` test family is providing real projection and geometry with JVM fonts without a device. The oracle compares pixels with an identical image without contours: bids, headers and neighboring cells must remain identical and each marking must have four sides and the colour of the series adjustment.
+- Raster recovery writes and reads JSON checkpoints through the application codec, then fully compares PNG pixels decoded before and after restoration. At 3–6 seats, RO/EN and enlarged text, check the keeping of historical markings in the bidding, game, closing of hand and end of match. The last row and last eligible payment shall be checked separately when the final hand has a single card; the file saving does not qualify the port of Android `SharedPreferences`.
 - The thickness of the separators has a target of 2,1 dp, with 30% below 3 dp; conversion to whole pixels can change the percentage observed on a profile. Components check raster thickness for each density, separate from Android readability and rendering.
-- The columns of zero pixels, numerical overruns and negative measurements are rejected prior to the construction of the vision. A Font Supplier Fail retains the original cause and does not become a zero measurement.
+- The columns of zero pixels, numerical overruns and negative measurements are rejected prior to the construction of the view. A font-provider failure retains the original cause and does not become a zero measurement.
 
 - [TrumpIndicatorComponentTest](../../whist-lab-app/app/src/test/java/ro/whistlab/app/table/TrumpIndicatorComponentTest.java) checks the same projection of the asset in all ways and languages, the lack of redundant row, two regions of complete font and the separation of the contour of the button from the tactile target. Injected measurements shall not replace the rendering of the Android font.
 - [CardFaceMetrics](../../whist-lab-app/whist-presentation/src/main/java/ro/whistlab/app/cards/CardFaceMetrics.java) holds the proportion 5: 7: 63×88 dp in hand, respectively 46×64 or 50×70 dp per table. The components check the height reduction by 10%, rounding up, lifting and identical sizes to 1–13 cards and 3–6 seats.
@@ -77,7 +77,7 @@ For a change limited to historical, JVM selection may be restricted to `:app:tes
 
 | Collection | Preconditions | Result |
 |---|---|---|
-| `AndroidDisplayComponentSuite` | Java 21, Maven and already available dependencies | JUnit XML and Extent with audit of selected invokes. Without ADB or SDK Android; includes the native plan. |
+| `AndroidDisplayComponentSuite` | Java 21, Maven and already available dependencies | JUnit XML and Extent with audit of selected invocations. Without ADB or SDK Android; includes the native plan. |
 | `whist.displayComponents=true` | Java, Gradle and SDK Android for compilation | JVM components of the application; without installation or emulator. |
 | `:app:historyRasterTest` | Full JDK, Gradle and SDK compiled application classes | Projection of totals and component images without graphics libraries in Android compilation. |
 
@@ -95,7 +95,7 @@ From the root of the project:
 pwsh -NoProfile -File .\scripts\run-whist-responsive-sanity.ps1 -ComponentsOnly
 ```
 
-The launcher prepares a temporary copy and a repository Maven private. `-MavenRepository` indicates the source of the cache; ATF JARs are installed and confronted in the copy of the execution without replacing those read by another process.
+The launcher prepares a temporary copy and a private Maven repository. `-MavenRepository` indicates the source of the cache; ATF JARs are installed and confronted in the copy of the execution without replacing those read by another process.
 
 The competing regression keeps an JAR open for reading in the source cache and requires successful bootstrap in private copy with the source intact. The hashes of the resolved libraries must coincide with those of the source copy; a botstrap failure remains distinct from the interface verdict.
 
@@ -133,11 +133,11 @@ With a copy of TMP, with his own Maven repository already prepared:
 mvn -B -o -pl atf-test-android -am -Phistory-components '-Dtest=AndroidHistoryComponentSuite' '-Dsurefire.failIfNoSpecifiedTests=false' test
 ```
 
-- **Individual: ** the `HistoryLegendAuditComponentTest` selector produces class ratio; the suite uses `atf.test.run.scope=suite` and only one owner.
+- **Individual:** the `HistoryLegendAuditComponentTest` selector produces class report; the suite uses `atf.test.run.scope=suite` and only one owner.
 - **Output: ** default `%TEMP%/whist-component-reports`; `atf.android.component.report-directory` accepts an absolute path. The sole name shall keep separate claims without overwriting an open report.
 - **Renderer: ** `atf.android.component.renderer=extent` is default; `fallback` allows checking the same contract without Extent.
 - **Context: ** XMLs and profile selections are complete, collapsible text bodies; external copies are not required for this selection. The preview of the assertions uses the captured reporting setting after the drafting.
-- **Long values: ** expected and current above the preview are published in full in the comments after drafting, without reassessing the comparison. The unique identity JUnit allows each parametric or intoxicated call to be confronted with the XML result.
+- **Long values:** expected and current above the preview are published in full in observations after redaction, without reassessing the comparison. The unique identity JUnit allows each parameterized or nested invocation to be confronted with the XML result.
 - **Budget of bodies: ** numbered parts keep the text entirely right above the display ceiling; concatenation and last character have component controls, separate from the forecast of assertions.
 - **Time: ** phases keep the duration measured by Kit; the start of the HTML session identifies subsequent publication without inventing an Android time.
 
@@ -147,17 +147,17 @@ mvn -B -o -pl atf-test-android -am -Phistory-components '-Dtest=AndroidHistoryCo
 |---|---|
 | `AndroidDisplayComponentSuite` | Geometry, hierarchy, screen plans, driver and fixtures of history. |
 | `AndroidComponentSuite` | Primary input for all Maven components of the adapter, including the focused selections below. |
-| `AndroidUiFlowTimingComponentSuite` | Trace, publication, republics read-only and separation of the time of publication execution. |
+| `AndroidUiFlowTimingComponentSuite` | Trace, publication, read-only republication and separation of the time of publication execution. |
 | `GameReportComponentSuite` | Consumer contracts for bodies, policies and reporting. |
 
 The classes use audited assertions and [Aggregate launcher](../reporting/ATF_Audit.md#aggregation-of-components-on-live-source) only complete the adapter when there is no explicit one. Display, historical and timekeeping suites are focused selections; they do not gather over the primary entry population.
 
-Gradle selection of the application, engine and graphic library uses [Gradle audit deck](ATF_GradleComponents.md) and are not implicitly included in the Maven aggregate. Each task publishes its own canonical HTML and confronts the calls with the Temporary Junite; the presence of another selection report does not qualify for audit.
+Gradle selection of the application, engine and graphic library uses [Gradle audit bridge](ATF_GradleComponents.md) and are not implicitly included in the Maven aggregate. Each task publishes its own canonical HTML and reconciles invocations with temporary JUnit results; the presence of another selection report does not qualify for audit.
 
 - **Contract:** [Jupiter producer controls](../../atf-test-android/src/test/java/atf/android/component/AndroidComponentReportContractTest.java) and [Gradle bridge controls](../../whist-lab-app/test-audit/src/test/java/atf/gradle/audit/GradleAuditBridgeComponentTest.java) qualify shared ownership, original failures, aborted runs, missing assertions and full long values. [Producer qualification](../reporting/ATF_Audit.md#governed-producer-inventory) remains separate from historical execution migration.
 
-- **Launcher: ** `-ComponentsOnly -ComponentSuite History` and `-ComponentRenderer fallback` restrict selection; `Display` is implicit. The report appears in `component-reports` of the external running, and `WORKING_STATE.json` identifies the specimen and the field.
-- **Compilation: ** Maven profiles select tests on execution; the broad profile does not omit the historical sources in compilation.
+- **Launcher:** `-ComponentsOnly -ComponentSuite History` and `-ComponentRenderer fallback` restrict selection; `Display` is implicit. The report appears in `component-reports` of the external run, and `WORKING_STATE.json` identifies the snapshot and scope.
+- **Compilation:** Maven profiles select tests on execution; the broad profile does not omit the historical sources in compilation.
 
 ## What keeps the native check
 
@@ -165,7 +165,7 @@ Gradle selection of the application, engine and graphic library uses [Gradle aud
 
 | Property | Remaining check on Android |
 |---|---|
-| Font and glyph | Actual measurement, fallback, increased text, trunks and legible capture. |
+| Font and glyph | Actual measurement, fallback, increased text, clipping and a legible capture. |
 | Window | Effective consumption of the insets, keyboard, clipping and navigation of the system on the target API. |
 | Interaction | Tap accepted, focus, hit testing, animation and transition observed. |
 | Composition | The same state contains all the necessary regions in the real raster. |

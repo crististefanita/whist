@@ -32,8 +32,8 @@ The ADB adapter retains each bounded command’s result. The UI adapter interpre
 | [AdbClient](src/main/java/atf/android/AdbClient.java) | Explicit device, maximum duration, text or binary outputs. |
 | [TableViewportAudit](src/main/java/atf/android/whist/evidence/TableViewportAudit.java) | Compare one observation of the table; E2E and components use the same oracle, with real or simulated data. |
 | [Capture](src/main/java/atf/android/evidence/AndroidScreenshotEvidence.java) and [timing](src/main/java/atf/android/evidence/timing/) | Original PNG, monotonic clock, intervals and serialization. |
-| [audits Whist](src/main/java/atf/android/whist/evidence/) | Pure checks and publication of the external index. |
-| [Screenplays and oracles](src/test/java/atf/android/e2e/) | Navigation, state extraction, actors and game comparisons. |
+| [Whist audits](src/main/java/atf/android/whist/evidence/) | Pure checks and publication of the external index. |
+| [Scenarios and oracles](src/test/java/atf/android/e2e/) | Navigation, state extraction, actors and game comparisons. |
 | [Interpretation of the hierarchy](src/test/java/atf/android/e2e/driver/hierarchy/) | `HierarchyDocument` decodes XML and coordinates; `CardLabelText` keeps the card notation, and `CardHierarchy` interprets the accessible hand, edge and legality. |
 | [Flow support](src/test/java/atf/android/e2e/support/) | Control points, partial log and individual or aggregated publication. |
 
@@ -42,7 +42,7 @@ The ADB adapter retains each bounded command’s result. The UI adapter interpre
 ## Running contract checks
 
 - Each command has identified device and maximum duration; the success of the transport and semantic transition have distinct verdicts.
-- The XML interpretation receives one observation and does not order the device. The decoder rejects `DOCTYPE` declarations; generic and card selectors use the same node model and normalization.
+- The XML interpretation receives one observation and does not command the device. The decoder rejects `DOCTYPE` declarations; generic and card selectors use the same node model and normalization.
 - The full PNG and the hierarchy belong to the same checkpoint checked.
 - UIAutomator logical coordinates are mapped at the PNG raster observed prior to pixel comparisons. [DisplayRaster](src/main/java/atf/android/evidence/DisplayRaster.java) requires exact active physical or logical dimensions, without tolerance for cropping or arbitrary scaling.
 - The phase clock starts before the first action and keeps the partial intervals at failure.
@@ -80,16 +80,15 @@ pwsh -NoProfile -File .\scripts\run-whist-responsive-sanity.ps1 -TableViewportOn
 ```
 
 Runner requires PowerShell 7 (`pwsh`), because the ADB process adapter uses
-`ProcessStartInfo.ArgumentList`. The building and report remain in temporary locations
-and documented external.
+`ProcessStartInfo.ArgumentList`. Builds and reports remain in documented external temporary locations.
 
 Geometric oracle and nodes have different limits to visibility in the PNG and observed interaction. The compact table requires the hand, trick and all boxes simultaneously without vertical scroll; the check of pixels and native acceptance remain distinct from the simulated observations.
 
 ## Test levels
 
-- **Unit: ** monotonous clock and serialization of the intervals.
-- **Component: ** ADB controlled, captures, oracles, geometry and publication.
-- **E2E: ** new actions in the identified and installed application under the device reservation.
+- **Unit:** monotonic clock and serialization of the intervals.
+- **Component:** ADB controlled, captures, oracles, geometry and publication.
+- **E2E:** new actions in the identified and installed application under the device reservation.
 
 [Test architecture](../docs/testing/ATF_Architecture.md) separates the level, collection, environment and publication. The resumption of a journal retains its original execution; the acceptance of new interactions requires a new scenario on the device.
 
@@ -106,16 +105,16 @@ Geometric oracle and nodes have different limits to visibility in the PNG and ob
 
 | Mechanism | Question verified | Owner |
 |---|---|---|
-| Passive expectation | Has the required status arisen before the deadline? | `UiStateAwaiter`, fresh-readable and monotonous watch. |
-| Catch | Hierarchy and PNG belong to the current observation? | `UiDeviceCapture`, with transfer and measured range. |
-| Transport | Has the command ended, including draining the exits? | `AdbClient` and `CommandProcess`, with one term. |
+| Passive wait | Did the required state appear before the deadline? | `UiStateAwaiter`, fresh reads and a monotonic clock. |
+| Capture | Hierarchy and PNG belong to the current observation? | `UiDeviceCapture`, with transfer and measured range. |
+| Transport | Has the command ended, including draining output streams? | `AdbClient` and `CommandProcess`, with one deadline. |
 
 The driver composes these mechanisms and records the actions. Components control processes, clocks and observations; the native scenario qualifies the device and interaction separately.
 
 | Contract changed | Verification without device |
 |---|---|
-| First observation and expiry of the wait | [AndroidUiDriverComponentTest](src/test/java/atf/android/e2e/driver/AndroidUiDriverComponentTest.java), with watch and controlled readings. |
-| Catch, transfer and interval | [AndroidUiDriverCaptureTimingTest](src/test/java/atf/android/e2e/driver/AndroidUiDriverCaptureTimingTest.java), with processes and files controlled. |
+| First observation and expiry of the wait | [AndroidUiDriverComponentTest](src/test/java/atf/android/e2e/driver/AndroidUiDriverComponentTest.java), with a controlled clock and reads. |
+| Capture, transfer and interval | [AndroidUiDriverCaptureTimingTest](src/test/java/atf/android/e2e/driver/AndroidUiDriverCaptureTimingTest.java), with processes and files controlled. |
 | Start, finish, drain and clean | [CommandProcessComponentTest](src/test/java/atf/android/process/CommandProcessComponentTest.java), with controlled local processes. |
 
 Transport, intervals and capture data may support another application. The card selectors, table interpretation and score check keep the Whist semantics; [Transfer to another game](../docs/learning/ATF_GameTransfer.md) requires adaptor and own oracle.
@@ -126,18 +125,17 @@ Transport, intervals and capture data may support another application. The card 
 ## Waiting for state
 
 [UiStateAwaiter](src/test/java/atf/android/e2e/driver/waiting/UiStateAwaiter.java)
-shares a common loop in passive expectations. The driver shall provide the condition,
-Interrogation interval and diagnosis; reading produces a fresh hierarchy.
+shares one loop for passive waits. The driver shall provide the condition,
+polling interval and diagnostic; reading produces a fresh hierarchy.
 
 | Contract | Behaviour |
 |---|---|
-| First remark | The condition shall be assessed prior to the break, including when the deadline is already expired. |
-| Reluare | The monotonous clock checks the term between the tests; the readout of the ADB shall retain its own termination contract. |
+| First observation | Evaluate the condition before sleeping, including when the deadline is already expired. |
+| Retry | The monotonic clock checks the deadline between attempts; each ADB read retains its own termination contract. |
 | Diagnostic | Expiration uses the last observed hierarchy; error or interruption is not replaced by success or resumption. |
 | Navigation | Loops closing menus or activating controls remain distinct; passive waiting does not introduce actions. |
 
-Components use watch and controlled breaks without emulator or thresholds
-Host performance. [Package governance](../docs/governance/ATF_Packages.md)
+Components use a controlled clock and pauses without an emulator or host-performance thresholds. [Package governance](../docs/governance/ATF_Packages.md)
 delimit the mechanism for interaction and capture of evidence.
 
 </details>
@@ -148,15 +146,14 @@ delimit the mechanism for interaction and capture of evidence.
 ## Isolated transport execution
 
 [Driver UI](src/test/java/atf/android/e2e/driver/AndroidUiDriver.java) keep
-interactions and stock log. [Capture](src/test/java/atf/android/e2e/driver/UiDeviceCapture.java)
-holds the transfer of the hierarchy and PNG, retesting and closing the range
-measured. A hierarchy left over from another screen or prior PNG cannot demonstrate
-success of current capture; interruption retains the cause and marking of the wire.
+interactions and the action journal. [Capture](src/test/java/atf/android/e2e/driver/UiDeviceCapture.java)
+holds the transfer of the hierarchy and PNG, retries and closure of the measured interval. A hierarchy left over from another screen or prior PNG cannot demonstrate
+success of current capture; interruption retains the cause and thread interrupt status.
 
-[AdbClient](src/main/java/atf/android/AdbClient.java) delegates [execution of the process](src/main/java/atf/android/process/CommandProcess.java) with a single monotonous term for starting, finishing and drainage exits. The interruption shall retain the wire marking and the reading errors must not be converted into success.
+[AdbClient](src/main/java/atf/android/AdbClient.java) delegates [execution of the process](src/main/java/atf/android/process/CommandProcess.java) with a single monotonic deadline for starting, finishing and output draining. The interruption shall retain the thread interrupt status and the reading errors must not be converted into success.
 
 - Native blocking operations use daemon threads independently of the virtual-thread scheduler.
-- The wait shall observe both flows so that one locked exit does not conceal the error of the other; an error already observed takes precedence over the generic expiry diagnosis.
+- The wait shall observe both streams so that one blocked output does not conceal the error of the other; an error already observed takes precedence over the generic expiry diagnosis.
 
 Transport components use controlled local processes. [Acceptance of Android](../docs/testing/ATF_Android.md) checks the behaviour on the device separately; publication of a valid capture has its own contract.
 

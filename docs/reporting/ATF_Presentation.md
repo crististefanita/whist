@@ -8,13 +8,13 @@ An immutable policy controls AUTO, SUMMARY and FULL selection and the limits of 
 
 | Configuration | Responsibility |
 |---|---|
-| `config/game-evidence.yml` | Consumer specific selection and limits; explicit route through `atf.evidence.policy`. |
-| `atf.yaml` or `atf.yml` | Preview of comparisons and content budget; explicit route through `atf.report.config`. |
+| `config/game-evidence.yml` | Consumer specific selection and limits; explicit path through `atf.evidence.policy`. |
+| `atf.yaml` or `atf.yml` | Preview of comparisons and content budget; explicit path through `atf.report.config`. |
 | `EvidencePolicy` and `GameReportConfiguration` | Resolve configuration once for publication. |
 
 The subsequent change of configuration does not alter the object already captured. [GameReportConfiguration](../../atf-tests/src/main/java/atf/tests/reporting/GameReportConfiguration.java) requires assertion previews of 240 characters and a positive body budget; another preview value is denied by the current adapter.
 
-Unknown or duplicate keys, multiple documents, invalid types, numerical overruns and negative limits are refused to load. Default values shall be consulted in the [actual configuration](../../config/game-evidence.yml).
+Unknown or duplicate keys, multiple documents, invalid types, numeric overflow and negative limits are rejected at loading. Default values shall be consulted in the [actual configuration](../../config/game-evidence.yml).
 
 ```mermaid
 flowchart LR
@@ -36,8 +36,8 @@ Selection determines which invocations are presented and declares omissions. Gro
 | Mode | Retained invocations | Context and presentation |
 |---|---|---|
 | AUTO | The full supplied population within inclusive limits; otherwise complete deterministic examples, non-PASS outcomes and mandatory checks. | Optional context in the captured budget and all selected comparisons. |
-| SUMMARY | Complete passing examples, non-PASS outcomes and mandatory checks. | Observe the optional context and fingerprints; declare the original inventory, retained and omitted. |
-| FULL | All supplied invocations and checkpoints. | The budgets remain active; the pre-selected diagnosis and the optional observation required for the session have distinct behaviors defined below. |
+| SUMMARY | Complete passing examples, non-PASS outcomes and mandatory checks. | Omit optional context and fingerprints; declare the original inventory, retained and omitted. |
+| FULL | All supplied invocations and checkpoints. | The budgets remain active; the preselected diagnostics and the optional observation required for the session have distinct behaviors defined below. |
 
 Collections explicitly marked for full storage shall be kept in accordance with policy in every mode. The presentation mode does not extend the population provided by the producer and does not execute the game or oracle.
 
@@ -46,28 +46,28 @@ Collections explicitly marked for full storage shall be kept in accordance with 
 | Surface | Contract |
 |---|---|
 | Comparison | Native tables with at most `rowsPerGroup` rows; continuations identify the original range. |
-| Fragment Verdict | Derived from retained rows; the terminal fragment also retains the result of the explicitly provided group. |
+| Fragment verdict | Derived from retained rows; the terminal fragment also retains the result of the explicitly provided group. |
 | Long values | Native preview of 240 characters and access to complete values associated with the original group. |
 | Remarks | Not more than `fieldsPerGroup` rows; long values keep the content complete. |
-| TEXT | Ordered parts, preferably for the end of the line and keeping CR/LF, Unicode and literal entities. |
+| TEXT | Ordered parts, preferably at line boundaries and preserving CR/LF, Unicode and literal entities. |
 | JSON | Full documents at object or array boundaries; an indivisible element over budget is denied. |
-| Captures Android | The original whole PNG associated with the control point; the selection does not replace or cut the image. |
+| Android captures | The original whole PNG associated with the control point; the selection does not replace or cut the image. |
 | Observation without comparison | The explicit API for attached materials without invented domain assertions. |
 
 Every JSON fragment is a complete document. The original numerical forms shall be maintained by formatting and fragmentation; a missing or reordered fragment invalidates completeness.
 
 ## Optional data and refusal of publication
 
-The optional character is declared by the caller. The file name or label shall not convert the comparative inputs, causes and captures into optional data.
+The caller declares whether data is optional. The file name or label shall not convert the comparative inputs, causes and captures into optional data.
 
 | Step | Implemented behaviour |
 |---|---|
 | [EvidenceSelection](../../atf-tests/src/main/java/atf/tests/learning/EvidenceSelection.java) | Deduplicates diagnostic fingerprints, keeps entire records in the budget and declares omissions including in FULL; SUMMARY omits them. |
-| [GameReportPresentation](../../atf-tests/src/main/java/atf/tests/reporting/GameReportPresentation.java) | For optional comments requested for the session: AUTO omits that do not fit, SUMMARY omits the context and FULL refuses to exceed the budget. |
+| [GameReportPresentation](../../atf-tests/src/main/java/atf/tests/reporting/GameReportPresentation.java) | For optional observations requested by the session: AUTO omits those that do not fit, SUMMARY omits the context and FULL refuses to exceed the budget. |
 | [GameReportSession](../../atf-tests/src/main/java/atf/tests/reporting/GameReportSession.java) | Reserve the selected context before the scenarios and check the cumulative limit; reservation does not recompute the selection. |
 | [GameReportPhase](../../atf-tests/src/main/java/atf/tests/reporting/GameReportPhase.java) | Preserve INCOMPLETE, including when the caller intercepts the error before closing. |
 
-External diagnostic references are inventoried and omitted from HTML; mandatory information remains incorporated. The content is measured in UTF-16 units and HTML markings add volume: the text budget is not a total file or memory limit.
+External diagnostic references are inventoried and omitted from HTML; mandatory information remains incorporated. The content is measured in UTF-16 units and HTML markup adds volume: the text budget is not a total file or memory limit.
 
 [EvidenceSelectionContractTest](../../atf-tests/src/test/java/atf/tests/learning/EvidenceSelectionContractTest.java) checks selection before the session. [GameReportPublicationContractTest](../../atf-tests/src/test/java/atf/tests/reporting/GameReportPublicationContractTest.java) checks its publication and refusal; the two contracts are not confused.
 
@@ -83,7 +83,7 @@ The consumer controls the population and context, and the library has the prepar
 
 ```mermaid
 flowchart LR
-    SELECT[Declared selection] -->|publishes| HTML[Purpose content]
+    SELECT[Declared selection] -->|publishes| HTML[Declared scope content]
     HTML -->|display by navigation| VISIBLE[Values and captures]
     VISIBLE -->|allows| AUDIT[Interactive revision]
 ```
@@ -104,4 +104,4 @@ The selection shall retain complete invocations and explicit omissions. The chan
 
 ### Performance governance
 
-[Publication audit](ATF_Audit.md) has data checks and interactive review. a successful structural audit does not certify time or legibility in the browser; the generic rendering problem is directed by [feedback](../feedback/README.md).
+[Publication audit](ATF_Audit.md) owns data checks and interactive review. A successful structural audit does not certify time or legibility in the browser; the generic rendering problem is directed by [feedback](../feedback/README.md).
