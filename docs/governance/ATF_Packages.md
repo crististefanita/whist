@@ -8,7 +8,7 @@ A package groups types that change for the same contract. [Project policy](../..
 
 ## Source language
 
-Code is written in English on both documentation branches: identifiers, comments, Javadoc, source-level explanations and developer diagnostics. The Romanian documentation edition translates guides, not implementations. User-facing localized text, domain proper names and explicitly identified language fixtures remain data; they do not authorize Romanian implementation comments or identifiers.
+Implementation code must use English on both documentation branches: identifiers, comments, Javadoc, source-level explanations and developer diagnostics. The Romanian documentation edition translates guides, not implementations. User-facing localized text, domain proper names and explicitly identified language fixtures remain data; they do not authorize Romanian implementation comments or identifiers.
 
 Source review must check meaning as well as spelling. Automated governance must identify the inspected source population and reject reviewed language violations, while accepting localized resources and fixture literals. The remaining executable enforcement is tracked in the [governance register](../feedback/ATF_Governance.md#source-language-governance).
 

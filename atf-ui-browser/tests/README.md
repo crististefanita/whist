@@ -6,7 +6,7 @@
 
 ## Overview
 
-Shared contract for components and E2E. The adapter owns the platform protocol; the common source owns the matrix and assertions.
+Shared contract for components and E2E. The adapter owns the platform protocol; the common source owns the matrix and assertions. [Java support](../src/test/README.md) documents session and evidence ownership.
 
 ## Contract
 
