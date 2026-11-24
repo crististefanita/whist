@@ -21,6 +21,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Base64;
 import java.util.List;
+import java.util.Properties;
 import javax.imageio.ImageIO;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
@@ -299,8 +300,13 @@ class AndroidUiFlowReportPublisherTest {
         int previewLimit = AtfReportConfigurationLoader.load().reportingSettings().assertionMaxDisplayCharacters();
         Path screenshot = output.resolve("overlong.png");
         Files.write(screenshot, Base64.getDecoder().decode(ONE_PIXEL_PNG));
-        AndroidUiFlowTrace trace = validPassingTrace(output, "overlong-assertion", screenshot,
-                "x".repeat(previewLimit + 1));
+        AndroidUiFlowTrace original = validPassingTrace(output, "overlong-assertion", screenshot, "6");
+        Properties captured = new Properties();
+        try (var input = Files.newInputStream(original.manifest())) { captured.load(input); }
+        captured.setProperty("phase.0.step.0.assertion.0.actual", "x".repeat(previewLimit + 1));
+        Path legacy = output.resolve("legacy.properties");
+        try (var sink = Files.newOutputStream(legacy)) { captured.store(sink, "Controlled legacy assertion"); }
+        var trace = atf.android.e2e.support.replay.CapturedAndroidFlow.read(legacy);
         Path report = output.resolve("overlong-assertion.html");
 
         IllegalStateException failure = assertThrows(IllegalStateException.class,
@@ -309,6 +315,27 @@ class AndroidUiFlowReportPublisherTest {
 
         assertTrue(failure.getMessage().contains("configured " + previewLimit + " character preview"));
         assertFalse(Files.exists(report), "An unauditable preview must not leave a candidate Extent report");
+    }
+
+    @Test
+    void livePublicationUsesTheSamePublicPolicyAsCheckpointAdmission(@TempDir Path output) throws Exception {
+        int currentLimit = AtfReportConfigurationLoader.load().reportingSettings().assertionMaxDisplayCharacters();
+        var settings = new atf.reporting.configuration.ReportingSettings(currentLimit + 1);
+        Path screenshot = output.resolve("captured-policy.png");
+        Files.write(screenshot, Base64.getDecoder().decode(ONE_PIXEL_PNG));
+        String fullValue = "x".repeat(currentLimit) + "Z";
+        var trace = new AndroidUiFlowTrace(output, "captured-policy", "Captured publication policy",
+                "AndroidUiFlowReportPublisherTest", "atf.android.e2e.support", "ro.whistlab.app",
+                List.of("component"), System::nanoTime, settings);
+        trace.checkpoint("BODY", "THEN", "Retain the admitted comparison", "Table", screenshot,
+                List.of(new AtfUiActionRecord(1, "Inspect state", "Table", "visible", "visible", 0,
+                        AtfReportStatus.PASS, AtfUiEvidenceSource.OBSERVE)),
+                List.of(new AtfAssertion("Complete admitted value", fullValue, fullValue, true)), AtfReportStatus.PASS, List.of());
+        trace.finish(AtfReportStatus.PASS);
+        Path report = AndroidUiFlowReportPublisher.publish(output.resolve("captured-policy.html"),
+                "package:/installed.apk", "emulator-5554", "28", "Controlled public policy", List.of(), trace);
+        assertEquals(settings, trace.publicationSettings().orElseThrow());
+        assertTrue(Files.readString(report).contains(fullValue), "Publication must retain the entire value admitted by the live policy");
     }
 
     @Test

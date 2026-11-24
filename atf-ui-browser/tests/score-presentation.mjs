@@ -9,14 +9,16 @@ export function verifyScoreActionTypography(tokens, rootPixels, buttons) {
     return Number.parseFloat(tokens[name]);
   };
   const primary = rem('--score-text-action-primary'), secondary = rem('--score-text-action-secondary');
-  assert.equal(primary, rem('--score-text-primary') * 1.5, 'The primary score action gains exactly 50%');
-  assert.equal(secondary, rem('--score-text-quiet') * 1.5, 'The secondary score action gains exactly 50%');
+  const supporting = rem('--score-text-action-explanation');
+  assert.equal(primary, 1, 'Commands retain the 16-unit shared menu role');
+  assert.equal(secondary, primary, 'Quiet commands use the same role');
+  assert.equal(supporting, rem('--score-text-quiet'), 'Scoring details retain the supporting 14-unit role');
   for (const button of buttons) {
-    assert.equal(button.size, rootPixels * (button.quiet ? secondary : primary), 'One text scale: ' + button.label);
+    assert.equal(button.size, rootPixels * (button.explanation ? supporting : button.quiet ? secondary : primary), 'One text scale: ' + button.label);
     assert.ok(button.height >= 48, 'Touch target: ' + button.label);
     assert.equal(button.overflow, false, 'Complete label: ' + button.label);
   }
-  return {actions: buttons.length, primaryRem: primary, secondaryRem: secondary};
+  return {actions: buttons.length, primaryRem: primary, secondaryRem: secondary, supportingRem: supporting};
 }
 
 /** Executes the delivered renderers with game-owned captions; it never calculates a score. */

@@ -39,14 +39,15 @@ test('the real Web score renderer matches native text roles and preserves action
   const probe=fileURLToPath(new URL('./ScoreTypographyProbe.java',import.meta.url));
   const compile=['-proc:none','-encoding','UTF-8','-d',work];
   if(process.env.ATF_BROWSER_RUNTIME_JAR)compile.push('-cp',process.env.ATF_BROWSER_RUNTIME_JAR);
-  else compile.push(contract);
+  else compile.push(contract, path.join(root,'whist-lab-app/card-table-core/src/main/java/ro/cardtable/ui/menu/ActionTypography.java'));
   execFileSync('javac',[...compile,probe],{windowsHide:true,timeout:30000});
   const classpath=[work,process.env.ATF_BROWSER_RUNTIME_JAR].filter(Boolean).join(path.delimiter);
   const tokens=JSON.parse(execFileSync('java',['-cp',classpath,'ScoreTypographyProbe'],{encoding:'utf8',windowsHide:true,timeout:30000}));
   assert.equal(tokens['--score-text-title'],'1.5625rem','Native score title remains 25 logical sp');
   assert.equal(tokens['--score-text-quiet'],'0.875rem','Native quiet actions retain their 14 sp role');
-  assert.equal(tokens['--score-text-action-primary'],'1.5rem','Score primary actions gain 50% independently of body text');
-  assert.equal(tokens['--score-text-action-secondary'],'1.3125rem','Score secondary actions gain 50% independently of dialogs');
+  assert.equal(tokens['--score-text-action-primary'],'1.0rem','Score primary commands match menu commands');
+  assert.equal(tokens['--score-text-action-secondary'],'1.0rem','Quiet command styling preserves the role');
+  assert.equal(tokens['--score-text-action-explanation'],'0.875rem','Scoring details use the supporting role');
   const css=fs.readFileSync(path.join(web,'table.css'),'utf8');
   const score=fragment('function whistScore(', 'function writeSeatFact(');
   const grid=fragment('function scoreGrid(', 'function showHistory(');
@@ -92,7 +93,7 @@ test('the real Web score renderer matches native text roles and preserves action
         const result={heading:size(stage.querySelector('h1')),summary:size(stage.querySelector('.whist-score-status')),
           hand:size(stage.querySelector('.whist-score-hand')),winner:size(stage.querySelector('.whist-score-winner')),
           award:size(stage.querySelector('.whist-score-awards')),column:size(stage.querySelector('th')),value:size(stage.querySelector('td')),
-          buttons:buttons.map(node=>({label:node.textContent,size:size(node),quiet:node.classList.contains('quiet'),
+          buttons:buttons.map(node=>({label:node.textContent,size:size(node),quiet:node.classList.contains('quiet'),explanation:node.classList.contains('score-explanation'),
             height:node.getBoundingClientRect().height,overflow:node.scrollWidth>node.clientWidth+1})),
           extraWidth:stage.scrollWidth-stage.clientWidth,
           columns:[...stage.querySelectorAll('.whist-score-grid :is(th,td):not(:first-child)')].map(cell=>{
@@ -154,13 +155,16 @@ test('the real Web score renderer matches native text roles and preserves action
 
 test('the score action contract rejects stale roles, double scaling and clipped controls',()=>{
   const roles={'--score-text-primary':'1rem','--score-text-quiet':'.875rem',
-    '--score-text-action-primary':'1.5rem','--score-text-action-secondary':'1.3125rem'};
+    '--score-text-action-primary':'1rem','--score-text-action-secondary':'1rem','--score-text-action-explanation':'0.875rem'};
   roles['--score-text-quiet']='0.875rem';
-  const button={label:'Istoricul jocului',quiet:true,size:21,height:48,overflow:false};
-  assert.deepEqual(verifyScoreActionTypography(roles,16,[button]),{actions:1,primaryRem:1.5,secondaryRem:1.3125});
+  const button={label:'Istoricul jocului',quiet:true,size:16,height:48,overflow:false};
+  assert.deepEqual(verifyScoreActionTypography(roles,16,[button]),{actions:1,primaryRem:1,secondaryRem:1,supportingRem:0.875});
   for(const mutation of [{size:14},{size:31.5},{height:47},{overflow:true}])
     assert.throws(()=>verifyScoreActionTypography(roles,16,[{...button,...mutation}]));
   assert.throws(()=>verifyScoreActionTypography({...roles,'--score-text-action-secondary':undefined},16,[button]));
+  assert.throws(()=>verifyScoreActionTypography({...roles,'--score-text-action-primary':'1.5rem'},16,[button]));
+  assert.throws(()=>verifyScoreActionTypography(roles,16,[{...button,explanation:true,size:16}]));
+  assert.equal(verifyScoreActionTypography(roles,16,[{...button,explanation:true,size:14}]).supportingRem,.875);
   assert.throws(()=>verifyScoreActionTypography(roles,0,[button]));
   console.log('Score action rejection observations: stale role, duplicate scale, clipped label and undersized target refused');
 });

@@ -53,7 +53,15 @@ The shared matrix covers 3–6 seats, compact and tall windows, enlarged fonts a
 
 ## Result action acceptance
 
-The shared roles and adapter components qualify the logical text and callback contract. Native raster acceptance must additionally observe complete wrapped labels, vertical scrolling and the last action on identified Whist and Rentz APKs, with RO/EN and enlarged text. A source or AAR comparison alone does not certify Android clipping.
+Action typography follows intent rather than filled/quiet styling. The portable owner provides one command role and one supporting role; Android and Web apply accessibility scaling exactly once. Titles, score cells and touch targets keep their independent contracts.
+
+| Family | Actions | Logical size |
+|---|---|---|
+| Command | Home: New game, Resume game; setup: Start game, Back; score: Next hand, Score history, Main menu | 16 |
+| Supporting | Home: Rankings, Achievements, Rules; score: Scoring details | 14 |
+
+- Components must compare the same semantic roles across home, setup and score, preserve callbacks, and reject stale or doubled scaling in RO/EN and enlarged text. Supporting labels may be smaller; their touch target remains at least 48 logical units.
+- Native raster acceptance must additionally observe complete labels, vertical fit and the last action on identified Whist and Rentz APKs. Shared roles or controlled DOM measurements alone do not certify Android clipping. Keep UI-02 open until that boundary is observed.
 
 ## Shared presentation acceptance
 

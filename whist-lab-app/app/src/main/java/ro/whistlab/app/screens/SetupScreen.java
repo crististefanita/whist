@@ -120,6 +120,6 @@ public final class SetupScreen {
             setup.allowZeroGame(zeroGame.isChecked());
             start.accept(setup.config(System.nanoTime()));
         }, true);
-        views.addQuietButton(page, copy.back(), back);
+        views.addQuietButton(page, copy.back(), back, ro.cardtable.ui.menu.MenuTypography.ACTION.logicalPixels());
     }
 }

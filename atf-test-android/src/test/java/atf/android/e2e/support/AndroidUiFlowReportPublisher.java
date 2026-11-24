@@ -60,9 +60,9 @@ public final class AndroidUiFlowReportPublisher {
             String summary, AndroidUiFlowEvidence trace, java.util.function.LongSupplier publicationTicks,
             java.util.Set<Path> evidenceFiles) throws Exception {
         Files.createDirectories(output.getParent());
-        ReportingSettings settings = AtfReportConfigurationLoader.load().reportingSettings();
-        validateCheckpointContract(trace,
-                settings.assertionMaxDisplayCharacters());
+        ReportingSettings settings = trace.publicationSettings()
+                .orElseGet(() -> AtfReportConfigurationLoader.load().reportingSettings());
+        validateCheckpointContract(trace, settings);
         List<ReportObservation.Body> supporting = supportingEvidence(List.copyOf(evidenceFiles),
                 trace.manifest().toAbsolutePath().getParent(), settings.bodyMaxDisplayCharacters());
 
@@ -195,7 +195,7 @@ public final class AndroidUiFlowReportPublisher {
         AndroidUiFlowReportAudit.auditPublishedReport(report, trace, settings);
     }
 
-    private static void validateCheckpointContract(AndroidUiFlowEvidence trace, int assertionPreviewLimit) {
+    private static void validateCheckpointContract(AndroidUiFlowEvidence trace, ReportingSettings settings) {
         List<AndroidUiFlowTrace.CheckpointSnapshot> checkpoints = trace.phaseSnapshots().stream()
                 .flatMap(phase -> phase.checkpoints().stream()).toList();
         trace.sanityPlan().ifPresent(plan -> plan.verify(checkpoints.stream()
@@ -209,15 +209,7 @@ public final class AndroidUiFlowReportPublisher {
                     "Android checkpoint has no recorded UI observation: " + checkpoint.title());
             require(!checkpoint.assertions().isEmpty(),
                     "Android checkpoint has no evaluated assertions: " + checkpoint.title());
-            for (var assertion : checkpoint.assertions()) {
-                require(assertion.expected().length() <= assertionPreviewLimit,
-                        "Assertion expected value exceeds Extent's configured " + assertionPreviewLimit
-                                + " character preview: " + assertion.name());
-                require(assertion.actual().length() <= assertionPreviewLimit,
-                        "Assertion actual value exceeds Extent's configured " + assertionPreviewLimit
-                                + " character preview: " + assertion.name()
-                                + "; put complete diagnostic values in the expandable observation table");
-            }
+            atf.android.e2e.support.flow.CheckpointAssertionPolicy.validate(checkpoint.assertions(), settings);
         }
     }
 

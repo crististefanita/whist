@@ -853,7 +853,7 @@ function whistScore(match) {
   scoreTable.append(scoreGrid(match.score.table, true));
   page.append(scoreTable,
     button(copy("scoringDetails", "Calculul punctajului"),
-      () => profileDialogs.message(copy("scoringDetails", "Calculul punctajului"), details.rules, "game-score-rules"), "quiet"));
+      () => profileDialogs.message(copy("scoringDetails", "Calculul punctajului"), details.rules, "game-score-rules"), "quiet score-explanation"));
   for (const move of match.actions) page.append(control(move));
   page.append(button(copy("history", "Istoric punctaj"), () => showHistory(match.history), "quiet"),
     button(copy("mainMenu", "Meniu principal"), menu, "quiet"));

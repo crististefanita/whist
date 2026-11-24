@@ -69,6 +69,10 @@ The [coordinator](../../atf-test-android/src/test/java/atf/android/e2e/support/A
 | Replacement succeeds, then timing fails | Committed evidence keeps its owner; the original cause stays visible. |
 | Replay and publication | Original identities, comparisons and failures reach the manifest and standalone HTML. |
 
+The live trace captures the public Reporting settings once. Checkpoint admission and publication share the same assertion preview policy: an oversized expected or actual value is rejected before journal writes or action transfer, with its assertion name, field, limit and measured UTF-16 length. Original values remain untouched; complete diagnostics belong to observation bodies rather than truncated comparison summaries.
+
+Legacy replay does not invent historical settings: it applies the effective publication policy and retains the original comparisons. The publisher independently checks these records before creating HTML. A bounded summary may be retried without losing or duplicating pending actions.
+
 Units verify format, statuses and Unicode fields without Extent. Components verify refusal, interrupted writing, retry and publication without a device; they do not qualify Android pixels.
 
 ### Full bodies and display budget
