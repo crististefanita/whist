@@ -4,13 +4,6 @@
 
 The project owns Android-boundary and adapter checks. Reusable contracts are requested through the [library ownership register](README.md), without copying producer implementations into consumers.
 
-## Cost of syntactic inspection
-
-| Priority | Observation and source | Closure criterion |
-|---|---|---|
-| P2 | The [syntax parser](../../atf-tests/src/test/java/atf/tests/governance/source/JavaTestDeclarations.java) already disables annotation processing and uses empty class and processor paths. The cost of this configuration has not been measured against the same inventory. | Measure parsing cost with an identified environment and inventory. Preserve independent controls for composed annotations, ambiguous imports, syntax errors and parser lifecycle; do not claim a speedup from configuration alone. |
-
-
 ## Cohesion and package development
 
 [Executable policy](../../config/atf-governance-policy.json) enforces the package limit without exceptions. [Package responsibilities](../governance/ATF_Packages.md) separates public APIs, shared support and test selections.
@@ -26,7 +19,7 @@ The [browser test index](../../atf-ui-browser/tests/README.md#diagnostic-runner-
 | Priority | Owner and gap | Verification level and closure criterion |
 |---|---|---|
 | P2 | Launcher coordination: entry points check preconditions inconsistently. | Controlled components for Java, Maven, Gradle, Node and Python must check required capabilities before costly operations and report missing capabilities with source identity. Distinguish the Python installation alias from an executable interpreter. For the [PowerShell ADB module](../../atf-test-android/tools/AndroidDeviceSetup.psm1), verify availability, refusal, timeout and process state separately from parsing and the Java client. |
-| P2 | Qualification cost: source/release snapshot preparation still copies and hashes retained reports repeatedly. | Separate retained-report admission from source staging and avoid recopying unrelated payloads; preserve exact hashes, source/catalog context and conservative admission of unknown readers. The implemented [compiler and cleanup recovery contracts](../testing/ATF_Collections.md#maven-compiler-reuse) are regression boundaries, not open implementation tasks. Measure source/release inventory and copying separately from compilation and execution; reconcile recorded stage durations with wall time before claiming savings, including the named post-compilation verification phase. |
+| P2 | Qualification cost: source/release snapshot preparation still copies and hashes retained reports repeatedly. | Separate retained-report admission from source staging and avoid recopying unrelated payloads; preserve exact hashes, source/catalog context and conservative admission of unknown readers. The implemented [compiler and cleanup recovery contracts](../testing/ATF_Collections.md#maven-compiler-reuse) are regression boundaries, not open implementation tasks. Measure source/release inventory and copying separately from compilation and execution; reconcile recorded stage durations with wall time before claiming savings, including the named post-compilation verification phase. Profile compiler-output-seal traversal, byte hashing and receipt serialization independently; retain byte-level tamper and missing-class checks. |
 
 [Inline-image retention governance](../../atf-tests/src/test/java/atf/tests/governance/documentation/release/ReleaseEvidenceRetentionGovernanceTest.java) separately checks for duplicated PNG files beside HTML. It does not prove data autonomy, image readability or APK integrity; the [adapter criterion](../reporting/ATF_Audit.md) remains separate.
 
@@ -76,6 +69,14 @@ The [early-admission contract](../governance/ATF_TestChanges.md#early-source-con
 |---|---|---|
 | P2 | Qualification metadata still reaches some diagnostics only after snapshot preparation. | Admit the active dossier's E2E inventory, catalog links and editorial limits through a cheap metadata check before the long collection. Preserve failed evidence and prove that a focused recheck cannot qualify a failed primary group; this is separate from source-control proof admission. |
 
+
+<a id="source-bound-proof-recovery"></a>
+
+## Source-bound proof recovery
+
+| Priority | Gap and owner | Closure criterion |
+|---|---|---|
+| P1 | [testChanges proof execution](../../atf-tests/src/test/java/atf/tests/execution/components/TestChangeProofExecution.java) reruns the complete declared control after one failed invocation; primary component-owner recovery does not yet cover this proof runner. | Checkpoint each static invocation and reuse original successful comparisons only for the same source, base, control ID, selection, compiled bytes and toolchain. Rerun failed or missing invocations; reject altered captures and foreign identities. Reconcile the complete final Extent population with the proof and preserve original failed attempts without weakening watchdogs. Measure planning/discovery, test bodies and publication separately. |
 
 <a id="framework-selection-boundaries"></a>
 

@@ -96,7 +96,7 @@ The test-only [cost probe](../../atf-tests/src/test/java/atf/tests/governance/so
 | Boundary | Measurement contract |
 |---|---|
 | Inputs | Read UTF-8 sources once, preserve paths and fingerprint the complete ordered inventory. |
-| Ownership | A disposable measurement JVM has an explicit memory, CPU and process budget; each trial owns one file manager and each source receives a fresh parse task and diagnostics. Compiler resources do not remain in the functional owner. |
+| Ownership | A disposable measurement JVM has an explicit heap limit, declared processor count and process deadline; each trial owns one file manager and each source receives a fresh parse task and diagnostics. Compiler resources do not remain in the functional owner. |
 | Reference | Both modes disable annotation processing; production uses empty class/processor paths and the reference uses JDK default paths. |
 | Order | Warm both modes, then alternate the order of measured pairs. |
 | Cost | Retain raw parse time separately from total ownership, AST normalization and hashing; record JDK, VM, OS and processor count. |

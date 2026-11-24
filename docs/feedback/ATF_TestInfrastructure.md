@@ -22,7 +22,6 @@ Durable ownership and recovery now belong to the [release qualification contract
 
 | Priority | Qualification limit | Closure criterion |
 |---|---|---|
-| P2 | [CommandProcessComponentTest](../../atf-test-android/src/test/java/atf/android/process/CommandProcessComponentTest.java) combines explicit synchronization with tight wall-clock thresholds. | Separate subprocess preparation from transport duration, and completion or truncation checks from latency qualification. Keep timeouts and negative controls; do not relax thresholds merely to obtain PASS. |
 | P2 | [Mocked ADB preflight](../../atf-tests/src/test/java/atf/tests/governance/documentation/release/rag/scope/AndroidReleasePreflightComponentTest.java) includes PowerShell startup within the refusal timeout. Under load it can fail before the mock verdict. | Signal fixture readiness and transport refusal separately. Verify controlled clock and process behavior, plus a bounded test of the actual launcher. |
 
 [Test kit](../../lib/README.TestKit.md#purpose-and-integration) · [Validation API](../../atf-validation/README.md) · [Governance](ATF_Governance.md)
