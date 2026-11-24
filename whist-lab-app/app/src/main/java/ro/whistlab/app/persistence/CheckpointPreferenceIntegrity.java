@@ -1,10 +1,12 @@
 package ro.whistlab.app.persistence;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.io.StringReader;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
 import java.util.function.Supplier;
 import javax.xml.parsers.SAXParserFactory;
 import org.xml.sax.Attributes;
@@ -26,7 +28,7 @@ public final class CheckpointPreferenceIntegrity {
         }
         if (!document.exists()) return null;
         try {
-            String xml = StandardCharsets.UTF_8.newDecoder().decode(ByteBuffer.wrap(Files.readAllBytes(document.toPath()))).toString();
+            String xml = readDocument(document);
             // SharedPreferences writes UTF-8 without a DTD. Reject declarations before parsing,
             // avoiding optional SAX security features unsupported by Android's Expat factory.
             if (xml.contains("<!DOCTYPE") || xml.contains("<!ENTITY")) throw new SAXException("Checkpoint declarations are forbidden");
@@ -41,6 +43,14 @@ public final class CheckpointPreferenceIntegrity {
             return null;
         } catch (Exception invalid) {
             throw new IllegalStateException("Could not read the saved checkpoint preference document", invalid);
+        }
+    }
+
+    private static String readDocument(File document) throws IOException {
+        try (var input = new FileInputStream(document); var bytes = new ByteArrayOutputStream()) {
+            byte[] buffer = new byte[4096]; int count;
+            while ((count = input.read(buffer)) != -1) bytes.write(buffer, 0, count);
+            return StandardCharsets.UTF_8.newDecoder().decode(ByteBuffer.wrap(bytes.toByteArray())).toString();
         }
     }
 

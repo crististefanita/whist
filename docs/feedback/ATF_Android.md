@@ -75,6 +75,8 @@ O schimbare de geometrie sau stil se leagă de sursele și APK-ul inspectate. Ca
 
 ## Acceptanță nativă Android 17
 
+- **Precondiție Lint:** eliminați operațiile de fișier API 26 moștenite în fixture-ul de replay pentru API 24 și calificați navigarea predictivă înapoi la target API 36+. Nu exceptați aceste erori și nu declarați Lint integral trecut; cititorul checkpoint-ului folosește API-uri disponibile la minimul declarat.
+
 Protecția ferestrei și calculul spațiului util sunt implementate; acceptanța pe API 37 rămâne distinctă de componente și de verificarea pe un alt sistem Android. Comparația între versiuni cere identitatea ambelor APK-uri și a dispozitivului.
 
 | Prioritate | Cerință rămasă | Criteriu de închidere |
