@@ -1,0 +1,16 @@
+{
+  "status": "PASS",
+  "result": "PASS",
+  "applicationId": "ro.whistlab.app",
+  "versionCode": 53,
+  "versionName": "0.25.0",
+  "minSdk": 24,
+  "targetSdk": 36,
+  "apkBytes": 1037745,
+  "apkSha256": "b3fbfeaccfc3509e853793b3899c1e96d740fe17b983d87e75ecf255ad3c3b4b",
+  "apkCrc32": "898a4e67",
+  "certificateSha256": "b80c45a9b52ef0c83dcb929ba4aeb8775c836e5e6d587324d7ec725c079fb4c3",
+  "alignment": "PASS",
+  "signatureVerification": "PASS",
+  "observedUtc": "2026-11-24T17:20:14.669Z"
+}

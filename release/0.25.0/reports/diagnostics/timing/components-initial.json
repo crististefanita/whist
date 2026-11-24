@@ -1,0 +1,192 @@
+{
+  "schemaVersion": 1,
+  "kind": "ATF_RELEASE_TIMING",
+  "owner": "components",
+  "stages": [
+    {
+      "stage": "components.test-change-admission",
+      "status": "PASS",
+      "startedUtc": "2026-11-24T16:52:14.6354887+00:00",
+      "endedUtc": "2026-11-24T16:52:37.3124996+00:00",
+      "elapsedMs": 15270
+    },
+    {
+      "stage": "snapshot.inventory",
+      "status": "PASS",
+      "startedUtc": "2026-11-24T16:52:37.4260863+00:00",
+      "endedUtc": "2026-11-24T16:52:42.2570735+00:00",
+      "elapsedMs": 3221
+    },
+    {
+      "stage": "snapshot.copy",
+      "status": "PASS",
+      "startedUtc": "2026-11-24T16:52:42.4587193+00:00",
+      "endedUtc": "2026-11-24T16:53:13.5786951+00:00",
+      "elapsedMs": 20747
+    },
+    {
+      "stage": "snapshot.verify",
+      "status": "PASS",
+      "startedUtc": "2026-11-24T16:53:13.5816411+00:00",
+      "endedUtc": "2026-11-24T16:53:20.4596904+00:00",
+      "elapsedMs": 4585
+    },
+    {
+      "stage": "snapshot.artifact-preflight",
+      "status": "PASS",
+      "startedUtc": "2026-11-24T16:53:20.4681631+00:00",
+      "endedUtc": "2026-11-24T16:53:20.8656524+00:00",
+      "elapsedMs": 265
+    },
+    {
+      "stage": "components.snapshot-preflight",
+      "status": "PASS",
+      "startedUtc": "2026-11-24T16:52:37.4059179+00:00",
+      "endedUtc": "2026-11-24T16:53:20.8688005+00:00",
+      "elapsedMs": 28975
+    },
+    {
+      "stage": "components.test-change-recheck",
+      "status": "PASS",
+      "startedUtc": "2026-11-24T16:53:20.8726693+00:00",
+      "endedUtc": "2026-11-24T16:53:45.9939700+00:00",
+      "elapsedMs": 16748
+    },
+    {
+      "stage": "components.reuse-check",
+      "status": "PASS",
+      "startedUtc": "2026-11-24T16:53:46.2484135+00:00",
+      "endedUtc": "2026-11-24T16:53:47.4655339+00:00",
+      "elapsedMs": 811
+    },
+    {
+      "stage": "components.compiler-identity",
+      "status": "PASS",
+      "startedUtc": "2026-11-24T16:53:47.6621946+00:00",
+      "endedUtc": "2026-11-24T16:53:48.6700674+00:00",
+      "elapsedMs": 672
+    },
+    {
+      "stage": "components.compiler-admission",
+      "status": "PASS",
+      "startedUtc": "2026-11-24T16:53:48.6756782+00:00",
+      "endedUtc": "2026-11-24T16:53:54.9649819+00:00",
+      "elapsedMs": 4193
+    },
+    {
+      "stage": "components.preparation-snapshot",
+      "status": "PASS",
+      "startedUtc": "2026-11-24T16:53:54.9765877+00:00",
+      "endedUtc": "2026-11-24T16:53:59.0036011+00:00",
+      "elapsedMs": 2685
+    },
+    {
+      "stage": "components.maven-cache",
+      "status": "REUSED",
+      "startedUtc": "2026-11-24T16:53:59.0171771+00:00",
+      "endedUtc": "2026-11-24T16:53:59.0171771+00:00",
+      "elapsedMs": 0,
+      "reason": "Verified Maven preparation and classpath."
+    },
+    {
+      "stage": "components.maven-compile",
+      "status": "REUSED",
+      "startedUtc": "2026-11-24T16:53:59.0213198+00:00",
+      "endedUtc": "2026-11-24T16:53:59.0213198+00:00",
+      "elapsedMs": 0,
+      "reason": "Verified Maven preparation and classpath."
+    },
+    {
+      "stage": "components.maven-classpath",
+      "status": "REUSED",
+      "startedUtc": "2026-11-24T16:53:59.0239017+00:00",
+      "endedUtc": "2026-11-24T16:53:59.0239017+00:00",
+      "elapsedMs": 0,
+      "reason": "Verified classpath."
+    },
+    {
+      "stage": "components.run.atf-validation",
+      "status": "PASS",
+      "startedUtc": "2026-11-24T16:53:59.0375753+00:00",
+      "endedUtc": "2026-11-24T16:54:09.1081281+00:00",
+      "elapsedMs": 6713
+    },
+    {
+      "stage": "components.run.atf-test-android",
+      "status": "PASS",
+      "startedUtc": "2026-11-24T16:54:09.1656875+00:00",
+      "endedUtc": "2026-11-24T16:56:05.4902195+00:00",
+      "elapsedMs": 106358
+    },
+    {
+      "stage": "components.run.atf-tests",
+      "status": "PASS",
+      "startedUtc": "2026-11-24T16:56:05.5264322+00:00",
+      "endedUtc": "2026-11-24T17:03:39.1218885+00:00",
+      "elapsedMs": 507514
+    },
+    {
+      "stage": "components.run.atf-tests-documentation",
+      "status": "FAIL",
+      "startedUtc": "2026-11-24T17:03:39.2070376+00:00",
+      "endedUtc": "2026-11-24T17:05:12.6182494+00:00",
+      "elapsedMs": 81091
+    },
+    {
+      "stage": "components.run.atf-tests-provenance",
+      "status": "PASS",
+      "startedUtc": "2026-11-24T17:05:12.6610458+00:00",
+      "endedUtc": "2026-11-24T17:09:18.3685159+00:00",
+      "elapsedMs": 238798
+    },
+    {
+      "stage": "components.run.atf-tests-android",
+      "status": "FAIL",
+      "startedUtc": "2026-11-24T17:09:18.3939197+00:00",
+      "endedUtc": "2026-11-24T17:19:39.6811634+00:00",
+      "elapsedMs": 638542
+    },
+    {
+      "stage": "components.run.atf-tests-github",
+      "status": "PASS",
+      "startedUtc": "2026-11-24T17:19:39.8814322+00:00",
+      "endedUtc": "2026-11-24T17:22:41.5070897+00:00",
+      "elapsedMs": 156895
+    },
+    {
+      "stage": "components.run.atf-tests-orchestration",
+      "status": "FAIL",
+      "startedUtc": "2026-11-24T17:22:41.5858724+00:00",
+      "endedUtc": "2026-11-24T17:58:34.3690885+00:00",
+      "elapsedMs": 2201116
+    },
+    {
+      "stage": "components.run.atf-tests-reporting",
+      "status": "PASS",
+      "startedUtc": "2026-11-24T17:58:35.5436675+00:00",
+      "endedUtc": "2026-11-24T18:02:46.1635525+00:00",
+      "elapsedMs": 186863
+    },
+    {
+      "stage": "components.gradle-batch",
+      "status": "PASS",
+      "startedUtc": "2026-11-24T18:02:47.4937137+00:00",
+      "endedUtc": "2026-11-24T18:13:18.2490694+00:00",
+      "elapsedMs": 650078
+    },
+    {
+      "stage": "components.gradle-extent-evidence",
+      "status": "PASS",
+      "startedUtc": "2026-11-24T18:13:19.3071918+00:00",
+      "endedUtc": "2026-11-24T18:13:20.9643009+00:00",
+      "elapsedMs": 1546
+    },
+    {
+      "stage": "components.snapshot-recheck",
+      "status": "PASS",
+      "startedUtc": "2026-11-24T18:13:21.0553080+00:00",
+      "endedUtc": "2026-11-24T18:16:00.8474743+00:00",
+      "elapsedMs": 174168
+    }
+  ]
+}
