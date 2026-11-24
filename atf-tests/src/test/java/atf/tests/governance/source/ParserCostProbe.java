@@ -83,7 +83,7 @@ final class ParserCostProbe {
         digest.update(value.getBytes(StandardCharsets.UTF_8)); digest.update((byte) 0);
     }
 
-    /** Reference differs only in compiler options; it also stops at parse(), before type analysis. */
+    /** Reference varies compiler paths only; annotation processing stays disabled in both modes. */
     private static final class DefaultPaths implements Reader {
         private final javax.tools.JavaCompiler compiler = ToolProvider.getSystemJavaCompiler();
         private final javax.tools.StandardJavaFileManager manager = compiler.getStandardFileManager(null, Locale.ROOT, StandardCharsets.UTF_8);
@@ -92,11 +92,12 @@ final class ParserCostProbe {
                 @Override public CharSequence getCharContent(boolean ignored) { return source; }
             };
             var diagnostics = new DiagnosticCollector<JavaFileObject>();
-            var task = (JavacTask) compiler.getTask(null, manager, diagnostics, List.of(), null, List.of(input));
-            var tree = task.parse().iterator().next();
+            var task = (JavacTask) compiler.getTask(null, manager, diagnostics, List.of("-proc:none"), null, List.of(input));
+            var trees = new ArrayList<CompilationUnitTree>();
+            task.parse().forEach(trees::add);
             if (diagnostics.getDiagnostics().stream().anyMatch(d -> d.getKind() == Diagnostic.Kind.ERROR))
                 throw new IllegalArgumentException("GOV-JAVA-SYNTAX: reference parse rejected malformed source");
-            return tree;
+            return trees.getFirst();
         }
         @Override public void close() throws Exception { manager.close(); }
     }

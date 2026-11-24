@@ -20,7 +20,7 @@ class TestLayerSyntaxTest {
         var root = atf.tests.governance.support.GovernanceProject.locateProjectRoot();
         var inventory = ParserCostProbe.freeze(root);
         var report = ParserCostProbe.measure(inventory, 3);
-        inputs.add("Paired parser experiment", "Declared Maven Java source roots; UTF-8 sources frozen once; configured=-proc:none with empty class/processor paths; reference=JDK default options; one warm-up per mode; three alternating measured pairs; no type analysis or speed threshold");
+        inputs.add("Paired parser experiment", "Declared Maven Java source roots; UTF-8 sources frozen once; configured=-proc:none with empty class/processor paths; reference=-proc:none with JDK default paths; one warm-up per mode; three alternating measured pairs; no type analysis or speed threshold");
         inputs.add("Original parser observations", new com.fasterxml.jackson.databind.ObjectMapper().writeValueAsString(report));
         AuditedAssertions.assertFalse(inventory.isEmpty(), "The comparison must inspect actual source files");
         AuditedAssertions.assertEquals(6, report.trials().size(), "Three pairs retain six independent measurements");

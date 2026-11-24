@@ -3302,7 +3302,7 @@ testChanges:
     status: VERIFIED
     base: 0f63cef42900a5c0df278c966de206fe8adf1a62
     expires: 2026-12-24
-    reason: Separați expirarea controlată a proceselor de pregătirea fixture-urilor și limitele de protecție fără schimbarea semanticii publice a transportului. Măsurați parsarea sintactică de producție și cu opțiuni implicite JDK pe un inventar de surse înghețat, cu ordine pereche și amprente AST identice; păstrați controalele independente pentru adnotări, ambiguitate, sintaxă și ciclu de viață, fără prag de viteză.
+    reason: Separați expirarea controlată a proceselor de pregătirea fixture-urilor și limitele de protecție fără schimbarea semanticii publice a transportului. Măsurați parsarea sintactică de producție și cu căi implicite JDK pe un inventar de surse înghețat, cu ordine pereche și amprente AST identice; păstrați controalele independente pentru adnotări, ambiguitate, sintaxă și ciclu de viață, fără prag de viteză.
     proof: "mvn -o -pl atf-tests -am -Dtest=CommandProcessComponentTest,TestLayerSyntaxTest,AtfSourceQualityGovernanceTest,PackageCohesionGovernanceTest,TestLayerGovernanceTest,SuiteOwnershipGovernanceTest,AtfCollectionOwnershipComponentTest -Dsurefire.failIfNoSpecifiedTests=false test"
     checks:
       positive:
