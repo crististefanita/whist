@@ -89,6 +89,21 @@ Each inspection owns and closes its JDK file manager, reusing it across sources 
 
 [Syntax components](../../atf-tests/src/test/java/atf/tests/governance/source/TestLayerSyntaxTest.java) verify rejected syntax and valid neighbouring cases, including Java examples in strings that should not be treated as declarations.
 
+### Paired parser cost
+
+The test-only [cost probe](../../atf-tests/src/test/java/atf/tests/governance/source/ParserCostProbe.java) compares the production parser with JDK default options on the same frozen Maven Java inventory. Both stop at syntax parsing, without type analysis or application-class loading.
+
+| Boundary | Measurement contract |
+|---|---|
+| Inputs | Read UTF-8 sources once, preserve paths and fingerprint the complete ordered inventory. |
+| Ownership | Each trial owns one file manager; each source receives a fresh parse task and diagnostics. |
+| Reference | Production uses disabled annotation processing and empty class/processor paths; the reference uses JDK defaults. |
+| Order | Warm both modes, then alternate the order of measured pairs. |
+| Cost | Retain raw parse time separately from total ownership, AST normalization and hashing; record JDK, VM, OS and processor count. |
+| Correctness | Require equal source counts and normalized AST fingerprints across every trial; refuse empty, duplicate or malformed inputs. |
+
+Observed durations remain in the external audit. Configuration isolation is a correctness boundary; a speedup requires measured evidence and is never inferred from flags alone.
+
 ## Isolated execution
 
 For a file or full documentary inventory, use [Documentation Client](ATF_Documentation.md#documentation-governance-cli). It tests the same editorial rules as the suite.

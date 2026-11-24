@@ -25,6 +25,7 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.Stream;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Timeout;
@@ -34,20 +35,23 @@ import org.junit.jupiter.api.io.TempDir;
 @Timeout(60)
 public class CommandProcessComponentTest {
     @RegisterExtension static final AndroidComponentAudit AUDIT = AndroidComponentAudit.extension();
-    @Test void aLateProcessStartIsBoundedAndItsEventualProcessIsCleaned() throws Exception {
+    private static final int WATCHDOG_SECONDS = 30;
+    @Test void aLateProcessStartIsBoundedAndItsEventualProcessIsCleaned(
+            atf.android.evidence.component.ComponentInputs inputs) throws Exception {
         CountDownLatch release = new CountDownLatch(1);
         CountDownLatch destroyed = new CountDownLatch(1);
         Process process = new StubProcess(new ByteArrayInputStream(new byte[0])) {
             @Override public Process destroyForcibly() { destroyed.countDown(); return this; }
         };
+        inputs.add("Late-start precondition", "Controlled starter blocks on a latch; start=0 ns, budget=1 ns, clock=1 ns; cleanup acknowledgement has an independent 30 s watchdog");
         try {
             assertThrows(IOException.class, () -> CommandProcess.start(() -> {
                 try { release.await(); }
                 catch (InterruptedException failure) { throw new IOException(failure); }
                 return process;
-            }, Duration.ofMillis(100), System.nanoTime(), TimeUnit.MILLISECONDS.toNanos(100)));
+            }, Duration.ofNanos(1), 0, 1, () -> 1));
             release.countDown();
-            assertTrue(destroyed.await(2, TimeUnit.SECONDS), "A late process must not escape after timeout");
+            assertTrue(destroyed.await(WATCHDOG_SECONDS, TimeUnit.SECONDS), "A late process must not escape after timeout");
         } finally { release.countDown(); }
     }
     @Test void separatesBinaryOutputAndKeepsNonzeroExit() throws Exception {
@@ -73,23 +77,68 @@ public class CommandProcessComponentTest {
         assertEquals("", result.stderr());
     }
 
-    @Test void blockedDrainCannotTurnProcessExitIntoAnUnboundedJoin() throws Exception {
+    @Test void blockedDrainCannotTurnProcessExitIntoAnUnboundedJoin(
+            atf.android.evidence.component.ComponentInputs inputs) throws Exception {
         CountDownLatch release = new CountDownLatch(1);
+        CountDownLatch reading = new CountDownLatch(1);
+        AtomicLong ticks = new AtomicLong();
         StubProcess process = new StubProcess(new InputStream() {
             @Override public int read() throws IOException {
+                reading.countDown();
                 try { release.await(); return -1; }
                 catch (InterruptedException failure) { throw new IOException(failure); }
             }
             @Override public void close() { release.countDown(); }
-        });
-        long start = System.nanoTime();
+        }) {
+            @Override public boolean waitFor(long time, TimeUnit unit) throws InterruptedException {
+                if (!reading.await(WATCHDOG_SECONDS, TimeUnit.SECONDS)) throw new IllegalStateException("Drain fixture not ready");
+                ticks.set(150);
+                return true;
+            }
+        };
+        inputs.add("Blocked-drain precondition", "Readiness latch precedes process exit; start=0 ns, budget=150 ns; exit advances clock to exactly 150 ns while stdout remains blocked");
         try {
             IOException failure = assertThrows(IOException.class, () -> CommandProcess.collect(
-                    process, Duration.ofMillis(150), start, TimeUnit.MILLISECONDS.toNanos(150)));
+                    process, Duration.ofNanos(150), 0, 150, ticks::get));
             assertTrue(failure.getMessage().contains("timed out"));
-            assertTrue(Duration.ofNanos(System.nanoTime()-start).toMillis() < 1500);
+            assertTrue(release.await(WATCHDOG_SECONDS, TimeUnit.SECONDS), "Cleanup closes the blocked drain after the exact clock boundary");
             assertTrue(process.destroyed);
         } finally { release.countDown(); }
+    }
+
+    @Test void completionBeforeTheDeadlineKeepsBothOutputsAndTheExitCode(
+            atf.android.evidence.component.ComponentInputs inputs) throws Exception {
+        CountDownLatch drained = new CountDownLatch(2);
+        AtomicLong ticks = new AtomicLong();
+        var output = new ByteArrayInputStream(new byte[] {42}) {
+            @Override public byte[] readAllBytes() { byte[] value = super.readAllBytes(); drained.countDown(); return value; }
+        };
+        StubProcess process = new StubProcess(output) {
+            @Override public InputStream getErrorStream() {
+                return new ByteArrayInputStream(new byte[] {69}) {
+                    @Override public byte[] readAllBytes() { byte[] value = super.readAllBytes(); drained.countDown(); return value; }
+                };
+            }
+            @Override public boolean waitFor(long time, TimeUnit unit) throws InterruptedException {
+                if (!drained.await(WATCHDOG_SECONDS, TimeUnit.SECONDS)) throw new IllegalStateException("Output fixture not ready");
+                ticks.set(149);
+                return true;
+            }
+            @Override public int exitValue() { return 7; }
+        };
+        inputs.add("Controlled transport clock", "start=0; deadline=150 ns; completion=149 ns; watchdog is not a latency oracle");
+        var result = CommandProcess.collect(process, Duration.ofNanos(150), 0, 150, ticks::get);
+        assertEquals(7, result.exitCode());
+        assertArrayEquals(new byte[] {42}, result.stdout());
+        assertEquals("E", result.stderr());
+        assertFalse(process.destroyed);
+    }
+
+    @Test void startFailureKeepsTheOriginalCauseWithoutAClockRace() {
+        IOException original = new IOException("controlled launch failure");
+        IOException actual = assertThrows(IOException.class, () -> CommandProcess.start(
+                () -> { throw original; }, Duration.ofSeconds(30), 0, TimeUnit.SECONDS.toNanos(30), () -> 0));
+        assertSame(original, actual);
     }
 
     @Test void readFailureIsNotSilentlyReportedAsSuccessAndCleanupCannotMaskIt() {
@@ -126,8 +175,9 @@ public class CommandProcessComponentTest {
         } finally { release.countDown(); }
     }
 
-    @Test void interruptionKillsTheOwnedProcessAndKeepsTheInterruptFlag() throws Exception {
-        Process process = new ProcessBuilder(ProcessFixture.command("sleep")).start();
+    @Test void interruptionKillsTheOwnedProcessAndKeepsTheInterruptFlag(@TempDir Path directory) throws Exception {
+        Path ready = directory.resolve("ready");
+        Process process = new ProcessBuilder(ProcessFixture.command("sleep", ready.toString())).start();
         AtomicReference<Throwable> failure = new AtomicReference<>();
         AtomicBoolean interrupted = new AtomicBoolean();
         Thread caller = new Thread(() -> {
@@ -135,13 +185,14 @@ public class CommandProcessComponentTest {
             catch (IOException | InterruptedException error) { failure.set(error); interrupted.set(Thread.currentThread().isInterrupted()); }
         });
         try {
+            ProcessFixture.awaitReady(process, ready);
             caller.start();
             caller.interrupt();
-            caller.join(2000);
+            caller.join(TimeUnit.SECONDS.toMillis(WATCHDOG_SECONDS));
             assertFalse(caller.isAlive(), "Interrupted caller must return without waiting for output EOF");
             assertInstanceOf(InterruptedException.class, failure.get());
             assertTrue(interrupted.get());
-            assertTrue(process.waitFor(2, TimeUnit.SECONDS), "Owned process must terminate");
+            assertTrue(process.waitFor(WATCHDOG_SECONDS, TimeUnit.SECONDS), "Owned process must terminate");
         } finally { process.destroyForcibly(); caller.interrupt(); }
     }
 
@@ -151,19 +202,15 @@ public class CommandProcessComponentTest {
         Process process = new ProcessBuilder(ProcessFixture.command("tree", pidFile.toString(), release.toString())).start();
         ProcessHandle child = null;
         try {
-            long fixtureStarted = System.nanoTime();
-            while (!Files.exists(pidFile) && process.isAlive()
-                    && System.nanoTime()-fixtureStarted < TimeUnit.SECONDS.toNanos(30)) Thread.sleep(10);
-            assertTrue(Files.exists(pidFile), "Fixture must actually create a descendant before measuring the deadline");
+            ProcessFixture.awaitReady(process, pidFile);
             child = ProcessHandle.of(Long.parseLong(Files.readString(pidFile))).orElseThrow();
             Process observed = ProcessFixture.exitAfterDescendantObservation(process, release);
             long start = System.nanoTime();
             assertThrows(IOException.class, () -> CommandProcess.collect(observed, Duration.ofSeconds(3),
                     start, TimeUnit.SECONDS.toNanos(3)));
-            assertTrue(Duration.ofNanos(System.nanoTime()-start).toMillis() < 4500);
             assertTrue(Files.exists(pidFile), "Fixture must actually create a descendant");
             if (child != null) {
-                child.onExit().get(2, TimeUnit.SECONDS);
+                child.onExit().get(WATCHDOG_SECONDS, TimeUnit.SECONDS);
                 assertFalse(child.isAlive());
             }
             assertFalse(process.isAlive());
@@ -179,7 +226,7 @@ public class CommandProcessComponentTest {
         @Override public InputStream getInputStream() { return input; }
         @Override public InputStream getErrorStream() { return new ByteArrayInputStream(new byte[0]); }
         @Override public int waitFor() { return 0; }
-        @Override public boolean waitFor(long time, TimeUnit unit) { return true; }
+        @Override public boolean waitFor(long time, TimeUnit unit) throws InterruptedException { return true; }
         @Override public int exitValue() { return 0; }
         @Override public void destroy() { destroyed = true; }
         @Override public Process destroyForcibly() {

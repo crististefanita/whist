@@ -38,9 +38,19 @@ public final class ProcessFixture {
                 Files.move(pending, marker, java.nio.file.StandardCopyOption.ATOMIC_MOVE);
                 while (!Files.exists(Path.of(arguments[2]))) Thread.sleep(10);
             }
-            case "sleep" -> Thread.sleep(60000);
+            case "sleep" -> {
+                if (arguments.length > 1) Files.writeString(Path.of(arguments[1]), "ready");
+                Thread.sleep(60000);
+            }
             default -> throw new IllegalArgumentException("Unknown local fixture mode");
         }
+    }
+
+    /** Fixture readiness is bounded independently of the transport operation being tested. */
+    static void awaitReady(Process process, Path marker) throws Exception {
+        long deadline = System.nanoTime() + java.util.concurrent.TimeUnit.SECONDS.toNanos(30);
+        while (!Files.exists(marker) && process.isAlive() && System.nanoTime() < deadline) Thread.sleep(10);
+        if (!Files.exists(marker)) throw new IllegalStateException("Local process fixture did not become ready: " + marker);
     }
 
     static Process exitAfterDescendantObservation(Process delegate, Path release) {

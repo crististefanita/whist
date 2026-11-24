@@ -160,6 +160,10 @@ success of current capture; interruption retains the cause and thread interrupt 
 
 Transport components use controlled local processes. [Acceptance of Android](../docs/testing/ATF_Android.md) checks the behaviour on the device separately; publication of a valid capture has its own contract.
 
+- Fixture readiness is a preparation precondition. A child marker precedes interruption or tree-cleanup observations; preparation does not consume a newly declared transport interval.
+- Controlled clock components compare completion just before expiry with a blocked drain at the exact deadline. The package-owned clock port leaves the public production facade on the monotonic system clock.
+- Watchdogs bound fixture preparation and asynchronous cleanup acknowledgements. They are distinct from transport budgets and do not qualify latency; a faster or slower test machine cannot redefine the expiry oracle.
+
 - The failure requires that the process and the observed descendants be stopped while the parent is active.
 - Flow closure does not block the caller; a process created after the start-up is cleaned when it becomes available.
 - The errors in cleaning are added to the original cause; a descendant removed before it can be observed has no identity guaranteed by API Java.
