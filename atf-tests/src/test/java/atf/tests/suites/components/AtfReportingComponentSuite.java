@@ -18,7 +18,6 @@ import org.junit.platform.suite.api.*;
     "^atf\\.tests\\.reporting\\.GameReportTextAuditContractTest$",
     "^atf\\.tests\\.reporting\\.acceptance\\.NativeModuleResultsComponentTest$",
     "^atf\\.tests\\.reporting\\.browser\\.BrowserExtentPublicationComponentTest$",
-    "^atf\\.tests\\.reporting\\.inventory\\.ReportProducerInventoryComponentTest$",
     "^atf\\.tests\\.reporting\\.text\\.ReportTextValueMatcherTest$"
 })
 @IncludeTags("component")

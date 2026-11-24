@@ -77,7 +77,7 @@ Fiecare producător se califică pe suprafața API efectiv folosită. Trecerea u
 
 ### Inventarul guvernat al producătorilor
 
-[Inventarul producătorilor](../../config/report-producers.json) identifică fiecare constructor direct al rendererului Extent sau de rezervă din sursele Java guvernate. [Componentele inventarului](../../atf-tests/src/test/java/atf/tests/reporting/inventory/ReportProducerInventoryComponentTest.java) parsează sintaxa, reconciliază populația exactă și verifică metodele de calificare declarate. Emitenții noi, duplicați, expirați sau necalificați opresc controlul; rendererii sintetici ai testelor sunt clasificați explicit drept fixture-uri.
+[Inventarul producătorilor](../../config/report-producers.json) identifică fiecare constructor direct al rendererului Extent sau de rezervă din sursele Java guvernate. [Componentele inventarului](../../atf-tests/src/test/java/atf/tests/governance/source/reporting/ReportProducerInventoryComponentTest.java) parsează sintaxa, reconciliază populația exactă și verifică metodele de calificare declarate. Emitenții noi, duplicați, expirați sau necalificați opresc controlul; rendererii sintetici ai testelor sunt clasificați explicit drept fixture-uri.
 
 | Graniță | Contract de calificare și refuz |
 |---|---|

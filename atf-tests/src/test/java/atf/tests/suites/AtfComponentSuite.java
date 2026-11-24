@@ -21,6 +21,7 @@ import org.junit.platform.suite.api.*;
     "^atf\\.tests\\.governance\\.source\\.changes\\.TestChangeSelectorComponentTest$",
     "^atf\\.tests\\.governance\\.source\\.game\\.GameSessionBoundaryComponentTest$",
     "^atf\\.tests\\.governance\\.source\\.gradle\\.GradleAuditGovernanceTest$",
+    "^atf\\.tests\\.governance\\.source\\.reporting\\.ReportProducerInventoryComponentTest$",
     "^atf\\.tests\\.governance\\.source\\.workspace\\.WorkspaceHygieneGovernanceTest$",
     "^atf\\.tests\\.governance\\.suites\\.AtfCollectionOwnershipComponentTest$",
     "^atf\\.tests\\.governance\\.suites\\.SuiteOwnershipGovernanceTest$"
