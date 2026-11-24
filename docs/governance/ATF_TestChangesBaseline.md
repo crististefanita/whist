@@ -3066,6 +3066,7 @@ testChanges:
 testChanges:
   - id: RAG-COMPILER-BROWSER-COHESION
     status: VERIFIED
+    allowDelete: true
     base: 19929344b76cfbeee3bf810193469ef4393949fa
     expires: 2026-12-24
     reason: Admit modern and legacy compiler pointers through one context-bound contract; preserve byte seals, leases, fresh controls and observable refusal. Separate browser selection, lifecycle, scenario drivers and results without removing cases or changing game behavior.
