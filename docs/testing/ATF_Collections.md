@@ -349,7 +349,11 @@ Use `run-component-suites.ps1 -ReuseFrom <rejected-run> -RunRoot <new-external-r
 
 The [resource profile](../../config/launcher-fixture-profile.json) declares the suite heap, serial child execution, stream bounds and default fixture deadline. A fixture-specific existing deadline remains explicit; it is not increased to conceal contention. JVM options belong to the suite, never a global `JAVA_TOOL_OPTIONS` variable.
 
-[Process support](../../atf-tests/tools/fixture-process.mjs) writes a uniquely named diagnostic receipt before fixture cleanup. The receipt retains the original failure identity, bounded stdout/stderr tails and measured elapsed time. A failed child also emits those bounded observations to its parent so an audit does not depend on a temporary path. Configure `WHIST_FIXTURE_DIAGNOSTICS`, `WHIST_EVIDENCE_ROOT` or `WHIST_QUALIFICATION_TEMP_ROOT` outside the checkout; no output may enter source directories.
+- [Process support](../../atf-tests/tools/fixture-process.mjs) writes a uniquely named diagnostic receipt before fixture cleanup. The receipt retains the original failure identity, bounded stdout/stderr tails and measured elapsed time.
+
+- A failed child also emits those bounded observations to its parent so an audit does not depend on a temporary path. Configure `WHIST_FIXTURE_DIAGNOSTICS`, `WHIST_EVIDENCE_ROOT` or `WHIST_QUALIFICATION_TEMP_ROOT` outside the checkout; no output may enter source directories.
+
+- The Java launcher copies bounded combined output into its timeout assertion before fixture cleanup; a missing log adds a capture failure without replacing the timeout identity.
 
 | Level | Responsibility |
 |---|---|

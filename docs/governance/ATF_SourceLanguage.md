@@ -6,7 +6,9 @@ Implementation uses English on both documentation branches. Identifiers, comment
 
 ## Scope and classification
 
-The [governor](../../atf-tests/tools/source-language.mjs) inventories tracked and nonignored implementation inputs from the configured Git checkout. It checks Java, JavaScript, PowerShell, Python, shell and build scripts, plus comments in configuration, markup, CSS and `.gitignore`. Release payloads remain immutable observations, not current implementation. The parked iOS adapter is outside this iteration's qualification.
+The [governor](../../atf-tests/tools/source-language.mjs) inventories tracked and nonignored implementation inputs, plus ignored sources within declared owners from the configured Git checkout. It checks Java, JavaScript, PowerShell, Python, shell and build scripts, plus comments in configuration, markup, CSS and `.gitignore`. 
+
+Release payloads remain immutable observations, not current implementation. The parked iOS adapter is outside this iteration's qualification.
 
 | Input | Required treatment |
 |---|---|
@@ -48,4 +50,7 @@ Run `node atf-tests/tools/source-language.mjs <checkout>` from an environment wi
 
 ## Review limits
 
-The reviewed vocabulary detects known violations; it cannot recognize every language, infer intent from every literal, or fully parse every embedded language. Review new syntax and developer-message producers before claiming additional coverage. Translate implementation explanations rather than weakening the vocabulary or adding file exemptions. Preserve localized behavior through its existing component contracts.
+- The reviewed vocabulary detects known violations; it cannot recognize every language, infer intent from every literal, or fully parse every embedded language.
+- Review new syntax and developer-message producers before claiming additional coverage.
+- Translate implementation explanations rather than weakening the vocabulary or adding file exemptions.
+- Preserve localized behavior through its existing component contracts.
