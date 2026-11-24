@@ -19,12 +19,20 @@ class TestLayerSyntaxTest {
             atf.android.evidence.component.ComponentInputs inputs) throws Exception {
         var root = atf.tests.governance.support.GovernanceProject.locateProjectRoot();
         var inventory = ParserCostProbe.freeze(root);
-        var report = ParserCostProbe.measure(inventory, 3);
+        var command = List.of(Path.of(System.getProperty("java.home"), "bin", "java").toString(),
+                "-Xmx384m", "-XX:ActiveProcessorCount=2", "-cp", System.getProperty("java.class.path"),
+                ParserCostProbe.class.getName(), root.toString());
+        var outcome = atf.android.process.CommandProcess.execute(command, Map.of(), java.time.Duration.ofMinutes(3), false);
+        AuditedAssertions.assertEquals(0, outcome.exitCode(), outcome.stderr());
+        var report = new com.fasterxml.jackson.databind.ObjectMapper().readValue(outcome.stdout(), ParserCostProbe.Report.class);
         inputs.add("Paired parser experiment", "Declared Maven Java source roots; UTF-8 sources frozen once; configured=-proc:none with empty class/processor paths; reference=-proc:none with JDK default paths; one warm-up per mode; three alternating measured pairs; no type analysis or speed threshold");
         inputs.add("Original parser observations", new com.fasterxml.jackson.databind.ObjectMapper().writeValueAsString(report));
+        inputs.add("Measurement isolation", "Disposable child JVM: -Xmx384m, -XX:ActiveProcessorCount=2, 3 minute process budget; functional owner does not retain benchmark compiler resources");
         AuditedAssertions.assertFalse(inventory.isEmpty(), "The comparison must inspect actual source files");
         AuditedAssertions.assertEquals(6, report.trials().size(), "Three pairs retain six independent measurements");
         AuditedAssertions.assertEquals(64, report.inventorySha256().length(), "Frozen source inventory is fingerprinted");
+        AuditedAssertions.assertEquals(ParserCostProbe.inventorySha256(inventory), report.inventorySha256(),
+                "Parent and measurement JVM use identical source bytes");
         String expected = report.trials().getFirst().astSha256();
         for (var trial : report.trials()) {
             AuditedAssertions.assertEquals(inventory.size(), trial.units(), "Every trial inspects the same population");
