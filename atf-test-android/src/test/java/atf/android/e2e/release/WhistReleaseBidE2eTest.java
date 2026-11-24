@@ -19,9 +19,11 @@ class WhistReleaseBidE2eTest {
     }
 
     @Test void autoGamePlaysOnlyTheCurrentHandAndReturnsControlForTheNext() throws Throwable {
+        var plan = AutoGameReleaseScenario.plan();
         var context = new ReleaseBidContext(Path.of(System.getProperty("whist.records.runRoot")),
                 "signed-release-auto-game", "Signed release — AutoGame bounded to one hand", getClass().getSimpleName());
-        context.execute(AutoGameReleaseScenario::run);
+        context.useSanityPlan(plan);
+        context.execute(c -> AutoGameReleaseScenario.run(c, plan));
     }
 
     @Test void signedThreePlayerDownAndUpKeepsTheSeventeenCardHandAndSeatAnchorsVisible() throws Throwable {

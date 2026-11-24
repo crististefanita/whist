@@ -75,6 +75,30 @@ Each producer shall qualify for API area actually used. The passage of a publish
 4. Check separately navigation, folding sections, images and return with the context kept on the HTML identified by hash.
 5. Keep the levels executed and limits in the external registration; [handing over results](ATF_Handoff.md) decides the acceptance of the purpose.
 
+### Governed producer inventory
+
+[Producer inventory](../../config/report-producers.json) identifies every direct Extent or fallback renderer constructor in governed Java sources. [Inventory components](../../atf-tests/src/test/java/atf/tests/reporting/inventory/ReportProducerInventoryComponentTest.java) parse syntax, reconcile the exact population and verify declared qualification methods. New, duplicate, stale or unqualified emitters fail the gate; synthetic test renderers are explicitly classified as fixtures.
+
+| Boundary | Qualification and rejection contract |
+|---|---|
+| Shared Jupiter producer | [Real execution controls](../../atf-test-android/src/test/java/atf/android/component/AndroidComponentReportContractTest.java) cover PASS, assertion failure, execution error, aborted execution, missing body assertions and distinct parameter invocations through Extent and fallback. Full original values and causes remain in HTML. |
+| Gradle bridge | [Bridge components](../../whist-lab-app/test-audit/src/test/java/atf/gradle/audit/GradleAuditBridgeComponentTest.java) reconcile independent JUnit identities with HTML and reject missing adapters, lost invocations, removed comparisons and duplicate receipts. |
+| Game report decorator | [Publication components](../../atf-tests/src/test/java/atf/tests/reporting/GameReportPublicationContractTest.java) retain each owner's full comparisons, final failure and mandatory body under every declared detail policy and renderer. |
+| Android trace publisher | [Trace components](../../atf-test-android/src/test/java/atf/android/e2e/support/AndroidUiFlowReportPublisherTest.java) retain original actions, observations, comparisons and failure causes; required image and input omissions are refused. |
+| Browser publisher | [Browser components](../../atf-tests/src/test/java/atf/tests/reporting/browser/BrowserExtentPublicationComponentTest.java) retain ordered before/after states, comparisons and image owners; malformed or contradictory input is rejected before creating HTML. |
+| Legacy XML aggregate | The compatibility entry refuses qualification: counts cannot reconstruct original component comparisons. Use canonical suite HTML and captured traces. |
+
+| Outcome or identity | Preservation rule |
+|---|---|
+| Execution error | Keep a failed execution with its original exception; do not convert it into a passing expected refusal. |
+| Abort | Retain SKIP. |
+| Controlled refusal | Pass only when the expected rejection is itself compared and captured. |
+| Parameters | Keep independent invocation identities even when display values repeat. |
+
+Qualification requires useful comparisons: a Boolean or exception type needs an invariant caption when the values alone do not explain the property. Source locations support traceability but do not replace the meaning. A component without captured body assertions is unqualified; independent JUnit/HTML reconciliation rejects an invocation omitted entirely by its adapter.
+
+Inventory qualification does not certify browser interactivity, native pixels, large-suite heap cost or historical reports. Those acceptance boundaries remain explicit and keep their original evidence.
+
 ## Aggregation of components on live source
 
 [Component Launcher](../../scripts/run-component-suites.ps1) Perform primary component inputs from [Catalog Maven](../../config/atf-test-suites.json), The declared Gradle collections of the application and the distinct selection of the common UI library. The compilation and cache of Maven belong to a TMP copy; each Gradle module and selection produces its own HTML Extent with distinct invokes, assessed comparisons and source provenance. Gradle reports do not concatenate in a synthetic report.

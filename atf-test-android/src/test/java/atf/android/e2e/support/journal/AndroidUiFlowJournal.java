@@ -27,6 +27,7 @@ public final class AndroidUiFlowJournal {
         properties.setProperty("flow.status", trace.status().name());
         properties.setProperty("flow.failure", trace.failure());
         properties.setProperty("flow.failurePhase", failurePhase);
+        trace.sanityPlan().ifPresent(plan -> properties.setProperty("flow.sanityPlan", plan.json()));
         var phases = trace.phaseSnapshots();
         properties.setProperty("flow.phaseCount", Integer.toString(phases.size()));
         for (int phaseIndex = 0; phaseIndex < phases.size(); phaseIndex++) {

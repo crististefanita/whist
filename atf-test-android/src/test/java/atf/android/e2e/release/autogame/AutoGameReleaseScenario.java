@@ -10,71 +10,77 @@ import java.util.List;
 
 /** Verifies the bid-screen AutoGame control and its one-hand boundary on the signed APK. */
 public final class AutoGameReleaseScenario {
-    public static void run(ReleaseBidContext c) throws Exception {
+    public static atf.android.evidence.flow.UiSanityPlan plan() throws java.io.IOException {
+        return atf.android.evidence.flow.UiSanityPlan.load(atf.android.e2e.support.flow.WhistLabScenario.checkoutRoot()
+                .resolve("config/table-sanity-plan.json"));
+    }
+
+    public static void run(ReleaseBidContext c) throws Exception { var plan = plan(); c.useSanityPlan(plan); run(c, plan); }
+
+    public static void run(ReleaseBidContext c, atf.android.evidence.flow.UiSanityPlan plan) throws Exception {
         String installed = c.installedHash();
         if (!c.setup.required("requestedApkSha256").asText().equals(installed))
             throw new IllegalStateException("Installed APK differs from the signed candidate");
-
         c.ui.restartToActivity(ReleaseBidContext.PACKAGE, ".MainActivity");
         boolean ro = c.ui.hasText(c.ui.dump(), "Joc nou");
         Labels labels = new Labels(ro);
-        c.checkpoint("Signed APK home before AutoGame", xml -> List.of(
-                ReleaseBidContext.equal("Installed APK matches the candidate SHA-256",
-                        c.setup.required("requestedApkSha256").asText(), installed),
-                ReleaseBidContext.equal("A new match can be started", true, c.ui.hasText(xml, labels.newGame()))));
-
         c.ui.tapText(labels.newGame());
         c.ui.selectNamedSpinnerOption(labels.players(), "4");
         c.ui.selectNamedSpinnerOption(labels.mode(), ro ? "Românesc (1–8–1)" : "Romanian (1–8–1)");
         c.ui.selectNamedSpinnerOption(labels.difficulty(), ro ? "Dificil" : "Hard");
         c.ui.tapText(labels.start());
-        c.awaitRecommendation(labels.submit());
-        c.checkpoint("Current hand is awaiting the human bid", xml -> List.of(
-                ReleaseBidContext.equal("Real bid control is visible", true, c.ui.hasText(xml, labels.submit())),
-                ReleaseBidContext.equal("AutoGame is in the upper right of the header, above trump and bidding", true,
-                        headerPlacement(c, xml, labels)),
-                ReleaseBidContext.equal("AutoGame starts unchecked with an explicit accessible action", true,
-                        c.ui.hasDescription(xml, labels.startAutoGame()))));
-
-        c.ui.tapText(labels.autoGameToggle());
-        // On a one-card hand the actor can advance before UiAutomator produces a hierarchy.
-        // Assert the durable score boundary here and inspect the play marker on the next manual turn.
-        c.awaitTextAndDismissAchievementNotice(labels.handComplete(), Duration.ofSeconds(45));
-        c.checkpoint("AutoGame completes the current hand at its real score boundary", xml -> List.of(
-                ReleaseBidContext.equal("One-card hand reached the score screen", true,
-                        c.ui.hasText(xml, labels.handComplete())),
-                ReleaseBidContext.equal("The score screen has no stale actor badge", 0L,
-                        badgeCount(xml, labels.playBadge()) + badgeCount(xml, labels.bidBadge()))));
-        c.revealPostHandAction(labels.next());
-        c.checkpoint("The score page exposes the continuation action after scrolling when needed", xml -> List.of(
-                ReleaseBidContext.equal("The Next hand button is visible and enabled", true,
-                        HierarchyDocument.nodes(xml).stream()
-                                .anyMatch(node -> node.text().equals(labels.next()) && node.clickable() && node.enabled()))));
-
-        c.ui.tapText(labels.next());
-        c.awaitRecommendation(labels.submit());
-        c.checkpoint("AutoGame does not leak into the next hand", xml -> List.of(
-                ReleaseBidContext.equal("The next hand exposes the same visible bid control", true,
-                        c.ui.hasText(xml, labels.autoGameToggle())),
-                ReleaseBidContext.equal("The new hand returns to the unchecked state", true,
-                        c.ui.hasDescription(xml, labels.startAutoGame())
-                                && !c.ui.hasDescription(xml, labels.stopAutoGame()))));
-        c.ui.revealDescriptionWithHeight(labels.handPrefix(), privateHandHeight(c));
-        String bid = c.ui.dump();
-        Map<String, Bounds> bidSeats = seatFrames(bid, labels);
-        c.checkpoint("The new hand exposes the active bidder and its table positions", xml -> List.of(
-                ReleaseBidContext.equal("All four seat frames are visible", 4, seatFrames(xml, labels).size()),
-                ReleaseBidContext.equal("The human bid button is the only visible bidding prompt", 0L,
-                        badgeCount(xml, labels.bidBadge()))));
-
-        c.ui.tapText(labels.submit());
-        c.ui.awaitText(labels.playBadge(), Duration.ofSeconds(30));
-        c.checkpoint("Play retains the same seat rectangles and shows the active player", xml -> List.of(
-                ReleaseBidContext.equal("Each seat frame occupies the same pixel rectangle", bidSeats, seatFrames(xml, labels)),
-                ReleaseBidContext.equal("Exactly one player has the play indicator", 1L, badgeCount(xml, labels.playBadge())),
-                ReleaseBidContext.equal("The full private card remains visible below the seats", true,
-                        privateHandIsVisible(c, xml, labels, bidSeats))));
-        c.ui.back();
+        var biddingFrames = new java.util.concurrent.atomic.AtomicReference<Map<String, Bounds>>();
+        plan.execute(step -> {
+            switch (step) {
+                case "bidding" -> {
+                    c.awaitRecommendation(labels.submit());
+                    biddingFrames.set(seatFrames(c.ui.dump(), labels));
+                    c.sanityCheckpoint(step, "Manual hand awaits its bid", xml -> List.of(
+                            ReleaseBidContext.equal("Installed APK matches the candidate", c.setup.required("requestedApkSha256").asText(), installed),
+                            ReleaseBidContext.equal("Four real seats are present", 4, seatFrames(xml, labels).size()),
+                            ReleaseBidContext.equal("AutoGame starts unchecked", true, c.ui.hasDescription(xml, labels.startAutoGame())),
+                            ReleaseBidContext.equal("Header placement", true, headerPlacement(c, xml, labels))));
+                }
+                case "before-human" -> {
+                    c.ui.tapText(labels.submit());
+                    c.ui.awaitDescriptionContaining(ro ? "Carte legală" : "Legal card", Duration.ofSeconds(30));
+                    c.sanityCheckpoint(step, "Human turn before the legal card", xml -> List.of(
+                            ReleaseBidContext.equal("Exactly one legal private card", 1, c.ui.legalCardDescriptions(xml).size()),
+                            ReleaseBidContext.equal("Bid and play preserve seat rectangles", biddingFrames.get(), seatFrames(xml, labels))));
+                }
+                case "after-human" -> {
+                    String xml = c.ui.dump();
+                    String legal = c.ui.legalCardDescriptions(xml).stream().findFirst().orElseThrow();
+                    c.ui.tapDescription(legal);
+                    c.awaitTextAndDismissAchievementNotice(labels.handComplete(), Duration.ofSeconds(45));
+                    c.sanityCheckpoint(step, "The human card reaches the score boundary", current -> List.of(
+                            ReleaseBidContext.equal("Real hand reached score", true, c.ui.hasText(current, labels.handComplete()))));
+                }
+                case "manual-score" -> c.sanityCheckpoint(step, "Manual hand has no stale actor", xml -> List.of(
+                        ReleaseBidContext.equal("Score has no play badge", 0L, badgeCount(xml, labels.playBadge()))));
+                case "auto-bidding" -> {
+                    c.revealPostHandAction(labels.next()); c.ui.tapText(labels.next());
+                    c.awaitRecommendation(labels.submit());
+                    c.sanityCheckpoint(step, "Next hand is ready for AutoGame", xml -> List.of(
+                            ReleaseBidContext.equal("One-card automatic hand", true, c.ui.hasDescriptionContaining(xml, labels.handPrefix()+"1")),
+                            ReleaseBidContext.equal("AutoGame remains unchecked before explicit selection", true, c.ui.hasDescription(xml, labels.startAutoGame()))));
+                }
+                case "auto-score" -> {
+                    c.ui.tapText(labels.autoGameToggle());
+                    c.awaitTextAndDismissAchievementNotice(labels.handComplete(), Duration.ofSeconds(45));
+                    c.sanityCheckpoint(step, "AutoGame completes its one real hand", xml -> List.of(
+                            ReleaseBidContext.equal("Automatic hand reached score", true, c.ui.hasText(xml, labels.handComplete())),
+                            ReleaseBidContext.equal("Score has no stale actor", 0L, badgeCount(xml, labels.playBadge())+badgeCount(xml, labels.bidBadge()))));
+                }
+                case "return-control" -> {
+                    c.revealPostHandAction(labels.next()); c.ui.tapText(labels.next()); c.awaitRecommendation(labels.submit());
+                    c.sanityCheckpoint(step, "Control returns without playing a third hand", xml -> List.of(
+                            ReleaseBidContext.equal("Manual bid is available", true, c.ui.hasText(xml, labels.submit())),
+                            ReleaseBidContext.equal("AutoGame is unchecked", true, c.ui.hasDescription(xml, labels.startAutoGame())&&!c.ui.hasDescription(xml, labels.stopAutoGame()))));
+                }
+                default -> throw new IllegalArgumentException("Unsupported paired step: " + step);
+            }
+        });
     }
 
     private static Map<String, Bounds> seatFrames(String xml, Labels labels) throws Exception {

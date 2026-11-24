@@ -91,6 +91,30 @@ final class BrowserReportFixture {
         new ObjectMapper().writeValue(root.resolve("browser-ui-checks.json").toFile(), java.util.List.of(test));
     }
 
+    static com.fasterxml.jackson.databind.node.ObjectNode sanity(Path root) throws Exception {
+        var test = steps(root); var json = new ObjectMapper();
+        var template = test.withArray("steps").get(0).deepCopy();
+        var plan = atf.android.evidence.flow.UiSanityPlan.load(GovernanceProject.locateProjectRoot().resolve("config/table-sanity-plan.json"));
+        test.put("id", "MATCH-ANCHORS-fixture"); var rows = test.putArray("steps");
+        var observed = test.putObject("observed");
+        observed.putObject("profile").set("deals", json.valueToTree(plan.deals()));
+        var rounds = observed.putArray("rounds");
+        for (int i = 0; i < plan.deals().size(); i++) rounds.addObject().put("hand", i + 1).put("cards", plan.deals().get(i));
+        var budget = observed.putObject("flowBudget").put("contract", "MINIMAL_TABLE_FLOW_V1").put("scenarioId", plan.id())
+                .put("hands", 2).put("normalCaptures", 4).put("failureCaptures", 0).put("maximumHands", 2).put("maximumNormalCaptures", 4);
+        budget.set("plan", plan.specification()); var frames = budget.putArray("frames");
+        for (String role : plan.steps()) {
+            var row = ((com.fasterxml.jackson.databind.node.ObjectNode) template.deepCopy()).put("id", "FLOW-" + role).put("name", role);
+            var images = row.putArray("images"); var frame = frames.addObject().put("id", role);
+            if (plan.captureSteps().contains(role)) {
+                String name = role + ".png"; png(root.resolve(name), 0xff557799 + plan.steps().indexOf(role));
+                images.addObject().put("file", name).put("title", "Captured " + role).put("role", role); frame.put("capture", name);
+            } else frame.putNull("capture");
+            rows.add(row);
+        }
+        writeSteps(root, test); return test;
+    }
+
     static String payload(Path image) throws Exception { return Base64.getEncoder().encodeToString(Files.readAllBytes(image)); }
     private static Map<String, String> image(String file, String title) { return Map.of("file", file, "title", title); }
     private static void png(Path file, int color) throws Exception {

@@ -166,6 +166,7 @@ public final class ReleaseBidContext {
     }
 
     public void checkpoint(String title, Comparisons comparisons) throws Exception {
+        if (trace.sanityPlan().isPresent()) { sanityCheckpoint("notice", title, comparisons); return; }
         var captured = ui.capture(title.replaceAll("[^A-Za-z0-9]+", "-").toLowerCase(java.util.Locale.ROOT));
         evidence.addAll(captured);
         Path xml = captured.stream().filter(file -> file.toString().endsWith(".xml")).findFirst().orElseThrow();
@@ -175,6 +176,30 @@ public final class ReleaseBidContext {
                 "Observe the actual signed application", "All declared UI comparisons match", "Captured hierarchy and PNG", 0,
                 checks, passed ? AtfReportStatus.PASS : AtfReportStatus.FAIL);
         if (!passed) throw new AssertionError(title + ": " + checks);
+    }
+
+    public void useSanityPlan(atf.android.evidence.flow.UiSanityPlan plan) throws java.io.IOException { trace.useSanityPlan(plan); }
+
+    public void sanityCheckpoint(String step, String title, Comparisons comparisons) throws Exception {
+        var plan = trace.sanityPlan().orElseThrow();
+        var frames = new ArrayList<>(trace.phaseSnapshots().stream().flatMap(p -> p.checkpoints().stream())
+                .map(c -> new atf.android.evidence.flow.UiSanityPlan.Frame(c.target(), c.screenshot() == null ? null : c.screenshot().toString())).toList());
+        frames.add(new atf.android.evidence.flow.UiSanityPlan.Frame(step, plan.captureSteps().contains(step) ? output.resolve(step + ".png").toString() : null));
+        plan.verify(frames, false);
+        List<Path> captured;
+        if (plan.captureSteps().contains(step) || step.equals("failure")) captured = ui.capture(step);
+        else {
+            Path xml = output.resolve(step + "-" + frames.size() + ".xml");
+            Files.writeString(xml, ui.dump()); captured = List.of(xml);
+        }
+        evidence.addAll(captured);
+        Path xml = captured.stream().filter(file -> file.toString().endsWith(".xml")).findFirst().orElseThrow();
+        var checks = comparisons.read(Files.readString(xml));
+        boolean passed = checks.stream().allMatch(AtfAssertion::passed);
+        UiFlowCheckpoint.checkpoint(trace, "TEST BODY", AtfGherkinKeyword.THEN, title, step, captured,
+                "Observe the actual signed application", "All declared UI comparisons match", "Fresh controlled-step hierarchy", 0,
+                checks, passed ? AtfReportStatus.PASS : AtfReportStatus.FAIL);
+        if (!passed && !step.equals("failure")) throw new AssertionError(title + ": " + checks);
     }
 
     void publish(Throwable failure) throws Exception {
@@ -194,6 +219,12 @@ public final class ReleaseBidContext {
             failure = original;
             try { trace.fail(original); } catch (Throwable diagnostic) {
                 if (diagnostic != original) original.addSuppressed(diagnostic);
+            }
+            if (trace.sanityPlan().isPresent() && trace.phaseSnapshots().stream().flatMap(p -> p.checkpoints().stream())
+                    .noneMatch(c -> c.status() == AtfReportStatus.FAIL && c.screenshot() != null)) {
+                try { sanityCheckpoint("failure", "First visual failure", xml -> List.of(
+                        equal("Original execution failure", "No execution failure", original.toString()))); }
+                catch (Throwable capture) { if (capture != original) original.addSuppressed(capture); }
             }
         } finally {
             try { publish(failure); } catch (Throwable publication) {

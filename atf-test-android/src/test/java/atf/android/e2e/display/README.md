@@ -20,6 +20,8 @@ Components verify all legal combinations, actors and winners without pictures. C
 
 Select few representative journeys with Given/When/Then, before/after comparisons and inline pictures. Do not replay the resolution matrix in E2E.
 
+The [paired APK/Web plan](../../../../../../../../config/table-sanity-plan.json) drives two one-card hands: manual, then AutoGame, then return to manual bidding. Four planned checkpoints have images; other steps keep observations and assertions. The journal and publisher reject missing roles, extra captures and reordered or misassigned evidence.
+
 ## Artifacts
 
 [APK catalog and status](../../../../../../../../release/README.md)

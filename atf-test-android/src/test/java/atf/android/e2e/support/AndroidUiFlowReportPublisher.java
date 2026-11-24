@@ -121,6 +121,11 @@ public final class AndroidUiFlowReportPublisher {
 
     private static void publishCheckpoint(UiExtentReportSession.UiPhase phase,
             AndroidUiFlowTrace.CheckpointSnapshot checkpoint) throws Exception {
+        if (checkpoint.screenshot() == null) {
+            phase.step(AtfGherkinKeyword.valueOf(checkpoint.keyword()), checkpoint.title(), checkpoint.target(), "",
+                    checkpoint.assertions(), checkpoint.actions(), checkpoint.status());
+            return;
+        }
         String screenshot = checkpoint.screenshot() == null ? ""
                 : AndroidScreenshotEvidence.from(checkpoint.screenshot()).base64Png();
         phase.step(AtfGherkinKeyword.valueOf(checkpoint.keyword()),
@@ -169,7 +174,10 @@ public final class AndroidUiFlowReportPublisher {
                             new ReportField("Installed APK", valueOrUnknown(installedPackage).trim()),
                             new ReportField("Checkpoint count", Integer.toString(checkpointCount)),
                             new ReportField("Inline checkpoint screenshots", Integer.toString(screenshotCount(trace))),
-                            new ReportField("Screenshot policy", "One full-display PNG at every captured checkpoint"),
+                            new ReportField("Screenshot policy", trace.sanityPlan().isPresent()
+                                    ? "Planned full-display captures; semantic checkpoints retain observations and comparisons"
+                                    : "One full-display PNG at every captured checkpoint"),
+                            new ReportField("Shared scenario identity", trace.sanityPlan().map(atf.android.evidence.flow.UiSanityPlan::id).orElse("Not a paired sanity scenario")),
                             new ReportField("Observed journey", valueOrUnknown(summary)),
                             new ReportField("Execution failure", trace.failure().isBlank() ? "none" : trace.failure())),
                     supporting, List.of()));
@@ -190,8 +198,12 @@ public final class AndroidUiFlowReportPublisher {
     private static void validateCheckpointContract(AndroidUiFlowEvidence trace, int assertionPreviewLimit) {
         List<AndroidUiFlowTrace.CheckpointSnapshot> checkpoints = trace.phaseSnapshots().stream()
                 .flatMap(phase -> phase.checkpoints().stream()).toList();
+        trace.sanityPlan().ifPresent(plan -> plan.verify(checkpoints.stream()
+                .map(c -> new atf.android.evidence.flow.UiSanityPlan.Frame(c.target(), c.screenshot() == null ? null : c.screenshot().toString()))
+                .toList(), trace.status() == AtfReportStatus.PASS));
         for (AndroidUiFlowTrace.CheckpointSnapshot checkpoint : checkpoints) {
-            require(checkpoint.screenshot() != null && Files.isRegularFile(checkpoint.screenshot()),
+            require((trace.sanityPlan().isPresent() && checkpoint.screenshot() == null)
+                            || checkpoint.screenshot() != null && Files.isRegularFile(checkpoint.screenshot()),
                     "Android checkpoint has no captured PNG: " + checkpoint.title());
             require(checkpoint.actions().stream().anyMatch(action -> action.source().name().equals("OBSERVE")),
                     "Android checkpoint has no recorded UI observation: " + checkpoint.title());

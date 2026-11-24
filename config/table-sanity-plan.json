@@ -1,0 +1,10 @@
+{
+  "schemaVersion": 1,
+  "id": "WHIST-TABLE-CONTINUITY-V1",
+  "steps": ["bidding", "before-human", "after-human", "manual-score", "auto-bidding", "auto-score", "return-control"],
+  "captureSteps": ["bidding", "before-human", "after-human", "auto-score"],
+  "optionalSteps": ["notice"],
+  "deals": [1, 1],
+  "maximumNormalCaptures": 4,
+  "maximumFailureCaptures": 1
+}

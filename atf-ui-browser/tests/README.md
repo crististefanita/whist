@@ -22,7 +22,7 @@ The test-only [static host](ro/cardtable/testing/browser/StaticSiteHost.java) ad
 
 Select an explicit short journey with Given/When/Then, before/after comparisons and inline pictures. The default `four-sanity` profile uses one 1664 × 916 viewport, one manual hand and one AutoGame hand, with at most four normal captures.
 
-The runner rejects `all` or more than two hands before browser startup; the publisher independently reconciles actual rounds and image references. Resolution matrices remain in components.
+The [shared APK/Web plan](../../config/table-sanity-plan.json) drives the ordered semantic roles. The runner rejects `all` or more than two hands before browser startup; the publisher independently reconciles actual rounds, roles and image references. Resolution matrices remain in components.
 
 - Use the compiled Pages site through the same static host for the short journey.
 - The legacy `Run-BrowserUi.ps1` diagnostic compiles its Java driver and shared host into the external evidence directory; its viewport expectations follow the adaptive scene contract.

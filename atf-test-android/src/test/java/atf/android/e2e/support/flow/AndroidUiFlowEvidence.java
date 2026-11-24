@@ -8,6 +8,7 @@ import java.util.List;
 
 /** Read-only publication contract shared by live capture and explicitly labelled offline republication. */
 public interface AndroidUiFlowEvidence {
+    default java.util.Optional<atf.android.evidence.flow.UiSanityPlan> sanityPlan() { return java.util.Optional.empty(); }
     Path manifest();
     String id();
     String name();

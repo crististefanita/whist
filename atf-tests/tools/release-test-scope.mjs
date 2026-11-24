@@ -28,7 +28,7 @@ const rules = [
 ];
 
 const nonProduct = /^(?:atf-validation\/|atf-tests\/|atf-test-android\/|ios\/|whist-lab-app\/(?:ai-lab|ios-bridge|test-audit|algorithm-build)\/|whist-lab-app\/[^/]+\/src\/(?:test|unitTest|testFixtures|androidTest|rasterTest)\/|\.github\/|\.atf-signing\/)/;
-const testConfiguration = /^config\/(?:atf-governance-policy\.json|atf-test-suites\.json|atf-component-(?:collections|dependencies|reader-seals)\.json|release-platform-rag-policy\.json|documentation-editions\.json|gradle-(?:app|audit)-collections\.properties|test-collections\.json)$/;
+const testConfiguration = /^config\/(?:report-producers\.json|table-sanity-plan\.json|atf-governance-policy\.json|atf-test-suites\.json|atf-component-(?:collections|dependencies|reader-seals)\.json|release-platform-rag-policy\.json|documentation-editions\.json|gradle-(?:app|audit)-collections\.properties|test-collections\.json)$/;
 const testLaunchers = /^scripts\/(?:AtfLocalPaths\.ps1|AtfSigningSourcePolicy\.ps1|AtfFileDigest\.ps1|Get-AtfSourceInputs\.ps1|Copy-AtfSourceInputs\.ps1|AtfQualificationSnapshot\.ps1|AtfComponentJvm\.ps1|AtfTestChangeAdmission\.ps1|AtfComponentResume\.ps1|AtfComponentMaven\.ps1|AtfCompilerIdentity\.ps1|AtfComponentMavenReuse\.ps1|AtfQualificationTiming\.ps1|Measure-AtfReleaseCommand\.ps1|AtfAndroidMaven\.ps1|AtfAndroidPackageRegistration\.ps1|AtfAndroidUserReadiness\.ps1|AtfAndroidUserOwnership\.ps1|AtfDeviceLease\.ps1|Invoke-AtfAndroidDisposableUser\.ps1|check-android-release-device\.ps1|export-card-table-ui\.ps1|run-(?:atf-governance|component-suites|whist-collection|whist-responsive-sanity|whist-signed-e2e)\.ps1)$/;
 
 function classify(file, metadataOnly, hasRulesComponents) {

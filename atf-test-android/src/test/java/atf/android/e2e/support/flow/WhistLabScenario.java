@@ -50,7 +50,7 @@ public final class WhistLabScenario {
         }
     }
 
-    static Path checkoutRoot() {
+    public static Path checkoutRoot() {
         for (String property : new String[] {
                 "atf.governance.gitRoot", "maven.multiModuleProjectDirectory", "user.dir"
         }) {

@@ -60,7 +60,25 @@ Delivery policy requires one or two hands per E2E game at one readable viewport.
 | Match completion | Use a legal near-final checkpoint validated in components, then play the real last hand. |
 | Suite delivery | The current `release/` index links canonical component, renderer, governance and E2E reports by relative path, with explicit selection and provenance. |
 | Historical references | Preserve original outcomes and bytes; an older over-budget journey does not become current primary qualification. |
-| Image selection | Web admission and publication enforce at most four normal captures; additionally retain the first visual failure. Do not photograph each card or display combination, and do not conceal failed comparison data. |
-| Implementation gap | Web admission rejects long plans before startup and the publisher reconciles actual rounds/captures. Native hand admission accepts one or two; `TEST-04` retains paired-driver and native-capture closure. |
+| Image selection | Both adapters and publishers enforce at most four normal captures and one terminal failure image. Semantic checkpoints retain original actions, observations and assertions without adding an image. |
+| Shared executable intent | [Sanity plan](../../config/table-sanity-plan.json) supplies the scenario ID, ordered roles, two one-card hands and image ownership to the Java and Web drivers. Admission precedes device or browser interaction. |
+
+### Paired sanity roles
+
+| Role | Actual transition | Capture |
+|---|---|---|
+| `bidding` | Start Romanian 1–8–1, four players, Hard, manual control. | Yes |
+| `before-human` | Submit a legal bid and wait for the human's legal card. | Yes |
+| `after-human` | Play the real card and reach the durable score screen. | Yes |
+| `manual-score` | Record the completed first hand. | No |
+| `auto-bidding` | Continue to the second one-card hand with AutoGame unchecked. | No |
+| `auto-score` | Enable AutoGame and reach the second score screen. | Yes |
+| `return-control` | Continue to manual bidding without playing a third hand. | No |
+
+- Drivers supply platform observations; they do not inject a completed score screen.
+- Optional achievement notices preserve their own semantic observations.
+- A failed run keeps the completed prefix, original cause and first diagnostic image; publication cannot turn it into a complete passing flow.
+
+The native journal carries its original plan through replay. Missing, extra, reordered or misassigned frames are refused before the next journal mutation or final HTML publication. Components test these controls without a device; an illustrated journey qualifies only its actual platform and viewport.
 
 [Implementation and remaining acceptance](../feedback/ATF_CardUi_Extraction.md#ui-three-module-plan) separate portable core, Android adapter and Web adapter. Game-specific cases remain with the game; neutral fixture/oracle support belongs to core tests.
