@@ -80,7 +80,8 @@ pwsh -NoProfile -File .\scripts\run-whist-responsive-sanity.ps1 -TableViewportOn
 ```
 
 Runner requires PowerShell 7 (`pwsh`), because the ADB process adapter uses
-`ProcessStartInfo.ArgumentList`. Builds and reports remain in documented external temporary locations.
+`ProcessStartInfo.ArgumentList`. Builds and reports remain in documented
+external temporary locations.
 
 Geometric oracle and nodes have different limits to visibility in the PNG and observed interaction. The compact table requires the hand, trick and all boxes simultaneously without vertical scroll; the check of pixels and native acceptance remain distinct from the simulated observations.
 
@@ -135,7 +136,8 @@ polling interval and diagnostic; reading produces a fresh hierarchy.
 | Diagnostic | Expiration uses the last observed hierarchy; error or interruption is not replaced by success or resumption. |
 | Navigation | Loops closing menus or activating controls remain distinct; passive waiting does not introduce actions. |
 
-Components use a controlled clock and pauses without an emulator or host-performance thresholds. [Package governance](../docs/governance/ATF_Packages.md)
+Components use a controlled clock and pauses without an emulator or
+host-performance thresholds. [Package governance](../docs/governance/ATF_Packages.md)
 delimit the mechanism for interaction and capture of evidence.
 
 </details>
@@ -147,7 +149,8 @@ delimit the mechanism for interaction and capture of evidence.
 
 [Driver UI](src/test/java/atf/android/e2e/driver/AndroidUiDriver.java) keep
 interactions and the action journal. [Capture](src/test/java/atf/android/e2e/driver/UiDeviceCapture.java)
-holds the transfer of the hierarchy and PNG, retries and closure of the measured interval. A hierarchy left over from another screen or prior PNG cannot demonstrate
+holds the transfer of the hierarchy and PNG, retries and closure of the
+measured interval. A hierarchy left over from another screen or prior PNG cannot demonstrate
 success of current capture; interruption retains the cause and thread interrupt status.
 
 [AdbClient](src/main/java/atf/android/AdbClient.java) delegates [execution of the process](src/main/java/atf/android/process/CommandProcess.java) with a single monotonic deadline for starting, finishing and output draining. The interruption shall retain the thread interrupt status and the reading errors must not be converted into success.
