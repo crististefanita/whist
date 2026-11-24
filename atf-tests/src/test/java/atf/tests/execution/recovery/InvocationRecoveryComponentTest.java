@@ -18,7 +18,28 @@ import static atf.testkit.assertions.AuditedAssertions.*;
 @AtfComponentTest @ExtendWith(GameReportAudit.class)
 class InvocationRecoveryComponentTest {
     private static final ObjectMapper JSON=new ObjectMapper();
+    private static Path originalFixture;
+    private static CommandProcess.Output originalOutcome;
+    private static String originalFixtureHash;
     @TempDir Path temporary;
+    @org.junit.jupiter.api.BeforeAll static void originalPreconditions(@TempDir Path root) throws Exception {
+        originalFixture=root;Path source=Files.createDirectories(root.resolve("source/config")).getParent();
+        JSON.writeValue(source.resolve("config/atf-test-suites.json").toFile(),Map.of("suites",List.of(Map.of("suite",RecoveryFixture.ControlledSuite.class.getName(),"role","primary","layer","component"))));
+        originalOutcome=fork(root,RecoveryFixture.ControlledSuite.class,source,"initial",null);
+        if(originalOutcome.exitCode()!=1) throw new IllegalStateException("Original controlled fixture must fail: "+new String(originalOutcome.stdout(),StandardCharsets.UTF_8));
+        originalFixtureHash=fixtureHash(root);
+    }
+    @org.junit.jupiter.api.AfterAll static void originalPreconditionsStayImmutable() throws Exception {
+        if(originalFixtureHash!=null) org.junit.jupiter.api.Assertions.assertEquals(originalFixtureHash,fixtureHash(originalFixture),"Shared original observations stay immutable across all recovery controls");
+    }
+    private static String fixtureHash(Path root) throws Exception {
+        var value=new StringBuilder();
+        try(var paths=Files.walk(root)) {
+            for(var file:paths.filter(Files::isRegularFile).sorted().toList()) value.append(root.relativize(file)).append('\t')
+                    .append(atf.android.evidence.component.snapshot.ComponentCaptureJournal.sha256(Files.readAllBytes(file))).append('\n');
+        }
+        return atf.android.evidence.component.snapshot.ComponentCaptureJournal.sha256(value.toString().getBytes(StandardCharsets.UTF_8));
+    }
     @Test void retryRunsOnlyFailedAndAbortedIdsAndRepublishesOriginalComparisons(ComponentInputs inputs) throws Exception {
         var fixture=prepare(RecoveryFixture.ControlledSuite.class);
         var first=execute(fixture,"initial",null);assertNotEquals(0,first.exitCode(),"The original controlled suite must actually fail");
@@ -38,8 +59,21 @@ class InvocationRecoveryComponentTest {
         String html=Files.readString(temporary.resolve("retry/group/component-report.html"));
         var rows=JSON.convertValue(result.path("invocations"),new com.fasterxml.jackson.core.type.TypeReference<List<ComponentReportCoverage.Invocation>>(){});
         assertEquals(List.of(),ComponentReportCoverage.violations(rows,html),"All original identities have one final receipt and original comparisons");
-        assertTrue(html.contains("retained value") && html.contains("REUSED_ORIGINAL_COMPARISONS"),"Inherited values and their historical origin remain visible");
-        assertTrue(html.contains("Original attempt (immutable)") && html.contains("Retry execution (immutable)"),"Canonical Extent retains both immutable attempt identities without truncation");
+        assertTrue(new atf.tests.reporting.GameReportTextAudit(html).contains("retained value"),"The original evaluated comparison value remains visible");
+        var origins=capturedBodies(html,"Component input: Original invocation recovery");
+        assertEquals(3,origins.size(),"Every inherited invocation retains one original recovery receipt");
+        var inheritedIds=new java.util.HashSet<String>();
+        for(String origin:origins) {
+            var recorded=JSON.readTree(origin);
+            assertEquals("REUSED_ORIGINAL_COMPARISONS",recorded.path("mode").asText());
+            assertEquals(result.at("/recovery/originalCheckpointSha256").asText(),recorded.path("originalCheckpointSha256").asText());
+            assertEquals(atf.android.evidence.component.snapshot.ComponentCaptureJournal.sha256(original),recorded.path("originalReportSha256").asText());
+            assertTrue(inheritedIds.add(recorded.path("originalInvocationId").asText()),"Original inherited identities are distinct");
+        }
+        assertEquals(new java.util.HashSet<>(JSON.convertValue(result.at("/recovery/reusedInvocationIds"),new com.fasterxml.jackson.core.type.TypeReference<List<String>>(){})),inheritedIds);
+        var lineage=JSON.readTree(capturedBodies(html,"Recovery report lineage").getFirst());
+        assertEquals(java.util.Set.of("Original attempt (immutable)","Retry execution (immutable)"),
+                new java.util.HashSet<>(lineage.findValuesAsText("label")),"Both immutable attempts survive ordered text fragmentation");
         String index=Files.readString(temporary.resolve("retry/group/README.md"));
         assertTrue(index.contains("](attempts/original-report.html)") && index.contains("](attempts/retry-report.html)"),"The accompanying index links both reports with relative paths");
         inputs.add("Reconciled invocation outcomes and lineage",JSON.writerWithDefaultPrettyPrinter().writeValueAsString(result));
@@ -56,7 +90,8 @@ class InvocationRecoveryComponentTest {
         assertEquals(2,Files.readAllLines(temporary.resolve("interrupted.count")).size(),"Interrupted body retries");
         assertEquals(1,Files.readAllLines(temporary.resolve("pending.count")).size(),"Unexecuted body runs once");
         String report=Files.readString(temporary.resolve("retry/group/component-report.html"));
-        assertTrue(report.contains("Original captured prefix (republication)"),"Rebuilt prefix is labeled as republication rather than original completed HTML");
+        var lineage=JSON.readTree(capturedBodies(report,"Recovery report lineage").getFirst());
+        assertTrue(lineage.findValuesAsText("label").contains("Original captured prefix (republication)"),"Rebuilt prefix is explicitly identified after reconstructing all body parts");
         inputs.add("Original interruption checkpoint",Files.readString(initial.resolve("invocation-checkpoint.json")));
     }
     @Test void aFailedRetryStaysFailedUntilOnlyItsRemainingIdentitiesPass(ComponentInputs inputs) throws Exception {
@@ -109,6 +144,22 @@ class InvocationRecoveryComponentTest {
         inputs.add("Independent rejection observations",String.join("\n",observations)+"\nmissing/foreign/duplicate retry, altered capture, altered HTML: REFUSED");
     }
     private Class<?> selected;
+    private static List<String> capturedBodies(String html,String title) {
+        var values=new ArrayList<String>();
+        for(var detail:org.jsoup.Jsoup.parse(html).select("details")) {
+            if(detail.children().stream().noneMatch(node -> node.tagName().equals("summary") && node.text().equals(title))) continue;
+            var parts=detail.select("pre");var text=new StringBuilder();
+            for(int i=0;i<parts.size();i++) {
+                var owner=parts.get(i).closest("details");
+                String expected="Full captured input — part "+(i+1)+"/"+parts.size();
+                if(owner==null || owner.children().stream().noneMatch(node -> node.tagName().equals("summary") && node.text().equals(expected)))
+                    throw new AssertionError("Missing, duplicated or reordered original body part: "+title+" / "+expected);
+                text.append(parts.get(i).wholeText());
+            }
+            values.add(text.toString());
+        }
+        return values;
+    }
     @Test void successfulOwnerReusePreservesItsOriginalSealedAttemptArtifacts(ComponentInputs inputs) throws Exception {
         Path root=atf.tests.governance.support.GovernanceProject.locateProjectRoot();
         String result=atf.tests.governance.documentation.release.rag.scope.NodeReleaseContracts.runNode(List.of("node","--test","--test-name-pattern","recovery preserves",
@@ -142,6 +193,20 @@ class InvocationRecoveryComponentTest {
         return source;
     }
     private CommandProcess.Output execute(Path source,String attempt,Path previous) throws Exception {
+        if(attempt.equals("initial") && selected==RecoveryFixture.ControlledSuite.class) {
+            try(var paths=Files.walk(originalFixture)) {
+                for(var from:paths.sorted().toList()) {
+                    Path to=temporary.resolve(originalFixture.relativize(from));
+                    if(Files.isDirectory(from)) Files.createDirectories(to);
+                    else if(!Files.exists(to)) Files.copy(from,to);
+                    else if(Files.mismatch(from,to)!=-1) throw new IllegalStateException("Fixture copy conflicts with owned preconditions: "+to);
+                }
+            }
+            return originalOutcome;
+        }
+        return fork(temporary,selected,source,attempt,previous);
+    }
+    private static CommandProcess.Output fork(Path temporary,Class<?> selected,Path source,String attempt,Path previous) throws Exception {
         Path run=temporary.resolve(attempt);Files.createDirectory(run);
         var provenance=Map.of("kind","live-source-components","apkQualification",false,"sourceFingerprint","a".repeat(64),"releaseFingerprint","b".repeat(64),
                 "qualificationContext",Map.of("sourceSha256","a".repeat(64),"releaseSha256","b".repeat(64)),"inputPartCharacters",16384,"observedUtc",attempt);

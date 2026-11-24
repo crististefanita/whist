@@ -188,7 +188,7 @@
     "atf-tests/src/test/java/atf/tests/execution/recovery/InvocationCaptureUnitTest.java": "bc997aea4c23050f5e3eda933cb16e299afc40a3767041149e52a4aadab51cb5",
     "atf-tests/src/test/java/atf/tests/execution/recovery/InvocationCheckpoint.java": "c1c542bf951a1fc57c5bd65b0cd7435cacbb50b57fef69f8d7ddae0f1779c65b",
     "atf-tests/src/test/java/atf/tests/execution/recovery/InvocationRecovery.java": "96f3659d9ceb3b28fd16bdc0d972b24298a9f20a638ee87e5c2442b3188a86a0",
-    "atf-tests/src/test/java/atf/tests/execution/recovery/InvocationRecoveryComponentTest.java": "01375cd33363aeff9c1ec6ee3e116854f9a7cae99d8ec4434d7f1cf3e49ad616",
+    "atf-tests/src/test/java/atf/tests/execution/recovery/InvocationRecoveryComponentTest.java": "30eb9120c84974263b03a5ad559f9bdfe99fd2edbd58d7f8e33cbbde3b6f0a6d",
     "atf-tests/src/test/java/atf/tests/execution/recovery/RecoveryPublication.java": "b6ff726a18342979fe8c20fda6654414aa4e896ac878ccde06873ca3b4ee0bd3",
     "atf-tests/src/test/java/atf/tests/governance/documentation/DocumentationAnchorGovernanceTest.java": "30d6c94dcd3059e40d5eb81cff6996da448d99d4be122dd5b9675b4053ff3bc6",
     "atf-tests/src/test/java/atf/tests/governance/documentation/DocumentationArchiveGovernanceTest.java": "83aa580eb5c265a4750a0e1d691c9682cd0e0b4db6622e228185c0da96995884",
