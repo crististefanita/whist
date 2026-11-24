@@ -65,6 +65,8 @@ mvn -B -pl atf-test-android -am '-Dtest=AndroidUnitSuite,AndroidComponentSuite' 
 
 Opțiunea `-ComponentsOnly` a lansatorului selectează colecția display fără dispozitiv. [Ghidul componentelor display](../docs/testing/ATF_DisplayComponents.md) definește intrările simulate, defectele controlate și limitele verificării.
 
+[Tranzacția checkpoint-ului](../docs/reporting/ATF_Android.md#checkpoint-transaction) separă coordonarea, codificarea și confirmarea jurnalului. Formatul și câmpurile se verifică în unitare fără Extent; refuzurile, reluarea și HTML-ul autonom se verifică în componente fără dispozitiv.
+
 ## Fluxuri Android
 
 [Ghidul Android](../docs/testing/ATF_Android.md) definește dispozitivul, rezervarea exclusivă, activarea și starea inițială. [Matricea de ecrane](../docs/testing/ATF_Display.md) deține profilurile, distribuțiile controlate și fluxul de joc opțional; [verificarea jocului](../docs/testing/ATF_Gameplay.md) deține regulile și scorul.

@@ -84,6 +84,11 @@ Măsurarea justifică investigarea reducerii redundanței; nu dovedește că toa
 
 ## Calificarea rămasă a producătorilor
 
-Pentru fiecare producător rămas, includeți fila standard `Overview` și structura în engleză în acceptanța HTML-ului autonom. Păstrați dovezile în limba originală a aplicației, PNG-urile încorporate la cazul proprietar și refuzați cadrele lipsă sau atribuite greșit. Contractul producătorului pentru navigator aparține suitei focalizate de raportare; nu implică acceptanța altor producători și nu modifică dovezile edițiilor sigilate.
+[Contractul checkpoint-ului](../reporting/ATF_Android.md#checkpoint-transaction) păstrează acum acțiunile și cauza originală la intrări respinse, scriere neconfirmată, reluare și eroare de temporizare după confirmare. Aceste limite aparțin jurnalului și publicatorului Android; ceilalți producători și acceptarea observațiilor native își păstrează criteriile de închidere.
 
-Pentru fiecare producător rămas, fluxurile de joc ilustrate cer puncte de control înainte/după ordonate și rânduri explicite de aserțiuni în locul unui singur PASS agregat. Inspectați fluxul real, ultimul său pas și proprietatea imaginilor în HTML autonom, alături de refuzul intrărilor incomplete sau contradictorii. Rapoartele istorice agregate își păstrează scopul original și nu dovedesc observațiile per acțiune absente; mecanismul calificat pentru navigator aparține [contractului publicării](../reporting/ATF_Audit.md#calificarea-unui-producător).
+| Domeniu rămas | Criteriu de închidere |
+|---|---|
+| Structura HTML | Fila standard `Overview` și narațiune în engleză; dovezile aplicației rămân în limba originală. |
+| Cadre și proprietate | PNG-uri încorporate la cazul proprietar; refuz explicit pentru cadre lipsă sau atribuite greșit. |
+| Flux ilustrat | Checkpoint-uri înainte/după ordonate, comparații explicite și ultimul pas verificabil în HTML autonom; refuz pentru date incomplete ori contradictorii. |
+| Limita acceptării | Calificarea publicatorului pentru navigator nu califică alți producători sau ediții istorice; [contractul publicării](../reporting/ATF_Audit.md#calificarea-unui-producător) păstrează aceste limite. |

@@ -5,18 +5,14 @@ import atf.reporting.contract.AtfReportStatus;
 import atf.reporting.ui.model.AtfUiActionRecord;
 import atf.android.evidence.timing.AndroidPhaseClock;
 import atf.android.evidence.timing.AndroidPhaseTiming;
-import atf.android.evidence.timing.AndroidPhaseTimingCodec;
+import atf.android.e2e.support.journal.AndroidUiFlowJournal;
 import java.io.IOException;
-import java.io.OutputStream;
-import java.nio.file.AtomicMoveNotSupportedException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Properties;
 import java.util.Objects;
 
 /** Persists ordered, renderer-neutral Android UI checkpoints for the final Whist Extent report. */
@@ -90,17 +86,35 @@ public final class AndroidUiFlowTrace implements atf.android.e2e.support.flow.An
         if (phases.keySet().stream().anyMatch(clock::running) && !clock.running(phaseName)) {
             throw new IllegalStateException("Checkpoint does not belong to the active Android phase: " + phaseName);
         }
-        List<Checkpoint> steps = phases.computeIfAbsent(phaseName, ignored -> new ArrayList<>());
         String screenshotName = artifactName(screenshot);
         List<String> artifactNames = supportingArtifacts == null ? List.of()
                 : supportingArtifacts.stream().map(this::artifactName).filter(value -> !value.isBlank()).toList();
         List<AtfUiActionRecord> checkpointActions = new ArrayList<>(pendingActions);
-        pendingActions.clear();
         if (actions != null) checkpointActions.addAll(actions);
-        steps.add(new Checkpoint(required(keyword, "keyword"), required(title, "title"),
+        var checkpoint = new Checkpoint(required(keyword, "keyword"), required(title, "title"),
                 required(target, "target"), screenshotName, List.copyOf(checkpointActions),
-                List.copyOf(assertions), Objects.requireNonNull(checkpointStatus), artifactNames));
-        flush();
+                List.copyOf(assertions), Objects.requireNonNull(checkpointStatus), artifactNames);
+        appendCheckpoint(phaseName, checkpoint);
+    }
+
+    private void appendCheckpoint(String phase, Checkpoint checkpoint) throws IOException {
+        boolean newPhase = !phases.containsKey(phase);
+        var steps = phases.computeIfAbsent(phase, ignored -> new ArrayList<>());
+        var pending = List.copyOf(pendingActions);
+        steps.add(checkpoint);
+        pendingActions.clear();
+        boolean[] committed = {false};
+        try {
+            clock.journal(() -> { writeManifest(); committed[0] = true; });
+        } catch (IOException | RuntimeException failure) {
+            // A timing failure after replacement must not erase already committed evidence.
+            if (!committed[0]) {
+                steps.removeLast();
+                if (newPhase) phases.remove(phase);
+                pendingActions.addAll(pending);
+            }
+            throw failure;
+        }
     }
 
     public synchronized void finish(AtfReportStatus finalStatus) throws IOException {
@@ -190,87 +204,8 @@ public final class AndroidUiFlowTrace implements atf.android.e2e.support.flow.An
     }
 
     private void writeManifest() throws IOException {
-        Properties properties = new Properties();
-        properties.setProperty("format.version", "1");
-        properties.setProperty("flow.id", id);
-        properties.setProperty("flow.name", name);
-        properties.setProperty("flow.testClass", testClass);
-        properties.setProperty("flow.testPackage", testPackage);
-        properties.setProperty("flow.appPackage", appPackage);
-        properties.setProperty("flow.tags", String.join(",", tags));
-        properties.setProperty("flow.status", status.name());
-        properties.setProperty("flow.failure", failure);
-        properties.setProperty("flow.failurePhase", failurePhase);
-        properties.setProperty("flow.phaseCount", Integer.toString(phases.size()));
-        int phaseIndex = 0;
-        for (var entry : phases.entrySet()) {
-            int ordinal = phaseIndex++;
-            String phasePrefix = "phase." + ordinal;
-            properties.setProperty(phasePrefix + ".name", entry.getKey());
-            clock.snapshot(entry.getKey()).ifPresent(timing -> AndroidPhaseTimingCodec.write(properties, phasePrefix + ".timing", timing));
-            if (clock.running(entry.getKey())) AndroidPhaseTimingCodec.running(properties, phasePrefix + ".timing", id, entry.getKey(), ordinal);
-            properties.setProperty(phasePrefix + ".stepCount", Integer.toString(entry.getValue().size()));
-            for (int stepIndex = 0; stepIndex < entry.getValue().size(); stepIndex++) {
-                Checkpoint checkpoint = entry.getValue().get(stepIndex);
-                String stepPrefix = phasePrefix + ".step." + stepIndex;
-                properties.setProperty(stepPrefix + ".keyword", checkpoint.keyword());
-                properties.setProperty(stepPrefix + ".title", checkpoint.title());
-                properties.setProperty(stepPrefix + ".target", checkpoint.target());
-                properties.setProperty(stepPrefix + ".screenshot", checkpoint.screenshot());
-                properties.setProperty(stepPrefix + ".status", checkpoint.status().name());
-                properties.setProperty(stepPrefix + ".actionCount", Integer.toString(checkpoint.actions().size()));
-                for (int actionIndex = 0; actionIndex < checkpoint.actions().size(); actionIndex++) {
-                    AtfUiActionRecord action = checkpoint.actions().get(actionIndex);
-                    String prefix = stepPrefix + ".action." + actionIndex;
-                    properties.setProperty(prefix + ".sequence", Integer.toString(action.sequence()));
-                    properties.setProperty(prefix + ".operation", action.operation());
-                    properties.setProperty(prefix + ".target", action.target());
-                    properties.setProperty(prefix + ".expected", action.expected());
-                    properties.setProperty(prefix + ".observed", action.observed());
-                    properties.setProperty(prefix + ".durationMillis", Long.toString(action.durationMillis()));
-                    properties.setProperty(prefix + ".status", action.status().name());
-                    properties.setProperty(prefix + ".source", action.source().name());
-                }
-                properties.setProperty(stepPrefix + ".assertionCount", Integer.toString(checkpoint.assertions().size()));
-                for (int assertionIndex = 0; assertionIndex < checkpoint.assertions().size(); assertionIndex++) {
-                    AtfAssertion assertion = checkpoint.assertions().get(assertionIndex);
-                    String prefix = stepPrefix + ".assertion." + assertionIndex;
-                    properties.setProperty(prefix + ".name", assertion.name());
-                    properties.setProperty(prefix + ".expected", assertion.expected());
-                    properties.setProperty(prefix + ".actual", assertion.actual());
-                    properties.setProperty(prefix + ".passed", Boolean.toString(assertion.passed()));
-                    properties.setProperty(prefix + ".status", assertion.resultStatus().name());
-                }
-                properties.setProperty(stepPrefix + ".artifactCount", Integer.toString(checkpoint.artifacts().size()));
-                for (int artifactIndex = 0; artifactIndex < checkpoint.artifacts().size(); artifactIndex++) {
-                    properties.setProperty(stepPrefix + ".artifact." + artifactIndex,
-                            checkpoint.artifacts().get(artifactIndex));
-                }
-            }
-        }
-        List<AtfUiActionRecord> retainedPending = pendingActions();
-        properties.setProperty("flow.pendingActionCount", Integer.toString(retainedPending.size()));
-        for (int index = 0; index < retainedPending.size(); index++) {
-            AtfUiActionRecord action = retainedPending.get(index);
-            String prefix = "flow.pendingAction." + index;
-            properties.setProperty(prefix + ".sequence", Integer.toString(action.sequence()));
-            properties.setProperty(prefix + ".operation", action.operation());
-            properties.setProperty(prefix + ".target", action.target());
-            properties.setProperty(prefix + ".expected", action.expected());
-            properties.setProperty(prefix + ".observed", action.observed());
-            properties.setProperty(prefix + ".durationMillis", Long.toString(action.durationMillis()));
-            properties.setProperty(prefix + ".status", action.status().name());
-            properties.setProperty(prefix + ".source", action.source().name());
-        }
-        Path temporary = manifest.resolveSibling(manifest.getFileName() + ".tmp");
-        try (OutputStream output = Files.newOutputStream(temporary)) {
-            properties.store(output, "Whist ordered Android UI flow evidence");
-        }
-        try {
-            Files.move(temporary, manifest, StandardCopyOption.REPLACE_EXISTING, StandardCopyOption.ATOMIC_MOVE);
-        } catch (AtomicMoveNotSupportedException unsupported) {
-            Files.move(temporary, manifest, StandardCopyOption.REPLACE_EXISTING);
-        }
+        var running = phases.keySet().stream().filter(clock::running).collect(java.util.stream.Collectors.toSet());
+        AndroidUiFlowJournal.write(manifest, AndroidUiFlowJournal.encode(this, failurePhase, running));
     }
 
     private static String required(String value, String field) {

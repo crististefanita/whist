@@ -7,6 +7,44 @@ Acest registru definește controalele revizuite, baza Git și căile lor exacte.
 ## Controale verificate
 
 <details>
+<summary>Proprietatea checkpoint-ului și jurnalul separat</summary>
+
+```yaml
+testChanges:
+  - id: RPT-CHECKPOINT-TRANSACTION
+    status: VERIFIED
+    base: 4caf2294d3a2bf3abce7aaa8a624546a8620cabb
+    expires: 2026-12-24
+    reason: Validați checkpoint-ul înaintea transferului acțiunilor, păstrați jurnalul anterior și cauza originală la refuz și reluare, fără dublă înregistrare. Separați codificarea pură de coordonare și păstrați formatul, intervalele, republicarea și HTML-ul autonom.
+    proof: 'mvn -o -pl atf-tests -am -Dtest=AndroidUiFlowCheckpointComponentTest,AndroidUiFlowTraceTest,AndroidUiFlowTimingComponentTest,CapturedAndroidFlowComponentTest,AndroidUiFlowReportPublisherTest,AtfSourceQualityGovernanceTest,PackageCohesionGovernanceTest,TestLayerGovernanceTest,SuiteOwnershipGovernanceTest -Dsurefire.failIfNoSpecifiedTests=false test'
+    checks:
+      positive:
+        - atf.android.e2e.support.journal.AndroidUiFlowCheckpointComponentTest#originalDispatchAndFailureSurviveReplayAndDetachedHtml
+        - atf.android.e2e.support.AndroidUiFlowTraceTest#assertionsKeepCheckpointOrderContextAndVerdicts
+        - atf.android.e2e.support.AndroidUiFlowTimingComponentTest#individualPublicationUsesCapturedPhaseIntervalsAndPreservesFullPngs
+        - atf.android.e2e.support.replay.CapturedAndroidFlowComponentTest#immutableReplayRetainsOriginalOwnersValuesVerdictsActionsAndTiming
+        - atf.android.e2e.support.AndroidUiFlowReportPublisherTest#embedsCompleteSupportingTextSafelyFromTheFingerprintedBytes
+        - atf.tests.governance.source.AtfSourceQualityGovernanceTest#sourcesRespectPackagePathsImportsAndProductionBoundaries
+        - atf.tests.governance.source.PackageCohesionGovernanceTest#currentProjectUsesNoCohesionExceptions
+        - atf.tests.governance.source.TestLayerGovernanceTest#executableMavenClassesHaveOneLayerAndTheGuideMatchesTheirDeclarations
+        - atf.tests.governance.suites.SuiteOwnershipGovernanceTest#everyMavenExecutableHasOnePrimaryOwnerAndEveryFocusedGateIsDeclared
+      negative:
+        - atf.android.e2e.support.journal.AndroidUiFlowCheckpointComponentTest#rejectedInputsPreservePendingActionsExistingPhasesAndOriginalManifest
+        - atf.android.e2e.support.journal.AndroidUiFlowCheckpointComponentTest#failedJournalWriteRollsBackOnlyTheUncommittedCheckpointAndRetriesOnce
+        - atf.android.e2e.support.journal.AndroidUiFlowCheckpointComponentTest#timingFailureAfterReplacementCannotRollBackCommittedEvidence
+        - atf.android.e2e.support.AndroidUiFlowReportPublisherTest#refusesFalseDriverTitleWithIdenticalRowsComparisonsAndPng
+    paths:
+      - atf-test-android/src/test/java/atf/android/e2e/support/AndroidUiFlowTrace.java
+      - atf-test-android/src/test/java/atf/android/e2e/support/journal/AndroidUiFlowJournal.java
+      - atf-test-android/src/test/java/atf/android/e2e/support/journal/AndroidUiFlowJournalUnitTest.java
+      - atf-test-android/src/test/java/atf/android/e2e/support/journal/AndroidUiFlowCheckpointComponentTest.java
+      - config/atf-component-dependencies.json
+      - config/atf-component-reader-seals.json
+```
+
+</details>
+
+<details>
 <summary>Sigilii independente și contextul sursei și catalogului calificat</summary>
 
 ```yaml

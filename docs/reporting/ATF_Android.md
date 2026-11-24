@@ -56,6 +56,21 @@ Tabelul de acțiuni păstrează operația expediată, ținta semantică, aștept
 - HTTP, SQL, comparațiile de componentă și acțiunile UI folosesc suprafața semantică a faptului real.
 - Titlurile și rezumatele nu substituie comparațiile detaliate.
 
+<a id="checkpoint-transaction"></a>
+
+### Tranzacția checkpoint-ului
+
+[Coordonatorul](../../atf-test-android/src/test/java/atf/android/e2e/support/AndroidUiFlowTrace.java) validează integral checkpoint-ul înaintea schimbării proprietății acțiunilor. [Jurnalul](../../atf-test-android/src/test/java/atf/android/e2e/support/journal/AndroidUiFlowJournal.java) deține codificarea pură și înlocuirea fișierului; serializarea nu reconstruiește rezultatele.
+
+| Limită | Date păstrate |
+|---|---|
+| Intrare respinsă | Acțiunile în așteptare, fazele și fișierul anterior rămân neschimbate. |
+| Scriere refuzată înaintea înlocuirii | Se retrage numai checkpoint-ul neconfirmat; acțiunile pot fi reluate fără dublă înregistrare. |
+| Înlocuire reușită, apoi eroare de temporizare | Checkpoint-ul confirmat își păstrează proprietatea; cauza inițială rămâne vizibilă. |
+| Reluare și publicare | Identitățile, comparațiile și eșecurile originale ajung în manifest și HTML autonom. |
+
+Unitarele verifică formatul, stările și câmpurile Unicode fără Extent. Componentele verifică refuzurile, scrierea întreruptă, reluarea și publicarea fără dispozitiv; nu califică pixelii Android.
+
 ### Corpuri integrale și bugetul de afișare
 
 Previzualizarea aserțiunilor și plafonul corpurilor sunt setări independente. [EvidenceTextParts](../../atf-test-android/src/main/java/atf/android/evidence/text/EvidenceTextParts.java) împarte textul deja redactat în părți consecutive care respectă bugetul efectiv, fără să separe o pereche Unicode.
