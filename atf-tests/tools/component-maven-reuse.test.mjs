@@ -48,7 +48,7 @@ $receiptFile=Join-Path $build 'component-maven.json';Write-AtfComponentJson $rec
 function Point($Directory,$Workspace) {
  if(!$Modern){Write-AtfComponentJson (Join-Path $Directory 'component-workspace.json') @{schemaVersion=1;path=$Workspace};return}
  Copy-Item $manifest (Join-Path $Directory 'source-inputs.json')
- Write-AtfComponentJson (Join-Path $Directory 'release-inputs.json') @(@{path='release/index.json';sha256=('f'*64)})
+ Write-Fixture (Join-Path $Directory 'release-inputs.json') (ConvertTo-Json -InputObject @(@{path='release/index.json';sha256=('f'*64)}))
  $snapshot=[pscustomobject]@{source=[IO.File]::ReadAllText((Join-Path $Directory 'source-inputs.json'));release=[IO.File]::ReadAllText((Join-Path $Directory 'release-inputs.json'))}
  Write-AtfComponentWorkspace $Directory $Workspace $snapshot
 }
@@ -62,7 +62,7 @@ if(!$Negative) {
  $new=Get-AtfComponentCompilerIdentity $source $java $maven
  Expect ($new.identity -ceq $compiler.identity) 'editorial changes must preserve compiler identity'
  $borrowed=Borrow
- Expect ($null -ne $borrowed) 'complete compiler output must be reusable'
+ Expect ($null -ne $borrowed) ('complete compiler output must be reusable: '+$decision.reason)
  try {
   Expect ($borrowed.buildWorkspace -ceq $build) 'classes remain in the verified build workspace'
   Expect (!(Test-Path (Join-Path $target 'project/demo/target'))) 'no duplicate output tree'
@@ -146,7 +146,7 @@ if(!$Negative) {
  Expect ($null -eq (Borrow)) 'incomplete classpath must not be borrowed'
  Write-Fixture $classpath $jar
  $restored=Borrow
- Expect ($null -ne $restored) 'restored classpath must admit the original compilation again'
+ Expect ($null -ne $restored) ('restored classpath must admit the original compilation again: '+$decision.reason)
  $restored.lease.Dispose()
  Point $previous (Join-Path $Root ('whist-component-suites-'+('d'*32)))
  Expect ($null -eq (Borrow)) 'cleaned compiler workspace must trigger cold preparation'
