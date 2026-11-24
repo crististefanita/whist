@@ -2940,7 +2940,7 @@ testChanges:
     base: 95d0bab317302507d12c2bab47450e168af20dd3
     expires: 2026-12-24
     reason: Use one APK/Web intent, preserve every semantic checkpoint with bounded captures, inventory all raw renderers, retain original failures and parameter identities, and refuse legacy count-only qualification.
-    proof: 'scripts/run-component-suites.ps1 -TestChangeControl WHIST-PAIRED-PRODUCER-20261124'
+    proof: 'mvn -o -pl atf-tests -am -Dtest=PairedSanityComponentTest,AndroidComponentReportContractTest,BrowserExtentPublicationComponentTest,ReportProducerInventoryComponentTest,AtfSourceQualityGovernanceTest,SuiteOwnershipGovernanceTest,PackageCohesionGovernanceTest,AtfCollectionOwnershipComponentTest,HtmlInvocationIntegrityComponentTest -Dsurefire.failIfNoSpecifiedTests=false test'
     checks:
       positive:
         - atf.android.e2e.support.journal.PairedSanityComponentTest#sharedPlanExecutesTheSameRolesInBothAdaptersAndPreservesFailure
