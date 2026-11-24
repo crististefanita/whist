@@ -1,4 +1,4 @@
-package atf.tests.reporting.inventory;
+package atf.tests.governance.source.reporting;
 
 import atf.android.evidence.component.ComponentInputs;
 import atf.testkit.AtfComponentTest;

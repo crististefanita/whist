@@ -77,7 +77,7 @@ Each producer shall qualify for API area actually used. The passage of a publish
 
 ### Governed producer inventory
 
-[Producer inventory](../../config/report-producers.json) identifies every direct Extent or fallback renderer constructor in governed Java sources. [Inventory components](../../atf-tests/src/test/java/atf/tests/reporting/inventory/ReportProducerInventoryComponentTest.java) parse syntax, reconcile the exact population and verify declared qualification methods. New, duplicate, stale or unqualified emitters fail the gate; synthetic test renderers are explicitly classified as fixtures.
+[Producer inventory](../../config/report-producers.json) identifies every direct Extent or fallback renderer constructor in governed Java sources. [Inventory components](../../atf-tests/src/test/java/atf/tests/governance/source/reporting/ReportProducerInventoryComponentTest.java) parse syntax, reconcile the exact population and verify declared qualification methods. New, duplicate, stale or unqualified emitters fail the gate; synthetic test renderers are explicitly classified as fixtures.
 
 | Boundary | Qualification and rejection contract |
 |---|---|

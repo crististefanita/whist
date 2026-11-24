@@ -99,7 +99,7 @@
       ]
     },
     {
-      "source": "atf-tests/src/test/java/atf/tests/reporting/inventory/ReportProducerInventoryComponentTest.java",
+      "source": "atf-tests/src/test/java/atf/tests/governance/source/reporting/ReportProducerInventoryComponentTest.java",
       "inputs": [
         "**/src/**/*.java",
         "atf-ui-browser/tests/**/*.java",
@@ -127,5 +127,5 @@
     }
   ],
   "readerSealsPath": "config/atf-component-reader-seals.json",
-  "topologySha256": "3b8ab5b640c7c3dfa47ffd7331b4f6ce86f1ba3c6fd7f86b769103d945a1c194"
+  "topologySha256": "a769793bfd821508602e6bf1c433bfa83535c6ad743322c698d74670e0ce71ba"
 }

@@ -56,7 +56,7 @@
       "role": "retired",
       "contracts": [
         {
-          "source": "atf-tests/src/test/java/atf/tests/reporting/inventory/ReportProducerInventoryComponentTest.java",
+          "source": "atf-tests/src/test/java/atf/tests/governance/source/reporting/ReportProducerInventoryComponentTest.java",
           "method": "legacyAggregateCannotQualifyMissingOriginalComparisons"
         }
       ]

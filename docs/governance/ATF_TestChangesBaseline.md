@@ -2947,7 +2947,7 @@ testChanges:
         - atf.android.e2e.support.journal.PairedSanityComponentTest#nativeSemanticStepsAndFourCapturesSurviveReplayAndDetachedPublication
         - atf.android.component.AndroidComponentReportContractTest#bothRenderersRetainOutcomesInvocationsAndOriginalComparisons
         - atf.tests.reporting.browser.BrowserExtentPublicationComponentTest#pairedSanityPublishesEverySemanticRoleAndItsOwnFourImages
-        - atf.tests.reporting.inventory.ReportProducerInventoryComponentTest#everyRendererBoundaryHasAnExplicitOwnerAndExistingQualification
+        - atf.tests.governance.source.reporting.ReportProducerInventoryComponentTest#everyRendererBoundaryHasAnExplicitOwnerAndExistingQualification
         - atf.tests.governance.source.AtfSourceQualityGovernanceTest#sourcesRespectPackagePathsImportsAndProductionBoundaries
         - atf.tests.governance.suites.SuiteOwnershipGovernanceTest#everyMavenExecutableHasOnePrimaryOwnerAndEveryFocusedGateIsDeclared
         - atf.tests.governance.source.PackageCohesionGovernanceTest#currentProjectUsesNoCohesionExceptions
@@ -2956,8 +2956,8 @@ testChanges:
         - atf.android.e2e.support.journal.PairedSanityComponentTest#missingExtraOrReorderedEvidenceIsRejectedBeforeChangingTheJournal
         - atf.tests.reporting.browser.BrowserExtentPublicationComponentTest#passingTableFlowsCannotUnderstateTheirHandOrCaptureBudget
         - atf.tests.reporting.browser.BrowserExtentPublicationComponentTest#incompleteOrContradictoryStepEvidenceIsRejectedBeforePublication
-        - atf.tests.reporting.inventory.ReportProducerInventoryComponentTest#missingDuplicateOrMisclassifiedProducersAndLostContractsAreRejected
-        - atf.tests.reporting.inventory.ReportProducerInventoryComponentTest#legacyAggregateCannotQualifyMissingOriginalComparisons
+        - atf.tests.governance.source.reporting.ReportProducerInventoryComponentTest#missingDuplicateOrMisclassifiedProducersAndLostContractsAreRejected
+        - atf.tests.governance.source.reporting.ReportProducerInventoryComponentTest#legacyAggregateCannotQualifyMissingOriginalComparisons
         - atf.tests.governance.documentation.release.integrity.html.HtmlInvocationIntegrityComponentTest#missingComparisonsFailureSkipAndMissingFixtureCannotQualify
     paths:
       - atf-test-android/src/main/java/atf/android/evidence/flow/UiSanityPlan.java
@@ -2977,7 +2977,7 @@ testChanges:
       - atf-tests/src/test/java/atf/tests/reporting/acceptance/CombinedAcceptanceReport.java
       - atf-tests/src/test/java/atf/tests/reporting/browser/BrowserExtentPublicationComponentTest.java
       - atf-tests/src/test/java/atf/tests/reporting/browser/BrowserReportFixture.java
-      - atf-tests/src/test/java/atf/tests/reporting/inventory/ReportProducerInventoryComponentTest.java
+      - atf-tests/src/test/java/atf/tests/governance/source/reporting/ReportProducerInventoryComponentTest.java
       - atf-tests/src/test/java/atf/tests/suites/components/AtfReportingComponentSuite.java
       - atf-tests/tools/release-test-scope.mjs
       - atf-ui-browser/tests/BrowserExtent.java
@@ -2990,6 +2990,7 @@ testChanges:
       - config/atf-component-collections.json
       - config/atf-component-dependencies.json
       - config/atf-component-reader-seals.json
+      - atf-tests/src/test/java/atf/tests/suites/AtfComponentSuite.java
       - config/report-producers.json
       - config/table-sanity-plan.json
 ```
