@@ -25,7 +25,9 @@
         "atf.tests.governance.source.workspace.WorkspaceHygieneGovernanceTest",
         "atf.tests.governance.suites.AtfCollectionOwnershipComponentTest",
         "atf.tests.governance.suites.SuiteOwnershipGovernanceTest",
-        "atf.tests.governance.source.reporting.ReportProducerInventoryComponentTest"
+        "atf.tests.governance.source.reporting.ReportProducerInventoryComponentTest",
+        "atf.tests.governance.source.language.SourceLanguageComponentTest",
+        "atf.tests.governance.source.language.SourceLanguageGovernanceTest"
       ]
     },
     {
@@ -133,7 +135,8 @@
         "atf.tests.governance.support.JvmInventoryCliComponentTest",
         "atf.tests.governance.support.LauncherSourceInventoryComponentTest",
         "atf.tests.governance.support.SigningSourceIsolationComponentTest",
-        "atf.tests.governance.support.SourceInventoryContractTest"
+        "atf.tests.governance.support.SourceInventoryContractTest",
+        "atf.tests.governance.documentation.release.rag.scope.launcher.LauncherFixtureComponentTest"
       ]
     },
     {

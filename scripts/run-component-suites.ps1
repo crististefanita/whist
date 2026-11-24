@@ -45,15 +45,15 @@ if ($TestChangeControl -or $AllTestChangeControls) {
     if (($TestChangeControl -and ($AllTestChangeControls -or $TestChangeControl -cnotmatch '^[A-Z][A-Z0-9-]{3,79}$')) -or
             !$TestChangeBaseRef -or $ReuseFrom -or
             @($Groups | Where-Object { $_ -cne 'atf-tests' }).Count) {
-        throw 'Proba testChanges cere fie un ID, fie toate controalele, baza Git și selecția offline atf-tests fără reutilizarea rapoartelor.'
+        throw 'testChanges proof requires one ID or all controls, a Git baseline and the offline atf-tests selection without report reuse.'
     }
     $Groups = @('atf-tests')
     $proofCommit = & git --no-replace-objects -C $sourceRoot rev-parse --verify HEAD
     if ($LASTEXITCODE -ne 0 -or $proofCommit -cnotmatch '^[a-f0-9]{40}(?:[a-f0-9]{24})?$') {
-        throw 'Proba testChanges cere un commit Git local.'
+        throw 'testChanges proof requires a local Git commit.'
     }
     $dirty = & git -C $sourceRoot status --porcelain=v1 --untracked-files=all
-    if ($LASTEXITCODE -ne 0 -or $dirty) { throw 'Proba testChanges cere un checkout curat.' }
+    if ($LASTEXITCODE -ne 0 -or $dirty) { throw 'testChanges proof requires a clean checkout.' }
 }
 if (-not $RunRoot) {
     $RunRoot = Join-Path $evidenceRoot ('component-suites/' + (Get-Date -Format 'yyyyMMdd-HHmmss') + '-' + [guid]::NewGuid().ToString('N').Substring(0,8))
@@ -61,13 +61,13 @@ if (-not $RunRoot) {
 $RunRoot = [IO.Path]::GetFullPath($RunRoot)
 if ($RunRoot.Equals($sourceRoot,[StringComparison]::OrdinalIgnoreCase) -or
     $RunRoot.StartsWith($sourceRoot + [IO.Path]::DirectorySeparatorChar,[StringComparison]::OrdinalIgnoreCase)) {
-    throw 'Rapoartele componentelor trebuie păstrate în afara proiectului.'
+    throw 'Component reports must remain outside the source checkout.'
 }
-if (Test-Path -LiteralPath $RunRoot) { throw 'Directorul rulării trebuie să fie nou.' }
+if (Test-Path -LiteralPath $RunRoot) { throw 'The run directory must be new.' }
 
 function Invoke-MavenSelections($selections, $stage, $provenanceFile) {
     $java = if ($JavaHome) { Join-Path $JavaHome 'bin/java.exe' } else { (Get-Command java -ErrorAction Stop).Source }
-    if (-not (Test-Path -LiteralPath $java -PathType Leaf)) { throw 'Este necesar un JDK complet compatibil cu proiectul.' }
+    if (-not (Test-Path -LiteralPath $java -PathType Leaf)) { throw 'A complete project-compatible JDK is required.' }
     $command = Get-Command $Maven -ErrorAction Stop
     $workspace = Split-Path -Parent $stage
     $policy = Get-Content -LiteralPath (Join-Path $stage 'config/atf-governance-policy.json') -Raw | ConvertFrom-Json
@@ -110,7 +110,7 @@ function Invoke-MavenSelections($selections, $stage, $provenanceFile) {
                 New-Item -ItemType Directory -Path $repository | Out-Null
                 if (Test-Path -LiteralPath $MavenCache -PathType Container) {
                     & robocopy $MavenCache $repository /E /XJ /R:1 /W:1 /XD atf .locks /XF *.lock *.tmp *.lastUpdated /NFL /NDL /NJH /NJS /NP *> (Join-Path $RunRoot 'copy-cache.log')
-                    if ($LASTEXITCODE -gt 7) { throw 'Copierea cache-ului Maven a eșuat.' }
+                    if ($LASTEXITCODE -gt 7) { throw 'Maven cache copying failed.' }
                 }
             }
             $compileExit = Invoke-AtfQualificationPhase $timing 'components.maven-compile' {
@@ -118,7 +118,7 @@ function Invoke-MavenSelections($selections, $stage, $provenanceFile) {
                 & $Maven -B -o -ntp "-Dmaven.repo.local=$repository" '-DskipTests' @goals *> (Join-Path $RunRoot 'compile.log')
                 $LASTEXITCODE
             } -ExitCode
-            if ($compileExit -ne 0) { throw "Compilarea a eșuat: $RunRoot/compile.log" }
+            if ($compileExit -ne 0) { throw "Compilation failed: $RunRoot/compile.log" }
             Invoke-AtfQualificationPhase $timing 'components.post-compile-snapshot' {
                 Assert-AtfQualificationSnapshot $snapshot $stage $sourceRoot
             }
@@ -159,7 +159,7 @@ function Invoke-MavenSelections($selections, $stage, $provenanceFile) {
             $proofJvm = $suiteJvm + @('-cp', $classpath, $proofRunner)
             Invoke-AtfTestChangeBatch -RunRoot $RunRoot -ReadPlan {
                 & $java @proofJvm --list $sourceRoot $TestChangeBaseRef $proofCommit 2>> (Join-Path $RunRoot 'test-change-plan.log')
-                if ($LASTEXITCODE -ne 0) { throw 'Selecția testChanges a eșuat. Consultați test-change-plan.log.' }
+                if ($LASTEXITCODE -ne 0) { throw 'testChanges selection failed. Inspect test-change-plan.log.' }
             } -RunControl {
                 param($id, $output)
                 Invoke-AtfQualificationPhase $timing "components.test-change.$id" {
@@ -275,7 +275,7 @@ try {
     $knownGroups = @($primaryComponents.group) + @($gradleGroups.group)
     if (@($Groups | Where-Object {$_ -cnotin $knownGroups}).Count -or
             @($Groups | Sort-Object -Unique).Count -ne $Groups.Count) {
-        throw 'Groups trebuie să conțină numai identificatori distincți din catalogul componentelor.'
+        throw 'Groups must contain only distinct identifiers from the component catalog.'
     }
     $selectedGroups = @(if ($Groups.Count) { $Groups } else { $knownGroups })
 
@@ -312,7 +312,7 @@ try {
             & node $reuseTool $RunRoot ([IO.Path]::GetFullPath($ReuseFrom)) @recovery @('--source-root',$stage) @selectedGroups | Out-Host
             $LASTEXITCODE
         } -ExitCode
-        if ($reuseExit -ne 0) { throw 'Verificarea dovezilor anterioare a eșuat.' }
+        if ($reuseExit -ne 0) { throw 'Previous evidence verification failed.' }
         $plan = Get-Content -LiteralPath (Join-Path $RunRoot 'component-reuse.json') -Raw | ConvertFrom-Json
         $reused = @($plan.decisions | Where-Object {$_.decision -in @('MATCH','REUSE')})
     }
@@ -351,7 +351,7 @@ try {
                     $env:ANDROID_HOME = [IO.Path]::GetFullPath($AndroidSdk)
                     $env:ANDROID_SDK_ROOT = $env:ANDROID_HOME
                     if (-not (Test-Path -LiteralPath (Join-Path $AndroidSdk 'platforms/android-36/android.jar') -PathType Leaf)) {
-                        throw 'Este necesar Android SDK platform 36 pentru selecțiile Gradle ale aplicației.'
+                        throw 'Android SDK platform 36 is required for application Gradle selections.'
                     }
                 }
                 $gradle = Join-Path $stage 'whist-lab-app/gradlew.bat'
@@ -382,7 +382,7 @@ try {
                     Read-AtfGradleResults $gradleSelections $checkpointFile
                 })
                 if ($exit -ne 0 -and @($batchResults | Where-Object exitCode -ne 0).Count -eq 0) {
-                    throw "Gradle a eșuat în afara selecțiilor validate. Reluați din checkpoint și consultați $log."
+                    throw "Gradle failed outside validated selections. Resume from the checkpoint and inspect $log."
                 }
                 $results += $batchResults
             }
@@ -403,7 +403,7 @@ try {
     $passed = $stable -and ($results.Count + $reused.Count) -eq $selectedGroups.Count -and @($results | Where-Object {$_.exitCode -ne 0}).Count -eq 0
     if ($TestChangeControl) {
         $directory = Join-Path $RunRoot $TestChangeControl
-        if (!$passed) { throw "Proba $TestChangeControl a eșuat; consultați $RunRoot/atf-tests.log și timing.json." }
+        if (!$passed) { throw "Proof $TestChangeControl failed; inspect $RunRoot/atf-tests.log and timing.json." }
         Move-Item -LiteralPath (Join-Path $directory 'proof.pending.json') -Destination (Join-Path $directory 'proof.json')
         Write-Output "PASS: $directory/proof.json"
         return
@@ -440,6 +440,6 @@ try {
         $portable = ConvertTo-AtfPortableDiagnostic $content $sourceRoot $stage $work $RunRoot
         [IO.File]::WriteAllText($logFile.FullName, $portable, [Text.UTF8Encoding]::new($false))
     }
-    if (-not $passed) { throw "Execuția, acoperirea HTML sau stabilitatea surselor a eșuat. Consultați $RunRoot/source-component-run.json și $stage." }
+    if (-not $passed) { throw "Execution, HTML coverage or source stability failed. Inspect $RunRoot/source-component-run.json and $stage." }
     Write-Output "PASS: $RunRoot/README.md"
 } finally { $workspaceLock.Dispose() }

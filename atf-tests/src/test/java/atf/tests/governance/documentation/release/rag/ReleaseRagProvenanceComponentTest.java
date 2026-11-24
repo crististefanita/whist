@@ -425,7 +425,7 @@ class ReleaseRagProvenanceComponentTest {
         AuditedAssertions.assertEquals(2, exit);
         AuditedAssertions.assertEquals("BLOCKED", check(verdict, "COMPONENT_SOURCE_BINDING"));
         AuditedAssertions.assertTrue(details(verdict, "COMPONENT_SOURCE_BINDING").stream()
-                .anyMatch(value -> value.contains("proveniență") && value.contains("manifestul")));
+                .anyMatch(value -> value.contains("provenance") && value.contains("manifest")));
     }
 
     @Test void componentSelectionsCannotReuseOneCanonicalExtentForTwoSuites() throws Exception {

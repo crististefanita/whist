@@ -15,7 +15,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.UUID;
 
-/** Colectează cadre Android și timpul lor de captură. */
+/** Collects Android frames and their capture timestamps. */
 public final class TrickFrameCapture {
     private TrickFrameCapture() {}
 

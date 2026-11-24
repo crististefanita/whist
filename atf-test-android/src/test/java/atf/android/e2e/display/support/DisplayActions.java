@@ -6,7 +6,7 @@ import atf.reporting.contract.AtfReportStatus;
 
 import java.time.Duration;
 
-/** Execută și trasează o comandă de configurare a display-ului. */
+/** Executes and traces a display-configuration command. */
 public final class DisplayActions {
     private DisplayActions() {}
 

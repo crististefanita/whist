@@ -34,7 +34,7 @@ import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 
-/** Verifică păstrarea levatei încheiate înaintea reluării interacțiunii. */
+/** Verifies completed-trick retention before interaction resumes. */
 public final class CompletedTrickScenario {
     private CompletedTrickScenario() {}
 

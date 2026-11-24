@@ -2,8 +2,8 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import os from 'node:os';
-import {execFileSync} from 'node:child_process';
 import test from 'node:test';
+import {runFixtureProcess} from './fixture-process.mjs';
 
 // Only admission and Java execution are neighbouring mocks. Snapshot, cache seals,
 // leases, task ordering and pending-proof promotion use the real launcher.
@@ -119,17 +119,17 @@ for($n=0;$n -lt $count;$n++){
   $null=& git -C $source -c user.name=Fixture -c user.email=fixture@example.invalid add .
   $null=& git -C $source -c user.name=Fixture -c user.email=fixture@example.invalid commit -q -m "Changed catalog observation $n"
  }
- $output=Join-Path $Root "run-$n";$log=Join-Path $Root "run-$n.log"
+ $clock=[Diagnostics.Stopwatch]::StartNew();$output=Join-Path $Root "run-$n";$log=Join-Path $Root "run-$n.log"
  $resume=@(if($Mode -eq 'resume' -and $n -eq 1){'-ResumeFrom';(Join-Path $Root 'run-0')})
  & pwsh -NoProfile -NonInteractive -File (Join-Path $scripts 'run-component-suites.ps1') -SourceRoot $source -RunRoot $output -TestChangeControl FIXTURE-COMPILER -TestChangeBaseRef $base -CompilerReuseFrom $previous @resume -JavaHome $javaHome -Maven $maven -MavenCache $cache *> $log
- $runs+=@{exit=$LASTEXITCODE;proof=(Test-Path (Join-Path $output 'FIXTURE-COMPILER/proof.json'));sourceFingerprint=if(Test-Path (Join-Path $output 'source-provenance.json')){(Get-Content (Join-Path $output 'source-provenance.json') -Raw|ConvertFrom-Json).sourceFingerprint}else{''};releaseFingerprint=if(Test-Path (Join-Path $output 'source-provenance.json')){(Get-Content (Join-Path $output 'source-provenance.json') -Raw|ConvertFrom-Json).releaseFingerprint}else{''};phases=if(Test-Path (Join-Path $output 'timing.json')){(Get-Content (Join-Path $output 'timing.json') -Raw|ConvertFrom-Json).stages}else{@()};log=(Get-Content $log -Raw)}
+ $runs+=@{elapsedMs=$clock.Elapsed.TotalMilliseconds;exit=$LASTEXITCODE;proof=(Test-Path (Join-Path $output 'FIXTURE-COMPILER/proof.json'));sourceFingerprint=if(Test-Path (Join-Path $output 'source-provenance.json')){(Get-Content (Join-Path $output 'source-provenance.json') -Raw|ConvertFrom-Json).sourceFingerprint}else{''};releaseFingerprint=if(Test-Path (Join-Path $output 'source-provenance.json')){(Get-Content (Join-Path $output 'source-provenance.json') -Raw|ConvertFrom-Json).releaseFingerprint}else{''};phases=if(Test-Path (Join-Path $output 'timing.json')){(Get-Content (Join-Path $output 'timing.json') -Raw|ConvertFrom-Json).stages}else{@()};log=(Get-Content $log -Raw)}
 }
 @{runs=$runs;maven=(Test-Path $env:MAVEN_RUN_MARKER);controls=if(Test-Path $env:PROOF_RUN_MARKER){@(Get-Content $env:PROOF_RUN_MARKER).Count}else{0};controlLines=@(if(Test-Path $env:PROOF_RUN_MARKER){Get-Content $env:PROOF_RUN_MARKER})}|ConvertTo-Json -Depth 8
 `);
   const environment={...process.env,MAVEN_OPTS:'',MAVEN_ARGS:'',JAVACMD:'',WHIST_EVIDENCE_ROOT:''};
   for(const name of ['JAVA_TOOL_OPTIONS','JDK_JAVA_OPTIONS','_JAVA_OPTIONS'])delete environment[name];
-  return JSON.parse(execFileSync('pwsh',['-NoProfile','-NonInteractive','-File',driver,root,host,mode],{
-    encoding:'utf8',timeout:90000,maxBuffer:1024*1024,env:environment
+  return JSON.parse(runFixtureProcess('pwsh',['-NoProfile','-NonInteractive','-File',driver,root,host,mode],{
+    fixture:'proof-compiler-'+mode,env:environment
   }));
 }
 
@@ -156,7 +156,7 @@ for(const mode of ['failure','partial','tampered'])test(`proof compiler reuse re
   if(mode==='tampered')assert.match(result.runs[0].phases.find(row=>row.stage==='components.compiler-reuse').reason,/COMPONENT_COMPILER_OUTPUTS_UNQUALIFIED/);
   observe(mode,result);
 });
-function observe(mode,result){process.stdout.write(JSON.stringify({fixture:'Mocked Java transport; real launcher, snapshot and compiler admission',mode,mavenStarted:result.maven,freshControlExecutions:result.controls,runs:result.runs.map(run=>({exit:run.exit,proofPromoted:run.proof,compilerStages:run.phases.filter(row=>row.stage.includes('compiler')||row.stage.includes('maven')).map(({stage,status})=>({stage,status}))}))})+'\n');}
+function observe(mode,result){process.stdout.write(JSON.stringify({fixture:'Mocked Java transport; real launcher, snapshot and compiler admission',mode,mavenStarted:result.maven,freshControlExecutions:result.controls,runs:result.runs.map(run=>({elapsedMs:run.elapsedMs,exit:run.exit,proofPromoted:run.proof,compilerStages:run.phases.filter(row=>row.stage.includes('compiler')||row.stage.includes('maven')).map(({stage,status})=>({stage,status}))}))})+'\n');}
 
 test('single static proof resume forwards only its original control and reuses admitted compilation',async t=>{
  const result=await exercise(t,'resume');

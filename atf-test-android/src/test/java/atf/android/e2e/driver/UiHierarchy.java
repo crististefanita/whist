@@ -9,7 +9,7 @@ import atf.android.e2e.driver.AndroidUiDriver.ElementSize;
 import atf.android.e2e.driver.hierarchy.HierarchyDocument.Node;
 import java.util.List;
 
-/** Selectori generici pentru o observație decodată, fără comenzi sau reluarea capturii. */
+/** Generic selectors for a decoded observation, without commands or capture replay. */
 final class UiHierarchy {
     private UiHierarchy() {}
 

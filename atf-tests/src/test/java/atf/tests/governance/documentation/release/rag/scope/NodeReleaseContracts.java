@@ -18,7 +18,7 @@ public final class NodeReleaseContracts {
 
     public static String runContracts(Duration timeout, java.util.function.Consumer<String> capture, String... scripts) throws Exception {
         var root = GovernanceProject.locateProjectRoot();
-        var args = new ArrayList<>(List.of("node", "--test"));
+        var args = new ArrayList<>(List.of("node", "--test", "--test-concurrency=1"));
         for (String script : scripts) args.add(root.resolve("atf-tests/tools").resolve(script).toString());
         return runNode(args, root, timeout, capture);
     }
@@ -28,7 +28,9 @@ public final class NodeReleaseContracts {
     }
 
     public static String runNode(List<String> args, Path directory, Duration timeout, java.util.function.Consumer<String> capture) throws Exception {
-        var result = CommandProcess.execute(args, directory, Map.of(), timeout, true);
+        String diagnosticRoot = System.getenv().getOrDefault("WHIST_FIXTURE_DIAGNOSTICS",
+                System.getenv().getOrDefault("WHIST_EVIDENCE_ROOT", System.getProperty("java.io.tmpdir")));
+        var result = CommandProcess.execute(args, directory, Map.of("WHIST_FIXTURE_DIAGNOSTICS", diagnosticRoot), timeout, true);
         String output = new String(result.stdout(), StandardCharsets.UTF_8);
         capture.accept("STDOUT\n" + output + "\nSTDERR\n" + result.stderr());
         AuditedAssertions.assertEquals(0, result.exitCode(),

@@ -1,4 +1,4 @@
-# Output local Maven/JVM; nu face parte din sursa ATF.
+# Local Maven/JVM output is not ATF source.
 target/
 .locks/
 *.class
@@ -18,15 +18,15 @@ models/
 __pycache__/
 *.pyc
 
-# IDE-uri și fișiere locale.
+# IDE and machine-local files.
 .idea/
 *.iml
 .classpath
 .project
 .settings/
 
-# Păstrăm numai versiunile curentă și precedentă; rulările intermediare sunt externe.
+# Keep the current and previous versions; intermediate runs stay outside the checkout.
 !/release/
 !/release/**
 
-# APK-urile și checksum-urile sunt payload-uri versionate, verificate față de manifest.
+# APK and checksum payloads are versioned and verified against the manifest.

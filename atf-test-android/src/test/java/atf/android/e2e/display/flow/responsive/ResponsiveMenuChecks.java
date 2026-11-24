@@ -31,7 +31,7 @@ import java.util.List;
 
 import javax.imageio.ImageIO;
 
-/** Inspecții ale meniurilor, mâinii și controalelor de licitare. */
+/** Inspects menus, the visible hand and bidding controls. */
 public final class ResponsiveMenuChecks {
     private ResponsiveMenuChecks() {}
 

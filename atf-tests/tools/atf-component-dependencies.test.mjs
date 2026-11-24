@@ -1,3 +1,4 @@
+import {runFixtureProcess} from './fixture-process.mjs';
 import assert from 'node:assert/strict';
 import test from 'node:test';
 import fs from 'node:fs';
@@ -102,7 +103,7 @@ test('generated module providers retain their producer inputs while undeclared i
 
 test('live dependency graph admits the complete catalog and keeps unrelated documentation-rule owners reusable', t => {
   const root = path.resolve(fileURLToPath(new URL('../../', import.meta.url)));
-  const rows = JSON.parse(execFileSync('pwsh', ['-NoProfile', '-NonInteractive', '-File',
+  const rows = JSON.parse(runFixtureProcess('pwsh', ['-NoProfile', '-NonInteractive', '-File',
     path.join(root, 'scripts/Get-AtfSourceInputs.ps1'), '-SourceRoot', root, '-AsJson'],
   {encoding: 'utf8', timeout: 30000, maxBuffer: 4 * 1024 * 1024}));
   const inputs = new Map(rows.map(row => [row.path, row.sha256]));

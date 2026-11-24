@@ -8,9 +8,7 @@ Proiectul deține perimetrul Android și adaptarea verificatoarelor. Contractul 
 
 ## Guvernanța limbii surselor
 
-| Prioritate | Lacună și responsabil | Criteriu de închidere |
-|---|---|---|
-| P1 | GOV-06: comentariile și explicațiile pentru dezvoltatori încă includ română, deși contractul implementării cere engleză. Verificările limbii documentației nu inspectează comentariile implementării. | Guvernați inventarul real de surse Java, JavaScript, PowerShell, scripturi de construire și comentarii de configurare, independent de ediția documentației. Cereți engleză pentru identificatori, comentarii, Javadoc și diagnostice pentru dezvoltatori. Adăugați componente negative pentru identificatori și comentarii românești revizuite, inclusiv scrierea ASCII; acceptați textele localizate pentru utilizatori, fixture-urile citate și numele proprii fără exceptarea largă a fișierelor. Păstrați diagnosticele localizate pe linie, codul comun EN/RO și limitele explicite ale reviziei semantice; o euristică de cuvinte-cheie nu poate certifica singură proză engleză arbitrară. Traduceți abaterile existente înaintea închiderii criteriului. |
+[Contractul limbii implementării](../governance/ATF_SourceLanguage.md) deține inventarul surselor, controalele lexicale revizuite, limitele datelor localizate și revizia semantică obligatorie.
 
 ## Coeziunea și evoluția pachetelor
 
@@ -89,9 +87,7 @@ LangGraph oferă noduri explicite, stare partajată și limite de checkpoint, da
 - Schimbările numai în Markdown selectează responsabilul documentației fără reluarea fixture-urilor independente ale lansatoarelor. Helper-ele comune, dependențele și intrările necunoscute invalidează în continuare consumatorii în mod conservator.
 - Reutilizarea păstrează identitățile și rezultatele JUnit originale, comparațiile și hash-urile rapoartelor. Rapoartele monolitice istorice rămân imuabile și nu pot califica noile identități ale partițiilor.
 
-| Prioritate | Lipsă delimitată | Criteriu de închidere |
-|---|---|---|
-| P1 | RAG-31: calificarea lansatoarelor repetă costurile proceselor și inițializării, iar curățarea fixture-urilor poate elimina diagnosticele copiilor după timeout. | Păstrați stdout/stderr limitate și duratele fiecărei invocări înainte de curățare. Mutați matricile pure exhaustive în unitare, păstrând componente reprezentative cu lansatoare reale și fiecare contract de respingere. Declarați profilul de resurse; comparați costurile la rece, la cald și la reluare fără a mări termenele pentru a ascunde concurența. Păstrați admiterea sursei/catalogului, comparațiile originale și paritatea exactă a invocărilor. |
+[Contractul fixture-urilor de lansare](../testing/ATF_Collections.md#launcher-fixtures) deține profilul resurselor, păstrarea diagnosticelor înaintea curățării, duratele independente ale invocărilor și separarea matricilor pure de componentele reale de admitere.
 
 Măsurați separat pregătirea snapshot-ului, compilarea și execuția. Diagnosticul focalizat rămâne distinct de calificarea unei colecții primare complete; recuperarea Maven/Jupiter în interiorul unui responsabil urmează [contractul reluării invocărilor](../testing/ATF_Collections.md#reluarea-în-interiorul-unei-selecții-maven).
 

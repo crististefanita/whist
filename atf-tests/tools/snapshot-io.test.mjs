@@ -1,9 +1,9 @@
+import {runFixtureProcess} from './fixture-process.mjs';
 import assert from 'node:assert/strict';
 import test from 'node:test';
 import fs from 'node:fs/promises';
 import os from 'node:os';
 import path from 'node:path';
-import {execFileSync} from 'node:child_process';
 import {createHash} from 'node:crypto';
 
 async function exercise(t,negative){
@@ -101,7 +101,7 @@ if($Negative -eq 'false'){
  @{observations=$observations;boundaries='Real inventory, copy, full recheck and sealing; controlled artifact preflight only'}|ConvertTo-Json -Depth 8 -Compress
 }
 `);
- return JSON.parse(execFileSync('pwsh',['-NoProfile','-NonInteractive','-File',script,root,
+ return JSON.parse(runFixtureProcess('pwsh',['-NoProfile','-NonInteractive','-File',script,root,
   path.resolve(import.meta.dirname,'../../scripts'),String(negative)],{encoding:'utf8',windowsHide:true,timeout:60000}));
 }
 test('native snapshot I/O preserves independent bytes inventory and child timing identities',async t=>{

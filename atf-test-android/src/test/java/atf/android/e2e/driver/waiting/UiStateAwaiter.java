@@ -4,7 +4,7 @@ import java.time.Duration;
 import java.util.Objects;
 import java.util.function.LongSupplier;
 
-/** Așteaptă o stare observată, cu termen monoton și pauze stabilite de apelant. */
+/** Awaits an observed state with a monotonic deadline and caller-defined pauses. */
 public final class UiStateAwaiter {
     @FunctionalInterface public interface Query { String read() throws Exception; }
     @FunctionalInterface public interface Condition { boolean matches(String hierarchy) throws Exception; }

@@ -10,7 +10,7 @@ import java.util.HexFormat;
 import java.util.List;
 import java.util.Properties;
 
-/** Citește sursele capturate și descrie artefactele dovezilor. */
+/** Reads captured sources and describes evidence artifacts. */
 public final class ReplayEvidenceFiles {
     private ReplayEvidenceFiles() {}
 

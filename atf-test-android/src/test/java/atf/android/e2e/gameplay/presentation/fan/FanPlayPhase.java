@@ -17,7 +17,7 @@ import java.nio.file.Path;
 import java.time.Duration;
 import java.util.List;
 
-/** Verifică deplasarea cărții și păstrarea mâinii, locului și atuului după apăsare. */
+/** Verifies card movement and retention of the hand, seat and trump after a tap. */
 final class FanPlayPhase {
     private FanPlayPhase() {}
 

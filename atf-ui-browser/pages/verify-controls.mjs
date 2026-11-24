@@ -25,7 +25,7 @@ function invoke(path, values = {}, profile = {}) {
   return JSON.parse(command("/api/" + path, JSON.stringify(fields), profile.name ?? null, profile.progress ?? null));
 }
 
-await check("WEB-02", "Țintele de licitare și rândul derulabil", "Dimensiunile și politica Android la lățimi compacte și normale", () => {
+await check("WEB-02", "Bidding targets and the scrollable row", "Dimensiunile și politica Android la lățimi compacte și normale", () => {
   initialize(31, 9);
   const geometry = (width, viewport, mode, players, bidOptions) => {
     const reply = invoke("layout", { width, height: 450, seatHeight: 52, handWidth: width,
@@ -75,7 +75,7 @@ function automationFixture() {
   };
 }
 
-await check("WEB-03", "Debifare înaintea licitației automate", "O programare anulată lasă jucătorul la rând", async () => {
+await check("WEB-03", "Unchecking before the automatic bid", "O programare anulată lasă jucătorul la rând", async () => {
   const turn = automationFixture();
   turn.control.set(true);
   assert.equal(turn.timers.length, 1);
@@ -86,7 +86,7 @@ await check("WEB-03", "Debifare înaintea licitației automate", "O programare a
   return { selections: turn.selections, commands: turn.commands.length };
 });
 
-await check("WEB-03", "Debifare în timpul colectării și revenire la manual", "Comanda în curs se încheie și următoarea rămâne manuală", async () => {
+await check("WEB-03", "Unchecking during collection and returning to manual play", "Comanda în curs se încheie și următoarea rămâne manuală", async () => {
   const turn = automationFixture();
   turn.control.set(true);
   turn.timers[0].resolve();
@@ -100,7 +100,7 @@ await check("WEB-03", "Debifare în timpul colectării și revenire la manual", 
   return { selections: turn.selections, committed: turn.commands.length };
 });
 
-await check("WEB-03", "Rebifare în timpul cererii și resetare la scor", "Nicio comandă dublă, iar bifa se stinge la scor", async () => {
+await check("WEB-03", "Rechecking during a request and resetting at score", "Nicio comandă dublă, iar bifa se stinge la scor", async () => {
   const turn = automationFixture();
   turn.control.set(true);
   turn.timers[0].resolve();
@@ -123,7 +123,7 @@ await check("WEB-03", "Rebifare în timpul cererii și resetare la scor", "Nicio
   return { selections: turn.selections, commands: turn.commands.length };
 });
 
-await check("WEB-03-ENGINE", "O singură decizie umană per comandă în motor", "Licitație automată, apoi mutare manuală legală și refuz la scor", () => {
+await check("WEB-03-ENGINE", "One human decision per engine command", "Licitație automată, apoi mutare manuală legală și refuz la scor", () => {
   initialize(31, 9);
   let state = invoke("start", { revision: 0, mode: "ROMANIAN_WHIST" }).result;
   const suggested = state.view.actions.find(move => move.emphasized);
@@ -141,7 +141,7 @@ await check("WEB-03-ENGINE", "O singură decizie umană per comandă în motor",
   return { bid: suggested.label, manual: card.action, score: state.view.history.rows[0] };
 });
 
-await check("WEB-01-LOCALE", "Română, engleză și realizări locale după redeschidere",
+await check("WEB-01-LOCALE", "Romanian, English and local achievements after reopening",
   "Texte și reguli din APK, păstrarea profilului și a realizărilor, fără modificarea mâinii la schimbarea limbii", async () => {
   const values = new Map();
   globalThis.localStorage = {

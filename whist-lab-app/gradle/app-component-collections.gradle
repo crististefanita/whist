@@ -12,7 +12,7 @@ afterEvaluate {
     def collections = names.collect { collection, suffix ->
         tasks.register("test${variant}${suffix}Components", Test) {
             group = 'verification'
-            description = "Componente JVM ale aplicației: ${collection}; colecție primară fără suprapuneri."
+            description = "Application JVM components: ${collection}; primary collection without overlap."
             dependsOn "compile${variant}UnitTestJavaWithJavac"
             def base = original.get()
             testClassesDirs = base.testClassesDirs
@@ -44,7 +44,7 @@ afterEvaluate {
     original.configure {
         enabled = false
         dependsOn collections
-        description = 'Intrare agregată: execută colecțiile JVM primare; nu repetă testele și raportarea.'
+        description = 'Aggregate entry: executes primary JVM collections without repeating tests or reporting.'
     }
     tasks.named('historyRasterTest', Test).configure {
         enabled = false
@@ -54,7 +54,7 @@ afterEvaluate {
 
     tasks.register('testDebugAchievementCalibration', Test) {
         group = 'verification'
-        description = 'Simulare offline opt-in pentru calibrarea realizărilor Whist; cohortă separată de regresia rapidă.'
+        description = 'Opt-in offline Whist achievement calibration; cohort separate from rapid regression.'
         dependsOn 'compileDebugUnitTestJavaWithJavac'
         def base = original.get()
         testClassesDirs = base.testClassesDirs

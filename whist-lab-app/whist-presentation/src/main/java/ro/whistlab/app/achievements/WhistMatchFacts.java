@@ -11,7 +11,7 @@ import ro.whistlab.core.session.GamePhase;
 import ro.whistlab.core.session.GameSession;
 import ro.whistlab.core.session.ScoreHistory;
 
-/** Fapte verificabile extrase din bilanțul complet al partidei, numai pentru locul uman. */
+/** Verifiable facts from the completed match ledger, restricted to the human seat. */
 record WhistMatchFacts(int playerCount, GameMode mode, int exactContracts, int exactOneCard,
         int exactZeroLarge, int exactMatchRate, int exactSmallHandRate, int exactMiddleHandRate,
         int exactLargeHandRate, int longestExactStreak, boolean won, boolean topTwo,

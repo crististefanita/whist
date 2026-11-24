@@ -5,7 +5,7 @@ import android.content.SharedPreferences;
 import java.io.IOException;
 import java.util.Objects;
 
-/** Stocare locală instalării; redenumirea jucătorului nu șterge progresul. */
+/** Installation-local storage; renaming the player does not erase progress. */
 public final class AndroidWhistAchievementStorage implements WhistAchievementRepository.Storage {
     private static final String PREFERENCES = "whist_lab_achievements";
     private static final String STATE = "catalog_v1";

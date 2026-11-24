@@ -15,7 +15,7 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
-/** Scenariul selectării și deplasării unei cărți din mâna lungă. */
+/** Selection and movement scenario for a card in a long hand. */
 public final class ThirteenCardPlayScenario {
     private ThirteenCardPlayScenario() {}
 

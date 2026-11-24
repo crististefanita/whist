@@ -7,6 +7,8 @@ import org.junit.platform.suite.api.*;
 @Suite
 @SelectPackages({"atf.tests", "atf.libraries"})
 @IncludeClassNamePatterns({
+    "^atf\\.tests\\.governance\\.source\\.language\\.SourceLanguageComponentTest$",
+    "^atf\\.tests\\.governance\\.source\\.language\\.SourceLanguageGovernanceTest$",
     "^atf\\.libraries\\.PlatformLibraryIntegrityTest$",
     "^atf\\.tests\\.contracts\\.HeuristicCatalogContractTest$",
     "^atf\\.tests\\.governance\\.source\\.AtfSourceQualityGovernanceTest$",

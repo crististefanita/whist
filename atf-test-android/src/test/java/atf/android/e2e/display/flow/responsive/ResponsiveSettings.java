@@ -3,7 +3,7 @@ package atf.android.e2e.display.flow.responsive;
 import java.time.Duration;
 import java.util.regex.Pattern;
 
-/** Contractele declarative ale verificării responsive. */
+/** Declarative contracts for responsive verification. */
 public final class ResponsiveSettings {
     private ResponsiveSettings() {}
 

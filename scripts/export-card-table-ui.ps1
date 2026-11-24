@@ -16,12 +16,12 @@ if (!$Repository) {
 $repositoryRoot = [IO.Path]::GetFullPath($Repository)
 if ($repositoryRoot.Equals($source, [StringComparison]::OrdinalIgnoreCase) -or
     $repositoryRoot.StartsWith($source + [IO.Path]::DirectorySeparatorChar, [StringComparison]::OrdinalIgnoreCase)) {
-    throw 'Repository-ul AAR trebuie păstrat în afara surselor.'
+    throw 'The AAR repository must remain outside the sources.'
 }
 $module = 'whist-lab-app/atf-card-table-ui'
 $build = Get-Content -LiteralPath (Join-Path $source "$module/build.gradle") -Raw
 $versionMatch = [regex]::Match($build, '(?m)^version\s*=\s*''([^'']+)''\s*$')
-if (!$versionMatch.Success) { throw 'Versiunea AAR trebuie declarată explicit în modul.' }
+if (!$versionMatch.Success) { throw 'The AAR version must be declared explicitly in the module.' }
 $version = $versionMatch.Groups[1].Value
 $coreBuild = Get-Content -LiteralPath (Join-Path $source 'whist-lab-app/card-table-core/build.gradle') -Raw
 $coreVersion = [regex]::Match($coreBuild, '(?m)^version\s*=\s*''([^'']+)''\s*$').Groups[1].Value
@@ -48,7 +48,7 @@ foreach ($relative in $productionRoots) {
     if ($entry.PSIsContainer) { $entries += @(Get-ChildItem -LiteralPath $entry.FullName -Recurse -Force) }
     foreach ($item in $entries) {
         if ($item.Attributes -band [IO.FileAttributes]::ReparsePoint) {
-            throw "Intrare AAR indirectă: $($item.FullName)"
+            throw "Indirect AAR input: $($item.FullName)"
         }
         if (!$item.PSIsContainer) {
             $paths.Add([IO.Path]::GetRelativePath($source, $item.FullName).Replace('\','/'))
@@ -67,15 +67,15 @@ function Confirm-Artifact {
     $receipt = Get-Content -LiteralPath $receiptPath -Raw | ConvertFrom-Json
     if ($receipt.schemaVersion -ne 1 -or $receipt.coordinate -cne "ro.cardtable:card-table-ui:$version" -or
         $receipt.inputSha256 -cne $fingerprint) {
-        throw "Coordonata $version există cu alte intrări. Păstrați artefactul original și actualizați versiunea modulului."
+        throw "Coordinate $version already has different inputs. Preserve the original artifact and update the module version."
     }
-    if ($receipt.files.Count -ne $names.Count) { throw 'Inventarul AAR are o cardinalitate diferită.' }
+    if ($receipt.files.Count -ne $names.Count) { throw 'The AAR inventory has a different cardinality.' }
     foreach ($name in $names) {
         $record = @($receipt.files | Where-Object {$_.path -ceq $name})
         $file = Get-Item -LiteralPath (Join-Path $final $name)
         if ($record.Count -ne 1 -or $file.PSIsContainer -or ($file.Attributes -band [IO.FileAttributes]::ReparsePoint) -or
             (Get-FileHash -LiteralPath $file.FullName -Algorithm SHA256).Hash -ine $record[0].sha256) {
-            throw "Checksum AAR diferit pentru $name."
+            throw "AAR checksum mismatch for $name."
         }
     }
     if ($receipt.core.coordinate -cne "ro.cardtable:card-table-core:$version" -or $receipt.core.files.Count -ne $coreNames.Count) {
@@ -96,7 +96,7 @@ if (Test-Path -LiteralPath $final) {
     return
 }
 if (!(Test-Path -LiteralPath (Join-Path $AndroidSdk 'platforms/android-36/android.jar') -PathType Leaf)) {
-    throw 'Este necesar Android SDK platform 36 pentru construirea AAR.'
+    throw 'Android SDK platform 36 is required to build the AAR.'
 }
 $work = Join-Path $repositoryRoot ('.card-ui-work/' + [guid]::NewGuid().ToString('N'))
 $stage = Join-Path $work 'source'
@@ -112,7 +112,7 @@ try {
     $env:ANDROID_HOME = [IO.Path]::GetFullPath($AndroidSdk)
     $env:ANDROID_SDK_ROOT = $env:ANDROID_HOME
     & ./gradlew.bat --offline --no-daemon --console=plain '-Pcardui.only=package' "-Pcardui.repository=$publishing" ':card-table-core:publishReleasePublicationToIsolatedRepository' ':card-table-android:publishReleasePublicationToIsolatedRepository' *> (Join-Path $work 'gradle.log')
-    if ($LASTEXITCODE -ne 0) { throw "Împachetarea a eșuat. Consultați $work/gradle.log." }
+    if ($LASTEXITCODE -ne 0) { throw "Packaging failed. Inspect $work/gradle.log." }
 } finally {
     $env:ANDROID_HOME = $androidHome
     $env:ANDROID_SDK_ROOT = $androidSdkRoot

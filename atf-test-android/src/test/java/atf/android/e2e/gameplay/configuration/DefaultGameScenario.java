@@ -18,7 +18,7 @@ import java.nio.file.Path;
 import java.time.Duration;
 import java.util.List;
 
-/** Verifică configurația implicită și starea observată după pornire. */
+/** Verifies default configuration and the state observed after startup. */
 public final class DefaultGameScenario {
     private DefaultGameScenario() {}
 

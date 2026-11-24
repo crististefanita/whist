@@ -150,3 +150,5 @@ Verificările structurale trebuie completate prin controale ale afirmațiilor fa
 - [Responsabilitățile pachetelor](ATF_Packages.md) cer starea, dependențele și invarianta fiecărui mecanism; mutarea unui fișier nu demonstrează singură coeziunea.
 - [Bunele practici documentare](ATF_Documentation.md) dețin grila editorială și separarea rezultatului extern de contract.
 - [Feedback-ul de guvernanță](../feedback/ATF_Governance.md#calificarea-afirmațiilor-și-lansatoarelor) păstrează controlul factual încă necesar și nivelul cerut înaintea închiderii.
+
+[Limba implementării](ATF_SourceLanguage.md) guvernează explicațiile din surse în engleză, independent de datele localizate ale jocului și edițiile documentare.

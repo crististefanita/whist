@@ -7,7 +7,7 @@ $ErrorActionPreference = 'Stop'
 . (Join-Path $PSScriptRoot 'AtfSigningSourcePolicy.ps1')
 . (Join-Path $PSScriptRoot 'AtfFileDigest.ps1')
 $root = [IO.Path]::GetFullPath($SourceRoot)
-if (-not (Test-Path -LiteralPath $root -PathType Container)) { throw 'Rădăcina surselor nu există.' }
+if (-not (Test-Path -LiteralPath $root -PathType Container)) { throw 'The source root does not exist.' }
 Assert-AtfDirectSourcePath $root
 $policy = Get-Content -LiteralPath (Join-Path $root 'config/atf-governance-policy.json') -Raw | ConvertFrom-Json
 $boundaries = [Collections.Generic.HashSet[string]]::new([StringComparer]::OrdinalIgnoreCase)
@@ -17,7 +17,7 @@ function Get-RelativeInputPath([string]$path) {
     $absolute = [IO.Path]::GetFullPath((Join-Path $root $path))
     if ([IO.Path]::IsPathRooted($path) -or $absolute.Equals($root,[StringComparison]::OrdinalIgnoreCase) -or
         -not $absolute.StartsWith($root + [IO.Path]::DirectorySeparatorChar,[StringComparison]::OrdinalIgnoreCase)) {
-        throw "Cale configurată în afara surselor: $path"
+        throw "Configured path outside the source checkout: $path"
     }
     return [IO.Path]::GetRelativePath($root,$absolute).Replace('\','/')
 }
@@ -31,7 +31,7 @@ foreach ($buildRoot in $policy.buildRoots) {
     $relative = Get-RelativeInputPath $buildRoot
     if (-not (Test-Path -LiteralPath (Join-Path $root "$relative/settings.gradle")) -or
         -not (Test-Path -LiteralPath (Join-Path $root "$relative/build.gradle"))) {
-        throw "Rădăcină Gradle fără settings și build explicite: $relative"
+        throw "Gradle root lacks explicit settings and build files: $relative"
     }
     $null = $boundaries.Add($relative)
 }
@@ -42,7 +42,7 @@ foreach ($module in $policy.mavenModules) {
         $node = $pom.SelectSingleNode("/*[local-name()='project']/*[local-name()='build']/*[local-name()='$name']")
         if ($null -ne $node) {
             $path = $node.InnerText.Trim()
-            if (-not $path -or $path.Contains('${') -or [IO.Path]::IsPathRooted($path)) { throw "Rădăcină Maven neliterală: $module/$name" }
+            if (-not $path -or $path.Contains('${') -or [IO.Path]::IsPathRooted($path)) { throw "Nonliteral Maven root: $module/$name" }
             $protected.Add((Get-RelativeInputPath "$module/$path"))
         }
     }
@@ -65,7 +65,7 @@ function Visit-InputDirectory([string]$directory) {
         if (Test-AtfPrivateSigningInput $relative) { continue }
         $isDirectory = [bool]($entry.Attributes -band [IO.FileAttributes]::Directory)
         if ($isDirectory -and $excluded.Contains($relative)) { continue }
-        if ($entry.Attributes -band [IO.FileAttributes]::ReparsePoint) { throw "Intrare indirectă neinventariată: $relative" }
+        if ($entry.Attributes -band [IO.FileAttributes]::ReparsePoint) { throw "Uninventoried indirect input: $relative" }
         if ($isDirectory) { Visit-InputDirectory $entry.FullName }
         else { $rows.Add([pscustomobject]@{path=$relative;sha256=(Get-AtfFileSha256 $entry.FullName)}) }
     }

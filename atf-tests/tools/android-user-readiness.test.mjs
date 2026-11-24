@@ -1,5 +1,5 @@
+import {runFixtureProcess} from './fixture-process.mjs';
 import assert from 'node:assert/strict';
-import {execFileSync} from 'node:child_process';
 import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
@@ -32,7 +32,7 @@ foreach($case in @('ready','boot-unlock','boot-timeout','locked-timeout','unknow
 }
 $rows|ConvertTo-Json -Depth 4 -Compress
 `);
-  const rows=JSON.parse(execFileSync('pwsh',['-NoProfile','-File',script,path.resolve('scripts/AtfAndroidUserReadiness.ps1')],
+  const rows=JSON.parse(runFixtureProcess('pwsh',['-NoProfile','-File',script,path.resolve('scripts/AtfAndroidUserReadiness.ps1')],
     {encoding:'utf8',windowsHide:true,timeout:30000}));
   assert.equal(rows.length,8);
   assert.equal(rows[0].pass,true);assert.deepEqual(rows[0].calls,['read:RUNNING_UNLOCKED']);

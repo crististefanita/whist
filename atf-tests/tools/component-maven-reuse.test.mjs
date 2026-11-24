@@ -1,9 +1,9 @@
 import assert from 'node:assert/strict';
-import {execFileSync} from 'node:child_process';
 import fs from 'node:fs/promises';
 import os from 'node:os';
 import path from 'node:path';
 import test from 'node:test';
+import {runFixtureProcess} from './fixture-process.mjs';
 
 async function exercise(t, negative, modern = false) {
   const root=await fs.mkdtemp(path.join(os.tmpdir(),'whist-compiler-reuse-'));
@@ -157,9 +157,10 @@ if(!$Negative) {
 }
 $outcomes|ConvertTo-Json -Compress
 `);
-  return execFileSync('pwsh',['-NoProfile','-NonInteractive','-File',script,root,
+  return runFixtureProcess('pwsh',['-NoProfile','-NonInteractive','-File',script,root,
     path.resolve(import.meta.dirname,'../../scripts'),...(negative?['-Negative']:[]),...(modern?['-Modern']:[])],{
-    encoding:'utf8',timeout:90000,env:{...process.env,MAVEN_ARGS:'',JAVACMD:'',MAVEN_OPTS:''}
+    fixture:'compiler-reuse-'+(negative?'negative':'nominal')+(modern?'-modern':'-legacy'),
+    env:{...process.env,MAVEN_ARGS:'',JAVACMD:'',MAVEN_OPTS:''}
   });
 }
 

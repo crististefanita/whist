@@ -32,7 +32,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
-/** Compune raportul din rezultate native și dovezi UI verificate. */
+/** Composes the report from native results and verified UI evidence. */
 public final class CombinedAcceptanceReport {
     private CombinedAcceptanceReport() {}
 

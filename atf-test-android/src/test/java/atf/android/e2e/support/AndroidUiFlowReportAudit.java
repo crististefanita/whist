@@ -16,7 +16,7 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 
-/** Verifică fidelitatea raportului publicat față de datele capturate, fără sesiune de randare. */
+/** Verifies published report fidelity against captured data without a rendering session. */
 final class AndroidUiFlowReportAudit {
     private AndroidUiFlowReportAudit() {}
 

@@ -3418,3 +3418,178 @@ testChanges:
 ```
 
 </details>
+
+<details>
+<summary>Implementare în engleză și calificare limitată a lansatoarelor</summary>
+
+```yaml
+testChanges:
+  - id: GOV-EN-LAUNCHER-COST
+    status: VERIFIED
+    base: 9dc7455729b8ef111e7598f7787e911dd71d1100
+    expires: 2026-12-24
+    reason: Impuneți abaterile revizuite ale limbii engleze din implementare, independent de datele localizate și edițiile documentare. Păstrați refuzurile și cauzele originale ale lansatoarelor, diagnosticele limitate ale proceselor copil înaintea curățării, eliminați lansările duplicate de admitere a compilării și mențineți matricile pure în stratul unitar.
+    proof: "mvn -o -pl atf-tests -am -Dtest=SourceLanguageComponentTest,SourceLanguageGovernanceTest,LauncherFixtureComponentTest,ComponentEvidenceScopeComponentTest,AtfSourceQualityGovernanceTest,PackageCohesionGovernanceTest,TestLayerGovernanceTest,SuiteOwnershipGovernanceTest,AtfCollectionOwnershipComponentTest,ReleaseRagProvenanceComponentTest -Dsurefire.failIfNoSpecifiedTests=false test"
+    checks:
+      positive:
+        - atf.tests.governance.source.language.SourceLanguageComponentTest#acceptsLocalizedDataWithOneOwnedPopulation
+        - atf.tests.governance.source.language.SourceLanguageGovernanceTest#implementationCommentsAndDiagnosticsUseEnglish
+        - atf.tests.governance.documentation.release.rag.scope.launcher.LauncherFixtureComponentTest#completedChildrenRetainIndependentTimingsAndResourceIdentity
+        - atf.tests.governance.documentation.release.rag.scope.ComponentEvidenceScopeComponentTest#modernCompilerPointersAndLegacyInputsPreserveSealsAndExplicitRefusals
+        - atf.tests.governance.documentation.release.rag.scope.ComponentEvidenceScopeComponentTest#borrowedCompilerDoesNotCacheControlExecution
+        - atf.tests.governance.documentation.release.rag.scope.ComponentEvidenceScopeComponentTest#staticProofResumeKeepsItsOriginalControlAndVerifiedCompilation
+        - atf.tests.governance.source.AtfSourceQualityGovernanceTest#sourcesRespectPackagePathsImportsAndProductionBoundaries
+        - atf.tests.governance.source.PackageCohesionGovernanceTest#currentProjectUsesNoCohesionExceptions
+        - atf.tests.governance.source.TestLayerGovernanceTest#executableMavenClassesHaveOneLayerAndTheGuideMatchesTheirDeclarations
+        - atf.tests.governance.suites.SuiteOwnershipGovernanceTest#everyMavenExecutableHasOnePrimaryOwnerAndEveryFocusedGateIsDeclared
+        - atf.tests.governance.suites.AtfCollectionOwnershipComponentTest#positiveInventoriesPartitionEveryAtfComponentWithoutChangingLeafNames
+        - atf.tests.governance.documentation.release.rag.ReleaseRagProvenanceComponentTest#provenanceReceiptMustBindTheSameComponentManifestAndAggregateRun
+      negative:
+        - atf.tests.governance.source.language.SourceLanguageComponentTest#rejectsRomanianImplementationOnBothEditions
+        - atf.tests.governance.documentation.release.rag.scope.launcher.LauncherFixtureComponentTest#interruptedChildPreservesBothStreamsBeforeOwnedFixtureCleanup
+        - atf.tests.governance.documentation.release.rag.scope.ComponentEvidenceScopeComponentTest#failedControlsCannotPromoteAProof
+        - atf.tests.governance.documentation.release.rag.scope.ComponentEvidenceScopeComponentTest#incompleteControlsCannotPromoteAProof
+        - atf.tests.governance.documentation.release.rag.scope.ComponentEvidenceScopeComponentTest#tamperedCompilerCannotQualifyProofGeneration
+        - atf.tests.governance.source.AtfSourceQualityGovernanceTest#lexicalGuardFindsRealViolationsAndIgnoresExamples
+        - atf.tests.governance.suites.SuiteOwnershipGovernanceTest#newOmittedClassOverlapWrongLayerAndHiddenSelectionAreRejected
+    paths:
+      - .gitignore
+      - atf-test-android/src/test/java/atf/android/e2e/display/flow/responsive/ResponsiveDisplayActions.java
+      - atf-test-android/src/test/java/atf/android/e2e/display/flow/responsive/ResponsiveEvidence.java
+      - atf-test-android/src/test/java/atf/android/e2e/display/flow/responsive/ResponsiveGameFlow.java
+      - atf-test-android/src/test/java/atf/android/e2e/display/flow/responsive/ResponsiveMenuChecks.java
+      - atf-test-android/src/test/java/atf/android/e2e/display/flow/responsive/ResponsiveSanityRun.java
+      - atf-test-android/src/test/java/atf/android/e2e/display/flow/responsive/ResponsiveSettings.java
+      - atf-test-android/src/test/java/atf/android/e2e/display/flow/responsive/ResponsiveTableState.java
+      - atf-test-android/src/test/java/atf/android/e2e/display/flow/responsive/SimultaneousTableChecks.java
+      - atf-test-android/src/test/java/atf/android/e2e/display/support/DisplayActions.java
+      - atf-test-android/src/test/java/atf/android/e2e/display/support/GameplayDisplay.java
+      - atf-test-android/src/test/java/atf/android/e2e/display/support/GameplayGeometry.java
+      - atf-test-android/src/test/java/atf/android/e2e/display/support/ResponsiveGeometry.java
+      - atf-test-android/src/test/java/atf/android/e2e/display/support/ScreenGeometry.java
+      - atf-test-android/src/test/java/atf/android/e2e/driver/hierarchy/CardHierarchy.java
+      - atf-test-android/src/test/java/atf/android/e2e/driver/hierarchy/CardLabelText.java
+      - atf-test-android/src/test/java/atf/android/e2e/driver/hierarchy/HierarchyDocument.java
+      - atf-test-android/src/test/java/atf/android/e2e/driver/UiHierarchy.java
+      - atf-test-android/src/test/java/atf/android/e2e/driver/waiting/UiStateAwaiter.java
+      - atf-test-android/src/test/java/atf/android/e2e/evidence/frames/PngUptimeMetadata.java
+      - atf-test-android/src/test/java/atf/android/e2e/evidence/frames/TrickFrameAnalysis.java
+      - atf-test-android/src/test/java/atf/android/e2e/evidence/frames/TrickFrameCapture.java
+      - atf-test-android/src/test/java/atf/android/e2e/gameplay/configuration/DefaultGameScenario.java
+      - atf-test-android/src/test/java/atf/android/e2e/gameplay/persistence/SavedGamePreparationPhase.java
+      - atf-test-android/src/test/java/atf/android/e2e/gameplay/persistence/SavedGameRecoveryScenario.java
+      - atf-test-android/src/test/java/atf/android/e2e/gameplay/persistence/SavedGameResumePhase.java
+      - atf-test-android/src/test/java/atf/android/e2e/gameplay/presentation/fan/FanPlayPhase.java
+      - atf-test-android/src/test/java/atf/android/e2e/gameplay/presentation/fan/FanSetupPhase.java
+      - atf-test-android/src/test/java/atf/android/e2e/gameplay/presentation/fan/ThirteenCardFanFlow.java
+      - atf-test-android/src/test/java/atf/android/e2e/gameplay/presentation/SingleCardCenteringCheck.java
+      - atf-test-android/src/test/java/atf/android/e2e/gameplay/presentation/SixPlayerBiddingCheck.java
+      - atf-test-android/src/test/java/atf/android/e2e/gameplay/presentation/SixPlayerNavigationCheck.java
+      - atf-test-android/src/test/java/atf/android/e2e/gameplay/presentation/SixPlayerSetupPhase.java
+      - atf-test-android/src/test/java/atf/android/e2e/gameplay/presentation/SixPlayerTableScenario.java
+      - atf-test-android/src/test/java/atf/android/e2e/gameplay/presentation/ThirteenCardBiddingCheck.java
+      - atf-test-android/src/test/java/atf/android/e2e/gameplay/presentation/ThirteenCardDisplayScenario.java
+      - atf-test-android/src/test/java/atf/android/e2e/gameplay/presentation/ThirteenCardPlayScenario.java
+      - atf-test-android/src/test/java/atf/android/e2e/gameplay/support/TrickUiState.java
+      - atf-test-android/src/test/java/atf/android/e2e/gameplay/tricks/CompletedTrickScenario.java
+      - atf-test-android/src/test/java/atf/android/e2e/support/AndroidUiFlowReportAudit.java
+      - atf-test-android/src/test/java/atf/android/e2e/support/flow/UiFlowCheckpoint.java
+      - atf-test-android/src/test/java/atf/android/e2e/support/flow/WhistLabScenario.java
+      - atf-test-android/src/test/java/atf/android/e2e/support/flow/WhistLabScenarioArtifactsComponentTest.java
+      - atf-tests/src/main/java/atf/tests/testchange/TestChangeReview.java
+      - atf-tests/src/test/java/atf/tests/governance/documentation/release/rag/ReleaseRagProvenanceComponentTest.java
+      - atf-tests/src/test/java/atf/tests/governance/documentation/release/rag/scope/ComponentEvidenceScopeComponentTest.java
+      - atf-tests/src/test/java/atf/tests/governance/documentation/release/rag/scope/launcher/LauncherFixtureComponentTest.java
+      - atf-tests/src/test/java/atf/tests/governance/documentation/release/rag/scope/launcher/LauncherFixtureUnitTest.java
+      - atf-tests/src/test/java/atf/tests/governance/documentation/release/rag/scope/NodeReleaseContracts.java
+      - atf-tests/src/test/java/atf/tests/governance/documentation/release/rag/scope/QualificationLauncherComponentTest.java
+      - atf-tests/src/test/java/atf/tests/governance/documentation/release/ReleaseCatalogPresentation.java
+      - atf-tests/src/test/java/atf/tests/governance/documentation/release/ReleaseRagPlatformGovernanceTest.java
+      - atf-tests/src/test/java/atf/tests/governance/source/language/SourceLanguageComponentTest.java
+      - atf-tests/src/test/java/atf/tests/governance/source/language/SourceLanguageGovernanceTest.java
+      - atf-tests/src/test/java/atf/tests/governance/source/language/SourceLanguageUnitTest.java
+      - atf-tests/src/test/java/atf/tests/reporting/acceptance/CombinedAcceptanceReport.java
+      - atf-tests/src/test/java/atf/tests/reporting/acceptance/NativeModuleResults.java
+      - atf-tests/src/test/java/atf/tests/reporting/replay/ReplayEvidenceFiles.java
+      - atf-tests/src/test/java/atf/tests/reporting/replay/UiFlowReplay.java
+      - atf-tests/src/test/java/atf/tests/suites/AtfComponentSuite.java
+      - atf-tests/src/test/java/atf/tests/suites/components/AtfOrchestrationComponentSuite.java
+      - atf-tests/tools/android-e2e-evidence.mjs
+      - atf-tests/tools/android-package-registration.test.mjs
+      - atf-tests/tools/android-user-ownership.test.mjs
+      - atf-tests/tools/android-user-readiness.test.mjs
+      - atf-tests/tools/atf-component-dependencies.test.mjs
+      - atf-tests/tools/atf-component-ownership.test.mjs
+      - atf-tests/tools/component-compiler-scope.test.mjs
+      - atf-tests/tools/component-maven-reuse.test.mjs
+      - atf-tests/tools/component-proof-compiler-reuse.test.mjs
+      - atf-tests/tools/component-qualification-context.test.mjs
+      - atf-tests/tools/component-source-check.test.mjs
+      - atf-tests/tools/evaluate-release-rag.mjs
+      - atf-tests/tools/fixture-process.mjs
+      - atf-tests/tools/fixture-process.test.mjs
+      - atf-tests/tools/prepare-component-reuse.test.mjs
+      - atf-tests/tools/snapshot-io.test.mjs
+      - atf-tests/tools/source-language-admission.test.mjs
+      - atf-tests/tools/source-language-tokens.mjs
+      - atf-tests/tools/source-language.mjs
+      - atf-tests/tools/source-language.test.mjs
+      - atf-tests/tools/workflow-test-change-admission.test.mjs
+      - atf-ui-browser/pages/verify-card-adapter.mjs
+      - atf-ui-browser/pages/verify-controls.mjs
+      - atf-ui-browser/pages/verify-effects.mjs
+      - atf-ui-browser/pages/verify-navigation.mjs
+      - atf-ui-browser/pages/verify-records.mjs
+      - atf-ui-browser/pages/verify.mjs
+      - atf-ui-browser/pages/web/local-transport.mjs
+      - atf-ui-browser/tests/run-components.mjs
+      - config/atf-component-collections.json
+      - config/atf-component-dependencies.json
+      - config/atf-component-reader-seals.json
+      - config/gradle-app-collections.properties
+      - config/launcher-fixture-profile.json
+      - config/source-language-policy.json
+      - scripts/Copy-AtfSourceInputs.ps1
+      - scripts/export-card-table-ui.ps1
+      - scripts/Get-AtfSourceInputs.ps1
+      - scripts/run-atf-governance.ps1
+      - scripts/run-component-suites.ps1
+      - whist-lab-app/app/src/main/java/ro/whistlab/app/achievements/AndroidWhistAchievementStorage.java
+      - whist-lab-app/gradle/app-component-collections.gradle
+      - whist-lab-app/whist-presentation/achievement-catalog.gradle
+      - whist-lab-app/whist-presentation/src/main/java/ro/whistlab/app/achievements/WhistAchievementCatalog.java
+      - whist-lab-app/whist-presentation/src/main/java/ro/whistlab/app/achievements/WhistAchievementCodec.java
+      - whist-lab-app/whist-presentation/src/main/java/ro/whistlab/app/achievements/WhistAchievementRepository.java
+      - whist-lab-app/whist-presentation/src/main/java/ro/whistlab/app/achievements/WhistMatchFacts.java
+```
+
+</details>
+
+<details>
+<summary>Diagnostice pentru timeout-ul lansatorului Java</summary>
+
+```yaml
+testChanges:
+  - id: RAG-JAVA-FIXTURE-TAIL
+    status: VERIFIED
+    base: 1a1b4c8cff2cfa0472a331b5800513ae3f94d5e8
+    expires: 2026-12-24
+    reason: Păstrați ieșirea combinată limitată a procesului copil în aserțiunea Java de timeout înaintea curățării fixture-ului. Mențineți identitatea timeout-ului original când captura diagnosticului eșuează și păstrați matricile pentru dimensiunea fluxurilor în teste unitare.
+    proof: "mvn -o -pl atf-tests -am -Dtest=LauncherFixtureComponentTest,SourceLanguageGovernanceTest,AtfSourceQualityGovernanceTest -Dsurefire.failIfNoSpecifiedTests=false test"
+    checks:
+      positive:
+        - atf.tests.governance.documentation.release.rag.scope.launcher.LauncherFixtureComponentTest#javaTimeoutRetainsCombinedOutputBeforeFixtureCleanup
+        - atf.tests.governance.source.language.SourceLanguageGovernanceTest#implementationCommentsAndDiagnosticsUseEnglish
+        - atf.tests.governance.source.AtfSourceQualityGovernanceTest#sourcesRespectPackagePathsImportsAndProductionBoundaries
+      negative:
+        - atf.tests.governance.documentation.release.rag.scope.launcher.LauncherFixtureComponentTest#missingJavaLogDoesNotMaskTheOriginalTimeout
+    paths:
+      - config/atf-component-dependencies.json
+      - config/atf-component-reader-seals.json
+      - atf-tests/src/test/java/atf/tests/governance/documentation/release/rag/scope/launcher/LauncherFailureLog.java
+      - atf-tests/src/test/java/atf/tests/governance/documentation/release/rag/scope/launcher/LauncherFixtureComponentTest.java
+      - atf-tests/src/test/java/atf/tests/governance/documentation/release/rag/scope/launcher/LauncherFixtureUnitTest.java
+      - atf-tests/src/test/java/atf/tests/governance/documentation/release/rag/scope/QualificationLauncherComponentTest.java
+```
+
+</details>

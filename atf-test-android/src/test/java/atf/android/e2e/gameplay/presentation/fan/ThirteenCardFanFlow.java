@@ -7,7 +7,7 @@ import atf.reporting.contract.AtfAssertion;
 import java.nio.file.Path;
 import java.util.List;
 
-/** Intrarea comună a fazelor de evantai; identitatea execuției rămâne la coordonator. */
+/** Shared entry point for fan phases; execution identity stays with the coordinator. */
 public final class ThirteenCardFanFlow {
     private ThirteenCardFanFlow() {}
 

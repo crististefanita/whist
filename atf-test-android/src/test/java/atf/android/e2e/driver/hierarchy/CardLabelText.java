@@ -2,7 +2,7 @@ package atf.android.e2e.driver.hierarchy;
 
 import java.util.regex.Pattern;
 
-/** Convenția textuală a cărților, comună decodării și selectorilor de joc. */
+/** Card text conventions shared by decoding and gameplay selectors. */
 final class CardLabelText {
     private CardLabelText() {}
 

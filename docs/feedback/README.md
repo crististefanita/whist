@@ -28,11 +28,9 @@ Scorul 1–100 exprimă ordinea recomandată de lucru, nu calitatea sau procentu
 |---|---:|---:|---|
 | AND-02 | P1 | 92 | Califică pe APK actorul, geometria stabilă și mâna vizibilă în licitație/joc/AutoGame pentru 3–6 locuri, RO/EN și text mărit. [Registru](ATF_Android.md) |
 | AI-01 | P1 | 91 | Calibrează inferența Hard pentru 2–8 cărți din licitații și cărți jucate pe loturi noi; separă exactitatea probabilităților de scorul simulat. [Registru](ATF_Ai.md) |
-| GOV-06 | P1 | 91 | Impuneți identificatori, comentarii și explicații pentru dezvoltatori în engleză, cu componente negative pe surse și limite explicite pentru texte localizate și fixture-uri. [Registru](ATF_Governance.md#source-language-governance) |
 | UI-04 | P1 | 90 | Furnizați măsurătorile native reale portului neutru de observații; respingeți fonturile tăiate și redesenarea veche independent de egalitatea planurilor. [Registru](ATF_CardUi_Extraction.md#ui-three-module-plan) |
 | ACH-01 | P1 | 90 | Califică pe APK restaurarea poziției și selecției din Realizări, apoi reluarea notificărilor după recrearea activității. [Registru](ATF_Achievements.md) |
 | AND-03 | P1 | 89 | Califică API 37, navigarea sistemului, reluarea, fonturile mărite și memoria pe un dispozitiv identificat. [Registru](ATF_Android.md) |
-| RAG-31 | P1 | 89 | Limitați costul calificării lansatoarelor, păstrați diagnosticele timeout-urilor și coborâți matricile pure sub granița proceselor fără pierderea acoperirii respingerilor. [Registru](ATF_Governance.md#framework-selection-boundaries) |
 | RPT-03 | P1 | 88 | Publică suite mari în limita de heap declarată, fără copii repetate ale HTML-ului și fără să piardă JUnit sau comparațiile la eșec. [Registru](ATF_Reporting.md#rpt-bounded-report-heap--finalizare-sigură-pentru-suite-mari) |
 | WEB-16 | P1 | 88 | Calificați mărirea scenei calibrată după APK, textul chenarelor, listele, tipografia scorului și benzile acțiunilor pe un Android, RO/EN și text mărit; numai istoricul are derulare verticală. [Registru](ATF_UiBrowser.md#web-16-suprafața-de-joc-responsivă-și-tipografia-meniurilor) |
 | UI-01 | P1 | 86 | Califică antetul, chenarele și notificările pe APK-urile consumatorilor și verifică nativ intrarea Unicode a numelui. [Registru](ATF_CardUi_Extraction.md#priorități-și-condiții-de-închidere) |

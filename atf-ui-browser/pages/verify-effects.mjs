@@ -33,8 +33,8 @@ async function check(name, expected, exercise) {
 
 let samples;
 let cue;
-await check("Proiecția APK pentru chenar, mână și efectul de levată",
-  "Licitație și levate în chenar, marcaj legal din același model, aceeași ordine și durată a colectării", () => {
+await check("APK projection for player frame, hand and trick effect",
+  "Bids and tricks within the frame, legal marking from one model and identical collection order and duration", () => {
     initialize(31, 9);
     const setup = call("setup");
     samples = setup.collectionSamples;
@@ -106,8 +106,8 @@ function surface(reduced) {
   return { animations, clock, stage, draw, attached: () => attached };
 }
 
-await check("Redimensionarea păstrează fereastra de afișare a levatei",
-  "Anularea desenului lasă temporizatorul activ și curăță o singură dată suprapunerea", async () => {
+await check("Resizing preserves the trick display interval",
+  "Cancelling drawing keeps the timer active and clears the overlay once", async () => {
     assert.ok(cue);
     const screen = surface(false);
     const run = collect(screen.stage, cue, screen.draw, samples, screen.clock);
@@ -131,8 +131,8 @@ await check("Redimensionarea păstrează fereastra de afișare a levatei",
     return { remainingTimerPreserved: true, effects: screen.animations.length };
   });
 
-await check("Mișcare redusă și anulare fără cadre rămase",
-  "Cărțile rămân vizibile pentru intervalul normal, fără suprapunere; anularea închide așteptarea", async () => {
+await check("Reduced motion and cancellation without residual frames",
+  "Cards remain visible for the normal interval without overlap; cancellation closes the wait", async () => {
     assert.ok(cue);
     const screen = surface(true);
     const run = collect(screen.stage, cue, screen.draw, samples, screen.clock);

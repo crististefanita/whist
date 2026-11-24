@@ -1,8 +1,8 @@
+import {runFixtureProcess} from './fixture-process.mjs';
 import assert from 'node:assert/strict';
 import fs from 'node:fs/promises';
 import os from 'node:os';
 import path from 'node:path';
-import {execFileSync} from 'node:child_process';
 import test from 'node:test';
 const workflow = await fs.readFile(new URL('../../.github/workflows/whist-components.yml',import.meta.url),'utf8');
 const label='      - name: Admit source-control plan before Maven';
@@ -44,7 +44,7 @@ try {
  if($env:ADMISSION_REJECT -ne 'yes'){throw}
 }`;
   await fs.writeFile(path.join(root,'exercise.ps1'),script);
-  execFileSync('pwsh',['-NoProfile','-NonInteractive','-File',path.join(root,'exercise.ps1')],{
+  runFixtureProcess('pwsh',['-NoProfile','-NonInteractive','-File',path.join(root,'exercise.ps1')],{
     env:{...process.env,GITHUB_WORKSPACE:root,WHIST_PUBLICATION_TEST_ROOT:path.join(root,'wq/tmp'),
       ATF_TEST_CHANGE_BASE_REF:'a'.repeat(40),ADMISSION_REJECT:rejected?'yes':'no'},
     windowsHide:true,encoding:'utf8',timeout:30_000});

@@ -1,5 +1,5 @@
+import {runFixtureProcess} from './fixture-process.mjs';
 import assert from 'node:assert/strict';
-import {execFileSync} from 'node:child_process';
 import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
@@ -34,7 +34,7 @@ foreach($invalid in @(('Users:'+$crlf+' UserInfo{0:Owner:13}'+$crlf+' UserInfo{0
 }
 @{cases=$rows;rejected=$rejected}|ConvertTo-Json -Depth 5 -Compress
 `);
-  const output=execFileSync('pwsh',['-NoProfile','-File',script,
+  const output=runFixtureProcess('pwsh',['-NoProfile','-File',script,
     fileURLToPath(new URL('../../scripts/AtfAndroidUserOwnership.ps1',import.meta.url))],{encoding:'utf8',timeout:30000,windowsHide:true});
   const result=JSON.parse(output);assert.equal(result.cases.length,4);
   for(const row of result.cases){assert.deepEqual(row.ids,[0,10]);assert.deepEqual(row.names,['Owner','Foreign profile']);}
@@ -110,7 +110,7 @@ try {ConvertFrom-AtfAndroidUsers "cmd: Can't find service: package"|Out-Null}cat
 @{rows=$results;unavailableList=$invalid}|ConvertTo-Json -Depth 8 -Compress
 `);
   const helper=fileURLToPath(new URL('../../scripts/AtfAndroidUserOwnership.ps1',import.meta.url));
-  const result=JSON.parse(execFileSync('pwsh',['-NoProfile','-NonInteractive','-File',script,helper,root],{encoding:'utf8',timeout:60000}));
+  const result=JSON.parse(runFixtureProcess('pwsh',['-NoProfile','-NonInteractive','-File',script,helper,root],{encoding:'utf8',timeout:60000}));
   const accepted=new Set(['lost-id','bound-id','remove-timeout','package-unavailable','idempotent']);
   for(const row of result.rows){
     if(accepted.has(row.case)){
@@ -204,7 +204,7 @@ foreach($case in @('recovery','wrong-lease-run','service-unavailable','prepare-f
 }
 ConvertTo-Json -InputObject @($rows) -Depth 10 -Compress
 `);
-  const rows=JSON.parse(execFileSync('pwsh',['-NoProfile','-NonInteractive','-File',harness,scripts,root],
+  const rows=JSON.parse(runFixtureProcess('pwsh',['-NoProfile','-NonInteractive','-File',harness,scripts,root],
     {encoding:'utf8',timeout:60000}));
   const success=rows.find(row=>row.case==='recovery');
   assert.equal(success.error,'');assert.deepEqual(success.remaining,[0,9]);

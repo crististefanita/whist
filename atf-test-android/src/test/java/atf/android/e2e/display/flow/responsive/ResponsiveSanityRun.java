@@ -24,7 +24,7 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
-/** Coordonează profilurile și selecția inspecțiilor responsive. */
+/** Coordinates responsive profiles and their inspection selections. */
 public final class ResponsiveSanityRun {
     private ResponsiveSanityRun() {}
 

@@ -1,9 +1,9 @@
+import {runFixtureProcess} from './fixture-process.mjs';
 import assert from 'node:assert/strict';
 import fs from 'node:fs/promises';
 import os from 'node:os';
 import path from 'node:path';
 import test from 'node:test';
-import {execFileSync} from 'node:child_process';
 import {fileURLToPath} from 'node:url';
 import {atfCollections, atfGroups, atfOwnershipPath, atfComponentGroups} from './atf-component-ownership.mjs';
 import {componentEvidenceScope, changedInputs} from './component-evidence-scope.mjs';
@@ -107,7 +107,7 @@ test('unchanged receipts preserve original JUnit identities, Extent bytes and ha
 });
 
 test('reviewed reader updates reuse unrelated original receipts through the live graph and release planner', async t => {
-  const rows = JSON.parse(execFileSync('pwsh', ['-NoProfile', '-NonInteractive', '-File',
+  const rows = JSON.parse(runFixtureProcess('pwsh', ['-NoProfile', '-NonInteractive', '-File',
     fileURLToPath(new URL('../../scripts/Get-AtfSourceInputs.ps1', import.meta.url)),
     '-SourceRoot', path.resolve(fileURLToPath(new URL('../../', import.meta.url))), '-AsJson'],
   {encoding: 'utf8', timeout: 30000, maxBuffer: 4 * 1024 * 1024}));

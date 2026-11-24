@@ -1,9 +1,9 @@
+import {runFixtureProcess} from './fixture-process.mjs';
 import assert from 'node:assert/strict';
 import fs from 'node:fs/promises';
 import os from 'node:os';
 import path from 'node:path';
 import {fileURLToPath} from 'node:url';
-import {execFileSync} from 'node:child_process';
 import test from 'node:test';
 import {qualificationContext} from './component-qualification-context.mjs';
 import {digest} from './source-input-identity.mjs';
@@ -106,7 +106,7 @@ Get-AtfQualifiedCatalogContext $snapshot | ConvertTo-Json -Compress
     if (mutation === 'missing') delete value.qualificationContext;
     if (mutation === 'foreign-path') value.path=path.join(root,'foreign-workspace');
     await fs.writeFile(path.join(root, 'component-workspace.json'), JSON.stringify(value));
-    const invoke = () => execFileSync('pwsh', ['-NoProfile', '-NonInteractive', '-File', program, project, root],
+    const invoke = () => runFixtureProcess('pwsh', ['-NoProfile', '-NonInteractive', '-File', program, project, root],
       {encoding: 'utf8', timeout: 15000, stdio: ['pipe', 'pipe', 'pipe']});
     if (mutation === 'valid') assert.deepEqual(JSON.parse(invoke()), f.context);
     else assert.throws(invoke, error => /COMPONENT_RESUME_(?:CONTEXT|WORKSPACE_RECEIPT)/.test(error.stderr.toString()), mutation);

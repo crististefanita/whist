@@ -5,6 +5,7 @@ import atf.testkit.AtfComponentTest;
 import atf.testkit.assertions.AuditedAssertions;
 import atf.tests.governance.support.GovernanceProject;
 import atf.tests.governance.source.changes.TestChangeAdmissionFixture;
+import atf.tests.governance.documentation.release.rag.scope.launcher.LauncherFailureLog;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.nio.file.Files;
@@ -51,7 +52,7 @@ class QualificationLauncherComponentTest {
         Path components = scratch.resolve("admitted-components");
         var component = launch(COMPONENTS, source, components, "component-boundary", null);
         AuditedAssertions.assertEquals(1, component.exit());
-        AuditedAssertions.assertTrue(component.log().contains("Groups trebuie"), component.log());
+        AuditedAssertions.assertTrue(component.log().contains("Groups must"), component.log());
         AuditedAssertions.assertTrue(Files.isRegularFile(components.resolve("source-inputs.json")), "Valid proof permits the real snapshot");
         AuditedAssertions.assertEquals("PASS", JSON.readTree(components.resolve("test-change-admission-recheck.json").toFile())
                 .path("status").asText());
@@ -410,9 +411,11 @@ class QualificationLauncherComponentTest {
         else environment.remove("WHIST_EVIDENCE_ROOT");
         environment.put("ATF_FIXTURE_EVIDENCE_ROOT", evidenceRoot == null ? "" : evidenceRoot.toString());
         Path log = Files.createTempFile(scratch, "launcher-", ".log");
+        long started = System.nanoTime();
         var process = builder.redirectErrorStream(true).redirectOutput(log.toFile()).start();
         try {
-            AuditedAssertions.assertTrue(process.waitFor(60, TimeUnit.SECONDS), "Launcher timed out: " + log);
+            AuditedAssertions.assertTrue(process.waitFor(60, TimeUnit.SECONDS),
+                    () -> LauncherFailureLog.timeoutMessage(log, Duration.ofNanos(System.nanoTime() - started)));
             return new Run(process.exitValue(), new String(Files.readAllBytes(log), java.nio.charset.StandardCharsets.UTF_8));
         } finally { if (process.isAlive()) process.destroyForcibly(); }
     }

@@ -41,8 +41,8 @@ async function check(name, expected, exercise, id = "WEB-09") {
   console.log(cases.at(-1).status + " " + name);
 }
 
-await check("Același scenariu de reacție la atingere ca în testul Android",
-  "Același fișier, aceleași revizii, refuz fără mutare și o singură alegere acceptată", () => {
+await check("The same touch-response scenario as the Android test",
+  "The same file and revisions, refusal without movement and exactly one accepted selection", () => {
     initialize(31, 9);
     const setup = command("setup");
     timing = setup.handMotion;
@@ -77,8 +77,8 @@ await check("Același scenariu de reacție la atingere ca în testul Android",
     return { cards: Object.fromEntries(Object.entries(cards).map(([role, card]) => [role, id(card)])), seen };
   });
 
-await check("Ridicarea precede singura depunere; închiderea invalidează animația",
-  "Marcaje pe loc la refuz, ritmul APK, ridicare sub vecini și o singură depunere", async () => {
+await check("Lifting precedes the single play; closing invalidates the animation",
+  "Stable rejection marks, APK timing, lifting below neighboring cards and one play", async () => {
     assert.ok(cards);
     const fixtureCards = Object.fromEntries(Object.entries(cards)
       .map(([role, card]) => [role, { face: id(card), command: card.action }]));
@@ -89,8 +89,8 @@ await check("Ridicarea precede singura depunere; închiderea invalidează anima�
     return observed;
   });
 
-await check("Fața din mână și stilul păstrat în colectare",
-  "Rang și simbol, text accesibil, culori și dimensiuni din modulul comun", () => {
+await check("Hand card face and retained collection styling",
+  "Rank, suit, accessible text, colors and dimensions from the shared module", () => {
     assert.ok(fixture);
     assert.equal(style["--whist-hint-rejected-fill"], "#ffeee8");
     assert.equal(style["--whist-hint-rejected-line"], "#b7544d");
@@ -112,8 +112,8 @@ await check("Fața din mână și stilul păstrat în colectare",
     return { card: plays[0].faceLabel, faceHeight: layout.played.cardHeightDp, played: plays.length };
   });
 
-await check("AutoGame colectează fiecare levată, apoi publică doar cărțile curente",
-  "Patru colectări în ordinea motorului, oprire la scor și fără cărți expirate în starea stabilă", () => {
+await check("AutoGame collects every trick and then publishes only current cards",
+  "Four collections in engine order, stopping at score without stale cards in stable state", () => {
     local.checkpoint = fixture;
     state = command("state");
     const gathered = [];
@@ -140,8 +140,8 @@ await check("AutoGame colectează fiecare levată, apoi publică doar cărțile 
     return { tricks: gathered, totals: state.view.score.table.rows.map(row => Number(row[4])) };
   });
 
-await check("Antetul browserului folosește măsurile de referință ale APK-ului",
-  "Aceleași valori pentru titlu, progres, licitații, ținta meniului și chenarul de atu", async () => {
+await check("The browser header uses APK reference measurements",
+  "Identical title, progress, bids, menu target and trump-frame values", async () => {
     const properties = new URL("../../whist-lab-app/app/src/test/resources/whist-header-presentation.properties", import.meta.url);
     const reference = Object.fromEntries((await readFile(properties, "utf8")).trim().split(/\r?\n/u)
       .map(line => line.split("=")).map(([key, value]) => [key, Number(value)]));
@@ -163,8 +163,8 @@ await check("Antetul browserului folosește măsurile de referință ale APK-ulu
     return {reference, observed, palette, mapped};
   }, "WEB-12");
 
-await check("Ranguri de carte și bandă măsurată pentru 17 cărți",
-  "Scală moderată și uniformă pentru toate rangurile, cu lățimea măsurată rezervată în evantai și refuz la geometrie invalidă", () => {
+await check("Card ranks and measured space for a seventeen-card hand",
+  "Moderate uniform rank scaling, measured fan width and rejection of invalid geometry", () => {
     assert.equal(style["--whist-hand-label"], "0.8125rem");
     assert.equal(style["--whist-hand-rank-cap"], "26px");
     for (let seed = 31; seed < 96 && !wideCheckpoint; seed++) {
@@ -186,8 +186,8 @@ await check("Ranguri de carte și bandă măsurată pentru 17 cărți",
     return { baseRankSize: style["--whist-hand-label"], handIndexWidth: 43, hand: plan.hand };
   }, "WEB-11");
 
-await check("Atu lizibil în același chenar la font normal și mărit",
-  "Aceleași cazuri ca în componenta Android, inclusiv la două cifre și fără atu", async () => {
+await check("Readable trump within the same frame at normal and enlarged font sizes",
+  "The same Android component cases, including two-digit ranks and no trump", async () => {
     const file = new URL("../../whist-lab-app/app/src/test/resources/whist-trump-text-fit.tsv", import.meta.url);
     return verifyTrumpTextFit(fitTextWidth, file);
   }, "WEB-12");

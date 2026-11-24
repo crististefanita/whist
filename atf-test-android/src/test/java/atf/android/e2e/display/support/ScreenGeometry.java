@@ -2,7 +2,7 @@ package atf.android.e2e.display.support;
 
 import atf.android.e2e.driver.AndroidUiDriver;
 
-/** Operații geometrice comune, cu toleranță explicită pentru suprapunere. */
+/** Shared geometry operations with an explicit overlap tolerance. */
 public final class ScreenGeometry {
     private ScreenGeometry() {}
 

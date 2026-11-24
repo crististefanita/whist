@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-/** Verifică scorul fără confirmarea licitației și revenirea la meniul principal. */
+/** Verifies scoring without confirming the bid and returning to the main menu. */
 final class SixPlayerNavigationCheck {
     private SixPlayerNavigationCheck() {}
 

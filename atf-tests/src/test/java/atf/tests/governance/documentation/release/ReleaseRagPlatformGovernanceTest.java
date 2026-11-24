@@ -341,7 +341,7 @@ class ReleaseRagPlatformGovernanceTest {
         int executionPreflight = nativeRunner.indexOf("    Assert-AtfAndroidPreflight");
         assertTrue(executionPreflight > staging && executionPreflight < nativeRunner.indexOf("shell pm path"));
         assertFalse(feedback.contains("RAG-03"));
-        assertFalse(feedback.contains("0.14.0"), "Feedback-ul activ nu păstrează constatările unui release istoric");
+        assertFalse(feedback.contains("0.14.0"), "Active feedback does not retain findings from a historical release");
         assertTrue(evaluator.contains("READY_FOR_HUMAN_REVIEW"));
     }
 

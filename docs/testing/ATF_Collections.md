@@ -343,3 +343,22 @@ Captura observațiilor demonstrează ce s-a schimbat la limita originală. Selec
 </details>
 
 Folosiți `run-component-suites.ps1 -ReuseFrom <rejected-run> -RunRoot <new-external-run>` cu selecțiile `-Groups` necesare, baza Git explicită pentru revizie și căile locale configurate ale uneltelor/cache-ului. `-ResumeFrom` rămâne limitat la snapshot-uri complete identice; editarea documentației cere un snapshot nou. Reutilizarea compilatorului rămâne o decizie independentă, verificată la nivel de octeți.
+<a id="launcher-fixtures"></a>
+
+## Costul și diagnosticele fixture-urilor de lansare
+
+[Profilul resurselor](../../config/launcher-fixture-profile.json) declară memoria suitei, execuția serială a proceselor copil, limitele fluxurilor și termenul implicit al fixture-urilor. Un termen existent specific fixture-ului rămâne explicit; nu este mărit pentru a ascunde concurența pe resurse. Opțiunile JVM aparțin suitei, niciodată unei variabile globale `JAVA_TOOL_OPTIONS`.
+
+- [Suportul de proces](../../atf-tests/tools/fixture-process.mjs) scrie un receipt de diagnostic cu nume unic înaintea curățării fixture-ului. Receipt-ul păstrează identitatea cauzei originale, finalurile limitate ale fluxurilor stdout/stderr și durata măsurată.
+
+- Un proces copil eșuat emite acele observații limitate și către părinte, astfel încât auditul să nu depindă de o cale temporară. Configurați `WHIST_FIXTURE_DIAGNOSTICS`, `WHIST_EVIDENCE_ROOT` sau `WHIST_QUALIFICATION_TEMP_ROOT` în afara checkout-ului; ieșirile nu pot ajunge în directoarele surselor.
+
+- Lansatorul Java copiază ieșirea combinată limitată în aserțiunea de timeout înaintea curățării fixture-ului; un log lipsă adaugă eroarea capturii fără să înlocuiască identitatea timeout-ului.
+
+| Nivel | Responsabilitate |
+|---|---|
+| Unitar | Matrici pure pentru intrările compilatorului, limitele fluxurilor și cauze de timeout/ieșire simulate. Nu au raport Extent. |
+| Componentă | Ciclul real al procesului, păstrarea ieșirii întrerupte și admiterea reală a compilatorului/probelor, inclusiv fiecare contract original de refuz. Comparațiile rămân în Extent fără poze. |
+| Măsurare | Înregistrați separat pregătirea proaspătă, reutilizarea compilatorului și reluarea selecției. Măsurarea pornirii unui proces nu este un benchmark al compilării Maven fără cache. |
+
+Matricea intrărilor compilatorului are un singur responsabil unitar. Admiterea reală a compilatorului are un singur responsabil de componentă; eliminarea unei lansări duplicate nu pune în cache un verdict și nu elimină cazurile sale negative. Comparați numărul real al proceselor copil și duratele etapelor în profilul declarat; păstrați rezultatele în auditul extern, nu ca afirmații istorice despre durate în acest ghid.

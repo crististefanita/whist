@@ -45,12 +45,12 @@ async function check(name, expected, exercise) {
 const start = (fields = {}, revision = 0) => send("start", { revision, ...fields });
 const act = (state, action, error) => send("action", { revision: state.revision, action }, error);
 
-await check("Atingerea mesei închide meniul de joc",
-  "Clickul în meniu îl păstrează deschis, clickul pe masă îl închide inclusiv după redesenare",
+await check("Touching the table closes the game menu",
+  "Menu clicks keep it open; table clicks close it, including after repaint",
   () => verifyGameMenuDismissal(dismissGameMenuOnOutsideClick));
 
-await check("Valori implicite APK și reguli RO/EN pentru 3–6 jucători",
-  "Oh Hell la 4 jucători, șase variante și cele 48 de previzualizări localizate", () => {
+await check("APK defaults and RO/EN rules for three to six players",
+  "Four-player Oh Hell, six variants and forty-eight localized previews", () => {
     const setup = send("setup");
     const fields = Object.fromEntries(setup.fields.map(field => [field.key, field]));
     assert.equal(fields.players.initial, "4");
@@ -76,8 +76,8 @@ await check("Valori implicite APK și reguli RO/EN pentru 3–6 jucători",
     return { initial: fields.mode.initial, localizations: checked.length * 2 };
   });
 
-await check("Comutarea modului și a limbii fără schimbarea partidei",
-  "Setările românești sunt aplicate numai când sunt eligibile și păstrează valoarea aleasă", () => {
+await check("Switching mode and language without changing the game",
+  "Romanian settings apply only when eligible and preserve the selected value", () => {
     let state = start({ mode: "OH_HELL", series: 5, streaks: "yes", zero: "yes", players: 3 });
     let game = JSON.parse(stored.checkpoint);
     assert.equal(game.streakBonuses, false);
@@ -100,8 +100,8 @@ await check("Comutarea modului și a limbii fără schimbarea partidei",
     return { mode: game.mode, seats: game.playerCount, zero: game.allowZeroGame, keptBonus: game.streakBonusPoints };
   });
 
-await check("Joacă din nou din ultimul scor și numai din ultimul scor",
-  "Distribuire nouă, identificator nou, aceleași reguli și nicio creditare dublă", () => {
+await check("Play again is available only from the final score",
+  "New deal and identity, the same rules and no duplicate credit", () => {
     let state = start({ mode: "ROMANIAN_WHIST", players: 3, difficulty: "HARD",
       series: 5, streaks: "yes", zero: "yes", name: "WebProbe" });
     const initial = stored.checkpoint;
@@ -147,8 +147,8 @@ await check("Joacă din nou din ultimul scor și numai din ultimul scor",
     return { hands, mode: fresh.mode, players: fresh.playerCount, points: fresh.streakBonusPoints };
   });
 
-await check("Oprirea temporară a AutoGame în meniuri și dialoguri",
-  "Bifa rămâne activă, temporizatorul vechi se anulează, iar comanda pornește o singură dată după închidere", async () => {
+await check("Suspending AutoGame temporarily in menus and dialogs",
+  "Selection remains active, the old timer is cancelled and exactly one command starts after closing", async () => {
     const timers = [], commands = [], changes = [];
     const tick = () => new Promise(resolve => setImmediate(resolve));
     const control = autoGame({

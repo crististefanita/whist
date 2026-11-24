@@ -13,7 +13,7 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
-/** Scenariul de prezentare și navigare al mesei cu șase jucători. */
+/** Presentation and navigation scenario for a six-player table. */
 public final class SixPlayerTableScenario {
     private SixPlayerTableScenario() {}
 
