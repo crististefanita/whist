@@ -283,7 +283,7 @@
     "atf-tests/src/test/java/atf/tests/governance/source/game/GameSessionBoundaryComponentTest.java": "40b11b6c82d0968fca655180b214dd7ef5b7715006042080029374e592ec78e8",
     "atf-tests/src/test/java/atf/tests/governance/source/gradle/GradleAuditGovernanceTest.java": "a43d3d5ab60cdea616adbb445acb5e9ebfeb64339e990ed853bcd6caaf1399ff",
     "atf-tests/src/test/java/atf/tests/governance/source/language/SourceLanguageComponentTest.java": "ce3aaab5554ce88a618ecebdb1336b4ce44e7084c11443b356ea0a83d2114906",
-    "atf-tests/src/test/java/atf/tests/governance/source/language/SourceLanguageGovernanceTest.java": "690a328efa01470a5ee57eb41ee2f0386ac5b4fc863f8c1072aff04f25456739",
+    "atf-tests/src/test/java/atf/tests/governance/source/language/SourceLanguageGovernanceTest.java": "27b7ee67777375b87e99bcd7a7a164259ba45eeba7eb224487a53b852ac6b7fc",
     "atf-tests/src/test/java/atf/tests/governance/source/language/SourceLanguageUnitTest.java": "1fd6969122a9c2c1e7c3d78c5db709dcd90adf0941e9308eb8c57d9a8a4fdbc1",
     "atf-tests/src/test/java/atf/tests/governance/source/reporting/ReportProducerInventoryComponentTest.java": "8728150a4dda4c18ea890998da338284dc77938db1b2d8c057afb7ec065e90b3",
     "atf-tests/src/test/java/atf/tests/governance/source/workspace/PrimaryBranchGovernanceTest.java": "e425b3df94f412a5f34f5e881effc3c9b19bbbc56b85417d460e229773a778bb",

@@ -42,6 +42,8 @@ Run `node atf-tests/tools/source-language.mjs <checkout>` from an environment wi
 
 [Policy](../../config/source-language-policy.json) contains reviewed Romanian vocabulary, including ASCII spellings. Unknown policy fields, empty vocabularies, indirect inputs and missing files cannot authorize an empty successful scan. Source-language policy and implementation changes participate in protected test-change review.
 
+- The [inventory execution profile](../../config/source-language-inventory-profile.json) declares the complete checkout deadline separately from small launcher fixtures. Expiry remains an execution failure; the configured budget does not remove files or relax the language policy.
+
 | Level | Owner and independent responsibility |
 |---|---|
 | Unit | [Lexical matrices](../../atf-tests/tools/source-language.test.mjs) cover comments, literals, interpolation, identifier words, diagnostic arguments and policy rejection without Extent. |
