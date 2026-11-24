@@ -2,8 +2,8 @@
 
 ## Overview
 
-Qualified Android test edition awaiting publication. The signed APK, source-bound components and seven native flows have passed; delivery is verified separately.
+Published signed Android test edition. Source-bound components and seven native flows passed; the downloaded APK passed byte count, SHA-256 and ZIP CRC comparisons.
 
-[Signed APK](WhistLab-0.25.0.apk) · [Qualification audit](reports/README.md)
+[Download APK](https://github.com/crististefanita/whist/releases/download/v0.25.0/WhistLab-0.25.0.apk) · [Qualification audit](reports/README.md)
 
-Publication uses the existing test certificate. iOS is parked.
+The existing test certificate is retained. iOS is parked.

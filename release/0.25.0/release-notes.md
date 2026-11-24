@@ -11,4 +11,4 @@ Shared presentation, checkpoint integrity and qualified release recovery.
 
 ## Audit
 
-[Extent qualification audit](https://github.com/crististefanita/whist/blob/{evidenceCommit}/release/0.25.0/reports/README.md)
+[Extent qualification audit](https://github.com/crististefanita/whist/blob/9c3fb9a7473269fd9521f5af88dfc26b6c6c72e0/release/0.25.0/reports/README.md)

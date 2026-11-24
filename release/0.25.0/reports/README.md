@@ -52,6 +52,10 @@ The component total excludes the seven E2E invocations, overlapping source-contr
 
 Automated producer and detached-report contracts passed in the reporting collection. Interactive opening of this local HTML through Browser MCP was blocked by its URL policy and remains unverified. [Recorded review limit](diagnostics/report-review.json)
 
+## Publication and download
+
+[Complete download Extent](download-extent.html) and [distribution receipt](distribution-verification.json) record the actual published APK, completed bytes, SHA-256, ZIP CRC and HTTP comparisons. The main README identifies this same asset. Live catalog and retention observations remain separate from the original qualification context.
+
 ## Limits and delivery
 
 This is an Android test channel using the existing test certificate. Native evidence covers API 28 and one readable profile; broader parity criteria remain open in [feedback](../../../docs/feedback/README.md). The final publication, download and two-release retention checks are separate observations.
