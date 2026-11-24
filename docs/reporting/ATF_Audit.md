@@ -197,6 +197,37 @@ Passing structural checks alone does not prove readability or interactive naviga
 
 ## Report interface and evidence ownership
 
+### Verified component publication
+
+`ComponentReportPublication` owns the consumer transaction. Rendering and J24 finalization write a private candidate; the authored scenario profile and mandatory values are verified before atomic promotion. A failed render, inspection, size guard or changed candidate preserves the previous canonical HTML.
+
+```mermaid
+flowchart LR
+    CAPTURE["Original invocation captures"] -->|render| PRIVATE["Private HTML"]
+    PRIVATE -->|inspect original intent| VERIFY["Profile and byte seal"]
+    VERIFY -->|accept| FINAL["Canonical HTML"]
+    PRIVATE -->|reject| DIAG["Stage receipt and available candidate"]
+```
+
+<details>
+<summary>Legend: test outcome and publication outcome</summary>
+
+Publication never rewrites JUnit results or converts a failed comparison into PASS. The capture journal and original JUnit receipt remain independent of HTML promotion. A retained candidate is diagnostic evidence, not a qualified canonical report.
+
+</details>
+
+| Receipt stage | Meaning |
+|---|---|
+| `RENDER_AND_FINALIZE` | The pinned J24 session renders and injects navigation internally; the consumer cannot measure these two operations independently. |
+| `VERIFY` | Check artifact size, authored inventory and unchanged bytes. Consumer seals stream the file; they do not materialize another full HTML string. |
+| `PROMOTE` | Use the shared atomic publication coordinator after verification. |
+
+The [heap profile](../../config/report-heap-profile.json) declares child heap, timeout, comparison populations and body size. Isolated children verify small, medium and large synthetic suites, a final failed comparison, complete values across body parts and repeated inline PNG payloads. These fixtures do not count as additional JUnit invocations or product screenshots.
+
+Receipts retain elapsed time, heap usage before/after each stage and cumulative memory-pool peak upper bounds. A cumulative upper bound is not an isolated phase peak. Failure diagnostics retain the original exception type and stage; a hard process failure leaves the last started stage for the owning runner.
+
+The default artifact guard is 64 MiB and `atf.component.report-max-bytes` configures it. A byte limit is not a universal heap guarantee: DOM shape, body volume and captures remain separate input dimensions. Separate rendering/navigation peaks and generic library copy reduction require the Reporting owner; increasing heap alone does not qualify them.
+
 The Extent `Overview` keeps the standard `Reporting` dashboard. Consumer publishers must not inject screenshot galleries, game controls or custom sections into that view.
 
 Attach captured PNGs inline to their original scenario and phase through the public UI evidence API. Observation-only frames do not manufacture assertions or a new game result.

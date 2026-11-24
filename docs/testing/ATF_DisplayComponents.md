@@ -159,6 +159,30 @@ Gradle selection of the application, engine and graphic library uses [Gradle aud
 - **Launcher:** `-ComponentsOnly -ComponentSuite History` and `-ComponentRenderer fallback` restrict selection; `Display` is implicit. The report appears in `component-reports` of the external run, and `WORKING_STATE.json` identifies the snapshot and scope.
 - **Compilation:** Maven profiles select tests on execution; the broad profile does not omit the historical sources in compilation.
 
+## Measured renderer observations
+
+`AndroidSurfaceObservation` reads laid-out Views, visible rectangles and `TextView.Layout` lines. `BoardLayout.observeSurface` supplies the actual seat Views; the caller binds header, fact-row, trump and card content explicitly. It does not submit expected layout plans as observations.
+
+```mermaid
+flowchart LR
+    NATIVE["Android View and Layout"] -->|measure| PORT["RenderedSurface"]
+    DOM["DOM measurement adapter"] -->|measure| PORT
+    PORT -->|inspect| ORACLE["Visibility and continuity oracle"]
+    EPOCH["Owner and revision ticket"] -->|admit| NATIVE
+```
+
+<details>
+<summary>Legend: observation and expectation remain independent</summary>
+
+The portable observation retains pixel frames, visible regions, text-line bounds and ellipsis. Density normalizes continuity once. The oracle rejects clipped content even when the expected and actual frame plans are equal.
+
+</details>
+
+- Capture on the Android main thread after layout. Pending layout, hidden or foreign Views and missing text layout are explicit failures.
+- Keep the original `SurfaceEpoch` ticket in delayed callbacks. Replacing or disposing an owner invalidates it; ownership is checked before and after reading Views.
+- Units own normalization and invalid-value combinations without Extent. Components execute the production Android adapter against controlled API responses and retain the measured fields and original refusals, without screenshots.
+- API compilation and controlled responses do not certify Android glyph ink, fallback fonts or a consumer APK. Native acceptance remains required for the identified device, language and font profile.
+
 ## What keeps the native check
 
 [Native graphical components](../../whist-lab-app/app/src/androidTest/README.md) checks the Android class drawing in a real parent, no activity or match. Distinguishing between JVM and E2E flows; the internal text shall be applied prior to the evaluation of the pixels of the markings.

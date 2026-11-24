@@ -96,6 +96,18 @@ public class BoardLayout extends ViewGroup {
 
     private int dp(int value) { return Math.round(value * getResources().getDisplayMetrics().density); }
 
+    /** Call after layout; additional bindings identify the actual header, trump and public card Views. */
+    public ro.cardtable.ui.observation.RenderedSurface observeSurface(
+            java.util.List<ro.cardtable.ui.observation.AndroidSurfaceObservation.Binding> content,
+            ro.cardtable.ui.observation.SurfaceEpoch epoch,
+            ro.cardtable.ui.observation.SurfaceEpoch.Ticket ticket) {
+        var bindings = new java.util.ArrayList<ro.cardtable.ui.observation.AndroidSurfaceObservation.Binding>();
+        for (int seat = 0; seat < players; seat++)
+            bindings.add(new ro.cardtable.ui.observation.AndroidSurfaceObservation.Binding("seat:" + seat, getChildAt(seat)));
+        bindings.addAll(content);
+        return ro.cardtable.ui.observation.AndroidSurfaceObservation.capture(this, bindings, epoch, ticket);
+    }
+
     @Override protected LayoutParams generateDefaultLayoutParams() {
         return new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
     }
