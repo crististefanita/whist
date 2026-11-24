@@ -88,6 +88,11 @@ class ComponentEvidenceScopeComponentTest {
         proofCompilerContract("rejects tampered", inputs);
     }
 
+    @Test @ExtendWith(GameReportAudit.class)
+    void staticProofResumeKeepsItsOriginalControlAndVerifiedCompilation(ComponentInputs inputs) throws Exception {
+        proofCompilerContract("single static proof resume", inputs);
+    }
+
     private static void proofCompilerContract(String scenario, ComponentInputs inputs) throws Exception {
         var root = atf.tests.governance.support.GovernanceProject.locateProjectRoot();
         String output = runNode(List.of("node", "--test", "--test-name-pattern", scenario,

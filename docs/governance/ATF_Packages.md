@@ -6,6 +6,12 @@ A package groups types that change for the same contract. [Project policy](../..
 
 [Header typography](../../whist-lab-app/whist-presentation/src/main/java/ro/whistlab/app/theme/GameHeaderTypography.java) belongs to the common style of `theme`; geometry and composition of the table remain in `table`. The selection of display components shall include both responsibilities.
 
+## Source language
+
+Code is written in English on both documentation branches: identifiers, comments, Javadoc, source-level explanations and developer diagnostics. The Romanian documentation edition translates guides, not implementations. User-facing localized text, domain proper names and explicitly identified language fixtures remain data; they do not authorize Romanian implementation comments or identifiers.
+
+Source review must check meaning as well as spelling. Automated governance must identify the inspected source population and reject reviewed language violations, while accepting localized resources and fixture literals. The remaining executable enforcement is tracked in the [governance register](../feedback/ATF_Governance.md#source-language-governance).
+
 ## Choosing an owner
 
 ```mermaid
@@ -29,7 +35,7 @@ The input class shall retain the API consumed and delegate the mechanisms with i
 | What information can policy use? | [Decision model](../ai/ATF_DecisionModel.md): projection of his own hand and public facts precedes the simulation. |
 | How do we compare independent implementation? | [Lab](../../whist-lab-app/ai-lab/README.md): separate model and algorithm; the engine consumes only when tested. |
 | How do you measure and play the screen? | [Atlas Android](../../whist-lab-app/app/src/main/java/ro/whistlab/app/README.md): window, geometry, texts, persistence and life cycle. |
-| Who commands and interprets the observation? | [Android adapter](../../atf-test-android/README.md): unlimited transport, capture and parsing; pure components do not control the device. |
+| Who commands and interprets the observation? | [Android adapter](../../atf-test-android/README.md): bounded transport, capture and parsing; pure components do not control the device. |
 | Who selects and publishes the results? | [Reporting consumer](../../atf-tests/README.md): local data and audit; generic rendering belongs to the binary library. |
 
 ## Entry and delegation classes

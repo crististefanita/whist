@@ -3347,3 +3347,52 @@ testChanges:
 ```
 
 </details>
+
+<details>
+<summary>Static proof invocation recovery on the identical qualified review</summary>
+
+```yaml
+testChanges:
+  - id: RAG-STATIC-PROOF-RECOVERY
+    status: VERIFIED
+    base: ed9473ee05bd6780a6dce6da86e262533570ca79
+    expires: 2026-12-24
+    reason: Preserve original passing comparisons and retry only unresolved static invocations under the same Git review, selectors, source/catalog context, compiled byte seal and toolchain. Keep original failed attempts immutable, reject altered or foreign inputs, and retain independent primary-owner recovery and final Extent population checks.
+    proof: "scripts/run-component-suites.ps1 -TestChangeControl RAG-STATIC-PROOF-RECOVERY"
+    checks:
+      positive:
+        - atf.tests.execution.proofs.StaticProofRecoveryComponentTest#failedProofRetriesOnlyItsFailedBodyAndRetainsOriginalComparisons
+        - atf.tests.execution.proofs.StaticProofRecoveryComponentTest#interruptionResumesOnlyMissingBodiesFromTheKnownStaticPopulation
+        - atf.tests.governance.documentation.release.rag.scope.ComponentEvidenceScopeComponentTest#staticProofResumeKeepsItsOriginalControlAndVerifiedCompilation
+        - atf.tests.execution.recovery.InvocationRecoveryComponentTest#retryRunsOnlyFailedAndAbortedIdsAndRepublishesOriginalComparisons
+        - atf.tests.execution.recovery.InvocationRecoveryComponentTest#interruptedStaticPopulationResumesTheMissingBodiesFromDurableCaptures
+        - atf.tests.governance.source.AtfSourceQualityGovernanceTest#sourcesRespectPackagePathsImportsAndProductionBoundaries
+        - atf.tests.governance.source.PackageCohesionGovernanceTest#currentProjectUsesNoCohesionExceptions
+        - atf.tests.governance.source.TestLayerGovernanceTest#executableMavenClassesHaveOneLayerAndTheGuideMatchesTheirDeclarations
+        - atf.tests.governance.suites.SuiteOwnershipGovernanceTest#everyMavenExecutableHasOnePrimaryOwnerAndEveryFocusedGateIsDeclared
+        - atf.tests.governance.suites.AtfCollectionOwnershipComponentTest#positiveInventoriesPartitionEveryAtfComponentWithoutChangingLeafNames
+      negative:
+        - atf.tests.execution.proofs.StaticProofRecoveryComponentTest#unresolvedRootCauseRemainsAFailedProof
+        - atf.tests.execution.proofs.StaticProofRecoveryComponentTest#foreignReviewSelectionCompilerOrToolchainCannotReuseAProof
+        - atf.tests.execution.proofs.StaticProofRecoveryComponentTest#alteredCapturesAndOriginalReportsCannotAuthorizeReuse
+        - atf.tests.execution.recovery.InvocationRecoveryComponentTest#changedSourcesUnknownPopulationsAndTamperedEvidenceAreRefused
+        - atf.tests.governance.source.changes.TestChangeProofComponentTest#proofFromAnotherCommitCannotBeReused
+        - atf.tests.governance.source.changes.TestChangeProofComponentTest#proofWithoutPassingNegativeControlIsRefused
+    paths:
+      - atf-tests/src/test/java/atf/tests/execution/proofs/ProofRecoveryFixture.java
+      - atf-tests/src/test/java/atf/tests/execution/proofs/StaticProofRecoveryComponentTest.java
+      - atf-tests/src/test/java/atf/tests/execution/proofs/StaticProofRun.java
+      - atf-tests/src/test/java/atf/tests/execution/proofs/StaticProofSelectors.java
+      - atf-tests/src/test/java/atf/tests/execution/components/TestChangeProofExecution.java
+      - atf-tests/src/test/java/atf/tests/execution/recovery/InvocationRecovery.java
+      - atf-tests/src/test/java/atf/tests/execution/recovery/RecoveryPublication.java
+      - atf-tests/src/test/java/atf/tests/suites/components/AtfOrchestrationComponentSuite.java
+      - atf-tests/src/test/java/atf/tests/governance/documentation/release/rag/scope/ComponentEvidenceScopeComponentTest.java
+      - atf-tests/tools/component-proof-compiler-reuse.test.mjs
+      - scripts/run-component-suites.ps1
+      - config/atf-component-collections.json
+      - config/atf-component-dependencies.json
+      - config/atf-component-reader-seals.json
+```
+
+</details>

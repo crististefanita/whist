@@ -154,6 +154,20 @@ $env:ATF_TEST_CHANGE_PROOF_ROOT = Join-Path $runRoot 'proofs'
 
 On failure or source change, inspect the per-control logs and the `proofs.pending` diagnostic directory. For a focused run, `-TestChangeControl` stores the receipt under `<RunRoot>/<ID>`. Reuse that receipt and report for the original commit and diff, or for a verified editorial continuation that preserves their identity.
 
+### Resume one static proof control
+
+Use a new external run directory and the original run as `-ResumeFrom`, together with the same `-TestChangeControl` and Git base. The launcher first admits the complete source/release snapshot and verified compilation. Fresh batch generation remains separate; `-AllTestChangeControls` does not accept resume.
+
+```powershell
+.\scripts\run-component-suites.ps1 -TestChangeControl $control -TestChangeBaseRef $reviewBase -ResumeFrom $previousRun -RunRoot $newRun
+```
+
+The [static proof executor](../../atf-tests/src/test/java/atf/tests/execution/proofs/StaticProofRun.java) checkpoints registration and outcomes through the shared neutral-capture ports. Recovery additionally requires the same control ID, Git base, commit, raw diff, positive/negative selectors, sealed compiled output, classpath and JVM/tool identity. Current compiled discovery must match the original static invocation population exactly.
+
+Only failed or missing bodies run again. Original passing comparisons and phase timing are republished with their original checkpoint/report hashes; a failed retry remains failed. Altered captures, foreign or missing identities and failed owner containers cannot authorize a proof. Final publication still requires complete Extent reconciliation, source/diff rechecking and the launcher's pending-proof promotion.
+
+[Controlled recovery components](../../atf-tests/src/test/java/atf/tests/execution/proofs/StaticProofRecoveryComponentTest.java) count actual child-JVM body executions, inject process interruption and tamper with evidence. These are offline components without screenshots; their fixtures are not application E2E acceptance.
+
 ## Transferring ownership of a check
 
 The transfer of an implementation to a library shall keep all native contracts to the producer. The consumer shall retain the acceptance of the API used, the identity of the loaded JARs and the refusal of metadata or inconsistent deliveries.

@@ -4,6 +4,14 @@
 
 The project owns Android-boundary and adapter checks. Reusable contracts are requested through the [library ownership register](README.md), without copying producer implementations into consumers.
 
+<a id="source-language-governance"></a>
+
+## Source language governance
+
+| Priority | Gap and owner | Closure criterion |
+|---|---|---|
+| P1 | GOV-06: source comments and developer explanations still include Romanian despite the English implementation contract. Documentation-language checks do not inspect implementation comments. | Govern the actual Java, JavaScript, PowerShell and build-script source inventory independently of the documentation edition. Require English identifiers, comments, Javadoc and developer diagnostics. Add negative components for reviewed Romanian identifiers and comments, including ASCII spellings; accept localized user text, quoted fixtures and proper names without broad file exemptions. Preserve line-local diagnostics, shared EN/RO code and explicit semantic-review limits; a keyword heuristic alone cannot certify arbitrary English prose. Translate existing violations before closing the criterion. |
+
 ## Cohesion and package development
 
 [Executable policy](../../config/atf-governance-policy.json) enforces the package limit without exceptions. [Package responsibilities](../governance/ATF_Packages.md) separates public APIs, shared support and test selections.

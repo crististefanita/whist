@@ -74,6 +74,10 @@ class MockJava {
   File.AppendAllText(Environment.GetEnvironmentVariable("PROOF_RUN_MARKER"),"fresh-control\n");
   string mode=Environment.GetEnvironmentVariable("PROOF_RUN_MODE");
   if(mode=="failure")return 7;
+  if(mode=="resume") {
+   if(args.Length!=at+9)return 7;
+   File.AppendAllText(Environment.GetEnvironmentVariable("PROOF_RUN_MARKER"),"resumed-control:"+args[at+8]+"\n");
+  }
   if(mode=="partial")return 0;
   Directory.CreateDirectory(args[at+3]);
   File.WriteAllText(Path.Combine(args[at+3],"proof.pending.json"),"{\"kind\":\"CONTROLLED_TRANSPORT_FIXTURE\"}");
@@ -103,7 +107,7 @@ Write-AtfComponentWorkspace $previous $build $qualified
 if($Mode -eq 'tampered'){Put $jar 'changed bytecode'}
 $env:PROOF_RUN_MARKER=Join-Path $Root 'controls.marker';$env:MAVEN_RUN_MARKER=Join-Path $Root 'maven.marker';$env:PROOF_RUN_MODE=$Mode
 $env:WHIST_QUALIFICATION_TEMP_ROOT=$Root;$env:TEMP=$Root;$env:TMP=$Root
-$runs=@();$count=if($Mode -in @('success','gradle','catalog')){2}else{1}
+$runs=@();$count=if($Mode -in @('success','gradle','catalog','resume')){2}else{1}
 for($n=0;$n -lt $count;$n++){
  if($Mode -eq 'gradle') {
   Put (Join-Path $source 'gradle/src/test/java/OnlyTest.java') "changed Gradle test $n"
@@ -116,10 +120,11 @@ for($n=0;$n -lt $count;$n++){
   $null=& git -C $source -c user.name=Fixture -c user.email=fixture@example.invalid commit -q -m "Changed catalog observation $n"
  }
  $output=Join-Path $Root "run-$n";$log=Join-Path $Root "run-$n.log"
- & pwsh -NoProfile -NonInteractive -File (Join-Path $scripts 'run-component-suites.ps1') -SourceRoot $source -RunRoot $output -TestChangeControl FIXTURE-COMPILER -TestChangeBaseRef $base -CompilerReuseFrom $previous -JavaHome $javaHome -Maven $maven -MavenCache $cache *> $log
+ $resume=@(if($Mode -eq 'resume' -and $n -eq 1){'-ResumeFrom';(Join-Path $Root 'run-0')})
+ & pwsh -NoProfile -NonInteractive -File (Join-Path $scripts 'run-component-suites.ps1') -SourceRoot $source -RunRoot $output -TestChangeControl FIXTURE-COMPILER -TestChangeBaseRef $base -CompilerReuseFrom $previous @resume -JavaHome $javaHome -Maven $maven -MavenCache $cache *> $log
  $runs+=@{exit=$LASTEXITCODE;proof=(Test-Path (Join-Path $output 'FIXTURE-COMPILER/proof.json'));sourceFingerprint=if(Test-Path (Join-Path $output 'source-provenance.json')){(Get-Content (Join-Path $output 'source-provenance.json') -Raw|ConvertFrom-Json).sourceFingerprint}else{''};releaseFingerprint=if(Test-Path (Join-Path $output 'source-provenance.json')){(Get-Content (Join-Path $output 'source-provenance.json') -Raw|ConvertFrom-Json).releaseFingerprint}else{''};phases=if(Test-Path (Join-Path $output 'timing.json')){(Get-Content (Join-Path $output 'timing.json') -Raw|ConvertFrom-Json).stages}else{@()};log=(Get-Content $log -Raw)}
 }
-@{runs=$runs;maven=(Test-Path $env:MAVEN_RUN_MARKER);controls=if(Test-Path $env:PROOF_RUN_MARKER){@(Get-Content $env:PROOF_RUN_MARKER).Count}else{0}}|ConvertTo-Json -Depth 8
+@{runs=$runs;maven=(Test-Path $env:MAVEN_RUN_MARKER);controls=if(Test-Path $env:PROOF_RUN_MARKER){@(Get-Content $env:PROOF_RUN_MARKER).Count}else{0};controlLines=@(if(Test-Path $env:PROOF_RUN_MARKER){Get-Content $env:PROOF_RUN_MARKER})}|ConvertTo-Json -Depth 8
 `);
   const environment={...process.env,MAVEN_OPTS:'',MAVEN_ARGS:'',JAVACMD:'',WHIST_EVIDENCE_ROOT:''};
   for(const name of ['JAVA_TOOL_OPTIONS','JDK_JAVA_OPTIONS','_JAVA_OPTIONS'])delete environment[name];
@@ -152,3 +157,16 @@ for(const mode of ['failure','partial','tampered'])test(`proof compiler reuse re
   observe(mode,result);
 });
 function observe(mode,result){process.stdout.write(JSON.stringify({fixture:'Mocked Java transport; real launcher, snapshot and compiler admission',mode,mavenStarted:result.maven,freshControlExecutions:result.controls,runs:result.runs.map(run=>({exit:run.exit,proofPromoted:run.proof,compilerStages:run.phases.filter(row=>row.stage.includes('compiler')||row.stage.includes('maven')).map(({stage,status})=>({stage,status}))}))})+'\n');}
+
+test('single static proof resume forwards only its original control and reuses admitted compilation',async t=>{
+ const result=await exercise(t,'resume');
+ assert.notEqual(result.runs[0].exit,0);
+ assert.equal(result.runs[0].proof,false);
+ assert.equal(result.runs[1].exit,0,result.runs[1].log);
+ assert.equal(result.runs[1].proof,true);
+ assert.equal(result.maven,false);
+ assert.equal(result.controls,3,'Two child launches plus the explicit resume marker');
+ assert.match(result.controlLines.at(-1),/resumed-control:.*[/\\]run-0[/\\]FIXTURE-COMPILER$/);
+ assert.equal(result.runs[1].phases.find(row=>row.stage==='components.maven-compile').status,'REUSED');
+ observe('resume',result);
+});

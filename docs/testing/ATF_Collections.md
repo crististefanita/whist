@@ -230,7 +230,7 @@ Compilation and execution have separate identities. The [compiler inventory](../
 | Compiled output | [Output admission](../../scripts/AtfComponentMaven.ps1) verifies classes, resources, dependency JAR/POM bytes, frozen input inventory and classpath destinations. Missing or altered data selects fresh preparation. |
 | Workspace pointer | [The shared contract](../../scripts/AtfComponentWorkspace.ps1) binds schema 2 to the original source/release manifests and catalog context. Legacy schema-1 pointers remain explicit and cannot acquire a modern context or qualify reused test results. |
 | Another run | [Borrowing](../../scripts/AtfComponentMavenReuse.ps1) resolves the original compiler workspace inside the configured external temp root and holds its exclusive lease throughout execution. No repository or class tree is copied. |
-| Proof generation | `-CompilerReuseFrom <compiler-run>` may borrow admitted compilation in single-control or batch generation. Every selected control runs freshly; no proof or report is borrowed. Failed or incomplete execution never promotes a proof. `-ReuseFrom` remains forbidden for proof generation. |
+| Proof generation | `-CompilerReuseFrom <compiler-run>` may borrow admitted compilation in single-control or batch generation. Fresh generation executes every selected control. A focused `-TestChangeControl` may resume its own admitted `-ResumeFrom` checkpoint on the identical review and compilation; unresolved invocations execute again and original passing comparisons remain sealed. Failed or incomplete execution never promotes a proof. `-ReuseFrom` remains forbidden for proof generation. |
 | Execution snapshot | The current source and release snapshots remain mandatory. Reusing compilation does not credit a test; owner selection and original report validation remain independent. |
 | Lifetime | References work only while the verified compiler workspace survives. Busy, missing, indirect or foreign workspaces and unsealed compiler receipts trigger fresh compilation; retained reports can still be reused independently. |
 
@@ -259,7 +259,7 @@ flowchart LR
 - Recovery executes only unresolved unique IDs. Current suite discovery admits the original population, including parameterized and nested identities; unknown dynamic populations, missing captures, source changes and owner failures reject recovery.
 - The [publisher](../../atf-tests/src/test/java/atf/tests/execution/recovery/RecoveryPublication.java) republishes admitted original values through Reporting alongside fresh retry outcomes. A failed retry remains FAIL; the original report is never edited.
 - Canonical Extent remains standalone with complete values and lineage hashes. Its companion index links immutable attempts through relative paths; a prefix rebuilt after process interruption is explicitly labeled as republication.
-- Reuse of a recovered passing owner verifies and retains its sealed attempt artifacts. Compiler, whole-owner and invocation reuse have separate admission rules; testChanges proof generation still executes every declared control freshly.
+- Reuse of a recovered passing owner verifies and retains its sealed attempt artifacts. Compiler, whole-owner and invocation reuse have separate admission rules; fresh testChanges proof generation executes every declared control; focused proof recovery follows the same neutral-capture contract with additional Git, selector and compiler identities.
 
 </details>
 

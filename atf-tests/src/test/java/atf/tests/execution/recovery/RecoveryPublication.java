@@ -15,6 +15,10 @@ import java.util.*;
 /** Republishes neutral original comparisons through Reporting; original and retry HTML remain immutable. */
 public final class RecoveryPublication {
     public static Map<String,Object> publish(InvocationRecovery.Plan plan,List<Invocation> executed,Path output) throws IOException {
+        return publish(plan,executed,output,plan.previous().getParent().resolve("source-provenance.json"));
+    }
+    public static Map<String,Object> publish(InvocationRecovery.Plan plan,List<Invocation> executed,Path output,
+                                              Path originalProvenance) throws IOException {
         var directory=output.resolve("attempts");Files.createDirectory(directory);
         var artifacts=new ArrayList<ReportObservation.Artifact>();
         Path original=directory.resolve("original-report.html");
@@ -22,7 +26,7 @@ public final class RecoveryPublication {
         else if(!plan.captured().isEmpty()) {
             String current=System.getProperty(atf.android.evidence.component.AndroidComponentReports.PROVENANCE);
             try {
-                System.setProperty(atf.android.evidence.component.AndroidComponentReports.PROVENANCE,Files.readString(plan.previous().getParent().resolve("source-provenance.json")));
+                System.setProperty(atf.android.evidence.component.AndroidComponentReports.PROVENANCE,Files.readString(originalProvenance));
                 render(original,plan.captured(),List.of());
             } finally {
                 if(current==null) System.clearProperty(atf.android.evidence.component.AndroidComponentReports.PROVENANCE);
