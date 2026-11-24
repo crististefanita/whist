@@ -2937,7 +2937,7 @@ testChanges:
 testChanges:
   - id: WHIST-PAIRED-PRODUCER-20261124
     status: VERIFIED
-    base: 546a46db4c8957c53619f2f1260ea7c8d6165c21
+    base: 95d0bab317302507d12c2bab47450e168af20dd3
     expires: 2026-12-24
     reason: Folosim o intenție comună APK/Web, păstrăm fiecare checkpoint semantic cu capturi limitate, inventariem rendererii, menținem eșecurile și identitățile parametrice originale și refuzăm calificarea bazată numai pe totaluri.
     proof: 'scripts/run-component-suites.ps1 -TestChangeControl WHIST-PAIRED-PRODUCER-20261124'
