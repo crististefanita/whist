@@ -11,6 +11,18 @@ function Get-AtfQualificationTempRoot([string]$SourceRoot) {
     $result
 }
 
+function Get-AtfQualifiedCatalogContext($Snapshot) {
+    $sourceHash = Get-AtfInputFingerprint $Snapshot.source
+    $releaseHash = Get-AtfInputFingerprint $Snapshot.release
+    $rows = ConvertFrom-Json -InputObject $Snapshot.release -NoEnumerate
+    $catalogHashes = @($rows | Where-Object path -ceq 'release/index.json' | Select-Object -ExpandProperty sha256)
+    if ($catalogHashes.Count -ne 1) { throw 'COMPONENT_CONTEXT_CATALOG' }
+    $identity = [Convert]::ToHexString([Security.Cryptography.SHA256]::HashData(
+        [Text.Encoding]::UTF8.GetBytes((@($sourceHash,$releaseHash,$catalogHashes[0]) -join "`n")))).ToLowerInvariant()
+    [ordered]@{schemaVersion=1;kind='QUALIFIED_SOURCE_AND_CATALOG'
+        sourceSha256=$sourceHash;releaseSha256=$releaseHash;catalogSha256=$catalogHashes[0];identitySha256=$identity}
+}
+
 function Get-AtfReleaseInputs([string]$Root) {
     $release = Join-Path $Root 'release'
     $rows = [Collections.Generic.List[object]]::new()

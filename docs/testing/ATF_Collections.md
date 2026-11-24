@@ -176,16 +176,24 @@ Muchiile descriu dependențe executabile la nivel de clasă sau modul, nu urmăr
 
 </details>
 
-Cititorii de fișiere și toți apelanții lor tranzitivi au sigilii revizuite ale corpului sursei. Contractele de citire noi sau schimbate cer o politică revizuită și calificare completă; înregistrarea unui sigiliu nou nu autorizează reutilizarea peste o intrare de cititor schimbată. Sfârșiturile de linie se normalizează numai pentru aceste sigilii ale checkout-urilor bilingve; manifestele originale ale sursei și dovezile reutilizate păstrează hash-urile octeților exacți.
+Politica topologiei fixează populațiile furnizorilor, muchiile executabile, tiparele observatorilor și rolurile cititorilor. [Inventarul separat al sigiliilor](../../config/atf-component-reader-seals.json) fixează corpurile revizuite; hash-ul său nu devine o dependență globală. Sfârșiturile de linie se normalizează numai pentru sigiliile corpurilor; manifestele sursei și probele originale păstrează hash-urile octeților exacți.
 
-Comanda de propunere, numai pentru citire, folosește un inventar proaspăt al sursei și scrie un fișier nou în afara checkout-ului:
+| Schimbare sau limită de admitere | Selecție |
+|---|---|
+| Corp revizuit și sigiliu corespunzător, cu aceeași topologie admisă | Consumatorii cititorului schimbat și observatorii inventarului sigiliilor. |
+| Mai mulți cititori revizuiți | Reuniunea tuturor consumatorilor afectați și observatorilor inventarului. |
+| Politica topologiei, rădăcini, muchii, populație de furnizori sau rol de cititor schimbat | Calificare ATF completă. |
+| Sigiliu lipsă, învechit sau străin; consumator necunoscut; inventar schimbat fără explicație | Calificare ATF completă. |
+| Origine istorică fără inventarul separat al sigiliilor | Admitere conservatoare; rapoartele vechi nu se reetichetează. |
+
+Comanda de propunere, numai pentru citire, folosește un inventar proaspăt al sursei și scrie două fișiere noi în afara checkout-ului:
 
 ```powershell
 .\scripts\Get-AtfSourceInputs.ps1 -SourceRoot (Get-Location).Path -AsJson > '<scratch-root>/source-inputs.json'
 node .\atf-tests\tools\atf-dependency-cli.mjs '<scratch-root>/source-inputs.json' '<scratch-root>/reader-policy-proposal.json'
 ```
 
-Revizuiți domeniile declarate ale cititorilor și furnizorii generați înaintea adoptării politicii propuse. Comanda nu actualizează politica versionată și nu acordă un verdict de calificare; cititorii sau mecanismele de selecție schimbate cer controalele pozitive și negative revizuite ale modificării testelor. Planul reutilizării înregistrează lanțul de dependențe sau domeniul observatorului care justifică fiecare selecție; admiterea receipt-ului imuabil, a identității JUnit și a raportului Extent rămâne obligatorie.
+Revizuiți domeniile declarate ale cititorilor și furnizorii generați înaintea adoptării ambelor propuneri: fișierul solicitat pentru topologie și fișierul vecin `atf-component-reader-seals.json`. Comanda nu actualizează politica versionată și nu acordă un verdict de calificare; cititorii sau mecanismele de selecție schimbate cer controalele pozitive și negative revizuite ale modificării testelor. Planul reutilizării înregistrează hash-ul topologiei, hash-ul sigiliilor, cititorii schimbați și lanțul de dependențe sau domeniul observatorului care justifică fiecare selecție; admiterea receipt-ului imuabil, a identității JUnit și a raportului Extent rămâne obligatorie.
 
 - `prepare-component-reuse.mjs` verifică sursa originală, snapshot-ul release-ului, rularea rădăcină, identitățile JUnit și hash-urile rapoartelor înaintea copierii octeților neschimbați. Evaluatorul cere fiecare responsabil ATF nou atunci când sursa candidatului conține noul descriptor, indiferent de versiunea de release declarată. Sursele istorice fără descriptor păstrează contractul monolitic; rapoartele lor nu pot fi reetichetate drept dovezi ale partițiilor.
 

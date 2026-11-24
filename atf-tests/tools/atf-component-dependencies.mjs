@@ -7,6 +7,7 @@ import {atfCollections, atfGroups} from './atf-component-ownership.mjs';
 import {componentInputMap} from './source-input-identity.mjs';
 
 export const atfDependencyPolicyPath = 'config/atf-component-dependencies.json';
+export const atfReaderSealsPath = 'config/atf-component-reader-seals.json';
 const root = fileURLToPath(new URL('../../', import.meta.url));
 const hash = bytes => createHash('sha256').update(bytes).digest('hex');
 const relative = value => typeof value === 'string' && value && !value.includes('\\')
@@ -25,10 +26,10 @@ export function dependencyPattern(pattern) {
 
 export function analyzeAtfDependencies(inputs, read, policy, collections) {
   inputs = componentInputMap([...inputs].map(([path, sha256]) => ({path, sha256})));
-  if (policy.schemaVersion !== 1 || !Array.isArray(policy.javaRoots) || !policy.javaRoots.length
+  if (policy.schemaVersion !== 2 || policy.readerSealsPath !== atfReaderSealsPath
+      || !Array.isArray(policy.javaRoots) || !policy.javaRoots.length
       || !Array.isArray(policy.scriptRoots) || !policy.scriptRoots.length
       || !Array.isArray(policy.globalInputs) || !policy.globalInputs.length || !Array.isArray(policy.observers)
-      || !policy.readerSeals || typeof policy.readerSeals !== 'object' || Array.isArray(policy.readerSeals)
       || [...policy.javaRoots, ...policy.scriptRoots, ...policy.globalInputs].some(file => !relative(file))) {
     throw Error('DEPENDENCY_POLICY');
   }
@@ -55,9 +56,6 @@ export function analyzeAtfDependencies(inputs, read, policy, collections) {
     nodes.set(file, {path: file, text});
   }
   if (!nodes.size) throw Error('DEPENDENCY_EMPTY');
-  if (Object.entries(policy.readerSeals).some(([file, sha]) => !nodes.has(file) || !/^[a-f\d]{64}$/.test(sha))) {
-    throw Error('DEPENDENCY_READER_SEAL');
-  }
   const index = referenceIndex(nodes, inputs.keys());
   index.generatedModules = new Map();
   for (const generated of policy.generatedModules ?? []) {
@@ -95,6 +93,10 @@ export function analyzeAtfDependencies(inputs, read, policy, collections) {
     }
   }
   const requiredReaderSeals = Object.fromEntries([...opaque].sort().map(file => [file, hash(readerBody(nodes.get(file).text))]));
+  // Body bytes are sealed independently. Any change to a provider population,
+  // executable edge, observer scope or reader role still changes global topology.
+  const topologySha256 = hash(JSON.stringify([...nodes].sort(([a], [b]) => a < b ? -1 : a > b ? 1 : 0)
+    .map(([file, node]) => [file, [...node.edges].sort(), [...new Set(node.patterns)].sort(), opaque.has(file)])));
   for (const node of nodes.values()) node.patterns = node.patterns.map(dependencyPattern);
   const closures = new Map();
   for (const owner of collections) {
@@ -121,7 +123,7 @@ export function analyzeAtfDependencies(inputs, read, policy, collections) {
   }
   const global = new Set(policy.globalInputs);
   return {
-    nodes, closures, global, requiredReaderSeals, readerPaths: new Set(Object.keys(requiredReaderSeals)),
+    nodes, closures, global, topologySha256, requiredReaderSeals, readerPaths: new Set(Object.keys(requiredReaderSeals)),
     owners(file) {
       if (global.has(file)) return collections.map(row => row.group);
       const groups = [...closures].filter(([, scope]) => scope.selected.has(file)
@@ -144,8 +146,14 @@ export function analyzeAtfDependencies(inputs, read, policy, collections) {
 
 export function buildAtfDependencyModel(inputs, read, policy, collections) {
   const model = analyzeAtfDependencies(inputs, read, policy, collections);
-  for (const [file, expected] of Object.entries({...model.requiredReaderSeals, ...policy.readerSeals})) {
-    if (policy.readerSeals[file] !== model.requiredReaderSeals[file]
+  if (policy.topologySha256 !== model.topologySha256) throw Error('DEPENDENCY_TOPOLOGY_NOT_QUALIFIED');
+  const bytes = read(atfReaderSealsPath);
+  if (hash(bytes) !== inputs.get(atfReaderSealsPath)) throw Error('DEPENDENCY_READER_SEALS_HASH');
+  const seals = JSON.parse(bytes);
+  if (seals.schemaVersion !== 1 || !seals.readerSeals || typeof seals.readerSeals !== 'object'
+      || Array.isArray(seals.readerSeals)) throw Error('DEPENDENCY_READER_SEAL');
+  for (const [file, expected] of Object.entries({...model.requiredReaderSeals, ...seals.readerSeals})) {
+    if (!model.nodes.has(file) || seals.readerSeals[file] !== model.requiredReaderSeals[file]
         || expected !== hash(readerBody(model.nodes.get(file).text))) {
       throw Error('DEPENDENCY_READER_NOT_QUALIFIED: ' + file);
     }
@@ -194,8 +202,22 @@ export function dependencyDecision(file, current, previous, load, groups = atfGr
   if ([...model.nodes.keys()].some(node => !previous.has(node))) {
     return {groups, status: 'CONSERVATIVE', reason: 'DEPENDENCY_PREVIOUS_POPULATION_MISSING'};
   }
-  if ([...model.readerPaths].some(node => current.get(node) !== previous.get(node))) {
-    return {groups, status: 'CONSERVATIVE', reason: 'DEPENDENCY_READER_INPUT_CHANGED'};
+  if (!current.has(atfReaderSealsPath) || !previous.has(atfReaderSealsPath)) {
+    return {groups, status: 'CONSERVATIVE', reason: 'DEPENDENCY_READER_SEALS_NOT_SHARED'};
+  }
+  const changedReaders = [...model.readerPaths].filter(node => current.get(node) !== previous.get(node)).sort();
+  const sealsChanged = current.get(atfReaderSealsPath) !== previous.get(atfReaderSealsPath);
+  if (changedReaders.some(node => !model.owners(node)) || (sealsChanged && !changedReaders.length)) {
+    return {groups, status: 'CONSERVATIVE', reason: 'DEPENDENCY_READER_SCOPE_UNKNOWN'};
+  }
+  if (file === atfReaderSealsPath) {
+    const consumers = [...new Set([...(model.owners(atfReaderSealsPath) ?? []),
+      ...changedReaders.flatMap(node => model.owners(node))])];
+    return {groups: consumers, status: 'ADMITTED', reason: 'REVIEWED_READER_SEAL_CONSUMERS',
+      evidence: [...model.explain(atfReaderSealsPath),
+        ...changedReaders.flatMap(node => model.explain(node).map(row => ({...row, reader: node})))],
+      changedReaders, topologySha256: model.topologySha256,
+      policySha256: current.get(atfDependencyPolicyPath), readerSealsSha256: current.get(atfReaderSealsPath)};
   }
   if (!model.nodes.has(file) && !model.global.has(file)) {
     return {groups, status: 'CONSERVATIVE', reason: 'DEPENDENCY_INPUT_UNQUALIFIED'};
@@ -203,7 +225,8 @@ export function dependencyDecision(file, current, previous, load, groups = atfGr
   const consumers = model.owners(file);
   return {groups: consumers ?? groups, status: consumers ? 'ADMITTED' : 'CONSERVATIVE',
     reason: consumers ? 'TRANSITIVE_SOURCE_DEPENDENCIES' : 'DEPENDENCY_INPUT_UNOWNED',
-    ...(consumers ? {evidence: model.explain?.(file) ?? []} : {}), policySha256: current.get(atfDependencyPolicyPath)};
+    ...(consumers ? {evidence: model.explain?.(file) ?? []} : {}), topologySha256: model.topologySha256,
+    policySha256: current.get(atfDependencyPolicyPath), readerSealsSha256: current.get(atfReaderSealsPath)};
 }
 
 export function atfDependencySelection(file, current, previous) {

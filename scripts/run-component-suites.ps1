@@ -264,14 +264,15 @@ try {
 
     $fingerprint = Get-AtfInputFingerprint $snapshot.source
     $releaseFingerprint = Get-AtfInputFingerprint $snapshot.release
+    $qualificationContext = Get-AtfQualifiedCatalogContext $snapshot
     $libraries = @($snapshot.source | ConvertFrom-Json | Where-Object {$_.path -like 'lib/*.jar'})
-    $provenance = [ordered]@{schemaVersion=1;kind='live-source-components';apkQualification=$false;androidExecution=$false;observedUtc=[DateTime]::UtcNow.ToString('o');sourceFingerprint=$fingerprint;inputCount=$snapshot.inputCount;inputManifest='source-inputs.json';inputPartCharacters=$InputPartCharacters;libraries=$libraries
+    $provenance = [ordered]@{schemaVersion=2;qualificationContext=$qualificationContext;kind='live-source-components';apkQualification=$false;androidExecution=$false;observedUtc=[DateTime]::UtcNow.ToString('o');sourceFingerprint=$fingerprint;inputCount=$snapshot.inputCount;inputManifest='source-inputs.json';inputPartCharacters=$InputPartCharacters;libraries=$libraries
         releaseFingerprint=$releaseFingerprint;releaseInputManifest='release-inputs.json'}
     $provenanceReceipt = Join-Path $RunRoot 'source-provenance.json'
     $provenance | ConvertTo-Json -Depth 8 | Set-Content -LiteralPath $provenanceReceipt -Encoding utf8
     $provenanceFingerprint = (Get-FileHash -LiteralPath $provenanceReceipt -Algorithm SHA256).Hash.ToLowerInvariant()
     Write-AtfComponentJson (Join-Path $RunRoot 'component-workspace.json') ([ordered]@{
-        schemaVersion=1;path=$work;sourceFingerprint=$fingerprint;releaseFingerprint=$releaseFingerprint
+        schemaVersion=2;qualificationContext=$qualificationContext;path=$work;sourceFingerprint=$fingerprint;releaseFingerprint=$releaseFingerprint
     })
     $completedComponents = [Collections.Generic.List[object]]::new()
     $checkpointFile = Join-Path $RunRoot 'component-checkpoint.json'
@@ -280,7 +281,7 @@ try {
 
         # Accepted only by ResumeFrom after revalidating both inventories and every reused report.
         $checkpoint = [ordered]@{
-            schemaVersion=1;kind='live-source-components';apkQualification=$false
+            schemaVersion=2;qualificationContext=$qualificationContext;kind='live-source-components';apkQualification=$false
             sourceFingerprint=$fingerprint;provenanceReceiptSha256=$provenanceFingerprint;inputManifest='source-inputs.json'
             sourceStable=$true;inputCount=$snapshot.inputCount;releaseFingerprint=$releaseFingerprint;releaseInputManifest='release-inputs.json'
             status=if (@($completedComponents | Where-Object exitCode -ne 0).Count) {'FAIL'} else {'PASS'}
@@ -396,7 +397,7 @@ try {
         'snapshots/' + $reused[0].componentEvidenceOrigin + '/source-component-run.json'
     }
     $run = [ordered]@{
-        schemaVersion=1;kind='live-source-components';apkQualification=$false
+        schemaVersion=2;qualificationContext=$qualificationContext;kind='live-source-components';apkQualification=$false
         sourceFingerprint=$fingerprint;provenanceReceiptSha256=$provenanceFingerprint;inputManifest='source-inputs.json'
         sourceStable=$stable;status=if($passed){'PASS'}else{'FAIL'};stage='isolated-staging-copy';inputCount=$snapshot.inputCount
         releaseFingerprint=$releaseFingerprint;releaseInputManifest='release-inputs.json';snapshotDifferences=$snapshotDifferences

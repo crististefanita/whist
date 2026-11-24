@@ -35,6 +35,35 @@ Un raport de componentă califică intrările și comparațiile JVM. Sanity-ul c
 | 6. Android | Rezervați dispozitivul; rulați scenariul scurt al schimbării și profilul care distinge riscul. Restaurați datele și configurația. O partidă completă nu se repetă pe toate rezoluțiile. |
 | 7. Predare | Confruntați sursele live, rapoartele, populația testelor, linkurile și guvernanța relevantă. Arhivați precedentul verificat înaintea înlocuirii dosarului activ și APK-ului. |
 
+<a id="qualified-catalog-context"></a>
+
+## Contextul catalogului calificat
+
+Înaintea execuției, receipt-urile moderne fixează `qualificationContext` în proveniență, checkpoint și rularea rădăcină. Identitatea se reconstruiește din SHA-256 al manifestului sursei, SHA-256 al inventarului complet al release-ului și hash-ul înregistrat pentru `release/index.json`. Reluarea refuză un context lipsă sau străin înaintea reutilizării rezultatelor.
+
+| Moment | Contract |
+|---|---|
+| Calificare | Inventarele copiate și live coincid cu snapshot-ul fixat; modificările reale sau fișierele corupte blochează admiterea. |
+| Reutilizare | Rapoartele și receipt-urile păstrează contextul original; noul plan nu le rescrie. |
+| Promovare și publicare | Contextul original nu devine o verificare a catalogului curent; retenția GitHub, legăturile și hash-urile descărcate se verifică separat. |
+| Dovezi istorice | Rămân explicit fără context modern; nu se inventează retrospectiv o identitate de calificare. |
+
+```mermaid
+flowchart LR
+    SNAP[Snapshot sursă și catalog] -->|fixează| CONTEXT[Identitate calificată]
+    CONTEXT -->|leagă| REPORT[Rapoarte originale]
+    CONTEXT -->|verifică aceeași identitate| RESUME[Reluare]
+    REPORT -->|păstrează observația originală| DELIVERY[Publicare]
+    DELIVERY -->|observă separat| LIVE[Catalog, legături și descărcări live]
+```
+
+<details>
+<summary>Legendă: calificarea și livrarea au observații separate</summary>
+
+Un rezultat explică sursa și catalogul văzute la execuție. Publicarea poate adăuga rapoarte; probele anterioare nu sunt reetichetate drept observații curente.
+
+</details>
+
 ## Organizarea dosarului candidat
 
 | Intrare | Conținut canonic |

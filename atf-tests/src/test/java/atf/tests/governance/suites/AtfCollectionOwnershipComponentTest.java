@@ -1,6 +1,8 @@
 package atf.tests.governance.suites;
 
 import atf.testkit.AtfComponentTest;
+import atf.android.evidence.component.ComponentInputs;
+import atf.tests.reporting.GameReportAudit;
 import atf.testkit.assertions.AuditedAssertions;
 import atf.tests.governance.source.TestLayerRules;
 import atf.tests.governance.support.GovernanceProject;
@@ -9,6 +11,7 @@ import java.nio.file.Files;
 import java.time.Duration;
 import java.util.*;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import static atf.tests.governance.documentation.release.rag.scope.NodeReleaseContracts.runNode;
 
 /** Source ownership and executable selection must agree before independent receipts can be reused. */
@@ -28,10 +31,40 @@ class AtfCollectionOwnershipComponentTest {
         String output = contracts("atf-component-dependencies.test.mjs", "unknown|missing|opaque|generated");
         AuditedAssertions.assertTrue(output.contains("unknown, unowned, historical and missing populations fail closed"),
                 "Missing graph admission never reinterprets original collection evidence");
-        AuditedAssertions.assertTrue(output.contains("opaque readers and their callers require reviewed body seals"),
-                "Reader or caller changes require complete qualification before selective reuse");
+        AuditedAssertions.assertTrue(output.contains("new opaque readers require topology admission"),
+                "New reader roles require topology admission and body seals before selective reuse");
         AuditedAssertions.assertTrue(output.contains("generated module providers retain their producer inputs"),
                 "A missing provider is rejected unless the sealed loader declares its producer scope");
+    }
+
+    @Test @ExtendWith(GameReportAudit.class)
+    void reviewedReaderSealsSelectOnlyTheirConsumersAndPreserveOriginalReports(ComponentInputs inputs) throws Exception {
+        inputs.add("Preconditions", "Two independent reader consumers share the same admitted topology; only reviewed body seals change. Original source/report receipts remain immutable.");
+        String output = auditedContracts("atf-reader-seals.test.mjs", "reviewed seal-only|simultaneous|seal inventory observers", inputs);
+        AuditedAssertions.assertTrue(output.contains("reviewed seal-only updates retain topology"),
+                "A reviewed seal update selects the changed reader's transitive consumers only");
+        output = auditedContracts("atf-component-ownership.test.mjs", "reviewed reader updates", inputs);
+        AuditedAssertions.assertTrue(output.contains("originalReportBytesPreserved"),
+                "Release planning and reuse preserve every unaffected original report, JUnit identity and receipt byte");
+    }
+
+    @Test @ExtendWith(GameReportAudit.class)
+    void topologyMissingSealsAndUnknownReaderScopesCannotNarrowQualification(ComponentInputs inputs) throws Exception {
+        inputs.add("Negative controls", "Alter topology, observer scope, provider population, seal hashes, historical admission and reader ownership independently.");
+        String output = auditedContracts("atf-reader-seals.test.mjs", "changed executable|unreviewed|missing historical", inputs);
+        AuditedAssertions.assertTrue(output.contains("cannot masquerade as a seal-only update"),
+                "Changed dependency topology and declared scopes retain complete qualification");
+        AuditedAssertions.assertTrue(output.contains("missing stale malformed or foreign reader seals fail closed"),
+                "Unadmitted, absent, stale, malformed and foreign seals never authorize reuse");
+        AuditedAssertions.assertTrue(output.contains("unknown consumers and unexplained seal changes"),
+                "An unknown consumer or unexplained seal update keeps every owner selected");
+    }
+
+    private static String auditedContracts(String script, String pattern, ComponentInputs inputs) throws Exception {
+        var root = GovernanceProject.locateProjectRoot();
+        return runNode(List.of("node", "--test", "--test-name-pattern", pattern,
+                root.resolve("atf-tests/tools").resolve(script).toString()), root, Duration.ofSeconds(45),
+                output -> inputs.add("Captured assertions: " + script, output));
     }
 
     @Test void positiveInventoriesPartitionEveryAtfComponentWithoutChangingLeafNames() throws Exception {

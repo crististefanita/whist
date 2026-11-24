@@ -15,6 +15,7 @@ import org.junit.platform.suite.api.*;
     "^atf\\.tests\\.governance\\.documentation\\.release\\.rag\\.ReleaseRagProvenanceComponentTest$",
     "^atf\\.tests\\.governance\\.documentation\\.release\\.rag\\.nativeproof\\.NativeSourceProvenanceComponentTest$",
     "^atf\\.tests\\.governance\\.documentation\\.release\\.rag\\.scope\\.VisualContractScopeComponentTest$",
+    "^atf\\.tests\\.governance\\.documentation\\.release\\.rag\\.scope\\.context\\.QualifiedCatalogContextComponentTest$",
     "^atf\\.tests\\.governance\\.documentation\\.release\\.versioning\\.ReleaseVersionComponentTest$"
 })
 @IncludeTags("component")

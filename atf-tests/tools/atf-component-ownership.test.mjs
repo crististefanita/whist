@@ -3,12 +3,15 @@ import fs from 'node:fs/promises';
 import os from 'node:os';
 import path from 'node:path';
 import test from 'node:test';
+import {execFileSync} from 'node:child_process';
+import {fileURLToPath} from 'node:url';
 import {atfCollections, atfGroups, atfOwnershipPath, atfComponentGroups} from './atf-component-ownership.mjs';
 import {componentEvidenceScope, changedInputs} from './component-evidence-scope.mjs';
 import {deriveReleaseTestScope} from './release-test-scope.mjs';
 import {digest, verifyComponentExecution, verifyComponentOrigin, strictJson} from './evaluate-release-rag.mjs';
 import {prepareComponentReuse} from './prepare-component-reuse.mjs';
 import {sourceCheckFiles, sourceCheckObservations, sourceCheckReceipt} from './component-source-check.mjs';
+import {atfReaderSealsPath} from './atf-component-dependencies.mjs';
 
 const ownership = digest(await fs.readFile(new URL('../../config/atf-component-collections.json', import.meta.url)));
 const baseline = new Map([[atfOwnershipPath, ownership], ['README.md', 'a'.repeat(64)]]);
@@ -60,15 +63,15 @@ test('transition from a historical monolith cannot relabel its evidence as a par
   assert.equal(componentEvidenceScope('atf-tests', new Map([['README.md', 'b'.repeat(64)]]), legacy).decision, 'RUN');
 });
 
-async function fixture(t, {payload = false} = {}) {
+async function fixture(t, {payload = false, sourceInputs = baseline, targetInputs = current} = {}) {
   const root = await fs.mkdtemp(path.join(os.tmpdir(), 'whist-atf-owners-'));
   t.after(() => fs.rm(root, {recursive: true, force: true}));
   const previous = path.join(root, 'previous'), target = path.join(root, 'target');
   await fs.mkdir(previous); await fs.mkdir(target);
   const write = (dir, name, data) => fs.writeFile(path.join(dir, name), JSON.stringify(data));
-  const rows = [...baseline].map(([path, sha256]) => ({path, sha256}));
+  const rows = [...sourceInputs].map(([path, sha256]) => ({path, sha256}));
   await write(previous, 'source-inputs.json', rows);
-  await write(target, 'source-inputs.json', [...current].map(([path, sha256]) => ({path, sha256})));
+  await write(target, 'source-inputs.json', [...targetInputs].map(([path, sha256]) => ({path, sha256})));
   const release = [{path: 'release/index.json', sha256: 'd'.repeat(64)}];
   await write(previous, 'release-inputs.json', release);
   await write(target, 'release-inputs.json', payload ? [...release, {path: 'release/extra.json', sha256: 'e'.repeat(64)}] : release);
@@ -101,6 +104,35 @@ test('unchanged receipts preserve original JUnit identities, Extent bytes and ha
       assert.deepEqual(await fs.readFile(path.join(target, owner.group, name)), await fs.readFile(path.join(previous, owner.group, name)));
     }
   }
+});
+
+test('reviewed reader updates reuse unrelated original receipts through the live graph and release planner', async t => {
+  const rows = JSON.parse(execFileSync('pwsh', ['-NoProfile', '-NonInteractive', '-File',
+    fileURLToPath(new URL('../../scripts/Get-AtfSourceInputs.ps1', import.meta.url)),
+    '-SourceRoot', path.resolve(fileURLToPath(new URL('../../', import.meta.url))), '-AsJson'],
+  {encoding: 'utf8', timeout: 30000, maxBuffer: 4 * 1024 * 1024}));
+  const targetInputs = new Map(rows.map(row => [row.path, row.sha256]));
+  const sourceInputs = new Map(targetInputs);
+  // Controlled prior body on the same admitted graph, with a distinct reviewed seal.
+  const reader = 'atf-test-android/src/main/java/atf/android/AdbClient.java';
+  sourceInputs.set(reader, digest('prior reader body'));
+  sourceInputs.set(atfReaderSealsPath, digest('prior reviewed seals'));
+  const f = await fixture(t, {sourceInputs, targetInputs});
+  const plan = deriveReleaseTestScope(sourceInputs, targetInputs, atfGroups);
+  const affected = ['atf-tests', 'atf-tests-documentation', 'atf-tests-orchestration'];
+  assert.deepEqual(plan.runComponentGroups, affected);
+  assert.deepEqual(plan.requiredE2eGroups, []);
+  const decisions = await prepareComponentReuse(f.target, f.previous, atfGroups);
+  for (const group of affected) assert.equal(decisions.find(row => row.group === group).decision, 'RUN', group);
+  for (const row of decisions.filter(row => !affected.includes(row.group))) {
+    assert.equal(row.decision, 'REUSE', row.group);
+    assert(row.dependencyEvidence.some(e => e.path === atfReaderSealsPath
+      && e.reason === 'REVIEWED_READER_SEAL_CONSUMERS' && e.changedReaders.includes(reader)));
+    for (const name of ['execution.json', 'component-report.html'])
+      assert.deepEqual(await fs.readFile(path.join(f.target, row.group, name)), await fs.readFile(path.join(f.previous, row.group, name)));
+  }
+  t.diagnostic(JSON.stringify({qualifiedOwners: atfGroups.length, execute: plan.runComponentGroups,
+    reused: decisions.filter(row => row.decision === 'REUSE').map(row => row.group), originalReportBytesPreserved: true}));
 });
 
 test('payload changes invalidate the dossier owner without replaying independent fixtures', async t => {

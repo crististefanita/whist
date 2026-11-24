@@ -62,7 +62,8 @@ public final class TestChangeReview {
             "atf-ui-browser/tests/packaged-sanity.mjs",
             "atf-tests/tools/evaluate-release-rag.mjs", "atf-tests/tools/atf-component-ownership.mjs",
             "atf-tests/tools/component-compiler-inputs.mjs",
-            "config/atf-component-dependencies.json", "atf-tests/tools/atf-component-dependencies.mjs",
+            "config/atf-component-dependencies.json", "config/atf-component-reader-seals.json", "atf-tests/tools/atf-component-dependencies.mjs",
+            "atf-tests/tools/component-qualification-context.mjs",
             "atf-tests/tools/atf-dependency-references.mjs", "atf-tests/tools/atf-script-references.mjs",
             "atf-tests/tools/atf-dependency-cli.mjs");
     private static final List<String> GATE_DIRECTORIES = List.of(

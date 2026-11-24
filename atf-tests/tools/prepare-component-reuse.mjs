@@ -62,6 +62,7 @@ export async function prepareComponentReuse(runRoot, previousRoot, groups, {resu
       const decision = {group, decision: scope.decision, reason: scope.reason,
         affectedGroups: scope.affectedGroups, changedInputs: scope.changed, affectedInputs: scope.affected,
         alwaysEvaluatedRagChecks: scope.alwaysEvaluatedRagChecks,
+        ...(origin.qualificationContext ? {qualificationContext: origin.qualificationContext} : {}),
         ...(origin.readmission ? {readmission: origin.readmission} : {}),
         ...(scope.dependencyEvidence ? {dependencyEvidence: scope.dependencyEvidence} : {})};
       if (scope.decision === 'RUN') {
