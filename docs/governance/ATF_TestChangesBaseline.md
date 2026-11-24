@@ -3292,3 +3292,58 @@ testChanges:
 ```
 
 </details>
+
+<details>
+<summary>Stabilitatea termenelor proceselor și costul pereche al inspecției sintactice</summary>
+
+```yaml
+testChanges:
+  - id: GOV-PROCESS-PARSER-MEASUREMENT
+    status: VERIFIED
+    base: 0f63cef42900a5c0df278c966de206fe8adf1a62
+    expires: 2026-12-24
+    reason: Separați expirarea controlată a proceselor de pregătirea fixture-urilor și limitele de protecție fără schimbarea semanticii publice a transportului. Măsurați parsarea sintactică de producție și cu opțiuni implicite JDK pe un inventar de surse înghețat, cu ordine pereche și amprente AST identice; păstrați controalele independente pentru adnotări, ambiguitate, sintaxă și ciclu de viață, fără prag de viteză.
+    proof: "mvn -o -pl atf-tests -am -Dtest=CommandProcessComponentTest,TestLayerSyntaxTest,AtfSourceQualityGovernanceTest,PackageCohesionGovernanceTest,TestLayerGovernanceTest,SuiteOwnershipGovernanceTest,AtfCollectionOwnershipComponentTest -Dsurefire.failIfNoSpecifiedTests=false test"
+    checks:
+      positive:
+        - atf.android.process.CommandProcessComponentTest#separatesBinaryOutputAndKeepsNonzeroExit
+        - atf.android.process.CommandProcessComponentTest#drainsBothFullPipesWithoutDeadlock
+        - atf.android.process.CommandProcessComponentTest#mergedOutputUsesTheSameDeadline
+        - atf.android.process.CommandProcessComponentTest#completionBeforeTheDeadlineKeepsBothOutputsAndTheExitCode
+        - atf.android.process.CommandProcessComponentTest#interruptionKillsTheOwnedProcessAndKeepsTheInterruptFlag
+        - atf.tests.governance.source.TestLayerSyntaxTest#syntaxInspectionCostUsesOneFrozenInventoryAndPreservesAstAcrossOptions
+        - atf.tests.governance.source.TestLayerSyntaxTest#everyTopLevelExecutableKeepsItsOwnLayer
+        - atf.tests.governance.source.TestLayerSyntaxTest#qualifiedAndInlineMethodAnnotationsIdentifyAnExecutableClass
+        - atf.tests.governance.source.TestLayerSyntaxTest#annotationsBetweenModifiersBelongToTheDeclaredType
+        - atf.tests.governance.source.TestLayerSyntaxTest#fixtureMethodsCannotTurnAnEnclosingHelperIntoAnExecutable
+        - atf.tests.governance.source.TestLayerSyntaxTest#anIdentifierContainingInterfaceIsStillAConcreteClass
+        - atf.tests.governance.source.TestLayerSyntaxTest#annotationDiscoveryIgnoresExamplesAndKeepsTheRealDeclaration
+        - atf.tests.governance.source.AtfSourceQualityGovernanceTest#sourcesRespectPackagePathsImportsAndProductionBoundaries
+        - atf.tests.governance.source.PackageCohesionGovernanceTest#currentProjectUsesNoCohesionExceptions
+        - atf.tests.governance.source.TestLayerGovernanceTest#executableMavenClassesHaveOneLayerAndTheGuideMatchesTheirDeclarations
+        - atf.tests.governance.source.TestLayerGovernanceTest#theGuideMapsEveryGovernedSourceModuleWithoutClaimingBinarySourceSuites
+        - atf.tests.governance.suites.SuiteOwnershipGovernanceTest#everyMavenExecutableHasOnePrimaryOwnerAndEveryFocusedGateIsDeclared
+        - atf.tests.governance.suites.AtfCollectionOwnershipComponentTest#realDependencyClosuresSelectOnlyTheirConsumers
+      negative:
+        - atf.android.process.CommandProcessComponentTest#aLateProcessStartIsBoundedAndItsEventualProcessIsCleaned
+        - atf.android.process.CommandProcessComponentTest#blockedDrainCannotTurnProcessExitIntoAnUnboundedJoin
+        - atf.android.process.CommandProcessComponentTest#readFailureIsNotSilentlyReportedAsSuccessAndCleanupCannotMaskIt
+        - atf.android.process.CommandProcessComponentTest#aBlockedStdoutDoesNotHideTheOriginalStderrFailure
+        - atf.android.process.CommandProcessComponentTest#startFailureKeepsTheOriginalCauseWithoutAClockRace
+        - atf.android.process.CommandProcessComponentTest#timedOutTreeKillsDescendantHoldingThePipeAfterParentExit
+        - atf.tests.governance.source.TestLayerSyntaxTest#parserOwnershipSurvivesASyntaxErrorAndEndsAtClose
+        - atf.tests.governance.source.TestLayerSyntaxTest#wildcardImportsResolveOnlyAnUnambiguousComposedAnnotation
+        - atf.tests.governance.source.TestLayerSyntaxTest#syntaxErrorsCannotBecomeSuccessfulEmptyDiscovery
+        - atf.tests.governance.source.TestLayerSyntaxTest#parserCostProbeRejectsAmbiguousInputsAndMalformedSources
+        - atf.tests.governance.suites.AtfCollectionOwnershipComponentTest#missingOrUnreviewedDependenciesCannotAuthorizeReuse
+    paths:
+      - atf-test-android/src/main/java/atf/android/process/CommandProcess.java
+      - atf-test-android/src/test/java/atf/android/process/CommandProcessComponentTest.java
+      - atf-test-android/src/test/java/atf/android/process/ProcessFixture.java
+      - atf-tests/src/test/java/atf/tests/governance/source/ParserCostProbe.java
+      - atf-tests/src/test/java/atf/tests/governance/source/TestLayerSyntaxTest.java
+      - config/atf-component-dependencies.json
+      - config/atf-component-reader-seals.json
+```
+
+</details>

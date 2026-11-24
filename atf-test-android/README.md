@@ -160,6 +160,10 @@ succesul capturii curente; întreruperea păstrează cauza și marcajul firului.
 
 Componentele transportului folosesc procese locale controlate. [Acceptanța Android](../docs/testing/ATF_Android.md) verifică separat comportamentul pe dispozitiv; publicarea unei capturi valide are propriul contract.
 
+- Pregătirea fixture-ului este o precondiție. Un marcaj al procesului copil precede observarea întreruperii sau curățării arborelui; pregătirea nu consumă un interval de transport nou declarat.
+- Componentele cu ceas controlat compară încheierea imediat înainte de expirare cu drenarea blocată exact la termen. Portul de ceas intern al pachetului păstrează fațada publică de producție pe ceasul monoton al sistemului.
+- Limitele de protecție delimitează pregătirea fixture-ului și confirmările asincrone de curățare. Sunt distincte de bugetele transportului și nu califică latența; viteza mașinii de test nu poate redefini oracolul expirării.
+
 - La eșec se solicită oprirea procesului și a descendenților observați cât timp părintele este activ.
 - Închiderea fluxurilor nu blochează apelantul; un proces creat după expirarea pornirii este curățat când devine disponibil.
 - Erorile curățării se adaugă cauzei inițiale; un descendent desprins înainte să poată fi observat nu are identitate garantată de API-ul Java.

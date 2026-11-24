@@ -89,6 +89,21 @@ O inspecție deține și închide propriul manager de fișiere JDK, reutilizat �
 
 [Componentele sintaxei](../../atf-tests/src/test/java/atf/tests/governance/source/TestLayerSyntaxTest.java) verifică refuzurile și vecinii valizi, inclusiv exemple Java în șiruri care nu trebuie tratate ca declarații.
 
+### Măsurarea pereche a costului parserului
+
+[Sonda de cost](../../atf-tests/src/test/java/atf/tests/governance/source/ParserCostProbe.java), exclusiv pentru teste, compară parserul de producție cu opțiunile implicite JDK pe același inventar Maven Java înghețat. Ambele se opresc la parsarea sintaxei, fără analiza tipurilor sau încărcarea claselor aplicației.
+
+| Frontieră | Contractul măsurării |
+|---|---|
+| Intrări | Citiți sursele UTF-8 o singură dată, păstrați căile și amprentați inventarul complet ordonat. |
+| Proprietate | Fiecare încercare deține un singur manager de fișiere; fiecare sursă primește o sarcină de parsare și diagnostice noi. |
+| Referință | Producția dezactivează procesarea adnotărilor și folosește căi goale pentru clase și procesoare; referința folosește opțiunile implicite JDK. |
+| Ordine | Încălziți ambele moduri, apoi alternați ordinea perechilor măsurate. |
+| Cost | Păstrați timpul brut al parsării separat de totalul deținerii, normalizării AST și amprentării; înregistrați JDK, VM, sistemul de operare și numărul de procesoare. |
+| Corectitudine | Cereți același număr de surse și aceleași amprente AST normalizate în fiecare încercare; refuzați intrările goale, duplicate sau incorecte sintactic. |
+
+Duratele observate rămân în auditul extern. Izolarea configurației este o graniță de corectitudine; accelerarea cere dovezi măsurate și nu se deduce niciodată doar din opțiuni.
+
 ## Rulare izolată
 
 Pentru un fișier sau pentru inventarul documentar complet, folosiți [CLI-ul de documentație](ATF_Documentation.md#cli-pentru-guvernanța-documentației). Acesta testează aceleași reguli editoriale ca suita.

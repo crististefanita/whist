@@ -14,6 +14,37 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @AtfComponentTest
 class TestLayerSyntaxTest {
+    @Test @org.junit.jupiter.api.extension.ExtendWith(atf.tests.reporting.GameReportAudit.class)
+    void syntaxInspectionCostUsesOneFrozenInventoryAndPreservesAstAcrossOptions(
+            atf.android.evidence.component.ComponentInputs inputs) throws Exception {
+        var root = atf.tests.governance.support.GovernanceProject.locateProjectRoot();
+        var inventory = ParserCostProbe.freeze(root);
+        var report = ParserCostProbe.measure(inventory, 3);
+        inputs.add("Paired parser experiment", "Declared Maven Java source roots; UTF-8 sources frozen once; configured=-proc:none with empty class/processor paths; reference=JDK default options; one warm-up per mode; three alternating measured pairs; no type analysis or speed threshold");
+        inputs.add("Original parser observations", new com.fasterxml.jackson.databind.ObjectMapper().writeValueAsString(report));
+        AuditedAssertions.assertFalse(inventory.isEmpty(), "The comparison must inspect actual source files");
+        AuditedAssertions.assertEquals(6, report.trials().size(), "Three pairs retain six independent measurements");
+        AuditedAssertions.assertEquals(64, report.inventorySha256().length(), "Frozen source inventory is fingerprinted");
+        String expected = report.trials().getFirst().astSha256();
+        for (var trial : report.trials()) {
+            AuditedAssertions.assertEquals(inventory.size(), trial.units(), "Every trial inspects the same population");
+            AuditedAssertions.assertEquals(expected, trial.astSha256(), "Compiler paths and processing options do not alter the parsed trees");
+            AuditedAssertions.assertTrue(trial.parseNanos() >= 0 && trial.totalNanos() >= trial.parseNanos(),
+                    "Parse cost is distinguished from ownership, normalization and hashing");
+        }
+    }
+
+    @Test void parserCostProbeRejectsAmbiguousInputsAndMalformedSources() throws Exception {
+        AuditedAssertions.assertThrows(IllegalArgumentException.class, () -> ParserCostProbe.measure(List.of(), 1));
+        var source = new ParserCostProbe.Input("fixture.java", "class Fixture {}");
+        AuditedAssertions.assertThrows(IllegalArgumentException.class, () -> ParserCostProbe.measure(List.of(source, source), 1));
+        AuditedAssertions.assertThrows(IllegalArgumentException.class, () -> ParserCostProbe.measure(List.of(source), 0));
+        AuditedAssertions.assertThrows(IllegalArgumentException.class, () -> ParserCostProbe.trial(List.of(source), "unknown", 0));
+        for (String mode : List.of("configured", "jdk-default-paths"))
+            AuditedAssertions.assertThrows(IllegalArgumentException.class, () -> ParserCostProbe.trial(
+                    List.of(new ParserCostProbe.Input("broken.java", "class Incomplete {")), mode, 0));
+    }
+
     @Test void parserOwnershipSurvivesASyntaxErrorAndEndsAtClose() {
         var parser = JavaTestDeclarations.open();
         try (parser) {

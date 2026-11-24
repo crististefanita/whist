@@ -14,6 +14,7 @@ import java.util.concurrent.CompletionException;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
+import java.util.function.LongSupplier;
 
 /** One process and its output drains share one monotonic deadline. */
 public final class CommandProcess {
@@ -43,12 +44,18 @@ public final class CommandProcess {
 
     static Process start(Starter starter, Duration timeout, long started, long budget)
             throws IOException, InterruptedException {
+        return start(starter, timeout, started, budget, System::nanoTime);
+    }
+
+    static Process start(Starter starter, Duration timeout, long started, long budget, LongSupplier ticks)
+            throws IOException, InterruptedException {
+        Objects.requireNonNull(ticks, "ticks");
         CompletableFuture<Process> launched = new CompletableFuture<>();
         background("start", () -> {
             try { launched.complete(starter.start()); }
             catch (IOException | RuntimeException failure) { launched.completeExceptionally(failure); }
         });
-        try { return launched.get(remaining(started, budget), TimeUnit.NANOSECONDS); }
+        try { return launched.get(remaining(started, budget, ticks), TimeUnit.NANOSECONDS); }
         catch (TimeoutException expired) {
             IOException failure = new IOException("Command timed out after " + timeout, expired);
             launched.thenAccept(process -> background("late-cleanup", () -> cleanup(process, new LinkedHashMap<>(), failure)));
@@ -65,6 +72,12 @@ public final class CommandProcess {
 
     static Output collect(Process process, Duration timeout, long started, long budget)
             throws IOException, InterruptedException {
+        return collect(process, timeout, started, budget, System::nanoTime);
+    }
+
+    static Output collect(Process process, Duration timeout, long started, long budget, LongSupplier ticks)
+            throws IOException, InterruptedException {
+        Objects.requireNonNull(ticks, "ticks");
         Map<Long, ProcessHandle> descendants = new LinkedHashMap<>();
         CompletableFuture<byte[]> out = new CompletableFuture<>();
         CompletableFuture<byte[]> err = new CompletableFuture<>();
@@ -78,17 +91,17 @@ public final class CommandProcess {
                 process.descendants().forEach(child -> descendants.put(child.pid(), child));
                 checkFailure(out);
                 checkFailure(err);
-                long left = remaining(started, budget);
+                long left = remaining(started, budget, ticks);
                 if (process.waitFor(Math.min(left, TimeUnit.MILLISECONDS.toNanos(10)), TimeUnit.NANOSECONDS)) break;
             }
             // Inspect both readers while waiting: a blocked stdout must not hide a stderr failure.
             while (!out.isDone() || !err.isDone()) {
                 checkFailure(out);
                 checkFailure(err);
-                TimeUnit.NANOSECONDS.sleep(Math.min(remaining(started, budget), TimeUnit.MILLISECONDS.toNanos(10)));
+                TimeUnit.NANOSECONDS.sleep(Math.min(remaining(started, budget, ticks), TimeUnit.MILLISECONDS.toNanos(10)));
             }
-            byte[] stdout = await(out, started, budget);
-            byte[] stderr = await(err, started, budget);
+            byte[] stdout = await(out, started, budget, ticks);
+            byte[] stderr = await(err, started, budget, ticks);
             complete = true;
             return new Output(process.exitValue(), stdout, new String(stderr, StandardCharsets.UTF_8));
         } catch (TimeoutException expired) {
@@ -157,9 +170,9 @@ public final class CommandProcess {
         catch (CompletionException failure) { return new IOException("Cannot read command output", failure.getCause()); }
     }
 
-    private static byte[] await(CompletableFuture<byte[]> result, long started, long budget)
+    private static byte[] await(CompletableFuture<byte[]> result, long started, long budget, LongSupplier ticks)
             throws IOException, InterruptedException, TimeoutException {
-        try { return result.get(remaining(started, budget), TimeUnit.NANOSECONDS); }
+        try { return result.get(remaining(started, budget, ticks), TimeUnit.NANOSECONDS); }
         catch (ExecutionException failure) { throw readFailure(failure); }
     }
 
@@ -167,8 +180,8 @@ public final class CommandProcess {
         return new IOException("Cannot read command output", failure.getCause());
     }
 
-    private static long remaining(long started, long budget) throws TimeoutException {
-        long left = budget - (System.nanoTime() - started);
+    private static long remaining(long started, long budget, LongSupplier ticks) throws TimeoutException {
+        long left = budget - (ticks.getAsLong() - started);
         if (left <= 0) throw new TimeoutException("Process and output deadline expired");
         return left;
     }
