@@ -27,6 +27,19 @@ final class ParserCostProbe {
             List<Trial> trials) { }
     private ParserCostProbe() { }
 
+    /** A disposable measurement JVM cannot retain compiler resources in the functional test owner. */
+    public static void main(String[] args) throws Exception {
+        if (args.length != 1) throw new IllegalArgumentException("PARSER-COST: expected one source root");
+        var report = measure(freeze(Path.of(args[0]).toRealPath()), 3);
+        System.out.println(new com.fasterxml.jackson.databind.ObjectMapper().writeValueAsString(report));
+    }
+
+    static String inventorySha256(List<Input> inputs) throws Exception {
+        var digest = MessageDigest.getInstance("SHA-256");
+        for (var input : inputs) update(digest, input.path(), input.text());
+        return HexFormat.of().formatHex(digest.digest());
+    }
+
     static List<Input> freeze(Path root) throws Exception {
         var inputs = new ArrayList<Input>();
         for (var file : AtfJavaSourceInventory.allSources(root))
