@@ -78,14 +78,6 @@ The [early-admission contract](../governance/ATF_TestChanges.md#early-source-con
 | P2 | Qualification metadata still reaches some diagnostics only after snapshot preparation. | Admit the active dossier's E2E inventory, catalog links and editorial limits through a cheap metadata check before the long collection. Preserve failed evidence and prove that a focused recheck cannot qualify a failed primary group; this is separate from source-control proof admission. |
 
 
-<a id="source-bound-proof-recovery"></a>
-
-## Source-bound proof recovery
-
-| Priority | Gap and owner | Closure criterion |
-|---|---|---|
-| P1 | [testChanges proof execution](../../atf-tests/src/test/java/atf/tests/execution/components/TestChangeProofExecution.java) reruns the complete declared control after one failed invocation; primary component-owner recovery does not yet cover this proof runner. | Checkpoint each static invocation and reuse original successful comparisons only for the same source, base, control ID, selection, compiled bytes and toolchain. Rerun failed or missing invocations; reject altered captures and foreign identities. Reconcile the complete final Extent population with the proof and preserve original failed attempts without weakening watchdogs. Measure planning/discovery, test bodies and publication separately. |
-
 <a id="framework-selection-boundaries"></a>
 
 ## Framework selection boundaries

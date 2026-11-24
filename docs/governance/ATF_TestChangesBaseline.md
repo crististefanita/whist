@@ -3396,3 +3396,25 @@ testChanges:
 ```
 
 </details>
+
+<details>
+<summary>Release identity for the qualified release-process improvement</summary>
+
+```yaml
+testChanges:
+  - id: RELEASE-0-25-0-IDENTITY
+    status: VERIFIED
+    base: d8f48628e19533ea466a5a9001d5072aac2b7987
+    expires: 2026-12-24
+    reason: Advance Android version metadata after qualifying static proof recovery, without changing the application runtime. Preserve the independent risk-based increment checks and source-bound release identity.
+    proof: "mvn -o -pl atf-tests -am -Dtest=ReleaseVersionComponentTest -Dsurefire.failIfNoSpecifiedTests=false test"
+    checks:
+      positive:
+        - atf.tests.governance.documentation.release.versioning.ReleaseVersionComponentTest#theApplicationUsesTheDeclaredPatchReleaseConvention
+      negative:
+        - atf.tests.governance.documentation.release.versioning.ReleaseVersionComponentTest#aChangeRiskCannotClaimAnIncorrectVersionIncrement
+    paths:
+      - whist-lab-app/app/build.gradle
+```
+
+</details>
