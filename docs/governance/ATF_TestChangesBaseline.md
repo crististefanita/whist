@@ -3604,9 +3604,11 @@ testChanges:
     base: a51c9ab5889ea1d5f167ad4f60de44a76dc3d93d
     expires: 2026-12-24
     reason: Qualify actual Android measurement API adaptation and transactional bounded-heap report publication. Keep pure value matrices in units and preserve native raster and opaque library-stage limits.
-    proof: "mvn -o -pl atf-tests -am -Dtest=WhistSurfaceAdapterComponentTest,ComponentPublicationComponentTest,ReportHeapComponentTest,AtfSourceQualityGovernanceTest,SourceLanguageGovernanceTest,SuiteOwnershipGovernanceTest -Dsurefire.failIfNoSpecifiedTests=false test"
+    proof: "mvn -o -pl atf-tests -am -Dtest=AndroidComponentReportContractTest,ReportProducerInventoryComponentTest,WhistSurfaceAdapterComponentTest,ComponentPublicationComponentTest,ReportHeapComponentTest,AtfSourceQualityGovernanceTest,SourceLanguageGovernanceTest,SuiteOwnershipGovernanceTest -Dsurefire.failIfNoSpecifiedTests=false test"
     checks:
       positive:
+        - atf.android.component.AndroidComponentReportContractTest#bothRenderersRetainOutcomesInvocationsAndOriginalComparisons
+        - atf.tests.governance.source.reporting.ReportProducerInventoryComponentTest#everyRendererBoundaryHasAnExplicitOwnerAndExistingQualification
         - atf.tests.governance.documentation.release.rag.nativeproof.WhistSurfaceAdapterComponentTest#nativeContentMeasurementsRejectClippingAndLateOwners
         - atf.tests.reporting.acceptance.ComponentPublicationComponentTest#verificationMustPassBeforeCanonicalReplacement
         - atf.tests.reporting.acceptance.heap.ReportHeapComponentTest#boundedSmallMediumAndLargeReportsKeepEveryComparisonUnderTheDeclaredHeap
@@ -3615,9 +3617,11 @@ testChanges:
         - atf.tests.governance.suites.SuiteOwnershipGovernanceTest#everyMavenExecutableHasOnePrimaryOwnerAndEveryFocusedGateIsDeclared
         - atf.tests.governance.suites.AtfCollectionOwnershipComponentTest#positiveInventoriesPartitionEveryAtfComponentWithoutChangingLeafNames
       negative:
+        - atf.tests.governance.source.reporting.ReportProducerInventoryComponentTest#missingDuplicateOrMisclassifiedProducersAndLostContractsAreRejected
         - atf.tests.reporting.acceptance.ComponentPublicationComponentTest#failedVerificationLimitsAndOriginalErrorsPreserveThePreviousReportAndJUnit
         - atf.tests.governance.suites.SuiteOwnershipGovernanceTest#newOmittedClassOverlapWrongLayerAndHiddenSelectionAreRejected
     paths:
+      - config/report-producers.json
       - atf-test-android/src/main/java/atf/android/evidence/component/AndroidComponentRun.java
       - atf-test-android/src/main/java/atf/android/evidence/component/publication/ComponentReportPublication.java
       - atf-tests/src/test/java/atf/tests/reporting/acceptance/ComponentPublicationComponentTest.java
