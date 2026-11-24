@@ -108,3 +108,13 @@ Evaluatorul aplică acum aceeași regulă de admitere a raportării înainte de 
 - Modul XML-only, valorile necunoscute, declarația modernă absentă sau formatele amestecate blochează verdictul. JUnit XML rămâne o dovadă temporară, nu raportul canonic.
 
 Politica se află în `config/release-platform-rag-policy.json`, admiterea este aplicată de `atf-tests/tools/evaluate-release-rag.mjs`, iar testele de componentă aparțin claselor `ReleaseRagProvenanceComponentTest` și `ReleaseRagPlatformGovernanceTest`.
+
+## Compatibilitatea pointerului compilării
+
+Runnerul componentelor emite un pointer schema 2 cu context calificat al surselor și catalogului, dar cititorul compilării împrumutate acceptă momentan numai schema 1. Refuzul este sigur, însă provoacă recompilare evitabilă chiar când există o recipisă validă a compilării.
+
+- [ ] RAG-30: admiteți pointerul curent printr-un contract comun; păstrați contextul, identitatea compilării, classpath-ul, hash-urile ieșirilor și proprietatea exclusivă înainte de reutilizare.
+- [ ] Acoperiți explicit schema 2 validă și intrarea veche; refuzați contextul lipsă ori străin, octeții modificați și classpath-ul incomplet prin componente cu mock.
+- [ ] Înregistrați motivul refuzului reutilizării în măsurarea etapelor. Demonstrați reutilizarea pe intrări de compilare neschimbate și reconstruirea la schimbare, fără relaxarea admiterii snapshot-ului.
+
+[Producătorul pointerului](../../scripts/run-component-suites.ps1) · [Cititorul compilării împrumutate](../../scripts/AtfComponentMavenReuse.ps1)
