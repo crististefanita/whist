@@ -64,16 +64,3 @@ Portable models, geometry, text roles and deterministic effects belong to `card-
 | ID | Priority | Remaining boundary | Closure criterion |
 |---|---|---|---|
 | UI-04 | P1 | Physical renderer observations | Connect actual native fact-row, header, trump and card measurements to the neutral observation port. Reject clipping and late-owner repaint; equal portable plans cannot qualify painted fonts. Keep existing controlled DOM checks. |
-| TEST-04 | P1 | Paired platform sanity orchestration | Reuse one scenario identity and semantic command plan through APK/Web drivers, and apply the declared capture budget to the APK publisher. Web admission and publication already enforce two hands/four normal captures; native hand admission is bounded separately. |
-
-## Minimal E2E and suite delivery
-
-<a id="ui-minimal-e2e-plan"></a>
-
-- Keep resolution, text, legal-hand, actor and winner combinations in screenshot-free component suites. Unit source sets publish no Extent; component suites preserve preconditions and evaluated assertions.
-- E2E verifies essential window transitions with one readable viewport, at most two hands and few checkpoint-owned inline captures. Select legal short hands or a component-validated near-final checkpoint; no injected finished screen.
-- Preserve the first failure and its original cause. Reporting remains the renderer of captured results; this work changes producer inputs and suite organization.
-- Keep current suite HTML and relative README navigation in `release/WEB/`. Original reused evidence keeps its source, artifact identity and outcome; references do not become current native acceptance.
-- Package and distribute only after Whist acceptance. UIX01–UIX06 retain their own native and consumer closing conditions; do not infer them from source compilation.
-
-[Component ownership](../../whist-lab-app/card-table-core/README.md) · [Shared continuity](../testing/ATF_TableContinuity.md) · [Current evidence](../../release/WEB/README.md)

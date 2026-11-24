@@ -4,7 +4,7 @@
 
 [Adapter documentation](../../atf-ui-browser/README.md) explains the APK, shared-package and Pages paths. This register tracks the remaining comparison on the same Android device.
 
-[The shared three-module plan](ATF_CardUi_Extraction.md#ui-three-module-plan) owns extraction and the main display matrix. E2E selects essential navigation and transitions with at most two hands per game; `TEST-04` remains open for mechanical budget enforcement.
+[The shared three-module plan](ATF_CardUi_Extraction.md#ui-three-module-plan) owns extraction and the main display matrix. The [paired sanity contract](../testing/ATF_TableContinuity.md#paired-sanity-roles) governs essential transitions, ordered roles and capture budgets; same-device rendering acceptance remains separate.
 
 ## Qualification on the same device
 

@@ -40,6 +40,6 @@ Use [Isolated input of the module](../../README.md#verification-without-device) 
 
 - **Audit:** [AndroidComponentAudit](java/atf/android/component/AndroidComponentAudit.java) binds the invocation to Test Kit. [Adapter contracts](java/atf/android/component/AndroidComponentReportContractTest.java) verify the publication and refusals; expected fixture failures remain distinct from application results.
 
-- **Result:** JUnit identifies execution, and audited HTML keeps the input, expected/actual and the verdict. [Aggregate criterion](../../../docs/feedback/ATF_Reporting.md#rpt-android-component-html---captured-comparisons-not-just-junit-xml) remains distinct from JUnit passing.
+- **Result:** JUnit identifies execution, and audited HTML keeps the input, expected/actual and the verdict. [Producer qualification](../../../docs/reporting/ATF_Audit.md#governed-producer-inventory) remains distinct from JUnit passing.
 
 [Module Android](../../README.md) · [Common strategy](../../../docs/testing/README.md) · [Audit of reports](../../../docs/reporting/ATF_Audit.md)

@@ -20,19 +20,6 @@ The consumer holds the game records, selection, oracle and external indexation. 
 
 Incomplete publication keeps diagnosis and unique material. The historical play keeps the original identity, times and verdict. [Lifetime retention governance](../../atf-tests/src/test/java/atf/tests/governance/documentation/release/ReleaseEvidenceRetentionGovernanceTest.java)
 
-## RPT-ANDROID-COMPONENT-HTML - captured comparisons, not just JUnit XML
-
-**P1 · Android adaptor responsible: qualification of each producer and handoff.** [Families Maven](../testing/ATF_DisplayComponents.md#families-using-the-same-audit) and [bridge Gradle](../testing/ATF_GradleComponents.md) Gradle keeps separate entries for application, engine, graphic library and raster; catalogue requires classification and participation of classes in the audit. Migrating of the mechanism does not recalibrate historical executions and unexecuted selections.
-
-[Display suite](../../atf-test-android/src/test/java/atf/android/suites/AndroidDisplayComponentSuite.java), inclusive [FrameFillAuditComponentTest](../../atf-test-android/src/test/java/atf/android/e2e/display/component/FrameFillAuditComponentTest.java), The families without adaptor keep the population and JUnit verdict; the unfathomable values of a past execution are not reconstructed retrospectively.
-
-- [ ] Identify by inventory producers who may still lose a claim or comparison to publication. The sample injects a component without an adapter, a lost parametric reclection and a FAIL, ERROR and SKIP result. Diagnosis indicates exact invoicing and difference between JUnit and HTML. [Verifier Gradle](../testing/ATF_GradleComponents.md)
-- [ ] Review the meaning of the migration rows: Boolean or exceptional comparisons have declarative messages when values do not explain the invariant. The method name or Java line does not substitute the meaning of each comparison in HTML; [reading contract](../reporting/ATF_Audit.md#reading-a-report) holds the rule.
-
-**Closure: ** a past and a controlled negative comparison are exclusively audible from HTML, with the last value and the right owner; a case without captured comparisons is explicitly unqualified.
-
-[Publication of the host](../../atf-test-android/src/main/java/atf/android/evidence/component/AndroidComponentRun.java) is postponed until the aim is closed and keeps the original durations separately. The cost of memory at large selections and the integration of parallel Jupiter require their own qualification prior to enlargement; the historic pilot does not automatically close these borders.
-
 ## Early validation of checkpoint
 
 | Priority | Lacquer and source | Level and criterion of closure |
@@ -81,14 +68,3 @@ Measurement justifies investigating the reduction of redundancy; it does not pro
 - [Android contract](../reporting/ATF_Android.md) holds the association of action-observation-comparison and the distinction between the functional result and publication.
 
 [Android contract](../reporting/ATF_Android.md) · [Publication audit](../reporting/ATF_Audit.md) · [Retention](../learning/ATF_Retention.md)
-
-## Remaining producer qualification
-
-The [checkpoint contract](../reporting/ATF_Android.md#checkpoint-transaction) now preserves actions and the original cause across rejected inputs, uncommitted writes, retry and post-commit timing failure. These boundaries belong to the Android journal and publisher; other producers and native-observation acceptance retain their own closing criteria.
-
-| Remaining area | Closing criterion |
-|---|---|
-| HTML structure | Standard `Overview` and English narration; application evidence keeps its original language. |
-| Frames and ownership | Case-owned inline PNGs; explicit refusal of missing or misassigned frames. |
-| Illustrated flow | Ordered before/after checkpoints, explicit comparisons and a verifiable last step in standalone HTML; refusal of incomplete or contradictory data. |
-| Acceptance boundary | Browser-publisher qualification does not qualify other producers or historical releases; the [publication contract](../reporting/ATF_Audit.md#qualification-of-a-producer) preserves these limits. |
