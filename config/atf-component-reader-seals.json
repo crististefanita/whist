@@ -250,7 +250,7 @@
     "atf-tests/src/test/java/atf/tests/governance/documentation/release/rag/nativeproof/SharedPresentationComponentTest.java": "20f13731e91c90dc938ca4127253237b5ba9c55c7107083d226c7309962eac50",
     "atf-tests/src/test/java/atf/tests/governance/documentation/release/rag/nativeproof/WhistBindingComponentTest.java": "1989a52df319920ca9e217c44d34fd76933512e0209c5e63a6e28c8c1423c3d6",
     "atf-tests/src/test/java/atf/tests/governance/documentation/release/rag/nativeproof/WhistSurfaceAdapterComponentTest.java": "1edb362f805b9240c40ac63a6596731ffaccbbdbbb03e2fa341e7ba94bea6279",
-    "atf-tests/src/test/java/atf/tests/governance/documentation/release/rag/scope/AndroidReleasePreflightComponentTest.java": "9cf68982181f8714f1bb39d6575cd52dca64a116c7af3bd2f0a19d6a54f12414",
+    "atf-tests/src/test/java/atf/tests/governance/documentation/release/rag/scope/AndroidReleasePreflightComponentTest.java": "7555f895e575d3bbe84e272b122eb63beed8584271f5f31abc55b0c532375578",
     "atf-tests/src/test/java/atf/tests/governance/documentation/release/rag/scope/AndroidUserOwnershipComponentTest.java": "974c4f42a5467582eb4fd007afb2629b17343eac5861a955c6200ee13b26e7ec",
     "atf-tests/src/test/java/atf/tests/governance/documentation/release/rag/scope/ComponentEvidencePortabilityComponentTest.java": "589c6de43f0f0d4ce79a1ad95c65ddd168772961777893bdc4498a55a35c3a47",
     "atf-tests/src/test/java/atf/tests/governance/documentation/release/rag/scope/ComponentEvidenceScopeComponentTest.java": "bfb138ee1fe52b8ff5d11194e4f17cbe89e98b5c8a07c3d3bf0b863dd1e58c42",

@@ -17,8 +17,6 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.api.io.TempDir;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.CsvSource;
 
 @AtfComponentTest
 @ExtendWith(GameReportAudit.class)
@@ -93,16 +91,22 @@ class AndroidReleasePreflightComponentTest {
         if (process.exitValue() != 0) throw new IllegalStateException(Files.readString(output));
     }
 
-    @ParameterizedTest
-    @CsvSource({
-        "refused, ANDROID_PREFLIGHT_ADB, 1",
-        "offline, ANDROID_PREFLIGHT_ADB, 2",
-        "boot, ANDROID_PREFLIGHT_BOOT, 3",
-        "api, ANDROID_PREFLIGHT_PROFILE, 4",
-        "display, ANDROID_PREFLIGHT_PROFILE, 6",
-        "malformed, ANDROID_PREFLIGHT_PROFILE, 5"
-    })
-    void theNativeLauncherBlocksBeforeStagingOrMaven(String mode, String code, int commands) throws Exception {
+    @Test void theNativeLauncherBlocksBeforeStagingOrMaven(ComponentInputs inputs) throws Exception {
+        inputs.add("Precondition", "Six isolated compiled-ADB outcomes through the actual responsive launcher; each must stop before source staging or Maven and release its owned lease.");
+        String[][] cases = {{"refused", "ANDROID_PREFLIGHT_ADB", "1"}, {"offline", "ANDROID_PREFLIGHT_ADB", "2"},
+                {"boot", "ANDROID_PREFLIGHT_BOOT", "3"}, {"api", "ANDROID_PREFLIGHT_PROFILE", "4"},
+                {"display", "ANDROID_PREFLIGHT_PROFILE", "6"}, {"malformed", "ANDROID_PREFLIGHT_PROFILE", "5"}};
+        Path parent = scratch;
+        try {
+            for (String[] row : cases) {
+                scratch = Files.createDirectory(parent.resolve(row[0]));
+                inputs.add("Expected rejection", String.join("; ", row));
+                assertNativeLauncherBlocked(row[0], row[1], Integer.parseInt(row[2]));
+            }
+        } finally { scratch = parent; }
+    }
+
+    private void assertNativeLauncherBlocked(String mode, String code, int commands) throws Exception {
         Path output = scratch.resolve("run");
         Path lease = scratch.resolve("lease.json");
         Path maven = scratch.resolve("maven-probe.ps1");
@@ -122,9 +126,19 @@ class AndroidReleasePreflightComponentTest {
         AuditedAssertions.assertEquals(FULL_PREFLIGHT.subList(0, commands), calls());
     }
 
-    @ParameterizedTest
-    @CsvSource({"override, 1080x1920@420", "physical, 1080x1920@440"})
-    void theSignedReleaseEntryRecordsTheEffectiveProfile(String mode, String profile) throws Exception {
+    @Test void theSignedReleaseEntryRecordsTheEffectiveProfile(ComponentInputs inputs) throws Exception {
+        inputs.add("Precondition", "Actual signed-release preflight with override and physical-only display responses; both must preserve the effective profile, route, lease and complete command order.");
+        Path parent = scratch;
+        try {
+            for (String[] row : new String[][]{{"override", "1080x1920@420"}, {"physical", "1080x1920@440"}}) {
+                scratch = Files.createDirectory(parent.resolve(row[0]));
+                inputs.add("Expected effective profile", row[0] + ": " + row[1]);
+                assertEffectiveProfile(row[0], row[1]);
+            }
+        } finally { scratch = parent; }
+    }
+
+    private void assertEffectiveProfile(String mode, String profile) throws Exception {
         Path lease = activeLease(SERIAL);
         Path receipt = scratch.resolve("preflight.json");
         Run run = check(mode, lease, receipt, profile, "10");
