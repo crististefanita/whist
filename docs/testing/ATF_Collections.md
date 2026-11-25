@@ -361,4 +361,8 @@ The [resource profile](../../config/launcher-fixture-profile.json) declares the 
 | Component | Real process lifecycle, interrupted output retention and actual compiler/proof admission, including every original rejection contract. Comparisons remain in Extent without screenshots. |
 | Measurement | Record fresh preparation, reused-compiler and resumed-selection observations separately. A process-start measurement is not a cold Maven compilation benchmark. |
 
+- Launcher-ordering components dispatch the prepared canonical CLI classes through an explicitly controlled compiler port. They retain real entry points, validator requests, exit codes and diagnostics; source-proof and editorial neighbours are qualified separately.
+
+- The copied tool host includes its pinned runtime configuration. This fixture boundary never changes production preflight or qualifies standalone compilation.
+
 The compiler-input matrix has one unit owner. Real compiler admission has one component owner; removing a duplicate launcher call does not cache a verdict or remove its rejection cases. Compare actual child counts and phase durations under the declared profile; keep results in the external audit rather than historical timing claims in this guide.
