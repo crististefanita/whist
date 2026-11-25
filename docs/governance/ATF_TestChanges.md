@@ -167,18 +167,18 @@ La eșec sau schimbarea sursei, inspectați jurnalele fiecărui control și dosa
 | Selecția | Rutarea pe domenii, gruparea probelor, eșecurile și modificarea sursei/planului | Execuția jocului sau a rendererului nativ |
 
 ```mermaid
-flowchart TD
-    DIFF["Diff Git real"] --> OWNER["Proprietarii exacți ai căilor revizuite"]
-    OWNER --> VALIDATOR["Validarea inventarului"]
-    OWNER --> UI["Suprafața nativă"]
-    OWNER --> REPORT["Raportarea"]
-    OWNER --> CATALOG["Catalogul și selecția"]
-    VALIDATOR --> UNION["Reuniunea controalelor necesare"]
-    UI --> UNION
-    REPORT --> UNION
-    CATALOG --> UNION
-    UNION --> COMPILE["O singură compilare sigilată"]
-    COMPILE --> PROOFS["Extent și probă originale separate pentru fiecare control"]
+flowchart LR
+    DIFF["Diff Git real"] -->|identifică| OWNER["Proprietarii exacți ai căilor revizuite"]
+    OWNER -->|atribuie| VALIDATOR["Validarea inventarului"]
+    OWNER -->|atribuie| UI["Suprafața nativă"]
+    OWNER -->|atribuie| REPORT["Raportarea"]
+    OWNER -->|atribuie| CATALOG["Catalogul și selecția"]
+    VALIDATOR -->|contribuie| UNION["Reuniunea controalelor necesare"]
+    UI -->|contribuie| UNION
+    REPORT -->|contribuie| UNION
+    CATALOG -->|contribuie| UNION
+    UNION -->|folosește| COMPILE["O singură compilare sigilată"]
+    COMPILE -->|produce| PROOFS["Extent și probă originale separate pentru fiecare control"]
 ```
 
 <details>
