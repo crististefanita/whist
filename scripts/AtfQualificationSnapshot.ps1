@@ -1,5 +1,44 @@
 #requires -Version 7.0
 . (Join-Path $PSScriptRoot 'AtfFileDigest.ps1')
+. (Join-Path $PSScriptRoot 'AtfStandaloneJava.ps1')
+
+function Assert-AtfMetadataEditorial([string]$SourceRoot, [string]$TempRoot, [string]$JavaHome,
+    [string]$MavenCache, [string]$Receipt) {
+    $tools = Split-Path -Parent $PSScriptRoot
+    $classpath = Get-AtfJvmCompilerClasspath -ToolRoot $tools -MavenCache $MavenCache -Yaml
+    $exit = 1
+    $diagnostics = @(Invoke-AtfJvmCli -ToolRoot $tools -ProjectRoot $SourceRoot -ScratchRoot $TempRoot `
+        -JavaHome $JavaHome -ClassPath $classpath -MainClass 'atf.tests.documentation.cli.DocumentationGovernanceCli' `
+        -Arguments @('--file','release/README.md','--json') -Result ([ref]$exit) `
+        -AdditionalSourcePaths @((Join-Path $tools 'atf-test-android/src/main/java')) 2>&1)
+    [IO.File]::WriteAllText($Receipt,($diagnostics -join [Environment]::NewLine))
+    if ($exit -ne 0) { throw "RELEASE-METADATA-EDITORIAL: $Receipt" }
+    $result = ($diagnostics -join [Environment]::NewLine) | ConvertFrom-Json
+    if ($result.status -cne 'PASS' -or $result.schemaVersion -ne 1 -or $result.diagnostics.Count -ne 0) {
+        throw "RELEASE-METADATA-EDITORIAL-RECEIPT: $Receipt"
+    }
+}
+
+function Assert-AtfQualificationMetadata([string]$SourceRoot, [string]$RunRoot, [string]$TempRoot,
+    [string]$JavaHome, [string]$MavenCache) {
+    $metadata = @( & node (Join-Path $PSScriptRoot '../atf-tests/tools/release-metadata-preflight.mjs') $SourceRoot 2>&1)
+    $exit = $LASTEXITCODE
+    [IO.File]::WriteAllText((Join-Path $RunRoot 'release-metadata.json'),($metadata -join [Environment]::NewLine))
+    if ($exit -ne 0) { throw "RELEASE-METADATA: $($metadata -join ' ')" }
+    $receipt = ($metadata -join [Environment]::NewLine) | ConvertFrom-Json
+    if ($receipt.status -cne 'PASS' -or $receipt.kind -cne 'ATF_RELEASE_METADATA_PREFLIGHT' -or $receipt.schemaVersion -ne 1) {
+        throw 'RELEASE-METADATA-RECEIPT'
+    }
+    Assert-AtfMetadataEditorial $SourceRoot $TempRoot $JavaHome $MavenCache (Join-Path $RunRoot 'release-editorial.json')
+}
+
+function Assert-AtfMetadataSnapshot([string]$Stage, [string]$RunRoot) {
+    $observed = @(& node (Join-Path $PSScriptRoot '../atf-tests/tools/release-metadata-preflight.mjs') `
+        $Stage '--against' (Join-Path $RunRoot 'release-metadata.json') 2>&1)
+    $exit = $LASTEXITCODE
+    [IO.File]::WriteAllText((Join-Path $RunRoot 'release-metadata-recheck.json'),($observed -join [Environment]::NewLine))
+    if ($exit -ne 0) { throw "RELEASE-METADATA-RECHECK: $($observed -join ' ')" }
+}
 
 function Get-AtfQualificationTempRoot([string]$SourceRoot) {
     $checker = Join-Path $PSScriptRoot '../atf-tests/tools/qualification-temp-root.mjs'

@@ -247,6 +247,16 @@ The component launcher composes these checks. A valid compilation survives an in
 
 ### Snapshot and preflight before Maven
 
+<a id="early-release-metadata"></a>
+
+#### Early release metadata
+
+After source-control admission, both qualification entry points check metadata before source inventory, copying or Maven. [Metadata inspection](../../atf-tests/tools/release-metadata-preflight.mjs) verifies catalog identities and guide destinations, the active E2E decision, canonical flow inventory, paths, counts and execution-profile shape without opening APKs or report HTML.
+
+- The existing documentation CLI applies the same editorial rules as governance to `release/README.md`; original diagnostics are retained in `release-editorial.json`. Full document and publication-note governance remains mandatory later.
+- `release-metadata.json` binds JSON inputs and release-index bytes. A staged recheck rejects changed metadata before Maven, including a valid but different release index.
+- Metadata `PASS` is explicitly not qualification. Original component results, report hashes, payload bytes and final RAG admission remain authoritative; a focused diagnostic cannot replace a failed primary group.
+
 The [component launcher](../../scripts/run-component-suites.ps1) and [governance launcher](../../scripts/run-atf-governance.ps1) use the [same snapshot preparation](../../scripts/AtfQualificationSnapshot.ps1). Maven compiles and checks the same temporary copy. Published-evidence checks read historical Git objects at the specified commit rather than that checkout's live files.
 
 [Temporary-directory preflight](../../atf-tests/tools/qualification-temp-root.mjs) runs before creating the run directory, copying sources or invoking Maven.

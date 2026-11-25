@@ -37,11 +37,17 @@ function Assert-GovernanceTestChangeAdmission([string]$Receipt) {
 Invoke-AtfQualificationPhase $timing 'governance.test-change-admission' {
     Assert-GovernanceTestChangeAdmission 'test-change-admission.json'
 }
+Invoke-AtfQualificationPhase $timing 'governance.metadata-preflight' {
+    Assert-AtfQualificationMetadata $sourceRoot $RunRoot $tempRoot $JavaHome $MavenCache
+}
 $work = Join-Path $tempRoot ('atf-quality-' + [guid]::NewGuid().ToString('N'))
 $stage = Join-Path $work 'project'
 New-Item -ItemType Directory -Path $stage | Out-Null
 $snapshot = Invoke-AtfQualificationPhase $timing 'governance.snapshot-preflight' {
     New-AtfQualificationSnapshot $sourceRoot $stage $RunRoot $PinnedSourceInputs $timing
+}
+Invoke-AtfQualificationPhase $timing 'governance.metadata-recheck' {
+    Assert-AtfMetadataSnapshot $stage $RunRoot
 }
 Invoke-AtfQualificationPhase $timing 'governance.test-change-recheck' {
     Assert-GovernanceTestChangeAdmission 'test-change-admission-recheck.json'

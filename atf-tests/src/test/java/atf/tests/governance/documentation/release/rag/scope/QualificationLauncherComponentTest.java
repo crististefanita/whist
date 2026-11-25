@@ -1,6 +1,7 @@
 package atf.tests.governance.documentation.release.rag.scope;
 
 import atf.android.process.CommandProcess;
+import atf.android.evidence.component.ComponentInputs;
 import atf.testkit.AtfComponentTest;
 import atf.testkit.assertions.AuditedAssertions;
 import atf.tests.governance.support.GovernanceProject;
@@ -38,6 +39,44 @@ class QualificationLauncherComponentTest {
     private Path proofRoot;
     private Path launcherScripts;
     private boolean realAdmission;
+
+    @Test @org.junit.jupiter.api.extension.ExtendWith(atf.tests.reporting.GameReportAudit.class)
+    void metadataDefectsStopBothLaunchersBeforeCopyCacheOrMaven(ComponentInputs inputs) throws Exception {
+        inputs.add("Precondition", "Both actual entry points, real Git proof admission and canonical editorial CLI. Controlled release data has no application execution; Maven is an unentered local probe.");
+        realAdmission = true;
+        Path source = fixture();
+        proofRoot = scratch.resolve("metadata proof inputs");
+        TestChangeAdmissionFixture.verifiedProof(source, reviewBase, proofRoot,
+                java.time.LocalDate.now(java.time.ZoneOffset.UTC));
+        Path manifest = source.resolve(RELEASE + "release-validation.json");
+        String original = Files.readString(manifest);
+        Path guide = source.resolve("release/README.md");
+        String originalGuide = Files.readString(guide);
+        for (String defect : List.of("inventory", "editorial")) {
+            Files.writeString(manifest, original);
+            Files.writeString(guide, originalGuide);
+            if (defect.equals("inventory")) {
+                var changed = (com.fasterxml.jackson.databind.node.ObjectNode) JSON.readTree(original);
+                changed.withObject("/qualification").withObject("/e2eGroups").putObject("unselected-flow");
+                JSON.writeValue(manifest.toFile(), changed);
+            } else Files.writeString(guide, originalGuide.replace("## Overview", "## Pe scurt"));
+            for (String runner : List.of(GOVERNANCE, COMPONENTS)) {
+                Path output = scratch.resolve(defect + "-" + runner);
+                var run = launch(runner, source, output, "", null);
+                inputs.add("Observed " + runner + " / " + defect, run.log());
+                AuditedAssertions.assertEquals(1, run.exit(), run.log());
+                AuditedAssertions.assertTrue(run.log().contains(defect.equals("inventory") ? "RELEASE-METADATA-E2E" : "RELEASE-METADATA-EDITORIAL"), run.log());
+                AuditedAssertions.assertFalse(Files.exists(output.resolve("source-inputs.json")), "Metadata rejection precedes source inventory and copying");
+                AuditedAssertions.assertFalse(Files.exists(output.resolve("copy-cache.log")) || Files.exists(output.resolve("copy-maven-cache.log")), "No dependency cache is prepared");
+                AuditedAssertions.assertFalse(Files.exists(scratch.resolve("maven.entered")), "A metadata diagnostic cannot run a primary suite");
+                if (defect.equals("editorial")) {
+                    String diagnostic = Files.readString(output.resolve("release-editorial.json"));
+                    inputs.add("Canonical editorial diagnostic", diagnostic);
+                    AuditedAssertions.assertTrue(diagnostic.contains("DOC-"), "The canonical editorial diagnostics are retained");
+                }
+            }
+        }
+    }
 
     @Test void validTestChangeProofPrecedesSourceCopyAndMavenInBothLaunchers() throws Exception {
         realAdmission = true;
@@ -304,7 +343,7 @@ class QualificationLauncherComponentTest {
 
     private Path fixture() throws Exception {
         Path source = Files.createDirectory(scratch.resolve("surse fixate"));
-        write(source, "config/atf-governance-policy.json", "{\"mavenModules\":[],\"additionalSourceRoots\":[]}");
+        write(source, "config/atf-governance-policy.json", "{\"documentationLanguage\":\"en\",\"mavenModules\":[],\"additionalSourceRoots\":[]}");
         write(source, "pom.xml", "<project/>");
         Path real = GovernanceProject.locateProjectRoot();
         Files.copy(real.resolve("config/release-platform-rag-policy.json"), source.resolve("config/release-platform-rag-policy.json"));
@@ -322,12 +361,17 @@ class QualificationLauncherComponentTest {
             }
         }
         write(source, "release/index.json", "{\"schemaVersion\":2,\"currentVersion\":\"" + VERSION + "\",\"versions\":[\"" + VERSION + "\"]}");
+        for (String guide : List.of("release/README.md", RELEASE + "README.md", RELEASE + "reports/README.md"))
+            write(source, guide, "# Release guide\n\n## Overview\n\nControlled metadata fixture.\n");
         Path apk = write(source, RELEASE + APK, "apk fixture");
         Path checksum = write(source, RELEASE + APK + ".sha256", hash(apk) + "  " + APK + "\n");
         var manifest = JSON.createObjectNode();
         manifest.putObject("release").put("artifactKind", "apk").put("versionName", VERSION)
                 .put("apkName", APK).put("apkRelativePath", APK).put("apkBytes", Files.size(apk)).put("apkSha256", hash(apk));
         var files = manifest.putObject("integrity").putArray("files");
+        var qualification = manifest.putObject("qualification");
+        qualification.putObject("e2e").put("status", "NOT_RUN").put("rationale", "Controlled fixture does not execute application flows.");
+        qualification.putObject("e2eGroups");
         for (Path file : List.of(apk, checksum)) files.addObject()
                 .put("path", file.getFileName().toString()).put("bytes", Files.size(file)).put("sha256", hash(file));
         JSON.writeValue(source.resolve(RELEASE + "release-validation.json").toFile(), manifest);

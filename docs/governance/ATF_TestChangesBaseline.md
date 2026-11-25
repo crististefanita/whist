@@ -7,6 +7,75 @@ This register defines reviewed controls, their Git base and exact paths. The [te
 ## Verified controls
 
 <details>
+<summary>Independent Android command dispatch and early release metadata admission</summary>
+
+```yaml
+testChanges:
+  - id: ANDROID-ACTION-DISPATCH
+    status: VERIFIED
+    base: af2b14b9a5d4861214e192fa7b6d9c780e5e7066
+    expires: 2026-12-25
+    reason: Separate resolved commands from hierarchy selection and caller-owned phases. Preserve command order, durations, retries and cancellation while retaining original command failures if reporting also fails.
+    proof: "mvn -o -pl atf-test-android -am -Dtest=AndroidUiActionsComponentTest,AndroidUiDriverActionTraceTest,AndroidUiDriverComponentTest -Dsurefire.failIfNoSpecifiedTests=false test"
+    checks:
+      positive:
+        - atf.android.e2e.driver.actions.AndroidUiActionsComponentTest#facadePreservesCommandOrderSequenceAndDispatchOnlyDurations
+        - atf.android.e2e.driver.actions.AndroidUiActionsComponentTest#callerOwnedSetupAndBodyKeepTheirActionsAtTheOriginalCheckpoint
+        - atf.android.e2e.driver.AndroidUiDriverActionTraceTest#recordsTheResolvedAndroidTapAndMeasuredDispatchWithoutInventingTheResult
+        - atf.android.e2e.driver.AndroidUiDriverComponentTest#nextHandIsRevealedInsideTheScoreViewport
+        - atf.android.e2e.driver.AndroidUiDriverComponentTest#lateAchievementNoticeIsDismissedBeforeTheNextScroll
+      negative:
+        - atf.android.e2e.driver.actions.AndroidUiActionsComponentTest#commandTimeoutAndCancellationKeepOriginalCauseEvenWhenFailureReportingBreaks
+        - atf.android.e2e.driver.actions.AndroidUiActionsComponentTest#aSuccessPublicationFailureCannotInventASecondFailedCommand
+    paths:
+      - atf-test-android/src/test/java/atf/android/e2e/driver/AndroidUiDriver.java
+      - atf-test-android/src/test/java/atf/android/e2e/driver/actions/AndroidUiActions.java
+      - atf-test-android/src/test/java/atf/android/e2e/driver/actions/AndroidUiActionsComponentTest.java
+  - id: RELEASE-METADATA-ADMISSION
+    status: VERIFIED
+    base: af2b14b9a5d4861214e192fa7b6d9c780e5e7066
+    expires: 2026-12-25
+    reason: Admit catalog links, active E2E declarations and canonical release-index editorial rules before staging. Bind the staged recheck to original metadata bytes and retain source-proof precedence and primary-group authority.
+    proof: "mvn -o -pl atf-tests -am -Dtest=ReleaseMetadataComponentTest,QualificationLauncherComponentTest -Dsurefire.failIfNoSpecifiedTests=false test"
+    checks:
+      positive:
+        - atf.tests.governance.documentation.release.rag.scope.metadata.ReleaseMetadataComponentTest#metadataIsIndependentFromArtifactQualification
+        - atf.tests.governance.documentation.release.rag.scope.QualificationLauncherComponentTest#validTestChangeProofPrecedesSourceCopyAndMavenInBothLaunchers
+      negative:
+        - atf.tests.governance.documentation.release.rag.scope.QualificationLauncherComponentTest#metadataDefectsStopBothLaunchersBeforeCopyCacheOrMaven
+        - atf.tests.governance.documentation.release.rag.scope.QualificationLauncherComponentTest#invalidTestChangeProofStopsBothLaunchersBeforeCopyOrMaven
+    paths:
+      - scripts/AtfQualificationSnapshot.ps1
+      - scripts/run-component-suites.ps1
+      - scripts/run-atf-governance.ps1
+      - atf-tests/tools/release-metadata-preflight.mjs
+      - atf-tests/tools/release-metadata-preflight.test.mjs
+      - atf-tests/src/test/java/atf/tests/governance/documentation/release/rag/scope/metadata/ReleaseMetadataComponentTest.java
+      - atf-tests/src/test/java/atf/tests/governance/documentation/release/rag/scope/QualificationLauncherComponentTest.java
+      - atf-tests/src/test/java/atf/tests/governance/source/changes/TestChangeAdmissionFixture.java
+  - id: RAG-DOMAIN-CATALOG-ACTION-METADATA
+    status: VERIFIED
+    base: af2b14b9a5d4861214e192fa7b6d9c780e5e7066
+    expires: 2026-12-25
+    reason: Keep the metadata component in one primary collection and bind the regenerated dependency and reader inventories to unchanged source and suite ownership contracts.
+    proof: "mvn -o -pl atf-tests -am -Dtest=AtfSourceQualityGovernanceTest,SuiteOwnershipGovernanceTest,AtfCollectionOwnershipComponentTest -Dsurefire.failIfNoSpecifiedTests=false test"
+    checks:
+      positive:
+        - atf.tests.governance.source.AtfSourceQualityGovernanceTest#sourcesRespectPackagePathsImportsAndProductionBoundaries
+        - atf.tests.governance.suites.SuiteOwnershipGovernanceTest#everyMavenExecutableHasOnePrimaryOwnerAndEveryFocusedGateIsDeclared
+        - atf.tests.governance.suites.AtfCollectionOwnershipComponentTest#positiveInventoriesPartitionEveryAtfComponentWithoutChangingLeafNames
+      negative:
+        - atf.tests.governance.suites.SuiteOwnershipGovernanceTest#newOmittedClassOverlapWrongLayerAndHiddenSelectionAreRejected
+    paths:
+      - atf-tests/src/test/java/atf/tests/suites/components/AtfOrchestrationComponentSuite.java
+      - config/atf-component-collections.json
+      - config/atf-component-dependencies.json
+      - config/atf-component-reader-seals.json
+```
+
+</details>
+
+<details>
 <summary>Bounded schema evaluation and independent ADB process readiness</summary>
 
 ```yaml

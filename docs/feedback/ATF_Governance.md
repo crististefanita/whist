@@ -76,9 +76,7 @@ LangGraph offers explicit nodes, shared state and checkpoint boundaries, but it 
 
 The [early-admission contract](../governance/ATF_TestChanges.md#early-source-control-admission) owns canonical proof validation, generation-plan admission and rechecking after staging. Original proof reports, exact Git identities and final governance remain mandatory; selection or compiler reuse does not bypass admission.
 
-| Priority | Separate remaining gap | Closure criterion |
-|---|---|---|
-| P2 | Qualification metadata still reaches some diagnostics only after snapshot preparation. | Admit the active dossier's E2E inventory, catalog links and editorial limits through a cheap metadata check before the long collection. Preserve failed evidence and prove that a focused recheck cannot qualify a failed primary group; this is separate from source-control proof admission. |
+The [early metadata contract](../testing/ATF_ReleaseQualification.md#early-release-metadata) checks the active E2E declarations, catalog destinations and release-index editorial rules before inventory, copying or Maven. Its source-bound snapshot recheck remains separate from artifact bytes, primary-suite results and full publication qualification.
 
 
 <a id="framework-selection-boundaries"></a>

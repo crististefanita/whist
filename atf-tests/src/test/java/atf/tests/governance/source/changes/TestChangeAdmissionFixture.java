@@ -109,6 +109,14 @@ public final class TestChangeAdmissionFixture {
                   [IO.File]::WriteAllText($ReceiptFile,'{"schemaVersion":1,"kind":"MOCK_TEST_CHANGE_ADMISSION","status":"PASS","mode":"VERIFY"}')
                 }
                 """);
+        Files.writeString(scripts.resolve("AtfQualificationSnapshot.ps1"), """
+
+                # Adjacent editorial acceptance is controlled here; metadata and snapshot logic remain real.
+                function Assert-AtfMetadataEditorial {
+                    param($SourceRoot,$TempRoot,$JavaHome,$MavenCache,$Receipt)
+                    [IO.File]::WriteAllText($Receipt,'{"status":"PASS","kind":"MOCK_EDITORIAL_NEIGHBOUR"}')
+                }
+                """, java.nio.file.StandardOpenOption.APPEND);
         return scripts;
     }
 

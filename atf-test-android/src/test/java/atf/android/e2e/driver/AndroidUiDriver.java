@@ -7,10 +7,10 @@ import atf.android.AdbClient;
 import atf.android.e2e.driver.hierarchy.CardHierarchy;
 import atf.android.e2e.driver.hierarchy.HierarchyDocument;
 import atf.android.e2e.driver.waiting.UiStateAwaiter;
+import atf.android.e2e.driver.actions.AndroidUiActions;
 import atf.android.e2e.driver.hierarchy.HierarchyDocument.Node;
 import atf.reporting.contract.AtfReportStatus;
 import atf.reporting.ui.model.AtfUiActionRecord;
-import atf.reporting.ui.model.AtfUiEvidenceSource;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -45,9 +45,8 @@ public final class AndroidUiDriver {
     private final UiStateAwaiter waiter;
     private final LongSupplier nanoTime;
     private final Delay pause;
-    private Consumer<AtfUiActionRecord> actionSink = ignored -> {};
+    private final AndroidUiActions actions;
     private java.util.function.Supplier<? extends AutoCloseable> captureScopes = () -> () -> {};
-    private int actionSequence;
 
     public AndroidUiDriver(AdbClient adb, Path output) throws Exception {
         this(
@@ -74,13 +73,14 @@ public final class AndroidUiDriver {
         this.output = output.toAbsolutePath().normalize();
         this.nanoTime = Objects.requireNonNull(nanoTime);
         this.pause = Objects.requireNonNull(pause);
+        this.actions = new AndroidUiActions(arguments -> this.adb.run(arguments).requireSuccess(), this.nanoTime);
         Files.createDirectories(this.output);
         captures = new UiDeviceCapture(this.adb, this.output);
         waiter = new UiStateAwaiter(this::dump, this.nanoTime, this.pause::sleep);
     }
 
     public void recordActionsAs(Consumer<AtfUiActionRecord> sink) {
-        actionSink = Objects.requireNonNull(sink, "sink");
+        actions.recordAs(sink);
     }
 
     public void recordCapturesAs(java.util.function.Supplier<? extends AutoCloseable> scopes) {
@@ -342,29 +342,12 @@ public final class AndroidUiDriver {
             int startX = (viewport.left() + viewport.right()) / 2;
             int startY = viewport.top() + height * 4 / 5;
             int endY = viewport.top() + height / 3;
-            long started = nanoTime.getAsLong();
-            try {
-                adb.run(
-                                "shell", "input", "swipe", "" + startX, "" + startY, "" + startX,
-                                "" + endY, "350")
-                        .requireSuccess();
-            } catch (Exception failure) {
-                record(
-                        "Swipe",
-                        "Android scroll viewport",
-                        "Reveal " + label,
-                        failure.toString(),
-                        started,
-                        AtfReportStatus.FAIL);
-                throw failure;
-            }
-            record(
+            actions.dispatch(
                     "Swipe",
                     "Android scroll viewport",
                     "Reveal " + label,
                     "ADB accepted swipe " + startX + "," + startY + " → " + startX + "," + endY,
-                    started,
-                    AtfReportStatus.PASS);
+                    "shell", "input", "swipe", "" + startX, "" + startY, "" + startX, "" + endY, "350");
             pause.sleep(250);
         }
         throw new IllegalStateException("UI did not reveal '" + label + "' after 8 scroll gestures");
@@ -448,26 +431,12 @@ public final class AndroidUiDriver {
     }
 
     public void back() throws Exception {
-        long started = nanoTime.getAsLong();
-        try {
-            adb.run("shell", "input", "keyevent", "4").requireSuccess();
-        } catch (Exception failure) {
-            record(
-                    "Press Back",
-                    "Android navigation",
-                    "Current overlay or screen closes",
-                    failure.toString(),
-                    started,
-                    AtfReportStatus.FAIL);
-            throw failure;
-        }
-        record(
+        actions.dispatch(
                 "Press Back",
                 "Android navigation",
                 "Current overlay or screen closes",
                 "ADB accepted keyevent 4",
-                started,
-                AtfReportStatus.PASS);
+                "shell", "input", "keyevent", "4");
         pause.sleep(350);
     }
 
@@ -500,50 +469,12 @@ public final class AndroidUiDriver {
     public String restartToActivity(String packageName, String activity, String... intentArguments)
             throws Exception {
         String target = packageName + "/" + activity;
-        long stopStarted = nanoTime.getAsLong();
-        try {
-            adb.run("shell", "am", "force-stop", packageName).requireSuccess();
-            record(
-                    "Force-stop Android app",
-                    packageName,
-                    "The previous app process is stopped",
-                    "ADB accepted force-stop",
-                    stopStarted,
-                    AtfReportStatus.PASS);
-        } catch (Exception failure) {
-            record(
-                    "Force-stop Android app",
-                    packageName,
-                    "The previous app process is stopped",
-                    failure.toString(),
-                    stopStarted,
-                    AtfReportStatus.FAIL);
-            throw failure;
-        }
-
-        long launchStarted = nanoTime.getAsLong();
-        try {
-            List<String> command =
-                    new ArrayList<>(List.of("shell", "am", "start", "-W", "-n", target));
-            command.addAll(List.of(intentArguments));
-            adb.run(command.toArray(String[]::new)).requireSuccess();
-            record(
-                    "Launch Android activity",
-                    target,
-                    "The requested app activity opens",
-                    "ADB accepted activity start",
-                    launchStarted,
-                    AtfReportStatus.PASS);
-        } catch (Exception failure) {
-            record(
-                    "Launch Android activity",
-                    target,
-                    "The requested app activity opens",
-                    failure.toString(),
-                    launchStarted,
-                    AtfReportStatus.FAIL);
-            throw failure;
-        }
+        actions.dispatch("Force-stop Android app", packageName, "The previous app process is stopped",
+                "ADB accepted force-stop", "shell", "am", "force-stop", packageName);
+        List<String> command = new ArrayList<>(List.of("shell", "am", "start", "-W", "-n", target));
+        command.addAll(List.of(intentArguments));
+        actions.dispatch("Launch Android activity", target, "The requested app activity opens",
+                "ADB accepted activity start", command.toArray(String[]::new));
         return dump();
     }
 
@@ -615,38 +546,13 @@ public final class AndroidUiDriver {
                 operation.equals("Select option")
                         ? "Dispatch a tap to the selected option at its current accessibility bounds"
                         : "Dispatch a tap to the resolved target at its current accessibility bounds";
-        long started = nanoTime.getAsLong();
-        try {
-            adb.run("shell", "input", "tap", Integer.toString(x), Integer.toString(y))
-                    .requireSuccess();
-        } catch (Exception failure) {
-            record(operation, target, expected, failure.toString(), started, AtfReportStatus.FAIL);
-            throw failure;
-        }
-        record(
+        actions.dispatch(
                 operation,
                 target,
                 expected,
                 "ADB accepted tap at " + x + "," + y,
-                started,
-                AtfReportStatus.PASS);
+                "shell", "input", "tap", Integer.toString(x), Integer.toString(y));
         pause.sleep(500);
-    }
-
-    private void record(
-            String operation,
-            String target,
-            String expected,
-            String observed,
-            long started,
-            AtfReportStatus status) {
-        recordAction(
-                operation,
-                target,
-                expected,
-                observed,
-                Duration.ofNanos(nanoTime.getAsLong() - started).toMillis(),
-                status);
     }
 
     public void recordAction(
@@ -656,16 +562,7 @@ public final class AndroidUiDriver {
             String observed,
             long durationMillis,
             AtfReportStatus status) {
-        actionSink.accept(
-                new AtfUiActionRecord(
-                        ++actionSequence,
-                        operation,
-                        target,
-                        expected,
-                        observed,
-                        durationMillis,
-                        status,
-                        AtfUiEvidenceSource.ACTION));
+        actions.record(operation, target, expected, observed, durationMillis, status);
     }
 
     public boolean turnedTrumpIdentityMatchesVisibleCard(String xml) throws Exception {

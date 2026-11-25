@@ -36,6 +36,18 @@ Components control processes, clocks and observations. E2E captures a new intera
 
 ## Execution and interpretation
 
+<a id="action-dispatch-and-ownership"></a>
+
+### Action dispatch and ownership
+
+| Owner | Contract |
+|---|---|
+| [Driver facade](java/atf/android/e2e/driver/AndroidUiDriver.java) | Resolves current hierarchy targets, retries and settling delays; its public methods remain the test adapter API. |
+| [Action executor](java/atf/android/e2e/driver/actions/AndroidUiActions.java) | Dispatches the command once, measures only dispatch, sequences records and retains the original command cause. A reporting failure is suppressed onto an existing command failure; accepted-command publication failure does not invent another failed command. |
+| Flow caller | Owns setup/body phases, checkpoints and capture scopes. Command acceptance alone does not prove the requested application outcome. |
+
+[Controlled action components](java/atf/android/e2e/driver/actions/AndroidUiActionsComponentTest.java) use process and clock ports without a device, sleeps or screenshots. Existing hierarchy and scroll components retain target selection and retry coverage; native E2E qualifies the application separately.
+
 Use [Isolated input of the module](../../README.md#verification-without-device) and [Component Guide](../../../docs/testing/ATF_DisplayComponents.md). Select the suite or its classes with the declared overlap; temporary directories and reports belong to the external run workspace.
 
 - **Audit:** [AndroidComponentAudit](java/atf/android/component/AndroidComponentAudit.java) binds the invocation to Test Kit. [Adapter contracts](java/atf/android/component/AndroidComponentReportContractTest.java) verify the publication and refusals; expected fixture failures remain distinct from application results.

@@ -24,9 +24,7 @@ The [mocked ADB component](../../atf-tests/src/test/java/atf/tests/governance/do
 
 ## Launcher composition
 
-| Priority | Gap and owner | Closure criterion |
-|---|---|---|
-| P2 | Android adapter: [AndroidUiDriver](../../atf-test-android/src/test/java/atf/android/e2e/driver/AndroidUiDriver.java) combines control selection, command retries and action reporting. Similar blocks make dispatch and timing changes costly. | Extract shared execution and reporting behind explicit ports while preserving the driver facade and domain oracle. Controlled process and clock tests must prove command order, original cause, duration and setup/body attribution, including timeout and cancellation. |
+The [Android action contract](../../atf-test-android/src/test/README.md#action-dispatch-and-ownership) separates hierarchy selection, command execution and caller-owned phases. Controlled components qualify order, durations, cancellation and original causes; native application acceptance remains with the Android register.
 
 ## RAG cost rating
 
