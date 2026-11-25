@@ -437,7 +437,7 @@
     "atf-ui-browser/tests/action-typography.test.mjs": "5970596dcb48bbe5002db0bd85f14bb653629d241c59ef651f931d397fb64a95",
     "atf-ui-browser/tests/asset-revision.test.mjs": "9c8464da9e980738313cbc0a41798f364abc9f5ff736de9666381dcd8f582329",
     "atf-ui-browser/tests/automation-handoff.test.mjs": "42095f769112c90cd5646c729bd0ee917043e4bb6f1f4cd06b1238ac4f78b30e",
-    "atf-ui-browser/tests/bid-evidence.test.mjs": "6eeff1d6c4666b1ff5bad304c2463b09ce655171f259c2a24839466593c26a20",
+    "atf-ui-browser/tests/bid-evidence.test.mjs": "6f86e0f3ba6bb2ab590b80678ed8e3cc06b858616cf010171c4469b70c658d05",
     "atf-ui-browser/tests/card-typography.mjs": "74cf3c31507825b2e23080830d8f0733115e6bdd3ff2fce17e1dac4c89d2a298",
     "atf-ui-browser/tests/fixtures.mjs": "d3a75006c4c4d451731e3a5221bebd6211e84f452650c5ed4830d2b78f536f9d",
     "atf-ui-browser/tests/flow-budget.mjs": "9ed5d54dafddb0d323d3ae4d928eab29f4e19d492bd18fa1cfdf71699de2b4a6",
