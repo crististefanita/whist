@@ -361,7 +361,7 @@ Folosiți `run-component-suites.ps1 -ReuseFrom <rejected-run> -RunRoot <new-exte
 | Componentă | Ciclul real al procesului, păstrarea ieșirii întrerupte și admiterea reală a compilatorului/probelor, inclusiv fiecare contract original de refuz. Comparațiile rămân în Extent fără poze. |
 | Măsurare | Înregistrați separat pregătirea proaspătă, reutilizarea compilatorului și reluarea selecției. Măsurarea pornirii unui proces nu este un benchmark al compilării Maven fără cache. |
 
-- Componentele pentru ordinea lansării execută clasele CLI canonice deja compilate printr-un port al compilatorului controlat explicit. Ele păstrează punctele reale de intrare, cererile validatorului, codurile de ieșire și diagnosticele; vecinii pentru probele sursei și regulile editoriale sunt calificați separat.
+- Componentele pentru ordinea lansării execută clasele CLI canonice deja compilate printr-un port al compilatorului controlat explicit. Ele păstrează punctele reale de intrare, cererile validatorului, codurile de ieșire și diagnosticele; vecinii pentru probele sursei, regulile editoriale și integritatea artefactelor sunt calificați separat.
 
 - Gazda copiată include configurația fixată a modulelor sale. Această limită a fixture-ului nu modifică preflight-ul de producție și nu califică compilarea de sine stătătoare.
 

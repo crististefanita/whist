@@ -102,6 +102,9 @@ class QualificationLauncherComponentTest {
         AuditedAssertions.assertEquals("MOCK_EDITORIAL_NEIGHBOUR", JSON.readTree(
                 components.resolve("release-editorial.json").toFile()).path("kind").asText(),
                 "Editorial acceptance is independently qualified by the metadata component");
+        AuditedAssertions.assertEquals("MOCK_ARTIFACT_NEIGHBOUR", JSON.readTree(
+                components.resolve("release-preflight.log").toFile()).path("kind").asText(),
+                "Payload integrity has its own components; this fixture owns source admission and real snapshot ordering");
         AuditedAssertions.assertTrue(Files.readString(scratch.resolve("prepared-validator-calls.jsonl"))
                 .contains("atf.tests.testchange.TestChangeAdmissionCli"), "The controlled compiler dispatches the prepared canonical source validator");
         AuditedAssertions.assertFalse(Files.exists(scratch.resolve("maven.entered")), "The deliberate invalid group stops after admission");
@@ -356,14 +359,20 @@ class QualificationLauncherComponentTest {
         Files.copy(real.resolve("config/gradle-app-collections.properties"), source.resolve("config/gradle-app-collections.properties"));
         Files.copy(real.resolve("config/atf-component-collections.json"), source.resolve("config/atf-component-collections.json"));
         Files.copy(real.resolve("config/atf-test-suites.json"), source.resolve("config/atf-test-suites.json"));
-        // Keep the real runtime module closure; a hand-maintained subset hid later helper imports.
-        Path tools = real.resolve("atf-tests/tools");
-        try (var entries = Files.list(tools)) {
-            for (var file : entries.filter(Files::isRegularFile).filter(path -> path.toString().endsWith(".mjs")
-                    && !path.toString().endsWith(".test.mjs")).toList()) {
-                Path target = source.resolve("atf-tests/tools").resolve(file.getFileName());
-                Files.createDirectories(target.getParent());
-                Files.copy(file, target);
+        if (realAdmission || realEditorial) {
+            // Admission fixtures inspect a small external checkout; artifact qualification is a controlled neighbour.
+            write(source, "atf-tests/tools/check-release-artifacts.mjs",
+                    "console.log(JSON.stringify({status:'PASS',kind:'MOCK_ARTIFACT_NEIGHBOUR'}));\n");
+        } else {
+            // Artifact fixtures keep their real runtime closure; the tool host is independently complete.
+            Path tools = real.resolve("atf-tests/tools");
+            try (var entries = Files.list(tools)) {
+                for (var file : entries.filter(Files::isRegularFile).filter(path -> path.toString().endsWith(".mjs")
+                        && !path.toString().endsWith(".test.mjs")).toList()) {
+                    Path target = source.resolve("atf-tests/tools").resolve(file.getFileName());
+                    Files.createDirectories(target.getParent());
+                    Files.copy(file, target);
+                }
             }
         }
         write(source, "release/index.json", "{\"schemaVersion\":2,\"currentVersion\":\"" + VERSION + "\",\"versions\":[\"" + VERSION + "\"]}");
