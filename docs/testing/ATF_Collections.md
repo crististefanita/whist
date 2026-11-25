@@ -276,11 +276,15 @@ Rulările istorice fără checkpoint-uri de invocare păstrează reluarea selec�
 | Admiterea copierii | Validați manifestul complet, granița semnării publice și căile directe înainte de directoare sau copiere; respingeți destinațiile duplicate. |
 | Lot limitat | Cel mult patru lucrători reverifică sursa/destinația la utilizare și calculează independent hash-ul octeților scriși. Windows folosește fluxuri cu buffer, păstrând data modificării și atributele; celelalte platforme păstrează copierea nativă. |
 | Validare nouă | Reinventariați sursele/release-urile din staging și live după copiere și după compilare; adăugările, ștergerile, schimbările cu metadate identice și căile indirecte rămân refuzuri. |
+| Selecție și copiere release | [`AtfComponentSelection.ps1`](../../scripts/AtfComponentSelection.ps1) validează grupurile cerute și calculează hash-urile cataloagelor de suite, Gradle și ownership înainte de crearea dosarului de rulare sau a staging-ului. Selecțiile implicite/toate și grupul legacy `atf-tests` rămân conservatoare. Un grup cu `releaseSnapshot: true` primește întregul arbore release; celelalte grupuri explicite omit copierea payload-ului, păstrând inventarul complet `release-inputs.json` și contextul sursă/catalog. |
+| Payload release omis | Staging-ul sursei nu trebuie să conțină directorul `release/`. Runnerul calculează hash-ul inventarului live complet înainte și după rulare și execută preflight-ul artefactelor asupra lui. Neconcordanța hash-ului selector/catalog, deriva release-ului sau reluarea unui grup proprietar al release-ului dintr-un staging fără payload sunt refuzate. Recipisele vechi de workspace fără indicatorul payload-ului păstrează interpretarea de copiere completă. |
 | Sigiliul compilării | Sortați ordinal aceleași înregistrări de clase, resurse și dependențe și calculați hash-ul conținutului exact; un cache de metadate nu înlocuiește citirea. |
-| Observabilitate | Înregistrați separat `snapshot.inventory`, `snapshot.copy`, `snapshot.verify`, `snapshot.artifact-preflight` și `components.post-compile-snapshot`. Etapele copil ale snapshotului se suprapun cu durata părintelui și nu se adună de două ori. |
+| Observabilitate | Înregistrați separat admiterea selectorilor, `snapshot.inventory`, `snapshot.copy`, `snapshot.verify`, `snapshot.artifact-preflight` și `components.post-compile-snapshot`. Etapele copil ale snapshotului se suprapun cu durata părintelui și nu se adună de două ori. |
 | Măsurare | Comparați manifeste și sigilii identice, declarați prima trecere față de citirile repetate și limitele cache-ului OS, păstrând timpii originali. Un câștig I/O local este distinct de accelerarea întregului release. |
 
 Inventarierea și sigilarea nu inițializează compilatorul copierii. Inițializarea lotului aparține etapei măsurate de copiere; un eșec de copiere sau preflight păstrează cauza originală și blochează calificarea.
+
+[Componenta de selecție](../../atf-tests/tools/component-selection.test.mjs) respinge grupurile necunoscute, duplicate sau schimbate înainte de staging. [Componenta snapshotului](../../atf-tests/tools/snapshot-io.test.mjs) verifică omiterea unui arbore release fără legătură, păstrând inventarul complet de hash-uri și refuzul la derivă. Doar colecția de documentație declară proprietatea payload-ului release; controalele RAG generice nu moștenesc copierea voluminoasă.
 
 ```mermaid
 flowchart LR
@@ -379,6 +383,7 @@ Pregătirea Maven nouă produce măsurători diagnostice lângă sigiliul existe
 | Populația fișierelor | Numărul exact de fișiere hash-uite, directoarele vizitate și lungimile observate înainte de hash. Lungimile observate nu măsoară citirile fizice sau alocările. |
 | `compiler-receipt-initial-cost.json` | Intervale separate de serializare și publicare atomică pentru recipisa Maven inițială. |
 | `compiler-receipt-classpath-cost.json` | Aceeași separare pentru recipisa unui classpath rezolvat acum. Un classpath reutilizat nu are o nouă observație de scriere. |
+| Fixture de admitere rece/caldă | `component-maven-reuse.test.mjs` înregistrează sigilarea completă a rezultatelor și admiterea separată a recipisei calde pe același fixture de patru fișiere. Fingerprint-urile egale și refuzurile pentru alterări/clase lipsă califică identitatea; fixture-ul nu invocă Maven și nu pretinde reducerea timpului de compilare. |
 | Admitere | Fiecare măsurătoare declară `qualified: false`. O operație măsurată eșuată își golește observația; fișierul de cost nu înlocuiește recipisa sursei sau compilării. |
 
 Doar sigilarea rezultatelor noi activează ceasurile detaliate de parcurgere. Reutilizarea verifică în continuare octeții actuali, fără măsurători pe fișier. Profilul nu restrânge intrările compilării, nu omite rezultate, nu schimbă selecția rapoartelor și nu pretinde accelerare.

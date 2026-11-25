@@ -7,6 +7,42 @@ Acest registru definește controalele revizuite, baza Git și căile lor exacte.
 ## Controale verificate
 
 <details>
+<summary>Calificarea selectorilor înainte de staging și măsurarea compilatorului</summary>
+
+```yaml
+testChanges:
+  - id: RAG-33-34-SELECTION-REUSE
+    status: VERIFIED
+    base: 49ed70f6cfe24e920f4bcf309a161be62b670b10
+    expires: 2026-12-25
+    reason: Validați selectorii înainte de staging, omiteți octeții payload-ului release fără proprietar păstrând inventarele complete și măsurați sigilarea rece a rezultatelor față de admiterea caldă a recipisei fără slăbirea verificărilor complete ale octeților.
+    proof: "mvn -o -pl atf-tests -am -Dtest=ComponentEvidenceScopeComponentTest,SnapshotIoComponentTest,TestChangeReviewComponentTest -Dsurefire.failIfNoSpecifiedTests=false test"
+    checks:
+      positive:
+        - atf.tests.governance.documentation.release.rag.scope.ComponentEvidenceScopeComponentTest#selectorsAreValidatedBeforePreparationAndOnlyReleaseOwnersStageReleaseBytes
+        - atf.tests.governance.documentation.release.rag.scope.ComponentEvidenceScopeComponentTest#modernCompilerPointersAndLegacyInputsPreserveSealsAndExplicitRefusals
+        - atf.tests.governance.documentation.release.rag.scope.io.SnapshotIoComponentTest#unselectedReleasePayloadStaysOutsideStageWhileItsFullInventoryRemainsBound
+      negative:
+        - atf.tests.governance.source.changes.TestChangeReviewComponentTest#markdownFixturesAndSelectionContractsRemainProtected
+    paths:
+      - scripts/AtfComponentSelection.ps1
+      - scripts/AtfComponentWorkspace.ps1
+      - scripts/AtfQualificationSnapshot.ps1
+      - scripts/run-component-suites.ps1
+      - atf-tests/tools/component-selection.test.mjs
+      - atf-tests/tools/component-maven-reuse.test.mjs
+      - atf-tests/tools/snapshot-io.test.mjs
+      - atf-tests/src/test/java/atf/tests/governance/documentation/release/rag/scope/ComponentEvidenceScopeComponentTest.java
+      - atf-tests/src/test/java/atf/tests/governance/documentation/release/rag/scope/io/SnapshotIoComponentTest.java
+      - atf-tests/src/main/java/atf/tests/testchange/TestChangeReview.java
+      - atf-tests/src/test/java/atf/tests/governance/source/changes/TestChangeReviewComponentTest.java
+      - config/atf-component-dependencies.json
+      - config/atf-component-reader-seals.json
+```
+
+</details>
+
+<details>
 <summary>Cititor comun legat de sursă și sigilii integrale neschimbate</summary>
 
 ```yaml

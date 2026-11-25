@@ -18,7 +18,7 @@
 
 Acest director coordonează operații care traversează modulele: verificări, construirea aplicației și scenarii Android activate explicit. Algoritmii, validatoarele și testele uneltelor aparțin modulelor care dețin comportamentul.
 
-Lansatoarele citesc rădăcina proiectului din propria poziție și pregătesc copii temporare. Rezultatele se păstrează în depozitul extern configurat.
+Lansatoarele citesc rădăcina proiectului din propria poziție și pregătesc copii temporare. Grupurile componentelor sunt admise pe baza cataloagelor live înainte de staging. Octeții payload-ului release sunt copiați doar pentru grupurile care declară un snapshot release; fiecare rulare păstrează inventarul complet de hash-uri și verifică octeții live ai release-ului înainte și după execuție. Rezultatele se păstrează în depozitul extern configurat.
 
 ## Responsabilități
 
@@ -82,6 +82,8 @@ Colecțiile JVM nu cer conectarea emulatorului. Pregătirea Java/Maven/Gradle nu
 [Recuperarea snapshotului](AtfComponentResume.ps1) validează inventarele originale ale surselor și release-urilor și scrie checkpointuri atomice. [Admiterea Maven](AtfComponentMaven.ps1) verifică separat identitatea pregătirii, clasele compilate, octeții dependențelor și classpathul.
 
 Lansatorul poate reutiliza compilarea după întreruperea etapei de classpath; un classpath alterat reface doar acea etapă, iar clasele schimbate sau o chitanță străină, invalidă ori lipsă cer o nouă pregătire. Niciun helper nu rulează jocul și nu schimbă verdictul raportului.
+
+[`AtfComponentSelection.ps1`](AtfComponentSelection.ps1) rezolvă și validează selectorii înainte de crearea dosarului de rulare sau staging-ul sursei. Recipisa este reverificată contra cataloagelor de suite, Gradle și ownership din staging. Grupurile proprietare ale release-ului primesc arborele complet păstrat; celelalte selecții explicite omit octeții payload-ului, dar păstrează manifestul complet al release-ului, identitatea catalogului, controalele de derivă live și preflight-ul artefactelor. Grupul legacy `atf-tests` și selecția implicită a tuturor grupurilor păstrează staging-ul complet. Reluarea verifică din nou modul salvat și refuză grupurile care au nevoie de payload-ul absent din workspace-ul original.
 
 ## Intrări private de semnare
 
