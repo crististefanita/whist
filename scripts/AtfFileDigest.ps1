@@ -1,9 +1,8 @@
 #requires -Version 7.0
 
-# Load the copy batch only when copying; inventory/sealing need no compiler startup.
-function Initialize-AtfCheckedFileCopy {
-  if (-not ('Atf.CheckedFileIo' -as [type])) {
-    Add-Type -TypeDefinition @'
+# The same source defines copy verification and the optional process-local hash reader.
+function Get-AtfCheckedFileIoDefinition {
+@'
 using System;
 using System.IO;
 using System.Collections.Generic;
@@ -63,7 +62,33 @@ namespace Atf {
     }
 }
 '@
-  }
+}
+
+function Get-AtfCheckedFileIoSourceHash {
+    $bytes = [Text.Encoding]::UTF8.GetBytes((Get-AtfCheckedFileIoDefinition))
+    [Convert]::ToHexString([Security.Cryptography.SHA256]::HashData($bytes)).ToLowerInvariant()
+}
+
+# Compile only for copying. Hash-only callers never acquire a compiler startup dependency.
+function Initialize-AtfCheckedFileCopy {
+    if (-not ('Atf.CheckedFileIo' -as [type])) {
+        Add-Type -TypeDefinition (Get-AtfCheckedFileIoDefinition)
+        $reader = [Atf.CheckedFileIo].GetMethod('Sha256').CreateDelegate([Func[string,string]])
+        [AppDomain]::CurrentDomain.SetData('ATF.CheckedFileIo.HashReader.1', @{
+            definitionSha256=(Get-AtfCheckedFileIoSourceHash); reader=$reader
+        })
+    }
+}
+
+function Get-AtfPreparedFileHasher {
+    $state = [AppDomain]::CurrentDomain.GetData('ATF.CheckedFileIo.HashReader.1')
+    $type = 'Atf.CheckedFileIo' -as [type]
+    if ($state -isnot [Collections.IDictionary] -or !$state.Contains('reader') -or
+            !$state.Contains('definitionSha256') -or $state.reader -isnot [Func[string,string]] -or !$type) { return }
+    if ($state.definitionSha256 -cne (Get-AtfCheckedFileIoSourceHash) -or
+            $state.reader.Method -ne $type.GetMethod('Sha256', [type[]]@([string])) -or
+            $state.reader.GetInvocationList().Length -ne 1 -or $null -ne $state.reader.Target) { return }
+    $state.reader
 }
 
 # Fresh content reads only: file times and sizes never authorize reuse.

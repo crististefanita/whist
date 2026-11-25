@@ -18,6 +18,7 @@ function Assert-AtfCompilerDirectPath([string]$Path) {
 function Get-AtfComponentMavenFingerprint([string]$Work, [string]$Repository, [string[]]$Modules, [ref]$Measurement) {
     if ($Measurement) { $Measurement.Value = $null }
     $started = [Diagnostics.Stopwatch]::GetTimestamp()
+    $nativeHasher = Get-AtfPreparedFileHasher
     $traversalTicks = 0L; $hashTicks = 0L; $files = 0L; $bytes = 0L; $directories = 0L
     $roots = @($Repository) + @($Modules | ForEach-Object {
         Join-Path $Work "project/$_/target/classes"
@@ -56,7 +57,8 @@ function Get-AtfComponentMavenFingerprint([string]$Work, [string]$Repository, [s
                     $traversalTicks += [Diagnostics.Stopwatch]::GetTimestamp()-$scan
                     $hashStarted = [Diagnostics.Stopwatch]::GetTimestamp()
                 }
-                $hash = Get-AtfFileSha256 $file.FullName
+                $hash = if ($nativeHasher) { $nativeHasher.Invoke($file.FullName) }
+                    else { Get-AtfFileSha256 $file.FullName }
                 if ($Measurement) { $hashTicks += [Diagnostics.Stopwatch]::GetTimestamp()-$hashStarted }
                 $records.Add($relative + ':' + $hash)
             }
@@ -71,6 +73,7 @@ function Get-AtfComponentMavenFingerprint([string]$Work, [string]$Repository, [s
     if ($Measurement) {
         $total = [Diagnostics.Stopwatch]::GetTimestamp()-$started
         $Measurement.Value = [ordered]@{schemaVersion=1;kind='ATF_MAVEN_SEAL_COST';qualified=$false
+            hashReader=$(if ($nativeHasher) { 'native-source-bound' } else { 'powershell-full-stream' })
             frequency=[Diagnostics.Stopwatch]::Frequency;totalTicks=$total
             traversalTicks=$traversalTicks;hashTicks=$hashTicks;identityTicks=$identityTicks
             coordinationTicks=($total-$traversalTicks-$hashTicks-$identityTicks)

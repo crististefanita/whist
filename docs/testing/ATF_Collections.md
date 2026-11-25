@@ -399,3 +399,19 @@ flowchart LR
 Intervalele ceasului explică un cost observat; recipisele octeților legate de sursă autorizează reutilizarea. Coordonarea rămasă include admiterea rădăcinilor și costul măsurării. Probele de componentă reconciliază numărul și intervalele cu hash-uri independente; nu califică performanța pe orice calculator sau alocările randării.
 
 </details>
+
+<a id="source-bound-native-digest"></a>
+
+## Cititor nativ legat de sursă
+
+Sigiliul poate reutiliza implementarea SHA-256 pe flux complet deja inițializată pentru copierea verificată. Elimină lansările PowerShell și reflecția repetate la granița fiecărui fișier; nu memorează hash-uri și nu schimbă algoritmul verificării octeților.
+
+| Stare | Cititor și autoritate |
+|---|---|
+| Copiere inițializată de sursa curentă | Inițializatorul publică în proces un delegat static cu hash-ul definiției C# exacte. Sigiliul verifică definiția curentă, metoda așteptată și invocarea unică înainte de selecție. |
+| Capabilitate lipsă, străină sau învechită | Păstrează calea PowerShell originală cu SHA-256 proaspăt. Apelurile doar pentru hash nu compilează suport nativ pentru pregătirea sigiliului. |
+| Verificarea fișierelor | Fiecare fișier selectat este deschis și citit integral la fiecare sigilare. Dimensiunea, timpul, disponibilitatea cititorului și măsurătorile anterioare nu autorizează un hash. |
+| Căi și erori | Verificările existente ale căilor directe, populației complete, fișierelor lipsă și erorilor de citire rămân active. Ambele implementări eliberează fluxurile. |
+| Măsurare | `hashReader` identifică în costurile diagnostice calea selectată; amprenta conține doar căile relative sortate și hash-urile integrale originale. |
+
+Descriptorul din proces conține identitatea codului și un delegat, nu conținut sau rezultate pe fișier. Nu este cache pe disc sau apărare față de un operator care poate înlocui codul executat. Comparațiile de performanță păstrează contextul rece/cald, ordinea, toate probele și identitatea sursei; timpul pe o gazdă nu stabilește o accelerare universală a release-ului.
