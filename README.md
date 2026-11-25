@@ -14,7 +14,7 @@ Whist Lab este un joc local de levate pentru 3–6 jucători și un laborator pe
 ## Jocul
 
 - **[Descarcă APK 0.25.0](https://github.com/crististefanita/whist/releases/download/v0.25.0/WhistLab-0.25.0.apk)**
-- **[Joacă Whist online](https://crististefanita.github.io/whist/)**
+- **[Joacă în browser](https://crististefanita.github.io/whist/)**
 
 ## Harta modulelor
 

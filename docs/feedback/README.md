@@ -22,7 +22,24 @@ Contractele stabile aparțin ghidurilor tematice; fiecare criteriu rămâne desc
 
 ## ToDo-uri prioritizate
 
-Scorul 1–100 exprimă ordinea recomandată de lucru, nu calitatea sau procentul de finalizare. Evaluarea combină impactul asupra utilizatorului, mărimea golului de verificare, riscul pentru release și claritatea criteriului de închidere. Fiecare rând indică registrul normativ; scorul se revizuiește când se schimbă riscul ori dovada, iar criteriile rămân deschise până la închiderea lor acolo.
+Scorul 1–100 exprimă prioritatea în fiecare categorie, nu calitatea ori procentul de finalizare. Pachetele offline au criterii delimitate de componentă/guvernanță; pragurile de acceptanță și cercetare păstrează cerințele de dispozitiv, consumator, bibliotecă ori date noi. Fiecare ID este unic între categorii și indică registrul proprietar.
+
+Selectați ID-uri explicite înaintea unei iterații și numiți-le în auditul și răspunsul final. Un subcriteriu calificat nu închide pragul părinte; eliminați doar criteriile finalizate și precizați limita rămasă. Indexul prioritizează lucrări din registrele tematice; numărul rândurilor sale nu numără iterațiile finalizate.
+
+### Pachete de lucru offline
+
+| ID | Prioritate | Scor | ToDo rămas și criteriul scurt de închidere |
+|---|---:|---:|---|
+| RAG-32 | P2 | 88 | Calificați preflight-ul capabilităților în lansatoarele Java, Maven, Gradle și Node rămase, inclusiv granița procesului PowerShell ADB. Verificările JDK din browser au contract propriu. [Registru](ATF_Governance.md#calificarea-afirmațiilor-și-lansatoarelor) |
+| RAG-33 | P2 | 87 | Separați admiterea rapoartelor păstrate de pregătirea surselor, păstrând sigiliile octeților și identitatea sursă/catalog; măsurați fiecare etapă de cost. [Registru](ATF_Governance.md#calificarea-afirmațiilor-și-lansatoarelor) |
+| RAG-34 | P2 | 86 | Restrângeți invalidarea rețetei compilatorului numai după calificarea dependențelor complete ale rețetei, claselor lipsă și modificărilor de octeți pe intrări reci/calde identificate. [Registru](ATF_Governance.md#calificarea-afirmațiilor-și-lansatoarelor) |
+| RAG-35 | P2 | 85 | Măsurați și reduceți revizuirea Git repetată, scanările lexicale și serializarea, păstrând inventarul delimitat și refuzul conservator al cititorilor necunoscuți. [Registru](ATF_Governance.md#calificarea-afirmațiilor-și-lansatoarelor) |
+| RAG-36 | P2 | 84 | Reutilizați controalele reușite după o corecție izolată a unui driver numai cu închideri de dependențe per control, identități JUnit/raport originale și refuzul intrărilor comune schimbate. [Registru](ATF_Governance.md#calificarea-afirmațiilor-și-lansatoarelor) |
+| LAB-01 | P2 | 83 | Calificați recuperarea rezervărilor publicării corpusului după oprire brutală, excluzând scriitorii activi și păstrând identitățile intrărilor imuabile. [Registru](ATF_Ai.md#verificarea-autonomă-a-laboratorului) |
+| LAB-02 | P2 | 82 | Calificați uneltele corpusului la volume mari declarate, cu măsurători de scalare, resurse și proveniență. [Registru](ATF_Ai.md#verificarea-autonomă-a-laboratorului) |
+| AI-03 | P2 | 81 | Calificați deciziile jucătorului independent în contexte de scor echivalente, fără schimbarea identităților politicilor înghețate. [Registru](ATF_Ai.md#lacune-și-limite-de-calificare) |
+
+### Praguri de acceptanță și cercetare
 
 | ID | Prioritate | Scor | ToDo rămas și criteriul scurt de închidere |
 |---|---:|---:|---|

@@ -64,6 +64,34 @@ final class FeedbackIndexGovernanceTest {
         AuditedAssertions.assertTrue(externalLink.stream().anyMatch(value -> value.contains("owner link must be a local project document")));
     }
 
+    @Test
+    void smallMultipleTracksAndExplicitCompletionHaveNoArtificialMinimum() throws Exception {
+        Path project = temporary.resolve("small");Path feedback = project.resolve("docs/feedback");Files.createDirectories(feedback);
+        Files.writeString(feedback.resolve("ATF_Owner.md"), "# Owner\n");
+        String body = "# Feedback\n\n## Prioritized ToDos\n\n### Offline\n" + table(row("GOV-07", "P1", "90", "[Owner](ATF_Owner.md#owner)"))
+                + "\n### Device\n" + table(row("AND-02", "P1", "95", "[Owner](ATF_Owner.md#owner)"));
+        var violations = new ArrayList<Violation>();
+        FeedbackIndexRules.inspectRows(body.lines().toList(), feedback.resolve("README.md"), project, violations);
+        FeedbackIndexRules.inspectPriorities(body.lines().toList(), feedback.resolve("README.md"), project, violations);
+        AuditedAssertions.assertTrue(violations.isEmpty(), "Both tracks are complete, uniquely owned and sorted independently: " + violations);
+        violations.clear();
+        FeedbackIndexRules.inspectPriorities(List.of("## Prioritized ToDos", "<!-- feedback:empty -->"), feedback.resolve("README.md"), project, violations);
+        AuditedAssertions.assertTrue(violations.isEmpty(), "A fully completed backlog does not require invented work");
+    }
+
+    @Test
+    void laterTablesInvalidPrioritiesAndFalseCompletionRemainVisible() throws Exception {
+        Path project = temporary.resolve("multiple");Path feedback = project.resolve("docs/feedback");Files.createDirectories(feedback);
+        Files.writeString(feedback.resolve("ATF_Owner.md"), "# Owner\n");
+        String body = table(row("GOV-07", "P1", "90", "[Owner](ATF_Owner.md)")) + "\n### Next track\n"
+                + table(row("GOV-07", "P3", "80", "[Owner](ATF_Owner.md#missing)")) + "\n<!-- feedback:empty -->\n";
+        var findings = validate(body, feedback, project);
+        AuditedAssertions.assertTrue(findings.stream().anyMatch(v -> v.contains("duplicate ID GOV-07")), "Later tables cannot escape the shared ID inventory");
+        AuditedAssertions.assertTrue(findings.stream().anyMatch(v -> v.contains("invalid priority")), "Unrecognized priorities are refused rather than skipped");
+        AuditedAssertions.assertTrue(findings.stream().anyMatch(v -> v.contains("anchor does not resolve")), "The owning closure criterion remains navigable");
+        AuditedAssertions.assertTrue(findings.stream().anyMatch(v -> v.contains("contradicts active rows")), "Completion cannot hide open work");
+    }
+
     private static List<String> validate(String markdown, Path feedbackFolder, Path root) {
         var violations = new ArrayList<Violation>();
         FeedbackIndexRules.inspectRows(markdown.lines().toList(), feedbackFolder.resolve("README.md"), root, violations);

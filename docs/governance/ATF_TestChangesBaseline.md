@@ -4344,3 +4344,88 @@ testChanges:
 ```
 
 </details>
+
+<details>
+<summary>Categorii explicite de feedback și închidere corectă</summary>
+
+```yaml
+testChanges:
+  - id: GOV-07-FEEDBACK-INDEX
+    status: VERIFIED
+    base: 7d82c7157b222df9af6b320ed5853564b2ccbbde
+    expires: 2026-12-25
+    reason: GOV-07 validates all active feedback tables, unique IDs, local owners and explicit completion without a minimum row quota.
+    proof: "mvn -o -pl atf-tests -am -Dtest=FeedbackIndexGovernanceTest,DocumentationPolicyGovernanceTest,DocumentationReadmeStructureGovernanceTest -Dsurefire.failIfNoSpecifiedTests=false test"
+    checks:
+      positive:
+        - atf.tests.governance.documentation.feedback.FeedbackIndexGovernanceTest#projectFeedbackIndexHasUniqueOrderedScoresAndExistingOwnerLinks
+        - atf.tests.governance.documentation.feedback.FeedbackIndexGovernanceTest#smallMultipleTracksAndExplicitCompletionHaveNoArtificialMinimum
+        - atf.tests.governance.documentation.DocumentationPolicyGovernanceTest#feedbackPriorityRegisterUsesUniqueScoresFromHighestToLowest
+        - atf.tests.governance.documentation.DocumentationReadmeStructureGovernanceTest#mainGameSectionUsesTheSharedBrowserActionLabel
+      negative:
+        - atf.tests.governance.documentation.feedback.FeedbackIndexGovernanceTest#rejectsDuplicateIdsInvalidScoresWrongOrderAndBrokenOwnerLinks
+        - atf.tests.governance.documentation.feedback.FeedbackIndexGovernanceTest#requiresARecognizableTodoTableAndAResolvableLocalOwnerLink
+        - atf.tests.governance.documentation.feedback.FeedbackIndexGovernanceTest#laterTablesInvalidPrioritiesAndFalseCompletionRemainVisible
+        - atf.tests.governance.documentation.DocumentationReadmeStructureGovernanceTest#theOtherEditionHeadingIsRejectedByTheStructuralRule
+    paths:
+      - atf-tests/src/main/java/atf/tests/documentation/policy/FeedbackIndexRules.java
+      - atf-tests/src/test/java/atf/tests/governance/documentation/feedback/FeedbackIndexGovernanceTest.java
+      - atf-tests/src/test/java/atf/tests/governance/documentation/feedback/FeedbackIndexUnitTest.java
+      - atf-tests/src/test/java/atf/tests/governance/documentation/DocumentationReadmeStructureGovernanceTest.java
+```
+
+</details>
+
+<details>
+<summary>Preflight al uneltelor browserului legat de sursă</summary>
+
+```yaml
+testChanges:
+  - id: RAG-31-BROWSER-PREFLIGHT
+    status: VERIFIED
+    base: 7d82c7157b222df9af6b320ed5853564b2ccbbde
+    expires: 2026-12-25
+    reason: RAG-31 rejects missing or incompatible browser build tools before preparation and preserves original process and cleanup causes.
+    proof: "mvn -o -pl atf-tests -am -Dtest=BrowserToolchainComponentTest -Dsurefire.failIfNoSpecifiedTests=false test"
+    checks:
+      positive:
+        - atf.tests.browser.toolchain.BrowserToolchainComponentTest#javaCapabilitiesAndMavenPresencePrecedeBrowserPreparation
+      negative:
+        - atf.tests.browser.toolchain.BrowserToolchainComponentTest#missingOldAliasAndInterruptedToolsCannotPassOrMaskOriginalCauses
+    paths:
+      - scripts/AtfBrowserToolchain.ps1
+      - atf-ui-browser/Start-WhistBrowser.ps1
+      - atf-ui-browser/Start-CardTableBrowser.ps1
+      - atf-ui-browser/Build-WhistPages.ps1
+      - atf-tests/src/test/java/atf/tests/browser/toolchain/BrowserToolchainComponentTest.java
+      - atf-tests/src/test/resources/toolchain/browser-toolchain-contract.ps1
+```
+
+</details>
+
+<details>
+<summary>Proprietatea colecțiilor pentru feedback și unelte</summary>
+
+```yaml
+testChanges:
+  - id: FEEDBACK-TOOLCHAIN-CATALOG
+    status: VERIFIED
+    base: 7d82c7157b222df9af6b320ed5853564b2ccbbde
+    expires: 2026-12-25
+    reason: Preserve complete source and package boundaries and one primary owner for every new component or unit test.
+    proof: "mvn -o -pl atf-tests -am -Dtest=AtfSourceQualityGovernanceTest,SuiteOwnershipGovernanceTest,AtfCollectionOwnershipComponentTest -Dsurefire.failIfNoSpecifiedTests=false test"
+    checks:
+      positive:
+        - atf.tests.governance.source.AtfSourceQualityGovernanceTest#sourcesRespectPackagePathsImportsAndProductionBoundaries
+        - atf.tests.governance.suites.SuiteOwnershipGovernanceTest#everyMavenExecutableHasOnePrimaryOwnerAndEveryFocusedGateIsDeclared
+        - atf.tests.governance.suites.AtfCollectionOwnershipComponentTest#positiveInventoriesPartitionEveryAtfComponentWithoutChangingLeafNames
+      negative:
+        - atf.tests.governance.suites.SuiteOwnershipGovernanceTest#newOmittedClassOverlapWrongLayerAndHiddenSelectionAreRejected
+    paths:
+      - atf-tests/src/test/java/atf/tests/suites/components/AtfOrchestrationComponentSuite.java
+      - config/atf-component-collections.json
+      - config/atf-component-dependencies.json
+      - config/atf-component-reader-seals.json
+```
+
+</details>

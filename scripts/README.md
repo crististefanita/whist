@@ -88,3 +88,16 @@ Lansatorul poate reutiliza compilarea după întreruperea etapei de classpath; u
 - [O singură politică a surselor](AtfSigningSourcePolicy.ps1) admite numai metadatele publice de semnare și omite intrările private locale înainte de calcularea hash-urilor.
 - [Copierea](Copy-AtfSourceInputs.ps1) validează manifestul complet, căile canonice și absența linkurilor în strămoșii sursei și destinației înainte de scriere.
 - Intrările private sunt refuzate chiar și într-un manifest vechi. [Ghidul de semnare](../.atf-signing/README.md) definește lista publică permisă și limitele politicii.
+
+## Preflight-ul uneltelor pentru browser
+
+[Verificările capabilităților browserului](AtfBrowserToolchain.ps1) rulează înaintea generării catalogului Whist, compilării modulelor ori rezolvării dependențelor Pages. Java, javac și jar trebuie să fie aplicații rezolvabile și să raporteze Java 17 sau mai nou; Pages cere și o aplicație Maven înainte de pregătire.
+
+| Graniță | Semnificație |
+|---|---|
+| Unelte Java | Probele de versiune delimitate califică suportul nivelului Java la căile observate; lansatorul invocă acele executabile rezolvate. |
+| Maven | Numai prezența aplicației; rezolvarea dependențelor, pluginurile, rețeaua și rularea Maven efectivă rămân verificări separate. |
+| Eșecul procesului | Refuză unelte lipsă, aliasuri/răspunsuri fără versiune, versiuni vechi, coduri nenule și timeout. Oprește numai procesul copil deținut când este necesar, îl eliberează și păstrează cauzele primare și de curățare. |
+| Identitatea sursei | Recipisa și diagnosticele disponibilității/versiunii identifică scriptul de preflight consumat prin SHA-256. Nu reprezintă verdict de APK, randare în browser ori release. |
+
+Componentele controlate înlocuiesc răspunsurile de rezolvare/versiune și portul privat al procesului; matricile de refuz nu cer shell, browser, build ori dispozitiv. Ordinea lansatoarelor reale și legarea comenzilor rezolvate se verifică separat de disponibilitatea Java reală.

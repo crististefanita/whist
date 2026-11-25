@@ -27,6 +27,18 @@ public class DocumentationReadmeStructureGovernanceTest {
     }
 
     @Test
+    void mainGameSectionUsesTheSharedBrowserActionLabel() throws Exception {
+        var readme = Files.readAllLines(locateProjectRoot().resolve("README.md"));
+        var game = readme.stream().dropWhile(line -> !line.equals("## Game")).skip(1)
+                .takeWhile(line -> !line.startsWith("## ")).filter(line -> !line.isBlank()).toList();
+        assertEquals(2, game.size(), "Game keeps the APK and browser routes together");
+        assertEquals("- **[" + (romanian ? "Joacă în browser" : "Play in browser") + "](https://crististefanita.github.io/whist/)**", game.getLast());
+        assertEquals(1L, readme.stream()
+                .filter(line -> line.contains("crististefanita.github.io/whist/")).count());
+        assertFalse(String.join("\n", readme).contains("[Play Whist online]"));
+    }
+
+    @Test
     void theOtherEditionHeadingIsRejectedByTheStructuralRule(@TempDir Path temporary) throws Exception {
         for (String language : List.of("en", "ro")) {
             Path root = Files.createDirectory(temporary.resolve(language));

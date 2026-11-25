@@ -145,7 +145,8 @@
         "atf.tests.governance.support.SigningSourceIsolationComponentTest",
         "atf.tests.governance.support.SourceInventoryContractTest",
         "atf.tests.governance.documentation.release.rag.scope.launcher.LauncherFixtureComponentTest",
-        "atf.tests.learning.publication.CorpusPublicationComponentTest"
+        "atf.tests.learning.publication.CorpusPublicationComponentTest",
+        "atf.tests.browser.toolchain.BrowserToolchainComponentTest"
       ]
     },
     {
