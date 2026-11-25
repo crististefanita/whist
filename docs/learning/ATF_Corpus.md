@@ -54,3 +54,35 @@ node whist-lab-app/ai-lab/tools/corpus/whist-active-corpus.mjs verify-current
 Default components use [legal data built](../../whist-lab-app/ai-lab/tools/testing/legal-game-fixture.mjs), with rules of training independent of validator. External archive is required only for selected operations on kept data.
 
 [Selection criteria](ATF_Selection.md) and [evaluation protocol](README.md) explain the use of the body to improve policies.
+
+## Atomic tool publication
+
+The [active curator](../../whist-lab-app/ai-lab/tools/corpus/whist-active-corpus.mjs) and [paired-batch composer](../../whist-lab-app/ai-lab/tools/learning/whist-learning-batches.mjs) use one [directory publisher](../../whist-lab-app/ai-lab/tools/qualification/atomic-directory.mjs). The caller supplies an existing parent and a fresh destination outside immutable inputs; canonical path checks also reject aliases into those inputs.
+
+```mermaid
+flowchart LR
+    INPUT["Immutable inputs"] -->|validate| CLAIM["Exclusive claim"]
+    CLAIM -->|build privately| STAGE["Sibling staging"]
+    STAGE -->|sync files and manifest| READY["Complete result"]
+    READY -->|rename once| OUTPUT["Published directory"]
+    STAGE -->|on failure| CLEAN["Owned cleanup"]
+```
+
+<details>
+<summary>Legend: visibility and ownership</summary>
+
+Cooperating writers claim the same destination exclusively. Consumers see either no final directory or a complete result; private files and the claim are never accepted as published data.
+
+</details>
+
+| Boundary | Contract |
+|---|---|
+| Existing destination | Refuse files, links and directories, including empty directories; never merge or erase an earlier result. |
+| Input identity | Preserve original game and invocation bytes, hashes, pair population and recorded failures; private staging names never become result identities. |
+| Completion | Sync each file, write the manifest last and recheck the claim, private staging ownership and destination absence before promotion. |
+| Handled failure | Remove only owned private staging and the original claim; retain the primary error and any cleanup failures. A cleanup failure after promotion does not erase the published result. |
+| Interrupted process | A hard stop may leave a claim and private staging; no automatic expiry or claim takeover is permitted. Confirm the writer has stopped and inspect ownership and original inputs before explicit recovery. |
+
+Publication uses a sibling on the same filesystem. This is a cooperative-writer contract, not protection against a hostile process replacing paths between checks, or a power-loss durability guarantee.
+
+Pure unit tests cover the publisher's filesystem boundaries and error retention. Auditable [publication components](../../atf-tests/src/test/java/atf/tests/learning/publication/CorpusPublicationComponentTest.java) generate legal games locally, compare source and published hashes independently, and control concurrent writers and write/promotion faults; they require neither an external archive nor screenshots.

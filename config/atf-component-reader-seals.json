@@ -312,6 +312,7 @@
     "atf-tests/src/test/java/atf/tests/learning/EvidenceSelectionContractTest.java": "37638170dea5e03548bb4843099265200cf7f8fbbbee397313843744d0edc835",
     "atf-tests/src/test/java/atf/tests/learning/LearningRunReportContractTest.java": "5eb8ddd6d0503285838a662b117342e1d53bfdda417ce58804c31640aae8b99b",
     "atf-tests/src/test/java/atf/tests/learning/LearningRunReportTest.java": "ea69f54b3c12d63d574585ec95b44a3a386cda6597986fb02236f35345b454bb",
+    "atf-tests/src/test/java/atf/tests/learning/publication/CorpusPublicationComponentTest.java": "0eee8e1bfa768714acfd6e12e8d7335059ad950af6351c1aa1981a0e63537af7",
     "atf-tests/src/test/java/atf/tests/publishing/CoreReportingConsumerContractTest.java": "99adaa86c51321849c2325210e88534140d7ba6216dfa10200eaa5277185495f",
     "atf-tests/src/test/java/atf/tests/publishing/DeepSuiteExtentReportTest.java": "c3fb468d02cdfd017565ab83b1e05e410a882d8fa76adf9cbb0d22ccc0e15e91",
     "atf-tests/src/test/java/atf/tests/publishing/FullMatchExtentReportTest.java": "23664e72f3c8bdc5d92b2738d3796f07a10a8f49766622ab4093a8484c4db161",

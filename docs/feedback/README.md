@@ -11,7 +11,7 @@ Stable contracts belong to thematic guidelines; each criterion remains open unti
 
 | Area | Ownership and criteria |
 |---|---|
-| [AI players](ATF_Ai.md) | Inference, estimates, cost and policy qualification on new data. |
+| [AI players](ATF_Ai.md) | Inference, estimates, policy qualification on new data, and remaining laboratory volume/recovery limits. |
 | [Android](ATF_Android.md) | Full history, persistence, geometry, location and accessibility. |
 | [Shared interface](ATF_CardUi_Extraction.md) | Boundaries between reusable presentation and the Whist adapter: menu, profile, table, history and animation. |
 | [Browser](ATF_UiBrowser.md) | Responsive viewport, menu typography and parity with APKs for the shared Edge and Chrome adapter. |

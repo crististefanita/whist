@@ -40,6 +40,7 @@ The curator produces the active corpus, and the casebook consumes separately dec
 ## Process Invariants
 
 - [Corpus](ATF_Corpus.md) holds the partition, identity, hashes and independent replay before analysis.
+- [Atomic tool publication](ATF_Corpus.md#atomic-tool-publication) keeps partial selections private and refuses existing destinations without changing selection criteria.
 - [AI components](../testing/ATF_AiComponents.md) holds the legal witness, the actor's projection and the justified expectation.
 - [Protocol offline](README.md#the-improvement-cycle) holds the freezing, reserved lot and promotion.
 

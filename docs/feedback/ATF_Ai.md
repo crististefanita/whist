@@ -29,7 +29,7 @@ The AI module's manager shall have his own inputs and verification. The engine i
 
 | Priority | Gap and source | Level and criterion of closure |
 |---|---|---|
-| P2 | The cost and recovery of corpus tools, selection and composition require their own qualification, separate from the exposure register. | Components with duplicates, incomplete entries, interrupted writing or competing volumes and controlled volumes; budget and declared environment, with maintenance of origin. |
+| P2 | Corpus-tool cost at large volumes and recovery after a hard process stop still require qualification. Cooperative publication and handled write/promotion failures have a separate [contract](../learning/ATF_Corpus.md#atomic-tool-publication). | Declare input-volume and resource budgets; measure scaling and simulate process termination with stale claims. Recovery must preserve input identity and exclude a live writer before removing its claim; small constructed components do not establish either property. |
 
 ## Re-use of mechanisms
 

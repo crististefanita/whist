@@ -43,6 +43,8 @@ The [exposure registry](qualification/whist-evaluation-registry.mjs) coordinates
 - **Generic mechanism:** [intersection of the intervals](qualification/half-open-interval.mjs) is pure and receives full semi-open intervals.
 - **Field Adapter:** Whist keeps distribution space, seed validation and persistence; [transferable lessons](../../../docs/learning/ATF_PolicyEvolution.md#lessons-to-other-games-and-products) explain this border.
 
+The curator and paired-batch composer share [private staging and exclusive publication](qualification/atomic-directory.mjs). The [publication contract](../../../docs/learning/ATF_Corpus.md#atomic-tool-publication) defines immutable inputs, final-directory visibility, error retention and explicit recovery after a hard stop.
+
 ## Verification
 
 From the `whist-lab-app` directory of a full temporary copy of the project, with Java, Node.js and the locally available Gradle dependencies:
@@ -53,7 +55,8 @@ From the `whist-lab-app` directory of a full temporary copy of the project, with
 
 - **Resolution:** Gradle executes Node from the root of the project copy. The imports and resources of the tools shall be resolved against the file which holds them; CLI inputs and external destinations shall be declared by the caller.
 - **Local data:** tests [corpus](corpus/whist-corpus.test.mjs) and [curator](corpus/whist-active-corpus.test.mjs) use [matches constructed](testing/legal-game-fixture.mjs), with distribution, bids, legal game and score calculated separately from the validator. Temporary files belong to the test. `--offline` requires the Gradle dependencies to be available separately.
-- **Reproduction: ** Semantic identities of the records shall be kept when physically moving the source. The old captures shall be reproduced from their identified copy and the external directories shall not be rewritten by this organization.
+- **Reproduction:** Semantic identities of the records shall be kept when physically moving the source. The old captures shall be reproduced from their identified copy and the external directories shall not be rewritten by this organization.
+- **Publication layers:** Pure [publisher unit tests](qualification/atomic-directory.test.mjs) exercise filesystem boundaries without Extent. Auditable [corpus and pair components](testing/corpus-publication.test.mjs) use constructed legal games, byte comparisons and controlled failures under a 128 MiB Node heap; the primary orchestration suite publishes their Java adapter's assertions and inputs without images.
 
 [Module AI](../README.md) · [Protocol](../../../docs/learning/README.md) · [Collections](../../../docs/testing/ATF_Collections.md)
 

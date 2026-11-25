@@ -2,6 +2,7 @@ import fs from 'node:fs/promises';
 import path from 'node:path';
 import crypto from 'node:crypto';
 import {validateGame} from './whist-corpus.mjs';
+import {publishDirectory,writeFreshFile} from '../qualification/atomic-directory.mjs';
 const hash=bytes=>crypto.createHash('sha256').update(bytes).digest('hex');
 function check(ok,message){if(!ok)throw new Error(message);}
 export function traceHash(game){
@@ -73,10 +74,11 @@ export function selectGames(entries,{maxGames=100,protectedIds=[]}={}){
  return {selected:finalSelection,exchangeImprovements,uniqueTraces:candidates.length,lessonCount:frequency.size,
   coveredLessons:finalCovered.size,missingLessons:[...frequency.keys()].filter(t=>!finalCovered.has(t)).sort()};
 }
-export async function curate(archive,output,options={}){
+export async function curate(archive,output,options={},publication={}){
  const began=performance.now();archive=path.resolve(archive);output=path.resolve(output);
  check(output!==archive&&!output.startsWith(archive+path.sep),'Active corpus must be separate from immutable archive');
- await fs.mkdir(output,{recursive:false});await fs.mkdir(path.join(output,'games'));
+ return publishDirectory(output,async(staging,io)=>{
+ await io.mkdir(path.join(staging,'games'));
  const directory=path.join(archive,'games','development'),entries=[];
  for(const name of (await fs.readdir(directory)).filter(n=>n.endsWith('.json')).sort()){
   const bytes=await fs.readFile(path.join(directory,name)),g=JSON.parse(bytes);
@@ -88,15 +90,16 @@ export async function curate(archive,output,options={}){
  const selection=selectGames(entries,options),active=[];
  for(const e of selection.selected){
   const bytes=await fs.readFile(path.join(archive,e.file));check(hash(bytes)===e.sha256,'Archive changed during curation '+e.id);
-  const file='games/'+e.id+'.json';await fs.writeFile(path.join(output,file),bytes,{flag:'wx'});
+  const file='games/'+e.id+'.json';await writeFreshFile(path.join(staging,file),bytes,io);
   active.push({...e,file,archiveFile:e.file});
  }
  const selectedHashes=new Set(active.map(e=>e.traceHash));
  const manifest={schemaVersion:1,partition:'development',purpose:'Small teaching set of observed outcomes; not optimal-action labels or evaluation evidence.',archive,archiveMutation:'NONE: redundant records stay in archival storage; ordinary learning reads this explicit active manifest only.',maxGames:options.maxGames??100,sourceGames:entries.length,sourceBytes:entries.reduce((n,e)=>n+e.bytes,0),activeGames:active.length,activeBytes:active.reduce((n,e)=>n+e.bytes,0),uniqueTraces:selection.uniqueTraces,lessonCount:selection.lessonCount,coveredLessons:selection.coveredLessons,missingLessons:selection.missingLessons,exchangeImprovements:selection.exchangeImprovements,heldout:'Never read or copied by curator',protectedIds:[...(options.protectedIds??[])],selection:'Protected regression origins, deterministic rarity-weighted set cover, then strictly improving one-for-one exchanges over2..8-card lessons. Protected traces and the cap never change; remaining gaps are disclosed.',elapsedMilliseconds:performance.now()-began,games:active};
- await fs.writeFile(path.join(output,'manifest.json'),JSON.stringify(manifest,null,2)+'\n',{flag:'wx'});
  const inventory=entries.map(e=>({id:e.id,file:e.file,sha256:e.sha256,traceHash:e.traceHash,disposition:active.some(a=>a.id===e.id)?'ACTIVE_COPY':selectedHashes.has(e.traceHash)?'ARCHIVE_DUPLICATE':'ARCHIVE_REDUNDANT_OR_CAP',reason:selectedHashes.has(e.traceHash)?'Exact trace represented in active set':'No additional selected lesson within declared cap'}));
- await fs.writeFile(path.join(output,'archive-inventory.json'),JSON.stringify(inventory,null,2)+'\n',{flag:'wx'});
+ await writeFreshFile(path.join(staging,'archive-inventory.json'),JSON.stringify(inventory,null,2)+'\n',io);
+ await writeFreshFile(path.join(staging,'manifest.json'),JSON.stringify(manifest,null,2)+'\n',io);
  return manifest;
+ },{...publication,forbiddenRoots:[archive]});
 }
 export async function loadActiveGame(folder,manifest,entry){
  check(manifest.schemaVersion===1&&manifest.partition==='development','Development active manifest required');
