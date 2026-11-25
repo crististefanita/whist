@@ -208,7 +208,7 @@
     "atf-tests/src/test/java/atf/tests/governance/documentation/DocumentationDiagramGovernanceTest.java": "6ba90c3371939069a127c66b53b715e4f230666cbac0a8dc585a045ef516b3b5",
     "atf-tests/src/test/java/atf/tests/governance/documentation/DocumentationPolicyGovernanceTest.java": "50c5ec9c01b028922981a722bda9e56cb5d56ae9892cb79803ed066260b01040",
     "atf-tests/src/test/java/atf/tests/governance/documentation/DocumentationProseGovernanceTest.java": "99ec874f33864b7de069236e1d2630c2171eb77ada9a45c6770302ffdce8a9c0",
-    "atf-tests/src/test/java/atf/tests/governance/documentation/DocumentationReadmeStructureGovernanceTest.java": "4e2bd078801d1eaf13b8f218c7b7a94318b9c880466dbf6aa8cdd6fee3f84f49",
+    "atf-tests/src/test/java/atf/tests/governance/documentation/DocumentationReadmeStructureGovernanceTest.java": "e2108a9dc08df48a59ab58fd3b80abff07a432546a29991f252cdae4a1e04bda",
     "atf-tests/src/test/java/atf/tests/governance/documentation/DocumentationStyleGovernanceTest.java": "dbea622aba6a36ed40fd5c2901bdf76f04358d5fd1ab0549705cae9bd7a01bd5",
     "atf-tests/src/test/java/atf/tests/governance/documentation/DynamicPathDocumentationArchitectureTest.java": "6fb70ce4a594111397d3cdf63dd1a8c8b0fcc4779247db90d5d67f8ff7ae5b75",
     "atf-tests/src/test/java/atf/tests/governance/documentation/cli/DocumentationGovernanceCliComponentTest.java": "a16caa4908eb7075d649c4f77b38a4c0ae699761e4e11262cf26d7638361d2d3",
