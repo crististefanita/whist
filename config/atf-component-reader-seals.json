@@ -215,7 +215,7 @@
     "atf-tests/src/test/java/atf/tests/governance/documentation/factual/BuildModuleDeclarations.java": "20147cae473329d02a4d182f0f635e7f222420202fbc87e3d226b177fa968c17",
     "atf-tests/src/test/java/atf/tests/governance/documentation/factual/DocumentedModuleMap.java": "19f4f14a98c6cb0fbb8406d33724a82aa84d6395e955b36e1470893ed428921b",
     "atf-tests/src/test/java/atf/tests/governance/documentation/factual/DocumentedModuleMapGovernanceTest.java": "f592def8105b6f4584b089b832b126f4b7ebb670fc760f347b1f221e938fe308",
-    "atf-tests/src/test/java/atf/tests/governance/documentation/feedback/FeedbackIndexGovernanceTest.java": "5a02fe849df1b1ca25439adca4df05681e3781f91ca033fdb5fef55955d1fa3d",
+    "atf-tests/src/test/java/atf/tests/governance/documentation/feedback/FeedbackIndexGovernanceTest.java": "3534fd79bdf34207ed3239d3117b8865a6918bf9d4e2efcd46ae81a2275012bd",
     "atf-tests/src/test/java/atf/tests/governance/documentation/feedback/FeedbackIndexUnitTest.java": "40fc4e11164790d2a9a4c2bc32072d83deb69eebd9c26ddda6fa8946ec3c4026",
     "atf-tests/src/test/java/atf/tests/governance/documentation/language/DocumentationTerminologyComponentTest.java": "f6bc7d39cc1c5bcc39f22b73d01bf2f04e2ac78257c6ead47f573b62ff9f3d84",
     "atf-tests/src/test/java/atf/tests/governance/documentation/language/DocumentationTerminologyGovernanceTest.java": "9bf9bbb4e9de0f38cd6ff41b2823b8a15f1028468c8a13258dc56a848a523cbb",

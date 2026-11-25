@@ -1,6 +1,7 @@
 package atf.tests.governance.documentation.feedback;
 
 import atf.testkit.AtfComponentTest;
+import atf.android.evidence.component.ComponentInputs;
 import atf.testkit.assertions.AuditedAssertions;
 import atf.tests.governance.support.GovernanceProject;
 import atf.tests.documentation.DocumentationGovernance;
@@ -26,14 +27,16 @@ final class FeedbackIndexGovernanceTest {
     Path temporary;
 
     @Test
-    void projectFeedbackIndexHasUniqueOrderedScoresAndExistingOwnerLinks() throws Exception {
+    void projectFeedbackIndexHasUniqueOrderedScoresAndExistingOwnerLinks(ComponentInputs inputs) throws Exception {
         Path root = GovernanceProject.locateProjectRoot();
+        inputs.add("Precondition", "Live index; all tracks share unique IDs, priorities, local owners and explicit completion rules. Table size is not a closure criterion.");
+        inputs.add("Original live feedback index", Files.readString(root.resolve("docs/feedback/README.md")));
         var result = DocumentationGovernance.scanFile(root, "docs/feedback/README.md", DocumentationGovernance.Rule.FEEDBACK_ROWS);
         AuditedAssertions.assertTrue(result.violations().isEmpty(), result.violations().toString());
     }
 
     @Test
-    void rejectsDuplicateIdsInvalidScoresWrongOrderAndBrokenOwnerLinks() throws Exception {
+    void rejectsDuplicateIdsInvalidScoresWrongOrderAndBrokenOwnerLinks(ComponentInputs inputs) throws Exception {
         Path root = temporary.resolve("project");
         Path feedback = root.resolve("docs/feedback");
         Files.createDirectories(feedback);
@@ -43,7 +46,9 @@ final class FeedbackIndexGovernanceTest {
                 row("ACH-01", "P1", "101", "[Owner](missing.md)"),
                 row("AI-01", "P2", "95", "[Owner](ATF_Owner.md)"));
 
+        inputs.add("Original malformed index", index);
         List<String> violations = validate(index, feedback, root);
+        inputs.add("Original diagnostics", violations.toString());
 
         AuditedAssertions.assertTrue(violations.stream().anyMatch(value -> value.contains("duplicate ID ACH-01")));
         AuditedAssertions.assertTrue(violations.stream().anyMatch(value -> value.contains("score must be between 1 and 100")));
@@ -52,11 +57,12 @@ final class FeedbackIndexGovernanceTest {
     }
 
     @Test
-    void requiresARecognizableTodoTableAndAResolvableLocalOwnerLink() throws Exception {
+    void requiresARecognizableTodoTableAndAResolvableLocalOwnerLink(ComponentInputs inputs) throws Exception {
         Path root = temporary.resolve("empty-project");
         Path feedback = root.resolve("docs/feedback");
         Files.createDirectories(feedback);
 
+        inputs.add("Precondition", "Missing ToDo table and external-owner controls must be rejected independently.");
         List<String> missingTable = validate("# Feedback\n", feedback, root);
         List<String> externalLink = validate(table(row("RAG-01", "P1", "98", "[Owner](https://example.invalid)")), feedback, root);
 
@@ -65,11 +71,13 @@ final class FeedbackIndexGovernanceTest {
     }
 
     @Test
-    void smallMultipleTracksAndExplicitCompletionHaveNoArtificialMinimum() throws Exception {
+    void smallMultipleTracksAndExplicitCompletionHaveNoArtificialMinimum(ComponentInputs inputs) throws Exception {
         Path project = temporary.resolve("small");Path feedback = project.resolve("docs/feedback");Files.createDirectories(feedback);
         Files.writeString(feedback.resolve("ATF_Owner.md"), "# Owner\n");
         String body = "# Feedback\n\n## Prioritized ToDos\n\n### Offline\n" + table(row("GOV-07", "P1", "90", "[Owner](ATF_Owner.md#owner)"))
                 + "\n### Device\n" + table(row("AND-02", "P1", "95", "[Owner](ATF_Owner.md#owner)"));
+        inputs.add("Original two-track fixture", body);
+        inputs.add("Explicit empty backlog", "## Prioritized ToDos\n<!-- feedback:empty -->");
         var violations = new ArrayList<Violation>();
         FeedbackIndexRules.inspectRows(body.lines().toList(), feedback.resolve("README.md"), project, violations);
         FeedbackIndexRules.inspectPriorities(body.lines().toList(), feedback.resolve("README.md"), project, violations);
@@ -80,12 +88,14 @@ final class FeedbackIndexGovernanceTest {
     }
 
     @Test
-    void laterTablesInvalidPrioritiesAndFalseCompletionRemainVisible() throws Exception {
+    void laterTablesInvalidPrioritiesAndFalseCompletionRemainVisible(ComponentInputs inputs) throws Exception {
         Path project = temporary.resolve("multiple");Path feedback = project.resolve("docs/feedback");Files.createDirectories(feedback);
         Files.writeString(feedback.resolve("ATF_Owner.md"), "# Owner\n");
         String body = table(row("GOV-07", "P1", "90", "[Owner](ATF_Owner.md)")) + "\n### Next track\n"
                 + table(row("GOV-07", "P3", "80", "[Owner](ATF_Owner.md#missing)")) + "\n<!-- feedback:empty -->\n";
+        inputs.add("Original hidden-table and false-completion fixture", body);
         var findings = validate(body, feedback, project);
+        inputs.add("Original diagnostics", findings.toString());
         AuditedAssertions.assertTrue(findings.stream().anyMatch(v -> v.contains("duplicate ID GOV-07")), "Later tables cannot escape the shared ID inventory");
         AuditedAssertions.assertTrue(findings.stream().anyMatch(v -> v.contains("invalid priority")), "Unrecognized priorities are refused rather than skipped");
         AuditedAssertions.assertTrue(findings.stream().anyMatch(v -> v.contains("anchor does not resolve")), "The owning closure criterion remains navigable");
