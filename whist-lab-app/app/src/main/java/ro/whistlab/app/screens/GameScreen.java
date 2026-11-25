@@ -48,8 +48,15 @@ public final class GameScreen {
     private ScrollView tableViewport;
     private int viewportHand;
     private Runnable cancelFirstDraw = () -> { };
+    private ro.whistlab.app.observation.WhistSurfaceObservation observation;
+
+    public ro.cardtable.ui.observation.RenderedSurface observeTable() {
+        if (observation == null) throw new IllegalStateException("NO_CURRENT_WHIST_SURFACE");
+        return observation.capture();
+    }
 
     public void cancelCollection() {
+        if (observation != null) { observation.dispose(); observation = null; }
         cancelFirstDraw.run();
         cancelFirstDraw = () -> { };
         if (currentTable != null) { currentTable.cancelCollection(); currentTable = null; }
@@ -71,6 +78,7 @@ public final class GameScreen {
                 turn, copy);
         currentTable = table;
         page.addView(table, new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 0, 1f));
+        observe(page, state);
     }
     public void playing(WhistUiText copy, GameSession.Snapshot state, List<PlayedCard> completedTrick,
             boolean pauseActive, boolean autoGame, LongSupplier startCollection, Runnable resized,
@@ -91,6 +99,12 @@ public final class GameScreen {
         page.addView(table, new LinearLayout.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT, 0, 1f));
         if (pauseActive && startCollection != null) attachAtFirstDraw(table, startCollection, resized);
+        observe(page, state);
+    }
+
+    private void observe(View page, GameSession.Snapshot state) {
+        observation = new ro.whistlab.app.observation.WhistSurfaceObservation(page,
+                "hand:" + state.handNumber() + "/" + state.phase());
     }
 
     private LinearLayout tablePage(int handNumber) {
@@ -180,6 +194,8 @@ public final class GameScreen {
         status.setPadding(views.dp(GameTitleBar.TOUCH_TARGET_DP + 8), 0, 0, 0);
         TextView progress = views.text(copy.progress(state), GameHeaderTypography.PROGRESS_SP, Color.rgb(229, 239, 230), true);
         TextView summary = views.text(copy.bidSummary(state), GameHeaderTypography.BID_SUMMARY_SP, Color.rgb(194, 216, 199), false);
+        progress.setTag("game-progress");
+        summary.setTag("game-bid-summary");
         summary.setSingleLine(false);
         status.addView(progress, views.matchWrap());
         status.addView(summary, views.matchWrap());

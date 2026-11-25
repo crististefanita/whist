@@ -10,6 +10,7 @@ import org.junit.platform.suite.api.*;
     "^atf\\.tests\\.governance\\.documentation\\.release\\.rag\\.ReleaseRagAndroidComponentTest$",
     "^atf\\.tests\\.governance\\.documentation\\.release\\.rag\\.nativeproof\\.SharedPresentationComponentTest$",
     "^atf\\.tests\\.governance\\.documentation\\.release\\.rag\\.nativeproof\\.WhistSurfaceAdapterComponentTest$",
+    "^atf\\.tests\\.governance\\.documentation\\.release\\.rag\\.nativeproof\\.WhistBindingComponentTest$",
     "^atf\\.tests\\.governance\\.documentation\\.release\\.rag\\.scope\\.AndroidReleasePreflightComponentTest$",
     "^atf\\.tests\\.governance\\.documentation\\.release\\.rag\\.scope\\.AndroidUserOwnershipComponentTest$",
     "^atf\\.tests\\.governance\\.uiadapter\\.SharedMenuHistoryComponentTest$"

@@ -71,6 +71,6 @@ Modelele portabile, geometria, rolurile textului și efectele deterministe apar�
 
 | ID | Prioritate | Graniță rămasă | Criteriu de închidere |
 |---|---|---|---|
-| UI-04 | P1 | Acceptanța consumatorului nativ și a glifelor | Conectați măsurătorile reale Whist pentru rânduri, antet, atu și cărți la API-ul de observație. Calificați fonturile tăiate, textul mărit și redesenarea unui proprietar vechi pe un renderer nativ identificat; răspunsurile API controlate și planurile portabile egale nu certifică glifele desenate. |
+| UI-04 | P1 | Acceptanța nativă a glifelor și redesenării | Calificați legăturile Whist montate pentru tăierea fonturilor, text mărit și redesenarea unui proprietar vechi pe un renderer nativ identificat. Răspunsurile View/Layout controlate și verificările compoziției ecranului verifică proprietarul legăturilor și refuzurile, dar nu certifică glifele desenate. |
 
-[Observațiile măsurate ale rendererului](../testing/ATF_DisplayComponents.md#observații-măsurate-ale-rendererului) definesc API-ul nativ, protecția epocii și oracolul independent al conținutului. Fixture-urile cu API controlat verifică refuzul tăierii și al proprietarului vechi; criteriul rămas cere conexiunile consumatorului real și observații ale fonturilor native.
+[Observațiile măsurate ale rendererului](../testing/ATF_DisplayComponents.md#observații-măsurate-ale-rendererului) definesc API-ul nativ, legăturile Whist montate, protecția epocii și oracolul independent al conținutului. Observațiile fonturilor native rămân o graniță separată de acceptanță.

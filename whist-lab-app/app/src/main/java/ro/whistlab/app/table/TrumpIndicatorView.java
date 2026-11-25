@@ -38,6 +38,7 @@ public final class TrumpIndicatorView extends LinearLayout {
         setImportantForAccessibility(IMPORTANT_FOR_ACCESSIBILITY_YES);
 
         heading = new TextView(context);
+        heading.setTag("trump-heading");
         heading.setText(copy.trumpHeading());
         heading.setTextSize(TrumpTileMetrics.HEADING_SP);
         heading.setTextColor(TrumpTileStyle.INK);
@@ -48,6 +49,7 @@ public final class TrumpIndicatorView extends LinearLayout {
         addView(heading, new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
 
         value = new TextView(context);
+        value.setTag("trump-value");
         value.setText(copy.trumpIndicatorValue(state));
         value.setTextSize(TrumpTileMetrics.VALUE_SP);
         if (state.turnedCard() != null) {

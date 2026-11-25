@@ -45,6 +45,83 @@ testChanges:
 </details>
 
 <details>
+<summary>Legarea consumatorului Whist montat și refuzul proprietarului</summary>
+
+```yaml
+testChanges:
+  - id: RAG-DOMAIN-UI-BINDINGS
+    status: VERIFIED
+    base: a5cfb295dd7c52b3b6ffb5054c54cb959ba80bd4
+    expires: 2026-12-25
+    reason: Leagă conținutul Whist montat de API-ul nativ măsurat și refuză proprietarii lipsă, duplicați, tăiați sau invalidați fără a pretinde acceptanța glifelor native.
+    proof: "mvn -o -pl atf-tests -am -Dtest=WhistBindingComponentTest -Dsurefire.failIfNoSpecifiedTests=false test"
+    checks:
+      positive:
+        - atf.tests.governance.documentation.release.rag.nativeproof.WhistBindingComponentTest#mountedWhistViewsSupplyCurrentHeaderTrumpAndCardBindings
+      negative:
+        - atf.tests.governance.documentation.release.rag.nativeproof.WhistBindingComponentTest#missingDuplicateClippedAndDisposedWhistBindingsAreRejected
+    paths:
+      - whist-lab-app/app/src/main/java/ro/whistlab/app/observation/WhistSurfaceObservation.java
+      - whist-lab-app/app/src/main/java/ro/whistlab/app/screens/GameScreen.java
+      - whist-lab-app/app/src/main/java/ro/whistlab/app/table/TrumpIndicatorView.java
+      - atf-ui-browser/tests/whist-native-bindings.test.mjs
+      - atf-tests/src/test/java/atf/tests/governance/documentation/release/rag/nativeproof/WhistBindingComponentTest.java
+```
+
+</details>
+
+<details>
+<summary>Eșecuri reale ale procesului de publicare și recuperare printr-o nouă încercare</summary>
+
+```yaml
+testChanges:
+  - id: RAG-DOMAIN-REPORTING-PROCESS
+    status: VERIFIED
+    base: a5cfb295dd7c52b3b6ffb5054c54cb959ba80bd4
+    expires: 2026-12-25
+    reason: Califică granița eșecului real al procesului consumatorului limitat păstrând JUnit original, octeții canonici și identitatea persistentă a etapei; alocările bibliotecii rămân separate.
+    proof: "mvn -o -pl atf-tests -am -Dtest=PublicationFailureProcessComponentTest -Dsurefire.failIfNoSpecifiedTests=false test"
+    checks:
+      positive:
+        - atf.tests.reporting.acceptance.heap.PublicationFailureProcessComponentTest#freshProcessCanPublishAndSealTheCandidate
+      negative:
+        - atf.tests.reporting.acceptance.heap.PublicationFailureProcessComponentTest#realHeapExhaustionAndAbruptTerminationCannotPromotePartialReports
+    paths:
+      - atf-tests/src/test/java/atf/tests/reporting/acceptance/heap/PublicationFailureProbe.java
+      - atf-tests/src/test/java/atf/tests/reporting/acceptance/heap/PublicationFailureProcessComponentTest.java
+```
+
+</details>
+
+<details>
+<summary>Proprietarii componentelor adăugate pentru consumator și proces</summary>
+
+```yaml
+testChanges:
+  - id: RAG-DOMAIN-CATALOG-BINDINGS
+    status: VERIFIED
+    base: a5cfb295dd7c52b3b6ffb5054c54cb959ba80bd4
+    expires: 2026-12-25
+    reason: Păstrează granițele pachetelor, proprietarii primari independenți și inventarele pozitive explicite la înregistrarea calificării focalizate a consumatorului și procesului.
+    proof: "mvn -o -pl atf-tests -am -Dtest=AtfSourceQualityGovernanceTest,SuiteOwnershipGovernanceTest,AtfCollectionOwnershipComponentTest,TestChangeDomainComponentTest -Dsurefire.failIfNoSpecifiedTests=false test"
+    checks:
+      positive:
+        - atf.tests.governance.source.AtfSourceQualityGovernanceTest#sourcesRespectPackagePathsImportsAndProductionBoundaries
+        - atf.tests.governance.suites.SuiteOwnershipGovernanceTest#everyMavenExecutableHasOnePrimaryOwnerAndEveryFocusedGateIsDeclared
+        - atf.tests.governance.suites.AtfCollectionOwnershipComponentTest#positiveInventoriesPartitionEveryAtfComponentWithoutChangingLeafNames
+      negative:
+        - atf.tests.governance.suites.SuiteOwnershipGovernanceTest#newOmittedClassOverlapWrongLayerAndHiddenSelectionAreRejected
+    paths:
+      - atf-tests/src/test/java/atf/tests/suites/components/AtfAndroidComponentSuite.java
+      - atf-tests/src/test/java/atf/tests/suites/components/AtfReportingComponentSuite.java
+      - config/atf-component-collections.json
+      - config/atf-component-dependencies.json
+      - config/atf-component-reader-seals.json
+```
+
+</details>
+
+<details>
 <summary>Sigilii independente și contextul sursei și catalogului calificat</summary>
 
 ```yaml
