@@ -315,7 +315,7 @@
     "atf-tests/src/test/java/atf/tests/learning/LearningRunReportContractTest.java": "5eb8ddd6d0503285838a662b117342e1d53bfdda417ce58804c31640aae8b99b",
     "atf-tests/src/test/java/atf/tests/learning/LearningRunReportTest.java": "ea69f54b3c12d63d574585ec95b44a3a386cda6597986fb02236f35345b454bb",
     "atf-tests/src/test/java/atf/tests/learning/publication/CorpusPublicationComponentTest.java": "0eee8e1bfa768714acfd6e12e8d7335059ad950af6351c1aa1981a0e63537af7",
-    "atf-tests/src/test/java/atf/tests/learning/selection/EvidenceSelectionComponentTest.java": "b2e2d506c07104d4377e6c9cb5922757a255dbb1bbf0cc0f0c0db02ccc962394",
+    "atf-tests/src/test/java/atf/tests/learning/selection/EvidenceSelectionComponentTest.java": "971d151eb96e09135004508e47b93a9f812fce0ef57da11fb8d688118c19637a",
     "atf-tests/src/test/java/atf/tests/learning/selection/EvidenceSelectionUnitTest.java": "55aca9085f89a0a7343f98de75f2361c80cc4389b0e08e0020ddd4e838dab54f",
     "atf-tests/src/test/java/atf/tests/learning/selection/SelectionCostProbe.java": "2d00f03c52fe4a72b5f13e52a282e378ad80752df487156acee69e57e7fffb1e",
     "atf-tests/src/test/java/atf/tests/learning/selection/SelectionFixture.java": "73ef015f6f98daeb708bdfde5bff75769865f3fde38878c8cd6fd27296e22c24",

@@ -23,6 +23,11 @@ class EvidenceSelectionComponentTest {
         inputs.add("Preconditions and oracle", "Constructed immutable receipts; reversed IDs, three passing families, configured regression captures, quality gates, FAIL/ERROR/SKIP, complete Unicode context and repeated optional fingerprints. Independent literal specifications compute selected IDs and captured interval sums. No images, renderer, archive, APK or device.");
         assertEquals("WHIST_SELECTION_COST_QUALIFICATION", profile.path("kind").asText());
         assertEquals(128, profile.path("childHeapMiB").asInt(), "The selector cannot silently raise its admitted heap");
+        assertEquals(List.of(64, 512, 2048), SelectionFixture.JSON.convertValue(profile.path("populations"), List.class), "The declared population matrix cannot become empty or silently shrink");
+        assertEquals(List.of("mixed", "mostly-failed"), SelectionFixture.JSON.convertValue(profile.path("compositions"), List.class));
+        assertEquals(2, profile.path("childActiveProcessors").asInt());
+        assertEquals(256, profile.path("checkpointContextCharacters").asInt());
+        assertEquals(45, profile.path("timeoutSeconds").asInt());
         for (var size : profile.path("populations")) for (boolean failed : new boolean[]{false, true}) {
             var log = root.resolve("population-" + size.asInt() + "-" + failed + ".log");
             String java = Path.of(System.getProperty("java.home"), "bin", System.getProperty("os.name").startsWith("Windows") ? "java.exe" : "java").toString();
