@@ -83,6 +83,8 @@ public final class MainActivity extends Activity {
     private HighScoreRepository highScores;
     private WhistAchievementRepository achievements;
     private WhistAchievementNoticeCoordinator achievementNotices;
+    private final ro.whistlab.app.achievements.presentation.WhistAchievementScreenOwner achievementScreen =
+            new ro.whistlab.app.achievements.presentation.WhistAchievementScreenOwner();
     private GamePersistence persistence;
     private boolean rankingEligible;
     private String matchId = java.util.UUID.randomUUID().toString();
@@ -101,6 +103,7 @@ public final class MainActivity extends Activity {
     @Override
     protected void onCreate(Bundle state) {
         super.onCreate(state);
+        achievementScreen.restore(state);
         String selectedLanguage = getPreferences(MODE_PRIVATE).getString("interfaceLanguage",
                 getPreferences(MODE_PRIVATE).getString("helpLanguage", "EN"));
         if (BuildConfig.DEBUG && getIntent().hasExtra("debug_language")) {
@@ -146,8 +149,13 @@ public final class MainActivity extends Activity {
             else driveAutomatedTurns();
         } else {
             loadSavedGame();
-            renderHome();
+            if (achievementScreen.reopen()) showAchievements(); else renderHome();
         }
+    }
+
+    @Override protected void onSaveInstanceState(Bundle state) {
+        super.onSaveInstanceState(state);
+        achievementScreen.save(state, navigation.screen() == AppNavigation.Screen.ACHIEVEMENTS);
     }
 
     private void loadSavedGame() {
@@ -189,6 +197,7 @@ public final class MainActivity extends Activity {
         switch (navigation.screen()) {
             case INSTRUCTIONS -> renderInstructions();
             case SETUP -> renderSetup();
+            case ACHIEVEMENTS -> showAchievements();
             default -> renderHome();
         }
     }
@@ -425,7 +434,7 @@ public final class MainActivity extends Activity {
             var progress = achievements.state();
             navigation.show(AppNavigation.Screen.ACHIEVEMENTS);
             ro.whistlab.app.achievements.presentation.WhistAchievementsScreen.show(views, copy, progress,
-                    new ro.cardtable.ui.achievements.AchievementScreen.State(), this::renderHome);
+                    achievementScreen.state(), this::renderHome);
         } catch (java.io.IOException failure) {
             Toast.makeText(this, copy.storageError(), Toast.LENGTH_LONG).show();
         }

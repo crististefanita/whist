@@ -163,6 +163,7 @@ La eșec sau schimbarea sursei, inspectați jurnalele fiecărui control și dosa
 | Validarea inventarului | Politica limbii surselor, inventarul complet și cazurile controlate de refuz | Geometria nativă sau randarea rapoartelor |
 | Suprafața nativă | Conținutul măsurat, geometria comună între faze și refuzul pozițiilor deplasate | Inventarul limbii pentru toate sursele |
 | Raportarea | Publicarea, proprietatea producătorilor, valorile complete și fixture-urile cu resurse limitate | Observațiile suprafeței native |
+| Dovezi AI | Admiterea tranzacțională a eșantioanelor, frecvențe de model și oracole independente ale utilității | Randare nativă sau evaluarea forței de joc |
 | Catalogul | Suitele primare, inventarele claselor, dependențele cititorilor și sigiliile | Corpurile neafectate ale testelor UI sau de resurse |
 | Selecția | Rutarea pe domenii, gruparea probelor, eșecurile și modificarea sursei/planului | Execuția jocului sau a rendererului nativ |
 
@@ -172,10 +173,12 @@ flowchart LR
     OWNER -->|atribuie| VALIDATOR["Validarea inventarului"]
     OWNER -->|atribuie| UI["Suprafața nativă"]
     OWNER -->|atribuie| REPORT["Raportarea"]
+    OWNER -->|atribuie| AI["Dovezi AI"]
     OWNER -->|atribuie| CATALOG["Catalogul și selecția"]
     VALIDATOR -->|contribuie| UNION["Reuniunea controalelor necesare"]
     UI -->|contribuie| UNION
     REPORT -->|contribuie| UNION
+    AI -->|contribuie| UNION
     CATALOG -->|contribuie| UNION
     UNION -->|folosește| COMPILE["O singură compilare sigilată"]
     COMPILE -->|produce| PROOFS["Extent și probă originale separate pentru fiecare control"]

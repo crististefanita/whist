@@ -27,9 +27,9 @@ Scorul 1–100 exprimă ordinea recomandată de lucru, nu calitatea sau procentu
 | ID | Prioritate | Scor | ToDo rămas și criteriul scurt de închidere |
 |---|---:|---:|---|
 | AND-02 | P1 | 92 | Califică pe APK actorul, geometria stabilă și mâna vizibilă în licitație/joc/AutoGame pentru 3–6 locuri, RO/EN și text mărit. [Registru](ATF_Android.md) |
-| AI-01 | P1 | 91 | Calibrează inferența Hard pentru 2–8 cărți din licitații și cărți jucate pe loturi noi; separă exactitatea probabilităților de scorul simulat. [Registru](ATF_Ai.md) |
+| AI-01 | P1 | 91 | Calibrați inferența Hard la 2–8 cărți pe loturi noi; admiterea atomică a eșantioanelor și oracolele frecvențelor din modele finite nu stabilesc calibrarea posteriorului sau câștiguri de forță de joc. [Registru](ATF_Ai.md) |
 | UI-04 | P1 | 90 | Calificați legăturile Whist montate, vizibilitatea fonturilor native și redesenarea unui proprietar vechi pe un renderer identificat; componentele controlate de legare rămân separate de acceptanța glifelor. [Registru](ATF_CardUi_Extraction.md#ui-three-module-plan) |
-| ACH-01 | P1 | 90 | Califică pe APK restaurarea poziției și selecției din Realizări, apoi reluarea notificărilor după recrearea activității. [Registru](ATF_Achievements.md) |
+| ACH-01 | P1 | 90 | Calificați pe APK snapshot-ul Realizărilor deținut de activitate: restaurarea nativă a derulării/selecției și reluarea notificărilor înainte și după confirmare. [Registru](ATF_Achievements.md) |
 | AND-03 | P1 | 89 | Califică API 37, navigarea sistemului, reluarea, fonturile mărite și memoria pe un dispozitiv identificat. [Registru](ATF_Android.md) |
 | RPT-03 | P1 | 88 | Calificați vârfurile independente de memorie ale bibliotecii, reducerea copiilor integrale și un profil de resurse mai larg; recuperarea după eșecul real al procesului consumatorului este separată de alocările bibliotecii. [Registru](ATF_Reporting.md#rpt-bounded-report-heap--finalizare-sigură-pentru-suite-mari) |
 | WEB-16 | P1 | 88 | Calificați mărirea scenei calibrată după APK, textul chenarelor, listele, tipografia scorului și benzile acțiunilor pe un Android, RO/EN și text mărit; numai istoricul are derulare verticală. [Registru](ATF_UiBrowser.md#web-16-suprafața-de-joc-responsivă-și-tipografia-meniurilor) |

@@ -41,6 +41,7 @@ class TestChangeDomainComponentTest {
     }
 
     private static boolean belongs(String id, String check) {
+        if (id.startsWith("RAG-DOMAIN-AI")) return check.contains(".governance.source.ai.");
         if (id.startsWith(ReviewedDomains.VALIDATOR)) return check.contains(".source.language.");
         if (id.startsWith(ReviewedDomains.UI)) return check.contains(".nativeproof.");
         if (id.startsWith(ReviewedDomains.REPORTING)) return check.contains(".reporting.") || check.startsWith("atf.android.component.");

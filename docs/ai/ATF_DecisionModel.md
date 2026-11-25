@@ -145,6 +145,9 @@ Lipsa unui certificat păstrează fallback-ul și nu dovedește că alternativa 
 
 ## Reproductibilitate și limite
 
+- `BidSampleEvidence` admite tranzacțional un eșantion complet: identitățile licitațiilor legale sunt unice, valorile contractului exact sunt în `[0,1]`, iar ponderile, utilitățile și agregatele propuse trebuie să fie finite și reprezentabile. Un rând respins lasă neschimbate mediile, varianța perechilor, numărul brut și dimensiunea efectivă a eșantionului.
+- Frecvența ponderată a contractului, punctele așteptate, numărul brut și dimensiunea efectivă a eșantionului au sensuri separate. Componentele compară acumulatorul și funcția scorului românesc cu aritmetică independentă pe populații finite; rezultatele controlate nu calibrează eșantionarea lumii ascunse și nu demonstrează joc mai puternic.
+
 - Aceeași observație completă și aceeași implementare produc aceeași decizie.
 - Pentru Hard, inițializarea estimatorului folosește diferențele de scor față de actor, calculate pe 64 de biți. O translație comună a totalurilor păstrează aceleași lumi și estimări; schimbarea diferențelor de scor rămâne parte a contextului. Jucătorul independent are propriul flux aleator și nu preia automat această invariantă.
 - Bonusurile și penalizările configurate schimbă utilitatea rezultatului, fără să schimbe singure distribuirea cărților. La mâinile eligibile, diferența valorii unei serii se ponderează cu frecvența exactului sau a ratării; o mână de o carte nu plătește seria.

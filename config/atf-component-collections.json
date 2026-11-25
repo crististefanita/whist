@@ -11,6 +11,7 @@
         "atf.libraries.PlatformLibraryIntegrityTest",
         "atf.tests.contracts.HeuristicCatalogContractTest",
         "atf.tests.governance.source.AtfSourceQualityGovernanceTest",
+        "atf.tests.governance.source.ai.AiSampleEvidenceComponentTest",
         "atf.tests.governance.source.ModuleBoundaryGovernanceTest",
         "atf.tests.governance.source.PackageCohesionGovernanceTest",
         "atf.tests.governance.source.TestLayerSyntaxTest",
@@ -95,6 +96,7 @@
         "atf.tests.governance.documentation.release.rag.nativeproof.SharedPresentationComponentTest",
         "atf.tests.governance.documentation.release.rag.nativeproof.WhistSurfaceAdapterComponentTest",
         "atf.tests.governance.documentation.release.rag.nativeproof.WhistBindingComponentTest",
+        "atf.tests.governance.documentation.release.rag.nativeproof.AchievementOwnerComponentTest",
         "atf.tests.governance.documentation.release.rag.scope.AndroidReleasePreflightComponentTest",
         "atf.tests.governance.documentation.release.rag.scope.AndroidUserOwnershipComponentTest",
         "atf.tests.governance.uiadapter.SharedMenuHistoryComponentTest"

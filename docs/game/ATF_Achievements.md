@@ -46,6 +46,22 @@ Mâinile și partidele furnizează fapte distincte. Evaluarea actualizează star
 - `:app:verifyWhistAchievementCatalogValidation` verifică vectorii valizi și negativi; taskul face parte din `:app:testDebugAchievementsComponents` și `check`. Testele runtime verifică separat ordinea și identitățile generate, pragurile, reluarea și acordarea idempotentă a progresului.
 - Identificatorii stabili leagă progresul salvat de obiectivul afișat. Interfața plafonează progresul la țintă, iar modelul păstrează valoarea acumulată pentru pragurile care folosesc aceeași măsură.
 
+<a id="activity-owned-navigation"></a>
+
+## Navigarea deținută de activitate
+
+`WhistAchievementScreenOwner` păstrează câte un `AchievementScreen.State` comun pentru fiecare activitate. Activitatea îl restaurează înainte de deschiderea catalogului și salvează un snapshot Bundle imbricat prin codecul comun.
+
+| Proprietar | Responsabilitate |
+|---|---|
+| Ecranul comun | Poziția derulării, ID-ul stabil al obiectivului selectat și restaurarea detaliului său. |
+| Proprietarul activității Whist | Refolosește starea la redeschidere sau schimbarea limbii; salvează dacă era vizibil catalogul și redeschide numai ruta salvată. |
+| Bundle-ul activității | Copiază valorile de navigare la salvare; callback-urile ulterioare ale stării vechi nu pot modifica valorile salvate. |
+| Depozitul realizărilor | Progres persistent, chei de idempotentă și notificări în așteptare; navigarea nu rescrie aceste date. |
+| Coordonatorul notificărilor | Confirmă notificarea curentă, păstrează obiectivele neconfirmate și refuză callback-urile depășite de confirmare. |
+
+Componentele Bundle controlate folosesc codecul State comun real și verifică compoziția activității. Poziționarea nativă a derulării, recrearea activității și etichetele traduse vizibile rămân criterii separate de acceptanță pe APK.
+
 ## Sursa de adevăr
 
 - Progresul de mână se acordă numai după ce levatele, licitațiile și scorul acelei mâini au fost înregistrate. Obiectivele care depind de întreaga partidă se acordă numai după `SCORE` și `finalHand`, pentru locul uman de la scaunul 0.

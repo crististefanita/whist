@@ -6,10 +6,9 @@ Validarea YAML la build și compatibilitatea progresului sunt documentate în [c
 
 ## P1 · Restaurarea stării ecranului comun pe Android
 
-Adaptorul Whist creează o stare nouă a ecranului la fiecare deschidere. Componentele catalogului și detaliului nu demonstrează, singure, că poziția listei și obiectivul selectat se păstrează la recrearea ecranului sau după revenirea dintr-o notificare.
+[Contractul snapshot-ului de navigare](../game/ATF_Achievements.md#activity-owned-navigation) separă starea listei/selecției deținută de activitate de progresul persistent. Transferurile Bundle controlate și verificările compoziției activității nu certifică poziționarea nativă a listei, glifele traduse sau recrearea platformei.
 
-- Păstrează starea de navigare și selecția în proprietarul Android potrivit ciclului de viață, fără să schimbi ordinea sau conținutul catalogului.
-- Verifică RO/EN, selectarea unui obiectiv, derularea până la un rând, recrearea ecranului și revenirea la aceeași poziție și selecție.
+- Pe un APK identificat în RO/EN, selectează un obiectiv, derulează până la un rând, recreează activitatea și verifică aceeași poziție și selecție, inclusiv după schimbarea limbii.
 - Componentele acoperă păstrarea cozii la închidere, reapariția notificării neconfirmate și refuzul unei confirmări depășite. Pe APK, recreează activitatea înainte și după confirmare și confruntă fiecare apariție cu starea cozii și progresul salvat. [Componentele notificării](../../whist-lab-app/app/src/test/java/ro/whistlab/app/achievements/WhistAchievementNoticeCoordinatorComponentTest.java)
 - Folosește checkpoint-urile existente pentru catalog și detaliu. Extinde proba cu recrearea activității în ambele limbi și verifică revenirea la același obiectiv, la aceeași poziție și cu etichetele vizibile corecte.
 
