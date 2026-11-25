@@ -54,3 +54,35 @@ node whist-lab-app/ai-lab/tools/corpus/whist-active-corpus.mjs verify-current
 Componentele implicite folosesc [date legale construite](../../whist-lab-app/ai-lab/tools/testing/legal-game-fixture.mjs), cu reguli de pregătire independente de validator. Arhiva externă este necesară numai pentru operațiile selectate asupra datelor păstrate.
 
 [Criteriile selecției](ATF_Selection.md) și [protocolul evaluării](README.md) explică folosirea corpusului pentru îmbunătățirea politicilor.
+
+## Publicarea atomică a uneltelor
+
+[Curatorul activ](../../whist-lab-app/ai-lab/tools/corpus/whist-active-corpus.mjs) și [compozitorul loturilor pereche](../../whist-lab-app/ai-lab/tools/learning/whist-learning-batches.mjs) folosesc același [publicator de directoare](../../whist-lab-app/ai-lab/tools/qualification/atomic-directory.mjs). Apelantul furnizează un părinte existent și o destinație nouă în afara intrărilor imuabile; verificarea căilor canonice respinge și aliasurile către aceste intrări.
+
+```mermaid
+flowchart LR
+    INPUT["Intrări imuabile"] -->|validează| CLAIM["Rezervare exclusivă"]
+    CLAIM -->|construiește privat| STAGE["Pregătire în director alăturat"]
+    STAGE -->|sincronizează fișierele și manifestul| READY["Rezultat complet"]
+    READY -->|redenumește o dată| OUTPUT["Director publicat"]
+    STAGE -->|la eșec| CLEAN["Curățare cu proprietar verificat"]
+```
+
+<details>
+<summary>Legendă: vizibilitate și proprietate</summary>
+
+Scriitorii cooperanți rezervă exclusiv aceeași destinație. Consumatorii văd fie absența directorului final, fie un rezultat complet; fișierele private și rezervarea nu sunt acceptate drept date publicate.
+
+</details>
+
+| Graniță | Contract |
+|---|---|
+| Destinație existentă | Refuză fișierele, legăturile și directoarele, inclusiv directoarele goale; nu combină și nu șterge un rezultat anterior. |
+| Identitatea intrărilor | Păstrează octeții originali ai partidelor și invocărilor, hash-urile, populația perechilor și eșecurile înregistrate; numele pregătirii private nu devin identități ale rezultatului. |
+| Finalizare | Sincronizează fiecare fișier, scrie manifestul ultimul și verifică din nou rezervarea, proprietatea directorului privat și absența destinației înainte de promovare. |
+| Eșec tratat | Elimină numai pregătirea privată deținută și rezervarea originală; păstrează eroarea primară și eventualele eșecuri de curățare. Un eșec de curățare după promovare nu șterge rezultatul publicat. |
+| Proces întrerupt | O oprire brutală poate lăsa o rezervare și pregătirea privată; nu este permisă expirarea automată ori preluarea rezervării. Confirmați oprirea scriitorului și verificați proprietatea și intrările originale înainte de recuperarea explicită. |
+
+Publicarea folosește un director alăturat pe același sistem de fișiere. Este un contract între scriitori cooperanți, nu protecție împotriva unui proces ostil care înlocuiește căile între verificări ori garanție de durabilitate la căderea alimentării.
+
+Testele unitare pure acoperă granițele sistemului de fișiere și păstrarea erorilor publicatorului. [Componentele auditabile de publicare](../../atf-tests/src/test/java/atf/tests/learning/publication/CorpusPublicationComponentTest.java) generează local partide legale, compară independent hash-urile surselor și ale rezultatelor și controlează scriitorii concurenți și eșecurile la scriere/promovare; nu cer nici arhivă externă, nici capturi de ecran.

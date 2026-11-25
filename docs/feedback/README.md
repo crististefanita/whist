@@ -11,7 +11,7 @@ Contractele stabile aparțin ghidurilor tematice; fiecare criteriu rămâne desc
 
 | Arie | Responsabilitate și criterii |
 |---|---|
-| [Jucători AI](ATF_Ai.md) | Inferență, estimări, cost și calificarea politicilor pe date noi. |
+| [Jucători AI](ATF_Ai.md) | Inferență, estimări, calificarea politicilor pe date noi și limitele rămase de volum/recuperare ale laboratorului. |
 | [Android](ATF_Android.md) | Istoric complet, persistență, geometrie, localizare și accesibilitate. |
 | [Interfață comună](ATF_CardUi_Extraction.md) | Limitele dintre prezentarea reutilizabilă și adaptorul Whist: meniu, profil, masă, istoric și animații. |
 | [Browser](ATF_UiBrowser.md) | Viewport responsiv, tipografia meniurilor și paritatea cu APK-urile pentru adaptorul comun Edge și Chrome. |

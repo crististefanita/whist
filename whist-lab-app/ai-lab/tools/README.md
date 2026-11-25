@@ -43,6 +43,8 @@ Validatorul verifică regulile și scorul înaintea interpretării rezultatelor.
 - **Mecanism generic:** [intersecția intervalelor](qualification/half-open-interval.mjs) este pură și primește intervale întregi semi-deschise.
 - **Adaptor de domeniu:** Whist păstrează spațiul distribuțiilor, validarea seed-urilor și persistența; [lecțiile transferabile](../../../docs/learning/ATF_PolicyEvolution.md#lecții-transferabile-către-alte-jocuri-și-produse) explică această graniță.
 
+Curatorul și compozitorul loturilor pereche folosesc aceeași [pregătire privată și publicare exclusivă](qualification/atomic-directory.mjs). [Contractul publicării](../../../docs/learning/ATF_Corpus.md#publicarea-atomică-a-uneltelor) definește intrările imuabile, vizibilitatea directorului final, păstrarea erorilor și recuperarea explicită după o oprire brutală.
+
 ## Verificare
 
 Din directorul `whist-lab-app` al unei copii temporare complete a proiectului, cu Java, Node.js și dependențele Gradle disponibile local:
@@ -54,6 +56,8 @@ Din directorul `whist-lab-app` al unei copii temporare complete a proiectului, c
 - **Rezolvare:** Gradle execută Node din rădăcina copiei proiectului. Importurile și resursele uneltelor se rezolvă față de fișierul care le deține; intrările CLI și destinațiile externe sunt declarate de apelant.
 - **Date locale:** testele de [corpus](corpus/whist-corpus.test.mjs) și de [curator](corpus/whist-active-corpus.test.mjs) folosesc [partide construite](testing/legal-game-fixture.mjs), cu distribuire, licitații, joc legal și scor calculate separat de validator. Fișierele temporare aparțin testului. `--offline` cere separat dependențe Gradle disponibile local.
 - **Reproductibilitate:** identitățile semantice ale înregistrărilor se păstrează la mutarea fizică a sursei. Capturile vechi se reproduc din copia lor identificată, iar directoarele externe nu sunt rescrise prin această organizare.
+
+- **Straturile publicării:** [Testele unitare pure ale publicatorului](qualification/atomic-directory.test.mjs) verifică granițele sistemului de fișiere fără Extent. [Componentele auditabile pentru corpus și perechi](testing/corpus-publication.test.mjs) folosesc partide legale construite, comparații de octeți și eșecuri controlate cu o limită de heap Node de 128 MiB; suita primară de orchestrare publică aserțiunile și intrările adaptorului Java fără imagini.
 
 [Modulul AI](../README.md) · [Protocolul](../../../docs/learning/README.md) · [Colecții](../../../docs/testing/ATF_Collections.md)
 

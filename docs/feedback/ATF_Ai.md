@@ -29,7 +29,7 @@ Responsabilul modulului AI deține intrările și verificarea proprie. Testele d
 
 | Prioritate | Lacună și sursă | Nivel și criteriu de închidere |
 |---|---|---|
-| P2 | Costul și recuperarea uneltelor de corpus, selecție și compoziție cer calificare proprie, separată de registrul expunerii. | Componente cu duplicate, intrări incomplete, scriere întreruptă ori concurentă și volume controlate; buget și mediu declarate, cu păstrarea provenienței. |
+| P2 | Costul uneltelor de corpus la volume mari și recuperarea după oprirea brutală a procesului cer în continuare calificare. Publicarea cooperantă și eșecurile tratate la scriere/promovare au un [contract](../learning/ATF_Corpus.md#publicarea-atomică-a-uneltelor) separat. | Declarați bugetele pentru volumul intrărilor și resurse; măsurați scalarea și simulați terminarea procesului cu rezervări rămase. Recuperarea trebuie să păstreze identitatea intrărilor și să excludă un scriitor activ înainte de eliminarea rezervării; componentele mici construite nu stabilesc aceste proprietăți. |
 
 ## Reutilizarea mecanismelor
 

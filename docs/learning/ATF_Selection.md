@@ -40,6 +40,7 @@ Curatorul produce corpusul activ, iar casebook-ul consumă separat invocări și
 ## Invariante de proces
 
 - [Corpusul](ATF_Corpus.md) deține partiția, identitatea, hash-urile și replay-ul independent înaintea analizei.
+- [Publicarea atomică a uneltelor](ATF_Corpus.md#publicarea-atomică-a-uneltelor) păstrează private selecțiile parțiale și refuză destinațiile existente fără a schimba criteriile selecției.
 - [Componentele AI](../testing/ATF_AiComponents.md) dețin martorul legal, proiecția actorului și așteptarea justificată.
 - [Protocolul offline](README.md#ciclul-de-îmbunătățire) deține înghețarea, lotul rezervat și promovarea.
 

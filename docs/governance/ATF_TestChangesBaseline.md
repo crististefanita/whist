@@ -4224,3 +4224,58 @@ testChanges:
 ```
 
 </details>
+
+<details>
+<summary>Publicarea atomică a corpusului și a loturilor pereche</summary>
+
+```yaml
+testChanges:
+  - id: LAB-ATOMIC-PUBLICATION
+    status: VERIFIED
+    base: 6d496cee24aa2b1e0d97892da24bc584a07545d8
+    expires: 2026-12-25
+    reason: Publish complete fresh results once, preserve original bytes and failures, and reject interrupted or concurrent writes without an archive or device.
+    proof: "mvn -o -pl atf-tests -am -Dtest=CorpusPublicationComponentTest -Dsurefire.failIfNoSpecifiedTests=false test"
+    checks:
+      positive:
+        - atf.tests.learning.publication.CorpusPublicationComponentTest#completeCorpusAndPairedBatchesKeepIndependentOriginalByteHashes
+      negative:
+        - atf.tests.learning.publication.CorpusPublicationComponentTest#interruptedConcurrentAndFailedInputsCannotPublishOrEraseOriginals
+    paths:
+      - atf-tests/src/test/java/atf/tests/learning/publication/CorpusPublicationComponentTest.java
+      - whist-lab-app/ai-lab/tools/qualification/atomic-directory.mjs
+      - whist-lab-app/ai-lab/tools/qualification/atomic-directory.test.mjs
+      - whist-lab-app/ai-lab/tools/testing/publication-fixtures.mjs
+      - whist-lab-app/ai-lab/tools/testing/corpus-publication.test.mjs
+      - whist-lab-app/ai-lab/tools/corpus/whist-active-corpus.mjs
+      - whist-lab-app/ai-lab/tools/learning/whist-learning-batches.mjs
+```
+
+</details>
+
+<details>
+<summary>Proprietatea componentelor de publicare și inventarul cititorilor</summary>
+
+```yaml
+testChanges:
+  - id: LAB-PUBLICATION-CATALOG
+    status: VERIFIED
+    base: 6d496cee24aa2b1e0d97892da24bc584a07545d8
+    expires: 2026-12-25
+    reason: Keep publication components in one primary orchestration collection and retain complete source, suite and dependency-reader inventories.
+    proof: "mvn -o -pl atf-tests -am -Dtest=AtfSourceQualityGovernanceTest,SuiteOwnershipGovernanceTest,AtfCollectionOwnershipComponentTest -Dsurefire.failIfNoSpecifiedTests=false test"
+    checks:
+      positive:
+        - atf.tests.governance.source.AtfSourceQualityGovernanceTest#sourcesRespectPackagePathsImportsAndProductionBoundaries
+        - atf.tests.governance.suites.SuiteOwnershipGovernanceTest#everyMavenExecutableHasOnePrimaryOwnerAndEveryFocusedGateIsDeclared
+        - atf.tests.governance.suites.AtfCollectionOwnershipComponentTest#positiveInventoriesPartitionEveryAtfComponentWithoutChangingLeafNames
+      negative:
+        - atf.tests.governance.suites.SuiteOwnershipGovernanceTest#newOmittedClassOverlapWrongLayerAndHiddenSelectionAreRejected
+    paths:
+      - atf-tests/src/test/java/atf/tests/suites/components/AtfOrchestrationComponentSuite.java
+      - config/atf-component-collections.json
+      - config/atf-component-dependencies.json
+      - config/atf-component-reader-seals.json
+```
+
+</details>
