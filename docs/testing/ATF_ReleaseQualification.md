@@ -725,3 +725,16 @@ After interruption, retain the run directory and workspace. Resume from the same
 | Game component | Opening four one-card hands, dealer rotation, transition to two cards and score checkpoint. Check alternate choices, recommendation precedence and confirmed-contract persistence across hand sizes. |
 | Driver component | XML hierarchy and an achievement notification after the run starts. Mock ADB verifies observation order and gesture counts. |
 | APK E2E | Visible recommendation, alternate choice, score dialog and contract preserved after restart. Play at most one preparatory hand when the opening bid is forced. |
+
+<a id="qualification-journal-failures"></a>
+
+## Qualification journal failures
+
+The [timing owner](../../scripts/AtfQualificationTiming.ps1) records command outcome separately from journal publication. A storage failure cannot replace the original command exception or turn an incomplete journal into qualified evidence.
+
+- Original command failures propagate unchanged. Attached `ATF_QUALIFICATION_TIMING_FAILURES` retain each secondary exception and its phase, including nested phases.
+- A publication failure after an accepted command still fails the operation. Native exit codes remain attached as `ATF_NATIVE_EXIT_CODE`; command acceptance does not prove journal publication.
+- Atomic replacement preserves the previous journal until the new document is committed. A remaining `.writing` file records an unpromoted observation and requires explicit, source-bound recovery.
+- The injectable writer belongs to controlled component probes. Production launchers use the real filesystem writer; the port grants no execution or qualification authority.
+
+[Component coverage](../../atf-tests/src/test/java/atf/tests/governance/documentation/release/rag/scope/metrics/QualificationCostComponentTest.java) combines actual filesystem refusal with controlled storage errors. It preserves cause identity, phase ownership and existing output; no device or timing threshold is involved.

@@ -1,10 +1,21 @@
 #requires -Version 7.0
 . (Join-Path $PSScriptRoot 'AtfComponentWorkspace.ps1')
 
-function Write-AtfComponentJson([string]$File, $Document) {
+function Write-AtfComponentJson([string]$File, $Document, [ref]$Measurement) {
+    if ($Measurement) { $Measurement.Value = $null }
+    $started = [Diagnostics.Stopwatch]::GetTimestamp()
+    $json = ($Document | ConvertTo-Json -Depth 12) + [Environment]::NewLine
+    $serialized = [Diagnostics.Stopwatch]::GetTimestamp()
     $temporary = $File + '.writing'
-    [IO.File]::WriteAllText($temporary, (($Document | ConvertTo-Json -Depth 12) + [Environment]::NewLine))
+    [IO.File]::WriteAllText($temporary, $json)
     [IO.File]::Move($temporary, $File, $true)
+    if ($Measurement) {
+        $ended = [Diagnostics.Stopwatch]::GetTimestamp()
+        $Measurement.Value = [ordered]@{schemaVersion=1;kind='ATF_JSON_WRITE_COST';qualified=$false
+            frequency=[Diagnostics.Stopwatch]::Frequency;totalTicks=($ended-$started)
+            serializationTicks=($serialized-$started);publicationTicks=($ended-$serialized)
+            bytes=[Text.Encoding]::UTF8.GetByteCount($json)}
+    }
 }
 
 function Get-AtfResumeComponentWorkspace([string]$Previous, [string]$TempRoot) {

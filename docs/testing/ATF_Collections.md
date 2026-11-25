@@ -366,3 +366,36 @@ The [resource profile](../../config/launcher-fixture-profile.json) declares the 
 - The copied tool host includes its pinned runtime configuration. This fixture boundary never changes production preflight or qualifies standalone compilation.
 
 The compiler-input matrix has one unit owner. Real compiler admission has one component owner; removing a duplicate launcher call does not cache a verdict or remove its rejection cases. Compare actual child counts and phase durations under the declared profile; keep results in the external audit rather than historical timing claims in this guide.
+
+<a id="compiler-cost-partitions"></a>
+
+## Compiler cost partitions
+
+Fresh Maven preparation emits diagnostic measurements alongside its existing byte seal. These observations never authorize reuse: current source, toolchain, original receipts, complete output hashes and classpath admission remain mandatory. The measured and ordinary seal have the same identity.
+
+| Observation | Meaning and boundary |
+|---|---|
+| `compiler-output-cost.json` | Disjoint monotonic ticks for enumeration/metadata, fresh byte hashing, sorting/identity formation and remaining coordination. Their sum equals the measured total. |
+| File population | Exact hashed-file count, visited directories and file lengths observed before hashing. Observed lengths are not physical disk-read or allocation measurements. |
+| `compiler-receipt-initial-cost.json` | Separate serialization and atomic publication intervals for the initial Maven receipt. |
+| `compiler-receipt-classpath-cost.json` | The same partition for a freshly resolved classpath receipt. A reused classpath has no new write observation. |
+| Admission | Every measurement declares `qualified: false`. A failed measured operation clears its output observation; the cost file cannot replace a source or compiler receipt. |
+
+Only fresh output sealing enables detailed traversal clocks. Reuse still hashes current bytes without collecting per-file measurements. The profile does not narrow compiler inputs, discard outputs, alter report selection or assert a speedup.
+
+```mermaid
+flowchart LR
+    Outputs[Compiler outputs] -->|enter| Walk[Enumerate and inspect]
+    Walk -->|feeds| Hash[Hash fresh bytes]
+    Hash -->|feeds| Seal[Sort and form identity]
+    Seal -->|records| Receipt[Serialize receipt]
+    Receipt -->|commits| Publish[Atomic publication]
+    Seal -->|is checked by| Admission[Existing admission rules]
+```
+
+<details>
+<summary>Legend: measurements and authority</summary>
+
+Clock intervals explain observed cost; source-bound byte receipts authorize reuse. Remaining coordination includes root admission and measurement overhead. Component probes reconcile counts and partitions against independent hashes; they do not qualify machine-independent performance or renderer allocation.
+
+</details>

@@ -7,6 +7,55 @@ This register defines reviewed controls, their Git base and exact paths. The [te
 ## Verified controls
 
 <details>
+<summary>Original qualification failures and measured compiler sealing</summary>
+
+```yaml
+testChanges:
+  - id: RAG-QUALIFICATION-COST-DIAGNOSTICS
+    status: VERIFIED
+    base: 3e35994db80a8224d63928b1b83f5489ecd4d5e6
+    expires: 2026-12-25
+    reason: Preserve primary command failures when timing publication fails. Measure disjoint compiler traversal, hashing, identity and receipt publication without changing byte seals, admission authority or source-bound recovery.
+    proof: "mvn -o -pl atf-tests -am -Dtest=QualificationCostComponentTest,SnapshotIoComponentTest -Dsurefire.failIfNoSpecifiedTests=false test"
+    checks:
+      positive:
+        - atf.tests.governance.documentation.release.rag.scope.metrics.QualificationCostComponentTest#timingRetainsActionResultsAndExistingJournalOwnership
+        - atf.tests.governance.documentation.release.rag.scope.metrics.QualificationCostComponentTest#measuredSealAndReceiptPreserveIndependentByteIdentity
+        - atf.tests.governance.documentation.release.rag.scope.io.SnapshotIoComponentTest#byteInventoriesAndNamedSnapshotPhasesRemainEquivalent
+      negative:
+        - atf.tests.governance.documentation.release.rag.scope.metrics.QualificationCostComponentTest#nestedJournalFailureCannotReplaceTheOriginalCancellation
+        - atf.tests.governance.documentation.release.rag.scope.metrics.QualificationCostComponentTest#costsCannotAuthorizeMissingOrCorruptedCompilerOutput
+        - atf.tests.governance.documentation.release.rag.scope.io.SnapshotIoComponentTest#sameMetadataDriftCorruptionAndIndirectPathsCannotQualify
+    paths:
+      - scripts/AtfQualificationTiming.ps1
+      - scripts/AtfComponentMaven.ps1
+      - scripts/AtfComponentResume.ps1
+      - scripts/run-component-suites.ps1
+      - atf-tests/tools/qualification-costs.test.mjs
+      - atf-tests/src/test/java/atf/tests/governance/documentation/release/rag/scope/metrics/QualificationCostComponentTest.java
+  - id: RAG-DOMAIN-CATALOG-QUALIFICATION-COST
+    status: VERIFIED
+    base: 3e35994db80a8224d63928b1b83f5489ecd4d5e6
+    expires: 2026-12-25
+    reason: Assign the qualification cost component to one primary owner and review complete source, suite, dependency and reader-seal populations.
+    proof: "mvn -o -pl atf-tests -am -Dtest=AtfSourceQualityGovernanceTest,SuiteOwnershipGovernanceTest,AtfCollectionOwnershipComponentTest -Dsurefire.failIfNoSpecifiedTests=false test"
+    checks:
+      positive:
+        - atf.tests.governance.source.AtfSourceQualityGovernanceTest#sourcesRespectPackagePathsImportsAndProductionBoundaries
+        - atf.tests.governance.suites.SuiteOwnershipGovernanceTest#everyMavenExecutableHasOnePrimaryOwnerAndEveryFocusedGateIsDeclared
+        - atf.tests.governance.suites.AtfCollectionOwnershipComponentTest#positiveInventoriesPartitionEveryAtfComponentWithoutChangingLeafNames
+      negative:
+        - atf.tests.governance.suites.SuiteOwnershipGovernanceTest#newOmittedClassOverlapWrongLayerAndHiddenSelectionAreRejected
+    paths:
+      - atf-tests/src/test/java/atf/tests/suites/components/AtfOrchestrationComponentSuite.java
+      - config/atf-component-collections.json
+      - config/atf-component-dependencies.json
+      - config/atf-component-reader-seals.json
+```
+
+</details>
+
+<details>
 <summary>Independent Android command dispatch and early release metadata admission</summary>
 
 ```yaml

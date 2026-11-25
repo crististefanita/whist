@@ -123,9 +123,11 @@ function Invoke-MavenSelections($selections, $stage, $provenanceFile) {
                 Assert-AtfQualificationSnapshot $snapshot $stage $sourceRoot
             }
             Copy-Item -LiteralPath (Join-Path $RunRoot 'source-inputs.json') -Destination (Join-Path $workspace 'compiler-source-inputs.json')
+            $sealCost = $null
             $outputFingerprint = Invoke-AtfQualificationPhase $timing 'components.compiler-output-seal' {
-                Get-AtfComponentMavenFingerprint $workspace $repository $policy.mavenModules
+                Get-AtfComponentMavenFingerprint $workspace $repository $policy.mavenModules -Measurement ([ref]$sealCost)
             }
+            Write-AtfComponentJson (Join-Path $RunRoot 'compiler-output-cost.json') $sealCost
             $mavenReceipt = [ordered]@{
                 schemaVersion=2;identity=$identity;repo=(Split-Path -Leaf $repository)
                 compilerFingerprint=$compiler.compilerFingerprint;toolFingerprint=$compiler.toolFingerprint
@@ -133,7 +135,9 @@ function Invoke-MavenSelections($selections, $stage, $provenanceFile) {
                 buildFingerprint=$outputFingerprint
                 classpathSha256=$null
             }
-            Write-AtfComponentJson (Join-Path $workspace 'component-maven.json') $mavenReceipt
+            $receiptCost = $null
+            Write-AtfComponentJson (Join-Path $workspace 'component-maven.json') $mavenReceipt -Measurement ([ref]$receiptCost)
+            Write-AtfComponentJson (Join-Path $RunRoot 'compiler-receipt-initial-cost.json') $receiptCost
         }
         if ($prepared -and $prepared.classpathReady) {
             Write-AtfQualificationDecision $timing 'components.maven-classpath' 'REUSED' 'Verified classpath.'
@@ -145,7 +149,9 @@ function Invoke-MavenSelections($selections, $stage, $provenanceFile) {
             } -ExitCode
             if ($classpathExit -ne 0) { throw "Classpath-ul nu a fost rezolvat: $RunRoot/classpath.log" }
             $mavenReceipt.classpathSha256 = (Get-FileHash -LiteralPath $classpathFile).Hash
-            Write-AtfComponentJson (Join-Path $workspace 'component-maven.json') $mavenReceipt
+            $receiptCost = $null
+            Write-AtfComponentJson (Join-Path $workspace 'component-maven.json') $mavenReceipt -Measurement ([ref]$receiptCost)
+            Write-AtfComponentJson (Join-Path $RunRoot 'compiler-receipt-classpath-cost.json') $receiptCost
         }
         $entries = @($policy.mavenModules | ForEach-Object { Join-Path $buildWork "project/$_/target/test-classes" })
         $entries += @($policy.mavenModules | ForEach-Object { Join-Path $buildWork "project/$_/target/classes" })
