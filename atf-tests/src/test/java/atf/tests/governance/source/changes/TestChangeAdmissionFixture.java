@@ -120,6 +120,32 @@ public final class TestChangeAdmissionFixture {
         return scripts;
     }
 
+    /** The proof-admission component exercises the canonical source validator and controls editorial admission. */
+    public static Path admissionLauncherHost(Path real, Path directory) throws Exception {
+        Path scripts = mockedLauncherHost(real, directory);
+        Files.writeString(scripts.resolve("AtfTestChangeAdmission.ps1"),
+                ". '" + real.resolve("scripts/AtfTestChangeAdmission.ps1").toString().replace("'", "''") + "'\n");
+        return scripts;
+    }
+
+    /** The metadata component exercises canonical editorial admission and controls the source-proof neighbour. */
+    public static Path editorialLauncherHost(Path real, Path directory) throws Exception {
+        Path scripts = mockedLauncherHost(real, directory);
+        String helper = real.resolve("scripts/AtfQualificationSnapshot.ps1").toString().replace("'", "''");
+        Files.writeString(scripts.resolve("AtfQualificationSnapshot.ps1"), """
+
+                function Assert-AtfMetadataEditorial {
+                    param($SourceRoot,$TempRoot,$JavaHome,$MavenCache,$Receipt)
+                    & {
+                        param($SourceRoot,$TempRoot,$JavaHome,$MavenCache,$Receipt)
+                        . '%s'
+                        Assert-AtfMetadataEditorial $SourceRoot $TempRoot $JavaHome $MavenCache $Receipt
+                    } $SourceRoot $TempRoot $JavaHome $MavenCache $Receipt
+                }
+                """.formatted(helper), java.nio.file.StandardOpenOption.APPEND);
+        return scripts;
+    }
+
     private static Path binary(Class<?> type) throws Exception {
         Path file = Path.of(type.getProtectionDomain().getCodeSource().getLocation().toURI());
         if (!Files.isRegularFile(file)) throw new IllegalStateException("Expected a pinned parser JAR: " + type);
