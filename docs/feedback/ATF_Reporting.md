@@ -28,9 +28,10 @@ The [Gradle component guide](../testing/ATF_GradleComponents.md#bounded-matrix-i
 - [ ] Expose independent rendering and navigation peak measurements in the library. Consumer receipts currently observe their combined boundary; cumulative pool peaks cannot substitute isolated phase peaks.
 - [ ] Reduce repeated full-document copies inside generic rendering and DOM verification. Streaming consumer seals avoid an extra local copy but do not establish the library's allocation behavior.
 - [ ] Extend the declared resource envelope across comparison, body and capture volume independently. The bounded synthetic profile verifies complete values and PNG bytes; it does not qualify every report below the artifact-size guard.
-- [ ] Qualify real heap exhaustion and abrupt process termination while retaining original JUnit and the last started stage. Controlled errors and rejected byte limits establish transaction safety, not recovery from every process failure.
 
 [Verified component publication](../reporting/ATF_Audit.md#verified-component-publication) owns private staging, pre-promotion inspection, atomic replacement and original-cause diagnostics. Keep those regression boundaries active; the remaining criteria concern native resource behavior and library allocation.
+
+The consumer failure protocol uses isolated bounded JVMs to verify actual heap exhaustion and abrupt termination during rendering or verification. The durable journal retains the last started stage, canonical HTML and original JUnit remain unchanged, and a fresh attempt must qualify before promotion. Controlled operations exercise this process boundary; they do not measure allocation inside the generic renderer or prove recovery from every operating-system failure.
 
 Both producer and verifier need qualification. Increasing one process's heap limit does not close the criterion or prove that the report is publishable in the standard environment.
 

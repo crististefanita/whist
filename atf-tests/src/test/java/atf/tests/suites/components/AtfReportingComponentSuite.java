@@ -19,6 +19,7 @@ import org.junit.platform.suite.api.*;
     "^atf\\.tests\\.reporting\\.acceptance\\.NativeModuleResultsComponentTest$",
     "^atf\\.tests\\.reporting\\.acceptance\\.ComponentPublicationComponentTest$",
     "^atf\\.tests\\.reporting\\.acceptance\\.heap\\.ReportHeapComponentTest$",
+    "^atf\\.tests\\.reporting\\.acceptance\\.heap\\.PublicationFailureProcessComponentTest$",
     "^atf\\.tests\\.reporting\\.autonomy\\.StandaloneReportContractComponentTest$",
     "^atf\\.tests\\.reporting\\.autonomy\\.DetachedReviewComponentTest$",
     "^atf\\.tests\\.reporting\\.browser\\.BrowserExtentPublicationComponentTest$",

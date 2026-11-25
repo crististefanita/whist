@@ -28,10 +28,10 @@ The 1–100 score expresses work priority, not quality or completion percentage.
 |---|---:|---:|---|
 | AND-02 | P1 | 92 | Qualify the active actor, stable geometry and visible hand in bidding, play and AutoGame on the APK, for 3–6 players, RO/EN and enlarged text. [Register](ATF_Android.md) |
 | AI-01 | P1 | 91 | Calibrate Hard inference for bidding with 2–8 cards and cards played on new lots; separate the accuracy of probabilities from the simulated score. [Register](ATF_Ai.md) |
-| UI-04 | P1 | 90 | Qualify actual Whist bindings, native font visibility and late-owner rejection using the measured API; controlled components remain separate from glyph acceptance. [Register](ATF_CardUi_Extraction.md#ui-three-module-plan) |
+| UI-04 | P1 | 90 | Qualify mounted Whist bindings, native font visibility and late-owner repaint on an identified renderer; controlled binding components remain separate from glyph acceptance. [Register](ATF_CardUi_Extraction.md#ui-three-module-plan) |
 | ACH-01 | P1 | 90 | Qualify restoration of Achievements scroll position and selection on the APK, and notification resumption after activity recreation. [Register](ATF_Achievements.md) |
 | AND-03 | P1 | 89 | Qualify API 37, navigation of the system, resumption, enlarged fonts and memory on an identified device. [Register](ATF_Android.md) |
-| RPT-03 | P1 | 88 | Qualify independent library memory peaks, full-copy reduction and real process exhaustion beyond the bounded publication profile. [Register](ATF_Reporting.md#rpt-bounded-report-heap---safe-completion-for-large-suites) |
+| RPT-03 | P1 | 88 | Qualify independent library memory peaks, full-copy reduction and a broader resource envelope; real consumer-process failure recovery is separate from library allocation. [Register](ATF_Reporting.md#rpt-bounded-report-heap---safe-completion-for-large-suites) |
 | WEB-16 | P1 | 88 | Qualify native-calibrated scene zoom, seat text, dropdowns, score typography and action bands on one Android, RO/EN and enlarged text; score history is the sole vertical-scroll exception. [Register](ATF_UiBrowser.md#web-16-responsive-game-surface-and-menu-typography) |
 | UI-01 | P1 | 86 | Qualify headers, player boxes and notifications on consumer APKs, including Unicode name entry. [Register](ATF_CardUi_Extraction.md#priorities-and-closing-conditions) |
 | UI-02 | P2 | 84 | Qualify shared command and supporting action roles and scrolling on the consumer APKs in RO/EN with enlarged text. [Register](ATF_CardUi_Extraction.md#result-action-acceptance) |

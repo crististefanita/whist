@@ -71,6 +71,6 @@ Portable models, geometry, text roles and deterministic effects belong to `card-
 
 | ID | Priority | Remaining boundary | Closure criterion |
 |---|---|---|---|
-| UI-04 | P1 | Native consumer and glyph acceptance | Wire actual Whist fact-row, header, trump and card bindings into the measured observation API. Qualify font clipping, enlarged text and late-owner repaint on an identified native renderer; controlled API responses and equal portable plans cannot certify painted glyphs. |
+| UI-04 | P1 | Native glyph and repaint acceptance | Qualify the mounted Whist bindings for font clipping, enlarged text and late-owner repaint on an identified native renderer. Controlled View/Layout responses and screen-composition guards verify binding ownership and rejection, but cannot certify painted glyphs. |
 
-[Measured renderer observations](../testing/ATF_DisplayComponents.md#measured-renderer-observations) owns the native API, epoch guard and independent content oracle. Controlled API fixtures check clipping and stale-owner refusals; the remaining criterion requires actual consumer bindings and native font observations.
+[Measured renderer observations](../testing/ATF_DisplayComponents.md#measured-renderer-observations) owns the native API, mounted Whist bindings, epoch guard and independent content oracle. Native font observations remain a separate acceptance boundary.

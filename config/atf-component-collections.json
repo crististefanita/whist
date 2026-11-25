@@ -94,6 +94,7 @@
         "atf.tests.governance.documentation.release.rag.ReleaseRagAndroidComponentTest",
         "atf.tests.governance.documentation.release.rag.nativeproof.SharedPresentationComponentTest",
         "atf.tests.governance.documentation.release.rag.nativeproof.WhistSurfaceAdapterComponentTest",
+        "atf.tests.governance.documentation.release.rag.nativeproof.WhistBindingComponentTest",
         "atf.tests.governance.documentation.release.rag.scope.AndroidReleasePreflightComponentTest",
         "atf.tests.governance.documentation.release.rag.scope.AndroidUserOwnershipComponentTest",
         "atf.tests.governance.uiadapter.SharedMenuHistoryComponentTest"
@@ -159,6 +160,7 @@
         "atf.tests.reporting.acceptance.ComponentPublicationComponentTest",
         "atf.tests.reporting.acceptance.NativeModuleResultsComponentTest",
         "atf.tests.reporting.acceptance.heap.ReportHeapComponentTest",
+        "atf.tests.reporting.acceptance.heap.PublicationFailureProcessComponentTest",
         "atf.tests.reporting.autonomy.DetachedReviewComponentTest",
         "atf.tests.reporting.autonomy.StandaloneReportContractComponentTest",
         "atf.tests.reporting.browser.BrowserExtentPublicationComponentTest",

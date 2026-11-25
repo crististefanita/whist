@@ -45,6 +45,83 @@ testChanges:
 </details>
 
 <details>
+<summary>Mounted Whist consumer binding and owner rejection</summary>
+
+```yaml
+testChanges:
+  - id: RAG-DOMAIN-UI-BINDINGS
+    status: VERIFIED
+    base: a5cfb295dd7c52b3b6ffb5054c54cb959ba80bd4
+    expires: 2026-12-25
+    reason: Bind mounted Whist content to the measured native API and reject missing, duplicate, clipped or disposed owners without claiming native glyph acceptance.
+    proof: "mvn -o -pl atf-tests -am -Dtest=WhistBindingComponentTest -Dsurefire.failIfNoSpecifiedTests=false test"
+    checks:
+      positive:
+        - atf.tests.governance.documentation.release.rag.nativeproof.WhistBindingComponentTest#mountedWhistViewsSupplyCurrentHeaderTrumpAndCardBindings
+      negative:
+        - atf.tests.governance.documentation.release.rag.nativeproof.WhistBindingComponentTest#missingDuplicateClippedAndDisposedWhistBindingsAreRejected
+    paths:
+      - whist-lab-app/app/src/main/java/ro/whistlab/app/observation/WhistSurfaceObservation.java
+      - whist-lab-app/app/src/main/java/ro/whistlab/app/screens/GameScreen.java
+      - whist-lab-app/app/src/main/java/ro/whistlab/app/table/TrumpIndicatorView.java
+      - atf-ui-browser/tests/whist-native-bindings.test.mjs
+      - atf-tests/src/test/java/atf/tests/governance/documentation/release/rag/nativeproof/WhistBindingComponentTest.java
+```
+
+</details>
+
+<details>
+<summary>Real publication-process failures and fresh-attempt recovery</summary>
+
+```yaml
+testChanges:
+  - id: RAG-DOMAIN-REPORTING-PROCESS
+    status: VERIFIED
+    base: a5cfb295dd7c52b3b6ffb5054c54cb959ba80bd4
+    expires: 2026-12-25
+    reason: Qualify the real bounded consumer process failure boundary while preserving original JUnit, canonical bytes and durable phase identity; library allocation remains separate.
+    proof: "mvn -o -pl atf-tests -am -Dtest=PublicationFailureProcessComponentTest -Dsurefire.failIfNoSpecifiedTests=false test"
+    checks:
+      positive:
+        - atf.tests.reporting.acceptance.heap.PublicationFailureProcessComponentTest#freshProcessCanPublishAndSealTheCandidate
+      negative:
+        - atf.tests.reporting.acceptance.heap.PublicationFailureProcessComponentTest#realHeapExhaustionAndAbruptTerminationCannotPromotePartialReports
+    paths:
+      - atf-tests/src/test/java/atf/tests/reporting/acceptance/heap/PublicationFailureProbe.java
+      - atf-tests/src/test/java/atf/tests/reporting/acceptance/heap/PublicationFailureProcessComponentTest.java
+```
+
+</details>
+
+<details>
+<summary>Ownership of the added consumer and process components</summary>
+
+```yaml
+testChanges:
+  - id: RAG-DOMAIN-CATALOG-BINDINGS
+    status: VERIFIED
+    base: a5cfb295dd7c52b3b6ffb5054c54cb959ba80bd4
+    expires: 2026-12-25
+    reason: Preserve package boundaries, independent primary owners and explicit positive inventories while registering focused consumer and process qualification.
+    proof: "mvn -o -pl atf-tests -am -Dtest=AtfSourceQualityGovernanceTest,SuiteOwnershipGovernanceTest,AtfCollectionOwnershipComponentTest,TestChangeDomainComponentTest -Dsurefire.failIfNoSpecifiedTests=false test"
+    checks:
+      positive:
+        - atf.tests.governance.source.AtfSourceQualityGovernanceTest#sourcesRespectPackagePathsImportsAndProductionBoundaries
+        - atf.tests.governance.suites.SuiteOwnershipGovernanceTest#everyMavenExecutableHasOnePrimaryOwnerAndEveryFocusedGateIsDeclared
+        - atf.tests.governance.suites.AtfCollectionOwnershipComponentTest#positiveInventoriesPartitionEveryAtfComponentWithoutChangingLeafNames
+      negative:
+        - atf.tests.governance.suites.SuiteOwnershipGovernanceTest#newOmittedClassOverlapWrongLayerAndHiddenSelectionAreRejected
+    paths:
+      - atf-tests/src/test/java/atf/tests/suites/components/AtfAndroidComponentSuite.java
+      - atf-tests/src/test/java/atf/tests/suites/components/AtfReportingComponentSuite.java
+      - config/atf-component-collections.json
+      - config/atf-component-dependencies.json
+      - config/atf-component-reader-seals.json
+```
+
+</details>
+
+<details>
 <summary>Independent reader seals and qualified source/catalog context</summary>
 
 ```yaml
