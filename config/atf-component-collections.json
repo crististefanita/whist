@@ -27,7 +27,8 @@
         "atf.tests.governance.suites.SuiteOwnershipGovernanceTest",
         "atf.tests.governance.source.reporting.ReportProducerInventoryComponentTest",
         "atf.tests.governance.source.language.SourceLanguageComponentTest",
-        "atf.tests.governance.source.language.SourceLanguageGovernanceTest"
+        "atf.tests.governance.source.language.SourceLanguageGovernanceTest",
+        "atf.tests.governance.source.changes.domains.TestChangeDomainComponentTest"
       ]
     },
     {

@@ -154,6 +154,45 @@ $env:ATF_TEST_CHANGE_PROOF_ROOT = Join-Path $runRoot 'proofs'
 
 La eșec sau schimbarea sursei, inspectați jurnalele fiecărui control și dosarul diagnostic `proofs.pending`. Pentru o rulare focalizată, `-TestChangeControl` păstrează receipt-ul în `<RunRoot>/<ID>`. Reutilizați receipt-ul și raportul pentru commitul și diff-ul originale sau pentru o continuare editorială verificată care le păstrează identitatea.
 
+### Domenii independente ale probelor
+
+[Declarațiile revizuite pe domenii](ATF_TestChangesBaseline.md#current-domain-controls) sunt inventarul selecției. Fiecare control deține căi exacte și selectorii săi pozitivi și negativi; verificatorul Git existent selectează reuniunea proprietarilor atinși de diff.
+
+| Domeniu | Deține | Nu programează singur |
+|---|---|---|
+| Validarea inventarului | Politica limbii surselor, inventarul complet și cazurile controlate de refuz | Geometria nativă sau randarea rapoartelor |
+| Suprafața nativă | Conținutul măsurat, geometria comună între faze și refuzul pozițiilor deplasate | Inventarul limbii pentru toate sursele |
+| Raportarea | Publicarea, proprietatea producătorilor, valorile complete și fixture-urile cu resurse limitate | Observațiile suprafeței native |
+| Catalogul | Suitele primare, inventarele claselor, dependențele cititorilor și sigiliile | Corpurile neafectate ale testelor UI sau de resurse |
+| Selecția | Rutarea pe domenii, gruparea probelor, eșecurile și modificarea sursei/planului | Execuția jocului sau a rendererului nativ |
+
+```mermaid
+flowchart TD
+    DIFF["Diff Git real"] --> OWNER["Proprietarii exacți ai căilor revizuite"]
+    OWNER --> VALIDATOR["Validarea inventarului"]
+    OWNER --> UI["Suprafața nativă"]
+    OWNER --> REPORT["Raportarea"]
+    OWNER --> CATALOG["Catalogul și selecția"]
+    VALIDATOR --> UNION["Reuniunea controalelor necesare"]
+    UI --> UNION
+    REPORT --> UNION
+    CATALOG --> UNION
+    UNION --> COMPILE["O singură compilare sigilată"]
+    COMPILE --> PROOFS["Extent și probă originale separate pentru fiecare control"]
+```
+
+<details>
+<summary>Legendă: omiterea și reutilizarea au semnificații diferite</summary>
+
+Un domeniu neschimbat lipsește din planul execuției; dovezile sale originale își păstrează commitul și perimetrul originale. Excluderea nu transformă acele dovezi într-o probă pentru un control sau o sursă nouă. Un diff mixt restabilește fiecare proprietar afectat, iar un proprietar lipsă sau ambiguu blochează calificarea.
+
+</details>
+
+- Folosiți controale coerente `RAG-DOMAIN-` și un ID/o bază nouă revizuite pentru o revizie nouă; păstrați imuabile declarațiile istorice calificate. Controalele expirate și baza Git incorectă rămân refuzuri.
+- Metadatele comune ale selecției au verificări independente pentru proprietatea suitelor. O schimbare a sursei UI selectează suplimentar domeniul nativ; proprietatea catalogului nu o poate ascunde.
+- [Componentele domeniilor](../../atf-tests/src/test/java/atf/tests/governance/source/changes/domains/TestChangeDomainComponentTest.java) citesc declarațiile live, păstrează verificările originale, resping proprietatea suprapusă și rezolvă diff-uri reale comise în fixture prin verificatorul de producție. Simbolurile lor de componente sunt stub-uri neexecutate, nu acceptanță UI.
+- Un lot folosește în continuare o singură compilare și același classpath. Un control eșuat, sursa schimbată sau planul schimbat împiedică publicarea finală a probelor; separarea domeniilor nu relaxează aceste granițe.
+
 ### Reluarea unui control static al probei
 
 Folosiți un director extern nou al rulării și rularea originală ca `-ResumeFrom`, împreună cu același `-TestChangeControl` și aceeași bază Git. Lansatorul admite întâi snapshot-ul complet sursă/release și compilarea verificată. Generarea unui lot nou rămâne separată; `-AllTestChangeControls` nu acceptă reluarea.

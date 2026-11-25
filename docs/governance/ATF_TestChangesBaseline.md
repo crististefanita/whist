@@ -3648,3 +3648,170 @@ testChanges:
 ```
 
 </details>
+
+<a id="current-domain-controls"></a>
+
+## Controale revizuite pe domenii
+
+Aceste declarații separă proprietarii independenți ai schimbărilor. Un control revizuit nu este un rezultat al execuției; numai controalele atinse de diff-ul Git real cer probă. Declarațiile istorice compuse își păstrează identitatea și nu se republică drept dovezi ale domeniilor.
+
+<details>
+<summary>Inventarul complet al surselor și regulile limbii implementării</summary>
+
+```yaml
+testChanges:
+  - id: RAG-DOMAIN-VALIDATOR
+    status: VERIFIED
+    base: 7d1ada70b932e7018b6bd815d806c970010ea821
+    expires: 2026-12-25
+    reason: Păstrați inventarul complet al surselor și regulile limbii implementării separat de domeniile fără legătură, cu acoperire explicită a refuzurilor și proveniența dovezilor originale.
+    proof: "mvn -o -pl atf-tests -am -Dtest=SourceLanguageGovernanceTest,SourceLanguageComponentTest -Dsurefire.failIfNoSpecifiedTests=false test"
+    checks:
+      positive:
+        - atf.tests.governance.source.language.SourceLanguageGovernanceTest#implementationCommentsAndDiagnosticsUseEnglish
+        - atf.tests.governance.source.language.SourceLanguageComponentTest#acceptsLocalizedDataWithOneOwnedPopulation
+      negative:
+        - atf.tests.governance.source.language.SourceLanguageComponentTest#rejectsRomanianImplementationOnBothEditions
+    paths:
+      - config/source-language-inventory-profile.json
+      - config/source-language-policy.json
+      - atf-tests/src/test/java/atf/tests/governance/source/language/SourceLanguageGovernanceTest.java
+      - atf-tests/src/test/java/atf/tests/governance/source/language/SourceLanguageComponentTest.java
+      - atf-tests/tools/source-language.mjs
+      - atf-tests/tools/source-language-tokens.mjs
+      - atf-tests/tools/source-language.test.mjs
+      - atf-tests/tools/source-language-admission.test.mjs
+```
+
+</details>
+
+<details>
+<summary>Observațiile măsurate ale suprafeței native și Web</summary>
+
+```yaml
+testChanges:
+  - id: RAG-DOMAIN-UI
+    status: VERIFIED
+    base: 7d1ada70b932e7018b6bd815d806c970010ea821
+    expires: 2026-12-25
+    reason: Păstrați observațiile măsurate ale suprafeței native și web separat de domeniile fără legătură, cu acoperire explicită a refuzurilor și proveniența dovezilor originale.
+    proof: "mvn -o -pl atf-tests -am -Dtest=WhistSurfaceAdapterComponentTest -Dsurefire.failIfNoSpecifiedTests=false test"
+    checks:
+      positive:
+        - atf.tests.governance.documentation.release.rag.nativeproof.WhistSurfaceAdapterComponentTest#nativeContentMeasurementsRejectClippingAndLateOwners
+        - atf.tests.governance.documentation.release.rag.nativeproof.WhistSurfaceAdapterComponentTest#everySeatAndLegalDealShareOneNativeWebPhaseContract
+      negative:
+        - atf.tests.governance.documentation.release.rag.nativeproof.WhistSurfaceAdapterComponentTest#sharedPhaseOracleRejectsEveryDisplacedOrMissingSeat
+    paths:
+      - atf-tests/src/test/java/atf/tests/governance/documentation/release/rag/nativeproof/WhistSurfaceAdapterComponentTest.java
+      - atf-ui-browser/tests/native-observation-fixture.mjs
+      - atf-ui-browser/tests/native-observation.test.mjs
+      - whist-lab-app/card-table-core/src/main/java/ro/cardtable/ui/observation/RenderedSurface.java
+      - whist-lab-app/card-table-core/src/main/java/ro/cardtable/ui/observation/SurfaceEpoch.java
+      - whist-lab-app/card-table-core/src/testFixtures/java/ro/cardtable/testing/RenderedSurfaceAudit.java
+      - whist-lab-app/card-table-core/src/unitTest/java/ro/cardtable/testing/RenderedSurfaceUnitTest.java
+      - whist-lab-app/atf-card-table-ui/src/main/java/ro/cardtable/ui/observation/AndroidSurfaceObservation.java
+      - whist-lab-app/atf-card-table-ui/src/main/java/ro/cardtable/ui/table/android/BoardLayout.java
+```
+
+</details>
+
+<details>
+<summary>Publicarea, dovezile originale și resursele limitate ale raportului</summary>
+
+```yaml
+testChanges:
+  - id: RAG-DOMAIN-REPORTING
+    status: VERIFIED
+    base: 7d1ada70b932e7018b6bd815d806c970010ea821
+    expires: 2026-12-25
+    reason: Păstrați publicarea, dovezile originale și resursele limitate ale raportului separat de domeniile fără legătură, cu acoperire explicită a refuzurilor și proveniența dovezilor originale.
+    proof: "mvn -o -pl atf-tests -am -Dtest=AndroidComponentReportContractTest,ReportProducerInventoryComponentTest,ComponentPublicationComponentTest,ReportHeapComponentTest -Dsurefire.failIfNoSpecifiedTests=false test"
+    checks:
+      positive:
+        - atf.android.component.AndroidComponentReportContractTest#bothRenderersRetainOutcomesInvocationsAndOriginalComparisons
+        - atf.tests.governance.source.reporting.ReportProducerInventoryComponentTest#everyRendererBoundaryHasAnExplicitOwnerAndExistingQualification
+        - atf.tests.reporting.acceptance.ComponentPublicationComponentTest#verificationMustPassBeforeCanonicalReplacement
+        - atf.tests.reporting.acceptance.heap.ReportHeapComponentTest#boundedSmallMediumAndLargeReportsKeepEveryComparisonUnderTheDeclaredHeap
+      negative:
+        - atf.tests.governance.source.reporting.ReportProducerInventoryComponentTest#missingDuplicateOrMisclassifiedProducersAndLostContractsAreRejected
+        - atf.tests.reporting.acceptance.ComponentPublicationComponentTest#failedVerificationLimitsAndOriginalErrorsPreserveThePreviousReportAndJUnit
+    paths:
+      - config/report-producers.json
+      - config/report-heap-profile.json
+      - atf-test-android/src/main/java/atf/android/evidence/component/AndroidComponentRun.java
+      - atf-test-android/src/main/java/atf/android/evidence/component/publication/ComponentReportPublication.java
+      - atf-tests/src/test/java/atf/tests/reporting/acceptance/ComponentPublicationComponentTest.java
+      - atf-tests/src/test/java/atf/tests/reporting/acceptance/heap/BoundedReportProbe.java
+      - atf-tests/src/test/java/atf/tests/reporting/acceptance/heap/CapturedTextProbe.java
+      - atf-tests/src/test/java/atf/tests/reporting/acceptance/heap/ReportHeapComponentTest.java
+      - atf-tests/src/test/java/atf/tests/reporting/acceptance/heap/ReportHeapUnitTest.java
+      - atf-tests/src/test/java/atf/tests/governance/source/reporting/ReportProducerInventoryComponentTest.java
+      - atf-test-android/src/test/java/atf/android/component/AndroidComponentReportContractTest.java
+```
+
+</details>
+
+<details>
+<summary>Responsabilitățile independente ale surselor, pachetelor și suitelor primare</summary>
+
+```yaml
+testChanges:
+  - id: RAG-DOMAIN-CATALOG
+    status: VERIFIED
+    base: 7d1ada70b932e7018b6bd815d806c970010ea821
+    expires: 2026-12-25
+    reason: Păstrați responsabilitățile independente ale surselor, pachetelor și suitelor primare separat de domeniile fără legătură, cu acoperire explicită a refuzurilor și proveniența dovezilor originale.
+    proof: "mvn -o -pl atf-tests -am -Dtest=AtfSourceQualityGovernanceTest,SuiteOwnershipGovernanceTest,AtfCollectionOwnershipComponentTest -Dsurefire.failIfNoSpecifiedTests=false test"
+    checks:
+      positive:
+        - atf.tests.governance.source.AtfSourceQualityGovernanceTest#sourcesRespectPackagePathsImportsAndProductionBoundaries
+        - atf.tests.governance.suites.SuiteOwnershipGovernanceTest#everyMavenExecutableHasOnePrimaryOwnerAndEveryFocusedGateIsDeclared
+        - atf.tests.governance.suites.AtfCollectionOwnershipComponentTest#positiveInventoriesPartitionEveryAtfComponentWithoutChangingLeafNames
+      negative:
+        - atf.tests.governance.suites.SuiteOwnershipGovernanceTest#newOmittedClassOverlapWrongLayerAndHiddenSelectionAreRejected
+    paths:
+      - config/atf-component-collections.json
+      - config/atf-component-dependencies.json
+      - config/atf-component-reader-seals.json
+      - config/atf-test-suites.json
+      - atf-tests/src/test/java/atf/tests/suites/components/AtfReportingComponentSuite.java
+      - atf-tests/src/test/java/atf/tests/suites/AtfComponentSuite.java
+      - atf-tests/src/test/java/atf/tests/governance/source/AtfSourceQualityGovernanceTest.java
+      - atf-tests/src/test/java/atf/tests/governance/suites/SuiteOwnershipGovernanceTest.java
+      - atf-tests/src/test/java/atf/tests/governance/suites/AtfCollectionOwnershipComponentTest.java
+```
+
+</details>
+
+<details>
+<summary>Rutarea pe domenii din Git și gruparea tranzacțională a probelor</summary>
+
+```yaml
+testChanges:
+  - id: RAG-DOMAIN-SELECTION
+    status: VERIFIED
+    base: 7d1ada70b932e7018b6bd815d806c970010ea821
+    expires: 2026-12-25
+    reason: Păstrați rutarea pe domenii din git și gruparea tranzacțională a probelor separat de domeniile fără legătură, cu acoperire explicită a refuzurilor și proveniența dovezilor originale.
+    proof: "mvn -o -pl atf-tests -am -Dtest=TestChangeDomainComponentTest,TestChangeBatchComponentTest -Dsurefire.failIfNoSpecifiedTests=false test"
+    checks:
+      positive:
+        - atf.tests.governance.source.changes.domains.TestChangeDomainComponentTest#reviewedDomainsPreserveChecksAndKeepTheirPathsDisjoint
+        - atf.tests.governance.source.changes.domains.TestChangeDomainComponentTest#validatorAndEditorialDiffsExcludeUnaffectedUiAndReporting
+        - atf.tests.governance.source.changes.domains.TestChangeDomainComponentTest#mixedDiffsRestoreEachAffectedDomain
+        - atf.tests.execution.components.TestChangeBatchComponentTest#publishesBothControlsAfterCheckingTheSnapshot
+      negative:
+        - atf.tests.governance.source.changes.domains.TestChangeDomainComponentTest#uncoveredAndAmbiguousDomainChangesRemainBlocked
+        - atf.tests.execution.components.TestChangeBatchComponentTest#failedControlDoesNotStopTheRemainingControlsOrPublishTheirProofs
+        - atf.tests.execution.components.TestChangeBatchComponentTest#changedSourcePreventsPublicationOfPassingControls
+        - atf.tests.execution.components.TestChangeBatchComponentTest#changedReviewPreventsPublicationOfPassingControls
+    paths:
+      - atf-tests/src/test/java/atf/tests/governance/source/changes/domains/ReviewedDomains.java
+      - atf-tests/src/test/java/atf/tests/governance/source/changes/domains/DomainGitFixture.java
+      - atf-tests/src/test/java/atf/tests/governance/source/changes/domains/TestChangeDomainComponentTest.java
+      - scripts/AtfTestChangeBatch.ps1
+      - atf-tests/src/test/java/atf/tests/execution/components/TestChangeBatchComponentTest.java
+```
+
+</details>
