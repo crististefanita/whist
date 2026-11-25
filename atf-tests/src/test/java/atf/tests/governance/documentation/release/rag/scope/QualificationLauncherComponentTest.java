@@ -39,15 +39,13 @@ class QualificationLauncherComponentTest {
     private Path proofRoot;
     private Path launcherScripts;
     private boolean realAdmission;
+    private boolean realEditorial;
 
     @Test @org.junit.jupiter.api.extension.ExtendWith(atf.tests.reporting.GameReportAudit.class)
     void metadataDefectsStopBothLaunchersBeforeCopyCacheOrMaven(ComponentInputs inputs) throws Exception {
-        inputs.add("Precondition", "Both actual entry points, real Git proof admission and canonical editorial CLI. Controlled release data has no application execution; Maven is an unentered local probe.");
-        realAdmission = true;
+        inputs.add("Precondition", "Both actual entry points, real metadata admission and canonical editorial CLI. The independently qualified source-proof neighbour is mocked; Maven is an unentered local probe.");
+        realEditorial = true;
         Path source = fixture();
-        proofRoot = scratch.resolve("metadata proof inputs");
-        TestChangeAdmissionFixture.verifiedProof(source, reviewBase, proofRoot,
-                java.time.LocalDate.now(java.time.ZoneOffset.UTC));
         Path manifest = source.resolve(RELEASE + "release-validation.json");
         String original = Files.readString(manifest);
         Path guide = source.resolve("release/README.md");
@@ -64,6 +62,8 @@ class QualificationLauncherComponentTest {
                 Path output = scratch.resolve(defect + "-" + runner);
                 var run = launch(runner, source, output, "", null);
                 inputs.add("Observed " + runner + " / " + defect, run.log());
+                AuditedAssertions.assertEquals("MOCK_TEST_CHANGE_ADMISSION", JSON.readTree(output.resolve("test-change-admission.json").toFile()).path("kind").asText(),
+                        "The neighbouring source-proof boundary is explicitly controlled, not claimed as a fresh proof");
                 AuditedAssertions.assertEquals(1, run.exit(), run.log());
                 AuditedAssertions.assertTrue(run.log().contains(defect.equals("inventory") ? "RELEASE-METADATA-E2E" : "RELEASE-METADATA-EDITORIAL"), run.log());
                 AuditedAssertions.assertFalse(Files.exists(output.resolve("source-inputs.json")), "Metadata rejection precedes source inventory and copying");
@@ -98,6 +98,9 @@ class QualificationLauncherComponentTest {
         AuditedAssertions.assertEquals("ATF_TEST_CHANGE_ADMISSION", JSON.readTree(
                 components.resolve("test-change-admission.json").toFile()).path("kind").asText(),
                 "Admission integration must use the canonical validator, not the neighbouring-component mock");
+        AuditedAssertions.assertEquals("MOCK_EDITORIAL_NEIGHBOUR", JSON.readTree(
+                components.resolve("release-editorial.json").toFile()).path("kind").asText(),
+                "Editorial acceptance is independently qualified by the metadata component");
         AuditedAssertions.assertFalse(Files.exists(scratch.resolve("maven.entered")), "The deliberate invalid group stops after admission");
     }
 
@@ -378,11 +381,13 @@ class QualificationLauncherComponentTest {
         if (realAdmission) {
             reviewBase = TestChangeAdmissionFixture.prepareReview(source);
             parserCache = TestChangeAdmissionFixture.parserCache(scratch.resolve("parser-cache"));
-            launcherScripts = real.resolve("scripts");
+            launcherScripts = TestChangeAdmissionFixture.admissionLauncherHost(real, scratch.resolve("source-admission-launcher-host"));
         } else {
             reviewBase = "a".repeat(40);
-            parserCache = scratch.resolve("unused-cache");
-            launcherScripts = TestChangeAdmissionFixture.mockedLauncherHost(real, scratch.resolve("controlled-launcher-host"));
+            parserCache = realEditorial ? TestChangeAdmissionFixture.parserCache(scratch.resolve("parser-cache")) : scratch.resolve("unused-cache");
+            launcherScripts = realEditorial
+                    ? TestChangeAdmissionFixture.editorialLauncherHost(real, scratch.resolve("editorial-launcher-host"))
+                    : TestChangeAdmissionFixture.mockedLauncherHost(real, scratch.resolve("controlled-launcher-host"));
         }
         return source;
     }
