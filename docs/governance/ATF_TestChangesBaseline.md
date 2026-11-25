@@ -7,6 +7,53 @@ This register defines reviewed controls, their Git base and exact paths. The [te
 ## Verified controls
 
 <details>
+<summary>Source-bound shared reader and unchanged complete byte seals</summary>
+
+```yaml
+testChanges:
+  - id: RAG-SEALED-HASH-READER
+    status: VERIFIED
+    base: 6a48a82930c01a331149f8bb90306595ef9d7dc2
+    expires: 2026-12-25
+    reason: Reuse the already initialized source-bound native digest without caching file hashes or compiling for hash-only callers. Preserve complete independent byte oracles, original fallback, missing/corrupt output refusal and direct-path guards.
+    proof: "mvn -o -pl atf-tests -am -Dtest=DigestReadComponentTest,QualificationCostComponentTest,SnapshotIoComponentTest -Dsurefire.failIfNoSpecifiedTests=false test"
+    checks:
+      positive:
+        - atf.tests.governance.documentation.release.rag.scope.metrics.DigestReadComponentTest#preparedReaderKeepsIndependentFullByteDigestsAndColdFallback
+        - atf.tests.governance.documentation.release.rag.scope.metrics.QualificationCostComponentTest#measuredSealAndReceiptPreserveIndependentByteIdentity
+        - atf.tests.governance.documentation.release.rag.scope.io.SnapshotIoComponentTest#byteInventoriesAndNamedSnapshotPhasesRemainEquivalent
+      negative:
+        - atf.tests.governance.documentation.release.rag.scope.metrics.DigestReadComponentTest#foreignReadersAndFreshCorruptionCannotBorrowAValidSeal
+        - atf.tests.governance.documentation.release.rag.scope.metrics.QualificationCostComponentTest#costsCannotAuthorizeMissingOrCorruptedCompilerOutput
+        - atf.tests.governance.documentation.release.rag.scope.io.SnapshotIoComponentTest#sameMetadataDriftCorruptionAndIndirectPathsCannotQualify
+    paths:
+      - scripts/AtfFileDigest.ps1
+      - scripts/AtfComponentMaven.ps1
+      - atf-tests/tools/seal-reader.test.mjs
+      - atf-tests/src/test/java/atf/tests/governance/documentation/release/rag/scope/metrics/DigestReadComponentTest.java
+  - id: RAG-DOMAIN-CATALOG-HASH-READER
+    status: VERIFIED
+    base: 6a48a82930c01a331149f8bb90306595ef9d7dc2
+    expires: 2026-12-25
+    reason: Keep the digest component in one primary collection and review complete package, suite, dependency and reader inventories.
+    proof: "mvn -o -pl atf-tests -am -Dtest=AtfSourceQualityGovernanceTest,SuiteOwnershipGovernanceTest,AtfCollectionOwnershipComponentTest -Dsurefire.failIfNoSpecifiedTests=false test"
+    checks:
+      positive:
+        - atf.tests.governance.source.AtfSourceQualityGovernanceTest#sourcesRespectPackagePathsImportsAndProductionBoundaries
+        - atf.tests.governance.suites.SuiteOwnershipGovernanceTest#everyMavenExecutableHasOnePrimaryOwnerAndEveryFocusedGateIsDeclared
+        - atf.tests.governance.suites.AtfCollectionOwnershipComponentTest#positiveInventoriesPartitionEveryAtfComponentWithoutChangingLeafNames
+      negative:
+        - atf.tests.governance.suites.SuiteOwnershipGovernanceTest#newOmittedClassOverlapWrongLayerAndHiddenSelectionAreRejected
+    paths:
+      - atf-tests/src/test/java/atf/tests/suites/components/AtfOrchestrationComponentSuite.java
+      - config/atf-component-collections.json
+      - config/atf-component-dependencies.json
+      - config/atf-component-reader-seals.json
+```
+
+</details>
+
+<details>
 <summary>Original qualification failures and measured compiler sealing</summary>
 
 ```yaml

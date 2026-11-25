@@ -399,3 +399,19 @@ flowchart LR
 Clock intervals explain observed cost; source-bound byte receipts authorize reuse. Remaining coordination includes root admission and measurement overhead. Component probes reconcile counts and partitions against independent hashes; they do not qualify machine-independent performance or renderer allocation.
 
 </details>
+
+<a id="source-bound-native-digest"></a>
+
+## Source-bound native digest
+
+The seal can reuse the full-stream SHA-256 implementation already initialized for checked copying. It removes repeated PowerShell dispatch and reflection at the per-file boundary; it does not cache file hashes or change the byte-verification algorithm.
+
+| State | Reader and authority |
+|---|---|
+| Copy initialized by the current source | The initializer publishes a process-local static delegate with the exact C# definition hash. The seal checks the current definition, expected method and single invocation before selecting it. |
+| Missing, foreign or stale capability | Keep the original fresh PowerShell SHA-256 path. Hash-only callers never compile native support merely to prepare a seal. |
+| File verification | Every selected file is opened and read completely on every seal. Size, timestamp, reader availability and previous measurements never authorize a digest. |
+| Paths and errors | Existing direct-path checks, full file population, missing-file and read-error rejection remain active. Both implementations release their streams. |
+| Measurement | `hashReader` identifies the selected path in diagnostic cost data; the fingerprint contains only the original sorted relative paths and full digests. |
+
+The process-local descriptor contains code identity and a delegate, not file content or per-file results. It is not a disk cache or a defense against an operator able to replace executing code. Performance comparisons retain warm/cold context, order, every sample and source identity; host-specific timing does not establish a universal release speedup.
