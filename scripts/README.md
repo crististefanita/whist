@@ -18,7 +18,7 @@
 
 This directory coordinates operations across modules: checks, application builds and explicitly enabled Android scenarios. Algorithms, validators and tool tests remain in their owning modules.
 
-Launchers locate the project from their script path and prepare isolated working copies. Results stay in the configured external evidence directory.
+Launchers locate the project from their script path and prepare isolated working copies. Component groups are admitted against the live catalogs before staging. Release payload bytes are staged only for groups that declare a release snapshot; every run retains the complete release hash inventory and verifies live release bytes before and after execution. Results stay in the configured external evidence directory.
 
 ## Responsibilities
 
@@ -82,6 +82,8 @@ JVM collections do not require an emulator connection. Java, Maven and Gradle do
 [Snapshot recovery](AtfComponentResume.ps1) validates the original source and release inventories and writes atomic checkpoints. [Maven admission](AtfComponentMaven.ps1) independently checks the preparation identity, compiled classes, dependency bytes and classpath.
 
 The launcher can reuse compilation after an interrupted classpath step; an altered classpath rebuilds only that step, while changed classes or a foreign, malformed or missing receipt require preparation again. Neither helper runs a game or changes a report verdict.
+
+[`AtfComponentSelection.ps1`](AtfComponentSelection.ps1) resolves and validates component selectors before creating the run directory or staging source. Its receipt decision is checked against the staged suite, Gradle and ownership catalogs. A release-owning group receives the full retained release tree; other explicit groups omit those payload bytes while keeping the complete release manifest, catalog identity, live drift checks and artifact preflight. Legacy `atf-tests` and the default all-groups selection keep full release staging. Resume rechecks the saved mode and refuses a group that needs payload absent from its original workspace.
 
 ## Private signing inputs
 

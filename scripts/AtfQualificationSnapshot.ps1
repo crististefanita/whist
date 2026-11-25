@@ -120,8 +120,14 @@ function Get-AtfInputFingerprint([string]$Json) {
 function Get-AtfSnapshotDifferences($Snapshot, [string]$Stage, [string]$SourceRoot, [string]$CaptureRoot = '') {
     $differences = [Collections.Generic.List[string]]::new()
     $observations = [Collections.Generic.List[object]]::new()
+    $includeReleasePayload = if ($null -eq $Snapshot.includeReleasePayload) { $true } else { [bool]$Snapshot.includeReleasePayload }
     foreach ($location in @(@{name='STAGED';root=$Stage}, @{name='LIVE';root=$SourceRoot})) {
         foreach ($scope in @('SOURCE','RELEASE')) {
+            if ($location.name -eq 'STAGED' -and $scope -eq 'RELEASE' -and !$includeReleasePayload) {
+                $observations.Add(@{path='observed-staged-release.json';json='{"releasePayloadIncluded":false}'})
+                if ([IO.Directory]::Exists((Join-Path $Stage 'release'))) { $differences.Add('STAGED-RELEASE: unexpected payload') }
+                continue
+            }
             try {
                 $observed = if ($scope -eq 'SOURCE') {
                     @(& (Join-Path $PSScriptRoot 'Get-AtfSourceInputs.ps1') -SourceRoot $location.root)
@@ -169,7 +175,8 @@ function Invoke-AtfSnapshotPhase($Timing, [string]$Name, [scriptblock]$Action) {
     else { & $Action }
 }
 
-function New-AtfQualificationSnapshot([string]$SourceRoot, [string]$Stage, [string]$RunRoot, [string]$PinnedSourceInputs, $Timing = $null) {
+function New-AtfQualificationSnapshot([string]$SourceRoot, [string]$Stage, [string]$RunRoot, [string]$PinnedSourceInputs,
+    $Timing = $null, [bool]$IncludeReleasePayload = $true) {
     $inventory = Invoke-AtfSnapshotPhase $Timing 'snapshot.inventory' {
         [pscustomobject]@{sources=@(& (Join-Path $PSScriptRoot 'Get-AtfSourceInputs.ps1') -SourceRoot $SourceRoot)
             release=@(Get-AtfReleaseInputs $SourceRoot)}
@@ -179,6 +186,7 @@ function New-AtfQualificationSnapshot([string]$SourceRoot, [string]$Stage, [stri
     $snapshot = [pscustomobject]@{
         source=ConvertTo-AtfInputJson $sources
         release=ConvertTo-AtfInputJson $release
+        includeReleasePayload=$IncludeReleasePayload
         inputCount=$sources.Count
     }
     if ($PinnedSourceInputs) {
@@ -194,14 +202,15 @@ function New-AtfQualificationSnapshot([string]$SourceRoot, [string]$Stage, [stri
     [IO.File]::WriteAllText($sourceManifest, $snapshot.source)
     [IO.File]::WriteAllText($releaseManifest, $snapshot.release)
     $copyManifest = Join-Path (Split-Path -Parent $Stage) 'qualification-copy-inputs.json'
-    [IO.File]::WriteAllText($copyManifest, (ConvertTo-AtfInputJson ($sources + $release)))
+    $copyRows = if ($IncludeReleasePayload) { $sources + $release } else { $sources }
+    [IO.File]::WriteAllText($copyManifest, (ConvertTo-AtfInputJson $copyRows))
     Invoke-AtfSnapshotPhase $Timing 'snapshot.copy' {
         & (Join-Path $PSScriptRoot 'Copy-AtfSourceInputs.ps1') -SourceRoot $SourceRoot -Destination $Stage -InputManifest $copyManifest
     }
     Invoke-AtfSnapshotPhase $Timing 'snapshot.verify' { Assert-AtfQualificationSnapshot $snapshot $Stage $SourceRoot }
     Invoke-AtfSnapshotPhase $Timing 'snapshot.artifact-preflight' {
         $preflight = Join-Path $Stage 'atf-tests/tools/check-release-artifacts.mjs'
-        & node $preflight $Stage *> (Join-Path $RunRoot 'release-preflight.log')
+        & node $preflight $SourceRoot *> (Join-Path $RunRoot 'release-preflight.log')
         if ($LASTEXITCODE -ne 0) {
             throw "RELEASE-PREFLIGHT: $(Get-Content -LiteralPath (Join-Path $RunRoot 'release-preflight.log') -Raw)"
         }

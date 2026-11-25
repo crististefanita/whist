@@ -62,6 +62,7 @@ class TestChangeReviewComponentTest {
                 "config/atf-component-dependencies.json", "atf-tests/tools/atf-component-dependencies.mjs",
                 "atf-tests/tools/atf-dependency-references.mjs", "atf-tests/tools/atf-script-references.mjs",
                 "atf-tests/tools/atf-dependency-cli.mjs", "atf-tests/tools/component-source-check.mjs",
+                "scripts/AtfComponentSelection.ps1",
                 "atf-ui-browser/tests/flow-budget.mjs", "atf-ui-browser/tests/flow-budget.test.mjs",
                 "atf-ui-browser/build.gradle", "module/src/unitTest/java/UnitTest.java");
         for (String path : paths) repo.put(path, "controlled payload\n");

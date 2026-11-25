@@ -276,11 +276,15 @@ Historical runs without invocation checkpoints retain whole-selection recovery. 
 | Copy admission | Validate the complete manifest, public-signing boundary and direct paths before creating directories or copying files; reject duplicate destinations. |
 | Bounded batch | At most four copy workers recheck each source/destination path at use and independently hash written bytes. Windows uses buffered streams while preserving modification times and attributes; other platforms retain native copy semantics. |
 | Fresh validation | Re-inventory staged and live source/release trees after copying and after compilation; additions, deletions, same-metadata changes and indirect paths remain refusals. |
+| Selection and release copy | [`AtfComponentSelection.ps1`](../../scripts/AtfComponentSelection.ps1) validates the requested groups and hashes the suite, Gradle and ownership catalogs before the run directory or source stage is created. Default/all and legacy `atf-tests` selections remain conservative. A group with `releaseSnapshot: true` receives the full release tree; other explicit groups omit its payload copy but keep the complete `release-inputs.json` inventory and source/catalog context. |
+| Omitted release payload | The source stage must contain no `release/` directory. The runner still hashes the full live release inventory before and after the run and invokes artifact preflight against it. A selector/catalog hash mismatch, release drift or an omitted-payload stage resumed for a release-owning group is rejected. Older workspace receipts without the selection flag retain the full-copy interpretation. |
 | Compiler seal | Sort the same class, resource and dependency records ordinally and hash their exact content; no metadata cache substitutes for a read. |
-| Observability | Record `snapshot.inventory`, `snapshot.copy`, `snapshot.verify`, `snapshot.artifact-preflight` and `components.post-compile-snapshot` separately. Snapshot child stages overlap their parent duration and must not be added twice. |
+| Observability | Record selector admission and `snapshot.inventory`, `snapshot.copy`, `snapshot.verify`, `snapshot.artifact-preflight` and `components.post-compile-snapshot` separately. Snapshot child stages overlap their parent duration and must not be added twice. |
 | Measurement | Compare identical manifests and compiler seals, disclose first-pass versus warm observations and OS-cache limits, and retain raw timings. A local I/O improvement is distinct from an end-to-end release speed claim. |
 
 Inventory and sealing do not initialize the copy compiler. Batch initialization belongs to the measured copy phase; a copy or preflight failure retains its original cause and blocks qualification.
+
+The [selection component](../../atf-tests/tools/component-selection.test.mjs) rejects unknown, duplicate and changed selectors before staging. The [snapshot component](../../atf-tests/tools/snapshot-io.test.mjs) verifies that an unrelated release tree is omitted while its complete live hash inventory and drift refusal remain active. The documentation collection alone declares release-payload ownership; generic RAG controls do not inherit that large copy.
 
 ```mermaid
 flowchart LR
@@ -379,6 +383,7 @@ Fresh Maven preparation emits diagnostic measurements alongside its existing byt
 | File population | Exact hashed-file count, visited directories and file lengths observed before hashing. Observed lengths are not physical disk-read or allocation measurements. |
 | `compiler-receipt-initial-cost.json` | Separate serialization and atomic publication intervals for the initial Maven receipt. |
 | `compiler-receipt-classpath-cost.json` | The same partition for a freshly resolved classpath receipt. A reused classpath has no new write observation. |
+| Cold/warm admission fixture | `component-maven-reuse.test.mjs` records a fresh complete output seal and a separate warm receipt admission over the same four-file fixture. Equal fingerprints and tamper/missing-class refusals qualify identity; the fixture does not invoke Maven or claim compile-time savings. |
 | Admission | Every measurement declares `qualified: false`. A failed measured operation clears its output observation; the cost file cannot replace a source or compiler receipt. |
 
 Only fresh output sealing enables detailed traversal clocks. Reuse still hashes current bytes without collecting per-file measurements. The profile does not narrow compiler inputs, discard outputs, alter report selection or assert a speedup.

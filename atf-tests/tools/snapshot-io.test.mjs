@@ -6,13 +6,13 @@ import os from 'node:os';
 import path from 'node:path';
 import {createHash} from 'node:crypto';
 
-async function exercise(t,negative){
+async function exercise(t,negative,includeReleasePayload=true){
  const parent=await fs.realpath(process.env.WHIST_QUALIFICATION_TEMP_ROOT??os.tmpdir());
  const root=await fs.mkdtemp(path.join(parent,'whist-snapshot-io-'));
  t.after(async()=>{assert.equal(path.dirname(await fs.realpath(root)),parent);await fs.rm(root,{recursive:true,force:true});});
  const script=path.join(root,'exercise.ps1');
  await fs.writeFile(script,String.raw`
-param($Root,$Scripts,$Negative)
+param($Root,$Scripts,$Negative,$IncludeReleasePayload)
 $ErrorActionPreference='Stop'
 [Console]::OutputEncoding=[Text.UTF8Encoding]::new($false)
 . (Join-Path $Scripts 'AtfQualificationSnapshot.ps1')
@@ -37,8 +37,8 @@ Put (Join-Path $live 'release/index.json') '{}'
 Put (Join-Path $live 'release/payload.bin') 'release payload'
 Put (Join-Path $live 'atf-tests/tools/check-release-artifacts.mjs') 'console.log("Controlled artifact-preflight neighbour");'
 $timing=New-AtfQualificationTiming 'fixture' (Join-Path $run 'timing.json')
-$snapshot=New-AtfQualificationSnapshot $live $stage $run '' $timing
-if($Negative -eq 'false'){
+$snapshot=New-AtfQualificationSnapshot $live $stage $run '' $timing ([bool]::Parse($IncludeReleasePayload))
+if($Negative -eq 'false' -and $snapshot.includeReleasePayload){
  $sources=@($snapshot.source|ConvertFrom-Json);$releases=@($snapshot.release|ConvertFrom-Json)
  $observed=@(Get-ChildItem -LiteralPath $stage -Recurse -Force -File|ForEach-Object{[IO.Path]::GetRelativePath($stage,$_.FullName).Replace('\','/')})
  Expect ($observed.Count -eq ($sources.Count+$releases.Count)) 'Complete staged population'
@@ -46,6 +46,25 @@ if($Negative -eq 'false'){
  Expect (([IO.File]::GetAttributes($copiedReadonly) -band [IO.FileAttributes]::ReadOnly) -ne 0) 'Readonly attribute preserved'
  Expect ([IO.File]::GetLastWriteTimeUtc($copiedReadonly) -eq [IO.File]::GetLastWriteTimeUtc($readonly)) 'Original modification time preserved'
  @{source=$sources;release=$releases;timing=$timing.stages;preflight='controlled neighbour';files=@($observed|Sort-Object);attributesPreserved=$true}|ConvertTo-Json -Depth 8 -Compress
+}elseif($Negative -eq 'false'){
+ $sources=@($snapshot.source|ConvertFrom-Json);$releases=@($snapshot.release|ConvertFrom-Json)
+ $observed=@(Get-ChildItem -LiteralPath $stage -Recurse -Force -File|ForEach-Object{[IO.Path]::GetRelativePath($stage,$_.FullName).Replace('\\','/')})
+ Expect (!(Test-Path -LiteralPath (Join-Path $stage 'release'))) 'Unselected release payload must not enter source staging'
+ Expect ($observed.Count -eq $sources.Count) 'Only the admitted source population is staged'
+ Expect (@($releases|Where-Object path -like 'release/*').Count -eq 2) 'Complete release inventory remains bound separately'
+ Expect (@(Get-AtfSnapshotDifferences $snapshot $stage $live).Count -eq 0) 'Source stage and complete live release inventory pass'
+ $releaseFile=Join-Path $live 'release/payload.bin';$original=[IO.File]::ReadAllText($releaseFile);Put $releaseFile 'changed release payload'
+ $capture=Join-Path $Root 'drift-capture';$null=[IO.Directory]::CreateDirectory($capture)
+ try {
+  $differences=@(Get-AtfSnapshotDifferences $snapshot $stage $live -CaptureRoot $capture)
+  Expect ($differences.Count -eq 1 -and $differences[0] -eq 'LIVE-RELEASE: release/payload.bin') 'Unstaged release drift still blocks the source qualification'
+  $receipt=Get-Content (Join-Path $capture 'source-snapshot-check.json') -Raw|ConvertFrom-Json
+  Expect ($receipt.observations.Count -eq 4) 'Drift receipt retains staged-source, staged-release decision and both live inventories'
+ } finally { Put $releaseFile $original }
+ $timingRows=@($timing.stages|Where-Object {$_.stage -like 'snapshot.*'}|ForEach-Object {@{stage=$_.stage;status=$_.status;elapsedMs=$_.elapsedMs}})
+ @{sourceCount=$sources.Count;releaseCount=$releases.Count;stagedSourceCount=$observed.Count;stagedReleaseCount=0
+   releaseFingerprint=(Get-AtfInputFingerprint $snapshot.release);allLiveReleaseInputsStillSealed=$true
+   changedReleaseRefused=$true;driftReceiptObservations=4;timing=$timingRows}|ConvertTo-Json -Depth 6 -Compress
 }else{
  $observations=@()
  foreach($location in @($live,$stage)){
@@ -102,7 +121,7 @@ if($Negative -eq 'false'){
 }
 `);
  return JSON.parse(runFixtureProcess('pwsh',['-NoProfile','-NonInteractive','-File',script,root,
-  path.resolve(import.meta.dirname,'../../scripts'),String(negative)],{encoding:'utf8',windowsHide:true,timeout:60000}));
+  path.resolve(import.meta.dirname,'../../scripts'),String(negative),String(includeReleasePayload)],{encoding:'utf8',windowsHide:true,timeout:60000}));
 }
 test('native snapshot I/O preserves independent bytes inventory and child timing identities',async t=>{
  const result=await exercise(t,false),seen=new Map([...result.source,...result.release].map(row=>[row.path,row.sha256]));
@@ -112,6 +131,16 @@ test('native snapshot I/O preserves independent bytes inventory and child timing
  assert.equal(result.files.length,11);assert.equal(seen.has('.git'),false);assert.equal(result.attributesPreserved,true);
  assert.deepEqual(result.timing.map(row=>[row.stage,row.status]),['snapshot.inventory','snapshot.copy','snapshot.verify','snapshot.artifact-preflight'].map(name=>[name,'PASS']));
  console.log('Snapshot I/O parity observations: '+JSON.stringify(result));
+});
+
+test('does not stage unrelated release payloads while retaining their complete source seal',async t=>{
+ const result=await exercise(t,false,false);
+ assert.equal(result.stagedReleaseCount,0);assert.equal(result.releaseCount,2);
+ assert.equal(result.allLiveReleaseInputsStillSealed,true);assert.equal(result.changedReleaseRefused,true);
+ assert.equal(result.driftReceiptObservations,4);
+ assert.deepEqual(result.timing.map(row=>[row.stage,row.status]),
+   ['snapshot.inventory','snapshot.copy','snapshot.verify','snapshot.artifact-preflight'].map(name=>[name,'PASS']));
+ console.log('Snapshot release separation observations: '+JSON.stringify(result));
 });
 test('native snapshot I/O rejects same-metadata drift corruption private paths and links',async t=>{
  const result=await exercise(t,true);assert.equal(result.observations.length,11);

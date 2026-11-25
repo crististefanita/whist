@@ -41,9 +41,11 @@ $resource=Join-Path $build 'project/demo/target/test-classes/case.txt'
 Write-Fixture $jar 'dependency';Write-Fixture $pom '<project/>';Write-Fixture $class 'bytecode';Write-Fixture $resource 'resource'
 $classpath=Join-Path $build 'component-classpath.txt';Write-Fixture $classpath $jar
 $manifest=Join-Path $build 'compiler-source-inputs.json';Copy-Item $source $manifest
+$coldSealCost=$null
+$sealedFingerprint=Get-AtfComponentMavenFingerprint $build $repo @('demo') -Measurement ([ref]$coldSealCost)
 $receipt=[ordered]@{schemaVersion=2;identity=$compiler.identity;repo='maven-repository';compilerFingerprint=$compiler.compilerFingerprint
  toolFingerprint=$compiler.toolFingerprint;inputManifestSha256=(Get-FileHash $manifest).Hash.ToLowerInvariant()
- buildFingerprint=(Get-AtfComponentMavenFingerprint $build $repo @('demo'));classpathSha256=(Get-FileHash $classpath).Hash}
+ buildFingerprint=$sealedFingerprint;classpathSha256=(Get-FileHash $classpath).Hash}
 $receiptFile=Join-Path $build 'component-maven.json';Write-AtfComponentJson $receiptFile $receipt
 function Point($Directory,$Workspace) {
  if(!$Modern){Write-AtfComponentJson (Join-Path $Directory 'component-workspace.json') @{schemaVersion=1;path=$Workspace};return}
@@ -56,7 +58,15 @@ Point $previous $build
 $decision=@{}
 function Borrow { Read-AtfBorrowedComponentMaven $previous $target $compiler.identity @('demo') $Root -Decision $decision }
 $outcomes=[Collections.Generic.List[string]]::new()
+$warmAdmission=[ordered]@{elapsedMs=$null;fingerprint='';sameSeal=$false}
 if(!$Negative) {
+ $warmClock=[Diagnostics.Stopwatch]::StartNew()
+ $warmPrepared=Read-AtfPreparedComponentMaven $build $compiler.identity @('demo')
+ $warmClock.Stop()
+ Expect ($null -ne $warmPrepared) 'the sealed compiler receipt must admit its complete cold output'
+ Expect ($warmPrepared.receipt.buildFingerprint -ceq $sealedFingerprint) 'cold seal and warm admission must preserve the same output identity'
+ $warmAdmission=[ordered]@{elapsedMs=$warmClock.Elapsed.TotalMilliseconds;fingerprint=$warmPrepared.receipt.buildFingerprint;sameSeal=$true}
+ $outcomes.Add('cold output seal and warm receipt admission retain the same complete input identity')
  $rows[1].sha256=('c'*64);$rows+=@{path='config/documentation-editions.json';sha256=('d'*64)}
  Write-AtfComponentJson $source $rows
  $new=Get-AtfComponentCompilerIdentity $source $java $maven
@@ -155,7 +165,10 @@ if(!$Negative) {
  Expect ($null -eq (Borrow)) 'missing bytecode accepted'
  $outcomes.Add('changed sources, tools, outputs, foreign receipts, classpaths, locks and links are rejected')
 }
-$outcomes|ConvertTo-Json -Compress
+@{outcomes=$outcomes.ToArray();coldWarm=[ordered]@{profile='isolated synthetic compiler fixture; no Maven invocation';
+ coldSealMs=($coldSealCost.totalTicks*1000.0/$coldSealCost.frequency);coldHashedFiles=$coldSealCost.hashedFiles
+ coldObservedBytes=$coldSealCost.observedBytes;coldIdentity=$sealedFingerprint;warmAdmissionMs=$warmAdmission.elapsedMs
+ warmIdentity=$warmAdmission.fingerprint;sameSeal=$warmAdmission.sameSeal}}|ConvertTo-Json -Depth 6 -Compress
 `);
   return runFixtureProcess('pwsh',['-NoProfile','-NonInteractive','-File',script,root,
     path.resolve(import.meta.dirname,'../../scripts'),...(negative?['-Negative']:[]),...(modern?['-Modern']:[])],{
@@ -165,7 +178,14 @@ $outcomes|ConvertTo-Json -Compress
 }
 
 test('documentation preserves verified compilation without copying the repository or classes', async t=>{
-  assert.match(await exercise(t,false),/documentation preserves compiler identity/);
+  const output=await exercise(t,false),result=JSON.parse(output.trim().split(/\r?\n/).at(-1));
+  assert.match(output,/documentation preserves compiler identity/);
+  assert.match(output,/cold output seal and warm receipt admission/);
+  assert.equal(result.coldWarm.profile,'isolated synthetic compiler fixture; no Maven invocation');
+  assert.equal(result.coldWarm.coldHashedFiles,4);
+  assert.equal(result.coldWarm.sameSeal,true);
+  assert.equal(result.coldWarm.coldIdentity,result.coldWarm.warmIdentity);
+  console.log('Compiler cold/warm admission observations: '+JSON.stringify(result.coldWarm));
 });
 test('changed compiler inputs and unverified workspaces reject compilation reuse', async t=>{
   assert.match(await exercise(t,true),/changed sources, tools, outputs/);

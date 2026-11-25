@@ -24,6 +24,10 @@ class ComponentEvidenceScopeComponentTest {
         AuditedAssertions.assertTrue(output.contains("modern emitted pointer and qualified context"),"The actual pointer writer and reader agree on the current schema");
         AuditedAssertions.assertTrue(output.contains("modern context omissions, foreign identities"),"Modern context and original output seals are admitted independently");
         AuditedAssertions.assertTrue(output.contains("changed compiler inputs and unverified workspaces reject"),"Legacy compatibility preserves all original negative controls");
+        AuditedAssertions.assertTrue(output.contains("Compiler cold/warm admission observations:"),
+                "Cold byte sealing and warm receipt admission are measured as separate operations");
+        AuditedAssertions.assertTrue(output.contains("\"sameSeal\":true"),
+                "The measured warm admission binds the exact cold seal without implying a compile speedup");
     }
 
     @Test @ExtendWith(GameReportAudit.class)
@@ -53,6 +57,17 @@ class ComponentEvidenceScopeComponentTest {
                 root, Duration.ofSeconds(100), value -> inputs.add("Literal POM, build-helper, profile resource and recipe rejection observations", value));
         AuditedAssertions.assertTrue(output.contains("Literal Maven compiler scope observations:"), "Compiled providers and resources remain in the key");
         AuditedAssertions.assertTrue(output.contains("Compiler scope rejection observations:"), "Unknown recipes fall back; unbound and indirect recipes are rejected");
+    }
+
+    @Test @ExtendWith(GameReportAudit.class)
+    void selectorsAreValidatedBeforePreparationAndOnlyReleaseOwnersStageReleaseBytes(ComponentInputs inputs) throws Exception {
+        var root = GovernanceProject.locateProjectRoot();
+        String output = runNode(List.of("node", "--test", root.resolve("atf-tests/tools/component-selection.test.mjs").toString()),
+                root, Duration.ofSeconds(40), value -> inputs.add("Pre-staging selector and release-payload admission observations", value));
+        AuditedAssertions.assertTrue(output.contains("Component selection admission observations:"),
+                "Unknown and duplicate groups fail before a run can create staging output");
+        AuditedAssertions.assertTrue(output.contains("\"bidOnlyIncludesRelease\":false"),
+                "The selected group's ownership determines whether release payload bytes enter its stage");
     }
 
     @Test @ExtendWith(GameReportAudit.class)

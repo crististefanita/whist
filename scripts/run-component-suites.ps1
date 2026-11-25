@@ -22,6 +22,7 @@ $ErrorActionPreference = 'Stop'
 Assert-AtfComponentJavaEnvironment
 . (Join-Path $PSScriptRoot 'AtfQualificationSnapshot.ps1')
 . (Join-Path $PSScriptRoot 'AtfQualificationTiming.ps1')
+. (Join-Path $PSScriptRoot 'AtfComponentSelection.ps1')
 . (Join-Path $PSScriptRoot 'AtfTestChangeBatch.ps1')
 . (Join-Path $PSScriptRoot 'AtfTestChangeAdmission.ps1')
 . (Join-Path $PSScriptRoot 'AtfComponentResume.ps1')
@@ -29,9 +30,6 @@ Assert-AtfComponentJavaEnvironment
 . (Join-Path $PSScriptRoot 'AtfCompilerIdentity.ps1')
 . (Join-Path $PSScriptRoot 'AtfComponentMavenReuse.ps1')
 $sourceRoot = [IO.Path]::GetFullPath($SourceRoot)
-$evidenceRoot = if (-not [string]::IsNullOrWhiteSpace($env:WHIST_EVIDENCE_ROOT) -or -not $RunRoot) {
-    Ensure-AtfEvidenceRoot $sourceRoot
-} else { $null }
 if ($ResumeFrom) {
     if ($ReuseFrom -or $AllTestChangeControls) {
         throw 'ResumeFrom requires a normal component run or one static proof control and its own validated evidence source.'
@@ -55,6 +53,10 @@ if ($TestChangeControl -or $AllTestChangeControls) {
     $dirty = & git -C $sourceRoot status --porcelain=v1 --untracked-files=all
     if ($LASTEXITCODE -ne 0 -or $dirty) { throw 'testChanges proof requires a clean checkout.' }
 }
+$selection = Resolve-AtfComponentSelection $sourceRoot $Groups
+$evidenceRoot = if (-not [string]::IsNullOrWhiteSpace($env:WHIST_EVIDENCE_ROOT) -or -not $RunRoot) {
+    Ensure-AtfEvidenceRoot $sourceRoot
+} else { $null }
 if (-not $RunRoot) {
     $RunRoot = Join-Path $evidenceRoot ('component-suites/' + (Get-Date -Format 'yyyyMMdd-HHmmss') + '-' + [guid]::NewGuid().ToString('N').Substring(0,8))
 }
@@ -256,47 +258,35 @@ try {
         [IO.File]::WriteAllText((Join-Path $RunRoot 'source-inputs.json'),$snapshot.source)
         [IO.File]::WriteAllText((Join-Path $RunRoot 'release-inputs.json'),$snapshot.release)
         Write-AtfQualificationDecision $timing 'components.snapshot-preflight' 'REUSED' 'Verified live and staged snapshot.'
+        if ($selection.includeReleasePayload -and !$snapshot.includeReleasePayload) {
+            throw 'COMPONENT_RESUME_RELEASE_SNAPSHOT_REQUIRED'
+        }
     } else {
         New-Item -ItemType Directory -Path $stage | Out-Null
         $snapshot = Invoke-AtfQualificationPhase $timing 'components.snapshot-preflight' {
-            New-AtfQualificationSnapshot $sourceRoot $stage $RunRoot $PinnedSourceInputs $timing
+            New-AtfQualificationSnapshot $sourceRoot $stage $RunRoot $PinnedSourceInputs $timing $selection.includeReleasePayload
         }
     }
+    Invoke-AtfQualificationPhase $timing 'components.selection-recheck' {
+        Assert-AtfComponentSelectionSnapshot $stage $selection
+    }
     Invoke-AtfQualificationPhase $timing 'components.metadata-recheck' {
-        Assert-AtfMetadataSnapshot $stage $RunRoot
+        $metadataRoot = if ($snapshot.includeReleasePayload) { $stage } else { $sourceRoot }
+        Assert-AtfMetadataSnapshot $metadataRoot $RunRoot
     }
     Invoke-AtfQualificationPhase $timing 'components.test-change-recheck' {
         Assert-ComponentTestChangeAdmission 'test-change-admission-recheck.json'
     }
-    $catalog = Get-Content -LiteralPath (Join-Path $stage 'config/atf-test-suites.json') -Raw | ConvertFrom-Json
-    $primaryComponents = @($catalog.suites | Where-Object {$_.role -eq 'primary' -and $_.layer -eq 'component'} | ForEach-Object {
-        if (-not $_.group) { $_ | Add-Member -NotePropertyName group -NotePropertyValue $_.module }
-        $_
-    })
-    $collectionProperties = ConvertFrom-StringData (Get-Content -LiteralPath (Join-Path $stage 'config/gradle-app-collections.properties') -Raw)
-    $gradleGroups = @($collectionProperties.Values | Sort-Object -Unique | ForEach-Object {
-        $suffix = [Globalization.CultureInfo]::InvariantCulture.TextInfo.ToTitleCase($_)
-        $task = 'testDebug' + $suffix + 'Components'
-        [pscustomobject]@{group="whist-lab-app-$_";project='whist-lab-app/app';task=$task;path=":app:$task";selection=$task}
-    })
-    $uiTask = ':card-table-android:testDebugUnitTest'
-    $gradleGroups += [pscustomobject]@{group='whist-lab-app-atf-card-table-ui';project='whist-lab-app/atf-card-table-ui';task='testDebugUnitTest';path=$uiTask;selection=$uiTask}
-    $gradleGroups += [pscustomobject]@{group='whist-lab-app-card-table-core';project='whist-lab-app/card-table-core';task='test';path=':card-table-core:test';selection=':card-table-core:test'}
-    $rulesTask = ':game-core:releaseRulesComponents'
-    $gradleGroups += [pscustomobject]@{group='whist-lab-app-rules';project='whist-lab-app/game-core';task='releaseRulesComponents';path=$rulesTask;selection=$rulesTask}
-    $knownGroups = @($primaryComponents.group) + @($gradleGroups.group)
-    if (@($Groups | Where-Object {$_ -cnotin $knownGroups}).Count -or
-            @($Groups | Sort-Object -Unique).Count -ne $Groups.Count) {
-        throw 'Groups must contain only distinct identifiers from the component catalog.'
-    }
-    $selectedGroups = @(if ($Groups.Count) { $Groups } else { $knownGroups })
+    $primaryComponents = $selection.primaryComponents
+    $gradleGroups = $selection.gradleGroups
+    $selectedGroups = $selection.groups
 
     $fingerprint = Get-AtfInputFingerprint $snapshot.source
     $releaseFingerprint = Get-AtfInputFingerprint $snapshot.release
     $qualificationContext = Get-AtfQualifiedCatalogContext $snapshot
     $libraries = @($snapshot.source | ConvertFrom-Json | Where-Object {$_.path -like 'lib/*.jar'})
     $provenance = [ordered]@{schemaVersion=2;qualificationContext=$qualificationContext;kind='live-source-components';apkQualification=$false;androidExecution=$false;observedUtc=[DateTime]::UtcNow.ToString('o');sourceFingerprint=$fingerprint;inputCount=$snapshot.inputCount;inputManifest='source-inputs.json';inputPartCharacters=$InputPartCharacters;libraries=$libraries
-        releaseFingerprint=$releaseFingerprint;releaseInputManifest='release-inputs.json'}
+        releaseFingerprint=$releaseFingerprint;releaseInputManifest='release-inputs.json';includeReleasePayload=$snapshot.includeReleasePayload}
     $provenanceReceipt = Join-Path $RunRoot 'source-provenance.json'
     $provenance | ConvertTo-Json -Depth 8 | Set-Content -LiteralPath $provenanceReceipt -Encoding utf8
     $provenanceFingerprint = (Get-FileHash -LiteralPath $provenanceReceipt -Algorithm SHA256).Hash.ToLowerInvariant()
@@ -311,6 +301,7 @@ try {
             schemaVersion=2;qualificationContext=$qualificationContext;kind='live-source-components';apkQualification=$false
             sourceFingerprint=$fingerprint;provenanceReceiptSha256=$provenanceFingerprint;inputManifest='source-inputs.json'
             sourceStable=$true;inputCount=$snapshot.inputCount;releaseFingerprint=$releaseFingerprint;releaseInputManifest='release-inputs.json'
+            includeReleasePayload=$snapshot.includeReleasePayload
             status=if (@($completedComponents | Where-Object exitCode -ne 0).Count) {'FAIL'} else {'PASS'}
             results=$completedComponents.ToArray()
         }
@@ -427,7 +418,7 @@ try {
         schemaVersion=2;qualificationContext=$qualificationContext;kind='live-source-components';apkQualification=$false
         sourceFingerprint=$fingerprint;provenanceReceiptSha256=$provenanceFingerprint;inputManifest='source-inputs.json'
         sourceStable=$stable;status=if($passed){'PASS'}else{'FAIL'};stage='isolated-staging-copy';inputCount=$snapshot.inputCount
-        releaseFingerprint=$releaseFingerprint;releaseInputManifest='release-inputs.json';snapshotDifferences=$snapshotDifferences
+        releaseFingerprint=$releaseFingerprint;releaseInputManifest='release-inputs.json';includeReleasePayload=$snapshot.includeReleasePayload;snapshotDifferences=$snapshotDifferences
         results=$results;reusedGroups=@($reused | ForEach-Object {$_.group});gradleBatch=$gradleBatch
         androidComponentsReceipt=$androidComponentsReceipt
     }

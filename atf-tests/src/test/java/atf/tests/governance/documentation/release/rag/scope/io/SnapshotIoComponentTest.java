@@ -21,6 +21,16 @@ class SnapshotIoComponentTest {
                 "Independent byte hashes, hidden files, Unicode resources and exact inventory populations pass");
     }
 
+    @Test void unselectedReleasePayloadStaysOutsideStageWhileItsFullInventoryRemainsBound(ComponentInputs inputs) throws Exception {
+        String output = exercise("does not stage unrelated", inputs);
+        AuditedAssertions.assertTrue(output.contains("Snapshot release separation observations:"),
+                "Unselected groups skip copying retained reports while the full release inventory remains sealed");
+        AuditedAssertions.assertTrue(output.contains("\"stagedReleaseCount\":0"),
+                "The source workspace contains no release payload when the selected group has no release snapshot");
+        AuditedAssertions.assertTrue(output.contains("\"changedReleaseRefused\":true"),
+                "A changed live release input still refuses the snapshot");
+    }
+
     @Test void sameMetadataDriftCorruptionAndIndirectPathsCannotQualify(ComponentInputs inputs) throws Exception {
         String output = exercise("rejects same-metadata", inputs);
         AuditedAssertions.assertTrue(output.contains("Snapshot I/O rejection observations:"),

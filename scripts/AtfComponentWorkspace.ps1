@@ -18,6 +18,7 @@ function Read-AtfComponentWorkspace([string]$Previous, [switch]$RequireSnapshot)
         throw 'COMPONENT_RESUME_WORKSPACE_RECEIPT'
     }
     $snapshot = $null
+    $includeReleasePayload = $true
     if ($RequireSnapshot -or $pointer.schemaVersion -eq 2) {
         $sourceFile = Join-Path $Previous 'source-inputs.json'
         $releaseFile = Join-Path $Previous 'release-inputs.json'
@@ -33,7 +34,11 @@ function Read-AtfComponentWorkspace([string]$Previous, [switch]$RequireSnapshot)
                 $pointer.releaseFingerprint -cne (Get-AtfInputFingerprint $release)) {
             throw 'COMPONENT_RESUME_SNAPSHOT_RECEIPT'
         }
-        $snapshot = [pscustomobject]@{source=$source;release=$release;inputCount=$rows.Count}
+        if ($pointer.PSObject.Properties.Name -contains 'includeReleasePayload') {
+            if ($pointer.includeReleasePayload -isnot [bool]) { throw 'COMPONENT_RESUME_RELEASE_PAYLOAD' }
+            $includeReleasePayload = $pointer.includeReleasePayload
+        }
+        $snapshot = [pscustomobject]@{source=$source;release=$release;inputCount=$rows.Count;includeReleasePayload=$includeReleasePayload}
         if ($pointer.schemaVersion -eq 2) {
             $expected = Get-AtfQualifiedCatalogContext $snapshot
             $context = $pointer.qualificationContext
@@ -58,5 +63,6 @@ function Write-AtfComponentWorkspace([string]$RunRoot, [string]$Work, $Snapshot)
         schemaVersion=2;qualificationContext=(Get-AtfQualifiedCatalogContext $Snapshot);path=$Work
         sourceFingerprint=(Get-AtfInputFingerprint $Snapshot.source)
         releaseFingerprint=(Get-AtfInputFingerprint $Snapshot.release)
+        includeReleasePayload=$(if ($null -eq $Snapshot.includeReleasePayload) { $true } else { [bool]$Snapshot.includeReleasePayload })
     })
 }
