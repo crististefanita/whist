@@ -1,0 +1,18 @@
+{
+  "schemaVersion": 1,
+  "kind": "WHIST_SELECTION_COST_QUALIFICATION",
+  "childHeapMiB": 128,
+  "childActiveProcessors": 2,
+  "timeoutSeconds": 45,
+  "populations": [
+    64,
+    512,
+    2048
+  ],
+  "compositions": [
+    "mixed",
+    "mostly-failed"
+  ],
+  "checkpointContextCharacters": 256,
+  "scope": "Selector-only isolated JVM; rendering, browser cost and machine-wide RSS are separate."
+}

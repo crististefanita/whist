@@ -19,7 +19,7 @@ The [Gradle component guide](../testing/ATF_GradleComponents.md#bounded-matrix-i
 
 | Priority | Owner and remaining qualification | Level and criterion of closure |
 |---|---|---|
-| P2 | The consumer of reporting: cost of selection and composition in large or predominantly failed populations. | Components with controlled populations and identified environment: cost, number of comparisons and optional body, with all failures, mandatory values and inventory of retained omissions. |
+| P2 | Reporting-consumer cost beyond the [bounded selector profile](../reporting/ATF_Presentation.md#bounded-selection-and-composition), especially large rendered failure populations and long mandatory bodies. | Vary rendered comparisons, body size and failure density independently; measure actual allocation and composition phases while retaining every selected failure, mandatory value and omission. One-snapshot selection components and a small real HTML composition do not qualify this broader rendering envelope. |
 
 ## RPT-BOUNDED-REPORT-HEAP - Safe completion for large suites
 

@@ -71,6 +71,21 @@ External diagnostic references are inventoried and omitted from HTML; mandatory 
 
 [EvidenceSelectionContractTest](../../atf-tests/src/test/java/atf/tests/learning/EvidenceSelectionContractTest.java) checks selection before the session. [GameReportPublicationContractTest](../../atf-tests/src/test/java/atf/tests/reporting/GameReportPublicationContractTest.java) checks its publication and refusal; the two contracts are not confused.
 
+## Bounded selection and composition
+
+Selection reads one defensive snapshot of each invocation and validates it before deriving a private descriptor. Sorting uses captured IDs and families rather than repeatedly copying the receipt; selected inputs keep their original objects and byte hashes in supplied order.
+
+| Stage | Responsibility and limit |
+|---|---|
+| Population projection | Validate every receipt, reject duplicate IDs, count complete comparisons and context, and add captured durations with checked arithmetic. |
+| Whole-invocation selection | Keep every non-PASS result, configured complete collection and gate; choose passing examples by the first IDs per family without consuming example slots for mandatory entries. |
+| Optional diagnostics | Serialize fingerprints only for selected entries, deduplicate identical records in first-seen order and apply item/character budgets to whole records. Mandatory comparison values, failure causes and context remain independent. |
+| Composition | Recheck captured file hashes on load; the real renderer and HTML oracle preserve original owners, values, outcomes, timing and the complete omission inventory. |
+
+The [resource profile](../../config/report-selection-profile.json) declares selector populations, mixtures, child heap and timeout. [Auditable components](../../atf-tests/src/test/java/atf/tests/learning/selection/EvidenceSelectionComponentTest.java) compare independent literal populations and inspect a small real composition, including changed-source and changed-context refusals; no screenshots are required.
+
+[Unit matrices](../../atf-tests/src/test/java/atf/tests/learning/selection/EvidenceSelectionUnitTest.java) cover combinations and exact boundaries without Extent. The snapshot counter measures defensive receipt copies, not bytes allocated; isolated selector measurements do not establish renderer memory peaks, browser navigation cost or performance beyond the declared profile.
+
 ## Execution and verification
 
 The composition of the data is in the main sources of [integration module](../../atf-tests/README.md). Maintenance of the generic rendering component shall be directed by [joint responsibilities](../feedback/README.md).

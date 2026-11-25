@@ -15,7 +15,7 @@ Stable contracts belong to thematic guidelines; each criterion remains open unti
 | [Android](ATF_Android.md) | Full history, persistence, geometry, location and accessibility. |
 | [Shared interface](ATF_CardUi_Extraction.md) | Boundaries between reusable presentation and the Whist adapter: menu, profile, table, history and animation. |
 | [Browser](ATF_UiBrowser.md) | Responsive viewport, menu typography and parity with APKs for the shared Edge and Chrome adapter. |
-| [Reporting](ATF_Reporting.md) | Qualification of autonomy, comparisons and memory consumption in Extent. |
+| [Reporting](ATF_Reporting.md) | Autonomy, original comparisons, renderer allocation and cost beyond the admitted consumer-input profiles. |
 | [Governance](ATF_Governance.md) | Reusable API, explicit perimeter and code cohesion. |
 | [Local infrastructure](ATF_TestInfrastructure.md) | Kit concurrency, configuration isolation and API-validation cost. |
 | [Whist Achievements](ATF_Achievements.md) | Restoring the status of the Android screen and calibration with human players. |
