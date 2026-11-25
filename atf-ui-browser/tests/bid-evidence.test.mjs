@@ -99,6 +99,7 @@ test('invalid rows are atomic and a nontransactional mutant is caught by the sam
   assert.notEqual(mutant,original,'The controlled mutant restores the original partial-mutation defect');
   const previous=fixture(t,mutant);let refusal;
   try{previous.run('BidEvidenceProbe','negative');}catch(error){refusal=error;}
-  assert.ok(refusal&&refusal.message.includes('Rejected row changed accumulated options'),refusal?.message);
-  console.log(actual.trim()+'; controlledMutantSha256='+createHash('sha256').update(mutant).digest('hex')+'; original refusal='+refusal.message);
+  assert.ok(refusal&&refusal.code==='FIXTURE-CHILD-EXIT'&&refusal.status===1
+    &&String(refusal.stderr).includes('Rejected row changed accumulated options'),refusal?.message);
+  console.log(actual.trim()+'; controlledMutantSha256='+createHash('sha256').update(mutant).digest('hex')+'; original refusal='+refusal.stderr);
 });
