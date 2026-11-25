@@ -76,9 +76,7 @@ LangGraph oferă noduri explicite, stare partajată și limite de checkpoint, da
 
 [Contractul admiterii timpurii](../governance/ATF_TestChanges.md#admiterea-timpurie-a-controlului-sursei) deține validarea canonică a probelor, admiterea planului de generare și reverificarea după pregătire. Rapoartele originale ale probelor, identitățile Git exacte și guvernanța finală rămân obligatorii; selecția sau reutilizarea compilării nu ocolesc admiterea.
 
-| Prioritate | Lacună distinctă rămasă | Criteriu de închidere |
-|---|---|---|
-| P2 | Metadatele calificării ajung la unele diagnostice numai după pregătirea snapshot-ului. | Validați inventarul E2E al dosarului activ, linkurile catalogului și limitele editoriale printr-o verificare ieftină a metadatelor, înaintea colecției lungi. Păstrați dovezile eșuate și demonstrați că o reverificare focalizată nu poate califica un grup primar eșuat; acest criteriu este distinct de admiterea probelor de control al sursei. |
+[Contractul metadatelor preliminare](../testing/ATF_ReleaseQualification.md#early-release-metadata) verifică declarațiile E2E active, destinațiile catalogului și regulile editoriale ale indexului release-ului înainte de inventar, copiere sau Maven. Reverificarea snapshot-ului rămâne legată de sursă și separată de octeții artefactelor, rezultatele suitelor primare și calificarea completă a publicării.
 
 
 <a id="framework-selection-boundaries"></a>

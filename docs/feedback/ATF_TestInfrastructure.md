@@ -24,9 +24,7 @@ Deținerea persistentă și recuperarea aparțin [contractului de calificare](..
 
 ## Compoziția acțiunilor driverului
 
-| Prioritate | Lacună și responsabil | Criteriu de închidere |
-|---|---|---|
-| P2 | Adaptorul Android: [AndroidUiDriver](../../atf-test-android/src/test/java/atf/android/e2e/driver/AndroidUiDriver.java) păstrează împreună selecția controalelor, repetarea comenzilor și înregistrarea succesului ori eșecului acțiunii. Blocurile similare cresc costul schimbării atribuirii și al temporizării. | Separați execuția și înregistrarea comună a acțiunii într-un colaborator cu porturi explicite, păstrând fațada driverului și oracolul de domeniu. Componente cu proces și ceas controlate demonstrează aceeași ordine a comenzilor, cauză originală, intervale și atribuire setup/body, inclusiv timeout și anulare. |
+[Contractul acțiunilor Android](../../atf-test-android/src/test/README.md#action-dispatch-and-ownership) separă selecția ierarhiei, execuția comenzilor și fazele deținute de apelant. Componentele controlate califică ordinea, duratele, anularea și cauzele originale; acceptanța nativă rămâne în registrul Android.
 
 ## Calificarea costului RAG
 

@@ -234,6 +234,9 @@ function Assert-ComponentTestChangeAdmission([string]$Receipt) {
 Invoke-AtfQualificationPhase $timing 'components.test-change-admission' {
     Assert-ComponentTestChangeAdmission 'test-change-admission.json'
 }
+Invoke-AtfQualificationPhase $timing 'components.metadata-preflight' {
+    Assert-AtfQualificationMetadata $sourceRoot $RunRoot $tempRoot $JavaHome $MavenCache
+}
 $work = if ($ResumeFrom) { Get-AtfResumeComponentWorkspace $ResumeFrom $tempRoot } else {
     (New-Item -ItemType Directory -Path (Join-Path $tempRoot ('whist-component-suites-' + [guid]::NewGuid().ToString('N')))).FullName
 }
@@ -252,6 +255,9 @@ try {
         $snapshot = Invoke-AtfQualificationPhase $timing 'components.snapshot-preflight' {
             New-AtfQualificationSnapshot $sourceRoot $stage $RunRoot $PinnedSourceInputs $timing
         }
+    }
+    Invoke-AtfQualificationPhase $timing 'components.metadata-recheck' {
+        Assert-AtfMetadataSnapshot $stage $RunRoot
     }
     Invoke-AtfQualificationPhase $timing 'components.test-change-recheck' {
         Assert-ComponentTestChangeAdmission 'test-change-admission-recheck.json'

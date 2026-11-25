@@ -36,6 +36,18 @@ Componentele controlează procesele, ceasul și observațiile. E2E capturează o
 
 ## Execuție și interpretare
 
+<a id="action-dispatch-and-ownership"></a>
+
+### Execuția și deținerea acțiunilor
+
+| Responsabil | Contract |
+|---|---|
+| [Fațada driverului](java/atf/android/e2e/driver/AndroidUiDriver.java) | Rezolvă țintele ierarhiei curente, reîncercările și pauzele de stabilizare; metodele publice rămân API-ul adaptorului de testare. |
+| [Executorul acțiunilor](java/atf/android/e2e/driver/actions/AndroidUiActions.java) | Execută comanda o singură dată, măsoară numai execuția, numerotează înregistrările și păstrează cauza originală. Eșecul raportării devine excepție suprimată a unei comenzi eșuate; raportarea eșuată după o comandă acceptată nu inventează o altă comandă eșuată. |
+| Apelantul fluxului | Deține fazele de pregătire/corp, checkpoint-urile și intervalele capturilor. Acceptarea comenzii nu demonstrează singură rezultatul aplicației. |
+
+[Componentele controlate](java/atf/android/e2e/driver/actions/AndroidUiActionsComponentTest.java) folosesc porturi de proces și ceas fără dispozitiv, pauze reale sau poze. Componentele existente pentru ierarhie și derulare păstrează acoperirea selecției și reîncercărilor; E2E nativ califică separat aplicația.
+
 Folosiți [intrările izolate ale modulului](../../README.md#verificare-fără-dispozitiv) și [ghidul componentelor](../../../docs/testing/ATF_DisplayComponents.md). Selectați suita sau clasele sale, cu suprapunerea declarată; directoarele temporare și rapoartele aparțin rulării externe.
 
 - **Audit:** [AndroidComponentAudit](java/atf/android/component/AndroidComponentAudit.java) leagă invocarea de Kit. [Contractele adaptorului](java/atf/android/component/AndroidComponentReportContractTest.java) verifică publicarea și refuzurile; eșecurile intenționate sunt delimitate de rezultatul produsului.

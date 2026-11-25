@@ -247,6 +247,16 @@ Lansatorul componentelor compune aceste verificări. Compilarea validă supravie
 
 ### Snapshot și preflight înainte de Maven
 
+<a id="early-release-metadata"></a>
+
+#### Metadatele preliminare ale release-ului
+
+După admiterea controlului sursei, ambele lansatoare verifică metadatele înainte de inventarul surselor, copiere sau Maven. [Inspecția metadatelor](../../atf-tests/tools/release-metadata-preflight.mjs) verifică identitățile catalogului și destinațiile ghidurilor, decizia E2E activă, inventarul canonic al fluxurilor, căile, contoarele și forma profilului, fără a deschide APK-uri sau rapoarte HTML.
+
+- CLI-ul existent al documentației aplică aceleași reguli editoriale ca guvernanța pentru `release/README.md`; diagnosticele originale rămân în `release-editorial.json`. Guvernanța tuturor documentelor și a notelor publicării rămâne obligatorie ulterior.
+- `release-metadata.json` leagă intrările JSON și octeții indexului release-ului. Reverificarea copiei respinge metadatele schimbate înainte de Maven, inclusiv un index valid, dar diferit.
+- `PASS` pentru metadate nu reprezintă calificare. Rezultatele originale ale componentelor, hash-urile rapoartelor, octeții livrării și admiterea RAG finală rămân autoritare; diagnosticul focalizat nu poate înlocui un grup primar eșuat.
+
 [Lansatorul de componente](../../scripts/run-component-suites.ps1) și [lansatorul de guvernanță](../../scripts/run-atf-governance.ps1) folosesc [aceeași pregătire](../../scripts/AtfQualificationSnapshot.ps1). Maven compilează și verifică fișierele din aceeași copie temporară. Verificarea probelor publicate citește obiecte Git istorice din checkout-ul indicat, prin commit, fără a citi fișierele live din acesta.
 
 [Preflight-ul directorului temporar](../../atf-tests/tools/qualification-temp-root.mjs) rulează înainte de a crea dosarul rulării, de a copia sursele sau de a porni Maven.

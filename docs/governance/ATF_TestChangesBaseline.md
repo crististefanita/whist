@@ -7,6 +7,75 @@ Acest registru definește controalele revizuite, baza Git și căile lor exacte.
 ## Controale verificate
 
 <details>
+<summary>Execuția independentă a comenzilor Android și admiterea preliminară a metadatelor</summary>
+
+```yaml
+testChanges:
+  - id: ANDROID-ACTION-DISPATCH
+    status: VERIFIED
+    base: af2b14b9a5d4861214e192fa7b6d9c780e5e7066
+    expires: 2026-12-25
+    reason: Separă comenzile rezolvate de selecția ierarhiei și de fazele apelantului. Păstrează ordinea, duratele, reîncercările și anularea, menținând cauza originală dacă raportarea eșuează la rândul său.
+    proof: "mvn -o -pl atf-test-android -am -Dtest=AndroidUiActionsComponentTest,AndroidUiDriverActionTraceTest,AndroidUiDriverComponentTest -Dsurefire.failIfNoSpecifiedTests=false test"
+    checks:
+      positive:
+        - atf.android.e2e.driver.actions.AndroidUiActionsComponentTest#facadePreservesCommandOrderSequenceAndDispatchOnlyDurations
+        - atf.android.e2e.driver.actions.AndroidUiActionsComponentTest#callerOwnedSetupAndBodyKeepTheirActionsAtTheOriginalCheckpoint
+        - atf.android.e2e.driver.AndroidUiDriverActionTraceTest#recordsTheResolvedAndroidTapAndMeasuredDispatchWithoutInventingTheResult
+        - atf.android.e2e.driver.AndroidUiDriverComponentTest#nextHandIsRevealedInsideTheScoreViewport
+        - atf.android.e2e.driver.AndroidUiDriverComponentTest#lateAchievementNoticeIsDismissedBeforeTheNextScroll
+      negative:
+        - atf.android.e2e.driver.actions.AndroidUiActionsComponentTest#commandTimeoutAndCancellationKeepOriginalCauseEvenWhenFailureReportingBreaks
+        - atf.android.e2e.driver.actions.AndroidUiActionsComponentTest#aSuccessPublicationFailureCannotInventASecondFailedCommand
+    paths:
+      - atf-test-android/src/test/java/atf/android/e2e/driver/AndroidUiDriver.java
+      - atf-test-android/src/test/java/atf/android/e2e/driver/actions/AndroidUiActions.java
+      - atf-test-android/src/test/java/atf/android/e2e/driver/actions/AndroidUiActionsComponentTest.java
+  - id: RELEASE-METADATA-ADMISSION
+    status: VERIFIED
+    base: af2b14b9a5d4861214e192fa7b6d9c780e5e7066
+    expires: 2026-12-25
+    reason: Admite legăturile catalogului, declarațiile E2E active și regulile editoriale canonice ale indexului înainte de copiere. Leagă reverificarea copiei de octeții originali ai metadatelor și păstrează precedența probelor sursei și autoritatea grupurilor primare.
+    proof: "mvn -o -pl atf-tests -am -Dtest=ReleaseMetadataComponentTest,QualificationLauncherComponentTest -Dsurefire.failIfNoSpecifiedTests=false test"
+    checks:
+      positive:
+        - atf.tests.governance.documentation.release.rag.scope.metadata.ReleaseMetadataComponentTest#metadataIsIndependentFromArtifactQualification
+        - atf.tests.governance.documentation.release.rag.scope.QualificationLauncherComponentTest#validTestChangeProofPrecedesSourceCopyAndMavenInBothLaunchers
+      negative:
+        - atf.tests.governance.documentation.release.rag.scope.QualificationLauncherComponentTest#metadataDefectsStopBothLaunchersBeforeCopyCacheOrMaven
+        - atf.tests.governance.documentation.release.rag.scope.QualificationLauncherComponentTest#invalidTestChangeProofStopsBothLaunchersBeforeCopyOrMaven
+    paths:
+      - scripts/AtfQualificationSnapshot.ps1
+      - scripts/run-component-suites.ps1
+      - scripts/run-atf-governance.ps1
+      - atf-tests/tools/release-metadata-preflight.mjs
+      - atf-tests/tools/release-metadata-preflight.test.mjs
+      - atf-tests/src/test/java/atf/tests/governance/documentation/release/rag/scope/metadata/ReleaseMetadataComponentTest.java
+      - atf-tests/src/test/java/atf/tests/governance/documentation/release/rag/scope/QualificationLauncherComponentTest.java
+      - atf-tests/src/test/java/atf/tests/governance/source/changes/TestChangeAdmissionFixture.java
+  - id: RAG-DOMAIN-CATALOG-ACTION-METADATA
+    status: VERIFIED
+    base: af2b14b9a5d4861214e192fa7b6d9c780e5e7066
+    expires: 2026-12-25
+    reason: Păstrează componenta metadatelor într-o singură colecție primară și leagă inventarele regenerate de dependențe și cititori de contractele neschimbate ale surselor și suitelor.
+    proof: "mvn -o -pl atf-tests -am -Dtest=AtfSourceQualityGovernanceTest,SuiteOwnershipGovernanceTest,AtfCollectionOwnershipComponentTest -Dsurefire.failIfNoSpecifiedTests=false test"
+    checks:
+      positive:
+        - atf.tests.governance.source.AtfSourceQualityGovernanceTest#sourcesRespectPackagePathsImportsAndProductionBoundaries
+        - atf.tests.governance.suites.SuiteOwnershipGovernanceTest#everyMavenExecutableHasOnePrimaryOwnerAndEveryFocusedGateIsDeclared
+        - atf.tests.governance.suites.AtfCollectionOwnershipComponentTest#positiveInventoriesPartitionEveryAtfComponentWithoutChangingLeafNames
+      negative:
+        - atf.tests.governance.suites.SuiteOwnershipGovernanceTest#newOmittedClassOverlapWrongLayerAndHiddenSelectionAreRejected
+    paths:
+      - atf-tests/src/test/java/atf/tests/suites/components/AtfOrchestrationComponentSuite.java
+      - config/atf-component-collections.json
+      - config/atf-component-dependencies.json
+      - config/atf-component-reader-seals.json
+```
+
+</details>
+
+<details>
 <summary>Evaluarea limitată a schemei și pregătirea independentă a procesului ADB</summary>
 
 ```yaml
