@@ -129,26 +129,36 @@ public final class TestChangeAdmissionFixture {
     public static Path admissionLauncherHost(Path real, Path directory) throws Exception {
         Path scripts = mockedLauncherHost(real, directory);
         Files.writeString(scripts.resolve("AtfTestChangeAdmission.ps1"),
-                ". '" + real.resolve("scripts/AtfTestChangeAdmission.ps1").toString().replace("'", "''") + "'\n");
+                ". '" + real.resolve("scripts/AtfTestChangeAdmission.ps1").toString().replace("'", "''") + "'\n" + preparedValidatorPort());
         return scripts;
     }
 
     /** The metadata component exercises canonical editorial admission and controls the source-proof neighbour. */
     public static Path editorialLauncherHost(Path real, Path directory) throws Exception {
         Path scripts = mockedLauncherHost(real, directory);
-        String helper = real.resolve("scripts/AtfQualificationSnapshot.ps1").toString().replace("'", "''");
-        Files.writeString(scripts.resolve("AtfQualificationSnapshot.ps1"), """
-
-                function Assert-AtfMetadataEditorial {
-                    param($SourceRoot,$TempRoot,$JavaHome,$MavenCache,$Receipt)
-                    & {
-                        param($SourceRoot,$TempRoot,$JavaHome,$MavenCache,$Receipt)
-                        . '%s'
-                        Assert-AtfMetadataEditorial $SourceRoot $TempRoot $JavaHome $MavenCache $Receipt
-                    } $SourceRoot $TempRoot $JavaHome $MavenCache $Receipt
-                }
-                """.formatted(helper), java.nio.file.StandardOpenOption.APPEND);
+        Files.copy(real.resolve("scripts/AtfQualificationSnapshot.ps1"), scripts.resolve("AtfQualificationSnapshot.ps1"),
+                java.nio.file.StandardCopyOption.REPLACE_EXISTING);
+        Files.copy(real.resolve("pom.xml"), directory.resolve("pom.xml"));
+        Files.writeString(scripts.resolve("AtfStandaloneJava.ps1"),
+                ". '" + real.resolve("scripts/AtfStandaloneJava.ps1").toString().replace("'", "''") + "'\n" + preparedValidatorPort());
         return scripts;
+    }
+
+    /** Compilation has its own components; launcher ordering uses the parent's prepared canonical CLI classes. */
+    private static String preparedValidatorPort() {
+        return """
+                function Invoke-AtfJvmCli {
+                    param($ToolRoot,$ProjectRoot,$ScratchRoot,$JavaHome,$ClassPath,$MainClass,$Arguments,[ref]$Result,$AdditionalSourcePaths)
+                    if ($MainClass -cnotin @('atf.tests.testchange.TestChangeAdmissionCli','atf.tests.documentation.cli.DocumentationGovernanceCli') -or
+                        !$env:ATF_FIXTURE_VALIDATOR_CLASSPATH) { throw 'UNBOUND_PREPARED_VALIDATOR' }
+                    $request = @('--root',$ProjectRoot) + @($Arguments)
+                    $identity = [Convert]::ToHexString([Security.Cryptography.SHA256]::HashData([Text.Encoding]::UTF8.GetBytes($env:ATF_FIXTURE_VALIDATOR_CLASSPATH)))
+                    [IO.File]::AppendAllText($env:ATF_FIXTURE_VALIDATOR_CALLS, ((@{kind='CONTROLLED_COMPILER_CANONICAL_VALIDATOR';mainClass=$MainClass;classpathSha256=$identity;arguments=$request}|ConvertTo-Json -Compress) + [Environment]::NewLine))
+                    $java = if ($JavaHome) { Join-Path $JavaHome 'bin/java' } else { (Get-Command java).Source }
+                    ($request|ConvertTo-Json -Compress -EscapeHandling EscapeNonAscii) | & $java '-classpath' $env:ATF_FIXTURE_VALIDATOR_CLASSPATH $MainClass '--stdin'
+                    $Result.Value = $LASTEXITCODE
+                }
+                """;
     }
 
     private static Path binary(Class<?> type) throws Exception {

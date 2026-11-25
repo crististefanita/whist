@@ -43,7 +43,7 @@ class QualificationLauncherComponentTest {
 
     @Test @org.junit.jupiter.api.extension.ExtendWith(atf.tests.reporting.GameReportAudit.class)
     void metadataDefectsStopBothLaunchersBeforeCopyCacheOrMaven(ComponentInputs inputs) throws Exception {
-        inputs.add("Precondition", "Both actual entry points, real metadata admission and canonical editorial CLI. The independently qualified source-proof neighbour is mocked; Maven is an unentered local probe.");
+        inputs.add("Precondition", "Both actual entry points, real metadata admission and the prepared canonical editorial CLI. Compiler and source-proof neighbours are independently controlled; Maven is an unentered local probe.");
         realEditorial = true;
         Path source = fixture();
         Path manifest = source.resolve(RELEASE + "release-validation.json");
@@ -72,6 +72,7 @@ class QualificationLauncherComponentTest {
                 if (defect.equals("editorial")) {
                     String diagnostic = Files.readString(output.resolve("release-editorial.json"));
                     inputs.add("Canonical editorial diagnostic", diagnostic);
+                    inputs.add("Prepared canonical CLI command", Files.readString(scratch.resolve("prepared-validator-calls.jsonl")));
                     AuditedAssertions.assertTrue(diagnostic.contains("DOC-"), "The canonical editorial diagnostics are retained");
                 }
             }
@@ -101,6 +102,8 @@ class QualificationLauncherComponentTest {
         AuditedAssertions.assertEquals("MOCK_EDITORIAL_NEIGHBOUR", JSON.readTree(
                 components.resolve("release-editorial.json").toFile()).path("kind").asText(),
                 "Editorial acceptance is independently qualified by the metadata component");
+        AuditedAssertions.assertTrue(Files.readString(scratch.resolve("prepared-validator-calls.jsonl"))
+                .contains("atf.tests.testchange.TestChangeAdmissionCli"), "The controlled compiler dispatches the prepared canonical source validator");
         AuditedAssertions.assertFalse(Files.exists(scratch.resolve("maven.entered")), "The deliberate invalid group stops after admission");
     }
 
@@ -456,6 +459,8 @@ class QualificationLauncherComponentTest {
         environment.put("ATF_FIXTURE_TEMP_ROOTS", scratch.resolve("maven-temp-roots").toString());
         environment.put("ATF_FIXTURE_TEST_SELECTOR", scratch.resolve("maven-test-selector").toString());
         environment.put("ATF_FIXTURE_MUTATION", mutation);
+        environment.put("ATF_FIXTURE_VALIDATOR_CLASSPATH", System.getProperty("java.class.path"));
+        environment.put("ATF_FIXTURE_VALIDATOR_CALLS", scratch.resolve("prepared-validator-calls.jsonl").toString());
         if (evidenceRoot != null) environment.put("WHIST_EVIDENCE_ROOT", evidenceRoot.toString());
         else environment.remove("WHIST_EVIDENCE_ROOT");
         environment.put("ATF_FIXTURE_EVIDENCE_ROOT", evidenceRoot == null ? "" : evidenceRoot.toString());
