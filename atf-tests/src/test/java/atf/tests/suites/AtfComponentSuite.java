@@ -11,6 +11,7 @@ import org.junit.platform.suite.api.*;
     "^atf\\.tests\\.governance\\.source\\.language\\.SourceLanguageGovernanceTest$",
     "^atf\\.libraries\\.PlatformLibraryIntegrityTest$",
     "^atf\\.tests\\.contracts\\.HeuristicCatalogContractTest$",
+    "^atf\\.tests\\.contracts\\.validation\\.SchemaBudgetComponentTest$",
     "^atf\\.tests\\.governance\\.source\\.AtfSourceQualityGovernanceTest$",
     "^atf\\.tests\\.governance\\.source\\.ai\\.AiSampleEvidenceComponentTest$",
     "^atf\\.tests\\.governance\\.source\\.ModuleBoundaryGovernanceTest$",

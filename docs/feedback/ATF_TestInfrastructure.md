@@ -10,9 +10,7 @@ The consumer owns API validation, process checks and local adoption; the [owners
 
 ## Cost of validating API
 
-| Priority | Gap and source | Verification level and closure criterion |
-|---|---|---|
-| P2 | [JsonSchemaCapabilities](../../atf-validation/src/main/java/atf/validation/contract/schema/JsonSchemaCapabilities.java) and [JsonSchemaValidator](../../atf-validation/src/main/java/atf/validation/contract/JsonSchemaValidator.java) declare no evaluation-depth or volume budget. | Use controlled depth, cardinality and repeated-rule inputs with an identified environment. Document explicit limits and rejection behavior in the contract. |
+The [validation contract](../../atf-validation/README.md#cost-and-limits) owns structural limits and the shared prevalidation/evaluation work budget. Unit tests cover exact boundaries; public-contract components retain paths, policy and evaluation isolation. Parser allocation and Java regex wall-clock limits remain explicitly outside that budget.
 
 ## Stability of process verification
 
@@ -20,9 +18,7 @@ The consumer owns API validation, process checks and local adoption; the [owners
 
 Durable ownership and recovery now belong to the [release qualification contract](../testing/ATF_ReleaseQualification.md#disposable-user-recovery). Controlled components qualify interruption and identity checks; native profile acceptance remains separate.
 
-| Priority | Qualification limit | Closure criterion |
-|---|---|---|
-| P2 | [Mocked ADB preflight](../../atf-tests/src/test/java/atf/tests/governance/documentation/release/rag/scope/AndroidReleasePreflightComponentTest.java) includes PowerShell startup within the refusal timeout. Under load it can fail before the mock verdict. | Signal fixture readiness and transport refusal separately. Verify controlled clock and process behavior, plus a bounded test of the actual launcher. |
+The [mocked ADB component](../../atf-tests/src/test/java/atf/tests/governance/documentation/release/rag/scope/AndroidReleasePreflightComponentTest.java) separates fixture readiness from transport verdicts. A controlled production process port verifies order and original causes without sleeps; the bounded launcher probe requires observed fixture entry before attributing a timeout to ADB.
 
 [Test kit](../../lib/README.TestKit.md#purpose-and-integration) · [Validation API](../../atf-validation/README.md) · [Governance](ATF_Governance.md)
 

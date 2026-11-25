@@ -7,6 +7,70 @@ This register defines reviewed controls, their Git base and exact paths. The [te
 ## Verified controls
 
 <details>
+<summary>Bounded schema evaluation and independent ADB process readiness</summary>
+
+```yaml
+testChanges:
+  - id: SCHEMA-BUDGET-ADMISSION
+    status: VERIFIED
+    base: c7a286f22ec0c148631d933e7f4ff2512d76c0e7
+    expires: 2026-12-25
+    reason: Bound complete schema and instance trees and repeated evaluation work while preserving public policy, paths, order and independent evaluation state. Pure boundary matrices remain unit tests.
+    proof: "mvn -o -pl atf-tests -am -Dtest=SchemaBudgetComponentTest -Dsurefire.failIfNoSpecifiedTests=false test"
+    checks:
+      positive:
+        - atf.tests.contracts.validation.SchemaBudgetComponentTest#boundedContractsRetainPathsOrderAndEvaluationIsolation
+      negative:
+        - atf.tests.contracts.validation.SchemaBudgetComponentTest#excessiveInputsAndRepeatedRulesFailClosedUnderBothPolicies
+    paths:
+      - atf-validation/src/main/java/atf/validation/contract/schema/JsonSchemaBudget.java
+      - atf-validation/src/main/java/atf/validation/contract/schema/JsonSchemaCapabilities.java
+      - atf-validation/src/main/java/atf/validation/contract/schema/JsonValueEquality.java
+      - atf-validation/src/main/java/atf/validation/contract/JsonSchemaValidator.java
+      - atf-validation/src/test/java/atf/validation/JsonSchemaContractTest.java
+      - atf-tests/src/test/java/atf/tests/contracts/validation/SchemaBudgetComponentTest.java
+  - id: ADB-PROCESS-READINESS
+    status: VERIFIED
+    base: c7a286f22ec0c148631d933e7f4ff2512d76c0e7
+    expires: 2026-12-25
+    reason: Verify the actual private ADB process port under controlled outcomes, separate fixture readiness from transport timeout and retain bounded native-launcher refusal and successful profile contracts without an emulator.
+    proof: "mvn -o -pl atf-tests -am -Dtest=AndroidReleasePreflightComponentTest -Dsurefire.failIfNoSpecifiedTests=false test"
+    checks:
+      positive:
+        - atf.tests.governance.documentation.release.rag.scope.AndroidReleasePreflightComponentTest#controlledProcessSeparatesReadinessTimeoutAndOriginalFailure
+        - atf.tests.governance.documentation.release.rag.scope.AndroidReleasePreflightComponentTest#theSignedReleaseEntryRecordsTheEffectiveProfile
+        - atf.tests.governance.documentation.release.rag.scope.AndroidReleasePreflightComponentTest#theNativeLauncherStartsMavenOnlyAfterAValidPreflight
+      negative:
+        - atf.tests.governance.documentation.release.rag.scope.AndroidReleasePreflightComponentTest#aTimedOutAdbProcessProducesABlockedReceipt
+        - atf.tests.governance.documentation.release.rag.scope.AndroidReleasePreflightComponentTest#theNativeLauncherBlocksBeforeStagingOrMaven
+        - atf.tests.governance.documentation.release.rag.scope.AndroidReleasePreflightComponentTest#aForeignLeaseBlocksBeforeCallingAdb
+    paths:
+      - atf-test-android/tools/AndroidDeviceSetup.psm1
+      - atf-tests/src/test/java/atf/tests/governance/documentation/release/rag/scope/AndroidReleasePreflightComponentTest.java
+  - id: RAG-DOMAIN-CATALOG-SCHEMA-PROCESS
+    status: VERIFIED
+    base: c7a286f22ec0c148631d933e7f4ff2512d76c0e7
+    expires: 2026-12-25
+    reason: Keep the new public-contract component in one primary collection and bind its explicit Maven dependency and regenerated reader inventory to source and suite governance.
+    proof: "mvn -o -pl atf-tests -am -Dtest=AtfSourceQualityGovernanceTest,SuiteOwnershipGovernanceTest,AtfCollectionOwnershipComponentTest -Dsurefire.failIfNoSpecifiedTests=false test"
+    checks:
+      positive:
+        - atf.tests.governance.source.AtfSourceQualityGovernanceTest#sourcesRespectPackagePathsImportsAndProductionBoundaries
+        - atf.tests.governance.suites.SuiteOwnershipGovernanceTest#everyMavenExecutableHasOnePrimaryOwnerAndEveryFocusedGateIsDeclared
+        - atf.tests.governance.suites.AtfCollectionOwnershipComponentTest#positiveInventoriesPartitionEveryAtfComponentWithoutChangingLeafNames
+      negative:
+        - atf.tests.governance.suites.SuiteOwnershipGovernanceTest#newOmittedClassOverlapWrongLayerAndHiddenSelectionAreRejected
+    paths:
+      - atf-tests/pom.xml
+      - atf-tests/src/test/java/atf/tests/suites/AtfComponentSuite.java
+      - config/atf-component-collections.json
+      - config/atf-component-dependencies.json
+      - config/atf-component-reader-seals.json
+```
+
+</details>
+
+<details>
 <summary>Checkpoint ownership and separated journal</summary>
 
 ```yaml

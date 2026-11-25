@@ -19,22 +19,27 @@ function Invoke-AtfAdbCommand {
 
     $process = [System.Diagnostics.Process]::new()
     $process.StartInfo = $startInfo
+    Complete-AtfAdbProcess $process $TimeoutSeconds ($Arguments -join ' ')
+}
+
+# Private process port: components can verify ordering without starting a device or a shell.
+function Complete-AtfAdbProcess($Process, [int]$TimeoutSeconds, [string]$Command) {
     try {
-        if (-not $process.Start()) { throw "Could not start ADB client: $AdbExecutable" }
-        $stdout = $process.StandardOutput.ReadToEndAsync()
-        $stderr = $process.StandardError.ReadToEndAsync()
-        if (-not $process.WaitForExit($TimeoutSeconds * 1000)) {
-            $process.Kill($true)
-            $process.WaitForExit()
-            throw "ADB command timed out after ${TimeoutSeconds}s: $($Arguments -join ' ')"
+        if (-not $Process.Start()) { throw "Could not start ADB client: $($Process.StartInfo.FileName)" }
+        $stdout = $Process.StandardOutput.ReadToEndAsync()
+        $stderr = $Process.StandardError.ReadToEndAsync()
+        if (-not $Process.WaitForExit($TimeoutSeconds * 1000)) {
+            $Process.Kill($true)
+            $Process.WaitForExit()
+            throw "ADB command timed out after ${TimeoutSeconds}s: $Command"
         }
         [System.Threading.Tasks.Task]::WaitAll([System.Threading.Tasks.Task[]]@($stdout, $stderr))
         [pscustomobject]@{
-            ExitCode = $process.ExitCode
+            ExitCode = $Process.ExitCode
             Output = ($stdout.Result + $stderr.Result).Trim()
         }
     } finally {
-        $process.Dispose()
+        $Process.Dispose()
     }
 }
 

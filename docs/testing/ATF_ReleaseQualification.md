@@ -543,6 +543,8 @@ The [executable policy](../../config/release-platform-rag-policy.json) defines t
 
 ### Preflight Android
 
+The ADB command deadline starts after its process is launched; shell startup is a separate launcher boundary. Controlled components use the private process port to verify wait, termination, drain and disposal order, preserving original exit diagnostics. The actual-launcher timeout fixture publishes a readiness signal under its own deadline, so fixture startup failure cannot masquerade as a transport refusal.
+
 The [responsive launcher](../../scripts/run-whist-responsive-sanity.ps1) acquires the lease and runs [shared preflight](../../scripts/check-android-release-device.ps1) before copying Maven sources or cache. Signed-APK selections use the same check immediately after leasing, before installation, backup or interaction.
 
 ```powershell

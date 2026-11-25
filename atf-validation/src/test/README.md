@@ -10,7 +10,7 @@ The module compares observed responses with contracts, retaining differences and
 |---|---|
 | Equality and result | Type of value, difference observed and verdict of policy. |
 | Contract of Response | JSON document controlled, mandatory fields and localized messages. |
-| Schema | The declared capabilities and refusal of the unaccepted rules without turning the lack of support into success. |
+| Schema | Supported keywords, exact budget boundaries and refusal of unsupported or over-budget inputs; pure matrices remain unit tests without Extent. |
 | Evidence | Preview, drafting and preserving the values necessary to explain the failure. |
 
 ## Execution and limits
@@ -20,6 +20,6 @@ The module compares observed responses with contracts, retaining differences and
 - Use [module entry](../../README.md) in a temporary copy of the dependencies identified.
 - The negative samples alter a single relevant condition and keep the witness valid; a defect in the fixture does not demonstrate the requested refusal.
 
-Reporting tests check the data transmitted, separate from the renderer's acceptance. [Budget of evaluation](../../../docs/feedback/ATF_TestInfrastructure.md#cost-of-validating-api) remains a separate qualification from functional correctness.
+The [budget component](../../../atf-tests/src/test/java/atf/tests/contracts/validation/SchemaBudgetComponentTest.java) checks public contract collaboration, failure/warning policies, paths and fresh evaluation state in auditable Extent without screenshots. Reporting tests check transmitted data separately from renderer acceptance; [evaluation limits](../../README.md#cost-and-limits) define the deterministic boundary.
 
 [Validation API](../../README.md) · [Common strategy](../../../docs/testing/README.md)

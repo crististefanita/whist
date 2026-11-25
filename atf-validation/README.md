@@ -29,7 +29,7 @@ flowchart LR
 - Invalid paths, absence and present values are distinct; an explicit `null` is present.
 - Simple paths and JSON Pointer have an explicit subset; general selections, filters and recursive search are denied.
 - Schema prevalidation includes branches not reached by the instance; unknown keywords are rejected.
-- Each schema evaluation owns its compiled traversal and regular expressions; repeated values reuse the expression within that evaluation, without a shared cache across evaluations or file changes.
+- Each schema evaluation owns its work counter and compiled regular expressions; repeated values reuse the expression within that evaluation, without a shared cache across evaluations or file changes.
 - Strict policy is failing and warning policy retains negative comparisons and status `WARNING`.
 
 <details>
@@ -79,11 +79,21 @@ mvn -B -pl atf-validation -am test
 
 ## Cost and limits
 
-The JSON subset explicitly rejects unsupported constructs. Further qualification must bound prevalidation and evaluation cost for large, deep or repetitive structures.
+The supported subset rejects unsupported constructs and over-budget inputs. [JsonSchemaBudget](src/main/java/atf/validation/contract/schema/JsonSchemaBudget.java) admits the complete schema and instance separately before recursive evaluation, including annotations and branches the instance never visits.
 
-- [Validation feedback](../docs/feedback/ATF_TestInfrastructure.md#cost-of-validating-api) tracks volume and depth budgets. Evaluation-local expression reuse must preserve prevalidation, Java regex semantics, paths and violation order; components also verify independence between successive evaluations.
+| Resource | Inclusive limit and accounting |
+|---|---|
+| Tree depth | 64 edges from the root; root depth is zero. |
+| Tree nodes | 16,384 values per schema or instance, including containers and annotation data. |
+| Text | 1,048,576 UTF-16 code units per tree, including property names and string values. |
+| Evaluation work | 200,000 steps shared by schema prevalidation and instance evaluation: schema/value visits, field scans, required checks and recursive enum comparisons. |
 
-- Keep measurements and input identities externally. Accept optimizations through semantic parity and measurement, keeping publication separate from complete-value evaluation.
+A limit produces one explicit budget comparison and discards partial violations. Strict policy returns `FAIL`; warning policy returns `WARNING` with a failed comparison. The next evaluation starts with a fresh budget; admitted comparisons keep their paths and order.
+
+- These are deterministic evaluation limits, not wall-clock or parser-memory guarantees. JSON parsing occurs before tree admission.
+- A Java regular-expression match is not interruptible by the work counter. Keep schemas trusted; a transport or process deadline remains a separate boundary.
+
+[Validation feedback](../docs/feedback/ATF_TestInfrastructure.md#cost-of-validating-api) routes remaining infrastructure work. Keep measurements and input identities outside project guides; accept optimizations through semantic parity without shortening compared values.
 
 ## Test catalogue
 
