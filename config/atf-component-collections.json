@@ -171,7 +171,8 @@
         "atf.tests.reporting.autonomy.DetachedReviewComponentTest",
         "atf.tests.reporting.autonomy.StandaloneReportContractComponentTest",
         "atf.tests.reporting.browser.BrowserExtentPublicationComponentTest",
-        "atf.tests.reporting.text.ReportTextValueMatcherTest"
+        "atf.tests.reporting.text.ReportTextValueMatcherTest",
+        "atf.tests.learning.selection.EvidenceSelectionComponentTest"
       ]
     }
   ]

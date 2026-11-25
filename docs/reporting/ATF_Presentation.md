@@ -71,6 +71,21 @@ Referințele diagnostice externe sunt inventariate și omise din HTML; informaț
 
 [EvidenceSelectionContractTest](../../atf-tests/src/test/java/atf/tests/learning/EvidenceSelectionContractTest.java) verifică selecția înaintea sesiunii. [GameReportPublicationContractTest](../../atf-tests/src/test/java/atf/tests/reporting/GameReportPublicationContractTest.java) verifică publicarea și refuzul ei; cele două contracte nu se confundă.
 
+## Selecție și compoziție cu resurse delimitate
+
+Selecția citește o singură copie defensivă a fiecărei invocări și o validează înainte să derive un descriptor privat. Sortarea folosește ID-urile și familiile capturate, fără copierea repetată a înregistrării; intrările selectate păstrează obiectele originale și hash-urile octeților în ordinea furnizată.
+
+| Etapă | Responsabilitate și limită |
+|---|---|
+| Proiecția populației | Validează fiecare înregistrare, respinge ID-urile duplicate, numără comparațiile și contextul integral și adună duratele capturate cu aritmetică verificată. |
+| Selecția invocărilor întregi | Păstrează orice rezultat non-PASS, colecție completă configurată și control obligatoriu; alege exemplele reușite după primele ID-uri din fiecare familie, fără ca intrările obligatorii să consume locurile exemplelor. |
+| Diagnostic opțional | Serializează amprentele numai pentru intrările selectate, deduplică înregistrările identice în ordinea primei apariții și aplică bugetele de elemente/caractere înregistrărilor întregi. Valorile obligatorii ale comparațiilor, cauzele eșecurilor și contextul rămân independente. |
+| Compoziție | Verifică din nou hash-urile fișierelor capturate la încărcare; rendererul real și oracolul HTML păstrează proprietarii, valorile, rezultatele, duratele și inventarul complet al omisiunilor. |
+
+[Profilul de resurse](../../config/report-selection-profile.json) declară populațiile selectorului, amestecurile, heap-ul procesului copil și limita de timp. [Componentele auditabile](../../atf-tests/src/test/java/atf/tests/learning/selection/EvidenceSelectionComponentTest.java) compară populații literale independente și inspectează o compoziție reală mică, inclusiv refuzul surselor și contextelor schimbate; nu cer capturi de ecran.
+
+[Matricile unitare](../../atf-tests/src/test/java/atf/tests/learning/selection/EvidenceSelectionUnitTest.java) acoperă combinațiile și limitele exacte fără Extent. Contorul copiilor măsoară copiile defensive ale înregistrărilor, nu octeții alocați; măsurătorile selectorului izolat nu stabilesc vârfurile de memorie ale rendererului, costul navigării în browser ori performanța în afara profilului declarat.
+
 ## Implementare și verificare
 
 Compoziția datelor se află în sursele principale ale [modulului de integrare](../../atf-tests/README.md). Întreținerea componentei generice de randare se direcționează prin [responsabilitățile comune](../feedback/README.md).

@@ -4279,3 +4279,68 @@ testChanges:
 ```
 
 </details>
+
+<details>
+<summary>Selecție cu resurse delimitate și compoziție integrală</summary>
+
+```yaml
+testChanges:
+  - id: REPORT-SELECTION-COST
+    status: VERIFIED
+    base: 57cb89ce2b849c9f0a773a2ed9d8cc47c0adff82
+    expires: 2026-12-25
+    reason: Retain complete original outcomes and omissions while reading each immutable capture once; qualify changed-source and changed-context refusal under the declared selector profile.
+    proof: "mvn -o -pl atf-tests -am -Dtest=EvidenceSelectionComponentTest,EvidenceSelectionContractTest -Dsurefire.failIfNoSpecifiedTests=false test"
+    checks:
+      positive:
+        - atf.tests.learning.selection.EvidenceSelectionComponentTest#boundedPopulationsReadEachCaptureOnceAndKeepAllMandatoryOutcomes
+        - atf.tests.learning.EvidenceSelectionContractTest#autoThresholdsAreInclusiveAtMinusExactAndPlusOne
+        - atf.tests.learning.EvidenceSelectionContractTest#summaryRetainsAllOutcomesAndGateWithoutCherryPickingPassingScores
+        - atf.tests.learning.EvidenceSelectionContractTest#fullKeepsEveryCheckpointAndOriginalValuesEvenBeyondAdaptiveThresholds
+        - atf.tests.learning.EvidenceSelectionContractTest#optionalBudgetKeepsWholeDeduplicatedRecordsAtBoundary
+        - atf.tests.learning.EvidenceSelectionContractTest#capturedPolicyAndReceiptCannotBeChangedByLaterYamlOrCallerMutation
+        - atf.tests.learning.EvidenceSelectionContractTest#configuredRegressionsStayCompleteWhenLearningIsSampled
+      negative:
+        - atf.tests.learning.selection.EvidenceSelectionComponentTest#completeCompositionKeepsOriginalValuesAndRejectsChangedCaptures
+        - atf.tests.learning.EvidenceSelectionContractTest#tooSmallConfiguredBodyRefusesPublicationBeforeCreatingAnApparentlyCompleteReport
+    paths:
+      - atf-tests/src/main/java/atf/tests/learning/EvidenceSelection.java
+      - atf-tests/src/main/java/atf/tests/learning/EvidencePopulation.java
+      - atf-tests/src/main/java/atf/tests/learning/EvidenceDiagnostics.java
+      - atf-tests/src/test/java/atf/tests/learning/selection/EvidenceSelectionComponentTest.java
+      - atf-tests/src/test/java/atf/tests/learning/selection/EvidenceSelectionUnitTest.java
+      - atf-tests/src/test/java/atf/tests/learning/selection/SelectionFixture.java
+      - atf-tests/src/test/java/atf/tests/learning/selection/SelectionCostProbe.java
+      - config/report-selection-profile.json
+```
+
+</details>
+
+<details>
+<summary>Proprietatea selecției raportării și granițele surselor</summary>
+
+```yaml
+testChanges:
+  - id: REPORT-SELECTION-CATALOG
+    status: VERIFIED
+    base: 57cb89ce2b849c9f0a773a2ed9d8cc47c0adff82
+    expires: 2026-12-25
+    reason: Keep the selector components in one primary reporting owner and preserve source, package and dependency-reader boundaries.
+    proof: "mvn -o -pl atf-tests -am -Dtest=AtfSourceQualityGovernanceTest,SuiteOwnershipGovernanceTest,AtfCollectionOwnershipComponentTest,PackageCohesionGovernanceTest -Dsurefire.failIfNoSpecifiedTests=false test"
+    checks:
+      positive:
+        - atf.tests.governance.source.AtfSourceQualityGovernanceTest#sourcesRespectPackagePathsImportsAndProductionBoundaries
+        - atf.tests.governance.suites.SuiteOwnershipGovernanceTest#everyMavenExecutableHasOnePrimaryOwnerAndEveryFocusedGateIsDeclared
+        - atf.tests.governance.suites.AtfCollectionOwnershipComponentTest#positiveInventoriesPartitionEveryAtfComponentWithoutChangingLeafNames
+        - atf.tests.governance.source.PackageCohesionGovernanceTest#currentProjectUsesNoCohesionExceptions
+      negative:
+        - atf.tests.governance.suites.SuiteOwnershipGovernanceTest#newOmittedClassOverlapWrongLayerAndHiddenSelectionAreRejected
+        - atf.tests.governance.source.PackageCohesionGovernanceTest#unreviewedPackagePassesAtEightFilesAndRejectsTheNinth
+    paths:
+      - atf-tests/src/test/java/atf/tests/suites/components/AtfReportingComponentSuite.java
+      - config/atf-component-collections.json
+      - config/atf-component-dependencies.json
+      - config/atf-component-reader-seals.json
+```
+
+</details>

@@ -7,6 +7,7 @@ import org.junit.platform.suite.api.*;
 @Suite
 @SelectPackages({"atf.tests", "atf.libraries"})
 @IncludeClassNamePatterns({
+    "^atf\\.tests\\.learning\\.selection\\.EvidenceSelectionComponentTest$",
     "^atf\\.tests\\.contracts\\.AndroidInlineScreenshotReportContractTest$",
     "^atf\\.tests\\.contracts\\.AndroidPhaseTraceReplayContractTest$",
     "^atf\\.tests\\.contracts\\.LegacyUiMediaReportContractTest$",

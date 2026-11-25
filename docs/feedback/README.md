@@ -15,7 +15,7 @@ Contractele stabile aparțin ghidurilor tematice; fiecare criteriu rămâne desc
 | [Android](ATF_Android.md) | Istoric complet, persistență, geometrie, localizare și accesibilitate. |
 | [Interfață comună](ATF_CardUi_Extraction.md) | Limitele dintre prezentarea reutilizabilă și adaptorul Whist: meniu, profil, masă, istoric și animații. |
 | [Browser](ATF_UiBrowser.md) | Viewport responsiv, tipografia meniurilor și paritatea cu APK-urile pentru adaptorul comun Edge și Chrome. |
-| [Raportare](ATF_Reporting.md) | Calificarea autonomiei, comparațiilor și consumului de memorie în Extent. |
+| [Raportare](ATF_Reporting.md) | Autonomie, comparații originale, alocarea rendererului și costul în afara profilurilor de intrări admise ale consumatorului. |
 | [Guvernanță](ATF_Governance.md) | API reutilizabil, perimetru explicit și coeziunea codului. |
 | [Infrastructură locală](ATF_TestInfrastructure.md) | Concurența Kitului, izolarea configurației și costul validării API. |
 | [Realizări Whist](ATF_Achievements.md) | Restaurarea stării ecranului Android și calibrarea cu jucători umani. |

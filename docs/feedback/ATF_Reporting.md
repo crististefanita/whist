@@ -19,7 +19,7 @@ Consumatorul deține înregistrările jocului, selecția, oracolul și indexarea
 
 | Prioritate | Responsabil și calificare rămasă | Nivel și criteriu de închidere |
 |---|---|---|
-| P2 | Consumatorul raportării: costul selecției și compoziției la populații mari ori predominant cu eșec. | Componente cu populații controlate și mediu identificat: cost, număr de comparații și corp opțional, cu toate eșecurile, valorile obligatorii și inventarul omisiunilor păstrate. |
+| P2 | Costul consumatorului raportării în afara [profilului delimitat al selectorului](../reporting/ATF_Presentation.md#selecție-și-compoziție-cu-resurse-delimitate), în special populații mari cu eșecuri randate și corpuri obligatorii lungi. | Variați independent comparațiile randate, mărimea corpurilor și densitatea eșecurilor; măsurați alocarea reală și etapele compoziției, păstrând fiecare eșec selectat, valoare obligatorie și omisiune. Componentele cu o singură copie per înregistrare și o compoziție HTML reală mică nu califică acest domeniu mai larg al randării. |
 
 ## RPT-BOUNDED-REPORT-HEAP — finalizare sigură pentru suite mari
 
