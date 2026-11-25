@@ -366,3 +366,36 @@ Folosiți `run-component-suites.ps1 -ReuseFrom <rejected-run> -RunRoot <new-exte
 - Gazda copiată include configurația fixată a modulelor sale. Această limită a fixture-ului nu modifică preflight-ul de producție și nu califică compilarea de sine stătătoare.
 
 Matricea intrărilor compilatorului are un singur responsabil unitar. Admiterea reală a compilatorului are un singur responsabil de componentă; eliminarea unei lansări duplicate nu pune în cache un verdict și nu elimină cazurile sale negative. Comparați numărul real al proceselor copil și duratele etapelor în profilul declarat; păstrați rezultatele în auditul extern, nu ca afirmații istorice despre durate în acest ghid.
+
+<a id="compiler-cost-partitions"></a>
+
+## Separarea costurilor compilării
+
+Pregătirea Maven nouă produce măsurători diagnostice lângă sigiliul existent al octeților. Aceste observații nu autorizează reutilizarea: sursa curentă, uneltele, recipisele originale, hash-urile complete ale rezultatelor și admiterea classpath-ului rămân obligatorii. Sigiliul măsurat are aceeași identitate ca cel obișnuit.
+
+| Observație | Semnificație și limită |
+|---|---|
+| `compiler-output-cost.json` | Intervale monotone distincte pentru enumerare/metadate, hash-uri proaspete, sortare/formarea identității și coordonarea rămasă. Suma lor este egală cu totalul măsurat. |
+| Populația fișierelor | Numărul exact de fișiere hash-uite, directoarele vizitate și lungimile observate înainte de hash. Lungimile observate nu măsoară citirile fizice sau alocările. |
+| `compiler-receipt-initial-cost.json` | Intervale separate de serializare și publicare atomică pentru recipisa Maven inițială. |
+| `compiler-receipt-classpath-cost.json` | Aceeași separare pentru recipisa unui classpath rezolvat acum. Un classpath reutilizat nu are o nouă observație de scriere. |
+| Admitere | Fiecare măsurătoare declară `qualified: false`. O operație măsurată eșuată își golește observația; fișierul de cost nu înlocuiește recipisa sursei sau compilării. |
+
+Doar sigilarea rezultatelor noi activează ceasurile detaliate de parcurgere. Reutilizarea verifică în continuare octeții actuali, fără măsurători pe fișier. Profilul nu restrânge intrările compilării, nu omite rezultate, nu schimbă selecția rapoartelor și nu pretinde accelerare.
+
+```mermaid
+flowchart LR
+    Outputs[Rezultatele compilării] -->|intră în| Walk[Enumerare și inspecție]
+    Walk -->|alimentează| Hash[Hash pe octeți proaspeți]
+    Hash -->|alimentează| Seal[Sortare și formarea identității]
+    Seal -->|înregistrează| Receipt[Serializarea recipisei]
+    Receipt -->|confirmă| Publish[Publicare atomică]
+    Seal -->|este verificat de| Admission[Regulile existente de admitere]
+```
+
+<details>
+<summary>Legendă: măsurători și autoritate</summary>
+
+Intervalele ceasului explică un cost observat; recipisele octeților legate de sursă autorizează reutilizarea. Coordonarea rămasă include admiterea rădăcinilor și costul măsurării. Probele de componentă reconciliază numărul și intervalele cu hash-uri independente; nu califică performanța pe orice calculator sau alocările randării.
+
+</details>

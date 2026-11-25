@@ -725,3 +725,16 @@ După întrerupere păstrați directorul încercării și zona de lucru. Lansaț
 | Componentă de joc | Primele patru mâini cu o carte, rotația dealerului, trecerea la două cărți și checkpoint-ul scorului. Alegerea alternativă, prioritatea față de recomandare și persistența contractului se verifică și cu mai multe mărimi de mână. |
 | Componentă de driver | Ierarhia XML și o notificare de realizări apărută după începerea derulării. Mock-ul ADB măsoară ordinea observațiilor și numărul de gesturi. |
 | E2E pe APK | Recomandarea vizibilă, opțiunea alternativă, dialogul de scor și contractul păstrat după repornirea procesului. Se joacă o singură mână pregătitoare dacă licitația din deschidere este forțată. |
+
+<a id="qualification-journal-failures"></a>
+
+## Eșecurile jurnalului de calificare
+
+[Responsabilul temporizării](../../scripts/AtfQualificationTiming.ps1) înregistrează separat rezultatul comenzii și publicarea jurnalului. Un eșec de stocare nu poate înlocui excepția originală a comenzii sau transforma un jurnal incomplet în dovadă calificată.
+
+- Eșecurile originale ale comenzii se propagă neschimbate. Atașamentele `ATF_QUALIFICATION_TIMING_FAILURES` păstrează fiecare excepție secundară și faza sa, inclusiv fazele imbricate.
+- Eșecul publicării după acceptarea comenzii întrerupe în continuare operația. Codurile native rămân atașate în `ATF_NATIVE_EXIT_CODE`; acceptarea comenzii nu dovedește publicarea jurnalului.
+- Înlocuirea atomică păstrează jurnalul anterior până la confirmarea documentului nou. Un fișier `.writing` rămas conține o observație nepromovată și necesită recuperare explicită, legată de sursă.
+- Scriitorul injectabil aparține probelor controlate de componentă. Lansatoarele de producție folosesc scriitorul real pe disc; portul nu acordă autoritate de execuție sau calificare.
+
+[Acoperirea de componentă](../../atf-tests/src/test/java/atf/tests/governance/documentation/release/rag/scope/metrics/QualificationCostComponentTest.java) combină refuzul real pe disc cu erori de stocare controlate. Păstrează identitatea cauzelor, fazele și rezultatul existent; nu implică dispozitive sau praguri de timp.

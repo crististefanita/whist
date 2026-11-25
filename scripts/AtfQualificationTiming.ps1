@@ -1,9 +1,9 @@
 #requires -Version 7.0
 
-function New-AtfQualificationTiming([string]$Owner, [string]$File) {
+function New-AtfQualificationTiming([string]$Owner, [string]$File, [scriptblock]$JournalWriter = $null) {
     if (Test-Path -LiteralPath $File) { throw "Existing timing receipt: $File" }
     @{clock=[Diagnostics.Stopwatch]::StartNew()
-      file=$File; owner=$Owner; stages=[Collections.Generic.List[object]]::new()}
+      file=$File; owner=$Owner; stages=[Collections.Generic.List[object]]::new(); writer=$JournalWriter}
 }
 
 function Add-AtfQualificationTiming($Timing, [string]$Stage, [DateTimeOffset]$Started, [DateTimeOffset]$Ended, [long]$ElapsedMs,
@@ -14,15 +14,19 @@ function Add-AtfQualificationTiming($Timing, [string]$Stage, [DateTimeOffset]$St
     $Timing.stages.Add($row)
     $document = [ordered]@{schemaVersion=1; kind='ATF_RELEASE_TIMING'; owner=$Timing.owner; stages=$Timing.stages.ToArray()}
     $json = ($document | ConvertTo-Json -Depth 6) + [Environment]::NewLine
-    $temporary = $Timing.file + '.writing'
-    [IO.File]::WriteAllText($temporary,$json)
-    [IO.File]::Move($temporary,$Timing.file,$true)
+    if ($Timing.writer) { $null = & $Timing.writer $Timing.file $json }
+    else {
+        $temporary = $Timing.file + '.writing'
+        [IO.File]::WriteAllText($temporary,$json)
+        [IO.File]::Move($temporary,$Timing.file,$true)
+    }
 }
 
 function Invoke-AtfQualificationPhase($Timing, [string]$PhaseName, [scriptblock]$Action, [switch]$ExitCode) {
     $started = [DateTimeOffset]::UtcNow
     $start = $Timing.clock.ElapsedMilliseconds
     $status = 'FAIL'
+    $failure = $null
     try {
         if ($ExitCode) {
             $result = & $Action
@@ -32,8 +36,23 @@ function Invoke-AtfQualificationPhase($Timing, [string]$PhaseName, [scriptblock]
         }
         & $Action
         $status = 'PASS'
+    } catch {
+        $failure = $_
+        throw
     } finally {
-        Add-AtfQualificationTiming $Timing $PhaseName $started ([DateTimeOffset]::UtcNow) ($Timing.clock.ElapsedMilliseconds - $start) $status
+        try {
+            Add-AtfQualificationTiming $Timing $PhaseName $started ([DateTimeOffset]::UtcNow) ($Timing.clock.ElapsedMilliseconds - $start) $status
+        } catch {
+            if (!$failure) {
+                if ($ExitCode -and $result -is [int]) { $_.Exception.Data['ATF_NATIVE_EXIT_CODE'] = $result }
+                throw
+            }
+            $key = 'ATF_QUALIFICATION_TIMING_FAILURES'
+            if (!$failure.Exception.Data.Contains($key)) {
+                $failure.Exception.Data[$key] = [Collections.Generic.List[object]]::new()
+            }
+            $failure.Exception.Data[$key].Add([pscustomobject]@{phase=$PhaseName;exception=$_.Exception})
+        }
     }
 }
 

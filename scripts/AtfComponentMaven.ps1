@@ -15,7 +15,10 @@ function Assert-AtfCompilerDirectPath([string]$Path) {
     }
 }
 
-function Get-AtfComponentMavenFingerprint([string]$Work, [string]$Repository, [string[]]$Modules) {
+function Get-AtfComponentMavenFingerprint([string]$Work, [string]$Repository, [string[]]$Modules, [ref]$Measurement) {
+    if ($Measurement) { $Measurement.Value = $null }
+    $started = [Diagnostics.Stopwatch]::GetTimestamp()
+    $traversalTicks = 0L; $hashTicks = 0L; $files = 0L; $bytes = 0L; $directories = 0L
     $roots = @($Repository) + @($Modules | ForEach-Object {
         Join-Path $Work "project/$_/target/classes"
         Join-Path $Work "project/$_/target/test-classes"
@@ -27,18 +30,53 @@ function Get-AtfComponentMavenFingerprint([string]$Work, [string]$Repository, [s
         $pending = [Collections.Generic.Stack[string]]::new()
         $pending.Push($root)
         while ($pending.Count) {
-          foreach ($file in [IO.DirectoryInfo]::new($pending.Pop()).EnumerateFileSystemInfos()) {
-            if ($file.Attributes -band [IO.FileAttributes]::ReparsePoint) { throw 'COMPONENT_MAVEN_INDIRECT' }
-            if ($file.Attributes -band [IO.FileAttributes]::Directory) { $pending.Push($file.FullName); continue }
-            if ($root -eq $Repository -and $file.Extension -cnotin @('.jar','.pom')) { continue }
-            $relative = [IO.Path]::GetRelativePath($Work,$file.FullName).Replace('\','/')
-            $records.Add($relative + ':' + (Get-AtfFileSha256 $file.FullName))
-          }
+          $iterator = [IO.DirectoryInfo]::new($pending.Pop()).EnumerateFileSystemInfos().GetEnumerator()
+          $directories++
+          try {
+            while ($true) {
+                if ($Measurement) { $scan = [Diagnostics.Stopwatch]::GetTimestamp() }
+                if (!$iterator.MoveNext()) {
+                    if ($Measurement) { $traversalTicks += [Diagnostics.Stopwatch]::GetTimestamp()-$scan }
+                    break
+                }
+                $file = $iterator.Current
+                if ($file.Attributes -band [IO.FileAttributes]::ReparsePoint) { throw 'COMPONENT_MAVEN_INDIRECT' }
+                if ($file.Attributes -band [IO.FileAttributes]::Directory) {
+                    $pending.Push($file.FullName)
+                    if ($Measurement) { $traversalTicks += [Diagnostics.Stopwatch]::GetTimestamp()-$scan }
+                    continue
+                }
+                if ($root -eq $Repository -and $file.Extension -cnotin @('.jar','.pom')) {
+                    if ($Measurement) { $traversalTicks += [Diagnostics.Stopwatch]::GetTimestamp()-$scan }
+                    continue
+                }
+                $relative = [IO.Path]::GetRelativePath($Work,$file.FullName).Replace('\','/')
+                if ($Measurement) {
+                    $bytes += $file.Length; $files++
+                    $traversalTicks += [Diagnostics.Stopwatch]::GetTimestamp()-$scan
+                    $hashStarted = [Diagnostics.Stopwatch]::GetTimestamp()
+                }
+                $hash = Get-AtfFileSha256 $file.FullName
+                if ($Measurement) { $hashTicks += [Diagnostics.Stopwatch]::GetTimestamp()-$hashStarted }
+                $records.Add($relative + ':' + $hash)
+            }
+          } finally { $iterator.Dispose() }
         }
     }
-    $records.Sort([StringComparer]::Ordinal)
     if (!$records.Count) { throw 'COMPONENT_MAVEN_OUTPUTS_MISSING' }
-    Get-AtfInputFingerprint ($records -join [char]10)
+    $identityStarted = [Diagnostics.Stopwatch]::GetTimestamp()
+    $records.Sort([StringComparer]::Ordinal)
+    $fingerprint = Get-AtfInputFingerprint ($records -join [char]10)
+    $identityTicks = [Diagnostics.Stopwatch]::GetTimestamp()-$identityStarted
+    if ($Measurement) {
+        $total = [Diagnostics.Stopwatch]::GetTimestamp()-$started
+        $Measurement.Value = [ordered]@{schemaVersion=1;kind='ATF_MAVEN_SEAL_COST';qualified=$false
+            frequency=[Diagnostics.Stopwatch]::Frequency;totalTicks=$total
+            traversalTicks=$traversalTicks;hashTicks=$hashTicks;identityTicks=$identityTicks
+            coordinationTicks=($total-$traversalTicks-$hashTicks-$identityTicks)
+            hashedFiles=$files;observedBytes=$bytes;visitedDirectories=$directories;fingerprint=$fingerprint}
+    }
+    $fingerprint
 }
 
 function Test-AtfComponentMavenClasspath([string]$Work, [string]$Repository, $Receipt) {
