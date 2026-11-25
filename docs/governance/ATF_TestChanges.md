@@ -167,18 +167,18 @@ The [reviewed domain declarations](ATF_TestChangesBaseline.md#current-domain-con
 | Selection | Domain routing, proof batching, failures and source/plan drift | Game or native-renderer execution |
 
 ```mermaid
-flowchart TD
-    DIFF["Real Git diff"] --> OWNER["Exact reviewed path owners"]
-    OWNER --> VALIDATOR["Inventory validator"]
-    OWNER --> UI["Native surface"]
-    OWNER --> REPORT["Reporting"]
-    OWNER --> CATALOG["Catalog and selection"]
-    VALIDATOR --> UNION["Required control union"]
-    UI --> UNION
-    REPORT --> UNION
-    CATALOG --> UNION
-    UNION --> COMPILE["One sealed compilation"]
-    COMPILE --> PROOFS["Separate original Extent and proof per control"]
+flowchart LR
+    DIFF["Real Git diff"] -->|identifies| OWNER["Exact reviewed path owners"]
+    OWNER -->|assigns| VALIDATOR["Inventory validator"]
+    OWNER -->|assigns| UI["Native surface"]
+    OWNER -->|assigns| REPORT["Reporting"]
+    OWNER -->|assigns| CATALOG["Catalog and selection"]
+    VALIDATOR -->|contributes| UNION["Required control union"]
+    UI -->|contributes| UNION
+    REPORT -->|contributes| UNION
+    CATALOG -->|contributes| UNION
+    UNION -->|uses| COMPILE["One sealed compilation"]
+    COMPILE -->|produces| PROOFS["Separate original Extent and proof per control"]
 ```
 
 <details>
