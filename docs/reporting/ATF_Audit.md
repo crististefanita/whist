@@ -201,7 +201,15 @@ Trecerea auditului structural nu demonstrează singură lizibilitatea sau naviga
 
 `ComponentReportPublication` deține tranzacția consumatorului. Randarea și finalizarea Reporting scriu un candidat privat; profilul declarat al scenariilor și valorile obligatorii se verifică înaintea promovării atomice. Eșecul randării, inspecției, limitei de dimensiune sau modificarea candidatului păstrează HTML-ul canonic anterior.
 
-Eșecul procesului are o graniță separată de acceptanță. Componentele JVM izolate folosesc un heap mic declarat, epuizarea reală prin alocări și terminarea abruptă a VM-ului în randare și verificare. Ultima etapă începută este persistată înainte de începerea lucrului. Dacă tratarea de finalizare nu poate rula, chitanța rămâne incompletă în loc de reușită; octeții canonici anteriori și rezultatele JUnit originale rămân autoritare. Un proces nou trebuie să finalizeze inspecția și promovarea înainte ca propriul candidat să devină canonic. Operațiile de randare controlate califică acest protocol tranzacțional, nu alocările interne ale rendererului generic sau recuperarea după căderea sistemului de operare.
+Eșecul procesului are o graniță separată de acceptanță.
+
+| Graniță | Obligația componentei |
+|---|---|
+| Limită de resurse | JVM-urile izolate folosesc un heap mic declarat, epuizarea reală prin alocări și terminarea abruptă a VM-ului în randare și verificare. |
+| Etapă persistentă | Persistă ultima etapă începută înainte de lucru; absența finalizării lasă o chitanță incompletă în loc de reușită. |
+| Rezultate originale | Păstrează octeții canonici anteriori și rezultatele JUnit originale ca surse autoritare după eșec. |
+| Recuperare | Un proces nou finalizează inspecția și promovarea înainte ca propriul candidat să devină canonic. |
+| Limită de calificare | Operațiile de randare controlate califică protocolul tranzacțional, nu alocările rendererului generic sau recuperarea după căderea sistemului de operare. |
 
 ```mermaid
 flowchart LR

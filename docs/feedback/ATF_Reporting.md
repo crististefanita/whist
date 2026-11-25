@@ -31,7 +31,8 @@ Consumatorul deține înregistrările jocului, selecția, oracolul și indexarea
 
 [Publicarea verificată a componentelor](../reporting/ATF_Audit.md#publicarea-verificată-a-componentelor) deține pregătirea privată, inspecția înainte de promovare, înlocuirea atomică și diagnosticele cu cauza originală. Păstrați aceste granițe de regresie active; criteriile rămase țin de resursele native și alocările bibliotecii.
 
-Protocolul de eșec al consumatorului folosește JVM-uri izolate și limitate pentru a verifica epuizarea reală a heap-ului și terminarea abruptă în timpul randării sau verificării. Jurnalul persistent păstrează ultima etapă începută, HTML-ul canonic și JUnit original rămân neschimbate, iar o nouă încercare trebuie calificată înainte de promovare. Operațiile controlate verifică această graniță de proces; nu măsoară alocările interne ale rendererului generic și nu dovedesc recuperarea după orice eșec al sistemului de operare.
+- Protocolul de eșec al consumatorului folosește JVM-uri izolate și limitate pentru a verifica epuizarea reală a heap-ului și terminarea abruptă în timpul randării sau verificării. Jurnalul persistent păstrează ultima etapă începută; HTML-ul canonic și JUnit original rămân neschimbate.
+- O nouă încercare trebuie calificată înainte de promovare. Operațiile controlate verifică această graniță de proces; nu măsoară alocările interne ale rendererului generic și nu dovedesc recuperarea după orice eșec al sistemului de operare.
 
 Calificarea este comună producătorului și verificatorului: mărirea heap-ului unui singur proces nu închide criteriul și nu demonstrează că raportul rămâne publicabil în mediul standard.
 

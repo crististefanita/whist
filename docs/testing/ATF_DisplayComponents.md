@@ -163,7 +163,12 @@ Selecțiile Gradle ale aplicației, motorului și bibliotecii grafice folosesc [
 
 `AndroidSurfaceObservation` citește View-uri așezate, dreptunghiuri vizibile și linii `TextView.Layout`. `BoardLayout.observeSurface` furnizează View-urile reale ale jucătorilor; apelantul leagă explicit antetul, rândurile de valori, atuul și cărțile. Nu trimite planuri de geometrie așteptată drept observații.
 
-`GameScreen.observeTable()` din Whist leagă pagina montată prin `WhistSurfaceObservation`. Rolurile antetului și ale rândurilor informative, ambele linii de atu și indicii cărților private/publice curente sunt identificați din etichetele View reale la fiecare captură. Cărțile detașate nu sunt păstrate. Rolurile obligatorii lipsă sau duplicate sunt refuzate înainte de măsurare; înlocuirea sau părăsirea ecranului invalidează proprietarul original. O redesenare în timpul capturii trebuie refuzată de verificarea finală a epocii. Fixture-urile Android controlate verifică acest contract de integrare separat de vizibilitatea glifelor native.
+`GameScreen.observeTable()` din Whist leagă pagina montată prin `WhistSurfaceObservation`.
+
+- Rolurile antetului și ale rândurilor informative, ambele linii de atu și indicii cărților private/publice curente sunt identificați din etichetele View reale la fiecare captură. Cărțile detașate nu sunt păstrate.
+- Rolurile obligatorii lipsă sau duplicate sunt refuzate înainte de măsurare.
+- Înlocuirea sau părăsirea ecranului invalidează proprietarul original. O redesenare în timpul capturii trebuie refuzată de verificarea finală a epocii.
+- Fixture-urile Android controlate verifică acest contract de integrare separat de vizibilitatea glifelor native.
 
 ```mermaid
 flowchart LR
