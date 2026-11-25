@@ -3,6 +3,7 @@ package atf.validation.contract;
 import atf.validation.contract.json.JsonDocument;
 import atf.validation.contract.schema.JsonSchemaCapabilities;
 import atf.validation.contract.schema.JsonValueEquality;
+import atf.validation.contract.schema.JsonSchemaBudget;
 
 import com.fasterxml.jackson.databind.JsonNode;
 
@@ -20,6 +21,7 @@ import java.util.regex.Pattern;
 final class JsonSchemaValidator {
     private final List<String> violations = new ArrayList<>();
     private final Map<String, Pattern> patterns = new HashMap<>();
+    private final JsonSchemaBudget budget = new JsonSchemaBudget();
 
     private JsonSchemaValidator() { }
 
@@ -27,15 +29,21 @@ final class JsonSchemaValidator {
         var source = JsonDocument.parse(Files.readString(schemaPath));
         if (!source.valid()) return new Result(List.of("schema: " + source.failure()));
         JsonNode schema = source.root();
-        var contractErrors = JsonSchemaCapabilities.inspect(schema);
+        var evaluation = new JsonSchemaValidator();
+        var contractErrors = JsonSchemaCapabilities.inspect(schema, evaluation.budget);
         if (!contractErrors.isEmpty()) return new Result(contractErrors);
         if (!document.valid()) return new Result(List.of("instance: " + document.failure()));
-        var evaluation = new JsonSchemaValidator();
-        evaluation.validateNode(document.root(), schema, "$");
+        try {
+            JsonSchemaBudget.admit(document.root(), "instance");
+            evaluation.validateNode(document.root(), schema, "$");
+        } catch (JsonSchemaBudget.Limit limit) {
+            return new Result(List.of(limit.getMessage()));
+        }
         return new Result(evaluation.violations);
     }
 
     private void validateNode(JsonNode instance, JsonNode schema, String path) {
+        budget.step();
         if (schema.isBoolean() && schema.booleanValue()) return;
         if (schema.isBoolean() && !schema.booleanValue()) {
             violations.add(path + ": schema rejected the value");
@@ -60,6 +68,7 @@ final class JsonSchemaValidator {
         JsonNode required = schema.get("required");
         if (required != null && required.isArray()) {
             required.forEach(field -> {
+                budget.step();
                 if (field.isTextual() && !instance.has(field.asText())) {
                     violations.add(path + "." + field.asText() + ": required property is missing");
                 }
@@ -69,6 +78,7 @@ final class JsonSchemaValidator {
         if (properties != null && properties.isObject()) {
             Iterator<Map.Entry<String, JsonNode>> fields = properties.fields();
             while (fields.hasNext()) {
+                budget.step();
                 var field = fields.next();
                 if (instance.has(field.getKey())) {
                     validateNode(instance.get(field.getKey()), field.getValue(), path + "." + field.getKey());
@@ -78,6 +88,7 @@ final class JsonSchemaValidator {
         JsonNode additional = schema.get("additionalProperties");
         if (additional != null) {
             instance.fieldNames().forEachRemaining(name -> {
+                budget.step();
                 if (properties == null || !properties.has(name)) {
                     if (additional.isBoolean() && !additional.booleanValue())
                         violations.add(path + "." + name + ": additional property is not allowed");
@@ -154,8 +165,8 @@ final class JsonSchemaValidator {
         return "unknown";
     }
 
-    private static boolean contains(JsonNode values, JsonNode value) {
-        for (JsonNode candidate : values) if (JsonValueEquality.same(candidate, value)) return true;
+    private boolean contains(JsonNode values, JsonNode value) {
+        for (JsonNode candidate : values) if (JsonValueEquality.same(candidate, value, budget::step)) return true;
         return false;
     }
 

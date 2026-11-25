@@ -10,7 +10,7 @@ Modulul confruntă răspunsul observat cu un contract declarat, păstrând difer
 |---|---|
 | Egalitate și rezultat | Tipul valorii, diferența observată și verdictul politicii. |
 | Contractul răspunsului | Document JSON controlat, câmpuri obligatorii și mesaje localizate. |
-| Schemă | Capabilitățile declarate și refuzul regulilor neacceptate, fără a transforma lipsa suportului în succes. |
+| Schemă | Cuvinte-cheie acceptate, limite exacte și refuzul intrărilor nesuportate ori peste buget; matricile pure rămân unitare, fără Extent. |
 | Dovezi | Preview, redactare și păstrarea valorilor necesare explicării eșecului. |
 
 ## Execuție și limite
@@ -20,6 +20,6 @@ Modulul confruntă răspunsul observat cu un contract declarat, păstrând difer
 - Folosiți [intrarea modulului](../../README.md) într-o copie temporară cu dependențele identificate.
 - Probele negative modifică o singură condiție relevantă și păstrează martorul valid; un defect al fixture-ului nu demonstrează refuzul cerut.
 
-Testele de raportare verifică datele transmise, separat de acceptanța rendererului. [Bugetul evaluării](../../../docs/feedback/ATF_TestInfrastructure.md#costul-validării-api) rămâne o calificare distinctă de corectitudinea funcțională.
+[Componenta bugetului](../../../atf-tests/src/test/java/atf/tests/contracts/validation/SchemaBudgetComponentTest.java) verifică colaborarea contractului public, politicile de eșec/avertizare, căile și evaluările independente în Extent auditabil, fără poze. Raportarea verifică separat datele transmise față de acceptanța rendererului; [limitele evaluării](../../README.md#cost-și-limite) definesc frontiera deterministă.
 
 [Validarea API](../../README.md) · [Strategia comună](../../../docs/testing/README.md)

@@ -3,6 +3,8 @@ package atf.tests.governance.documentation.release.rag.scope;
 import atf.testkit.AtfComponentTest;
 import atf.testkit.assertions.AuditedAssertions;
 import atf.tests.governance.support.GovernanceProject;
+import atf.android.evidence.component.ComponentInputs;
+import atf.tests.reporting.GameReportAudit;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.nio.charset.StandardCharsets;
@@ -13,11 +15,13 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.api.io.TempDir;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 
 @AtfComponentTest
+@ExtendWith(GameReportAudit.class)
 class AndroidReleasePreflightComponentTest {
     private static final ObjectMapper JSON = new ObjectMapper();
     private static final String SERIAL = "127.0.0.1:15555";
@@ -46,10 +50,11 @@ class AndroidReleasePreflightComponentTest {
                         File.AppendAllText(Environment.GetEnvironmentVariable("ATF_FIXTURE_ADB_CALLS"), command + Environment.NewLine);
                         if (Environment.GetEnvironmentVariable("ADB_SERVER_SOCKET") != "tcp:127.0.0.1:15038") return 89;
                         var mode = Environment.GetEnvironmentVariable("ATF_FIXTURE_ADB_MODE");
+                        File.WriteAllText(Environment.GetEnvironmentVariable("ATF_FIXTURE_ADB_READY"), command);
                         switch (command) {
                             case "connect 127.0.0.1:15555":
                                 if (mode == "refused") Console.Error.WriteLine("failed to connect: Connection refused");
-                                else if (mode == "timeout") System.Threading.Thread.Sleep(8000);
+                                else if (mode == "timeout") System.Threading.Thread.Sleep(60000);
                                 else Console.WriteLine("already connected to 127.0.0.1:15555");
                                 return 0;
                             case "-s 127.0.0.1:15555 get-state":
@@ -219,12 +224,81 @@ class AndroidReleasePreflightComponentTest {
         }
     }
 
-    @Test void aTimedOutAdbProcessProducesABlockedReceipt() throws Exception {
+    @Test void aTimedOutAdbProcessProducesABlockedReceipt(ComponentInputs inputs) throws Exception {
+        inputs.add("Precondition", "Actual PowerShell launcher with a compiled local ADB double. Fixture readiness has its own 30-second deadline; the native ADB wait owns a separate 10-second command budget. No emulator is contacted.");
         Path receipt = scratch.resolve("preflight.json");
-        Run run = check("timeout", activeLease(SERIAL), receipt, "1080x1920@420", "1");
+        Run run = check("timeout", activeLease(SERIAL), receipt, "1080x1920@420", "10");
         AuditedAssertions.assertEquals(1, run.exit(), run.log());
-        AuditedAssertions.assertTrue(read(receipt).required("failure").asText().contains("timed out"));
+        String failure = read(receipt).required("failure").asText();
+        inputs.add("Original launcher refusal", failure);
+        AuditedAssertions.assertTrue(failure.contains("timed out after 10s"));
+        AuditedAssertions.assertEquals(CONNECT, Files.readString(scratch.resolve("adb.ready")), "The transport verdict follows observed fixture entry");
         AuditedAssertions.assertEquals(List.of(CONNECT), calls());
+    }
+
+    @Test void controlledProcessSeparatesReadinessTimeoutAndOriginalFailure(ComponentInputs inputs) throws Exception {
+        Path probe = scratch.resolve("process-port.ps1");
+        Files.writeString(probe, """
+                param($Module)
+                $ErrorActionPreference='Stop'
+                Import-Module $Module -Force
+                & (Get-Module AndroidDeviceSetup) {
+                    foreach ($mode in @('refused','timeout','start-failure')) {
+                        $events=[Collections.Generic.List[string]]::new()
+                        $process=[pscustomobject]@{Events=$events;Mode=$mode;ExitCode=7}
+                        foreach ($name in @('StandardOutput','StandardError')) {
+                            $stream=[pscustomobject]@{Events=$events;Name=$name}
+                            $stream | Add-Member ScriptMethod ReadToEndAsync {
+                                $this.Events.Add($this.Name)
+                                [Threading.Tasks.Task]::FromResult([string]$(if ($this.Name -eq 'StandardError') {'Connection refused: original cause'} else {''}))
+                            }
+                            $process | Add-Member NoteProperty $name $stream
+                        }
+                        $process | Add-Member ScriptMethod Start {
+                            $this.Events.Add('start')
+                            if ($this.Mode -eq 'start-failure') { throw 'original start failure' }
+                            $true
+                        }
+                        $process | Add-Member ScriptMethod WaitForExit {
+                            param($Milliseconds)
+                            if ($null -eq $Milliseconds) { $this.Events.Add('drain'); return }
+                            $this.Events.Add('wait:' + $Milliseconds)
+                            $this.Mode -ne 'timeout'
+                        }
+                        $process | Add-Member ScriptMethod Kill { param($Tree) $this.Events.Add('kill:' + $Tree) }
+                        $process | Add-Member ScriptMethod Dispose { $this.Events.Add('dispose') }
+                        try {
+                            $result=Complete-AtfAdbProcess $process 1 'connect fixture'
+                            if ($mode -ne 'refused' -or $result.ExitCode -ne 7 -or $result.Output -cne 'Connection refused: original cause') { throw 'Original refusal was lost' }
+                        } catch {
+                            if ($mode -eq 'refused') { throw }
+                            $message=$_.Exception.Message
+                            if ($mode -eq 'timeout' -and $message -cne 'ADB command timed out after 1s: connect fixture') { throw }
+                            if ($mode -eq 'start-failure' -and $message -cnotlike '*original start failure*') { throw }
+                        }
+                        $actual=$events -join ','
+                        $expected=switch($mode) {
+                            refused {'start,StandardOutput,StandardError,wait:1000,dispose'}
+                            timeout {'start,StandardOutput,StandardError,wait:1000,kill:True,drain,dispose'}
+                            start-failure {'start,dispose'}
+                        }
+                        if ($actual -cne $expected) { throw "$mode order: $actual; expected: $expected" }
+                        Write-Output "$mode=$actual"
+                    }
+                }
+                """);
+        Path log = scratch.resolve("process-port.log");
+        Path module = GovernanceProject.locateProjectRoot().resolve("atf-test-android/tools/AndroidDeviceSetup.psm1");
+        Process process = new ProcessBuilder("pwsh", "-NoProfile", "-NonInteractive", "-File", probe.toString(), module.toString())
+                .redirectErrorStream(true).redirectOutput(log.toFile()).start();
+        try {
+            AuditedAssertions.assertTrue(process.waitFor(30, TimeUnit.SECONDS), "The controlled process probe must finish independently of device availability");
+            String output = Files.readString(log);
+            inputs.add("Precondition", "Private production process port, controlled start/wait/streams/kill/dispose; no wall-clock sleeps or Android process.");
+            inputs.add("Observed process orders and original causes", output);
+            AuditedAssertions.assertEquals(0, process.exitValue(), output);
+            AuditedAssertions.assertTrue(output.contains("wait:1000,kill:True,drain,dispose"), "Timeout terminates and drains the same owned process before disposal");
+        } finally { if (process.isAlive()) process.destroyForcibly(); }
     }
 
     @Test void theSignedFlowRefusesStaleCompiledClassesAndUnrelatedJUnit() throws Exception {
@@ -306,10 +380,17 @@ class AndroidReleasePreflightComponentTest {
         environment.put("TMP", scratch.toString());
         environment.put("ATF_FIXTURE_ADB_MODE", mode);
         environment.put("ATF_FIXTURE_ADB_CALLS", scratch.resolve("adb.calls").toString());
+        environment.put("ATF_FIXTURE_ADB_READY", scratch.resolve("adb.ready").toString());
         environment.put("ATF_FIXTURE_MAVEN_ENTERED", scratch.resolve("maven.entered").toString());
         environment.put("ATF_FIXTURE_PREFLIGHT", scratch.resolve("run/android-preflight.json").toString());
         Process process = builder.start();
         try {
+            if (mode.equals("timeout")) {
+                long deadline = System.nanoTime() + TimeUnit.SECONDS.toNanos(30);
+                Path ready = scratch.resolve("adb.ready");
+                while (!Files.exists(ready) && process.isAlive() && System.nanoTime() < deadline) Thread.sleep(20);
+                AuditedAssertions.assertTrue(Files.exists(ready), "Fixture did not become ready; this is not an ADB transport timeout: " + Files.readString(output));
+            }
             boolean completed = process.waitFor(45, TimeUnit.SECONDS);
             String log = new String(Files.readAllBytes(output), StandardCharsets.UTF_8);
             AuditedAssertions.assertTrue(completed, "Android preflight launcher exceeded its deadline: " + log);

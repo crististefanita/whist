@@ -21,6 +21,26 @@ import static org.junit.jupiter.api.Assertions.*;
 @AtfUnitTest
 class JsonSchemaContractTest {
     @TempDir Path directory;
+
+    @Test void structuralAdmissionAndWorkCountersHonorExactBoundaries() {
+        var mapper = new com.fasterxml.jackson.databind.ObjectMapper();
+        var wide = mapper.createArrayNode();
+        for (int i = 0; i < 16_383; i++) wide.add(0);
+        atf.validation.contract.schema.JsonSchemaBudget.admit(wide, "instance");
+        wide.add(0);
+        assertThrows(atf.validation.contract.schema.JsonSchemaBudget.Limit.class,
+                () -> atf.validation.contract.schema.JsonSchemaBudget.admit(wide, "instance"));
+        atf.validation.contract.schema.JsonSchemaBudget.admit(mapper.getNodeFactory().textNode("a".repeat(1_048_576)), "instance");
+        var keys = mapper.createObjectNode().put("a".repeat(1_048_576), "");
+        atf.validation.contract.schema.JsonSchemaBudget.admit(keys, "schema");
+        keys.put("extra", "");
+        assertThrows(atf.validation.contract.schema.JsonSchemaBudget.Limit.class,
+                () -> atf.validation.contract.schema.JsonSchemaBudget.admit(keys, "schema"));
+        var budget = new atf.validation.contract.schema.JsonSchemaBudget();
+        for (int i = 0; i < 200_000; i++) budget.step();
+        assertThrows(atf.validation.contract.schema.JsonSchemaBudget.Limit.class, budget::step);
+    }
+
     @Test void everyDeclaredTypeHasANominalAndAnIncompatibleInstance() throws Exception {
         for (var entry : Map.of("object", "{}", "array", "[]", "string", "\"ok\"", "integer", "1",
                 "number", "1.25", "boolean", "true", "null", "null").entrySet()) {

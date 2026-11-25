@@ -10,9 +10,7 @@ Consumatorul deține validarea API, procesele și adopția locală; [registrul r
 
 ## Costul validării API
 
-| Prioritate | Lacună și sursă | Nivel și criteriu de închidere |
-|---|---|---|
-| P2 | [JsonSchemaCapabilities](../../atf-validation/src/main/java/atf/validation/contract/schema/JsonSchemaCapabilities.java) și [JsonSchemaValidator](../../atf-validation/src/main/java/atf/validation/contract/JsonSchemaValidator.java) nu declară un buget al adâncimii și volumului evaluării. | Probe controlate pentru adâncime, cardinalitate și repetarea regulilor; mediu și intrare identificate, refuz explicit și limite documentate în contract. |
+[Contractul validării](../../atf-validation/README.md#cost-și-limite) deține limitele structurale și bugetul comun al prevalidării/evaluării. Unitățile acoperă limitele exacte; componentele contractului public păstrează căile, politica și izolarea evaluărilor. Alocarea parserului și durata regex Java rămân explicit în afara acestui buget.
 
 ## Stabilitatea verificării proceselor
 
@@ -20,9 +18,7 @@ Consumatorul deține validarea API, procesele și adopția locală; [registrul r
 
 Deținerea persistentă și recuperarea aparțin [contractului de calificare](../testing/ATF_ReleaseQualification.md#recuperarea-utilizatorului-temporar). Componentele controlate califică întreruperea și verificările de identitate; acceptanța profilului nativ rămâne separată.
 
-| Prioritate | Limită de calificare | Criteriu de închidere |
-|---|---|---|
-| P2 | [Preflight-ul Android cu ADB simulat](../../atf-tests/src/test/java/atf/tests/governance/documentation/release/rag/scope/AndroidReleasePreflightComponentTest.java) include pornirea PowerShell în termenul impus probei de refuz. Sub încărcare, proba poate eșua înaintea verdictului mock-ului. | Semnalizați separat pornirea fixture-ului și refuzul transportului. Validați refuzul cu ceas și proces controlate, împreună cu o probă restrânsă a lansatorului real. |
+[Componenta ADB simulată](../../atf-tests/src/test/java/atf/tests/governance/documentation/release/rag/scope/AndroidReleasePreflightComponentTest.java) separă pregătirea fixture-ului de verdictul transportului. Un port controlat al procesului de producție verifică ordinea și cauzele originale fără așteptări artificiale; proba limitată a lansatorului cere intrarea observată în fixture înainte de a atribui un timeout transportului ADB.
 
 [Kitul testelor](../../lib/README.TestKit.md#scope-și-integrare) · [Validarea API](../../atf-validation/README.md) · [Guvernanță](ATF_Governance.md)
 

@@ -543,6 +543,8 @@ Verificați ferestrele în [politica executabilă](../../config/release-platform
 
 ### Preflight Android
 
+Termenul comenzii ADB începe după lansarea procesului; pornirea shell-ului are o limită separată a lansatorului. Componentele controlate folosesc portul privat al procesului pentru a verifica ordinea așteptării, opririi, golirii fluxurilor și eliberării, păstrând diagnosticele originale. Fixture-ul real de timeout publică un semnal de pregătire cu termen propriu, astfel încât eșecul pornirii sale să nu pară un refuz al transportului.
+
 [Lansatorul responsive](../../scripts/run-whist-responsive-sanity.ps1) rezervă dispozitivul și rulează [preflight-ul comun](../../scripts/check-android-release-device.ps1) înainte să copieze sursele sau cache-ul Maven. Pentru o selecție pe APK semnat, apelați aceeași comandă imediat după obținerea rezervării, înainte de instalare, backup sau interacțiuni cu aplicația.
 
 ```powershell

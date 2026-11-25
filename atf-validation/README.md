@@ -29,7 +29,7 @@ flowchart LR
 - Calea invalidă, absența și valoarea prezentă sunt distincte; `null` explicit este prezent.
 - Căile simple și JSON Pointer au un subset explicit; selecțiile generale, filtrele și căutarea recursivă sunt refuzate.
 - Schema este verificată preliminar, inclusiv în ramuri neatinse de instanță; cuvintele-cheie necunoscute sunt refuzate.
-- Evaluarea unei scheme are propriile abateri și expresii regulate compilate; aceeași expresie se reutilizează pentru valorile repetitive, fără cache comun între cereri sau după modificarea fișierului.
+- Fiecare evaluare are propriul contor de lucru și propriile expresii regulate compilate; aceeași expresie se reutilizează pentru valorile repetitive, fără cache comun între evaluări sau după modificarea fișierului.
 - Politica strictă produce eșec, iar politica de avertizare păstrează comparațiile negative și statutul `WARNING`.
 
 <details>
@@ -79,11 +79,21 @@ mvn -B -pl atf-validation -am test
 
 ## Cost și limite
 
-Subsetul JSON este explicit și refuză construcțiile nesuportate. Următoarea calificare trebuie să delimiteze costul prevalidării și al evaluării pe structuri mari, adânci sau repetitive.
+Subsetul acceptat refuză construcțiile nesuportate și intrările care depășesc bugetul. [JsonSchemaBudget](src/main/java/atf/validation/contract/schema/JsonSchemaBudget.java) verifică separat schema și instanța complete înaintea evaluării recursive, inclusiv adnotările și ramurile neatinse de instanță.
 
-- [Feedback-ul validării](../docs/feedback/ATF_TestInfrastructure.md#costul-validării-api) deține calificarea bugetelor pe volum și adâncime. Reutilizarea expresiilor din aceeași evaluare păstrează prevalidarea, semantica regex Java, căile și ordinea abaterilor; componentele verifică și independența evaluărilor succesive.
+| Resursă | Limită inclusivă și contabilizare |
+|---|---|
+| Adâncimea arborelui | 64 de muchii de la rădăcină; rădăcina are adâncimea zero. |
+| Nodurile arborelui | 16.384 de valori pentru fiecare schemă sau instanță, inclusiv containerele și adnotările. |
+| Text | 1.048.576 de unități de cod UTF-16 pentru fiecare arbore, inclusiv numele proprietăților și valorile text. |
+| Lucrul evaluării | 200.000 de pași comuni prevalidării schemei și evaluării instanței: vizite de schemă/valoare, parcurgeri de câmpuri, verificări required și comparații enum recursive. |
 
-- Rezultatul performanței și identitatea intrărilor se păstrează extern. Optimizarea se acceptă după paritate semantică și măsurare, cu publicarea separată de evaluarea valorilor integrale.
+Depășirea unei limite produce o singură comparație explicită de buget și elimină abaterile parțiale. Politica strictă întoarce `FAIL`; avertizarea întoarce `WARNING` cu o comparație negativă. Evaluarea următoare începe cu un buget nou; comparațiile admise își păstrează căile și ordinea.
+
+- Acestea sunt limite deterministe de evaluare, nu garanții de durată sau memorie a parserului. Parsarea JSON precedă admiterea arborelui.
+- Contorul de lucru nu poate întrerupe o potrivire regex Java. Folosiți scheme de încredere; termenul procesului sau transportului rămâne o frontieră separată.
+
+[Feedback-ul validării](../docs/feedback/ATF_TestInfrastructure.md#costul-validării-api) rutează lucrările rămase ale infrastructurii. Păstrați măsurătorile și identitatea intrărilor în afara ghidurilor proiectului; acceptați optimizările prin paritate semantică, fără scurtarea valorilor comparate.
 
 ## Catalogul testelor
 

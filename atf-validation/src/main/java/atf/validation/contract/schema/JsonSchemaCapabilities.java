@@ -17,14 +17,24 @@ public final class JsonSchemaCapabilities {
     private JsonSchemaCapabilities() { }
 
     public static List<String> inspect(JsonNode schema) {
+        return inspect(schema, new JsonSchemaBudget());
+    }
+    public static List<String> inspect(JsonNode schema, JsonSchemaBudget budget) {
         var errors = new ArrayList<String>();
-        inspect(schema, "$schema", errors);
+        try {
+            JsonSchemaBudget.admit(schema, "schema");
+            inspect(schema, "$schema", errors, budget);
+        } catch (JsonSchemaBudget.Limit limit) {
+            return List.of(limit.getMessage());
+        }
         return List.copyOf(errors);
     }
-    private static void inspect(JsonNode schema, String path, List<String> errors) {
+    private static void inspect(JsonNode schema, String path, List<String> errors, JsonSchemaBudget budget) {
+        budget.step();
         if (schema.isBoolean()) return;
         if (!schema.isObject()) { errors.add(path + ": schema must be an object or boolean"); return; }
         schema.fields().forEachRemaining(field -> {
+            budget.step();
             String key = field.getKey();
             JsonNode value = field.getValue();
             String location = path + "." + key;
@@ -36,13 +46,13 @@ public final class JsonSchemaCapabilities {
                 case "examples" -> require(value.isArray(), location, errors);
                 case "type" -> require(validTypes(value), location, errors);
                 case "required" -> require(uniqueStrings(value), location, errors);
-                case "enum" -> require(validEnum(value), location, errors);
+                case "enum" -> require(validEnum(value, budget), location, errors);
                 case "properties" -> {
                     require(value.isObject(), location, errors);
                     if (value.isObject()) value.fields().forEachRemaining(property ->
-                            inspect(property.getValue(), location + "." + property.getKey(), errors));
+                            inspect(property.getValue(), location + "." + property.getKey(), errors, budget));
                 }
-                case "items", "additionalProperties" -> inspect(value, location, errors);
+                case "items", "additionalProperties" -> inspect(value, location, errors, budget);
                 case "minItems", "maxItems", "minLength", "maxLength" ->
                         require(value.isNumber() && value.decimalValue().signum() >= 0
                                 && value.decimalValue().stripTrailingZeros().scale() <= 0, location, errors);
@@ -70,10 +80,10 @@ public final class JsonSchemaCapabilities {
         for (JsonNode value : node) if (!value.isTextual() || !values.add(value.textValue())) return false;
         return true;
     }
-    private static boolean validEnum(JsonNode node) {
+    private static boolean validEnum(JsonNode node, JsonSchemaBudget budget) {
         if (!node.isArray() || node.isEmpty()) return false;
         for (int i = 0; i < node.size(); i++)
-            for (int j = 0; j < i; j++) if (JsonValueEquality.same(node.get(i), node.get(j))) return false;
+            for (int j = 0; j < i; j++) if (JsonValueEquality.same(node.get(i), node.get(j), budget::step)) return false;
         return true;
     }
     private static void require(boolean valid, String path, List<String> errors) {
