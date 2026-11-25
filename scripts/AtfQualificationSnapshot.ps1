@@ -1,9 +1,9 @@
 #requires -Version 7.0
 . (Join-Path $PSScriptRoot 'AtfFileDigest.ps1')
-. (Join-Path $PSScriptRoot 'AtfStandaloneJava.ps1')
 
 function Assert-AtfMetadataEditorial([string]$SourceRoot, [string]$TempRoot, [string]$JavaHome,
     [string]$MavenCache, [string]$Receipt) {
+    . (Join-Path $PSScriptRoot 'AtfStandaloneJava.ps1')
     $tools = Split-Path -Parent $PSScriptRoot
     $classpath = Get-AtfJvmCompilerClasspath -ToolRoot $tools -MavenCache $MavenCache -Yaml
     $exit = 1
