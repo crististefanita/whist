@@ -24,7 +24,7 @@ function Invoke-AtfTestChangeBatch([string]$RunRoot, [scriptblock]$ReadPlan, [sc
         }
     }
     if ($failures.Count) {
-        throw "TEST-CHANGE-BATCH-CONTROL: $($failures -join ', '); vezi logurile test-change-<ID>.log"
+        throw "TEST-CHANGE-BATCH-CONTROL: $($failures -join ', '); inspect test-change-<ID>.log"
     }
     & $CheckSnapshot
     if (($controls -join "`n") -cne (@(& $ReadPlan) -join "`n")) {

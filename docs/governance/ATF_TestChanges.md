@@ -154,6 +154,45 @@ $env:ATF_TEST_CHANGE_PROOF_ROOT = Join-Path $runRoot 'proofs'
 
 On failure or source change, inspect the per-control logs and the `proofs.pending` diagnostic directory. For a focused run, `-TestChangeControl` stores the receipt under `<RunRoot>/<ID>`. Reuse that receipt and report for the original commit and diff, or for a verified editorial continuation that preserves their identity.
 
+### Independent proof domains
+
+The [reviewed domain declarations](ATF_TestChangesBaseline.md#current-domain-controls) are the selection inventory. Each control owns exact paths and its positive and negative selectors; the existing Git reviewer selects the union of owners touched by the diff.
+
+| Domain | Owns | Does not schedule by itself |
+|---|---|---|
+| Inventory validator | Source-language policy, complete inventory and its controlled rejection cases | Native geometry or report rendering |
+| Native surface | Measured content, shared phase geometry and displaced-seat rejection | Full-source language inventory |
+| Reporting | Publication, producer ownership, complete values and bounded resource fixtures | Native surface observations |
+| Catalog | Primary suites, class inventories, reader dependencies and seals | Unchanged UI or resource-test bodies |
+| Selection | Domain routing, proof batching, failures and source/plan drift | Game or native-renderer execution |
+
+```mermaid
+flowchart TD
+    DIFF["Real Git diff"] --> OWNER["Exact reviewed path owners"]
+    OWNER --> VALIDATOR["Inventory validator"]
+    OWNER --> UI["Native surface"]
+    OWNER --> REPORT["Reporting"]
+    OWNER --> CATALOG["Catalog and selection"]
+    VALIDATOR --> UNION["Required control union"]
+    UI --> UNION
+    REPORT --> UNION
+    CATALOG --> UNION
+    UNION --> COMPILE["One sealed compilation"]
+    COMPILE --> PROOFS["Separate original Extent and proof per control"]
+```
+
+<details>
+<summary>Legend: omission and reuse have different meanings</summary>
+
+An unchanged domain is absent from the execution plan; its original evidence keeps its original commit and scope. Exclusion does not turn that evidence into a proof for a new control or source. A mixed diff restores every affected owner, and a missing or ambiguous owner blocks qualification.
+
+</details>
+
+- Use cohesive `RAG-DOMAIN-` controls and a new reviewed ID/base for a new review; keep qualified historical declarations immutable. Expired controls and an incorrect Git base remain refusals.
+- Shared selection metadata has its own independent suite-ownership checks. A change to UI source additionally selects the native domain; catalog ownership cannot hide it.
+- [Domain components](../../atf-tests/src/test/java/atf/tests/governance/source/changes/domains/TestChangeDomainComponentTest.java) read the live declarations, retain the original checks, reject overlapping ownership and resolve actual committed fixture diffs through the production reviewer. Their component symbols are nonexecuted stubs, not UI acceptance.
+- One batch still shares compilation and classpath. A failed control, changed source or changed plan prevents final proof publication; domain separation does not relax those boundaries.
+
 ### Resume one static proof control
 
 Use a new external run directory and the original run as `-ResumeFrom`, together with the same `-TestChangeControl` and Git base. The launcher first admits the complete source/release snapshot and verified compilation. Fresh batch generation remains separate; `-AllTestChangeControls` does not accept resume.
