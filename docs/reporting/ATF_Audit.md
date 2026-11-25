@@ -201,7 +201,15 @@ Passing structural checks alone does not prove readability or interactive naviga
 
 `ComponentReportPublication` owns the consumer transaction. Rendering and Reporting finalization write a private candidate; the authored scenario profile and mandatory values are verified before atomic promotion. A failed render, inspection, size guard or changed candidate preserves the previous canonical HTML.
 
-Process failure has a separate acceptance boundary. Isolated JVM components use a declared small heap, real allocation exhaustion and abrupt VM termination in rendering and verification. The last started phase is persisted before work begins. If cleanup cannot run, the receipt remains incomplete rather than successful; prior canonical bytes and original JUnit outcomes remain authoritative. A fresh process must complete inspection and promotion before its candidate becomes canonical. Controlled render operations qualify this transaction protocol, not the generic renderer's internal allocation or operating-system crash recovery.
+Process failure has a separate acceptance boundary.
+
+| Boundary | Component obligation |
+|---|---|
+| Resource limit | Isolated JVMs use a declared small heap, actual allocation exhaustion and abrupt VM termination in rendering and verification. |
+| Durable stage | Persist the last started phase before work; absent cleanup leaves an incomplete receipt rather than success. |
+| Original outcomes | Keep prior canonical bytes and original JUnit authoritative after failure. |
+| Recovery | A fresh process completes inspection and promotion before its candidate becomes canonical. |
+| Qualification limit | Controlled render operations qualify the transaction protocol, not generic-renderer allocation or operating-system crash recovery. |
 
 ```mermaid
 flowchart LR

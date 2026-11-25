@@ -163,7 +163,12 @@ Gradle selection of the application, engine and graphic library uses [Gradle aud
 
 `AndroidSurfaceObservation` reads laid-out Views, visible rectangles and `TextView.Layout` lines. `BoardLayout.observeSurface` supplies the actual seat Views; the caller binds header, fact-row, trump and card content explicitly. It does not submit expected layout plans as observations.
 
-Whist's `GameScreen.observeTable()` binds the mounted page through `WhistSurfaceObservation`. Header and fact-row roles, both trump text lines and current private/public card indices are resolved from actual View tags on every capture. Detached cards are not retained. Missing or duplicate mandatory roles fail before measurement; replacing or leaving the screen disposes its original owner. A repaint during capture must fail the final epoch check. The controlled Android fixtures verify this integration contract separately from native glyph visibility.
+Whist's `GameScreen.observeTable()` binds the mounted page through `WhistSurfaceObservation`.
+
+- Header and fact-row roles, both trump text lines and current private/public card indices are resolved from actual View tags on every capture. Detached cards are not retained.
+- Missing or duplicate mandatory roles fail before measurement.
+- Replacing or leaving the screen disposes its original owner. A repaint during capture must fail the final epoch check.
+- Controlled Android fixtures verify this integration contract separately from native glyph visibility.
 
 ```mermaid
 flowchart LR

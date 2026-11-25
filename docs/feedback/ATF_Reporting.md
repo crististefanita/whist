@@ -31,7 +31,8 @@ The [Gradle component guide](../testing/ATF_GradleComponents.md#bounded-matrix-i
 
 [Verified component publication](../reporting/ATF_Audit.md#verified-component-publication) owns private staging, pre-promotion inspection, atomic replacement and original-cause diagnostics. Keep those regression boundaries active; the remaining criteria concern native resource behavior and library allocation.
 
-The consumer failure protocol uses isolated bounded JVMs to verify actual heap exhaustion and abrupt termination during rendering or verification. The durable journal retains the last started stage, canonical HTML and original JUnit remain unchanged, and a fresh attempt must qualify before promotion. Controlled operations exercise this process boundary; they do not measure allocation inside the generic renderer or prove recovery from every operating-system failure.
+- The consumer failure protocol uses isolated bounded JVMs to verify actual heap exhaustion and abrupt termination during rendering or verification. The durable journal retains the last started stage; canonical HTML and original JUnit remain unchanged.
+- A fresh attempt must qualify before promotion. Controlled operations exercise this process boundary; they do not measure allocation inside the generic renderer or prove recovery from every operating-system failure.
 
 Both producer and verifier need qualification. Increasing one process's heap limit does not close the criterion or prove that the report is publishable in the standard environment.
 
