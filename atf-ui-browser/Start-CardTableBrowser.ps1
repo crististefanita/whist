@@ -12,6 +12,8 @@ param(
     [switch]$ListSources
 )
 $ErrorActionPreference = 'Stop'
+. (Join-Path $PSScriptRoot '../scripts/AtfBrowserToolchain.ps1')
+$toolchain = Assert-AtfBrowserToolchain
 $checkout = (Resolve-Path -LiteralPath (Join-Path $PSScriptRoot '..')).ProviderPath
 $output = [IO.Path]::GetFullPath($WorkRoot)
 foreach ($source in $checkout, (Resolve-Path -LiteralPath $GameRoot).ProviderPath) {
@@ -39,6 +41,7 @@ if ($ListSources) {
     $sources
     return
 }
+$toolchain = Assert-AtfBrowserToolchain
 $null = New-Item -ItemType Directory -Path $classes -Force
 function Format-JavacPath([string]$Path) {
     '"' + $Path.Replace('\', '/') + '"'
@@ -50,7 +53,7 @@ function Compile-Sources([string[]]$Sources, [string]$Destination, [string[]]$Cl
     if ($Classpath.Count) { $options += @('-cp', (Format-JavacPath ($Classpath -join [IO.Path]::PathSeparator))) }
     $options += @($Sources | ForEach-Object { Format-JavacPath $_ })
     [IO.File]::WriteAllLines($argsFile, [string[]]$options, [Text.UTF8Encoding]::new($false))
-    & javac "@$argsFile"
+    & $toolchain.executables.javac "@$argsFile"
     if ($LASTEXITCODE -ne 0) { throw 'Presentation module compilation failed.' }
 }
 function Module-Sources([string[]]$Roots) {
@@ -60,7 +63,7 @@ function Module-Jar([string]$Name, [string[]]$Sources, [string[]]$Classpath = @(
     $destination = Join-Path $build $Name
     Compile-Sources $Sources $destination $Classpath
     $artifact = Join-Path $build "$Name.jar"
-    & jar --create --file $artifact '--date=2026-01-01T00:00:00Z' -C $destination .
+    & $toolchain.executables.jar --create --file $artifact '--date=2026-01-01T00:00:00Z' -C $destination .
     if ($LASTEXITCODE -ne 0) { throw 'Presentation module packaging failed.' }
     $artifact
 }
@@ -72,5 +75,5 @@ $gameSources = @($sources | Where-Object { $_ -notin $sharedSources })
 if ($gameSources.Count) { Compile-Sources $gameSources $classes $libraryPaths }
 $runtime = (@($classes) + $libraryPaths) -join [IO.Path]::PathSeparator
 if ($BuildOnly) { $runtime; return }
-& java '-cp' $runtime $MainClass (Join-Path $PSScriptRoot 'src/main/web') $ListenAddress $Port @MainArguments
+& $toolchain.executables.java '-cp' $runtime $MainClass (Join-Path $PSScriptRoot 'src/main/web') $ListenAddress $Port @MainArguments
 if ($LASTEXITCODE -ne 0) { throw 'Browser server stopped with an error.' }

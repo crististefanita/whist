@@ -10,6 +10,8 @@ param(
 )
 $checkout = Join-Path $PSScriptRoot '..'
 $ErrorActionPreference = 'Stop'
+. (Join-Path $PSScriptRoot '../scripts/AtfBrowserToolchain.ps1')
+$null = Assert-AtfBrowserToolchain
 $work = [IO.Path]::GetFullPath($WorkRoot)
 $source = (Resolve-Path -LiteralPath $checkout).ProviderPath
 if ($work -ieq $source -or $work.StartsWith($source + [IO.Path]::DirectorySeparatorChar,[StringComparison]::OrdinalIgnoreCase)) {

@@ -22,7 +22,24 @@ Stable contracts belong to thematic guidelines; each criterion remains open unti
 
 ## Prioritized ToDos
 
-The 1–100 score expresses work priority, not quality or completion percentage. It combines user impact, verification gaps, release risk and clarity of the closure criterion. Each row links to its owning register; revise the score as risk or evidence changes and close a criterion only at its required verification level.
+The 1–100 score expresses priority within each track, not quality or completion percentage. Offline work packages have bounded component/governance criteria; acceptance and research gates retain their device, consumer, library or fresh-data requirements. Each ID is unique across tracks and links to its owning register.
+
+Select explicit IDs before an iteration and name them in the final audit and reply. A qualified subcriterion does not close its parent gate; remove only completed criteria and state the remaining boundary. The index prioritizes work from the thematic registers; its row count is not a count of completed iterations.
+
+### Offline work packages
+
+| ID | Priority | Score | ToDo remaining and short closing criterion |
+|---|---:|---:|---|
+| RAG-32 | P2 | 88 | Qualify capability preflight in the remaining Java, Maven, Gradle and Node launchers, including the PowerShell ADB process boundary. Browser JDK checks have their own contract. [Register](ATF_Governance.md#qualification-of-claims-and-launchers) |
+| RAG-33 | P2 | 87 | Separate retained-report admission from source staging, preserving byte seals and source/catalog identity; measure each cost stage. [Register](ATF_Governance.md#qualification-of-claims-and-launchers) |
+| RAG-34 | P2 | 86 | Narrow compiler recipe invalidation only after qualifying complete recipe dependencies, missing classes and tampering on identified cold/warm inputs. [Register](ATF_Governance.md#qualification-of-claims-and-launchers) |
+| RAG-35 | P2 | 85 | Measure and reduce repeated Git review, lexical scans and serialization while preserving bounded inventory and conservative unknown-reader rejection. [Register](ATF_Governance.md#qualification-of-claims-and-launchers) |
+| RAG-36 | P2 | 84 | Reuse passing controls after an isolated driver correction only with per-control dependency closures, original JUnit/report identities and shared-input rejection. [Register](ATF_Governance.md#qualification-of-claims-and-launchers) |
+| LAB-01 | P2 | 83 | Qualify hard-stop recovery of corpus publication claims, excluding live writers and preserving immutable input identities. [Register](ATF_Ai.md#autonomous-laboratory-verification) |
+| LAB-02 | P2 | 82 | Qualify corpus tools at declared large input volumes with scaling, resource and provenance measurements. [Register](ATF_Ai.md#autonomous-laboratory-verification) |
+| AI-03 | P2 | 81 | Qualify independent-player decisions under equivalent score contexts without changing frozen policy identities. [Register](ATF_Ai.md#levels-and-qualification-limits) |
+
+### Acceptance and research gates
 
 | ID | Priority | Score | ToDo remaining and short closing criterion |
 |---|---:|---:|---|

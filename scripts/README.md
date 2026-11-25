@@ -88,3 +88,16 @@ The launcher can reuse compilation after an interrupted classpath step; an alter
 - [One source policy](AtfSigningSourcePolicy.ps1) admits only public signing metadata and skips private local entries before hashing.
 - [Copying](Copy-AtfSourceInputs.ps1) validates the complete manifest, canonical paths and link-free source and destination ancestors before writing.
 - Private entries are refused even in an old manifest. The [signing guide](../.atf-signing/README.md) defines the public allowlist and policy limits.
+
+## Browser toolchain preflight
+
+[Browser capability checks](AtfBrowserToolchain.ps1) run before Whist catalog generation, module compilation or Pages dependency resolution. Java, javac and jar must resolve to applications and report Java 17 or newer; Pages also requires a Maven application before starting preparation.
+
+| Boundary | Meaning |
+|---|---|
+| Java tools | Bounded version probes qualify release support at the observed paths; the launcher invokes those resolved executables. |
+| Maven | Application presence only; dependency resolution, plugins, network and the actual Maven run remain separate checks. |
+| Process failure | Refuse missing tools, aliases/non-version responses, old versions, nonzero exits and timeout. Kill only the owned child when needed, dispose it and preserve primary plus cleanup causes. |
+| Source identity | The receipt and availability/version diagnostics identify the consumed preflight script by SHA-256. This is not an APK, browser-rendering or release verdict. |
+
+Controlled components replace resolver/version responses and the private process port; no shell, browser, build or device is needed for rejection matrices. Actual launcher ordering and resolved-command bindings are checked separately from real Java availability.

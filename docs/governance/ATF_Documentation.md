@@ -29,9 +29,11 @@ Each stable rule has one owning document. Feedback records the remaining gap and
 - An indicative range of three to seven documents per area helps navigation. Volume, cohesion, and the reading path determine when an area is consolidated or separated.
 - A new file appears when it holds a contract or a process of its own; a title or an additional example may remain a section.
 - A guide covering two mechanisms states their boundaries and links to each owning contract.
-- The priority index `docs/feedback/README.md` keeps unique IDs, scores from 1–100 in descending order, and local links to the owning register; the [governance test](../../atf-tests/src/test/java/atf/tests/governance/documentation/feedback/FeedbackIndexGovernanceTest.java) validates negative cases as well.
+- The priority index `docs/feedback/README.md` separates offline work packages from acceptance/research gates. IDs are unique across tracks, scores from 1–100 descend within each table, and local owner links include valid fragments; the [governance test](../../atf-tests/src/test/java/atf/tests/governance/documentation/feedback/FeedbackIndexGovernanceTest.java) checks every table and negative cases.
 
 The orientation name is `README.md`. Descriptive guides use `ATF_<PascalCase>.md`, with short names in the context of the area; language or profile is indicated only when they distinguish real contracts.
+
+A completed backlog has no minimum row quota. Declare a fully empty register with `<!-- feedback:empty -->`; the marker cannot coexist with active rows or come from a fenced example. Select named IDs before work, retain exact closure evidence externally, and remove a parent gate only when its required verification level is met.
 
 ## Single contract and explicit stage
 
