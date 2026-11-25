@@ -145,6 +145,8 @@ The lack of a certificate keeps the fallback and does not prove that the alterna
 
 ## Reproducibility and limits
 
+- `BidSampleEvidence` admits a complete sample transactionally: legal bid identities are unique, exact-contract values lie in `[0,1]`, and weights, utilities and prospective aggregates must be finite and representable. A rejected row leaves means, paired variance, raw count and effective sample size unchanged.
+- Weighted contract frequency, expected points, raw sample count and effective sample size have separate meanings. Components compare the accumulator and Romanian score function with independent finite-population arithmetic; those controlled outcomes neither calibrate the hidden-world sampler nor demonstrate stronger play.
 - The same full observation and implementation shall produce the same decision.
 - For Hard, the initialization of the estimate uses the differences in score to actor, calculated on 64 bits. A common translation of totals keeps the same worlds and estimates; changing the score differences remains part of the context. The independent player has his own random stream and does not automatically take over this invariant.
 - The set-up bonuses and penalties change the usefulness of the result without changing the distribution of the cards on their own. In eligible hands, the difference in the value of a series shall be weighted with the exact or failure frequency; a hand of a card shall not pay the series.

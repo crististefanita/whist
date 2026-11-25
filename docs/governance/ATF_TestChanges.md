@@ -163,6 +163,7 @@ The [reviewed domain declarations](ATF_TestChangesBaseline.md#current-domain-con
 | Inventory validator | Source-language policy, complete inventory and its controlled rejection cases | Native geometry or report rendering |
 | Native surface | Measured content, shared phase geometry and displaced-seat rejection | Full-source language inventory |
 | Reporting | Publication, producer ownership, complete values and bounded resource fixtures | Native surface observations |
+| AI evidence | Transactional sample admission, model frequencies and independent utility oracles | Native rendering or playing-strength evaluation |
 | Catalog | Primary suites, class inventories, reader dependencies and seals | Unchanged UI or resource-test bodies |
 | Selection | Domain routing, proof batching, failures and source/plan drift | Game or native-renderer execution |
 
@@ -172,10 +173,12 @@ flowchart LR
     OWNER -->|assigns| VALIDATOR["Inventory validator"]
     OWNER -->|assigns| UI["Native surface"]
     OWNER -->|assigns| REPORT["Reporting"]
+    OWNER -->|assigns| AI["AI evidence"]
     OWNER -->|assigns| CATALOG["Catalog and selection"]
     VALIDATOR -->|contributes| UNION["Required control union"]
     UI -->|contributes| UNION
     REPORT -->|contributes| UNION
+    AI -->|contributes| UNION
     CATALOG -->|contributes| UNION
     UNION -->|uses| COMPILE["One sealed compilation"]
     COMPILE -->|produces| PROOFS["Separate original Extent and proof per control"]

@@ -6,10 +6,9 @@ YAML validation at the building and compatibility of progress are documented in 
 
 ## P1 · Restoration of the status of the common screen on Android
 
-The Whist Adapter creates a new state of the screen at each opening. The components of the catalogue and detail alone do not demonstrate that the position of the list and the selected objective are retained when recreating the screen or after returning from the notification.
+The [navigation snapshot contract](../game/ATF_Achievements.md#activity-owned-navigation) separates activity-owned list/selection state from durable progress. Controlled Bundle round trips and activity-composition checks do not certify native list placement, translated glyphs or platform recreation.
 
-- Keep navigation status and selection in the owner of Android according to life cycle without changing order or content of the catalogue.
-- Check RO/EN, select a target, run up to a row, recreate the screen and return to the same position and selection.
+- On an identified APK in RO/EN, select an objective, scroll to a row, recreate the activity and verify the same position and selection, including a language change.
 - The components shall cover the retention of the tail upon closure, the reappearance of unconfirmed notification and the refusal of an outdated confirmation. On APK, recreate activity before and after confirmation and face each appearance with tail status and saved progress. [Components of notification](../../whist-lab-app/app/src/test/java/ro/whistlab/app/achievements/WhistAchievementNoticeCoordinatorComponentTest.java)
 - Use existing checkpoints for catalogue and detail. Extend the sample with the recreation of activity in both languages and check for the return to the same objective, the same position and with the correct visible labels.
 
@@ -17,7 +16,7 @@ The Whist Adapter creates a new state of the screen at each opening. The compone
 
 ## P2 · Calibration of Order with Human Players
 
-Overflow simulation measures opportunities and rates for declared policies, not how natural order is for human players. It keeps human observation separate from AI calibration and changes thresholds only after a repeated signal.
+Offline simulation measures opportunities and rates for declared policies, not how natural the order feels to human players. Keep human observation separate from AI calibration and change thresholds only after a repeated signal.
 
 - Uses RO/EN protocols and uniform criteria for understanding descriptions, difficulty and progress.
 - Do not mix human results, development data and simulation holdout.

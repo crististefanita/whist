@@ -2,7 +2,7 @@
 
 ## Overview
 
-The catalogue comprises 55 stable targets, in 11 thematic groups of five, based on observable game results. Each group contains two Light, Two Medium and One Hard objectives; the difficulty of achieving is distinct from the level of the AIU.
+The catalog contains 55 stable objectives in 11 thematic groups of five, based on observable game results. Each group contains two Easy, two Medium and one Hard objective; achievement difficulty is separate from AI difficulty.
 
 All five objectives are visible and gain progress from the first eligible hand. The recommended group is the first where the player has not yet achieved a goal. The Recommendation is indicative; objectives across all groups remain available in any order.
 
@@ -22,7 +22,7 @@ flowchart LR
 <details>
 <summary>Legend: facts, status and notifications</summary>
 
-Hands and games provide distinct facts. The assessment shall update the local status with Iempotenti identifiers and the notification shall be pending until the user has confirmed it.
+Hands and matches provide distinct facts. Evaluation updates local progress using idempotency keys; a notification remains pending until the user acknowledges it.
 
 </details>
 
@@ -45,6 +45,22 @@ Hands and games provide distinct facts. The assessment shall update the local st
 - YAML Catalogue declares the groups, order, texts RO/ENGradle, the metrics and thresholds. Before generation, validates the shape of objects, fields, IDs, trade groups and metrics-aggregation combinations compared to runtime lists; refusal identifies invalid registration prior to Java compilation. [Catalog executable](../../whist-lab-app/whist-presentation/src/main/achievement-rules/whist-achievements.yaml) · [Contract validation](../../whist-lab-app/whist-presentation/achievement-catalog.gradle)
 - `:app:verifyWhistAchievementCatalogValidation` checks the vectors valid and negative; the tasku is part of `:app:testDebugAchievementsComponents` and `check`. Runtime tests shall verify separately the order and the identity generated, thresholds, resumption and the impotence of progress.
 - Established identifiers link the saved progress to the displayed target. The interface caps progress to the target and the model retains the accumulated value for thresholds using the same measure.
+
+<a id="activity-owned-navigation"></a>
+
+## Activity-owned navigation
+
+`WhistAchievementScreenOwner` retains one shared `AchievementScreen.State` per activity. The activity restores it before opening the catalog and saves a nested Bundle snapshot through the common codec.
+
+| Owner | Responsibility |
+|---|---|
+| Shared screen | Scroll position, selected stable objective ID and restoration of its detail. |
+| Whist activity owner | Reuse state when reopening or changing language; save whether the catalog was visible and reopen only that saved route. |
+| Activity Bundle | Copy navigation values at save time; later callbacks on the old state cannot modify the saved values. |
+| Achievement repository | Durable progress, idempotency keys and pending notifications; navigation never rewrites these data. |
+| Notice coordinator | Acknowledge the current notice, preserve unacknowledged goals and refuse stale acknowledgement callbacks. |
+
+Controlled Bundle components use the real shared State codec and check activity composition. Native scroll placement, activity recreation and visible translated labels remain separate APK acceptance criteria.
 
 ## Source of truth
 

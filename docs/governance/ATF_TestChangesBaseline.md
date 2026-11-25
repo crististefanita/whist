@@ -45,6 +45,107 @@ testChanges:
 </details>
 
 <details>
+<summary>Transactional AI evidence and independent finite-population oracles</summary>
+
+```yaml
+testChanges:
+  - id: RAG-DOMAIN-AI-EVIDENCE
+    status: VERIFIED
+    base: bc55b04371c899e4bccc06ec5c8c6f251f28fad5
+    expires: 2026-12-25
+    reason: Admit complete weighted samples atomically, retain finite frequency and utility meanings, and reject corrupt rows using an independent oracle and a nontransactional mutant.
+    proof: "mvn -o -pl atf-tests -am -Dtest=AiSampleEvidenceComponentTest -Dsurefire.failIfNoSpecifiedTests=false test"
+    checks:
+      positive:
+        - atf.tests.governance.source.ai.AiSampleEvidenceComponentTest#finiteWeightedFrequenciesAndPointsMatchIndependentOracles
+      negative:
+        - atf.tests.governance.source.ai.AiSampleEvidenceComponentTest#invalidSamplesPreserveEvidenceAndTheOriginalDefectIsDetected
+    paths:
+      - whist-lab-app/game-core/src/main/java/ro/whistlab/core/ai/engine/inference/BidSampleEvidence.java
+      - atf-ui-browser/tests/bid-evidence.test.mjs
+      - atf-tests/src/test/java/atf/tests/governance/source/ai/AiSampleEvidenceComponentTest.java
+```
+
+</details>
+
+<details>
+<summary>Activity-owned achievement navigation and shared-state restoration</summary>
+
+```yaml
+testChanges:
+  - id: RAG-DOMAIN-UI-ACHIEVEMENTS
+    status: VERIFIED
+    base: bc55b04371c899e4bccc06ec5c8c6f251f28fad5
+    expires: 2026-12-25
+    reason: Preserve shared scroll and selected-goal state through the Whist activity lifecycle without rewriting durable progress or claiming native recreation acceptance.
+    proof: "mvn -o -pl atf-tests -am -Dtest=AchievementOwnerComponentTest -Dsurefire.failIfNoSpecifiedTests=false test"
+    checks:
+      positive:
+        - atf.tests.governance.documentation.release.rag.nativeproof.AchievementOwnerComponentTest#activityOwnedStatePreservesTheSharedSelectionAndScroll
+      negative:
+        - atf.tests.governance.documentation.release.rag.nativeproof.AchievementOwnerComponentTest#hiddenAbsentAndObsoleteStateCannotReopenAnotherRoute
+    paths:
+      - whist-lab-app/app/src/main/java/ro/whistlab/app/MainActivity.java
+      - whist-lab-app/app/src/main/java/ro/whistlab/app/achievements/presentation/WhistAchievementScreenOwner.java
+      - atf-ui-browser/tests/achievement-owner.test.mjs
+      - atf-tests/src/test/java/atf/tests/governance/documentation/release/rag/nativeproof/AchievementOwnerComponentTest.java
+```
+
+</details>
+
+<details>
+<summary>AI domain classification and exact Git-derived control selection</summary>
+
+```yaml
+testChanges:
+  - id: RAG-DOMAIN-SELECTION-AI
+    status: VERIFIED
+    base: bc55b04371c899e4bccc06ec5c8c6f251f28fad5
+    expires: 2026-12-25
+    reason: Keep AI evidence separate from native and reporting domains while preserving mixed-diff union, uncovered-path refusal and unambiguous ownership.
+    proof: "mvn -o -pl atf-tests -am -Dtest=TestChangeDomainComponentTest -Dsurefire.failIfNoSpecifiedTests=false test"
+    checks:
+      positive:
+        - atf.tests.governance.source.changes.domains.TestChangeDomainComponentTest#reviewedDomainsPreserveChecksAndKeepTheirPathsDisjoint
+        - atf.tests.governance.source.changes.domains.TestChangeDomainComponentTest#validatorAndEditorialDiffsExcludeUnaffectedUiAndReporting
+        - atf.tests.governance.source.changes.domains.TestChangeDomainComponentTest#mixedDiffsRestoreEachAffectedDomain
+      negative:
+        - atf.tests.governance.source.changes.domains.TestChangeDomainComponentTest#uncoveredAndAmbiguousDomainChangesRemainBlocked
+    paths:
+      - atf-tests/src/test/java/atf/tests/governance/source/changes/domains/TestChangeDomainComponentTest.java
+```
+
+</details>
+
+<details>
+<summary>Primary owners and source boundaries for achievement and AI components</summary>
+
+```yaml
+testChanges:
+  - id: RAG-DOMAIN-CATALOG-AI-ACHIEVEMENTS
+    status: VERIFIED
+    base: bc55b04371c899e4bccc06ec5c8c6f251f28fad5
+    expires: 2026-12-25
+    reason: Register the new component owners without omissions or overlaps and preserve package boundaries and explicit reader seals.
+    proof: "mvn -o -pl atf-tests -am -Dtest=AtfSourceQualityGovernanceTest,SuiteOwnershipGovernanceTest,AtfCollectionOwnershipComponentTest -Dsurefire.failIfNoSpecifiedTests=false test"
+    checks:
+      positive:
+        - atf.tests.governance.source.AtfSourceQualityGovernanceTest#sourcesRespectPackagePathsImportsAndProductionBoundaries
+        - atf.tests.governance.suites.SuiteOwnershipGovernanceTest#everyMavenExecutableHasOnePrimaryOwnerAndEveryFocusedGateIsDeclared
+        - atf.tests.governance.suites.AtfCollectionOwnershipComponentTest#positiveInventoriesPartitionEveryAtfComponentWithoutChangingLeafNames
+      negative:
+        - atf.tests.governance.suites.SuiteOwnershipGovernanceTest#newOmittedClassOverlapWrongLayerAndHiddenSelectionAreRejected
+    paths:
+      - atf-tests/src/test/java/atf/tests/suites/AtfComponentSuite.java
+      - atf-tests/src/test/java/atf/tests/suites/components/AtfAndroidComponentSuite.java
+      - config/atf-component-collections.json
+      - config/atf-component-dependencies.json
+      - config/atf-component-reader-seals.json
+```
+
+</details>
+
+<details>
 <summary>Mounted Whist consumer binding and owner rejection</summary>
 
 ```yaml

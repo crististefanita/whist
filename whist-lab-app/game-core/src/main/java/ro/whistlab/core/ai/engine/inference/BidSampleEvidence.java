@@ -4,6 +4,7 @@ import java.util.*;
 
 /** Internal paired-world accumulator; consumes evaluated values, never deals or random state. */
 public final class BidSampleEvidence {
+    /** Weighted model frequency and utility, not calibrated hidden-world probability; samples is raw count. */
     public record Estimate(int bid, double exactContractProbability, double expectedPoints, int samples) {}
 
     private final List<Integer> allowed;
@@ -15,8 +16,13 @@ public final class BidSampleEvidence {
     private double squaredWeightTotal;
 
     public BidSampleEvidence(List<Integer> allowed, int size, boolean safety) {
+        if (allowed == null || allowed.isEmpty() || size < 1)
+            throw new IllegalArgumentException("No legal bid domain");
+        var unique = new java.util.HashSet<Integer>();
+        for (Integer bid : allowed)
+            if (bid == null || bid < 0 || bid >= size || !unique.add(bid))
+                throw new IllegalArgumentException("Invalid or duplicate legal bid");
         this.allowed = List.copyOf(allowed);
-        if (allowed.isEmpty()) throw new IllegalArgumentException("No legal bid");
         this.safety = safety;
         primary = new double[size];
         points = new double[size];
@@ -29,14 +35,9 @@ public final class BidSampleEvidence {
     }
 
     public void add(double[] scores, double[] exact, double weight) {
-        if (!Double.isFinite(weight) || weight <= 0)
-            throw new IllegalArgumentException("Sample weight must be finite and positive");
+        validate(scores, exact, weight);
         for (int bid : allowed) {
             double value = safety ? exact[bid] : scores[bid];
-            if (!Double.isFinite(value)
-                    || !Double.isFinite(scores[bid])
-                    || !Double.isFinite(exact[bid]))
-                throw new IllegalArgumentException("Non-finite sampled utility");
             primary[bid] += value * weight;
             points[bid] += scores[bid] * weight;
             exactTotals[bid] += exact[bid] * weight;
@@ -49,6 +50,31 @@ public final class BidSampleEvidence {
         count++;
         weightTotal += weight;
         squaredWeightTotal += weight * weight;
+    }
+
+    /** Validate the whole row and every prospective aggregate before committing any evidence. */
+    private void validate(double[] scores, double[] exact, double weight) {
+        double square = weight * weight;
+        if (!Double.isFinite(weight) || weight <= 0 || !Double.isFinite(square) || square == 0
+                || !Double.isFinite(weightTotal + weight) || !Double.isFinite(squaredWeightTotal + square))
+            throw new IllegalArgumentException("Sample weight must have finite representable aggregates");
+        if (scores == null || exact == null || scores.length < primary.length || exact.length < primary.length)
+            throw new IllegalArgumentException("Incomplete sampled utility row");
+        if (count == Integer.MAX_VALUE) throw new IllegalArgumentException("Sample count exhausted");
+        for (int bid : allowed) {
+            if (!Double.isFinite(scores[bid]) || !Double.isFinite(exact[bid]) || exact[bid] < 0 || exact[bid] > 1)
+                throw new IllegalArgumentException("Invalid sampled utility or exact-contract frequency");
+            double value = safety ? exact[bid] : scores[bid];
+            if (!Double.isFinite(primary[bid] + value * weight)
+                    || !Double.isFinite(points[bid] + scores[bid] * weight)
+                    || !Double.isFinite(exactTotals[bid] + exact[bid] * weight))
+                throw new IllegalArgumentException("Sampled utility aggregate overflow");
+            for (int other : allowed) {
+                double difference = safety ? exact[bid] - exact[other] : scores[bid] - scores[other];
+                if (!Double.isFinite(squaredDifferences[bid][other] + difference * difference * weight))
+                    throw new IllegalArgumentException("Sampled variance aggregate overflow");
+            }
+        }
     }
 
     public int best() {
