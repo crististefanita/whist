@@ -102,6 +102,11 @@ public final class TestChangeAdmissionFixture {
             for (Path file : files.filter(Files::isRegularFile).filter(p -> p.toString().endsWith(".mjs")
                     && !p.toString().endsWith(".test.mjs")).toList()) Files.copy(file, tools.resolve(file.getFileName()));
         }
+        // Runtime module imports own their pinned configuration beside the copied tool host.
+        Path config = Files.createDirectories(directory.resolve("config"));
+        try (var files = Files.list(real.resolve("config"))) {
+            for (Path file : files.filter(Files::isRegularFile).toList()) Files.copy(file, config.resolve(file.getFileName()));
+        }
         Files.writeString(scripts.resolve("AtfTestChangeAdmission.ps1"), """
                 function Invoke-AtfTestChangeAdmission {
                   param($SourceRoot,$BaseRef,$TempRoot,$JavaHome,$MavenCache,$ReceiptFile,[switch]$GenerateProofs,$Control)
