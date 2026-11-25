@@ -28,8 +28,10 @@ public class DocumentationReadmeStructureGovernanceTest {
 
     @Test
     void mainGameSectionUsesTheSharedBrowserActionLabel() throws Exception {
-        var readme = Files.readAllLines(locateProjectRoot().resolve("README.md"));
-        var game = readme.stream().dropWhile(line -> !line.equals("## Game")).skip(1)
+        var project = locateProjectRoot();
+        boolean romanian = atf.tests.documentation.policy.DocumentationContentPolicy.documentationLanguage(project).equals("ro");
+        var readme = Files.readAllLines(project.resolve("README.md"));
+        var game = readme.stream().dropWhile(line -> !line.equals(romanian ? "## Jocul" : "## Game")).skip(1)
                 .takeWhile(line -> !line.startsWith("## ")).filter(line -> !line.isBlank()).toList();
         assertEquals(2, game.size(), "Game keeps the APK and browser routes together");
         assertEquals("- **[" + (romanian ? "Joacă în browser" : "Play in browser") + "](https://crististefanita.github.io/whist/)**", game.getLast());
