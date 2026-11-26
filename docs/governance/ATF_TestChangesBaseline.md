@@ -122,7 +122,7 @@ testChanges:
     status: VERIFIED
     base: 6a48a82930c01a331149f8bb90306595ef9d7dc2
     expires: 2026-12-25
-    reason: Keep the digest component in one primary collection and review complete package, suite, dependency and reader inventories.
+    reason: Reuse the already initialized source-bound native digest without caching file hashes or compiling for hash-only callers. Preserve complete independent byte oracles, original fallback, missing/corrupt output refusal and direct-path guards.
     proof: "mvn -o -pl atf-tests -am -Dtest=AtfSourceQualityGovernanceTest,SuiteOwnershipGovernanceTest,AtfCollectionOwnershipComponentTest -Dsurefire.failIfNoSpecifiedTests=false test"
     checks:
       positive:
@@ -172,7 +172,7 @@ testChanges:
     status: VERIFIED
     base: 3e35994db80a8224d63928b1b83f5489ecd4d5e6
     expires: 2026-12-25
-    reason: Assign the qualification cost component to one primary owner and review complete source, suite, dependency and reader-seal populations.
+    reason: Preserve primary command failures when timing publication fails. Measure disjoint compiler traversal, hashing, identity and receipt publication without changing byte seals, admission authority or source-bound recovery.
     proof: "mvn -o -pl atf-tests -am -Dtest=AtfSourceQualityGovernanceTest,SuiteOwnershipGovernanceTest,AtfCollectionOwnershipComponentTest -Dsurefire.failIfNoSpecifiedTests=false test"
     checks:
       positive:
@@ -220,7 +220,7 @@ testChanges:
     status: VERIFIED
     base: af2b14b9a5d4861214e192fa7b6d9c780e5e7066
     expires: 2026-12-25
-    reason: Admite legăturile catalogului, declarațiile E2E active și regulile editoriale canonice ale indexului înainte de copiere. Leagă reverificarea copiei de octeții originali ai metadatelor și păstrează precedența probelor sursei și autoritatea grupurilor primare.
+    reason: Separă comenzile rezolvate de selecția ierarhiei și de fazele apelantului. Păstrează ordinea, duratele, reîncercările și anularea, menținând cauza originală dacă raportarea eșuează la rândul său.
     proof: "mvn -o -pl atf-tests -am -Dtest=ReleaseMetadataComponentTest,QualificationLauncherComponentTest -Dsurefire.failIfNoSpecifiedTests=false test"
     checks:
       positive:
@@ -242,7 +242,7 @@ testChanges:
     status: VERIFIED
     base: af2b14b9a5d4861214e192fa7b6d9c780e5e7066
     expires: 2026-12-25
-    reason: Păstrează componenta metadatelor într-o singură colecție primară și leagă inventarele regenerate de dependențe și cititori de contractele neschimbate ale surselor și suitelor.
+    reason: Separă comenzile rezolvate de selecția ierarhiei și de fazele apelantului. Păstrează ordinea, duratele, reîncercările și anularea, menținând cauza originală dacă raportarea eșuează la rândul său.
     proof: "mvn -o -pl atf-tests -am -Dtest=AtfSourceQualityGovernanceTest,SuiteOwnershipGovernanceTest,AtfCollectionOwnershipComponentTest -Dsurefire.failIfNoSpecifiedTests=false test"
     checks:
       positive:
@@ -287,7 +287,7 @@ testChanges:
     status: VERIFIED
     base: c7a286f22ec0c148631d933e7f4ff2512d76c0e7
     expires: 2026-12-25
-    reason: Verifică portul privat real al procesului ADB cu rezultate controlate, separă pregătirea fixture-ului de timeout-ul transportului și păstrează probele limitate ale refuzului și profilului valid fără emulator.
+    reason: Limitează arborii compleți ai schemei și instanței și lucrul repetitiv, păstrând politica publică, căile, ordinea și evaluările independente. Matricile pure ale limitelor rămân teste unitare.
     proof: "mvn -o -pl atf-tests -am -Dtest=AndroidReleasePreflightComponentTest -Dsurefire.failIfNoSpecifiedTests=false test"
     checks:
       positive:
@@ -305,7 +305,7 @@ testChanges:
     status: VERIFIED
     base: c7a286f22ec0c148631d933e7f4ff2512d76c0e7
     expires: 2026-12-25
-    reason: Păstrează componenta nouă a contractului public într-o singură colecție primară și leagă dependența Maven explicită și inventarul regenerat de guvernanța surselor și a suitelor.
+    reason: Limitează arborii compleți ai schemei și instanței și lucrul repetitiv, păstrând politica publică, căile, ordinea și evaluările independente. Matricile pure ale limitelor rămân teste unitare.
     proof: "mvn -o -pl atf-tests -am -Dtest=AtfSourceQualityGovernanceTest,SuiteOwnershipGovernanceTest,AtfCollectionOwnershipComponentTest -Dsurefire.failIfNoSpecifiedTests=false test"
     checks:
       positive:
@@ -765,6 +765,7 @@ testChanges:
         - atf.tests.governance.documentation.release.rag.scope.ComponentEvidenceScopeComponentTest#nodeContractTestsKeepReuseClassificationInsideTheRealBuildBoundary
       negative:
         - atf.tests.governance.source.changes.TestChangeProofComponentTest#admissionRechecksChangedSourcesAndSeparatesProofGeneration
+        - atf.tests.governance.source.changes.TestChangeProofComponentTest#generatedIgnoredOutputsDoNotInvalidateProofButIgnoredProtectedSourcesDo
         - atf.tests.governance.documentation.release.rag.scope.QualificationLauncherComponentTest#invalidTestChangeProofStopsBothLaunchersBeforeCopyOrMaven
         - atf.tests.governance.documentation.release.rag.scope.ComponentEvidenceScopeComponentTest#sharedDependenciesAndUnknownInputsCannotReuseTheirConsumers
     paths:
@@ -956,7 +957,7 @@ testChanges:
       - atf-test-android/src/test/java/atf/android/e2e/records/NameHistoryScenarios.java
 ```
 
-Un reper simulat arată cum ignorarea acțiunii inversează comparația distanțelor pe aceleași coordonate. Controalele negative păstrează erorile de text, actor, dimensiune și identitate a rândului; rularea nativă cere metadatele instalării, rezervarea și arhiva privată definite în [contractul Android](../testing/ATF_Android.md#profil-istoric-clasamente-și-serii).
+Un reper simulat arată cum acțiunea ignoră comparația distanțelor pe aceleași coordonate. Controalele negative păstrează erorile de text, actor, dimensiune și identitate ale rândului; verificarea nativă cere metadatele instalării, rezervarea și arhiva privată definite în [contractul Android](../testing/ATF_Android.md#profil-istoric-clasamente-și-serii).
 
 </details>
 
@@ -987,7 +988,7 @@ testChanges:
       - atf-test-android/src/test/java/atf/android/e2e/gameplay/presentation/SixPlayerTableScenario.java
 ```
 
-Oracolul dimensiunilor urmează cerința de prezentare, iar controalele negative refuză înălțimea depășită, acțiunea lipsă, textul prescurtat și suprapunerea peste nume. Verificarea nativă rămâne distinctă de observația simulată și de mecanismul JVM.
+Oracolul dimensiunilor respectă cerința de prezentare, iar controalele negative refuză înălțimea depășită, acțiunea lipsă, textul abreviat și suprapunerea peste nume. Verificarea nativă rămâne distinctă de observația simulată și de mecanismul JVM.
 
 </details>
 
@@ -1008,7 +1009,7 @@ testChanges:
       - whist-lab-app/app/src/test/java/ro/whistlab/app/score/ScoreHistoryGridMetricsComponentTest.java
 ```
 
-Regresiile se confruntă cu sursa anterioară înaintea corecției. Furnizorii de font sunt injectați în componente; calificarea rasterului și a fontului Android rămâne separată. Un diagnostic de classpath nu este reclasificat ca defect al produsului.
+Regresia se verifică pe sursa anterioară corecției. Furnizorii de fonturi sunt injectați în componente; calificarea rasterului și a fontului Android rămâne separată. Diagnosticul classSPath nu este reclasificat drept defect al produsului.
 
 </details>
 
@@ -1033,7 +1034,7 @@ testChanges:
       - atf-test-android/src/test/java/atf/android/e2e/records/WhistRecordsE2eTest.java
 ```
 
-Zero, ratarea cu puncte pozitive, datele necunoscute și o mână neîncheiată au rezultate distincte. Controalele negative refuză levatele fracționare, negative, neconservate sau contradictorii, iar măsurătorile injectate nu înlocuiesc randarea nativă.
+Zero, eșecul cu puncte pozitive, datele necunoscute și mâna neîncheiată au rezultate distincte. Controalele negative refuză levate fracționare, negative, neservite sau contradictorii, iar măsurătorile injectate nu înlocuiesc randarea nativă.
 
 </details>
 
@@ -1058,7 +1059,7 @@ testChanges:
       - atf-test-android/src/test/java/atf/android/e2e/display/flow/responsive/ResponsiveGameFlow.java
 ```
 
-Controalele păstrează cartea sau culoarea, lizibilitatea, localizarea și descrierea accesibilă; absența textului redundant nu înlocuiește prezența valorii. Măsurătorile de font injectate califică politica comună, iar verificarea nativă compară aceeași geometrie în stări cu și fără atu.
+Controalele păstrează cartea sau culoarea, lizibilitatea, poziția și descrierea accesibilă; absența textului redundant nu înlocuiește valoarea vizibilă. Măsurătorile de font injectate califică politica comună, iar verificarea nativă compară aceeași geometrie cu și fără atu.
 
 </details>
 
@@ -1101,7 +1102,7 @@ testChanges:
       - config/atf-governance-policy.json
 ```
 
-Reproducerea este refuzul linkului public valid ca referință editorială; controalele negative păstrează etichetele, alte proiecte și variantele necanonice în perimetrul verificat. Contractul [documentației](ATF_Documentation.md#conținut-stabil-și-date-variabile) definește limita, fără excepții generale pentru URL-uri.
+Reproducerea constă în acceptarea linkului public ca referință editorială; controalele negative păstrează verificările pentru etichete, alte proiecte și variante neanonime. [Contractul documentației](ATF_Documentation.md#conținut-stabil-și-date-variabile) definește limita fără excepții generale pentru URL-uri.
 
 </details>
 
@@ -1121,7 +1122,7 @@ testChanges:
       - atf-tests/src/main/java/atf/tests/distribution/ApkDownloadTarget.java
 ```
 
-[Identitatea livrării](../platform/ATF_AndroidDelivery.md) stabilește versiunea; [politica documentară](ATF_Documentation.md#conținut-stabil-și-date-variabile) clasifică numai destinațiile canonice. Probele refuză pagina nedeclarată, altă versiune, alt repository, imaginea și URL-urile cu modificări; eticheta vizibilă nu primește excepție.
+[Identitatea livrării](../platform/ATF_AndroidDelivery.md) stabilește versiunea; [politica documentației](ATF_Documentation.md#conținut-stabil-și-date-variabile) clasifică numai destinațiile canonice. Exemplele trebuie să refuze pagina nedeclarată, altă versiune, alt depozit, imaginea și URL-urile modificate; eticheta vizibilă rămâne permisă.
 
 </details>
 
@@ -1142,9 +1143,9 @@ testChanges:
       - atf-tests/src/test/java/atf/libraries/PlatformLibrarySurface.java
 ```
 
-Controalele negative resping README-ul absent, documentele suplimentare, un director în locul README-ului și atribuirea codului ori feedback-ului unui consumer. Bibliotecile distribuite își păstrează coordonatele și hash-urile.
+Controalele negative refuză README-ul lipsă, documentele suplimentare, un director în loc de README și atribuirea codului ori feedback-ului unui consumator. Bibliotecile distribuite își păstrează coordonatele și hash-urile.
 
-Inventarul de la baza Git declarată este cel al incrementului verificat. Perechile și ghidurile curente sunt definite în [contractul lib](../../lib/README.md).
+Inventarul declarat la baza Git este cel al incrementului verificat. Perechile și ghidurile actuale sunt definite în [contractul bibliotecilor](../../lib/README.md).
 
 </details>
 
@@ -1347,7 +1348,7 @@ testChanges:
     status: VERIFIED
     base: 6f36177aae63557abfeb18160b6ec1101dcf509c
     expires: 2026-12-19
-    reason: Publică lotul complet după verificarea sursei și păstrează rapoartele individuale la refuz.
+    reason: Descoperă controalele VERIFIED ale diff-ului real și păstrează identitatea commitului.
     proof: 'mvn -o -pl atf-tests -am -Dtest=TestChangeBatchComponentTest -Dsurefire.failIfNoSpecifiedTests=false test'
     checks:
       positive:
@@ -1944,7 +1945,7 @@ testChanges:
     status: VERIFIED
     base: 910439dab4bbcd72afe2d0a18c4fb9f583d339c6
     expires: 2026-12-19
-    reason: Apply the same reviewed source and test boundaries to the Romanian edition.
+    reason: Align score adapters and qualify Android API compatibility, complete launcher fixtures, transport line endings and independent component reuse without weakening artifact or unknown-input rejection.
     proof: 'mvn -o -pl atf-tests -am -Dtest=SharedPresentationComponentTest,ComponentEvidenceScopeComponentTest -Dsurefire.failIfNoSpecifiedTests=false test'
     checks:
       positive:
