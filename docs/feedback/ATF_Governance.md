@@ -118,7 +118,8 @@ LangGraph oferă noduri explicite, stare partajată și limite de checkpoint, da
 
 [Responsabilii ATF independenți](../testing/ATF_Collections.md#responsabili-independenți-pentru-componentele-atf) separă verificările editoriale și ale payload-ului de proveniență, Android simulat, GitHub simulat, orchestrare și raportare. Fiecare colecție primară are un inventar pozitiv de clase, un singur Extent canonic și propriul receipt legat de surse.
 
-Clasele de componente Maven au un singur proprietar primar declarat pozitiv, iar inventarul fiecărui proprietar corespunde exact descriptorului suitei. Clasele de test Gradle au un singur strat declarat în `config/gradle-audit-collections.properties`; stratul `unit` este limitat la setul de surse izolat pentru unități și nu poate depinde de raportarea componentelor. Controalele de guvernanță resping proprietarii Maven sau Gradle lipsă ori duplicați, clasele de suită nelistate și straturile Gradle necunoscute.
+- Clasele de componente Maven au un singur proprietar primar declarat pozitiv, iar inventarul corespunde exact descriptorului suitei. Suita de guvernanță respinge proprietarii omiși sau duplicați și clasele de suită nelistate.
+- Clasele de test Gradle au un singur strat declarat în `config/gradle-audit-collections.properties`. `unit` este limitat la setul de surse izolat pentru unități și nu poate depinde de raportarea componentelor; poarta inventarului respinge proprietarii lipsă ori învechiți și straturile necunoscute.
 
 [Contractul selecției după dependențe](../testing/ATF_Collections.md#selecția-după-dependențe-executabile) determină consumatorii din referințele executabile actuale și domeniile explicite de observare a repository-ului. Corpurile revizuite ale cititorilor și furnizorii generați delimitează ce poate admite analiza. Intrările necunoscute, populațiile lipsă și modificările neadmise ale cititorilor păstrează calificarea ATF completă.
 
