@@ -86,3 +86,9 @@ Scriitorii cooperanți rezervă exclusiv aceeași destinație. Consumatorii văd
 Publicarea folosește un director alăturat pe același sistem de fișiere. Este un contract între scriitori cooperanți, nu protecție împotriva unui proces ostil care înlocuiește căile între verificări ori garanție de durabilitate la căderea alimentării.
 
 Testele unitare pure acoperă granițele sistemului de fișiere și păstrarea erorilor publicatorului. [Componentele auditabile de publicare](../../atf-tests/src/test/java/atf/tests/learning/publication/CorpusPublicationComponentTest.java) generează local partide legale, compară independent hash-urile surselor și ale rezultatelor și controlează scriitorii concurenți și eșecurile la scriere/promovare; nu cer nici arhivă externă, nici capturi de ecran.
+
+O componentă focalizată măsoară selecția deterministă de tip set-cover pe intrări sintetice:
+
+- **Populație:** 100, 1.000 și 5.000 de urme unice după o încălzire cu 128 de intrări; fiecare rând cere acoperire 64/64 a lecțiilor și respectă limita de 100 de partide.
+- **Observații:** octeții intrării serializate, numărul selectat, hash-urile selecției în ordine directă/inversă, durata selectorului și memoria JavaScript reținută după colectarea explicită a gunoiului.
+- **Limite:** procesul copil declară heap de 128 MiB și timeout de 60 de secunde. Memoria reținută nu este vârful de memorie; proba nu exercită parsarea arhivei, validarea/copierea/publicarea integrală sau recuperarea după oprire brutală.

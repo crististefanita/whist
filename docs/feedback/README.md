@@ -29,7 +29,7 @@ Contractele stabile aparțin ghidurilor tematice; fiecare criteriu rămâne desc
 - Selectați ID-uri explicite înaintea unei iterații și numiți-le în auditul și răspunsul final.
 - Un subcriteriu calificat nu închide pragul părinte; eliminați doar criteriile finalizate și precizați limita rămasă.
 - Indexul prioritizează lucrări din registrele tematice; numărul rândurilor sale nu numără iterațiile finalizate.
-- Această ediție are patru pachete de lucru offline și paisprezece praguri agregate de acceptanță sau cercetare.
+- Această ediție are trei pachete de lucru offline și paisprezece praguri agregate de acceptanță sau cercetare.
 
 ### Pachete de lucru offline
 
@@ -37,8 +37,7 @@ Contractele stabile aparțin ghidurilor tematice; fiecare criteriu rămâne desc
 |---|---:|---:|---|
 | RAG-36 | P2 | 84 | Reutilizați controalele reușite după o corecție izolată a unui driver numai cu închideri de dependențe per control, identități JUnit/raport originale și refuzul intrărilor comune schimbate. [Registru](ATF_Governance.md#calificarea-afirmațiilor-și-lansatoarelor) |
 | LAB-01 | P2 | 83 | Calificați recuperarea rezervărilor publicării corpusului după oprire brutală, excluzând scriitorii activi și păstrând identitățile intrărilor imuabile. [Registru](ATF_Ai.md#verificarea-autonomă-a-laboratorului) |
-| LAB-02 | P2 | 82 | Calificați uneltele corpusului la volume mari declarate, cu măsurători de scalare, resurse și proveniență. [Registru](ATF_Ai.md#verificarea-autonomă-a-laboratorului) |
-| AI-03 | P2 | 81 | Calificați deciziile jucătorului independent în contexte de scor echivalente, fără schimbarea identităților politicilor înghețate. [Registru](ATF_Ai.md#lacune-și-limite-de-calificare) |
+| LAB-02 | P2 | 82 | Etapa selectorului este măsurată pe intrări sintetice de 100/1.000/5.000 de urme; calificați parcurgerea completă a arhivei, vârful resurselor și recuperarea după oprire brutală înainte de a închide criteriul de scalare a laboratorului. [Registru](ATF_Ai.md#verificarea-autonomă-a-laboratorului) |
 
 ### Praguri de acceptanță și cercetare
 

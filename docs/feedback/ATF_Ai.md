@@ -11,7 +11,6 @@ Responsabilul politicilor Whist deține aceste criterii de cercetare și calific
 | P1 | Inferența cărților la 2–8 cărți | Ponderarea generală după comportamentul fiecărui adversar rămâne experimentală. Activarea cere model identificat, suport legal, regularizare și progres separat pe loturi noi. Modelul activ de o carte are domeniu separat. |
 | P1 | Interpretarea probabilităților | Calificați distribuția de propunere, bugetul, incertitudinea și calibrarea pe date noi înainte de a interpreta o frecvență de model ca probabilitate a lumii ascunse. [Contractul de admitere a eșantioanelor](../ai/ATF_DecisionModel.md#reproductibilitate-și-limite) și oracolele didactice finite nu stabilesc un posterior calibrat. |
 | P1 | Cost pe mediul țintă și progres strategic | [Calificarea JVM](../ai/ATF_CostQualification.md) deține componentele, bugetele și măsurarea pe poziții generate la 2–8 cărți. Latența și consumul pe dispozitiv cer profil Android identificat; progresul strategic cere evaluare separată pe rol, adversar și loc, cu surse înghețate. Niciunul nu se deduce din costul JVM. |
-| P2 | Reproductibilitatea independentului între contexte | Hard folosește diferențe de scor în inițializarea estimatorului, conform [contractului deciziei](../ai/ATF_DecisionModel.md#reproductibilitate-și-limite). Jucătorul independent păstrează scorurile absolute în propriul seed; extinderea aceleiași invariante cere componente proprii și verificarea politicii independente. |
 
 ## Coordonarea evaluării și delimitarea mecanismelor
 
@@ -29,7 +28,7 @@ Responsabilul modulului AI deține intrările și verificarea proprie. Testele d
 
 | Prioritate | Lacună și sursă | Nivel și criteriu de închidere |
 |---|---|---|
-| P2 | Costul uneltelor de corpus la volume mari și recuperarea după oprirea brutală a procesului cer în continuare calificare. Publicarea cooperantă și eșecurile tratate la scriere/promovare au un [contract](../learning/ATF_Corpus.md#publicarea-atomică-a-uneltelor) separat. | Declarați bugetele pentru volumul intrărilor și resurse; măsurați scalarea și simulați terminarea procesului cu rezervări rămase. Recuperarea trebuie să păstreze identitatea intrărilor și să excludă un scriitor activ înainte de eliminarea rezervării; componentele mici construite nu stabilesc aceste proprietăți. |
+| P2 | Costul complet al uneltelor de corpus la scara arhivei și recuperarea după oprirea brutală a procesului cer în continuare calificare. Proba sintetică a etapei de selecție acoperă 100, 1.000 și 5.000 de urme unice, dar nu parcurgerea arhivei sau publicarea. Publicarea cooperantă și eșecurile tratate la scriere/promovare au un [contract](../learning/ATF_Corpus.md#publicarea-atomică-a-uneltelor) separat. | Calificați citirea arhivei, validarea completă a partidelor, copierea și publicarea pe volume declarate de partide generate reale. Măsurați vârful resurselor și proveniența, apoi opriți brutal un proces copil după crearea rezervării și verificați că recuperarea păstrează identitatea sursei și exclude un scriitor activ. Proba selectorului nu închide aceste granițe rămase. |
 
 ## Reutilizarea mecanismelor
 

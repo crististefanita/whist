@@ -62,6 +62,7 @@ Un parcurs Android rămâne E2E numai când execută interacțiuni noi în aplic
 | [CertifiedContractRegressionTest](../../whist-lab-app/game-core/src/test/java/ro/whistlab/core/ai/engine/CertifiedContractRegressionTest.java) | Certificat, lipsa garanției și fallback. |
 | [HardSalvageObjectiveTest](../../whist-lab-app/game-core/src/test/java/ro/whistlab/core/ai/contract/HardSalvageObjectiveTest.java) | Ordinea obiectivelor când exactul este imposibil public. |
 | [IndependentPlayerModelTest](../../whist-lab-app/game-core/src/test/java/ro/whistlab/coach/IndependentPlayerModelTest.java) | Fezabilitate și model independent. |
+| [IndependentPlayerContractTest#equivalentRelativeScoreContextsKeepIndependentSamplesAndDecisions](../../whist-lab-app/ai-lab/src/test/java/ro/whistlab/coach/IndependentPlayerContractTest.java) | O translație comună a scorului păstrează eșantioanele deterministe și deciziile complete de licitare/joc; o schimbare a scorului relativ pentru un singur loc rămâne vizibilă eșantionării. Acesta este un oracol de repetabilitate, nu o afirmație despre forța jocului. |
 | [HumanUncertainBidComponentTest](../../whist-lab-app/app/src/test/java/ro/whistlab/app/bidding/HumanUncertainBidComponentTest.java) | Recomandarea Hard pe observație publică, atu, licitații adverse, translația scorului și formule independente pentru seriile configurabile. |
 
 ## Citirea observațiilor arhivate
