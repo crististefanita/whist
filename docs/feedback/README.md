@@ -35,8 +35,8 @@ Stable contracts belong to thematic guidelines; each criterion remains open unti
 
 | ID | Priority | Score | ToDo remaining and short closing criterion |
 |---|---:|---:|---|
-| RAG-36 | P2 | 84 | The safe fallback and package-level reuse after reviewed reader changes are qualified. Selective testChanges per-control proof reuse remains open until per-control closures and original JUnit/report identities can be admitted. [Register](ATF_Governance.md#qualification-of-claims-and-launchers) |
-| LAB-02 | P2 | 82 | The generic publisher's hard-stop recovery is qualified. Still qualify full archive traversal, peak resources and recovery during an actual corpus-scale run before closing the laboratory-scale criterion. [Register](ATF_Ai.md#autonomous-laboratory-verification) |
+| RAG-36 | P2 | 84 | Batch admission now binds a non-empty proof receipt to its control ID and exact Extent digest; full-bundle recovery is qualified. Selective testChanges per-control reuse remains open until dependency closures and original JUnit/report identities can be admitted. [Register](ATF_Governance.md#qualification-of-claims-and-launchers) |
+| LAB-02 | P2 | 82 | The production curator now has generated-archive traversal and publication coverage at 256 records with bounded heap and measured process resources. Qualification on the external archive and interruption of its real curator/composer run remain open. [Register](ATF_Ai.md#autonomous-laboratory-verification) |
 
 ### Acceptance and research gates
 

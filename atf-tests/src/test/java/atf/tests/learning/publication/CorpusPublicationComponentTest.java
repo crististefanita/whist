@@ -111,6 +111,30 @@ class CorpusPublicationComponentTest {
         AuditedAssertions.assertEquals(128L * 1024 * 1024, profile.path("heapBudgetBytes").asLong());
     }
 
+    @Test void curatorTraversesAndPublishesGeneratedArchiveWithMeasuredResources(ComponentInputs inputs) throws Exception {
+        var root = GovernanceProject.locateProjectRoot();
+        inputs.add("Precondition", "The production curator reads, validates, selects, copies and publishes 256 independently generated legal games from a temporary development archive. A malformed heldout sentinel must remain unread. Node runs with a 256 MiB old-space limit; sampled RSS/heap, bytes, elapsed time, complete inventory and preserved source hashes are compared. This is generated archive scale, not the external active corpus or its recovery qualification.");
+        String output = runNode(List.of("node", "--expose-gc", "--max-old-space-size=256", "--test", "--test-concurrency=1",
+                        "--test-name-pattern", "curator publishes a generated archive volume",
+                        root.resolve("whist-lab-app/ai-lab/tools/testing/corpus-publication.test.mjs").toString()),
+                root, Duration.ofMinutes(3), text -> inputs.add("Original generated-archive observations", text));
+        AuditedAssertions.assertTrue(output.contains("Archive volume observations:"), output);
+        var observation = JSON.readTree(output.lines().filter(line -> line.contains("Archive volume observations:"))
+                .findFirst().orElseThrow().split("Archive volume observations:", 2)[1].trim());
+        AuditedAssertions.assertEquals("generated-archive-v1", observation.path("profile").asText());
+        AuditedAssertions.assertEquals(256, observation.path("sourceGames").asInt());
+        AuditedAssertions.assertEquals(256, observation.path("inventoryRows").asInt());
+        AuditedAssertions.assertTrue(observation.path("sourceBytesPreserved").asBoolean());
+        AuditedAssertions.assertTrue(observation.path("heldoutUntouched").asBoolean());
+        AuditedAssertions.assertTrue(observation.path("activeGames").asInt() > 0
+                && observation.path("activeGames").asInt() <= 32);
+        AuditedAssertions.assertTrue(observation.path("sourceBytes").asLong() >= observation.path("activeBytes").asLong());
+        AuditedAssertions.assertTrue(observation.path("processPeakRssBytes").asLong() > 0);
+        AuditedAssertions.assertTrue(observation.path("sampledPeakHeapBytes").asLong() <= observation.path("heapBudgetBytes").asLong());
+        AuditedAssertions.assertTrue(observation.path("elapsedMs").asDouble() >= 0);
+        inputs.add("Generated archive scale comparison", observation.toPrettyString());
+    }
+
     @Test void hardStoppedPublisherExcludesLiveWritersAndRecoversOnlyTheOriginalClaim(ComponentInputs inputs) throws Exception {
         var root = GovernanceProject.locateProjectRoot();
         inputs.add("Precondition", "A real child Node process owns the production atomic directory publisher. Its fixture copies an immutable byte source into a private sibling stage, then is force-stopped. A live competitor must be refused; recovery is attempted only after the parent observes child termination and rechecks the exact claim, stage path and source hash. No external corpus, APK, emulator or screenshot is used.");

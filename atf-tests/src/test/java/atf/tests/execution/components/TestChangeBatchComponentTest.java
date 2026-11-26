@@ -31,8 +31,12 @@ class TestChangeBatchComponentTest {
         AuditedAssertions.assertEquals(List.of(FIRST, SECOND, "snapshot"), calls());
         for (String id : List.of(FIRST, SECOND)) {
             Path folder = scratch.resolve("proofs").resolve(id);
-            AuditedAssertions.assertEquals(id, Files.readString(folder.resolve("proof.json")));
-            AuditedAssertions.assertEquals(id, Files.readString(folder.resolve("component-report.html")));
+            JsonNode proof = JSON.readTree(Files.readString(folder.resolve("proof.json")));
+            AuditedAssertions.assertEquals(1, proof.path("schemaVersion").asInt());
+            AuditedAssertions.assertEquals("ATF_TEST_CHANGE_PROOF", proof.path("kind").asText());
+            AuditedAssertions.assertEquals(id, proof.at("/identity/id").asText());
+            AuditedAssertions.assertEquals(sha256(Files.readAllBytes(folder.resolve("component-report.html"))),
+                    proof.path("reportSha256").asText());
         }
         AuditedAssertions.assertFalse(Files.exists(scratch.resolve("proofs.pending")));
     }
@@ -48,6 +52,18 @@ class TestChangeBatchComponentTest {
 
     @Test void changedReviewPreventsPublicationOfPassingControls() throws Exception {
         assertUnpublished(execute("review"), "TEST-CHANGE-BATCH-PLAN", List.of(FIRST, SECOND, "snapshot"));
+    }
+
+    @Test void invalidProofReceiptOrReportIdentityPreventsBatchPublication() throws Exception {
+        for (String mode : List.of("empty-proof", "empty-report", "malformed-proof", "foreign-control", "report-digest")) {
+            Path attempt = Files.createDirectories(scratch.resolve(mode));
+            var result = execute(attempt, mode);
+            AuditedAssertions.assertEquals(1, result.exitCode(), diagnostic(result));
+            AuditedAssertions.assertTrue(diagnostic(result).contains("TEST-CHANGE-BATCH-CONTROL"), diagnostic(result));
+            AuditedAssertions.assertEquals(List.of(FIRST, SECOND), calls(attempt));
+            AuditedAssertions.assertFalse(Files.exists(attempt.resolve("proofs")));
+            AuditedAssertions.assertTrue(Files.isRegularFile(attempt.resolve("proofs.pending/" + FIRST + "/proof.pending.json")));
+        }
     }
 
     @Test void isolatedDriverCorrectionRerunsTheBundleAndSharedInputDriftRejectsPromotion() throws Exception {
@@ -107,7 +123,11 @@ class TestChangeBatchComponentTest {
     private static List<String> calls(Path root) throws Exception { return Files.readAllLines(root.resolve("calls.txt")); }
 
     private CommandProcess.Output execute(String mode) throws Exception {
-        Path launcher = scratch.resolve("batch.ps1");
+        return execute(scratch, mode);
+    }
+
+    private CommandProcess.Output execute(Path root, String mode) throws Exception {
+        Path launcher = root.resolve("batch.ps1");
         Files.writeString(launcher, """
                 $ErrorActionPreference = 'Stop'
                 . $env:ATF_TEST_BATCH_HELPER
@@ -125,8 +145,17 @@ class TestChangeBatchComponentTest {
                     Add-Content -LiteralPath $calls -Value $id
                     if ($id -eq 'SECOND-CONTROL' -and $mode -eq 'control') { return 7 }
                     [IO.Directory]::CreateDirectory($output) | Out-Null
-                    [IO.File]::WriteAllText((Join-Path $output 'proof.pending.json'), $id)
-                    [IO.File]::WriteAllText((Join-Path $output 'component-report.html'), $id)
+                    $proof = Join-Path $output 'proof.pending.json'
+                    $report = Join-Path $output 'component-report.html'
+                    $reportText = $(if ($id -eq 'SECOND-CONTROL' -and $mode -eq 'empty-report') { '' } else { '<html>' + $id + '</html>' })
+                    [IO.File]::WriteAllText($report, $reportText)
+                    $proofId = $(if ($id -eq 'SECOND-CONTROL' -and $mode -eq 'foreign-control') { 'FOREIGN-CONTROL' } else { $id })
+                    $reportHash = (Get-FileHash -LiteralPath $report -Algorithm SHA256).Hash.ToLowerInvariant()
+                    if ($id -eq 'SECOND-CONTROL' -and $mode -eq 'report-digest') { $reportHash = '0' * 64 }
+                    $receipt = [ordered]@{schemaVersion=1;kind='ATF_TEST_CHANGE_PROOF';identity=@{id=$proofId};reportSha256=$reportHash} | ConvertTo-Json -Compress
+                    if ($id -eq 'SECOND-CONTROL' -and $mode -eq 'empty-proof') { $receipt = '' }
+                    if ($id -eq 'SECOND-CONTROL' -and $mode -eq 'malformed-proof') { $receipt = '{' }
+                    [IO.File]::WriteAllText($proof, $receipt)
                     if ($id -eq 'SECOND-CONTROL' -and $mode -eq 'snapshot') { [IO.File]::WriteAllText($source, 'changed') }
                     0
                 } -CheckSnapshot {
@@ -136,7 +165,7 @@ class TestChangeBatchComponentTest {
                 """);
         var helper = GovernanceProject.locateProjectRoot().resolve("scripts/AtfTestChangeBatch.ps1");
         return CommandProcess.execute(List.of("pwsh", "-NoProfile", "-NonInteractive", "-File", launcher.toString()),
-                Map.of("ATF_TEST_BATCH_HELPER", helper.toString(), "ATF_TEST_BATCH_ROOT", scratch.toString(),
+                Map.of("ATF_TEST_BATCH_HELPER", helper.toString(), "ATF_TEST_BATCH_ROOT", root.toString(),
                         "ATF_TEST_BATCH_MODE", mode), Duration.ofSeconds(45), true);
     }
 
@@ -168,7 +197,7 @@ class TestChangeBatchComponentTest {
                     $junitHash = (Get-FileHash -LiteralPath $junitPath -Algorithm SHA256).Hash.ToLowerInvariant()
                     [IO.File]::WriteAllText($extentPath, '<html data-attempt="' + $attempt + '" data-control="' + $id + '"><body>Extent population=2 junit=' + $junitHash + '</body></html>')
                     $extentHash = (Get-FileHash -LiteralPath $extentPath -Algorithm SHA256).Hash.ToLowerInvariant()
-                    $proof = [ordered]@{control=$id; attempt=$attempt; sourceHash=$sourceHash; selector=$id; junitPopulation=@('case-a','case-b'); junitSha256=$junitHash; extentSha256=$extentHash} | ConvertTo-Json -Compress
+                    $proof = [ordered]@{schemaVersion=1; kind='ATF_TEST_CHANGE_PROOF'; identity=@{id=$id}; control=$id; attempt=$attempt; sourceHash=$sourceHash; selector=$id; junitPopulation=@('case-a','case-b'); junitSha256=$junitHash; extentSha256=$extentHash; reportSha256=$extentHash} | ConvertTo-Json -Compress
                     [IO.File]::WriteAllText((Join-Path $output 'proof.pending.json'), $proof)
                     if ($id -eq 'SECOND-CONTROL' -and $mode -eq 'shared-change') { [IO.File]::WriteAllText($source, 'changed-shared-input') }
                     0
@@ -201,6 +230,9 @@ class TestChangeBatchComponentTest {
 
     private static void verifyPopulation(Path folder, String id, String attempt, String sourceHash) throws Exception {
         JsonNode proof = JSON.readTree(Files.readString(folder.resolve("proof.json")));
+        AuditedAssertions.assertEquals(1, proof.path("schemaVersion").asInt());
+        AuditedAssertions.assertEquals("ATF_TEST_CHANGE_PROOF", proof.path("kind").asText());
+        AuditedAssertions.assertEquals(id, proof.at("/identity/id").asText());
         AuditedAssertions.assertEquals(id, proof.path("control").asText());
         AuditedAssertions.assertEquals(attempt, proof.path("attempt").asText());
         AuditedAssertions.assertEquals(sourceHash, proof.path("sourceHash").asText());
@@ -210,6 +242,7 @@ class TestChangeBatchComponentTest {
         AuditedAssertions.assertTrue(Files.readString(folder.resolve("junit.xml")).contains("tests=\"2\" failures=\"0\""));
         AuditedAssertions.assertEquals(proof.path("junitSha256").asText(), sha256(Files.readAllBytes(folder.resolve("junit.xml"))));
         AuditedAssertions.assertEquals(proof.path("extentSha256").asText(), sha256(Files.readAllBytes(folder.resolve("component-report.html"))));
+        AuditedAssertions.assertEquals(proof.path("reportSha256").asText(), sha256(Files.readAllBytes(folder.resolve("component-report.html"))));
     }
 
     private static String sha256(byte[] bytes) throws Exception {

@@ -7,6 +7,7 @@ import {fileURLToPath} from 'node:url';
 import {curate,loadActiveGame} from '../corpus/whist-active-corpus.mjs';
 import {composeBatches} from '../learning/whist-learning-batches.mjs';
 import {publishDirectory,writeFreshFile} from '../qualification/atomic-directory.mjs';
+import {createLegalGame} from './legal-game-fixture.mjs';
 import {scratch,archiveFixture,batchFixture,interruptedWrite,unchanged,noPrivateState,hash,exists} from './publication-fixtures.mjs';
 
 const delay=milliseconds=>new Promise(resolve=>setTimeout(resolve,milliseconds));
@@ -34,6 +35,55 @@ test('active corpus publication retains legal immutable bytes',async t=>{
     assert.equal(await fs.readFile(path.join(archive,'games/heldout/DO_NOT_READ.json'),'utf8'),'invalid heldout sentinel');
     await noPrivateState(root,'active');
     console.log('Corpus publication observations: '+JSON.stringify({sourceGames:4,activeGames:manifest.activeGames,rows}));
+});
+
+test('curator publishes a generated archive volume within the bounded process budget',async t=>{
+    const root=await scratch(t),archive=path.join(root,'archive'),directory=path.join(archive,'games','development');
+    const heldout=path.join(archive,'games','heldout','DO_NOT_READ.json'),output=path.join(root,'active');
+    const sourceHashes=[];const sourceCount=256,maxGames=32;
+    await fs.mkdir(directory,{recursive:true});await fs.mkdir(path.dirname(heldout),{recursive:true});
+    await fs.writeFile(heldout,'invalid heldout sentinel');
+    const templates=[3,4,5,6].map((players,index)=>createLegalGame({players,seed:11000+index}))
+        .map(game=>({id:game.id,json:JSON.stringify(game)}));
+    for(let index=0;index<sourceCount;index++){
+        const template=templates[index%templates.length],id=`generated-archive-${String(index).padStart(4,'0')}`;
+        const bytes=Buffer.from(template.json.replace(`"id":${JSON.stringify(template.id)}`,`"id":${JSON.stringify(id)}`));
+        const file=path.join(directory,id+'.json');
+        await fs.writeFile(file,bytes,{flag:'wx'});sourceHashes.push({file,sha256:hash(bytes),bytes:bytes.length});
+    }
+    if(global.gc)global.gc();
+    const processPeakRssBytes=process.resourceUsage().maxRSS*1024;
+    let sampledPeakHeapBytes=process.memoryUsage().heapUsed;
+    const monitor=setInterval(()=>{
+        sampledPeakHeapBytes=Math.max(sampledPeakHeapBytes,process.memoryUsage().heapUsed);
+    },10);
+    monitor.unref();
+    const started=performance.now();let manifest;
+    try{manifest=await curate(archive,output,{maxGames});}
+    finally{clearInterval(monitor);}
+    const elapsedMs=performance.now()-started,inventory=JSON.parse(await fs.readFile(path.join(output,'archive-inventory.json'),'utf8'));
+    assert.equal(manifest.sourceGames,sourceCount);assert.equal(inventory.length,sourceCount);
+    assert.equal(manifest.sourceBytes,sourceHashes.reduce((total,item)=>total+item.bytes,0));
+    assert.ok(manifest.activeGames>0&&manifest.activeGames<=maxGames);
+    assert.equal(manifest.uniqueTraces,templates.length,'The full archive contains four distinct legal traces and repeated immutable aliases');
+    assert.ok(manifest.activeBytes<=manifest.sourceBytes);
+    assert.ok(processPeakRssBytes>0&&sampledPeakHeapBytes>0&&sampledPeakHeapBytes<=256*1024*1024);
+    assert.ok(elapsedMs>=0&&Number.isFinite(elapsedMs));
+    const sourceByName=new Map(sourceHashes.map(source=>[path.basename(source.file),source]));
+    for(const entry of inventory){
+        const original=sourceByName.get(path.basename(entry.file));
+        assert.ok(original,'Every inventoried game belongs to the generated development archive');
+        assert.equal(hash(await fs.readFile(original.file)),original.sha256,'Curator leaves archive source bytes unchanged');
+    }
+    for(const entry of manifest.games){
+        const bytes=await fs.readFile(path.join(output,entry.file));assert.equal(hash(bytes),entry.sha256);
+    }
+    assert.equal(await fs.readFile(heldout,'utf8'),'invalid heldout sentinel');
+    await noPrivateState(root,'active');
+    console.log('Archive volume observations: '+JSON.stringify({profile:'generated-archive-v1',sourceGames:sourceCount,
+        sourceBytes:manifest.sourceBytes,activeGames:manifest.activeGames,activeBytes:manifest.activeBytes,
+        uniqueTraces:manifest.uniqueTraces,processPeakRssBytes,sampledPeakHeapBytes,heapBudgetBytes:256*1024*1024,
+        elapsedMs:Number(elapsedMs.toFixed(3)),inventoryRows:inventory.length,sourceBytesPreserved:true,heldoutUntouched:true}));
 });
 
 test('paired batch publication retains every declared original pair',async t=>{

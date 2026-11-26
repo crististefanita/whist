@@ -24,9 +24,9 @@ The [browser test index](../../atf-ui-browser/tests/README.md#diagnostic-runner-
 
 | Priority | Owner and gap | Verification level and closure criterion |
 |---|---|---|
-| P2 | Proof recovery: static controls still share a complete protected Git diff identity. | Selective passing-control reuse remains gated on per-control production, test, runtime and shared dependency closures. Keep original source/report identities; reject changed shared or unknown inputs and changed selectors. The component regression now qualifies the conservative fallback: after one driver fails, the corrected attempt executes the entire selected bundle in a fresh run; original mocked JUnit and Extent identities remain unchanged, and shared-input drift prevents promotion. This does not authorize partial proof reuse. |
+| P2 | Proof recovery: static controls still share a complete protected Git diff identity. | Selective passing-control reuse remains gated on per-control production, test, runtime and shared dependency closures. Keep original source/report identities; reject changed shared or unknown inputs and changed selectors. The batch now rejects empty or malformed receipts, foreign control IDs and a receipt whose Extent digest does not match its report. The component regression also qualifies the conservative fallback: after one driver fails, the corrected attempt executes the entire selected bundle in a fresh run; original mocked JUnit and Extent identities remain unchanged, and shared-input drift prevents promotion. This does not authorize partial proof reuse. |
 
-The bounded [batch component](../../atf-tests/src/test/java/atf/tests/execution/components/TestChangeBatchComponentTest.java) compares a corrected full-bundle run with a shared-source negative case. The synthetic per-control JUnit population and report hashes are fixtures; the generated component report records the actual execution.
+The bounded [batch component](../../atf-tests/src/test/java/atf/tests/execution/components/TestChangeBatchComponentTest.java) compares a corrected full-bundle run with shared-source and control-output negative cases. It binds each mocked receipt to its control ID and exact Extent bytes. The synthetic per-control JUnit population and report hashes are fixtures; the generated component report records the actual execution.
 
 ```yaml
 testChanges:
@@ -35,13 +35,14 @@ testChanges:
     base: 3340c8124e109659bcf975e2b6ec9abbf63b10b8
     expires: 2026-12-26
     reason: Qualify conservative whole-bundle recovery after an isolated proof-driver failure and identity-checked recovery after a hard-stopped corpus publisher.
-    proof: "mvn -o -pl atf-tests -am '-Dtest=TestChangeBatchComponentTest#isolatedDriverCorrectionRerunsTheBundleAndSharedInputDriftRejectsPromotion,CorpusPublicationComponentTest#hardStoppedPublisherExcludesLiveWritersAndRecoversOnlyTheOriginalClaim' '-Dsurefire.failIfNoSpecifiedTests=false' test"
+    proof: "mvn -o -pl atf-tests -am '-Dtest=TestChangeBatchComponentTest#isolatedDriverCorrectionRerunsTheBundleAndSharedInputDriftRejectsPromotion,TestChangeBatchComponentTest#invalidProofReceiptOrReportIdentityPreventsBatchPublication,CorpusPublicationComponentTest#hardStoppedPublisherExcludesLiveWritersAndRecoversOnlyTheOriginalClaim,CorpusPublicationComponentTest#curatorTraversesAndPublishesGeneratedArchiveWithMeasuredResources' '-Dsurefire.failIfNoSpecifiedTests=false' test"
     checks:
       positive:
         - atf.tests.execution.components.TestChangeBatchComponentTest#isolatedDriverCorrectionRerunsTheBundleAndSharedInputDriftRejectsPromotion
         - atf.tests.learning.publication.CorpusPublicationComponentTest#hardStoppedPublisherExcludesLiveWritersAndRecoversOnlyTheOriginalClaim
       negative:
         - atf.tests.execution.components.TestChangeBatchComponentTest#changedSourcePreventsPublicationOfPassingControls
+        - atf.tests.execution.components.TestChangeBatchComponentTest#invalidProofReceiptOrReportIdentityPreventsBatchPublication
         - atf.tests.learning.publication.CorpusPublicationComponentTest#interruptedConcurrentAndFailedInputsCannotPublishOrEraseOriginals
     paths:
       - atf-tests/src/test/java/atf/tests/execution/components/TestChangeBatchComponentTest.java
