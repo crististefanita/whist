@@ -37,7 +37,7 @@ Legarea dovezilor de sursa calificată este verificată de [regresiile evaluator
 - Dovada de componentă înregistrează numărul real de faze și timpul scurs. Măsurătorile calificării separă inventarul, octeții copiați și sigilarea rezultatelor compilării.
 - Aceste măsurători arată reducerea muncii de revizie; nu pretind o accelerare generală a Maven ori a procesului complet de release. Sigiliile integrale ale octeților, refuzul cititorilor necunoscuți și proveniența originală a probei rămân intacte.
 - [Domeniile independente ale probelor](../governance/ATF_TestChanges.md#domenii-independente-ale-probelor) dețin selecția după căi, reuniunea diff-urilor mixte și dovezile separate. Excluderea domeniilor neschimbate nu închide criteriile rămase pentru costul snapshot-ului, compilării sau admiterii.
-- [Retenția imaginilor inline](../../atf-tests/src/test/java/atf/tests/governance/documentation/release/ReleaseEvidenceRetentionGovernanceTest.java) verifică duplicarea PNG-urilor lângă HTML; nu dovedește autonomia datelor, lizibilitatea imaginilor sau integritatea APK-ului.
+- [Retenția imaginilor inline](../../atf-tests/src/test/java/atf/tests/governance/documentation/release/ReleaseEvidenceRetentionGovernanceTest.java) verifică duplicarea PNG-urilor lângă HTML; nu dovedește autonomia datelor, lizibilitatea imaginilor sau integritatea APK-ului. [Criteriul adaptorului](../reporting/ATF_Audit.md) rămâne distinct.
 
 
 - [Contractul eșecurilor jurnalului](../testing/ATF_ReleaseQualification.md#qualification-journal-failures) păstrează separat cauzele originale ale comenzii și publicării.
