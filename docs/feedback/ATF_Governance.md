@@ -26,33 +26,8 @@ The [browser test index](../../atf-ui-browser/tests/README.md#diagnostic-runner-
 |---|---|---|
 | P2 | Proof recovery: static controls still share a complete protected Git diff identity. | Selective passing-control reuse remains gated on per-control production, test, runtime and shared dependency closures. Keep original source/report identities; reject changed shared or unknown inputs and changed selectors. The batch now checks each receipt's control ID, base, commit, protected-diff digest, nonempty distinct positive/negative selectors, PASS verdicts and exact Extent digest before promotion. The component regression also qualifies the conservative fallback: after one driver fails, the corrected attempt executes the entire selected bundle in a fresh run; original mocked JUnit and Extent identities remain unchanged, and shared-input drift prevents promotion. This does not authorize partial proof reuse. |
 
-The bounded [batch component](../../atf-tests/src/test/java/atf/tests/execution/components/TestChangeBatchComponentTest.java) compares a corrected full-bundle run with shared-source and control-output negative cases. It binds each mocked receipt to its control ID and exact Extent bytes. The synthetic per-control JUnit population and report hashes are fixtures; the generated component report records the actual execution.
-
-```yaml
-testChanges:
-  - id: RAG-36-LAB-01-RECOVERY
-    status: ACTIVE
-    base: 9e0f8b630a8a302b7bcb922fe1d93a73671ecbe6
-    expires: 2026-12-26
-    reason: Qualify conservative whole-bundle recovery after an isolated proof-driver failure and identity-checked recovery after a hard-stopped corpus publisher.
-    proof: "mvn -o -pl atf-tests -am '-Dtest=TestChangeBatchComponentTest#isolatedDriverCorrectionRerunsTheBundleAndSharedInputDriftRejectsPromotion,TestChangeBatchComponentTest#invalidProofReceiptOrReportIdentityPreventsBatchPublication,CorpusPublicationComponentTest#hardStoppedPublisherExcludesLiveWritersAndRecoversOnlyTheOriginalClaim,CorpusPublicationComponentTest#curatorTraversesAndPublishesGeneratedArchiveWithMeasuredResources,CorpusPublicationComponentTest#curatorHardStopPreservesArchiveAndRecoversByExactClaimIdentity' '-Dsurefire.failIfNoSpecifiedTests=false' test"
-    checks:
-      positive:
-        - atf.tests.execution.components.TestChangeBatchComponentTest#isolatedDriverCorrectionRerunsTheBundleAndSharedInputDriftRejectsPromotion
-        - atf.tests.learning.publication.CorpusPublicationComponentTest#hardStoppedPublisherExcludesLiveWritersAndRecoversOnlyTheOriginalClaim
-        - atf.tests.learning.publication.CorpusPublicationComponentTest#curatorHardStopPreservesArchiveAndRecoversByExactClaimIdentity
-      negative:
-        - atf.tests.execution.components.TestChangeBatchComponentTest#changedSourcePreventsPublicationOfPassingControls
-        - atf.tests.execution.components.TestChangeBatchComponentTest#invalidProofReceiptOrReportIdentityPreventsBatchPublication
-        - atf.tests.learning.publication.CorpusPublicationComponentTest#interruptedConcurrentAndFailedInputsCannotPublishOrEraseOriginals
-    paths:
-      - atf-tests/src/test/java/atf/tests/execution/components/TestChangeBatchComponentTest.java
-      - atf-tests/src/test/java/atf/tests/learning/publication/CorpusPublicationComponentTest.java
-      - scripts/AtfTestChangeBatch.ps1
-      - whist-lab-app/ai-lab/tools/qualification/atomic-directory-hard-stop-child.mjs
-      - whist-lab-app/ai-lab/tools/qualification/active-corpus-hard-stop-child.mjs
-      - whist-lab-app/ai-lab/tools/testing/corpus-publication.test.mjs
-```
+- The bounded [batch component](../../atf-tests/src/test/java/atf/tests/execution/components/TestChangeBatchComponentTest.java) compares a corrected full-bundle run with shared-source and control-output negative cases. Each mocked receipt is bound to its control ID and exact Extent bytes.
+- The synthetic per-control JUnit population and report hashes are fixtures; the generated component report records actual execution. The source-change control and exact positive/negative selectors are retained in the [verified testChanges baseline](../governance/ATF_TestChangesBaseline.md#rag-36-and-lab-02-receipt-admission-and-curator-recovery).
 
 - Component selection runs against the source catalogs before a run directory, source stage or Maven preparation is created; unknown and duplicate groups fail closed.
 - Groups that do not own release snapshots omit release payload bytes while retaining the complete release inventory, source/catalog identity, live pre/post checks and artifact preflight.

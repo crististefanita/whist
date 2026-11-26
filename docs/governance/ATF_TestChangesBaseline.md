@@ -56,6 +56,40 @@ testChanges:
 
 </details>
 
+<a id="rag-36-and-lab-02-receipt-admission-and-curator-recovery"></a>
+
+<details>
+<summary>RAG-36 and LAB-02 receipt admission and curator recovery</summary>
+
+```yaml
+testChanges:
+  - id: RAG-36-LAB-01-RECOVERY
+    status: VERIFIED
+    base: 9e0f8b630a8a302b7bcb922fe1d93a73671ecbe6
+    expires: 2026-12-26
+    reason: Bind per-control proof receipt admission and whole-bundle recovery to the exact source diff; stop the production corpus curator during staged copy and verify explicit identity-checked recovery.
+    proof: "mvn -o -pl atf-tests -am '-Dtest=TestChangeBatchComponentTest#isolatedDriverCorrectionRerunsTheBundleAndSharedInputDriftRejectsPromotion,TestChangeBatchComponentTest#changedSourcePreventsPublicationOfPassingControls,TestChangeBatchComponentTest#invalidProofReceiptOrReportIdentityPreventsBatchPublication,CorpusPublicationComponentTest#hardStoppedPublisherExcludesLiveWritersAndRecoversOnlyTheOriginalClaim,CorpusPublicationComponentTest#curatorTraversesAndPublishesGeneratedArchiveWithMeasuredResources,CorpusPublicationComponentTest#curatorHardStopPreservesArchiveAndRecoversByExactClaimIdentity,CorpusPublicationComponentTest#interruptedConcurrentAndFailedInputsCannotPublishOrEraseOriginals' '-Dsurefire.failIfNoSpecifiedTests=false' test"
+    checks:
+      positive:
+        - atf.tests.execution.components.TestChangeBatchComponentTest#isolatedDriverCorrectionRerunsTheBundleAndSharedInputDriftRejectsPromotion
+        - atf.tests.learning.publication.CorpusPublicationComponentTest#hardStoppedPublisherExcludesLiveWritersAndRecoversOnlyTheOriginalClaim
+        - atf.tests.learning.publication.CorpusPublicationComponentTest#curatorTraversesAndPublishesGeneratedArchiveWithMeasuredResources
+        - atf.tests.learning.publication.CorpusPublicationComponentTest#curatorHardStopPreservesArchiveAndRecoversByExactClaimIdentity
+      negative:
+        - atf.tests.execution.components.TestChangeBatchComponentTest#changedSourcePreventsPublicationOfPassingControls
+        - atf.tests.execution.components.TestChangeBatchComponentTest#invalidProofReceiptOrReportIdentityPreventsBatchPublication
+        - atf.tests.learning.publication.CorpusPublicationComponentTest#interruptedConcurrentAndFailedInputsCannotPublishOrEraseOriginals
+    paths:
+      - atf-tests/src/test/java/atf/tests/execution/components/TestChangeBatchComponentTest.java
+      - atf-tests/src/test/java/atf/tests/learning/publication/CorpusPublicationComponentTest.java
+      - scripts/AtfTestChangeBatch.ps1
+      - whist-lab-app/ai-lab/tools/qualification/atomic-directory-hard-stop-child.mjs
+      - whist-lab-app/ai-lab/tools/qualification/active-corpus-hard-stop-child.mjs
+      - whist-lab-app/ai-lab/tools/testing/corpus-publication.test.mjs
+```
+
+</details>
+
 <details>
 <summary>Bounded report receipt stage semantics</summary>
 
