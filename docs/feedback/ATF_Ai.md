@@ -28,7 +28,7 @@ The AI module's manager shall have his own inputs and verification. The engine i
 
 | Priority | Gap and source | Level and criterion of closure |
 |---|---|---|
-| P2 | Full corpus-tool cost at archive scale and recovery after a hard process stop still require qualification. The synthetic selector-stage probe covers 100, 1,000 and 5,000 unique traces, but not archive traversal or publication. Cooperative publication and handled write/promotion failures have a separate [contract](../learning/ATF_Corpus.md#atomic-tool-publication). | Qualify archive read, full game validation, copy and publication across declared real generated-game volumes. Measure peak process resources and provenance, then hard-stop a child after claim creation and verify recovery preserves source identity and excludes a live writer. The selector probe does not close these remaining boundaries. |
+| P2 | Full corpus-tool cost and archive-scale recovery remain unqualified. The synthetic selector-stage probe covers 100, 1,000 and 5,000 unique traces, but not archive traversal or the actual curator/composer run. | Qualify archive read, full game validation, copy and publication across declared generated-game volumes. Measure peak process resources and interrupt an actual corpus-scale operation; verify recovery preserves source identity and excludes live writers. The generic publisher's forced-stop contract is separately covered by [publication components](../learning/ATF_Corpus.md#atomic-tool-publication), but it cannot close this archive-scale boundary. |
 
 ## Re-use of mechanisms
 

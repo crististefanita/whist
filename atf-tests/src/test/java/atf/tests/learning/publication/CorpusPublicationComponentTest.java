@@ -111,6 +111,21 @@ class CorpusPublicationComponentTest {
         AuditedAssertions.assertEquals(128L * 1024 * 1024, profile.path("heapBudgetBytes").asLong());
     }
 
+    @Test void hardStoppedPublisherExcludesLiveWritersAndRecoversOnlyTheOriginalClaim(ComponentInputs inputs) throws Exception {
+        var root = GovernanceProject.locateProjectRoot();
+        inputs.add("Precondition", "A real child Node process owns the production atomic directory publisher. Its fixture copies an immutable byte source into a private sibling stage, then is force-stopped. A live competitor must be refused; recovery is attempted only after the parent observes child termination and rechecks the exact claim, stage path and source hash. No external corpus, APK, emulator or screenshot is used.");
+        String output = runNode(List.of("node", "--test", "--test-concurrency=1", "--test-name-pattern",
+                        "hard-stopped publisher blocks a live competitor",
+                        root.resolve("whist-lab-app/ai-lab/tools/testing/corpus-publication.test.mjs").toString()),
+                root, Duration.ofSeconds(30), text -> inputs.add("Original Node process observations", text));
+        AuditedAssertions.assertTrue(output.contains("hard-stopped publisher blocks a live competitor"), output);
+        AuditedAssertions.assertTrue(output.contains("pass 1"), output);
+        AuditedAssertions.assertTrue(output.contains("liveCompetitorRefused"), output);
+        AuditedAssertions.assertTrue(output.contains("originalInputSha256"), output);
+        AuditedAssertions.assertTrue(output.contains("recoveryRequiredDeadWriterAndExactClaim"), output);
+        AuditedAssertions.assertTrue(output.contains("outputAbsentUntilExplicitRecovery"), output);
+    }
+
     private static String exercise(String selection, ComponentInputs inputs) throws Exception {
         var root = GovernanceProject.locateProjectRoot();
         inputs.add("Precondition", "Locally generated legal Whist traces, 3–6 seats; four declared paired seats. Actual byte hashes, fresh directories and real cooperative writers. Injected write/promotion faults; no archive, device or screenshots. Node heap is bounded at 128 MiB.");

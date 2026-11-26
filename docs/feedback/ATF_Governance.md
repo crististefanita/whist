@@ -24,7 +24,31 @@ The [browser test index](../../atf-ui-browser/tests/README.md#diagnostic-runner-
 
 | Priority | Owner and gap | Verification level and closure criterion |
 |---|---|---|
-| P2 | Proof recovery: static controls still share a complete protected Git diff identity. A failed multi-control attempt cannot retain unaffected passing controls after one test driver changes. | Qualify per-control production, test, runtime and shared dependency closures before reusing such outcomes. Keep original source/report identities; reject changed shared or unknown inputs and changed selectors. Components must contrast an isolated driver correction with a shared dependency change and reconcile both JUnit population and Extent hashes. Until that admission exists, requalify the focused control bundle conservatively. |
+| P2 | Proof recovery: static controls still share a complete protected Git diff identity. | Selective passing-control reuse remains gated on per-control production, test, runtime and shared dependency closures. Keep original source/report identities; reject changed shared or unknown inputs and changed selectors. The component regression now qualifies the conservative fallback: after one driver fails, the corrected attempt executes the entire selected bundle in a fresh run; original mocked JUnit and Extent identities remain unchanged, and shared-input drift prevents promotion. This does not authorize partial proof reuse. |
+
+The bounded [batch component](../../atf-tests/src/test/java/atf/tests/execution/components/TestChangeBatchComponentTest.java) compares a corrected full-bundle run with a shared-source negative case. The synthetic per-control JUnit population and report hashes are fixtures; the generated component report records the actual execution.
+
+```yaml
+testChanges:
+  - id: RAG-36-LAB-01-RECOVERY
+    status: ACTIVE
+    base: 3340c8124e109659bcf975e2b6ec9abbf63b10b8
+    expires: 2026-12-26
+    reason: Qualify conservative whole-bundle recovery after an isolated proof-driver failure and identity-checked recovery after a hard-stopped corpus publisher.
+    proof: "mvn -o -pl atf-tests -am '-Dtest=TestChangeBatchComponentTest#isolatedDriverCorrectionRerunsTheBundleAndSharedInputDriftRejectsPromotion,CorpusPublicationComponentTest#hardStoppedPublisherExcludesLiveWritersAndRecoversOnlyTheOriginalClaim' '-Dsurefire.failIfNoSpecifiedTests=false' test"
+    checks:
+      positive:
+        - atf.tests.execution.components.TestChangeBatchComponentTest#isolatedDriverCorrectionRerunsTheBundleAndSharedInputDriftRejectsPromotion
+        - atf.tests.learning.publication.CorpusPublicationComponentTest#hardStoppedPublisherExcludesLiveWritersAndRecoversOnlyTheOriginalClaim
+      negative:
+        - atf.tests.execution.components.TestChangeBatchComponentTest#changedSourcePreventsPublicationOfPassingControls
+        - atf.tests.learning.publication.CorpusPublicationComponentTest#interruptedConcurrentAndFailedInputsCannotPublishOrEraseOriginals
+    paths:
+      - atf-tests/src/test/java/atf/tests/execution/components/TestChangeBatchComponentTest.java
+      - atf-tests/src/test/java/atf/tests/learning/publication/CorpusPublicationComponentTest.java
+      - whist-lab-app/ai-lab/tools/qualification/atomic-directory-hard-stop-child.mjs
+      - whist-lab-app/ai-lab/tools/testing/corpus-publication.test.mjs
+```
 
 - Component selection runs against the source catalogs before a run directory, source stage or Maven preparation is created; unknown and duplicate groups fail closed.
 - Groups that do not own release snapshots omit release payload bytes while retaining the complete release inventory, source/catalog identity, live pre/post checks and artifact preflight.

@@ -194,7 +194,7 @@ An unchanged domain is absent from the execution plan; its original evidence kee
 - Use cohesive `RAG-DOMAIN-` controls and a new reviewed ID/base for a new review; keep qualified historical declarations immutable. Expired controls and an incorrect Git base remain refusals.
 - Shared selection metadata has its own independent suite-ownership checks. A change to UI source additionally selects the native domain; catalog ownership cannot hide it.
 - [Domain components](../../atf-tests/src/test/java/atf/tests/governance/source/changes/domains/TestChangeDomainComponentTest.java) read the live declarations, retain the original checks, reject overlapping ownership and resolve actual committed fixture diffs through the production reviewer. Their component symbols are nonexecuted stubs, not UI acceptance.
-- One batch still shares compilation and classpath. A failed control, changed source or changed plan prevents final proof publication; domain separation does not relax those boundaries.
+- One batch still shares compilation and classpath. A failed control, changed source or changed plan prevents final proof publication; domain separation does not relax those boundaries. After an isolated driver correction, rerun the complete selected bundle in a fresh attempt until selective per-control dependency closure admission exists. Preserve original JUnit/report identities and reject shared-input drift. The [batch component](../../atf-tests/src/test/java/atf/tests/execution/components/TestChangeBatchComponentTest.java) qualifies this conservative fallback with mocked population/report hashes; it does not enable partial proof reuse.
 
 ### Resume one static proof control
 

@@ -81,11 +81,14 @@ Cooperating writers claim the same destination exclusively. Consumers see either
 | Input identity | Preserve original game and invocation bytes, hashes, pair population and recorded failures; private staging names never become result identities. |
 | Completion | Sync each file, write the manifest last and recheck the claim, private staging ownership and destination absence before promotion. |
 | Handled failure | Remove only owned private staging and the original claim; retain the primary error and any cleanup failures. A cleanup failure after promotion does not erase the published result. |
-| Interrupted process | A hard stop may leave a claim and private staging; no automatic expiry or claim takeover is permitted. Confirm the writer has stopped and inspect ownership and original inputs before explicit recovery. |
+| Interrupted process | A hard stop may leave a claim and private staging; no automatic expiry or claim takeover is permitted. Confirm the writer has stopped, the final destination is absent, the claim and stage still have their recorded ownership, and immutable input bytes still match before removing only that exact private stage and claim. Then restart publication from the original inputs. |
 
 Publication uses a sibling on the same filesystem. This is a cooperative-writer contract, not protection against a hostile process replacing paths between checks, or a power-loss durability guarantee.
 
 Pure unit tests cover the publisher's filesystem boundaries and error retention. Auditable [publication components](../../atf-tests/src/test/java/atf/tests/learning/publication/CorpusPublicationComponentTest.java) generate legal games locally, compare source and published hashes independently, and control concurrent writers and write/promotion faults; they require neither an external archive nor screenshots.
+
+- **Hard-stop recovery:** a child test leaves the production claim and private stage in place. It proves that a live competitor is refused, observes child termination, rechecks the exact claim and source/copy hashes, then performs explicit owned cleanup and republishes.
+- **Limit:** this qualifies the generic directory publisher. Archive-scale curator traversal and its peak-resource/recovery profile remain open.
 
 A focused component measures deterministic set-cover selection on synthetic input:
 
