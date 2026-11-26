@@ -28,7 +28,7 @@ Responsabilul modulului AI deține intrările și verificarea proprie. Testele d
 
 | Prioritate | Lacună și sursă | Nivel și criteriu de închidere |
 |---|---|---|
-| P2 | Costul complet al uneltelor de corpus la scara arhivei și recuperarea după oprirea brutală a procesului cer în continuare calificare. Proba sintetică a etapei de selecție acoperă 100, 1.000 și 5.000 de urme unice, dar nu parcurgerea arhivei sau publicarea. Publicarea cooperantă și eșecurile tratate la scriere/promovare au un [contract](../learning/ATF_Corpus.md#publicarea-atomică-a-uneltelor) separat. | Calificați citirea arhivei, validarea completă a partidelor, copierea și publicarea pe volume declarate de partide generate reale. Măsurați vârful resurselor și proveniența, apoi opriți brutal un proces copil după crearea rezervării și verificați că recuperarea păstrează identitatea sursei și exclude un scriitor activ. Proba selectorului nu închide aceste granițe rămase. |
+| P2 | Costul complet al uneltelor de corpus și recuperarea la scară de arhivă rămân necalificate. Proba sintetică a etapei de selecție acoperă 100, 1.000 și 5.000 de urme unice, dar nu parcurgerea arhivei sau rularea reală a curatorului/compozitorului. | Calificați citirea arhivei, validarea completă a partidelor, copierea și publicarea pe volume declarate de partide generate reale. Măsurați vârful resurselor și întrerupeți o operație reală la scară de corpus; verificați că recuperarea păstrează identitatea sursei și exclude scriitorii activi. Contractul publicatorului generic după oprire forțată este acoperit separat de [componentele de publicare](../learning/ATF_Corpus.md#publicarea-atomică-a-uneltelor), dar nu închide această graniță de scară a arhivei. |
 
 ## Reutilizarea mecanismelor
 

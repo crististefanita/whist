@@ -81,11 +81,14 @@ Scriitorii cooperanți rezervă exclusiv aceeași destinație. Consumatorii văd
 | Identitatea intrărilor | Păstrează octeții originali ai partidelor și invocărilor, hash-urile, populația perechilor și eșecurile înregistrate; numele pregătirii private nu devin identități ale rezultatului. |
 | Finalizare | Sincronizează fiecare fișier, scrie manifestul ultimul și verifică din nou rezervarea, proprietatea directorului privat și absența destinației înainte de promovare. |
 | Eșec tratat | Elimină numai pregătirea privată deținută și rezervarea originală; păstrează eroarea primară și eventualele eșecuri de curățare. Un eșec de curățare după promovare nu șterge rezultatul publicat. |
-| Proces întrerupt | O oprire brutală poate lăsa o rezervare și pregătirea privată; nu este permisă expirarea automată ori preluarea rezervării. Confirmați oprirea scriitorului și verificați proprietatea și intrările originale înainte de recuperarea explicită. |
+| Proces întrerupt | O oprire brutală poate lăsa o rezervare și pregătirea privată; nu este permisă expirarea automată ori preluarea rezervării. Confirmați oprirea scriitorului, absența destinației finale, proprietatea înregistrată a rezervării și pregătirii, precum și potrivirea octeților intrărilor imuabile înainte de a elimina doar pregătirea privată și rezervarea exactă. Apoi reluați publicarea din intrările originale. |
 
 Publicarea folosește un director alăturat pe același sistem de fișiere. Este un contract între scriitori cooperanți, nu protecție împotriva unui proces ostil care înlocuiește căile între verificări ori garanție de durabilitate la căderea alimentării.
 
 Testele unitare pure acoperă granițele sistemului de fișiere și păstrarea erorilor publicatorului. [Componentele auditabile de publicare](../../atf-tests/src/test/java/atf/tests/learning/publication/CorpusPublicationComponentTest.java) generează local partide legale, compară independent hash-urile surselor și ale rezultatelor și controlează scriitorii concurenți și eșecurile la scriere/promovare; nu cer nici arhivă externă, nici capturi de ecran.
+
+- **Recuperare după oprire brutală:** un test cu proces copil lasă rezervarea de producție și directorul privat. Demonstrează refuzul unui concurent activ, observă ieșirea copilului, verifică din nou rezervarea exactă și hash-urile sursei/copiei, apoi curăță explicit resursele deținute și publică din nou.
+- **Limită:** este calificat publicatorul generic. Parcurgerea arhivei la scară mare și profilul său de resurse/recuperare rămân deschise.
 
 O componentă focalizată măsoară selecția deterministă de tip set-cover pe intrări sintetice:
 
