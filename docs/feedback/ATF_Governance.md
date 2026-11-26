@@ -26,33 +26,8 @@ Legarea dovezilor de sursa calificată este verificată de [regresiile evaluator
 |---|---|---|
 | P2 | Recuperarea probelor: controalele statice încă împart identitatea întregului diff Git protejat. | Reutilizarea selectivă a controalelor reușite rămâne condiționată de închiderea dependențelor de producție, teste, runtime și suport comun per control. Păstrați identitățile originale ale sursei/raportului; refuzați intrările comune sau necunoscute schimbate și selectorii modificați. Înainte de promovare, lotul validează ID-ul controlului, baza, commit-ul, digestul diff-ului protejat, listele distincte și nevidate de selectori pozitivi/negativi cu verdict PASS și digestul Extent exact. Regresia de componentă califică și varianta conservatoare: după eșecul unui driver, încercarea corectată execută întregul lot selectat într-o rulare nouă; identitățile originale JUnit și Extent din fixture rămân nemodificate, iar deriva intrării comune împiedică promovarea. Aceasta nu autorizează reutilizarea parțială a probelor. |
 
-Componenta delimitată [pentru loturi](../../atf-tests/src/test/java/atf/tests/execution/components/TestChangeBatchComponentTest.java) compară o rulare completă după corectarea driverului cu cazuri negative pentru sursa comună și ieșirea controlului. Leagă fiecare recipisă mock-uită de ID-ul controlului și de octeții exacți ai raportului Extent. Populația JUnit per control și hash-urile rapoartelor sunt fixture-uri simulate; raportul generat al componentei înregistrează execuția reală.
-
-```yaml
-testChanges:
-  - id: RAG-36-LAB-01-RECOVERY
-    status: ACTIVE
-    base: 9e0f8b630a8a302b7bcb922fe1d93a73671ecbe6
-    expires: 2026-12-26
-    reason: Calificați reluarea conservatoare a lotului complet după eșecul izolat al unui driver de probe și recuperarea cu identitatea verificată după oprirea brutală a publicatorului de corpus.
-    proof: "mvn -o -pl atf-tests -am '-Dtest=TestChangeBatchComponentTest#isolatedDriverCorrectionRerunsTheBundleAndSharedInputDriftRejectsPromotion,TestChangeBatchComponentTest#invalidProofReceiptOrReportIdentityPreventsBatchPublication,CorpusPublicationComponentTest#hardStoppedPublisherExcludesLiveWritersAndRecoversOnlyTheOriginalClaim,CorpusPublicationComponentTest#curatorTraversesAndPublishesGeneratedArchiveWithMeasuredResources,CorpusPublicationComponentTest#curatorHardStopPreservesArchiveAndRecoversByExactClaimIdentity' '-Dsurefire.failIfNoSpecifiedTests=false' test"
-    checks:
-      positive:
-        - atf.tests.execution.components.TestChangeBatchComponentTest#isolatedDriverCorrectionRerunsTheBundleAndSharedInputDriftRejectsPromotion
-        - atf.tests.learning.publication.CorpusPublicationComponentTest#hardStoppedPublisherExcludesLiveWritersAndRecoversOnlyTheOriginalClaim
-        - atf.tests.learning.publication.CorpusPublicationComponentTest#curatorHardStopPreservesArchiveAndRecoversByExactClaimIdentity
-      negative:
-        - atf.tests.execution.components.TestChangeBatchComponentTest#changedSourcePreventsPublicationOfPassingControls
-        - atf.tests.execution.components.TestChangeBatchComponentTest#invalidProofReceiptOrReportIdentityPreventsBatchPublication
-        - atf.tests.learning.publication.CorpusPublicationComponentTest#interruptedConcurrentAndFailedInputsCannotPublishOrEraseOriginals
-    paths:
-      - atf-tests/src/test/java/atf/tests/execution/components/TestChangeBatchComponentTest.java
-      - atf-tests/src/test/java/atf/tests/learning/publication/CorpusPublicationComponentTest.java
-      - scripts/AtfTestChangeBatch.ps1
-      - whist-lab-app/ai-lab/tools/qualification/atomic-directory-hard-stop-child.mjs
-      - whist-lab-app/ai-lab/tools/qualification/active-corpus-hard-stop-child.mjs
-      - whist-lab-app/ai-lab/tools/testing/corpus-publication.test.mjs
-```
+- Componenta delimitată [pentru loturi](../../atf-tests/src/test/java/atf/tests/execution/components/TestChangeBatchComponentTest.java) compară o rulare completă după corectarea driverului cu cazuri negative pentru sursa comună și ieșirea controlului. Fiecare recipisă simulată este legată de ID-ul controlului și de octeții exacți ai raportului Extent.
+- Populația JUnit per control și hash-urile rapoartelor sunt fixture-uri simulate; raportul generat al componentei înregistrează execuția reală. Controlul schimbării sursei și selectorii pozitivi/negativi exacți apar în [baseline-ul `testChanges` verificat](../governance/ATF_TestChangesBaseline.md#rag-36-and-lab-02-receipt-admission-and-curator-recovery).
 
 
 - Selecția componentelor verifică aceste cataloage înainte de crearea dosarului de rulare, staging-ului sursei sau pregătirii Maven; grupurile necunoscute și duplicate sunt refuzate.
