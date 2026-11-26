@@ -29,6 +29,8 @@ Consumatorul deține înregistrările jocului, selecția, oracolul și indexarea
 - [ ] Reduceți copiile integrale repetate din randarea generică și verificarea DOM. Sigiliile incrementale ale consumatorului evită o copie locală suplimentară, dar nu stabilesc alocările bibliotecii.
 - [ ] Extindeți profilul de resurse separat pentru volumul comparațiilor, corpurilor și capturilor. Profilul sintetic limitat verifică valorile complete și octeții PNG; nu califică orice raport aflat sub limita de dimensiune a artefactului.
 
+Componenta consumatorului leagă profilurile limitate de receipt-ul bibliotecii de raportare fixate și verifică etapele denumite de randare/finalizare, verificare și promovare, duratele lor și limitele cumulative ale pool-urilor. Randarea/navigarea sunt raportate intenționat ca o singură etapă opacă a bibliotecii; acest contract al consumatorului nu satisface criteriile pentru vârfuri independente sau reducerea copiilor.
+
 [Publicarea verificată a componentelor](../reporting/ATF_Audit.md#publicarea-verificată-a-componentelor) deține pregătirea privată, inspecția înainte de promovare, înlocuirea atomică și diagnosticele cu cauza originală. Păstrați aceste granițe de regresie active; criteriile rămase țin de resursele native și alocările bibliotecii.
 
 - Protocolul de eșec al consumatorului folosește JVM-uri izolate și limitate pentru a verifica epuizarea reală a heap-ului și terminarea abruptă în timpul randării sau verificării. Jurnalul persistent păstrează ultima etapă începută; HTML-ul canonic și JUnit original rămân neschimbate.

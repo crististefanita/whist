@@ -56,6 +56,29 @@ testChanges:
 
 </details>
 
+<details>
+<summary>Semantica etapelor din recipisa raportului cu limită de resurse</summary>
+
+```yaml
+testChanges:
+  - id: RPT-03-REPORT-RECEIPT
+    status: VERIFIED
+    base: 1111491938af2939fe691bc7d31a083176d5aaac
+    expires: 2026-12-26
+    reason: Leagă profilul limitat al consumatorului de identitățile exacte și duratele etapelor de publicare; păstrează semantica limitelor cumulative și nu pretinde vârfuri izolate pentru randare sau navigare.
+    proof: "mvn -o -pl atf-tests -am -Dtest=ReportHeapComponentTest,PublicationFailureProcessComponentTest,AtfSourceQualityGovernanceTest,TestChangeGovernanceTest -Dsurefire.failIfNoSpecifiedTests=false test"
+    checks:
+      positive:
+        - atf.tests.reporting.acceptance.heap.ReportHeapComponentTest#boundedSmallMediumAndLargeReportsKeepEveryComparisonUnderTheDeclaredHeap
+        - atf.tests.reporting.acceptance.heap.PublicationFailureProcessComponentTest#freshProcessCanPublishAndSealTheCandidate
+      negative:
+        - atf.tests.reporting.acceptance.heap.PublicationFailureProcessComponentTest#realHeapExhaustionAndAbruptTerminationCannotPromotePartialReports
+    paths:
+      - atf-tests/src/test/java/atf/tests/reporting/acceptance/heap/ReportHeapComponentTest.java
+```
+
+</details>
+
 
 <details>
 <summary>Calificarea selectorilor înainte de staging și măsurarea compilatorului</summary>

@@ -96,13 +96,17 @@ Separarea sursei native de validator aparține [contractului de calificare](../t
 
 ## Pilot LangGraph în umbră
 
-Calea de producție rămâne deterministă: inventarul Git selectează responsabilii, lansatorul PowerShell pregătește copiile și execută numai suitele lipsă sau invalidate, checkpoint-urile Maven/Gradle leagă probele acceptate de sursă, iar evaluatorul Node citește doar dosarul. Testele de componentă acoperă deja întreruperile, intrările schimbate, checkpoint-urile parțiale și respingerea probelor. [Calificarea release-ului](../testing/ATF_ReleaseQualification.md#orchestrare-și-poarta-de-adoptare-langgraph) definește contractele stabile de reluare și selecție pe platformă.
+Calea de producție rămâne un lansator PowerShell determinist, cu checkpoint-uri Maven/Gradle legate de sursă și un evaluator Node cu acces doar la citire.
+
+[Recuperarea probelor statice](../../atf-tests/src/test/java/atf/tests/execution/proofs/StaticProofRecoveryComponentTest.java) și [recuperarea invocărilor](../../atf-tests/src/test/java/atf/tests/execution/recovery/InvocationRecoveryComponentTest.java) verifică întreruperea, reluarea legată de sursă, populațiile exacte ale invocărilor și paritatea raport/JUnit pentru acest lansator. Aceste rezultate nu dovedesc un pilot LangGraph: acest checkout nu conține un coordonator executabil bazat pe grafuri sau o rulare măsurată a grafului.
+
+[Calificarea release-ului](../testing/ATF_ReleaseQualification.md#orchestrare-și-poarta-de-adoptare-langgraph) definește contractele stabile de reluare și selecție pe platformă.
 
 LangGraph oferă noduri explicite, stare partajată și limite de checkpoint, dar nu scurtează compilarea. Un nod eșuat poate fi reluat de la început, așadar pilotul trebuie să demonstreze idempotența efectelor secundare și să lege fiecare reluare de sursă, comandă și receipt-urile inițiale. Vezi [îndrumarul oficial LangGraph pentru fluxuri](https://docs.langchain.com/oss/javascript/langgraph/thinking-in-langgraph).
 
 | Prioritate | Lacună delimitată | Criteriu de închidere |
 |---|---|---|
-| P2 | Încă nu există măsurători care să arate că un coordonator grafic îmbunătățește acest proces determinist de release față de checkpoint-urile actuale ale invocărilor. | Construiți un pilot shadow izolat care apelează numai comenzile existente. Injectați întreruperi în fiecare etapă și cereți paritate exactă pentru selecție, identitățile rapoartelor/JUnit și verdict, fără efecte secundare duplicate și fără autoritate de semnare, publicare sau ciclu de viață. Măsurați pornirea, costul unei rulări normale și recuperarea pe aceleași cazuri; adoptați numai dacă timpul median de recuperare scade cu cel puțin 20%, iar costul unei rulări neîntrerupte crește cu cel mult 5%. Niciun model nu poate stabili sau slăbi verdictul unui release. |
+| P2 | În acest checkout nu există un pilot executabil de coordonare prin graf sau o comparație măsurată. Componentele existente pentru reluare legată de sursă, populația invocărilor și paritatea raport/JUnit acoperă doar lansatorul determinist. | Construiți un pilot shadow izolat care apelează numai comenzile existente. Injectați întreruperi în fiecare etapă și cereți paritate exactă pentru selecție, identitățile rapoartelor/JUnit și verdict, fără efecte secundare duplicate și fără autoritate de semnare, publicare sau ciclu de viață. Măsurați pornirea, costul unei rulări normale și recuperarea pe aceleași cazuri; adoptați numai dacă timpul median de recuperare scade cu cel puțin 20%, iar costul unei rulări neîntrerupte crește cu cel mult 5%. Niciun model nu poate stabili sau slăbi verdictul unui release. |
 
 <a id="testchanges-admission-before-collection-preparation"></a>
 
