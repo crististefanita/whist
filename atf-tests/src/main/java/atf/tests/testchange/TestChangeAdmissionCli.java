@@ -27,25 +27,26 @@ public final class TestChangeAdmissionCli {
             Request request = parse(args);
             TestChangeReview.Result result;
             List<String> controls = List.of();
+            TestChangeReview.GenerationMeasurements measurements = null;
             if (request.generate()) {
                 Path root = request.root().toRealPath();
-                var snapshot = GitTestChangeSnapshot.read(root, request.base(), true);
-                controls = TestChangeReview.requiredProofs(root, request.base(), snapshot.head(), today);
-                if (!request.control().isEmpty() && !controls.contains(request.control()))
-                    throw TestChangeProof.failure("CONTROL", request.control() + " must authorize this diff as VERIFIED");
-                result = TestChangeReview.inspect(root, request.base(), Map.of("CI", "true"), today);
+                var generation = TestChangeReview.prepareProofGeneration(root, request.base(), request.control(), today);
+                controls = generation.controls();
+                measurements = generation.measurements();
+                result = generation.result();
             } else {
                 result = TestChangeReview.verify(request.root(), request.base(), environment, today);
             }
             boolean passed = result.diagnostics().isEmpty();
             emit(output, new Response(1, "ATF_TEST_CHANGE_ADMISSION", passed ? "PASS" : "BLOCKED",
                     request.generate() ? "GENERATE" : "VERIFY", result.base(), result.protectedPaths(),
-                    controls, result.diagnostics(), result.continuations()));
+                    controls, result.diagnostics(), result.continuations(), measurements));
             return passed ? 0 : 2;
         } catch (Exception invalid) {
             if (invalid instanceof InterruptedException) Thread.currentThread().interrupt();
             emit(output, new Response(1, "ATF_TEST_CHANGE_ADMISSION", "BLOCKED", "REJECTED", "", 0,
-                    List.of(), List.of(invalid.getMessage() == null ? invalid.getClass().getSimpleName() : invalid.getMessage()), List.of()));
+                    List.of(), List.of(invalid.getMessage() == null ? invalid.getClass().getSimpleName() : invalid.getMessage()),
+                    List.of(), null));
             return 2;
         }
     }
@@ -84,5 +85,6 @@ public final class TestChangeAdmissionCli {
     private record Request(Path root, String base, boolean generate, String control) { }
     private record Response(int schemaVersion, String kind, String status, String mode, String base,
                             int protectedPaths, List<String> controls, List<String> diagnostics,
-                            List<TestChangeProof.Continuation> continuations) { }
+                            List<TestChangeProof.Continuation> continuations,
+                            TestChangeReview.GenerationMeasurements measurements) { }
 }

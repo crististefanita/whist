@@ -29,6 +29,7 @@ Assert-AtfComponentJavaEnvironment
 . (Join-Path $PSScriptRoot 'AtfComponentMaven.ps1')
 . (Join-Path $PSScriptRoot 'AtfCompilerIdentity.ps1')
 . (Join-Path $PSScriptRoot 'AtfComponentMavenReuse.ps1')
+. (Join-Path $PSScriptRoot 'AtfLauncherCapabilities.ps1')
 $sourceRoot = [IO.Path]::GetFullPath($SourceRoot)
 if ($ResumeFrom) {
     if ($ReuseFrom -or $AllTestChangeControls) {
@@ -54,6 +55,11 @@ if ($TestChangeControl -or $AllTestChangeControls) {
     if ($LASTEXITCODE -ne 0 -or $dirty) { throw 'testChanges proof requires a clean checkout.' }
 }
 $selection = Resolve-AtfComponentSelection $sourceRoot $Groups
+$selectedMaven = @($selection.primaryComponents | Where-Object { $_.group -cin $selection.groups })
+$selectedGradle = @($selection.gradleGroups | Where-Object { $_.group -cin $selection.groups })
+$gradleRoot = if ($selectedGradle.Count) { Join-Path $sourceRoot 'whist-lab-app' } else { '' }
+$launcherCapabilities = Assert-AtfLauncherCapabilities -JavaHome $JavaHome -Maven $Maven `
+    -RequireMaven:([bool]($selectedMaven.Count)) -RequireNode -GradleRoot $gradleRoot
 $evidenceRoot = if (-not [string]::IsNullOrWhiteSpace($env:WHIST_EVIDENCE_ROOT) -or -not $RunRoot) {
     Ensure-AtfEvidenceRoot $sourceRoot
 } else { $null }
@@ -233,6 +239,7 @@ function Read-AtfGradleResults($Selections, [string]$Journal) {
 
 $tempRoot = Get-AtfQualificationTempRoot $sourceRoot
 New-Item -ItemType Directory -Path $RunRoot | Out-Null
+$launcherCapabilities | ConvertTo-Json -Depth 7 | Set-Content -LiteralPath (Join-Path $RunRoot 'launcher-capabilities.json') -Encoding utf8
 $timing = New-AtfQualificationTiming 'components' (Join-Path $RunRoot 'timing.json')
 function Assert-ComponentTestChangeAdmission([string]$Receipt) {
     Invoke-AtfTestChangeAdmission -SourceRoot $sourceRoot -BaseRef $TestChangeBaseRef -TempRoot $tempRoot `

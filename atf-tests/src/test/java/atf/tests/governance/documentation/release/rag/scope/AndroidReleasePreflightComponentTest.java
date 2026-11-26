@@ -257,9 +257,9 @@ class AndroidReleasePreflightComponentTest {
                 $ErrorActionPreference='Stop'
                 Import-Module $Module -Force
                 & (Get-Module AndroidDeviceSetup) {
-                    foreach ($mode in @('refused','timeout','start-failure')) {
+                    foreach ($mode in @('refused','timeout','kill-failure','recovery-timeout','start-failure')) {
                         $events=[Collections.Generic.List[string]]::new()
-                        $process=[pscustomobject]@{Events=$events;Mode=$mode;ExitCode=7}
+                        $process=[pscustomobject]@{Events=$events;Mode=$mode;ExitCode=7;Waits=0}
                         foreach ($name in @('StandardOutput','StandardError')) {
                             $stream=[pscustomobject]@{Events=$events;Name=$name}
                             $stream | Add-Member ScriptMethod ReadToEndAsync {
@@ -275,11 +275,16 @@ class AndroidReleasePreflightComponentTest {
                         }
                         $process | Add-Member ScriptMethod WaitForExit {
                             param($Milliseconds)
-                            if ($null -eq $Milliseconds) { $this.Events.Add('drain'); return }
                             $this.Events.Add('wait:' + $Milliseconds)
-                            $this.Mode -ne 'timeout'
+                            $this.Waits++
+                            if ($this.Waits -eq 1) { return $this.Mode -notin @('timeout','kill-failure','recovery-timeout') }
+                            return $this.Mode -ne 'recovery-timeout'
                         }
-                        $process | Add-Member ScriptMethod Kill { param($Tree) $this.Events.Add('kill:' + $Tree) }
+                        $process | Add-Member ScriptMethod Kill {
+                            param($Tree)
+                            $this.Events.Add('kill:' + $Tree)
+                            if ($this.Mode -eq 'kill-failure') { throw 'controlled kill failure' }
+                        }
                         $process | Add-Member ScriptMethod Dispose { $this.Events.Add('dispose') }
                         try {
                             $result=Complete-AtfAdbProcess $process 1 'connect fixture'
@@ -288,12 +293,16 @@ class AndroidReleasePreflightComponentTest {
                             if ($mode -eq 'refused') { throw }
                             $message=$_.Exception.Message
                             if ($mode -eq 'timeout' -and $message -cne 'ADB command timed out after 1s: connect fixture') { throw }
+                            if ($mode -eq 'kill-failure' -and (!$message.Contains('ADB command timed out after 1s') -or !$message.Contains('controlled kill failure'))) { throw }
+                            if ($mode -eq 'recovery-timeout' -and (!$message.Contains('ADB command timed out after 1s') -or !$message.Contains('did not exit within the 2s termination bound'))) { throw }
                             if ($mode -eq 'start-failure' -and $message -cnotlike '*original start failure*') { throw }
                         }
                         $actual=$events -join ','
                         $expected=switch($mode) {
                             refused {'start,StandardOutput,StandardError,wait:1000,dispose'}
-                            timeout {'start,StandardOutput,StandardError,wait:1000,kill:True,drain,dispose'}
+                            timeout {'start,StandardOutput,StandardError,wait:1000,kill:True,wait:2000,dispose'}
+                            kill-failure {'start,StandardOutput,StandardError,wait:1000,kill:True,wait:2000,dispose'}
+                            recovery-timeout {'start,StandardOutput,StandardError,wait:1000,kill:True,wait:2000,dispose'}
                             start-failure {'start,dispose'}
                         }
                         if ($actual -cne $expected) { throw "$mode order: $actual; expected: $expected" }
@@ -311,7 +320,7 @@ class AndroidReleasePreflightComponentTest {
             inputs.add("Precondition", "Private production process port, controlled start/wait/streams/kill/dispose; no wall-clock sleeps or Android process.");
             inputs.add("Observed process orders and original causes", output);
             AuditedAssertions.assertEquals(0, process.exitValue(), output);
-            AuditedAssertions.assertTrue(output.contains("wait:1000,kill:True,drain,dispose"), "Timeout terminates and drains the same owned process before disposal");
+            AuditedAssertions.assertTrue(output.contains("wait:1000,kill:True,wait:2000,dispose"), "Timeout cleanup uses a bounded process wait and disposes once");
         } finally { if (process.isAlive()) process.destroyForcibly(); }
     }
 

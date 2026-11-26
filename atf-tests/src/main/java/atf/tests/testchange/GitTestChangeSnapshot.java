@@ -96,12 +96,25 @@ final class GitTestChangeSnapshot {
     }
 
     static String proofDiff(Snapshot snapshot) throws IOException, InterruptedException {
+        assertReviewStillCurrent(snapshot);
         Path root = snapshot.root();
-        if (snapshot.ignoredProtected() || !output(root, "status", "--porcelain=v1", "-z", "--untracked-files=all", "--ignore-submodules=none").isEmpty()
-                || !snapshot.head().equals(commit(root, "HEAD"))) {
-            throw new IOException("TEST-CHANGE-PROOF-DIRTY: evidence requires the clean reviewed commit");
-        }
         return TestChangeProof.digest(rawDiff(root, snapshot.base(), snapshot.head()).getBytes(StandardCharsets.UTF_8));
+    }
+
+    static void assertReviewStillCurrent(Snapshot snapshot) throws IOException, InterruptedException {
+        Path root = snapshot.root();
+        var ignored = new ArrayList<>(List.of("ls-files", "--others", "--ignored", "--exclude-standard", "-z", "--"));
+        ignored.addAll(TestChangeReview.protectedPathspecs());
+        boolean ignoredProtected = fields(output(root, ignored.toArray(String[]::new))).stream()
+                .anyMatch(TestChangeReview::protectedPath);
+        boolean changed = !output(root, "status", "--porcelain=v1", "-z", "--untracked-files=all", "--ignore-submodules=none").isEmpty();
+        boolean headChanged = !snapshot.head().equals(commit(root, "HEAD"));
+        if (snapshot.ignoredProtected() || ignoredProtected || changed || headChanged) {
+            throw new IOException("TEST-CHANGE-PROOF-DIRTY: evidence requires the clean reviewed commit"
+                    + " (initialIgnoredProtected=" + snapshot.ignoredProtected()
+                    + ", currentIgnoredProtected=" + ignoredProtected
+                    + ", workingTreeChanged=" + changed + ", headChanged=" + headChanged + ")");
+        }
     }
 
     static String rawDiff(Path root, String base, String head) throws IOException, InterruptedException {

@@ -67,7 +67,7 @@ The component launcher uses [suite-local JVM options](AtfComponentJvm.ps1). Remo
 | `run-offline-*` | Tools and parameters declared by each script; some entries require explicit local paths. | Executes the selected protocol; script existence does not prove tool availability. |
 | Android flow | ADB configuration, identified APK, lease and verified data isolation. | [Infrastructure contract](../atf-test-android/README.md) separates transport, commands and observations. |
 
-JVM collections do not require an emulator connection. Java, Maven and Gradle do not yet share one capability verifier; [coordination feedback](../docs/feedback/ATF_Governance.md#qualification-of-claims-and-launchers) tracks that gap.
+JVM collections do not require an emulator connection. The shared [launcher capability contract](AtfLauncherCapabilities.ps1) resolves required tools before probing versions, validates Java 17+, Maven and Node runtimes, and checks Gradle's HTTPS distribution URL and SHA-256-pinned wrapper inputs before any probe or workspace preparation. Each applicable run stores `launcher-capabilities.json` with the consumed helper hash and observed paths. Android ADB transport readiness remains a separate, lease-bound check because an executable existing does not prove a reachable or booted device. Its process tests cover refusal, timeout, bounded termination and preserved cleanup causes without an emulator.
 
 ## Identity of execution
 
@@ -98,8 +98,9 @@ The launcher can reuse compilation after an interrupted classpath step; an alter
 | Boundary | Meaning |
 |---|---|
 | Java tools | Bounded version probes qualify release support at the observed paths; the launcher invokes those resolved executables. |
-| Maven | Application presence only; dependency resolution, plugins, network and the actual Maven run remain separate checks. |
-| Process failure | Refuse missing tools, aliases/non-version responses, old versions, nonzero exits and timeout. Kill only the owned child when needed, dispose it and preserve primary plus cleanup causes. |
-| Source identity | The receipt and availability/version diagnostics identify the consumed preflight script by SHA-256. This is not an APK, browser-rendering or release verdict. |
+| Maven | Run the resolved Maven command with `-version` through a bounded child process; dependency resolution, plugins, network and the actual Maven run remain separate checks. |
+| Gradle | Validate the checked-in wrapper, HTTPS distribution URL, SHA-256 pin and wrapper-JAR digest before starting another process; the launcher still records the actual Gradle task result separately. |
+| Process failure | Refuse missing tools, aliases/non-version responses, old Java versions, nonzero exits and timeouts. Stop only the owned child with a bounded recovery wait, dispose it and preserve primary plus cleanup causes. |
+| Source identity | The receipt and availability/version diagnostics identify the consumed preflight source by SHA-256. This is not an APK, browser-rendering or release verdict. |
 
 Controlled components replace resolver/version responses and the private process port; no shell, browser, build or device is needed for rejection matrices. Actual launcher ordering and resolved-command bindings are checked separately from real Java availability.

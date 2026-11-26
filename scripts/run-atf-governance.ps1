@@ -14,7 +14,9 @@ $ErrorActionPreference = 'Stop'
 . (Join-Path $PSScriptRoot 'AtfQualificationSnapshot.ps1')
 . (Join-Path $PSScriptRoot 'AtfQualificationTiming.ps1')
 . (Join-Path $PSScriptRoot 'AtfTestChangeAdmission.ps1')
+. (Join-Path $PSScriptRoot 'AtfLauncherCapabilities.ps1')
 $sourceRoot = [IO.Path]::GetFullPath($SourceRoot)
+$launcherCapabilities = Assert-AtfLauncherCapabilities -JavaHome $JavaHome -Maven $Maven -RequireMaven -RequireNode
 $evidenceRoot = if (-not [string]::IsNullOrWhiteSpace($env:WHIST_EVIDENCE_ROOT) -or [string]::IsNullOrWhiteSpace($RunRoot)) {
     Ensure-AtfEvidenceRoot $sourceRoot
 } else { $null }
@@ -29,6 +31,7 @@ if ($RunRoot.Equals($sourceRoot, [StringComparison]::OrdinalIgnoreCase) -or
 if (Test-Path -LiteralPath $RunRoot) { throw 'The results directory must be new.' }
 $tempRoot = Get-AtfQualificationTempRoot $sourceRoot
 New-Item -ItemType Directory -Path $RunRoot | Out-Null
+$launcherCapabilities | ConvertTo-Json -Depth 7 | Set-Content -LiteralPath (Join-Path $RunRoot 'launcher-capabilities.json') -Encoding utf8
 $timing = New-AtfQualificationTiming 'governance' (Join-Path $RunRoot 'timing.json')
 function Assert-GovernanceTestChangeAdmission([string]$Receipt) {
     Invoke-AtfTestChangeAdmission -SourceRoot $sourceRoot -BaseRef $TestChangeBaseRef -TempRoot $tempRoot `

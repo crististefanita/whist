@@ -24,23 +24,39 @@ function Invoke-AtfAdbCommand {
 
 # Private process port: components can verify ordering without starting a device or a shell.
 function Complete-AtfAdbProcess($Process, [int]$TimeoutSeconds, [string]$Command) {
+    $started = $false
+    $completed = $false
+    $failure = $null
+    $cleanup = [Collections.Generic.List[Exception]]::new()
+    $streams = @()
+    $result = $null
     try {
-        if (-not $Process.Start()) { throw "Could not start ADB client: $($Process.StartInfo.FileName)" }
-        $stdout = $Process.StandardOutput.ReadToEndAsync()
-        $stderr = $Process.StandardError.ReadToEndAsync()
-        if (-not $Process.WaitForExit($TimeoutSeconds * 1000)) {
-            $Process.Kill($true)
-            $Process.WaitForExit()
-            throw "ADB command timed out after ${TimeoutSeconds}s: $Command"
+        $started = $Process.Start()
+        if (-not $started) { throw "Could not start ADB client: $($Process.StartInfo.FileName)" }
+        $streams = @($Process.StandardOutput.ReadToEndAsync(), $Process.StandardError.ReadToEndAsync())
+        $completed = $Process.WaitForExit($TimeoutSeconds * 1000)
+        if (-not $completed) {
+            $failure = [TimeoutException]::new("ADB command timed out after ${TimeoutSeconds}s: $Command")
+            try { $Process.Kill($true) } catch { $cleanup.Add($_.Exception) }
+            try {
+                if (-not $Process.WaitForExit(2000)) { throw [TimeoutException]::new("ADB process did not exit within the 2s termination bound: $Command") }
+            } catch { $cleanup.Add($_.Exception) }
+            if (-not [System.Threading.Tasks.Task]::WaitAll([System.Threading.Tasks.Task[]]$streams, 2000)) {
+                $cleanup.Add([TimeoutException]::new("ADB output did not drain within the 2s termination bound: $Command"))
+            }
+        } elseif (-not [System.Threading.Tasks.Task]::WaitAll([System.Threading.Tasks.Task[]]$streams, $TimeoutSeconds * 1000)) {
+            $failure = [TimeoutException]::new("ADB output timed out after ${TimeoutSeconds}s: $Command")
         }
-        [System.Threading.Tasks.Task]::WaitAll([System.Threading.Tasks.Task[]]@($stdout, $stderr))
-        [pscustomobject]@{
-            ExitCode = $Process.ExitCode
-            Output = ($stdout.Result + $stderr.Result).Trim()
+        if (-not $failure) {
+            $failure = $null
+            $result = [pscustomobject]@{ExitCode=$Process.ExitCode;Output=($streams[0].Result + $streams[1].Result).Trim()}
         }
-    } finally {
-        $Process.Dispose()
-    }
+    } catch { $failure = $_.Exception }
+    try { $Process.Dispose() } catch { $cleanup.Add($_.Exception) }
+    if ($failure -and -not $cleanup.Count) { throw $failure }
+    if ($failure) { $cleanup.Insert(0, $failure) }
+    if ($cleanup.Count) { throw [AggregateException]::new('ADB process failed; original and cleanup causes retained', $cleanup.ToArray()) }
+    return $result
 }
 
 function Connect-AtfAndroidDevice {

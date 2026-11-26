@@ -16,6 +16,9 @@ function Read-JsonSnapshot([string]$File){
 }
 if($ResearchCandidate -and $CandidateOverlay){throw 'ResearchCandidate and CandidateOverlay cannot be combined.'}
 $sourceRoot=Split-Path -Parent $PSScriptRoot
+. (Join-Path $PSScriptRoot 'AtfLauncherCapabilities.ps1')
+$launcherCapabilities=Assert-AtfLauncherCapabilities -JavaHome $JavaHome -RequireNode `
+    -GradleRoot (Join-Path $sourceRoot 'whist-lab-app')
 $evaluationPolicy=Get-Content -LiteralPath (Join-Path $sourceRoot 'config/whist-evaluation-policy.json') -Raw | ConvertFrom-Json
 if($evaluationPolicy.schemaVersion -ne 1 -or -not [IO.Path]::IsPathRooted($evaluationPolicy.registryRoot)){throw 'Invalid installation-wide evaluation registry policy.'}
 $evaluationRegistryRoot=$evaluationPolicy.registryRoot
@@ -125,6 +128,7 @@ if($CandidateOverlay){
 $stageRoot=Join-Path ([IO.Path]::GetTempPath()) ('WHIST_COLLECTION_'+[guid]::NewGuid().ToString('N'))
 $stageApp=Join-Path $stageRoot 'whist-lab-app'
 New-Item -ItemType Directory -Path $RunRoot,$stageApp | Out-Null
+$launcherCapabilities | ConvertTo-Json -Depth 7 | Set-Content -LiteralPath (Join-Path $RunRoot 'launcher-capabilities.json') -Encoding utf8
 $inventory=@()
 $sharedInputs = @('pom.xml', 'config/gradle-audit-collections.properties', 'config/test-collections.json', 'docs/game/README.md', 'docs/game/ATF_RulesRo.md', 'docs/game/ATF_RulesEn.md')
 $sharedInputs += @(Get-ChildItem -LiteralPath (Join-Path $sourceRoot 'lib') -File |

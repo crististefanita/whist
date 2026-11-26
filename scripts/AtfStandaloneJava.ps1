@@ -1,3 +1,5 @@
+. (Join-Path $PSScriptRoot 'AtfLauncherCapabilities.ps1')
+
 function Get-AtfJvmCompilerClasspath {
     param([string]$ToolRoot, [string]$MavenCache, [switch]$Yaml, [switch]$Core)
     [xml]$pom = Get-Content -LiteralPath (Join-Path $ToolRoot 'pom.xml') -Raw
@@ -42,8 +44,9 @@ function Invoke-AtfJvmCli {
             throw 'ATF-COMPILER-SCRATCH: use an existing directory outside both the tool and the inspected project.'
         }
     }
-    $compiler = if ($JavaHome) { Join-Path $JavaHome 'bin/javac' } else { (Get-Command javac).Source }
-    $java = if ($JavaHome) { Join-Path $JavaHome 'bin/java' } else { (Get-Command java).Source }
+    $toolchain = Assert-AtfLauncherCapabilities -JavaHome $JavaHome
+    $compiler = $toolchain.executables.javac
+    $java = $toolchain.executables.java
     $source = Join-Path $ToolRoot 'atf-tests/src/main/java'
     $entry = Join-Path $source ($MainClass.Replace('.', '/') + '.java')
     $work = Join-Path $parent ('atf-jvm-cli-' + [guid]::NewGuid().ToString('N'))

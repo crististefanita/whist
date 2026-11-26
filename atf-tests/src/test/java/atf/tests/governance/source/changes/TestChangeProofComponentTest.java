@@ -2,12 +2,14 @@ package atf.tests.governance.source.changes;
 
 import atf.testkit.AtfComponentTest;
 import atf.testkit.assertions.AuditedAssertions;
+import atf.tests.reporting.GameReportAudit;
 import atf.tests.testchange.TestChangeProof;
 import atf.tests.testchange.TestChangeReview;
 import atf.tests.testchange.TestChangeAdmissionCli;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.api.io.TempDir;
 
 import java.io.IOException;
@@ -26,6 +28,7 @@ import static atf.tests.governance.source.changes.TestChangeGitFixture.RESOURCE;
 import static atf.tests.governance.source.changes.TestChangeGitFixture.TEST;
 
 @AtfComponentTest
+@ExtendWith(GameReportAudit.class)
 class TestChangeProofComponentTest {
     private static final LocalDate TODAY = LocalDate.of(2026, 11, 15);
     private static final String ID = "FIXTURE-TEST-PROOF";
@@ -56,7 +59,8 @@ class TestChangeProofComponentTest {
         }
     }
 
-    @Test void admissionRechecksChangedSourcesAndSeparatesProofGeneration(@TempDir Path root) throws Exception {
+    @Test void admissionRechecksChangedSourcesAndSeparatesProofGeneration(@TempDir Path root,
+                                                                          atf.android.evidence.component.ComponentInputs inputs) throws Exception {
         var fixture = fixture(root);
         Map<String,String> environment = Map.of(TestChangeProof.ROOT_ENV, fixture.directory().getParent().toString());
         AuditedAssertions.assertEquals("PASS", admission(fixture, environment).path("status").asText());
@@ -72,6 +76,17 @@ class TestChangeProofComponentTest {
         AuditedAssertions.assertEquals(0, exit);
         AuditedAssertions.assertEquals("GENERATE", generated.path("mode").asText());
         AuditedAssertions.assertEquals(ID, generated.path("controls").get(0).asText());
+        AuditedAssertions.assertEquals(1, generated.path("measurements").path("snapshotPasses").asInt(),
+                "One protected Git snapshot is shared by the generation decision");
+        AuditedAssertions.assertEquals(1, generated.path("measurements").path("reviewPasses").asInt(),
+                "Control parsing and static selector validation run once per generation");
+        AuditedAssertions.assertEquals(1, generated.path("measurements").path("protectedDiffDigests").asInt(),
+                "One exact protected diff digest is shared by every selected control");
+        AuditedAssertions.assertEquals(2, generated.path("measurements").path("stableCheckoutChecks").asInt(),
+                "A clean-state and HEAD check surrounds the shared digest without rescanning all source inputs");
+        AuditedAssertions.assertTrue(generated.path("measurements").path("elapsedMs").asLong() >= 0);
+        inputs.add("Proof-generation phase counts", generated.path("measurements").toPrettyString());
+        inputs.add("Cost reduction boundary", "The former generation path performed one raw Git snapshot, a full requiredProofs review and a full inspect review. The new path performs one source/control review, shares one protected raw-diff digest across all controls, then checks the clean checkout and HEAD without re-enumerating source inputs. The Extent records the actual elapsed time; it does not claim a build-time speedup.");
         AuditedAssertions.assertEquals("BLOCKED", admission(fixture, Map.of()).path("status").asText(),
                 "Generation admission never becomes authorization for a normal collection");
         fixture.git().put(BASELINE, verified(fixture.git(), ID, RESOURCE)
@@ -172,6 +187,28 @@ class TestChangeProofComponentTest {
         fixture.git().put(BASELINE, fixture.git().control(ID, "VERIFIED", fixture.git().base, TODAY.toString(), false, RESOURCE));
         fixture.git().commit("declaration without checks");
         refused(fixture, "CHECKS");
+    }
+
+    @Test void generatedIgnoredOutputsDoNotInvalidateProofButIgnoredProtectedSourcesDo(@TempDir Path root) throws Exception {
+        var fixture = fixture(root);
+        Path exclude = fixture.git().root.resolve(".git/info/exclude");
+        Files.writeString(exclude, "\n**/build/**\n", java.nio.file.StandardOpenOption.APPEND);
+        Path generatedPom = fixture.git().root.resolve("whist-lab-app/game-core/build/tmp/.cache/expanded/fixture/pom.xml");
+        Files.createDirectories(generatedPom.getParent());
+        Files.writeString(generatedPom, "generated Gradle cache metadata");
+        var plan = TestChangeReview.proofPlan(fixture.git().root, fixture.git().base, ID, TODAY);
+        AuditedAssertions.assertTrue(plan.identity().diffSha256().matches("[a-f0-9]{64}"),
+                "Ignored build output does not invalidate a proof over the same reviewed source diff");
+
+        String ignoredSource = "nested/module/src/test/java/demo/Ignored.java";
+        Path source = fixture.git().root.resolve(ignoredSource);
+        Files.createDirectories(source.getParent());
+        Files.writeString(source, "class Ignored {}\n");
+        Files.writeString(exclude, "\n" + ignoredSource + "\n", java.nio.file.StandardOpenOption.APPEND);
+        var review = TestChangeReview.inspect(fixture.git().root, fixture.git().base, Map.of(), TODAY);
+        AuditedAssertions.assertTrue(review.diagnostics().stream()
+                .anyMatch(message -> message.startsWith("TEST-CHANGE-UNCOVERED")),
+                "An ignored protected source remains visible to fail-closed control selection");
     }
 
     private static Fixture fixture(Path root) throws Exception {

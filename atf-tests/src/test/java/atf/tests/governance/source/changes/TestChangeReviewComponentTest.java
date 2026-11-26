@@ -2,8 +2,10 @@ package atf.tests.governance.source.changes;
 
 import atf.testkit.AtfComponentTest;
 import atf.testkit.assertions.AuditedAssertions;
+import atf.tests.reporting.GameReportAudit;
 import atf.tests.testchange.TestChangeReview;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.api.io.TempDir;
 
 import java.io.IOException;
@@ -20,6 +22,7 @@ import static atf.tests.governance.source.changes.TestChangeGitFixture.RESOURCE;
 import static atf.tests.governance.source.changes.TestChangeGitFixture.TEST;
 
 @AtfComponentTest
+@ExtendWith(GameReportAudit.class)
 class TestChangeReviewComponentTest {
     private static final LocalDate TODAY = LocalDate.of(2026, 11, 15);
     private static final String VALID = TODAY.toString();
@@ -62,7 +65,9 @@ class TestChangeReviewComponentTest {
                 "config/atf-component-dependencies.json", "atf-tests/tools/atf-component-dependencies.mjs",
                 "atf-tests/tools/atf-dependency-references.mjs", "atf-tests/tools/atf-script-references.mjs",
                 "atf-tests/tools/atf-dependency-cli.mjs", "atf-tests/tools/component-source-check.mjs",
-                "scripts/AtfComponentSelection.ps1",
+                "scripts/AtfComponentSelection.ps1", "scripts/AtfLauncherCapabilities.ps1",
+                "scripts/AtfBrowserToolchain.ps1", "scripts/run-whist-collection.ps1",
+                "atf-test-android/tools/AndroidDeviceSetup.psm1",
                 "atf-ui-browser/tests/flow-budget.mjs", "atf-ui-browser/tests/flow-budget.test.mjs",
                 "atf-ui-browser/build.gradle", "module/src/unitTest/java/UnitTest.java");
         for (String path : paths) repo.put(path, "controlled payload\n");

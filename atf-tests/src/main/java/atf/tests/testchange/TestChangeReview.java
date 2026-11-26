@@ -38,6 +38,9 @@ public final class TestChangeReview {
             "config/atf-governance-policy.json", "config/atf-test-suites.json", "config/atf-component-collections.json", "config/gradle-app-collections.properties",
             "config/gradle-audit-collections.properties", "config/test-collections.json", "config/release-platform-rag-policy.json",
             "scripts/run-atf-governance.ps1", "scripts/run-component-suites.ps1",
+            "scripts/AtfLauncherCapabilities.ps1", "scripts/run-whist-collection.ps1",
+            "scripts/AtfBrowserToolchain.ps1",
+            "atf-test-android/tools/AndroidDeviceSetup.psm1",
             "scripts/AtfLocalPaths.ps1", "scripts/run-documentation-governance.ps1", "scripts/run-jvm-inventory.ps1",
             "atf-tests/tools/android-user-ownership.test.mjs",
             "scripts/export-card-table-ui.ps1",
@@ -97,6 +100,25 @@ public final class TestChangeReview {
             throw TestChangeProof.failure("DIFF", "review moved during proof admission");
         var result = review.result();
         return new Result(result.base(), result.protectedPaths(), result.diagnostics(), List.copyOf(continuations));
+    }
+
+    public static Generation prepareProofGeneration(Path root, String explicitBase, String requestedControl,
+                                                     LocalDate today) throws IOException, InterruptedException {
+        long started = System.nanoTime();
+        Review review = proofReview(root, explicitBase, today);
+        var controlIds = review.verified().keySet().stream().toList();
+        if (!requestedControl.isBlank() && !controlIds.contains(requestedControl)) {
+            throw TestChangeProof.failure("CONTROL", requestedControl + " must authorize this diff as VERIFIED");
+        }
+        if (!controlIds.isEmpty()) {
+            String diff = GitTestChangeSnapshot.proofDiff(review.snapshot());
+            for (Control control : review.verified().values()) plan(review.snapshot(), control, diff);
+        }
+        GitTestChangeSnapshot.assertReviewStillCurrent(review.snapshot());
+        long elapsedMs = Math.max(0, (System.nanoTime() - started) / 1_000_000);
+        return new Generation(review.result(), controlIds,
+                new GenerationMeasurements(1, 1, controlIds.isEmpty() ? 0 : 1,
+                        controlIds.isEmpty() ? 1 : 2, elapsedMs));
     }
 
     public static TestChangeProof.Plan proofPlan(Path root, String base, String id, LocalDate today)
@@ -238,4 +260,8 @@ public final class TestChangeReview {
             this(base, protectedPaths, diagnostics, List.of());
         }
     }
+
+    public record Generation(Result result, List<String> controls, GenerationMeasurements measurements) { }
+    public record GenerationMeasurements(int snapshotPasses, int reviewPasses, int protectedDiffDigests,
+                                         int stableCheckoutChecks, long elapsedMs) { }
 }

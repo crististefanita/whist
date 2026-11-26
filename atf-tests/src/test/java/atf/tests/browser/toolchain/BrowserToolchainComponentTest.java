@@ -18,15 +18,19 @@ import static atf.testkit.assertions.AuditedAssertions.*;
 
 @AtfComponentTest @ExtendWith(GameReportAudit.class)
 class BrowserToolchainComponentTest {
-    @Test void javaCapabilitiesAndMavenPresencePrecedeBrowserPreparation(ComponentInputs inputs) throws Exception {
+    @Test void javaAndMavenVersionsPrecedeBrowserPreparation(ComponentInputs inputs) throws Exception {
         var observed = fixture("ready", inputs);
         assertEquals(2, observed.path("rows").size());
-        String source = HexFormat.of().formatHex(MessageDigest.getInstance("SHA-256").digest(Files.readAllBytes(GovernanceProject.locateProjectRoot().resolve("scripts/AtfBrowserToolchain.ps1"))));
+        var project = GovernanceProject.locateProjectRoot();
+        String sourceParts = List.of("AtfBrowserToolchain.ps1", "AtfLauncherCapabilities.ps1").stream()
+                .map(name -> name + "=" + fileSha(project.resolve("scripts/" + name))).collect(java.util.stream.Collectors.joining("\n"));
+        String source = HexFormat.of().formatHex(MessageDigest.getInstance("SHA-256")
+                .digest(sourceParts.getBytes(StandardCharsets.UTF_8)));
         for(var row:observed.path("rows")) {
             assertEquals(source,row.path("sourceSha256").asText(),"The receipt identifies the actually consumed preflight implementation");
             assertEquals(4,row.path("capabilities").size());
-            assertEquals(List.of("resolve:java","resolve:javac","resolve:jar","resolve:mvn","probe:java","probe:javac","probe:jar"),new ObjectMapper().convertValue(row.path("events"),List.class),"All tools are resolved before version probes; Maven presence is distinct from runtime qualification");
-            assertEquals("APPLICATION_PRESENT",row.path("capabilities").get(3).path("kind").asText());
+            assertEquals(List.of("resolve:java","resolve:javac","resolve:jar","resolve:mvn","probe:java","probe:javac","probe:jar","probe:mvn"),new ObjectMapper().convertValue(row.path("events"),List.class),"All tools are resolved before bounded version probes");
+            assertEquals("RUNTIME_VERSION",row.path("capabilities").get(3).path("kind").asText());
         }
         assertEquals(3,observed.path("bindings").size());
         for(var binding:observed.path("bindings"))assertTrue(binding.path("preflightBeforePreparation").asBoolean(),binding.path("name").asText());
@@ -43,11 +47,16 @@ class BrowserToolchainComponentTest {
     }
     private static JsonNode fixture(String selection,ComponentInputs inputs) throws Exception {
         var root=GovernanceProject.locateProjectRoot();
-        inputs.add("Precondition","PowerShell fixture with controlled application resolution, version responses and process lifecycle; actual three launcher sources. Java 17/21, missing tools, old/alias responses, refusal, read failure, timeout, kill and dispose failure. No browser, build, device, sleeps or screenshots.");
+        inputs.add("Precondition","PowerShell fixture with controlled application resolution, bounded version responses and process lifecycle; actual three browser launcher sources. Java 17/21, Maven runtime, missing tools, old/alias responses, refusal, read failure, timeout, kill and dispose failure. No browser, build, device, sleeps or screenshots.");
         var result=CommandProcess.execute(List.of("pwsh","-NoProfile","-File",root.resolve("atf-tests/src/test/resources/toolchain/browser-toolchain-contract.ps1").toString(),"-Root",root.toString(),"-Case",selection),root,Map.of(),Duration.ofSeconds(45),true);
         String output=new String(result.stdout(),StandardCharsets.UTF_8);
         inputs.add("Original controlled process output",output+"\nSTDERR\n"+result.stderr());
         assertEquals(0,result.exitCode(),"PowerShell contract completed: "+output);
         var observed=new ObjectMapper().readTree(output);assertEquals("PASS",observed.path("status").asText());return observed;
+    }
+
+    private static String fileSha(java.nio.file.Path path) {
+        try { return HexFormat.of().formatHex(MessageDigest.getInstance("SHA-256").digest(Files.readAllBytes(path))); }
+        catch (java.io.IOException | java.security.NoSuchAlgorithmException failure) { throw new IllegalStateException(failure); }
     }
 }

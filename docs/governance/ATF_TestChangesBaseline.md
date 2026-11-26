@@ -7,6 +7,56 @@ This register defines reviewed controls, their Git base and exact paths. The [te
 ## Verified controls
 
 <details>
+<summary>Launcher preflight and measured proof generation</summary>
+
+```yaml
+testChanges:
+  - id: RAG-32-35-LAUNCHER-PROOF
+    status: VERIFIED
+    base: 66510dfebb066e4cb2e7652cae1989b59cc0962d
+    expires: 2026-12-26
+    reason: Qualify shared Java, Maven, Gradle and Node preflight plus bounded ADB cleanup; reduce repeated protected Git scans while preserving byte identity and rejection causes.
+    proof: "mvn -o -pl atf-tests -am -Dtest=LauncherCapabilitiesComponentTest,BrowserToolchainComponentTest,AndroidReleasePreflightComponentTest,TestChangeProofComponentTest,TestChangeReviewComponentTest -Dsurefire.failIfNoSpecifiedTests=false test"
+    checks:
+      positive:
+        - atf.tests.governance.support.LauncherCapabilitiesComponentTest#requiredToolsResolveBeforeVersionProbesAndBeforeLauncherPreparation
+        - atf.tests.governance.support.LauncherCapabilitiesComponentTest#commandScriptLaunchUsesArgumentBoundariesAndRetainsExitCodes
+        - atf.tests.browser.toolchain.BrowserToolchainComponentTest#javaAndMavenVersionsPrecedeBrowserPreparation
+        - atf.tests.governance.documentation.release.rag.scope.AndroidReleasePreflightComponentTest#controlledProcessSeparatesReadinessTimeoutAndOriginalFailure
+        - atf.tests.governance.source.changes.TestChangeProofComponentTest#admissionRechecksChangedSourcesAndSeparatesProofGeneration
+        - atf.tests.governance.source.changes.TestChangeProofComponentTest#generatedIgnoredOutputsDoNotInvalidateProofButIgnoredProtectedSourcesDo
+        - atf.tests.governance.source.changes.TestChangeReviewComponentTest#markdownFixturesAndSelectionContractsRemainProtected
+      negative:
+        - atf.tests.governance.support.LauncherCapabilitiesComponentTest#missingMalformedAndUnpinnedToolsAreRejectedBeforeExpensiveWork
+        - atf.tests.browser.toolchain.BrowserToolchainComponentTest#missingOldAliasAndInterruptedToolsCannotPassOrMaskOriginalCauses
+        - atf.tests.governance.documentation.release.rag.scope.AndroidReleasePreflightComponentTest#theNativeLauncherBlocksBeforeStagingOrMaven
+        - atf.tests.governance.source.changes.TestChangeProofComponentTest#proofFromAnotherCommitCannotBeReused
+    paths:
+      - atf-test-android/tools/AndroidDeviceSetup.psm1
+      - atf-tests/src/main/java/atf/tests/testchange/GitTestChangeSnapshot.java
+      - atf-tests/src/main/java/atf/tests/testchange/TestChangeAdmissionCli.java
+      - atf-tests/src/main/java/atf/tests/testchange/TestChangeReview.java
+      - atf-tests/src/test/java/atf/tests/browser/toolchain/BrowserToolchainComponentTest.java
+      - atf-tests/src/test/java/atf/tests/governance/documentation/release/rag/scope/AndroidReleasePreflightComponentTest.java
+      - atf-tests/src/test/java/atf/tests/governance/source/changes/TestChangeProofComponentTest.java
+      - atf-tests/src/test/java/atf/tests/governance/source/changes/TestChangeReviewComponentTest.java
+      - atf-tests/src/test/java/atf/tests/governance/support/LauncherCapabilitiesComponentTest.java
+      - atf-tests/src/test/resources/toolchain/browser-toolchain-contract.ps1
+      - atf-tests/src/test/resources/toolchain/launcher-capabilities-contract.ps1
+      - config/atf-component-collections.json
+      - config/atf-component-reader-seals.json
+      - scripts/AtfBrowserToolchain.ps1
+      - scripts/AtfLauncherCapabilities.ps1
+      - scripts/AtfStandaloneJava.ps1
+      - scripts/run-atf-governance.ps1
+      - scripts/run-component-suites.ps1
+      - scripts/run-whist-collection.ps1
+      - docs/governance/ATF_TestChangesBaseline.md
+```
+
+</details>
+
+<details>
 <summary>Selector-first component qualification and compiler cost evidence</summary>
 
 ```yaml
@@ -712,6 +762,7 @@ testChanges:
         - atf.tests.governance.documentation.release.rag.scope.ComponentEvidenceScopeComponentTest#nodeContractTestsKeepReuseClassificationInsideTheRealBuildBoundary
       negative:
         - atf.tests.governance.source.changes.TestChangeProofComponentTest#admissionRechecksChangedSourcesAndSeparatesProofGeneration
+        - atf.tests.governance.source.changes.TestChangeProofComponentTest#generatedIgnoredOutputsDoNotInvalidateProofButIgnoredProtectedSourcesDo
         - atf.tests.governance.documentation.release.rag.scope.QualificationLauncherComponentTest#invalidTestChangeProofStopsBothLaunchersBeforeCopyOrMaven
         - atf.tests.governance.documentation.release.rag.scope.ComponentEvidenceScopeComponentTest#sharedDependenciesAndUnknownInputsCannotReuseTheirConsumers
     paths:

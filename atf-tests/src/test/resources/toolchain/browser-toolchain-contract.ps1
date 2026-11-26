@@ -12,7 +12,7 @@ function Read-AtfBrowserToolVersion([string]$Executable,[int]$TimeoutSeconds,[st
     $script:Events.Add('probe:'+ $Tool)
     if($script:Bad -eq 'probe'){throw 'controlled probe failure'}
     $name=if($Tool -eq 'java'){'openjdk'}else{$Tool}
-    $output="$name $($script:Major).0.1"
+    $output=if($Tool -eq 'mvn'){'Apache Maven 3.10.0'}else{"$name $($script:Major).0.1"}
     if($script:Bad -eq 'malformed'){$output='installation alias, not a runtime'}
     [pscustomobject]@{ExitCode=$(if($script:Bad -eq 'exit'){12}else{0});Output=$output}
 }
@@ -75,7 +75,7 @@ if($Case -eq 'ready'){
         $script:ProcessMode=$mode;$script:Waits=0;$script:Events.Clear();$cause=''
         try{$null=Complete-AtfBrowserToolProcess (New-ControlledProcess) 1 'controlled'}catch{$cause=$_.Exception.ToString()}
         if(!$cause -or @($script:Events|Where-Object{$_ -eq 'dispose'}).Count -ne 1){throw 'Process failure lost refusal or disposal'}
-        if($mode -eq 'kill' -and (!$cause.Contains('TOOL_CAPABILITY_TIMEOUT') -or !$cause.Contains('controlled kill failure'))){throw 'Cleanup masked timeout'}
+        if($mode -eq 'kill' -and (!$cause.Contains('LAUNCHER_CAPABILITY_TIMEOUT') -or !$cause.Contains('controlled kill failure'))){throw 'Cleanup masked timeout'}
         $rows+=@{name='process-'+$mode;refused=$true;disposedOnce=$true;cause=$cause;events=@($script:Events.ToArray())}
     }
     @{status='PASS';scope='Controlled missing tools, alias/old versions, startup/read/timeout and cleanup; no real wait or process';rows=$rows}|ConvertTo-Json -Depth 9 -Compress
