@@ -62,6 +62,44 @@ test('one exchange repairs a greedy coverage trap without increasing the active 
  assert.deepEqual(result,selectGames([...entries].reverse(),{maxGames:2}));
 });
 
+test('declared curator volume profile scales deterministically without exceeding its input and heap budgets',()=>{
+ const volumes=[100,1000,5000],lessonCount=64,lessonsPerEntry=8,maxGames=100,heapBudgetBytes=128*1024*1024,warmupGames=128;
+ const warmup=Array.from({length:warmupGames},(_,index)=>({id:`warmup-${index}`,
+  traceHash:crypto.createHash('sha256').update(`warmup-trace-${index}`).digest('hex'),
+  lessons:Array.from({length:lessonsPerEntry},(_,offset)=>`lesson-${String((index+offset)%lessonCount).padStart(2,'0')}`)}));
+ selectGames(warmup,{maxGames});
+ const rows=[];
+ for(const count of volumes){
+  if(global.gc)global.gc();
+  const entries=Array.from({length:count},(_,index)=>({
+   id:`volume-${String(index).padStart(5,'0')}`,
+   traceHash:crypto.createHash('sha256').update(`volume-trace-${index}`).digest('hex'),
+   lessons:Array.from({length:lessonsPerEntry},(_,offset)=>`lesson-${String((index+offset)%lessonCount).padStart(2,'0')}`)
+  }));
+  const inputBytes=Buffer.byteLength(JSON.stringify(entries));
+  const heapBeforeBytes=process.memoryUsage().heapUsed;
+  const started=performance.now(),forward=selectGames(entries,{maxGames}),elapsedMs=performance.now()-started;
+  const reverseStarted=performance.now(),reverse=selectGames([...entries].reverse(),{maxGames}),reverseElapsedMs=performance.now()-reverseStarted;
+  if(global.gc)global.gc();
+  const heapAfterBytes=process.memoryUsage().heapUsed;
+  const selectionHash=crypto.createHash('sha256').update(forward.selected.map(item=>item.traceHash).join('\n')).digest('hex');
+  const reverseHash=crypto.createHash('sha256').update(reverse.selected.map(item=>item.traceHash).join('\n')).digest('hex');
+  assert.equal(forward.uniqueTraces,count);
+  assert.ok(forward.selected.length<=maxGames);
+  assert.equal(forward.coveredLessons,lessonCount);
+  assert.deepEqual(forward.missingLessons,[]);
+  assert.equal(selectionHash,reverseHash,'Input order cannot change the selected trace set');
+  assert.ok(Number.isFinite(elapsedMs)&&elapsedMs>=0&&Number.isFinite(reverseElapsedMs)&&reverseElapsedMs>=0);
+  assert.ok(heapAfterBytes<=heapBudgetBytes,'Retained JavaScript heap stays within the declared child-process budget');
+  rows.push({inputGames:count,inputBytes,uniqueTraces:forward.uniqueTraces,lessonCount:forward.lessonCount,
+   coveredLessons:forward.coveredLessons,selectedGames:forward.selected.length,selectionHash,reverseHash,
+   elapsedMs:Number(elapsedMs.toFixed(3)),reverseElapsedMs:Number(reverseElapsedMs.toFixed(3)),
+   heapBeforeBytes,heapAfterBytes,heapBudgetBytes});
+ }
+ process.stdout.write('Curator volume observations: '+JSON.stringify({profile:'synthetic-selector-v1',maxGames,lessonsPerEntry,warmupGames,
+  timeoutSeconds:60,heapBudgetBytes,rows})+'\n');
+});
+
 test('a coverage improvement cannot trade away a protected regression origin',()=>{
  const entries=[e('a',['a','b','c','d']),e('b',['a','b','e']),e('c',['c','d','f'])];
  const result=selectGames(entries,{maxGames:2,protectedIds:['a']});

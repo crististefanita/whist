@@ -62,6 +62,7 @@ An Android path remains E2E only when performing new interactions in the install
 | [CertifiedContractRegressionTest](../../whist-lab-app/game-core/src/test/java/ro/whistlab/core/ai/engine/CertifiedContractRegressionTest.java) | Certificate, lack of guarantee and fallback. |
 | [HardSalvageObjectiveTest](../../whist-lab-app/game-core/src/test/java/ro/whistlab/core/ai/contract/HardSalvageObjectiveTest.java) | The order of objectives when exact completion is publicly impossible. |
 | [IndependentPlayerModelTest](../../whist-lab-app/game-core/src/test/java/ro/whistlab/coach/IndependentPlayerModelTest.java) | Feasibility and independent model. |
+| [IndependentPlayerContractTest#equivalentRelativeScoreContextsKeepIndependentSamplesAndDecisions](../../whist-lab-app/ai-lab/src/test/java/ro/whistlab/coach/IndependentPlayerContractTest.java) | Common score translation preserves deterministic samples and complete bid/card choices; a one-seat relative-score change remains visible to sampling. This is a repeatability oracle, not a strength claim. |
 | [HumanUncertainBidComponentTest](../../whist-lab-app/app/src/test/java/ro/whistlab/app/bidding/HumanUncertainBidComponentTest.java) | Hard recommendation on public observation, trump, opponent bids, translation of score and independent formulas for configurable series. |
 
 ## Reading of archived observations

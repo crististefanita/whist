@@ -29,7 +29,7 @@ Stable contracts belong to thematic guidelines; each criterion remains open unti
 - Select explicit IDs before an iteration and name them in the final audit and reply.
 - A qualified subcriterion does not close its parent gate; remove only completed criteria and state the remaining boundary.
 - The index prioritizes work from the thematic registers; its row count is not a count of completed iterations.
-- This revision has four offline work packages and fourteen aggregate acceptance or research gates.
+- This revision has three offline work packages and fourteen aggregate acceptance or research gates.
 
 ### Offline work packages
 
@@ -37,8 +37,7 @@ Stable contracts belong to thematic guidelines; each criterion remains open unti
 |---|---:|---:|---|
 | RAG-36 | P2 | 84 | Reuse passing controls after an isolated driver correction only with per-control dependency closures, original JUnit/report identities and shared-input rejection. [Register](ATF_Governance.md#qualification-of-claims-and-launchers) |
 | LAB-01 | P2 | 83 | Qualify hard-stop recovery of corpus publication claims, excluding live writers and preserving immutable input identities. [Register](ATF_Ai.md#autonomous-laboratory-verification) |
-| LAB-02 | P2 | 82 | Qualify corpus tools at declared large input volumes with scaling, resource and provenance measurements. [Register](ATF_Ai.md#autonomous-laboratory-verification) |
-| AI-03 | P2 | 81 | Qualify independent-player decisions under equivalent score contexts without changing frozen policy identities. [Register](ATF_Ai.md#levels-and-qualification-limits) |
+| LAB-02 | P2 | 82 | The selector stage is measured on synthetic 100/1,000/5,000-trace inputs; qualify full archive traversal, peak resources and hard-stop recovery before closing the laboratory-scale criterion. [Register](ATF_Ai.md#autonomous-laboratory-verification) |
 
 ### Acceptance and research gates
 

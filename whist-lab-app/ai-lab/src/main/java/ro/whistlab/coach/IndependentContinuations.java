@@ -77,9 +77,10 @@ final class IndependentContinuations {
 
     static int rival(Position p, int[] won, int[] goals, int actor) {
         int best = Integer.MIN_VALUE;
+        int actorTotal = p.seats().get(actor).total();
         for (int s = 0; s < won.length; s++)
             if (s != actor)
-                best = Math.max(best, p.seats().get(s).total() + score(p, s, won[s], goals[s]));
+                best = Math.max(best, p.seats().get(s).total() - actorTotal + score(p, s, won[s], goals[s]));
         return best;
     }
 

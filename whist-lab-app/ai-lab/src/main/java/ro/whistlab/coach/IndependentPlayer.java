@@ -119,14 +119,14 @@ public final class IndependentPlayer {
         for (int k = 0; k < 24; k++) {
             PlannerControl.check();
             PlannerControl.event(PlannerControl.Event.SAMPLE);
-            var world = deal(p, new Random(seed(p, k)));
+            var world = deal(p, new Random(sampleSeed(p, k)));
             if (world == null) continue;
             samples++;
             PlannerControl.event(PlannerControl.Event.WORLD);
             for (int b = 0; b <= p.size; b++)
                 if (!last || b + prior != p.size) {
                     int[] goals = goals(p, world, b);
-                    int[] won = roll(p, copy(world), -1, goals, new Random(seed(p, k) ^ 0xC0AC4L));
+                    int[] won = roll(p, copy(world), -1, goals, new Random(sampleSeed(p, k) ^ 0xC0AC4L));
                     values[b] += score(p, p.seat, won[p.seat], b);
                 }
         }
@@ -173,7 +173,7 @@ public final class IndependentPlayer {
         for (int k = 0; k < 48; k++) {
             PlannerControl.check();
             PlannerControl.event(PlannerControl.Event.SAMPLE);
-            var world = deal(p, new Random(seed(p, k)));
+            var world = deal(p, new Random(sampleSeed(p, k)));
             if (world == null) continue;
             samples++;
             PlannerControl.event(PlannerControl.Event.WORLD);
@@ -184,7 +184,7 @@ public final class IndependentPlayer {
                                 copy(world),
                                 allowed.get(c),
                                 goals,
-                                new Random(seed(p, k) ^ 0xC0AC4L));
+                                new Random(sampleSeed(p, k) ^ 0xC0AC4L));
                 values[c] += score(p, p.seat, won[p.seat], goals[p.seat]);
                 rivals[c] += IndependentContinuations.rival(p, won, goals, p.seat);
             }
@@ -330,10 +330,12 @@ public final class IndependentPlayer {
         return IndependentDeals.copy(w);
     }
 
-    private static long seed(Position p, int sample) {
+    static long sampleSeed(Position p, int sample) {
         int seats = 1;
+        int actorTotal = p.seats.get(p.seat).total;
         for (Seat s : p.seats) {
-            int h = ((s.remaining * 31 + Objects.hashCode(s.bid)) * 31 + s.won) * 31 + s.total;
+            int relativeTotal = s.total - actorTotal;
+            int h = ((s.remaining * 31 + Objects.hashCode(s.bid)) * 31 + s.won) * 31 + relativeTotal;
             seats = 31 * seats + h;
         }
         int h = ((p.seat * 31 + p.dealer) * 31 + p.size) * 31 + p.trump;

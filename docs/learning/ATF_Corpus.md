@@ -86,3 +86,9 @@ Cooperating writers claim the same destination exclusively. Consumers see either
 Publication uses a sibling on the same filesystem. This is a cooperative-writer contract, not protection against a hostile process replacing paths between checks, or a power-loss durability guarantee.
 
 Pure unit tests cover the publisher's filesystem boundaries and error retention. Auditable [publication components](../../atf-tests/src/test/java/atf/tests/learning/publication/CorpusPublicationComponentTest.java) generate legal games locally, compare source and published hashes independently, and control concurrent writers and write/promotion faults; they require neither an external archive nor screenshots.
+
+A focused component measures deterministic set-cover selection on synthetic input:
+
+- **Population:** 100, 1,000 and 5,000 unique traces after a 128-entry warm-up; every row requires 64/64 lesson coverage and respects the 100-game cap.
+- **Observations:** serialized input bytes, selected count, forward/reverse selection hashes, selector elapsed time, and retained JavaScript heap after explicit garbage collection.
+- **Limits:** the child process declares a 128 MiB heap and 60-second timeout. Retained heap is not peak memory; this probe does not exercise archive parsing, full validation/copy/publication, or hard-stop recovery.

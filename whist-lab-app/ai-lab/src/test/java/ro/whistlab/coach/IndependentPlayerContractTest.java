@@ -49,6 +49,37 @@ public class IndependentPlayerContractTest extends atf.gradle.audit.GradleAudite
         assertEquals("fields must equal Set.of(\"seat\", \"dealer\", \"size\", \"trump\", \"hand\", \"seats\", \"trick\", \"history\", \"turnedCard\", \"streakBonuses\", \"streakBonusPoints\", \"streakPenaltyPoints\")", Set.of("seat","dealer","size","trump","hand","seats","trick","history","turnedCard",
                 "streakBonuses","streakBonusPoints","streakPenaltyPoints"),fields);
     }
+    @Test public void equivalentRelativeScoreContextsKeepIndependentSamplesAndDecisions() {
+        var bid = LocalPositions.initial(4, 59, true, false);
+        var translatedBid = translateScores(bid, 1200, -1);
+        var card = LocalPositions.initial(4, 59, false, false);
+        var translatedCard = translateScores(card, 1200, -1);
+        var changedOpponent = translateScores(bid, 0, 1);
+
+        atf.gradle.audit.GradleInputs.fixture("Equivalent relative-score contexts before first assertion",
+                "bid", bid, "translated bid", translatedBid, "card", card,
+                "translated card", translatedCard, "relative control", changedOpponent);
+        assertEquals("Common score translation preserves the first public-world sample",
+                IndependentPlayer.sampleSeed(bid, 0), IndependentPlayer.sampleSeed(translatedBid, 0));
+        assertNotEquals("Changing one opponent's relative score changes the sample identity",
+                IndependentPlayer.sampleSeed(bid, 0), IndependentPlayer.sampleSeed(changedOpponent, 0));
+        assertEquals("Equivalent bid context preserves the complete choice and oracle trace",
+                IndependentPlayer.bid(bid), IndependentPlayer.bid(translatedBid));
+        assertEquals("Equivalent card context preserves the complete choice and oracle trace",
+                IndependentPlayer.card(card), IndependentPlayer.card(translatedCard));
+    }
+
+    private static IndependentPlayer.Position translateScores(IndependentPlayer.Position source,
+                                                                 int commonOffset, int extraSeat) {
+        var seats = java.util.stream.IntStream.range(0, source.seats().size()).mapToObj(index -> {
+            var seat = source.seats().get(index);
+            return new IndependentPlayer.Seat(seat.remaining(), seat.bid(), seat.won(),
+                    seat.total() + commonOffset + (index == extraSeat ? 1 : 0), seat.streak());
+        }).toList();
+        return new IndependentPlayer.Position(source.seat(), source.dealer(), source.size(), source.trump(),
+                source.hand(), seats, source.trick(), source.history(), source.turnedCard(),
+                source.streakBonuses(), source.streakBonusPoints(), source.streakPenaltyPoints());
+    }
     @Test public void bidsRespectTheRangeAndTheDealersForbiddenTotalAtTwoToEightCards() {
         for(int size=2;size<=8;size++)for(boolean last:List.of(false,true)) {
             var p=LocalPositions.initial(size,19,true,last);int bid=IndependentPlayer.bid(p).value();
