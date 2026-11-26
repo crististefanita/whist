@@ -180,8 +180,8 @@ Politica topologiei fixează populațiile furnizorilor, muchiile executabile, ti
 
 | Schimbare sau limită de admitere | Selecție |
 |---|---|
-| Corp revizuit și sigiliu corespunzător, cu aceeași topologie admisă | Consumatorii cititorului schimbat și observatorii inventarului sigiliilor. |
-| Mai mulți cititori revizuiți | Reuniunea tuturor consumatorilor afectați și observatorilor inventarului. |
+| Corp revizuit și sigiliu corespunzător, cu aceeași topologie admisă | Numai consumatorii corpurilor de cititor schimbate; observatorii metadatelor nu lărgesc selecția. |
+| Mai mulți cititori revizuiți | Reuniunea consumatorilor fiecărui cititor schimbat. |
 | Politica topologiei, rădăcini, muchii, populație de furnizori sau rol de cititor schimbat | Calificare ATF completă. |
 | Sigiliu lipsă, învechit sau străin; consumator necunoscut; inventar schimbat fără explicație | Calificare ATF completă. |
 | Origine istorică fără inventarul separat al sigiliilor | Admitere conservatoare; rapoartele vechi nu se reetichetează. |

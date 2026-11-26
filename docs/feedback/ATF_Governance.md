@@ -118,14 +118,13 @@ LangGraph oferă noduri explicite, stare partajată și limite de checkpoint, da
 
 [Responsabilii ATF independenți](../testing/ATF_Collections.md#responsabili-independenți-pentru-componentele-atf) separă verificările editoriale și ale payload-ului de proveniență, Android simulat, GitHub simulat, orchestrare și raportare. Fiecare colecție primară are un inventar pozitiv de clase, un singur Extent canonic și propriul receipt legat de surse.
 
-| Prioritate | Lacună | Criteriu de închidere |
-|---|---|---|
-| P1 · GOV-08 | Inventarele colecțiilor Maven/Gradle, proprietarii primari ai suitelor și declarațiile straturilor se pot desincroniza. | Sincronizați inventarele claselor executabile, proprietarii primari exclusivi și straturile declarate. Adăugați cazuri negative pentru omisiuni și suprapuneri, apoi treceți controalele focalizate pentru colecții, proprietatea suitelor și straturile Gradle fără excepții. |
+Clasele de componente Maven au un singur proprietar primar declarat pozitiv, iar inventarul fiecărui proprietar corespunde exact descriptorului suitei. Clasele de test Gradle au un singur strat declarat în `config/gradle-audit-collections.properties`; stratul `unit` este limitat la setul de surse izolat pentru unități și nu poate depinde de raportarea componentelor. Controalele de guvernanță resping proprietarii Maven sau Gradle lipsă ori duplicați, clasele de suită nelistate și straturile Gradle necunoscute.
 
 [Contractul selecției după dependențe](../testing/ATF_Collections.md#selecția-după-dependențe-executabile) determină consumatorii din referințele executabile actuale și domeniile explicite de observare a repository-ului. Corpurile revizuite ale cititorilor și furnizorii generați delimitează ce poate admite analiza. Intrările necunoscute, populațiile lipsă și modificările neadmise ale cititorilor păstrează calificarea ATF completă.
 
 - Schimbările numai în Markdown selectează responsabilul documentației fără reluarea fixture-urilor independente ale lansatoarelor. Helper-ele comune, dependențele și intrările necunoscute invalidează în continuare consumatorii în mod conservator.
 - Reutilizarea păstrează identitățile și rezultatele JUnit originale, comparațiile și hash-urile rapoartelor. Rapoartele monolitice istorice rămân imuabile și nu pot califica noile identități ale partițiilor.
+- O actualizare revizuită a sigiliilor cititorilor este validată față de inventarul complet actual și topologia neschimbată a dependențelor. Sunt selectați doar consumatorii corpurilor de cititor schimbate; observatorii metadatelor nu lărgesc selecția. Mai mulți cititori schimbați selectează reuniunea consumatorilor lor, iar sigiliile neexplicate sau domeniile necunoscute ale cititorilor păstrează calificarea completă.
 
 [Contractul fixture-urilor de lansare](../testing/ATF_Collections.md#launcher-fixtures) deține profilul resurselor, păstrarea diagnosticelor înaintea curățării, duratele independente ale invocărilor și separarea matricilor pure de componentele reale de admitere.
 
