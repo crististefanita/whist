@@ -22,9 +22,14 @@ Stable contracts belong to thematic guidelines; each criterion remains open unti
 
 ## Prioritized ToDos
 
-The 1–100 score expresses priority within each track, not quality or completion percentage. Offline work packages have bounded component/governance criteria; acceptance and research gates retain their device, consumer, library or fresh-data requirements. Each ID is unique across tracks and links to its owning register.
+- The 1–100 score expresses priority within each track, not quality or completion percentage.
+- Offline work packages have bounded component/governance criteria; acceptance and research gates retain their device, consumer, library or fresh-data requirements.
+- Each ID is unique across tracks and links to its owning register.
 
-Select explicit IDs before an iteration and name them in the final audit and reply. A qualified subcriterion does not close its parent gate; remove only completed criteria and state the remaining boundary. The index prioritizes work from the thematic registers; its row count is not a count of completed iterations. This revision has four offline work packages and fourteen aggregate acceptance or research gates.
+- Select explicit IDs before an iteration and name them in the final audit and reply.
+- A qualified subcriterion does not close its parent gate; remove only completed criteria and state the remaining boundary.
+- The index prioritizes work from the thematic registers; its row count is not a count of completed iterations.
+- This revision has four offline work packages and fourteen aggregate acceptance or research gates.
 
 ### Offline work packages
 

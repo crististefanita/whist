@@ -18,7 +18,10 @@
 
 This directory coordinates operations across modules: checks, application builds and explicitly enabled Android scenarios. Algorithms, validators and tool tests remain in their owning modules.
 
-Launchers locate the project from their script path and prepare isolated working copies. Component groups are admitted against the live catalogs before staging. Release payload bytes are staged only for groups that declare a release snapshot; every run retains the complete release hash inventory and verifies live release bytes before and after execution. Results stay in the configured external evidence directory.
+- Launchers locate the project from their script path and prepare isolated working copies.
+- Component groups are admitted against the live catalogs before staging.
+- Release payload bytes are staged only for groups that declare a release snapshot; every run retains the complete release hash inventory and verifies live release bytes before and after execution.
+- Results stay in the configured external evidence directory.
 
 ## Responsibilities
 
@@ -67,7 +70,11 @@ The component launcher uses [suite-local JVM options](AtfComponentJvm.ps1). Remo
 | `run-offline-*` | Tools and parameters declared by each script; some entries require explicit local paths. | Executes the selected protocol; script existence does not prove tool availability. |
 | Android flow | ADB configuration, identified APK, lease and verified data isolation. | [Infrastructure contract](../atf-test-android/README.md) separates transport, commands and observations. |
 
-JVM collections do not require an emulator connection. The shared [launcher capability contract](AtfLauncherCapabilities.ps1) resolves required tools before probing versions, validates Java 17+, Maven and Node runtimes, and checks Gradle's HTTPS distribution URL and SHA-256-pinned wrapper inputs before any probe or workspace preparation. Each applicable run stores `launcher-capabilities.json` with the consumed helper hash and observed paths. Android ADB transport readiness remains a separate, lease-bound check because an executable existing does not prove a reachable or booted device. Its process tests cover refusal, timeout, bounded termination and preserved cleanup causes without an emulator.
+- JVM collections do not require an emulator connection.
+- The shared launcher capability contract resolves required tools before version probes, validates Java 17+, Maven and Node runtimes, and checks Gradle's HTTPS distribution URL and SHA-256-pinned wrapper inputs before workspace or Maven preparation. Its implementation is `AtfLauncherCapabilities.ps1`; the [qualification register](../docs/feedback/ATF_Governance.md#qualification-of-claims-and-launchers) records the contract and limits.
+- Each applicable run stores `launcher-capabilities.json` with the consumed helper hash and observed paths.
+- Android ADB transport readiness remains a separate, lease-bound check; an executable existing does not prove a reachable or booted device.
+- Android process tests cover refusal, timeout, bounded termination and preserved cleanup causes without an emulator.
 
 ## Identity of execution
 
@@ -83,7 +90,10 @@ JVM collections do not require an emulator connection. The shared [launcher capa
 
 The launcher can reuse compilation after an interrupted classpath step; an altered classpath rebuilds only that step, while changed classes or a foreign, malformed or missing receipt require preparation again. Neither helper runs a game or changes a report verdict.
 
-[`AtfComponentSelection.ps1`](AtfComponentSelection.ps1) resolves and validates component selectors before creating the run directory or staging source. Its receipt decision is checked against the staged suite, Gradle and ownership catalogs. A release-owning group receives the full retained release tree; other explicit groups omit those payload bytes while keeping the complete release manifest, catalog identity, live drift checks and artifact preflight. Legacy `atf-tests` and the default all-groups selection keep full release staging. Resume rechecks the saved mode and refuses a group that needs payload absent from its original workspace.
+- `AtfComponentSelection.ps1` resolves and validates component selectors before creating the run directory or staging source. The [governance register](../docs/feedback/ATF_Governance.md#qualification-of-claims-and-launchers) records the contract and limits.
+- Its receipt decision is checked against the staged suite, Gradle and ownership catalogs.
+- A release-owning group receives the full retained release tree; other explicit groups omit those payload bytes while keeping the complete release manifest, catalog identity, live drift checks and artifact preflight.
+- Legacy `atf-tests` and the default all-groups selection keep full release staging. Resume rechecks the saved mode and refuses a group that needs payload absent from its original workspace.
 
 ## Private signing inputs
 
@@ -93,7 +103,9 @@ The launcher can reuse compilation after an interrupted classpath step; an alter
 
 ## Browser toolchain preflight
 
-[Browser capability checks](AtfBrowserToolchain.ps1) run before Whist catalog generation, module compilation or Pages dependency resolution. Java, javac and jar must resolve to applications and report Java 17 or newer; Pages also requires a Maven application before starting preparation.
+- [Browser capability checks](AtfBrowserToolchain.ps1) run before Whist catalog generation, module compilation or Pages dependency resolution.
+- Java, javac and jar must resolve to applications and report Java 17 or newer.
+- Pages verifies Maven with a bounded version probe before preparation; executable presence alone is insufficient.
 
 | Boundary | Meaning |
 |---|---|
@@ -103,4 +115,7 @@ The launcher can reuse compilation after an interrupted classpath step; an alter
 | Process failure | Refuse missing tools, aliases/non-version responses, old Java versions, nonzero exits and timeouts. Stop only the owned child with a bounded recovery wait, dispose it and preserve primary plus cleanup causes. |
 | Source identity | The receipt and availability/version diagnostics identify the consumed preflight source by SHA-256. This is not an APK, browser-rendering or release verdict. |
 
-Controlled components replace resolver/version responses and the private process port; no shell, browser, build or device is needed for rejection matrices. Actual launcher ordering and resolved-command bindings are checked separately from real Java availability.
+- The shared launcher capability contract resolves required tools before version probes and validates Java 17+, Maven and Node runtime versions, plus Gradle's HTTPS URL and SHA-256 wrapper pins. Its implementation is `AtfLauncherCapabilities.ps1`; the [qualification register](../docs/feedback/ATF_Governance.md#qualification-of-claims-and-launchers) records the contract and limits.
+- Each applicable run stores `launcher-capabilities.json` with the consumed helper hash and observed paths. Workspace or Maven preparation starts only after capability checks pass.
+- Android ADB transport readiness remains a separate lease-bound check; an executable existing does not prove a reachable or booted device.
+- Controlled components replace resolver/version responses and the private process port; no shell, browser, build or device is needed for rejection matrices. Actual launcher ordering and resolved-command bindings are checked separately from real Java availability.
