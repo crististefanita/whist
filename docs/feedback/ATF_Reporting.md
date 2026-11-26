@@ -29,6 +29,8 @@ The [Gradle component guide](../testing/ATF_GradleComponents.md#bounded-matrix-i
 - [ ] Reduce repeated full-document copies inside generic rendering and DOM verification. Streaming consumer seals avoid an extra local copy but do not establish the library's allocation behavior.
 - [ ] Extend the declared resource envelope across comparison, body and capture volume independently. The bounded synthetic profile verifies complete values and PNG bytes; it does not qualify every report below the artifact-size guard.
 
+The consumer component binds the bounded profiles to the pinned reporting-library receipt and verifies the named render/finalize, verify and promote stages, their durations and cumulative pool bounds. It deliberately reports rendering/navigation as one combined library phase; this consumer contract does not satisfy the independent peak or copy-reduction criteria above.
+
 [Verified component publication](../reporting/ATF_Audit.md#verified-component-publication) owns private staging, pre-promotion inspection, atomic replacement and original-cause diagnostics. Keep those regression boundaries active; the remaining criteria concern native resource behavior and library allocation.
 
 - The consumer failure protocol uses isolated bounded JVMs to verify actual heap exhaustion and abrupt termination during rendering or verification. The durable journal retains the last started stage; canonical HTML and original JUnit remain unchanged.

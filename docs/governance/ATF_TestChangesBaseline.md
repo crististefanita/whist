@@ -57,6 +57,29 @@ testChanges:
 </details>
 
 <details>
+<summary>Bounded report receipt stage semantics</summary>
+
+```yaml
+testChanges:
+  - id: RPT-03-REPORT-RECEIPT
+    status: VERIFIED
+    base: 1111491938af2939fe691bc7d31a083176d5aaac
+    expires: 2026-12-26
+    reason: Bind the bounded consumer profile to exact publication stage identities and durations while retaining the cumulative-bound semantics and refusing to claim isolated renderer or navigation peaks.
+    proof: "mvn -o -pl atf-tests -am -Dtest=ReportHeapComponentTest,PublicationFailureProcessComponentTest,AtfSourceQualityGovernanceTest,TestChangeGovernanceTest -Dsurefire.failIfNoSpecifiedTests=false test"
+    checks:
+      positive:
+        - atf.tests.reporting.acceptance.heap.ReportHeapComponentTest#boundedSmallMediumAndLargeReportsKeepEveryComparisonUnderTheDeclaredHeap
+        - atf.tests.reporting.acceptance.heap.PublicationFailureProcessComponentTest#freshProcessCanPublishAndSealTheCandidate
+      negative:
+        - atf.tests.reporting.acceptance.heap.PublicationFailureProcessComponentTest#realHeapExhaustionAndAbruptTerminationCannotPromotePartialReports
+    paths:
+      - atf-tests/src/test/java/atf/tests/reporting/acceptance/heap/ReportHeapComponentTest.java
+```
+
+</details>
+
+<details>
 <summary>Selector-first component qualification and compiler cost evidence</summary>
 
 ```yaml
