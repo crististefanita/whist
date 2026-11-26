@@ -211,7 +211,7 @@ test('hard-stopped active curator preserves the archive and recovers only after 
     await fs.writeFile(heldout,'invalid heldout sentinel');
     const templates=[3,4,5,6].map((players,index)=>createLegalGame({players,seed:12000+index}));
     const sources=[];
-    for(let index=0;index<256;index++){
+    for(let index=0;index<64;index++){
         const template=templates[index%templates.length],id=`curator-stop-${String(index).padStart(4,'0')}`;
         const bytes=Buffer.from(JSON.stringify({...template,id})),file=path.join(directory,id+'.json');
         await fs.writeFile(file,bytes,{flag:'wx'});sources.push({file,sha256:hash(bytes)});
@@ -238,11 +238,11 @@ test('hard-stopped active curator preserves the archive and recovers only after 
         assert.equal(path.basename(stage).startsWith('.active.pending-'),true);
         await fs.rm(stage,{recursive:true,force:false});await fs.unlink(observed.claimPath);
         const manifest=await curate(archive,output,{maxGames:16});
-        assert.equal(manifest.sourceGames,256);assert.ok(manifest.activeGames>0&&manifest.activeGames<=16);
+        assert.equal(manifest.sourceGames,64);assert.ok(manifest.activeGames>0&&manifest.activeGames<=16);
         for(const entry of manifest.games)await loadActiveGame(output,manifest,entry);
         for(const source of sources)assert.equal(await fs.readFile(source.file).then(hash),source.sha256);
         await noPrivateState(root,'active');
-        console.log('Active curator hard-stop observations: '+JSON.stringify({sourceGames:256,activeGames:manifest.activeGames,
+        console.log('Active curator hard-stop observations: '+JSON.stringify({sourceGames:64,activeGames:manifest.activeGames,
             liveCompetitorRefused:true,forcedStopObserved:true,originalSourceHashesPreserved:true,heldoutUntouched:true,
             outputAbsentUntilClaimRecovery:true,recoveryRequiredDeadWriterAndExactClaim:true,recurationVerified:true}));
     }finally{

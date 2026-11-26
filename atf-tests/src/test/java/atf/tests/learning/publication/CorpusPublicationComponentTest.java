@@ -152,7 +152,7 @@ class CorpusPublicationComponentTest {
 
     @Test void curatorHardStopPreservesArchiveAndRecoversByExactClaimIdentity(ComponentInputs inputs) throws Exception {
         var root = GovernanceProject.locateProjectRoot();
-        inputs.add("Precondition", "A child process runs the production corpus curator on 256 generated legal archive records. The child is stopped while the curator writes its real staged selection. Recovery waits for process termination, validates the exact sibling stage and publication claim, preserves every source hash and heldout sentinel, then reruns the curator. No external archive, APK, emulator or screenshot is used.");
+        inputs.add("Precondition", "A child process runs the production corpus curator on 64 generated legal archive records. The child is stopped while the curator writes its real staged selection. Recovery waits for process termination, validates the exact sibling stage and publication claim, preserves every source hash and heldout sentinel, then reruns the curator. The separate scale component covers 256 records. No external archive, APK, emulator or screenshot is used.");
         String output = runNode(List.of("node", "--test", "--test-concurrency=1", "--test-name-pattern",
                         "hard-stopped active curator preserves the archive",
                         root.resolve("whist-lab-app/ai-lab/tools/testing/corpus-publication.test.mjs").toString()),
@@ -160,7 +160,7 @@ class CorpusPublicationComponentTest {
         AuditedAssertions.assertTrue(output.contains("Active curator hard-stop observations:"), output);
         var observation = JSON.readTree(output.lines().filter(line -> line.contains("Active curator hard-stop observations:"))
                 .findFirst().orElseThrow().split("Active curator hard-stop observations:", 2)[1].trim());
-        AuditedAssertions.assertEquals(256, observation.path("sourceGames").asInt());
+        AuditedAssertions.assertEquals(64, observation.path("sourceGames").asInt());
         AuditedAssertions.assertTrue(observation.path("activeGames").asInt() > 0
                 && observation.path("activeGames").asInt() <= 16);
         for (String field : List.of("liveCompetitorRefused", "forcedStopObserved", "originalSourceHashesPreserved",
