@@ -7,6 +7,57 @@ Acest registru definește controalele revizuite, baza Git și căile lor exacte.
 ## Controale verificate
 
 <details>
+<summary>Preflight-ul lansatoarelor și măsurarea generării probelor</summary>
+
+```yaml
+testChanges:
+  - id: RAG-32-35-LAUNCHER-PROOF
+    status: VERIFIED
+    base: 66510dfebb066e4cb2e7652cae1989b59cc0962d
+    expires: 2026-12-26
+    reason: Calificați preflight-ul comun Java, Maven, Gradle și Node și curățarea ADB cu timp limitat; reduceți scanările Git protejate repetate, păstrând identitatea octeților și cauzele refuzurilor.
+    proof: "mvn -o -pl atf-tests -am -Dtest=LauncherCapabilitiesComponentTest,BrowserToolchainComponentTest,AndroidReleasePreflightComponentTest,TestChangeProofComponentTest,TestChangeReviewComponentTest -Dsurefire.failIfNoSpecifiedTests=false test"
+    checks:
+      positive:
+        - atf.tests.governance.support.LauncherCapabilitiesComponentTest#requiredToolsResolveBeforeVersionProbesAndBeforeLauncherPreparation
+        - atf.tests.governance.support.LauncherCapabilitiesComponentTest#commandScriptLaunchUsesArgumentBoundariesAndRetainsExitCodes
+        - atf.tests.browser.toolchain.BrowserToolchainComponentTest#javaAndMavenVersionsPrecedeBrowserPreparation
+        - atf.tests.governance.documentation.release.rag.scope.AndroidReleasePreflightComponentTest#controlledProcessSeparatesReadinessTimeoutAndOriginalFailure
+        - atf.tests.governance.source.changes.TestChangeProofComponentTest#admissionRechecksChangedSourcesAndSeparatesProofGeneration
+        - atf.tests.governance.source.changes.TestChangeProofComponentTest#generatedIgnoredOutputsDoNotInvalidateProofButIgnoredProtectedSourcesDo
+        - atf.tests.governance.source.changes.TestChangeReviewComponentTest#markdownFixturesAndSelectionContractsRemainProtected
+      negative:
+        - atf.tests.governance.support.LauncherCapabilitiesComponentTest#missingMalformedAndUnpinnedToolsAreRejectedBeforeExpensiveWork
+        - atf.tests.browser.toolchain.BrowserToolchainComponentTest#missingOldAliasAndInterruptedToolsCannotPassOrMaskOriginalCauses
+        - atf.tests.governance.documentation.release.rag.scope.AndroidReleasePreflightComponentTest#theNativeLauncherBlocksBeforeStagingOrMaven
+        - atf.tests.governance.source.changes.TestChangeProofComponentTest#proofFromAnotherCommitCannotBeReused
+    paths:
+      - atf-test-android/tools/AndroidDeviceSetup.psm1
+      - atf-tests/src/main/java/atf/tests/testchange/GitTestChangeSnapshot.java
+      - atf-tests/src/main/java/atf/tests/testchange/TestChangeAdmissionCli.java
+      - atf-tests/src/main/java/atf/tests/testchange/TestChangeReview.java
+      - atf-tests/src/test/java/atf/tests/browser/toolchain/BrowserToolchainComponentTest.java
+      - atf-tests/src/test/java/atf/tests/governance/documentation/release/rag/scope/AndroidReleasePreflightComponentTest.java
+      - atf-tests/src/test/java/atf/tests/governance/source/changes/TestChangeProofComponentTest.java
+      - atf-tests/src/test/java/atf/tests/governance/source/changes/TestChangeReviewComponentTest.java
+      - atf-tests/src/test/java/atf/tests/governance/support/LauncherCapabilitiesComponentTest.java
+      - atf-tests/src/test/resources/toolchain/browser-toolchain-contract.ps1
+      - atf-tests/src/test/resources/toolchain/launcher-capabilities-contract.ps1
+      - config/atf-component-collections.json
+      - config/atf-component-reader-seals.json
+      - scripts/AtfBrowserToolchain.ps1
+      - scripts/AtfLauncherCapabilities.ps1
+      - scripts/AtfStandaloneJava.ps1
+      - scripts/run-atf-governance.ps1
+      - scripts/run-component-suites.ps1
+      - scripts/run-whist-collection.ps1
+      - docs/governance/ATF_TestChangesBaseline.md
+```
+
+</details>
+
+
+<details>
 <summary>Calificarea selectorilor înainte de staging și măsurarea compilatorului</summary>
 
 ```yaml

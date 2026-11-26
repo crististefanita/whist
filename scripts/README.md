@@ -18,7 +18,10 @@
 
 Acest director coordonează operații care traversează modulele: verificări, construirea aplicației și scenarii Android activate explicit. Algoritmii, validatoarele și testele uneltelor aparțin modulelor care dețin comportamentul.
 
-Lansatoarele citesc rădăcina proiectului din propria poziție și pregătesc copii temporare. Grupurile componentelor sunt admise pe baza cataloagelor live înainte de staging. Octeții payload-ului release sunt copiați doar pentru grupurile care declară un snapshot release; fiecare rulare păstrează inventarul complet de hash-uri și verifică octeții live ai release-ului înainte și după execuție. Rezultatele se păstrează în depozitul extern configurat.
+- Lansatoarele citesc rădăcina proiectului din propria poziție și pregătesc copii temporare.
+- Grupurile componentelor sunt admise pe baza cataloagelor live înainte de staging.
+- Octeții payload-ului release sunt copiați doar pentru grupurile care declară un snapshot release; fiecare rulare păstrează inventarul complet de hash-uri și verifică octeții live ai release-ului înainte și după execuție.
+- Rezultatele se păstrează în depozitul extern configurat.
 
 ## Responsabilități
 
@@ -67,7 +70,11 @@ Lansatorul componentelor folosește [opțiuni JVM limitate la suită](AtfCompone
 | `run-offline-*` | Uneltele și parametrii declarați de fiecare fișier; unele intrări folosesc căi locale explicite. | Execută protocolul acelei intrări; disponibilitatea uneltei nu se deduce din parsarea scriptului. |
 | Flux Android | Configurația ADB, binarul aplicației, rezervare și backup verificat. | [Contractul infrastructurii](../atf-test-android/README.md) delimitează transportul, comanda și observația. |
 
-Colecțiile JVM nu cer conectarea emulatorului. Pregătirea Java/Maven/Gradle nu este încă un verificator unic de capabilități; [feedback-ul coordonării](../docs/feedback/ATF_Governance.md#calificarea-afirmațiilor-și-lansatoarelor) deține uniformizarea.
+- Colecțiile JVM nu cer conectarea emulatorului.
+- Contractul comun de capabilități ale lansatoarelor rezolvă uneltele necesare înaintea probelor de versiune, verifică Java 17+, versiunile runtime Maven și Node și intrările wrapper-ului Gradle fixate prin HTTPS/SHA-256. Implementarea este AtfLauncherCapabilities.ps1; [registrul de calificare](../docs/feedback/ATF_Governance.md#calificarea-afirmațiilor-și-lansatoarelor) consemnează contractul și limitele.
+- Fiecare rulare aplicabilă păstrează launcher-capabilities.json, cu hash-ul helper-ului și căile observate.
+- Disponibilitatea transportului Android ADB rămâne o verificare separată, legată de rezervare; existența executabilului nu dovedește un dispozitiv conectat sau pornit.
+- Testele procesului Android acoperă refuzul, timeout-ul, oprirea limitată și păstrarea cauzelor de curățare fără emulator.
 
 ## Identitatea execuției
 
@@ -83,7 +90,10 @@ Colecțiile JVM nu cer conectarea emulatorului. Pregătirea Java/Maven/Gradle nu
 
 Lansatorul poate reutiliza compilarea după întreruperea etapei de classpath; un classpath alterat reface doar acea etapă, iar clasele schimbate sau o chitanță străină, invalidă ori lipsă cer o nouă pregătire. Niciun helper nu rulează jocul și nu schimbă verdictul raportului.
 
-[`AtfComponentSelection.ps1`](AtfComponentSelection.ps1) rezolvă și validează selectorii înainte de crearea dosarului de rulare sau staging-ul sursei. Recipisa este reverificată contra cataloagelor de suite, Gradle și ownership din staging. Grupurile proprietare ale release-ului primesc arborele complet păstrat; celelalte selecții explicite omit octeții payload-ului, dar păstrează manifestul complet al release-ului, identitatea catalogului, controalele de derivă live și preflight-ul artefactelor. Grupul legacy `atf-tests` și selecția implicită a tuturor grupurilor păstrează staging-ul complet. Reluarea verifică din nou modul salvat și refuză grupurile care au nevoie de payload-ul absent din workspace-ul original.
+- AtfComponentSelection.ps1 rezolvă și validează selectorii înainte de crearea dosarului de rulare sau staging-ul sursei. [Registrul de guvernanță](../docs/feedback/ATF_Governance.md#calificarea-afirmațiilor-și-lansatoarelor) consemnează contractul și limitele.
+- Recipisa este reverificată contra cataloagelor de suite, Gradle și ownership din staging.
+- Grupurile proprietare ale release-ului primesc arborele complet păstrat; celelalte selecții explicite omit octeții payload-ului, dar păstrează manifestul complet, identitatea catalogului, controalele de derivă live și preflight-ul artefactelor.
+- Grupul legacy atf-tests și selecția implicită păstrează staging-ul complet. Reluarea refuză grupurile care au nevoie de payload-ul absent din workspace-ul original.
 
 ## Intrări private de semnare
 
@@ -93,13 +103,19 @@ Lansatorul poate reutiliza compilarea după întreruperea etapei de classpath; u
 
 ## Preflight-ul uneltelor pentru browser
 
-[Verificările capabilităților browserului](AtfBrowserToolchain.ps1) rulează înaintea generării catalogului Whist, compilării modulelor ori rezolvării dependențelor Pages. Java, javac și jar trebuie să fie aplicații rezolvabile și să raporteze Java 17 sau mai nou; Pages cere și o aplicație Maven înainte de pregătire.
+- [Verificările capabilităților browserului](AtfBrowserToolchain.ps1) rulează înaintea generării catalogului Whist, compilării modulelor ori rezolvării dependențelor Pages.
+- Java, javac și jar trebuie să fie aplicații rezolvabile și să raporteze Java 17 sau mai nou.
+- Pages verifică Maven printr-o probă de versiune delimitată înainte de pregătire; existența executabilului nu este suficientă.
 
 | Graniță | Semnificație |
 |---|---|
 | Unelte Java | Probele de versiune delimitate califică suportul nivelului Java la căile observate; lansatorul invocă acele executabile rezolvate. |
-| Maven | Numai prezența aplicației; rezolvarea dependențelor, pluginurile, rețeaua și rularea Maven efectivă rămân verificări separate. |
+| Maven | Rulează -version printr-un proces copil cu durată limitată; rezolvarea dependențelor, pluginurile, rețeaua și rularea Maven efectivă rămân verificări separate. |
+| Gradle | Validează wrapper-ul versionat, URL-ul distribuției HTTPS, pin-ul SHA-256 și digestul JAR-ului înainte de a porni alt proces; lansatorul înregistrează separat rezultatul taskului Gradle. |
 | Eșecul procesului | Refuză unelte lipsă, aliasuri/răspunsuri fără versiune, versiuni vechi, coduri nenule și timeout. Oprește numai procesul copil deținut când este necesar, îl eliberează și păstrează cauzele primare și de curățare. |
 | Identitatea sursei | Recipisa și diagnosticele disponibilității/versiunii identifică scriptul de preflight consumat prin SHA-256. Nu reprezintă verdict de APK, randare în browser ori release. |
 
-Componentele controlate înlocuiesc răspunsurile de rezolvare/versiune și portul privat al procesului; matricile de refuz nu cer shell, browser, build ori dispozitiv. Ordinea lansatoarelor reale și legarea comenzilor rezolvate se verifică separat de disponibilitatea Java reală.
+- Contractul comun de capabilități ale lansatoarelor rezolvă uneltele necesare înaintea probelor de versiune, verifică Java 17+, versiunile runtime Maven și Node și URL-ul HTTPS cu hash-urile SHA-256 ale wrapper-ului Gradle înaintea pregătirii workspace-ului sau Maven. Implementarea este AtfLauncherCapabilities.ps1; [registrul de calificare](../docs/feedback/ATF_Governance.md#calificarea-afirmațiilor-și-lansatoarelor) consemnează contractul și limitele.
+- Fiecare rulare aplicabilă păstrează launcher-capabilities.json, cu hash-ul helper-ului și căile observate. Pregătirea workspace-ului și Maven începe după aceste verificări.
+- Transportul ADB rămâne o verificare separată, legată de rezervare; existența unui executabil nu dovedește conectarea sau pornirea dispozitivului.
+- Componentele controlate înlocuiesc răspunsurile de rezolvare/versiune și portul privat al procesului; matricile de refuz nu cer shell, browser, build ori dispozitiv. Ordinea reală a lansatoarelor și legarea comenzilor rezolvate se verifică separat de disponibilitatea Java reală.
