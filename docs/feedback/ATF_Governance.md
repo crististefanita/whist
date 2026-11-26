@@ -24,7 +24,7 @@ The [browser test index](../../atf-ui-browser/tests/README.md#diagnostic-runner-
 
 | Priority | Owner and gap | Verification level and closure criterion |
 |---|---|---|
-| P2 | Proof recovery: static controls still share a complete protected Git diff identity. | Selective passing-control reuse remains gated on per-control production, test, runtime and shared dependency closures. Keep original source/report identities; reject changed shared or unknown inputs and changed selectors. The batch now rejects empty or malformed receipts, foreign control IDs and a receipt whose Extent digest does not match its report. The component regression also qualifies the conservative fallback: after one driver fails, the corrected attempt executes the entire selected bundle in a fresh run; original mocked JUnit and Extent identities remain unchanged, and shared-input drift prevents promotion. This does not authorize partial proof reuse. |
+| P2 | Proof recovery: static controls still share a complete protected Git diff identity. | Selective passing-control reuse remains gated on per-control production, test, runtime and shared dependency closures. Keep original source/report identities; reject changed shared or unknown inputs and changed selectors. The batch now checks each receipt's control ID, base, commit, protected-diff digest, nonempty distinct positive/negative selectors, PASS verdicts and exact Extent digest before promotion. The component regression also qualifies the conservative fallback: after one driver fails, the corrected attempt executes the entire selected bundle in a fresh run; original mocked JUnit and Extent identities remain unchanged, and shared-input drift prevents promotion. This does not authorize partial proof reuse. |
 
 The bounded [batch component](../../atf-tests/src/test/java/atf/tests/execution/components/TestChangeBatchComponentTest.java) compares a corrected full-bundle run with shared-source and control-output negative cases. It binds each mocked receipt to its control ID and exact Extent bytes. The synthetic per-control JUnit population and report hashes are fixtures; the generated component report records the actual execution.
 
@@ -35,11 +35,12 @@ testChanges:
     base: 3340c8124e109659bcf975e2b6ec9abbf63b10b8
     expires: 2026-12-26
     reason: Qualify conservative whole-bundle recovery after an isolated proof-driver failure and identity-checked recovery after a hard-stopped corpus publisher.
-    proof: "mvn -o -pl atf-tests -am '-Dtest=TestChangeBatchComponentTest#isolatedDriverCorrectionRerunsTheBundleAndSharedInputDriftRejectsPromotion,TestChangeBatchComponentTest#invalidProofReceiptOrReportIdentityPreventsBatchPublication,CorpusPublicationComponentTest#hardStoppedPublisherExcludesLiveWritersAndRecoversOnlyTheOriginalClaim,CorpusPublicationComponentTest#curatorTraversesAndPublishesGeneratedArchiveWithMeasuredResources' '-Dsurefire.failIfNoSpecifiedTests=false' test"
+    proof: "mvn -o -pl atf-tests -am '-Dtest=TestChangeBatchComponentTest#isolatedDriverCorrectionRerunsTheBundleAndSharedInputDriftRejectsPromotion,TestChangeBatchComponentTest#invalidProofReceiptOrReportIdentityPreventsBatchPublication,CorpusPublicationComponentTest#hardStoppedPublisherExcludesLiveWritersAndRecoversOnlyTheOriginalClaim,CorpusPublicationComponentTest#curatorTraversesAndPublishesGeneratedArchiveWithMeasuredResources,CorpusPublicationComponentTest#curatorHardStopPreservesArchiveAndRecoversByExactClaimIdentity' '-Dsurefire.failIfNoSpecifiedTests=false' test"
     checks:
       positive:
         - atf.tests.execution.components.TestChangeBatchComponentTest#isolatedDriverCorrectionRerunsTheBundleAndSharedInputDriftRejectsPromotion
         - atf.tests.learning.publication.CorpusPublicationComponentTest#hardStoppedPublisherExcludesLiveWritersAndRecoversOnlyTheOriginalClaim
+        - atf.tests.learning.publication.CorpusPublicationComponentTest#curatorHardStopPreservesArchiveAndRecoversByExactClaimIdentity
       negative:
         - atf.tests.execution.components.TestChangeBatchComponentTest#changedSourcePreventsPublicationOfPassingControls
         - atf.tests.execution.components.TestChangeBatchComponentTest#invalidProofReceiptOrReportIdentityPreventsBatchPublication
@@ -47,7 +48,9 @@ testChanges:
     paths:
       - atf-tests/src/test/java/atf/tests/execution/components/TestChangeBatchComponentTest.java
       - atf-tests/src/test/java/atf/tests/learning/publication/CorpusPublicationComponentTest.java
+      - scripts/AtfTestChangeBatch.ps1
       - whist-lab-app/ai-lab/tools/qualification/atomic-directory-hard-stop-child.mjs
+      - whist-lab-app/ai-lab/tools/qualification/active-corpus-hard-stop-child.mjs
       - whist-lab-app/ai-lab/tools/testing/corpus-publication.test.mjs
 ```
 
@@ -66,6 +69,12 @@ testChanges:
 - [Independent proof domains](../governance/ATF_TestChanges.md#independent-proof-domains) owns path-based selection, mixed-diff union and separate evidence. Keep those regression boundaries active; excluding unchanged domains does not close the remaining snapshot, compilation or admission-cost criteria.
 
 - [Inline-image retention governance](../../atf-tests/src/test/java/atf/tests/governance/documentation/release/ReleaseEvidenceRetentionGovernanceTest.java) checks for duplicated PNG files beside HTML. It does not prove data autonomy, image readability or APK integrity; the [adapter criterion](../reporting/ATF_Audit.md) remains separate.
+
+## RAG asset ownership and local signing
+
+| Priority | Current boundary | Closure criterion |
+|---|---|---|
+| P2 | Release policy, test catalogs and launchers have different owners across `config/` and `scripts/`; `.atf-signing/` also contains the public signing contract alongside ignored local material. Moving whole directories would relocate shared launchers, game policy and path contracts together. | Inventory ownership and readers first. Consider `config/rag/` and `scripts/rag/` only for RAG-exclusive files; leave shared launchers and game configuration in their current common areas. Keep private keys outside Git and RAG snapshots in protected local storage (for example, `.imp/local/signing`). Move nothing until component and governance tests prove source reconstruction with and without a local key, path override behavior, release evaluation, and absence of private bytes from manifests, copied sources and reports. |
 
 - The [journal failure contract](../testing/ATF_ReleaseQualification.md#qualification-journal-failures) preserves original command and publication causes separately.
 - Controlled writer failures and actual filesystem refusal remain component regression boundaries; they do not qualify every capability or host-resource condition.

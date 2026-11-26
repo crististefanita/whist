@@ -202,3 +202,50 @@ test('hard-stopped publisher blocks a live competitor and permits only explicit 
         if(child.exitCode===null&&child.signalCode===null){child.kill();await Promise.race([closed,delay(5000)]);}
     }
 });
+
+test('hard-stopped active curator preserves the archive and recovers only after exact claim validation',async t=>{
+    const root=await scratch(t),archive=path.join(root,'archive'),directory=path.join(archive,'games','development');
+    const heldout=path.join(archive,'games','heldout','DO_NOT_READ.json'),output=path.join(root,'active');
+    const marker=path.join(root,'curator-ready.json'),childScript=fileURLToPath(new URL('../qualification/active-corpus-hard-stop-child.mjs',import.meta.url));
+    await fs.mkdir(directory,{recursive:true});await fs.mkdir(path.dirname(heldout),{recursive:true});
+    await fs.writeFile(heldout,'invalid heldout sentinel');
+    const templates=[3,4,5,6].map((players,index)=>createLegalGame({players,seed:12000+index}));
+    const sources=[];
+    for(let index=0;index<256;index++){
+        const template=templates[index%templates.length],id=`curator-stop-${String(index).padStart(4,'0')}`;
+        const bytes=Buffer.from(JSON.stringify({...template,id})),file=path.join(directory,id+'.json');
+        await fs.writeFile(file,bytes,{flag:'wx'});sources.push({file,sha256:hash(bytes)});
+    }
+    const child=spawn(process.execPath,[childScript,archive,output,marker],{stdio:['ignore','pipe','pipe']});let diagnostic='';
+    child.stdout.on('data',chunk=>{diagnostic+=chunk.toString();});child.stderr.on('data',chunk=>{diagnostic+=chunk.toString();});
+    const closed=new Promise(resolve=>child.once('close',(code,signal)=>resolve({code,signal})));
+    try{
+        const observed=await waitForPublisherMarker(marker,child,30000),claim=JSON.parse(observed.claimContent);
+        assert.equal(observed.pid,child.pid);assert.equal(observed.output,output);assert.equal(claim.kind,'OWNED_DIRECTORY_PUBLICATION');
+        assert.equal(claim.destination,output);assert.equal(path.dirname(await fs.realpath(observed.stage)),await fs.realpath(root));
+        assert.ok(path.basename(observed.stage).startsWith('.active.pending-'));
+        assert.equal((await fs.lstat(observed.stage)).isSymbolicLink(),false);assert.equal(await exists(output),false);
+        assert.equal(await fs.readFile(observed.stagedFile).then(bytes=>bytes.length),0);
+        await assert.rejects(curate(archive,output,{maxGames:16}),error=>error.code==='EEXIST'&&error.message.includes('PUBLICATION_BUSY'));
+        assert.equal(child.kill('SIGKILL'),true,diagnostic);
+        const stopped=await Promise.race([closed,delay(5000).then(()=>null)]);
+        assert.ok(stopped,'The curator child must be observed stopped before recovery');assert.notEqual(stopped.code,0);
+        assert.equal(await fs.readFile(observed.claimPath,'utf8'),observed.claimContent);
+        assert.deepEqual(JSON.parse(await fs.readFile(observed.claimPath,'utf8')),claim);
+        for(const source of sources)assert.equal(await fs.readFile(source.file).then(hash),source.sha256);
+        assert.equal(await fs.readFile(heldout,'utf8'),'invalid heldout sentinel');assert.equal(await exists(output),false);
+        const stage=await fs.realpath(observed.stage);assert.equal(path.dirname(stage),await fs.realpath(root));
+        assert.equal(path.basename(stage).startsWith('.active.pending-'),true);
+        await fs.rm(stage,{recursive:true,force:false});await fs.unlink(observed.claimPath);
+        const manifest=await curate(archive,output,{maxGames:16});
+        assert.equal(manifest.sourceGames,256);assert.ok(manifest.activeGames>0&&manifest.activeGames<=16);
+        for(const entry of manifest.games)await loadActiveGame(output,manifest,entry);
+        for(const source of sources)assert.equal(await fs.readFile(source.file).then(hash),source.sha256);
+        await noPrivateState(root,'active');
+        console.log('Active curator hard-stop observations: '+JSON.stringify({sourceGames:256,activeGames:manifest.activeGames,
+            liveCompetitorRefused:true,forcedStopObserved:true,originalSourceHashesPreserved:true,heldoutUntouched:true,
+            outputAbsentUntilClaimRecovery:true,recoveryRequiredDeadWriterAndExactClaim:true,recurationVerified:true}));
+    }finally{
+        if(child.exitCode===null&&child.signalCode===null){child.kill();await Promise.race([closed,delay(5000)]);}
+    }
+});

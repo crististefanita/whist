@@ -55,7 +55,8 @@ class TestChangeBatchComponentTest {
     }
 
     @Test void invalidProofReceiptOrReportIdentityPreventsBatchPublication() throws Exception {
-        for (String mode : List.of("empty-proof", "empty-report", "malformed-proof", "foreign-control", "report-digest")) {
+        for (String mode : List.of("empty-proof", "empty-report", "malformed-proof", "foreign-control", "report-digest",
+                "missing-diff-identity", "empty-positive-checks", "failed-negative-check", "duplicate-check")) {
             Path attempt = Files.createDirectories(scratch.resolve(mode));
             var result = execute(attempt, mode);
             AuditedAssertions.assertEquals(1, result.exitCode(), diagnostic(result));
@@ -152,7 +153,14 @@ class TestChangeBatchComponentTest {
                     $proofId = $(if ($id -eq 'SECOND-CONTROL' -and $mode -eq 'foreign-control') { 'FOREIGN-CONTROL' } else { $id })
                     $reportHash = (Get-FileHash -LiteralPath $report -Algorithm SHA256).Hash.ToLowerInvariant()
                     if ($id -eq 'SECOND-CONTROL' -and $mode -eq 'report-digest') { $reportHash = '0' * 64 }
-                    $receipt = [ordered]@{schemaVersion=1;kind='ATF_TEST_CHANGE_PROOF';identity=@{id=$proofId};reportSha256=$reportHash} | ConvertTo-Json -Compress
+                    $identity = @{id=$proofId;base=('a' * 40);commit=('b' * 40);diffSha256=('c' * 64)}
+                    if ($id -eq 'SECOND-CONTROL' -and $mode -eq 'missing-diff-identity') { $identity.Remove('diffSha256') }
+                    $positive = @(@{selector='atf.tests.execution.components.TestChangeBatchComponentTest#fixturePositive';verdict='PASS'})
+                    $negative = @(@{selector='atf.tests.execution.components.TestChangeBatchComponentTest#fixtureNegative';verdict='PASS'})
+                    if ($id -eq 'SECOND-CONTROL' -and $mode -eq 'empty-positive-checks') { $positive = @() }
+                    if ($id -eq 'SECOND-CONTROL' -and $mode -eq 'failed-negative-check') { $negative[0].verdict = 'FAIL' }
+                    if ($id -eq 'SECOND-CONTROL' -and $mode -eq 'duplicate-check') { $negative[0].selector = $positive[0].selector }
+                    $receipt = [ordered]@{schemaVersion=1;kind='ATF_TEST_CHANGE_PROOF';identity=$identity;positive=$positive;negative=$negative;reportSha256=$reportHash} | ConvertTo-Json -Compress
                     if ($id -eq 'SECOND-CONTROL' -and $mode -eq 'empty-proof') { $receipt = '' }
                     if ($id -eq 'SECOND-CONTROL' -and $mode -eq 'malformed-proof') { $receipt = '{' }
                     [IO.File]::WriteAllText($proof, $receipt)

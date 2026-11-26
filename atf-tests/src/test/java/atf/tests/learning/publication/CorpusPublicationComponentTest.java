@@ -150,6 +150,25 @@ class CorpusPublicationComponentTest {
         AuditedAssertions.assertTrue(output.contains("outputAbsentUntilExplicitRecovery"), output);
     }
 
+    @Test void curatorHardStopPreservesArchiveAndRecoversByExactClaimIdentity(ComponentInputs inputs) throws Exception {
+        var root = GovernanceProject.locateProjectRoot();
+        inputs.add("Precondition", "A child process runs the production corpus curator on 256 generated legal archive records. The child is stopped while the curator writes its real staged selection. Recovery waits for process termination, validates the exact sibling stage and publication claim, preserves every source hash and heldout sentinel, then reruns the curator. No external archive, APK, emulator or screenshot is used.");
+        String output = runNode(List.of("node", "--test", "--test-concurrency=1", "--test-name-pattern",
+                        "hard-stopped active curator preserves the archive",
+                        root.resolve("whist-lab-app/ai-lab/tools/testing/corpus-publication.test.mjs").toString()),
+                root, Duration.ofSeconds(45), text -> inputs.add("Original curator interruption observations", text));
+        AuditedAssertions.assertTrue(output.contains("Active curator hard-stop observations:"), output);
+        var observation = JSON.readTree(output.lines().filter(line -> line.contains("Active curator hard-stop observations:"))
+                .findFirst().orElseThrow().split("Active curator hard-stop observations:", 2)[1].trim());
+        AuditedAssertions.assertEquals(256, observation.path("sourceGames").asInt());
+        AuditedAssertions.assertTrue(observation.path("activeGames").asInt() > 0
+                && observation.path("activeGames").asInt() <= 16);
+        for (String field : List.of("liveCompetitorRefused", "forcedStopObserved", "originalSourceHashesPreserved",
+                "heldoutUntouched", "outputAbsentUntilClaimRecovery", "recoveryRequiredDeadWriterAndExactClaim",
+                "recurationVerified"))
+            AuditedAssertions.assertTrue(observation.path(field).asBoolean(), field + " must be observed by the original process");
+    }
+
     private static String exercise(String selection, ComponentInputs inputs) throws Exception {
         var root = GovernanceProject.locateProjectRoot();
         inputs.add("Precondition", "Locally generated legal Whist traces, 3–6 seats; four declared paired seats. Actual byte hashes, fresh directories and real cooperative writers. Injected write/promotion faults; no archive, device or screenshots. Node heap is bounded at 128 MiB.");
