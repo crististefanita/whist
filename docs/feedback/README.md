@@ -37,7 +37,7 @@ Contractele stabile aparțin ghidurilor tematice; fiecare criteriu rămâne desc
 |---|---:|---:|---|
 | RAG-36 | P2 | 84 | Admiterea lotului validează ID-ul controlului, baza, commit-ul, digestul diff-ului protejat, selectorii pozitivi/negativi distincți cu verdict PASS și digestul Extent exact; recuperarea lotului complet este calificată. Reutilizarea selectivă per control rămâne deschisă până la închiderea dependențelor și admiterea rapoartelor/JUnit originale. [Registru](ATF_Governance.md#calificarea-afirmațiilor-și-lansatoarelor) |
 | LAB-02 | P2 | 82 | Curatorul de producție are acoperire de parcurgere și publicare plus oprire forțată în timpul copierii etapizate reale pe o arhivă generată de 256 de înregistrări, recuperare după verificarea revendicării exacte, păstrarea hash-urilor sursă și recurarare. Rămân deschise calificarea pe arhiva externă și recuperarea compozitorului. [Registru](ATF_Ai.md#verificarea-autonomă-a-laboratorului) |
-| RAG-37 | P2 | 80 | Decide limitele de proprietate înaintea mutării asset-urilor RAG: separă numai configurația și lansatoarele exclusive RAG, păstrează scripturile comune în zona lor comună și păstrează cheia privată în afara Git și a snapshot-urilor RAG. [Registru](ATF_Governance.md) |
+| RAG-37 | P2 | 80 | Evaluează `config/`, `scripts/` și `.atf-signing/` după proprietarul fiecărui fișier înainte de reorganizare: ia în calcul `config/rag/` și `scripts/rag/` numai pentru intrări exclusive RAG, păstrează lansatoarele comune și politica jocului la locul lor și ține materialul privat de semnare în afara Git și a snapshot-urilor RAG. [Registru](ATF_Governance.md) |
 
 ### Praguri de acceptanță și cercetare
 
