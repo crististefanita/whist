@@ -32,7 +32,7 @@ The bounded [batch component](../../atf-tests/src/test/java/atf/tests/execution/
 testChanges:
   - id: RAG-36-LAB-01-RECOVERY
     status: ACTIVE
-    base: 3340c8124e109659bcf975e2b6ec9abbf63b10b8
+    base: 9e0f8b630a8a302b7bcb922fe1d93a73671ecbe6
     expires: 2026-12-26
     reason: Qualify conservative whole-bundle recovery after an isolated proof-driver failure and identity-checked recovery after a hard-stopped corpus publisher.
     proof: "mvn -o -pl atf-tests -am '-Dtest=TestChangeBatchComponentTest#isolatedDriverCorrectionRerunsTheBundleAndSharedInputDriftRejectsPromotion,TestChangeBatchComponentTest#invalidProofReceiptOrReportIdentityPreventsBatchPublication,CorpusPublicationComponentTest#hardStoppedPublisherExcludesLiveWritersAndRecoversOnlyTheOriginalClaim,CorpusPublicationComponentTest#curatorTraversesAndPublishesGeneratedArchiveWithMeasuredResources,CorpusPublicationComponentTest#curatorHardStopPreservesArchiveAndRecoversByExactClaimIdentity' '-Dsurefire.failIfNoSpecifiedTests=false' test"
