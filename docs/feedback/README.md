@@ -37,7 +37,7 @@ Stable contracts belong to thematic guidelines; each criterion remains open unti
 |---|---:|---:|---|
 | RAG-36 | P2 | 84 | Batch admission now validates control ID, base, commit, protected-diff digest, distinct passing positive/negative selectors and exact Extent digest; full-bundle recovery is qualified. Selective per-control reuse remains open pending dependency closures and original JUnit/report admission. [Register](ATF_Governance.md#qualification-of-claims-and-launchers) |
 | LAB-02 | P2 | 82 | The production curator now has generated-archive traversal and publication coverage plus a forced stop during real staged copying of 256 records, exact-claim recovery, source-hash preservation and re-curation. External-archive qualification and composer recovery remain open. [Register](ATF_Ai.md#autonomous-laboratory-verification) |
-| RAG-37 | P2 | 80 | Decide ownership boundaries before moving release/RAG assets: separate only RAG-specific configuration and launchers, keep shared scripts in their common location, and keep private signing material outside Git and RAG snapshots. [Register](ATF_Governance.md) |
+| RAG-37 | P2 | 80 | Assess `config/`, `scripts/` and `.atf-signing/` by file ownership before restructuring: consider `config/rag/` and `scripts/rag/` only for RAG-exclusive inputs, retain shared launchers and game policy in place, and keep private signing material outside Git and RAG snapshots. [Register](ATF_Governance.md) |
 
 ### Acceptance and research gates
 

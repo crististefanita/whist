@@ -205,7 +205,10 @@ class TestChangeBatchComponentTest {
                     $junitHash = (Get-FileHash -LiteralPath $junitPath -Algorithm SHA256).Hash.ToLowerInvariant()
                     [IO.File]::WriteAllText($extentPath, '<html data-attempt="' + $attempt + '" data-control="' + $id + '"><body>Extent population=2 junit=' + $junitHash + '</body></html>')
                     $extentHash = (Get-FileHash -LiteralPath $extentPath -Algorithm SHA256).Hash.ToLowerInvariant()
-                    $proof = [ordered]@{schemaVersion=1; kind='ATF_TEST_CHANGE_PROOF'; identity=@{id=$id}; control=$id; attempt=$attempt; sourceHash=$sourceHash; selector=$id; junitPopulation=@('case-a','case-b'); junitSha256=$junitHash; extentSha256=$extentHash; reportSha256=$extentHash} | ConvertTo-Json -Compress
+                    $identity = @{id=$id; base=('a' * 40); commit=('b' * 40); diffSha256=('c' * 64)}
+                    $positive = @(@{selector='atf.tests.execution.components.TestChangeBatchComponentTest#fixturePositive';verdict='PASS'})
+                    $negative = @(@{selector='atf.tests.execution.components.TestChangeBatchComponentTest#fixtureNegative';verdict='PASS'})
+                    $proof = [ordered]@{schemaVersion=1; kind='ATF_TEST_CHANGE_PROOF'; identity=$identity; control=$id; attempt=$attempt; sourceHash=$sourceHash; selector=$id; junitPopulation=@('case-a','case-b'); junitSha256=$junitHash; extentSha256=$extentHash; reportSha256=$extentHash; positive=$positive; negative=$negative} | ConvertTo-Json -Compress
                     [IO.File]::WriteAllText((Join-Path $output 'proof.pending.json'), $proof)
                     if ($id -eq 'SECOND-CONTROL' -and $mode -eq 'shared-change') { [IO.File]::WriteAllText($source, 'changed-shared-input') }
                     0
