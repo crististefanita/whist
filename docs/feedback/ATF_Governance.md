@@ -120,6 +120,10 @@ The [early metadata contract](../testing/ATF_ReleaseQualification.md#early-relea
 
 The [independent ATF owners](../testing/ATF_Collections.md#independent-atf-component-owners) separate editorial and payload checks from provenance, mocked Android, mocked GitHub, orchestration and reporting. Each primary collection has a positive class inventory, one canonical Extent and its own source-bound receipt.
 
+| Priority | Gap | Closure criterion |
+|---|---|---|
+| P1 · GOV-08 | Maven/Gradle collection inventories, primary suite owners and test-layer declarations can drift apart. | Synchronize executable class inventories, exclusive primary owners and declared layers. Add negative cases for omissions and overlaps, then pass the focused collection, suite-ownership and Gradle-layer governance checks without exceptions. |
+
 The [dependency selection contract](../testing/ATF_Collections.md#executable-dependency-selection) derives consumers from current executable references and explicit repository-observer scopes. Reviewed reader bodies and generated providers bound what the analysis can admit. Unknown inputs, missing populations and unadmitted reader changes retain complete ATF qualification.
 
 - Markdown-only changes select the documentation owner without replaying independent launcher fixtures. Shared helpers, dependencies and unknown inputs still invalidate their consumers conservatively.
