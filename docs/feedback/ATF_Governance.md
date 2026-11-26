@@ -118,6 +118,10 @@ LangGraph oferă noduri explicite, stare partajată și limite de checkpoint, da
 
 [Responsabilii ATF independenți](../testing/ATF_Collections.md#responsabili-independenți-pentru-componentele-atf) separă verificările editoriale și ale payload-ului de proveniență, Android simulat, GitHub simulat, orchestrare și raportare. Fiecare colecție primară are un inventar pozitiv de clase, un singur Extent canonic și propriul receipt legat de surse.
 
+| Prioritate | Lacună | Criteriu de închidere |
+|---|---|---|
+| P1 · GOV-08 | Inventarele colecțiilor Maven/Gradle, proprietarii primari ai suitelor și declarațiile straturilor se pot desincroniza. | Sincronizați inventarele claselor executabile, proprietarii primari exclusivi și straturile declarate. Adăugați cazuri negative pentru omisiuni și suprapuneri, apoi treceți controalele focalizate pentru colecții, proprietatea suitelor și straturile Gradle fără excepții. |
+
 [Contractul selecției după dependențe](../testing/ATF_Collections.md#selecția-după-dependențe-executabile) determină consumatorii din referințele executabile actuale și domeniile explicite de observare a repository-ului. Corpurile revizuite ale cititorilor și furnizorii generați delimitează ce poate admite analiza. Intrările necunoscute, populațiile lipsă și modificările neadmise ale cititorilor păstrează calificarea ATF completă.
 
 - Schimbările numai în Markdown selectează responsabilul documentației fără reluarea fixture-urilor independente ale lansatoarelor. Helper-ele comune, dependențele și intrările necunoscute invalidează în continuare consumatorii în mod conservator.

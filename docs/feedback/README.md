@@ -29,12 +29,13 @@ Contractele stabile aparțin ghidurilor tematice; fiecare criteriu rămâne desc
 - Selectați ID-uri explicite înaintea unei iterații și numiți-le în auditul și răspunsul final.
 - Un subcriteriu calificat nu închide pragul părinte; eliminați doar criteriile finalizate și precizați limita rămasă.
 - Indexul prioritizează lucrări din registrele tematice; numărul rândurilor sale nu numără iterațiile finalizate.
-- Această ediție are două pachete de lucru offline și paisprezece praguri agregate de acceptanță sau cercetare.
+- Această ediție are trei pachete de lucru offline și paisprezece praguri agregate de acceptanță sau cercetare.
 
 ### Pachete de lucru offline
 
 | ID | Prioritate | Scor | ToDo rămas și criteriul scurt de închidere |
 |---|---:|---:|---|
+| GOV-08 | P1 | 88 | Aliniați inventarele colecțiilor Maven/Gradle, proprietarii primari ai suitelor și declarațiile straturilor astfel încât guvernanța focalizată să respingă proprietarii lipsă sau suprapuși. [Registru](ATF_Governance.md#framework-selection-boundaries) |
 | RAG-36 | P2 | 84 | Varianta sigură de rezervă este calificată: reluați întregul lot selectat după corectarea izolată a unui driver și refuzați promovarea dacă se schimbă o intrare comună. Reutilizarea selectivă a controalelor trecute rămâne deschisă până la admiterea închiderilor per control și a identităților JUnit/raport originale. [Registru](ATF_Governance.md#calificarea-afirmațiilor-și-lansatoarelor) |
 | LAB-02 | P2 | 82 | Recuperarea generică după oprirea publicatorului este calificată. Mai trebuie calificate parcurgerea completă a arhivei, vârful resurselor și recuperarea în timpul unei rulări reale la scară de corpus înainte de închiderea criteriului de scalare a laboratorului. [Registru](ATF_Ai.md#verificarea-autonomă-a-laboratorului) |
 
