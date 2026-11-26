@@ -180,8 +180,8 @@ The topology policy pins provider populations, executable edges, observer patter
 
 | Change or admission boundary | Selection |
 |---|---|
-| Reviewed body and matching seal, with the same admitted topology | Changed reader consumers and observers of the seal inventory. |
-| Several reviewed readers | Union of every affected consumer and inventory observer. |
+| Reviewed body and matching seal, with the same admitted topology | Consumers of changed reader bodies only; metadata observers do not broaden the selection. |
+| Several reviewed readers | Union of consumers for every changed reader. |
 | Changed topology policy, roots, edges, provider population or reader role | Complete ATF qualification. |
 | Missing, stale or foreign seal; unknown consumer; unexplained inventory change | Complete ATF qualification. |
 | Historical origin without the separate seal inventory | Conservative admission; never relabel old reports. |

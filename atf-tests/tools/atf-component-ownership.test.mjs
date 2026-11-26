@@ -114,7 +114,7 @@ test('reviewed reader updates reuse unrelated original receipts through the live
   const targetInputs = new Map(rows.map(row => [row.path, row.sha256]));
   const sourceInputs = new Map(targetInputs);
   // Controlled prior body on the same admitted graph, with a distinct reviewed seal.
-  const reader = 'atf-test-android/src/main/java/atf/android/AdbClient.java';
+  const reader = 'atf-tests/src/main/java/atf/tests/documentation/DocumentationGovernance.java';
   sourceInputs.set(reader, digest('prior reader body'));
   sourceInputs.set(atfReaderSealsPath, digest('prior reviewed seals'));
   const f = await fixture(t, {sourceInputs, targetInputs});

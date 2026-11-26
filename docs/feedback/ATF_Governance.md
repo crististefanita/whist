@@ -120,14 +120,14 @@ The [early metadata contract](../testing/ATF_ReleaseQualification.md#early-relea
 
 The [independent ATF owners](../testing/ATF_Collections.md#independent-atf-component-owners) separate editorial and payload checks from provenance, mocked Android, mocked GitHub, orchestration and reporting. Each primary collection has a positive class inventory, one canonical Extent and its own source-bound receipt.
 
-| Priority | Gap | Closure criterion |
-|---|---|---|
-| P1 · GOV-08 | Maven/Gradle collection inventories, primary suite owners and test-layer declarations can drift apart. | Synchronize executable class inventories, exclusive primary owners and declared layers. Add negative cases for omissions and overlaps, then pass the focused collection, suite-ownership and Gradle-layer governance checks without exceptions. |
+- Maven component classes have one positive primary owner, and each inventory matches its suite descriptor exactly. The governance suite rejects omitted or duplicate owners and unlisted suite classes.
+- Gradle test classes have one declared layer in `config/gradle-audit-collections.properties`. `unit` is limited to the isolated unit source set and cannot depend on component reporting; the inventory gate rejects missing or obsolete owners and unknown layers.
 
 The [dependency selection contract](../testing/ATF_Collections.md#executable-dependency-selection) derives consumers from current executable references and explicit repository-observer scopes. Reviewed reader bodies and generated providers bound what the analysis can admit. Unknown inputs, missing populations and unadmitted reader changes retain complete ATF qualification.
 
 - Markdown-only changes select the documentation owner without replaying independent launcher fixtures. Shared helpers, dependencies and unknown inputs still invalidate their consumers conservatively.
 - Reuse retains original JUnit identities, outcomes, comparisons and report hashes. Historical monolithic reports remain immutable and cannot qualify new partition identities.
+- A reviewed reader-seal update is validated against the complete current reader inventory and unchanged dependency topology. It selects consumers of changed reader bodies only; inventory observers do not broaden that selection. Multiple changed readers select the union of their consumers, while unexplained seal changes or unknown reader scopes retain complete qualification.
 
 The [launcher-fixture contract](../testing/ATF_Collections.md#launcher-fixtures) owns the resource profile, diagnostic retention before cleanup, independent invocation timings and the separation of pure matrices from real admission components.
 

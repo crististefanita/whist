@@ -28,6 +28,7 @@ import org.junit.platform.suite.api.*;
     "^atf\\.tests\\.governance\\.documentation\\.release\\.rag\\.scope\\.metrics\\.QualificationCostComponentTest$",
     "^atf\\.tests\\.governance\\.documentation\\.release\\.rag\\.scope\\.metrics\\.DigestReadComponentTest$",
     "^atf\\.tests\\.governance\\.support\\.JvmInventoryCliComponentTest$",
+    "^atf\\.tests\\.governance\\.support\\.LauncherCapabilitiesComponentTest$",
     "^atf\\.tests\\.governance\\.support\\.LauncherSourceInventoryComponentTest$",
     "^atf\\.tests\\.governance\\.support\\.SigningSourceIsolationComponentTest$",
     "^atf\\.tests\\.governance\\.support\\.SourceInventoryContractTest$"

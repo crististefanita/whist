@@ -211,11 +211,11 @@ export function dependencyDecision(file, current, previous, load, groups = atfGr
     return {groups, status: 'CONSERVATIVE', reason: 'DEPENDENCY_READER_SCOPE_UNKNOWN'};
   }
   if (file === atfReaderSealsPath) {
-    const consumers = [...new Set([...(model.owners(atfReaderSealsPath) ?? []),
-      ...changedReaders.flatMap(node => model.owners(node))])];
+    // Seal metadata may be observed by every collection. Reuse is admitted only
+    // for owners of readers whose source bytes actually changed.
+    const consumers = [...new Set(changedReaders.flatMap(node => model.owners(node)))];
     return {groups: consumers, status: 'ADMITTED', reason: 'REVIEWED_READER_SEAL_CONSUMERS',
-      evidence: [...model.explain(atfReaderSealsPath),
-        ...changedReaders.flatMap(node => model.explain(node).map(row => ({...row, reader: node})))],
+      evidence: changedReaders.flatMap(node => model.explain(node).map(row => ({...row, reader: node}))),
       changedReaders, topologySha256: model.topologySha256,
       policySha256: current.get(atfDependencyPolicyPath), readerSealsSha256: current.get(atfReaderSealsPath)};
   }

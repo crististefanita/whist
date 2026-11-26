@@ -44,7 +44,7 @@ test('simultaneous reviewed reader changes retain every consumer and unrelated c
   assert.deepEqual(f.select('scripts/unowned.ps1', previous).groups, ['first', 'second']);
 });
 
-test('seal inventory observers remain selected alongside changed reader consumers', () => {
+test('seal inventory observers do not broaden changed reader consumers', () => {
   const f = reviewedFixture();
   f.policy.observers.push({source: 'src/second/Second.java', inputs: ['config/**']});
   f.qualify();
@@ -52,8 +52,9 @@ test('seal inventory observers remain selected alongside changed reader consumer
   f.sources.set('tools/middle.mjs', f.sources.get('tools/middle.mjs') + '\n// reviewed');
   f.qualify();
   const decision = f.select(atfReaderSealsPath, previous);
-  assert.deepEqual(decision.groups.sort(), ['first', 'second']);
-  assert(decision.evidence.some(row => row.group === 'second' && row.observer));
+  assert.deepEqual(decision.groups, ['first']);
+  assert(decision.evidence.every(row => row.reader === 'tools/middle.mjs'));
+  assert(decision.evidence.every(row => !row.observer));
 });
 
 test('changed executable topology or declared scope cannot masquerade as a seal-only update', () => {

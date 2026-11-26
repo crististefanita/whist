@@ -36,18 +36,14 @@ public final class GradleAuditGovernanceTest {
             found.put(owner, isolatedUnit ? "unit" : "audited");
             sources.put(owner, source);
         }
-        var catalog = new TreeMap<String, String>();
-        for (String line : Files.readAllLines(root.resolve("config/gradle-audit-collections.properties"))) {
-            if (line.isBlank() || line.startsWith("#")) continue;
-            String[] pair = line.split("=", -1);
-            assertEquals(2, pair.length, "The test-layer entry is a single owner/value pair");
-            assertNull(catalog.put(pair[0], pair[1]), "An invocation owner must not have duplicate layer declarations");
-            assertTrue(List.of("unit", "component", "governance", "learning").contains(pair[1]), "Unknown test layer: " + line);
-        }
         assertFalse(found.isEmpty(), "The Gradle source perimeter cannot be empty");
-        assertEquals(found.keySet(), catalog.keySet(), "The catalog includes every test class exactly once, including opt-in collections");
+        var catalogRows = Files.readAllLines(root.resolve("config/gradle-audit-collections.properties"));
+        assertEquals(List.of(), gradleOwnershipViolations(found.keySet(), catalogRows),
+                "Every class has one known layer, without missing, duplicate or obsolete owners");
         found.forEach((owner, layer) -> {
-            assertEquals(List.of(), unitBoundaryViolations(layer.equals("unit"), sources.get(owner), catalog.get(owner)),
+            String declaredLayer = catalogRows.stream().filter(row -> row.startsWith(owner + "="))
+                    .map(row -> row.substring(row.indexOf('=') + 1)).findFirst().orElse(null);
+            assertEquals(List.of(), unitBoundaryViolations(layer.equals("unit"), sources.get(owner), declaredLayer),
                     "Source-set and reporting boundaries for " + owner);
         });
     }
@@ -102,6 +98,42 @@ public final class GradleAuditGovernanceTest {
         assertTrue(usesJUnit4Test("import org.junit.Test; class Explicit {}"));
         assertTrue(usesJUnit4Test("import org.junit.*; class Wildcard {}"));
         assertFalse(usesJUnit4Test("import org.junit.jupiter.api.Test; class Jupiter {}"));
+    }
+
+    @Test void gradleInventoryRejectsMissingDuplicateAndUnknownLayerOwners() {
+        var live = java.util.Set.of("alpha.ComponentTest", "beta.UnitTest");
+        assertEquals(List.of(), gradleOwnershipViolations(live,
+                List.of("alpha.ComponentTest=component", "beta.UnitTest=unit")));
+        assertEquals(List.of("missing Gradle owner: beta.UnitTest"), gradleOwnershipViolations(live,
+                List.of("alpha.ComponentTest=component")));
+        assertEquals(List.of("duplicate Gradle owner: alpha.ComponentTest"), gradleOwnershipViolations(live,
+                List.of("alpha.ComponentTest=component", "alpha.ComponentTest=component", "beta.UnitTest=unit")));
+        assertEquals(List.of("unknown Gradle layer: alpha.ComponentTest=integration"), gradleOwnershipViolations(live,
+                List.of("alpha.ComponentTest=integration", "beta.UnitTest=unit")));
+        assertEquals(List.of("unknown Gradle owner: obsolete.Test"), gradleOwnershipViolations(live,
+                List.of("alpha.ComponentTest=component", "beta.UnitTest=unit", "obsolete.Test=unit")));
+    }
+
+    private static List<String> gradleOwnershipViolations(java.util.Set<String> live, List<String> rows) {
+        var owners = new java.util.LinkedHashMap<String, String>();
+        var violations = new java.util.ArrayList<String>();
+        for (String row : rows) {
+            if (row.isBlank() || row.startsWith("#")) continue;
+            String[] pair = row.split("=", -1);
+            if (pair.length != 2 || pair[0].isBlank()) {
+                violations.add("invalid Gradle owner row: " + row);
+                continue;
+            }
+            if (owners.putIfAbsent(pair[0], pair[1]) != null) {
+                violations.add("duplicate Gradle owner: " + pair[0]);
+                continue;
+            }
+            if (!List.of("unit", "component", "governance", "learning").contains(pair[1]))
+                violations.add("unknown Gradle layer: " + row);
+        }
+        for (String owner : live) if (!owners.containsKey(owner)) violations.add("missing Gradle owner: " + owner);
+        for (String owner : owners.keySet()) if (!live.contains(owner)) violations.add("unknown Gradle owner: " + owner);
+        return List.copyOf(violations);
     }
 
     private static boolean usesJUnit4Test(String source) {

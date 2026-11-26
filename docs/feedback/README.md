@@ -29,14 +29,13 @@ Stable contracts belong to thematic guidelines; each criterion remains open unti
 - Select explicit IDs before an iteration and name them in the final audit and reply.
 - A qualified subcriterion does not close its parent gate; remove only completed criteria and state the remaining boundary.
 - The index prioritizes work from the thematic registers; its row count is not a count of completed iterations.
-- This revision has three offline work packages and fourteen aggregate acceptance or research gates.
+- This revision has two offline work packages and fourteen aggregate acceptance or research gates.
 
 ### Offline work packages
 
 | ID | Priority | Score | ToDo remaining and short closing criterion |
 |---|---:|---:|---|
-| GOV-08 | P1 | 88 | Reconcile Maven/Gradle collection inventories, primary suite ownership and test-layer declarations so missing or overlapping owners fail in focused governance. [Register](ATF_Governance.md#framework-selection-boundaries) |
-| RAG-36 | P2 | 84 | The safe fallback is qualified: rerun the complete selected bundle after an isolated driver correction and refuse promotion when shared input changes. Selective passing-control reuse remains open until per-control closures and original JUnit/report identities can be admitted. [Register](ATF_Governance.md#qualification-of-claims-and-launchers) |
+| RAG-36 | P2 | 84 | The safe fallback and package-level reuse after reviewed reader changes are qualified. Selective testChanges per-control proof reuse remains open until per-control closures and original JUnit/report identities can be admitted. [Register](ATF_Governance.md#qualification-of-claims-and-launchers) |
 | LAB-02 | P2 | 82 | The generic publisher's hard-stop recovery is qualified. Still qualify full archive traversal, peak resources and recovery during an actual corpus-scale run before closing the laboratory-scale criterion. [Register](ATF_Ai.md#autonomous-laboratory-verification) |
 
 ### Acceptance and research gates
