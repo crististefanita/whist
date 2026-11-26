@@ -24,7 +24,7 @@ Legarea dovezilor de sursa calificată este verificată de [regresiile evaluator
 
 | Prioritate | Responsabil și lacună | Nivel și criteriu de închidere |
 |---|---|---|
-| P2 | Recuperarea probelor: controalele statice încă împart identitatea întregului diff Git protejat. | Reutilizarea selectivă a controalelor reușite rămâne condiționată de închiderea dependențelor de producție, teste, runtime și suport comun per control. Păstrați identitățile originale ale sursei/raportului; refuzați intrările comune sau necunoscute schimbate și selectorii modificați. Lotul refuză acum recipisele goale sau malformate, ID-urile străine ale controalelor și recipisele al căror digest Extent nu corespunde raportului. Regresia de componentă califică și varianta conservatoare: după eșecul unui driver, încercarea corectată execută întregul lot selectat într-o rulare nouă; identitățile originale JUnit și Extent din fixture rămân nemodificate, iar deriva intrării comune împiedică promovarea. Aceasta nu autorizează reutilizarea parțială a probelor. |
+| P2 | Recuperarea probelor: controalele statice încă împart identitatea întregului diff Git protejat. | Reutilizarea selectivă a controalelor reușite rămâne condiționată de închiderea dependențelor de producție, teste, runtime și suport comun per control. Păstrați identitățile originale ale sursei/raportului; refuzați intrările comune sau necunoscute schimbate și selectorii modificați. Înainte de promovare, lotul validează ID-ul controlului, baza, commit-ul, digestul diff-ului protejat, listele distincte și nevidate de selectori pozitivi/negativi cu verdict PASS și digestul Extent exact. Regresia de componentă califică și varianta conservatoare: după eșecul unui driver, încercarea corectată execută întregul lot selectat într-o rulare nouă; identitățile originale JUnit și Extent din fixture rămân nemodificate, iar deriva intrării comune împiedică promovarea. Aceasta nu autorizează reutilizarea parțială a probelor. |
 
 Componenta delimitată [pentru loturi](../../atf-tests/src/test/java/atf/tests/execution/components/TestChangeBatchComponentTest.java) compară o rulare completă după corectarea driverului cu cazuri negative pentru sursa comună și ieșirea controlului. Leagă fiecare recipisă mock-uită de ID-ul controlului și de octeții exacți ai raportului Extent. Populația JUnit per control și hash-urile rapoartelor sunt fixture-uri simulate; raportul generat al componentei înregistrează execuția reală.
 
@@ -35,11 +35,12 @@ testChanges:
     base: 3340c8124e109659bcf975e2b6ec9abbf63b10b8
     expires: 2026-12-26
     reason: Calificați reluarea conservatoare a lotului complet după eșecul izolat al unui driver de probe și recuperarea cu identitatea verificată după oprirea brutală a publicatorului de corpus.
-    proof: "mvn -o -pl atf-tests -am '-Dtest=TestChangeBatchComponentTest#isolatedDriverCorrectionRerunsTheBundleAndSharedInputDriftRejectsPromotion,TestChangeBatchComponentTest#invalidProofReceiptOrReportIdentityPreventsBatchPublication,CorpusPublicationComponentTest#hardStoppedPublisherExcludesLiveWritersAndRecoversOnlyTheOriginalClaim,CorpusPublicationComponentTest#curatorTraversesAndPublishesGeneratedArchiveWithMeasuredResources' '-Dsurefire.failIfNoSpecifiedTests=false' test"
+    proof: "mvn -o -pl atf-tests -am '-Dtest=TestChangeBatchComponentTest#isolatedDriverCorrectionRerunsTheBundleAndSharedInputDriftRejectsPromotion,TestChangeBatchComponentTest#invalidProofReceiptOrReportIdentityPreventsBatchPublication,CorpusPublicationComponentTest#hardStoppedPublisherExcludesLiveWritersAndRecoversOnlyTheOriginalClaim,CorpusPublicationComponentTest#curatorTraversesAndPublishesGeneratedArchiveWithMeasuredResources,CorpusPublicationComponentTest#curatorHardStopPreservesArchiveAndRecoversByExactClaimIdentity' '-Dsurefire.failIfNoSpecifiedTests=false' test"
     checks:
       positive:
         - atf.tests.execution.components.TestChangeBatchComponentTest#isolatedDriverCorrectionRerunsTheBundleAndSharedInputDriftRejectsPromotion
         - atf.tests.learning.publication.CorpusPublicationComponentTest#hardStoppedPublisherExcludesLiveWritersAndRecoversOnlyTheOriginalClaim
+        - atf.tests.learning.publication.CorpusPublicationComponentTest#curatorHardStopPreservesArchiveAndRecoversByExactClaimIdentity
       negative:
         - atf.tests.execution.components.TestChangeBatchComponentTest#changedSourcePreventsPublicationOfPassingControls
         - atf.tests.execution.components.TestChangeBatchComponentTest#invalidProofReceiptOrReportIdentityPreventsBatchPublication
@@ -47,7 +48,9 @@ testChanges:
     paths:
       - atf-tests/src/test/java/atf/tests/execution/components/TestChangeBatchComponentTest.java
       - atf-tests/src/test/java/atf/tests/learning/publication/CorpusPublicationComponentTest.java
+      - scripts/AtfTestChangeBatch.ps1
       - whist-lab-app/ai-lab/tools/qualification/atomic-directory-hard-stop-child.mjs
+      - whist-lab-app/ai-lab/tools/qualification/active-corpus-hard-stop-child.mjs
       - whist-lab-app/ai-lab/tools/testing/corpus-publication.test.mjs
 ```
 
@@ -63,6 +66,12 @@ testChanges:
 - Aceste măsurători arată reducerea muncii de revizie; nu pretind o accelerare generală a Maven ori a procesului complet de release. Sigiliile integrale ale octeților, refuzul cititorilor necunoscuți și proveniența originală a probei rămân intacte.
 - [Domeniile independente ale probelor](../governance/ATF_TestChanges.md#domenii-independente-ale-probelor) dețin selecția după căi, reuniunea diff-urilor mixte și dovezile separate. Excluderea domeniilor neschimbate nu închide criteriile rămase pentru costul snapshot-ului, compilării sau admiterii.
 - [Retenția imaginilor inline](../../atf-tests/src/test/java/atf/tests/governance/documentation/release/ReleaseEvidenceRetentionGovernanceTest.java) verifică duplicarea PNG-urilor lângă HTML; nu dovedește autonomia datelor, lizibilitatea imaginilor sau integritatea APK-ului. [Criteriul adaptorului](../reporting/ATF_Audit.md) rămâne distinct.
+
+## Proprietatea asset-urilor RAG și semnarea locală
+
+| Prioritate | Graniță actuală | Criteriu de închidere |
+|---|---|---|
+| P2 | Politica de release, cataloagele de teste și lansatoarele au proprietari diferiți în `config/` și `scripts/`; `.atf-signing/` conține contractul public de semnare alături de material local ignorat. Mutarea directoarelor întregi ar muta împreună lansatoare comune, politica jocului și contractele de căi. | Inventariați mai întâi proprietarii și cititorii. Luați în calcul `config/rag/` și `scripts/rag/` numai pentru fișiere exclusive RAG; păstrați lansatoarele comune și configurația jocului în zonele comune actuale. Țineți cheile private în afara Git și a snapshot-urilor RAG, în stocare locală protejată (de exemplu, `.imp/local/signing`). Nu mutați nimic până când testele de componentă și guvernanță nu dovedesc reconstruirea sursei cu și fără cheie locală, rezolvarea suprascrierilor de cale, evaluarea release-ului și absența octeților privați din manifeste, surse copiate și rapoarte. |
 
 
 - [Contractul eșecurilor jurnalului](../testing/ATF_ReleaseQualification.md#qualification-journal-failures) păstrează separat cauzele originale ale comenzii și publicării.

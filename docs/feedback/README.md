@@ -29,14 +29,15 @@ Contractele stabile aparțin ghidurilor tematice; fiecare criteriu rămâne desc
 - Selectați ID-uri explicite înaintea unei iterații și numiți-le în auditul și răspunsul final.
 - Un subcriteriu calificat nu închide pragul părinte; eliminați doar criteriile finalizate și precizați limita rămasă.
 - Indexul prioritizează lucrări din registrele tematice; numărul rândurilor sale nu numără iterațiile finalizate.
-- Această ediție are două pachete de lucru offline și paisprezece praguri agregate de acceptanță sau cercetare.
+- Această ediție are trei pachete de lucru offline și paisprezece praguri agregate de acceptanță sau cercetare.
 
 ### Pachete de lucru offline
 
 | ID | Prioritate | Scor | ToDo rămas și criteriul scurt de închidere |
 |---|---:|---:|---|
-| RAG-36 | P2 | 84 | Admiterea lotului leagă acum o recipisă nevidă de ID-ul controlului și digestul Extent exact; recuperarea lotului complet este calificată. Reutilizarea selectivă `testChanges` per control rămâne deschisă până la admiterea închiderilor dependențelor și a identităților JUnit/raport originale. [Registru](ATF_Governance.md#calificarea-afirmațiilor-și-lansatoarelor) |
-| LAB-02 | P2 | 82 | Curatorul de producție are acum acoperire de parcurgere și publicare pe o arhivă generată de 256 de înregistrări, cu heap limitat și resurse măsurate. Rămân deschise calificarea pe arhiva externă și întreruperea rulării reale curator/compozitor. [Registru](ATF_Ai.md#verificarea-autonomă-a-laboratorului) |
+| RAG-36 | P2 | 84 | Admiterea lotului validează ID-ul controlului, baza, commit-ul, digestul diff-ului protejat, selectorii pozitivi/negativi distincți cu verdict PASS și digestul Extent exact; recuperarea lotului complet este calificată. Reutilizarea selectivă per control rămâne deschisă până la închiderea dependențelor și admiterea rapoartelor/JUnit originale. [Registru](ATF_Governance.md#calificarea-afirmațiilor-și-lansatoarelor) |
+| LAB-02 | P2 | 82 | Curatorul de producție are acoperire de parcurgere și publicare plus oprire forțată în timpul copierii etapizate reale pe o arhivă generată de 256 de înregistrări, recuperare după verificarea revendicării exacte, păstrarea hash-urilor sursă și recurarare. Rămân deschise calificarea pe arhiva externă și recuperarea compozitorului. [Registru](ATF_Ai.md#verificarea-autonomă-a-laboratorului) |
+| RAG-37 | P2 | 80 | Decide limitele de proprietate înaintea mutării asset-urilor RAG: separă numai configurația și lansatoarele exclusive RAG, păstrează scripturile comune în zona lor comună și păstrează cheia privată în afara Git și a snapshot-urilor RAG. [Registru](ATF_Governance.md) |
 
 ### Praguri de acceptanță și cercetare
 
