@@ -24,9 +24,9 @@ Legarea dovezilor de sursa calificată este verificată de [regresiile evaluator
 
 | Prioritate | Responsabil și lacună | Nivel și criteriu de închidere |
 |---|---|---|
-| P2 | Recuperarea probelor: controalele statice încă împart identitatea întregului diff Git protejat. | Reutilizarea selectivă a controalelor reușite rămâne condiționată de închiderea dependențelor de producție, teste, runtime și suport comun per control. Păstrați identitățile originale ale sursei/raportului; refuzați intrările comune sau necunoscute schimbate și selectorii modificați. Regresia de componentă califică acum varianta conservatoare: după eșecul unui driver, încercarea corectată execută întregul lot selectat într-o rulare nouă; identitățile originale JUnit și Extent din fixture rămân nemodificate, iar deriva intrării comune împiedică promovarea. Aceasta nu autorizează reutilizarea parțială a probelor. |
+| P2 | Recuperarea probelor: controalele statice încă împart identitatea întregului diff Git protejat. | Reutilizarea selectivă a controalelor reușite rămâne condiționată de închiderea dependențelor de producție, teste, runtime și suport comun per control. Păstrați identitățile originale ale sursei/raportului; refuzați intrările comune sau necunoscute schimbate și selectorii modificați. Lotul refuză acum recipisele goale sau malformate, ID-urile străine ale controalelor și recipisele al căror digest Extent nu corespunde raportului. Regresia de componentă califică și varianta conservatoare: după eșecul unui driver, încercarea corectată execută întregul lot selectat într-o rulare nouă; identitățile originale JUnit și Extent din fixture rămân nemodificate, iar deriva intrării comune împiedică promovarea. Aceasta nu autorizează reutilizarea parțială a probelor. |
 
-Componenta delimitată [pentru loturi](../../atf-tests/src/test/java/atf/tests/execution/components/TestChangeBatchComponentTest.java) compară o rulare completă după corectarea driverului cu un caz negativ de schimbare a sursei comune. Populația JUnit per control și hash-urile rapoartelor sunt fixture-uri simulate; raportul generat al componentei înregistrează execuția reală.
+Componenta delimitată [pentru loturi](../../atf-tests/src/test/java/atf/tests/execution/components/TestChangeBatchComponentTest.java) compară o rulare completă după corectarea driverului cu cazuri negative pentru sursa comună și ieșirea controlului. Leagă fiecare recipisă mock-uită de ID-ul controlului și de octeții exacți ai raportului Extent. Populația JUnit per control și hash-urile rapoartelor sunt fixture-uri simulate; raportul generat al componentei înregistrează execuția reală.
 
 ```yaml
 testChanges:
@@ -35,13 +35,14 @@ testChanges:
     base: 3340c8124e109659bcf975e2b6ec9abbf63b10b8
     expires: 2026-12-26
     reason: Calificați reluarea conservatoare a lotului complet după eșecul izolat al unui driver de probe și recuperarea cu identitatea verificată după oprirea brutală a publicatorului de corpus.
-    proof: "mvn -o -pl atf-tests -am '-Dtest=TestChangeBatchComponentTest#isolatedDriverCorrectionRerunsTheBundleAndSharedInputDriftRejectsPromotion,CorpusPublicationComponentTest#hardStoppedPublisherExcludesLiveWritersAndRecoversOnlyTheOriginalClaim' '-Dsurefire.failIfNoSpecifiedTests=false' test"
+    proof: "mvn -o -pl atf-tests -am '-Dtest=TestChangeBatchComponentTest#isolatedDriverCorrectionRerunsTheBundleAndSharedInputDriftRejectsPromotion,TestChangeBatchComponentTest#invalidProofReceiptOrReportIdentityPreventsBatchPublication,CorpusPublicationComponentTest#hardStoppedPublisherExcludesLiveWritersAndRecoversOnlyTheOriginalClaim,CorpusPublicationComponentTest#curatorTraversesAndPublishesGeneratedArchiveWithMeasuredResources' '-Dsurefire.failIfNoSpecifiedTests=false' test"
     checks:
       positive:
         - atf.tests.execution.components.TestChangeBatchComponentTest#isolatedDriverCorrectionRerunsTheBundleAndSharedInputDriftRejectsPromotion
         - atf.tests.learning.publication.CorpusPublicationComponentTest#hardStoppedPublisherExcludesLiveWritersAndRecoversOnlyTheOriginalClaim
       negative:
         - atf.tests.execution.components.TestChangeBatchComponentTest#changedSourcePreventsPublicationOfPassingControls
+        - atf.tests.execution.components.TestChangeBatchComponentTest#invalidProofReceiptOrReportIdentityPreventsBatchPublication
         - atf.tests.learning.publication.CorpusPublicationComponentTest#interruptedConcurrentAndFailedInputsCannotPublishOrEraseOriginals
     paths:
       - atf-tests/src/test/java/atf/tests/execution/components/TestChangeBatchComponentTest.java

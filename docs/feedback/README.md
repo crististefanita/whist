@@ -35,8 +35,8 @@ Contractele stabile aparțin ghidurilor tematice; fiecare criteriu rămâne desc
 
 | ID | Prioritate | Scor | ToDo rămas și criteriul scurt de închidere |
 |---|---:|---:|---|
-| RAG-36 | P2 | 84 | Varianta sigură de rezervă și reutilizarea la nivel de colecție după modificări revizuite ale cititorilor sunt calificate. Reutilizarea selectivă a dovezilor `testChanges` per control rămâne deschisă până la admiterea închiderilor per control și a identităților JUnit/raport originale. [Registru](ATF_Governance.md#calificarea-afirmațiilor-și-lansatoarelor) |
-| LAB-02 | P2 | 82 | Recuperarea generică după oprirea publicatorului este calificată. Mai trebuie calificate parcurgerea completă a arhivei, vârful resurselor și recuperarea în timpul unei rulări reale la scară de corpus înainte de închiderea criteriului de scalare a laboratorului. [Registru](ATF_Ai.md#verificarea-autonomă-a-laboratorului) |
+| RAG-36 | P2 | 84 | Admiterea lotului leagă acum o recipisă nevidă de ID-ul controlului și digestul Extent exact; recuperarea lotului complet este calificată. Reutilizarea selectivă `testChanges` per control rămâne deschisă până la admiterea închiderilor dependențelor și a identităților JUnit/raport originale. [Registru](ATF_Governance.md#calificarea-afirmațiilor-și-lansatoarelor) |
+| LAB-02 | P2 | 82 | Curatorul de producție are acum acoperire de parcurgere și publicare pe o arhivă generată de 256 de înregistrări, cu heap limitat și resurse măsurate. Rămân deschise calificarea pe arhiva externă și întreruperea rulării reale curator/compozitor. [Registru](ATF_Ai.md#verificarea-autonomă-a-laboratorului) |
 
 ### Praguri de acceptanță și cercetare
 
