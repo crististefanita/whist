@@ -52,15 +52,18 @@ test('curator publishes a generated archive volume within the bounded process bu
         await fs.writeFile(file,bytes,{flag:'wx'});sourceHashes.push({file,sha256:hash(bytes),bytes:bytes.length});
     }
     if(global.gc)global.gc();
-    const processPeakRssBytes=process.resourceUsage().maxRSS*1024;
+    let processPeakRssBytes=process.memoryUsage().rss;
     let sampledPeakHeapBytes=process.memoryUsage().heapUsed;
     const monitor=setInterval(()=>{
-        sampledPeakHeapBytes=Math.max(sampledPeakHeapBytes,process.memoryUsage().heapUsed);
+        const usage=process.memoryUsage();
+        processPeakRssBytes=Math.max(processPeakRssBytes,usage.rss);
+        sampledPeakHeapBytes=Math.max(sampledPeakHeapBytes,usage.heapUsed);
     },10);
     monitor.unref();
     const started=performance.now();let manifest;
     try{manifest=await curate(archive,output,{maxGames});}
     finally{clearInterval(monitor);}
+    processPeakRssBytes=Math.max(processPeakRssBytes,process.resourceUsage().maxRSS*1024,process.memoryUsage().rss);
     const elapsedMs=performance.now()-started,inventory=JSON.parse(await fs.readFile(path.join(output,'archive-inventory.json'),'utf8'));
     assert.equal(manifest.sourceGames,sourceCount);assert.equal(inventory.length,sourceCount);
     assert.equal(manifest.sourceBytes,sourceHashes.reduce((total,item)=>total+item.bytes,0));
