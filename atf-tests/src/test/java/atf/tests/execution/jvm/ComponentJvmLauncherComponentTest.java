@@ -27,6 +27,8 @@ class ComponentJvmLauncherComponentTest {
         var run = probe("owner", output);
         AuditedAssertions.assertEquals(0, run.exitCode(), diagnostic(run));
         var observed = new ObjectMapper().readTree(output.toFile());
+        AuditedAssertions.assertEquals(scratch.resolve("suite temp with spaces").toString(),
+                observed.required("temporaryDirectory").asText(), "Suite temporary files stay under the configured external workspace");
         AuditedAssertions.assertEquals("suite", observed.required("scope").asText());
         AuditedAssertions.assertEquals("8192", observed.required("partCharacters").asText());
         AuditedAssertions.assertEquals(scratch.resolve("checkout with spaces").toString(), observed.required("gitRoot").asText());
@@ -72,7 +74,42 @@ class ComponentJvmLauncherComponentTest {
         AuditedAssertions.assertTrue(diagnostic(run).contains("COMPONENT-JVM-ENV"));
     }
 
+    @Test void relativeTemporaryDirectoryIsRejectedBeforeLaunchingTheSuite() throws Exception {
+        var environment = environment();
+        environment.put("ATF_TEST_TEMP", "relative/suite-temp");
+        environment.put("ATF_PROBE_MODE", "owner");
+        environment.put("ATF_PROBE_OUTPUT", scratch.resolve("must-not-exist.json").toString());
+        var run = CommandProcess.execute(List.of("pwsh", "-NoProfile", "-NonInteractive", "-File", helperProbe().toString()),
+                environment, Duration.ofSeconds(45), false);
+        AuditedAssertions.assertEquals(1, run.exitCode());
+        AuditedAssertions.assertTrue(diagnostic(run).contains("COMPONENT-JVM-TEMP"));
+        AuditedAssertions.assertFalse(Files.exists(scratch.resolve("must-not-exist.json")));
+    }
+
+    @Test void componentRunnerOwnsTemporaryFilesUnderItsExternalWorkspace() throws Exception {
+        Path root = GovernanceProject.locateProjectRoot();
+        String runner = Files.readString(root.resolve("scripts/run-component-suites.ps1"));
+        AuditedAssertions.assertTrue(runner.contains("Join-Path $workspace 'component-jvm-temp'"));
+        AuditedAssertions.assertTrue(runner.contains("Join-Path $workspace 'maven-process-temp'"));
+        AuditedAssertions.assertTrue(runner.contains("-TempDirectory $suiteTemp"));
+        AuditedAssertions.assertTrue(runner.contains("Invoke-AtfMavenWithWorkspaceTemp"));
+        AuditedAssertions.assertTrue(runner.contains("$env:TEMP = $suiteTemp"));
+        AuditedAssertions.assertTrue(runner.contains("$env:TMP = $suiteTemp"));
+        AuditedAssertions.assertTrue(runner.contains("$env:TEMP = $savedSuiteTemp"));
+        AuditedAssertions.assertTrue(runner.contains("$env:TMP = $savedSuiteTmp"));
+        AuditedAssertions.assertTrue(runner.contains("$env:TEMP = $savedTemp"));
+        AuditedAssertions.assertTrue(runner.contains("$env:TMP = $savedTmp"));
+        AuditedAssertions.assertTrue(runner.contains("$env:WHIST_EVIDENCE_ROOT = $RunRoot"),
+                "Child processes bind fixture artifacts to the external run dossier");
+        AuditedAssertions.assertTrue(runner.contains("$env:WHIST_FIXTURE_DIAGNOSTICS = $fixtureDiagnosticsRoot"),
+                "Node fixture diagnostics are isolated under the external run dossier");
+        AuditedAssertions.assertTrue(runner.contains("$savedFixtureDiagnostics = $env:WHIST_FIXTURE_DIAGNOSTICS"));
+        AuditedAssertions.assertTrue(runner.contains("$env:WHIST_FIXTURE_DIAGNOSTICS = $savedFixtureDiagnostics"),
+                "The launcher restores inherited fixture settings after the batch");
+    }
+
     private CommandProcess.Output probe(String mode, Path output) throws Exception {
+        Files.createDirectories(scratch.resolve("suite temp with spaces"));
         var environment = environment();
         environment.put("ATF_PROBE_MODE", mode);
         environment.put("ATF_PROBE_OUTPUT", output.toString());
@@ -87,6 +124,7 @@ class ComponentJvmLauncherComponentTest {
         environment.put("ATF_CLASSPATH", System.getProperty("java.class.path"));
         environment.put("ATF_PROBE", ComponentJvmFixture.class.getName());
         environment.put("ATF_GIT_ROOT", scratch.resolve("checkout with spaces").toString());
+        environment.put("ATF_TEST_TEMP", scratch.resolve("suite temp with spaces").toString());
         return environment;
     }
 
@@ -97,7 +135,8 @@ class ComponentJvmLauncherComponentTest {
                 . $env:ATF_JVM_HELPER
                 $before = @('JAVA_TOOL_OPTIONS','_JAVA_OPTIONS','JDK_JAVA_OPTIONS') | ForEach-Object { [Environment]::GetEnvironmentVariable($_,'Process') }
                 Assert-AtfComponentJavaEnvironment
-                $options = @(Get-AtfComponentJvmArguments -InputPartCharacters 8192 -SourceRoot $env:ATF_GIT_ROOT)
+                $options = @(Get-AtfComponentJvmArguments -InputPartCharacters 8192 -SourceRoot $env:ATF_GIT_ROOT `
+                    -TempDirectory $env:ATF_TEST_TEMP)
                 & $env:ATF_JAVA @options -cp $env:ATF_CLASSPATH $env:ATF_PROBE $env:ATF_PROBE_MODE $env:ATF_PROBE_OUTPUT
                 $result = $LASTEXITCODE
                 $after = @('JAVA_TOOL_OPTIONS','_JAVA_OPTIONS','JDK_JAVA_OPTIONS') | ForEach-Object { [Environment]::GetEnvironmentVariable($_,'Process') }

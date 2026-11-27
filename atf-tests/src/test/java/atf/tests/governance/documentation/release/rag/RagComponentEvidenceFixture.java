@@ -10,7 +10,7 @@ import static atf.tests.governance.documentation.release.rag.RagCandidateFixture
 import static atf.tests.governance.documentation.release.rag.RagCandidateFixture.hash;
 
 final class RagComponentEvidenceFixture {
-    static final List<String> GROUPS = List.of("atf-validation", "atf-test-android", "atf-tests",
+    static final List<String> GROUPS = List.of("atf-validation", "atf-test-android", "release-tools", "atf-tests",
             "whist-lab-app-bidding", "whist-lab-app-commands", "whist-lab-app-display", "whist-lab-app-history",
             "whist-lab-app-achievements", "whist-lab-app-atf-card-table-ui");
 

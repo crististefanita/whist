@@ -39,6 +39,13 @@
       "layer": "e2e"
     },
     {
+      "module": "release-tools",
+      "suite": "atf.release.tools.ReleaseToolsComponentSuite",
+      "role": "primary",
+      "layer": "component",
+      "group": "release-tools"
+    },
+    {
       "module": "atf-tests",
       "suite": "atf.tests.suites.AtfUnitSuite",
       "role": "primary",

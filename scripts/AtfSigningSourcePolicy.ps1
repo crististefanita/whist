@@ -2,9 +2,10 @@
 
 function Test-AtfPrivateSigningInput([string]$RelativePath) {
     $path = $RelativePath.Replace('\','/')
-    if (-not $path.StartsWith('.atf-signing/',[StringComparison]::OrdinalIgnoreCase)) { return $false }
+    if ($path.StartsWith('.atf-signing/',[StringComparison]::OrdinalIgnoreCase)) { return $true }
+    if (-not $path.StartsWith('release-tools/.atf-signing/',[StringComparison]::OrdinalIgnoreCase)) { return $false }
     # Export only the public signing contract, never local key material or backups.
-    return $path -inotmatch '^\.atf-signing/(?:\.gitignore|README\.md|whist-android-test\.pem|whist-android-test\.fingerprint)$'
+    return $path -inotmatch '^release-tools/\.atf-signing/(?:\.gitignore|README\.md|whist-android-test\.pem|whist-android-test\.fingerprint)$'
 }
 
 function Assert-AtfDirectSourcePath([string]$Path) {

@@ -132,7 +132,7 @@ test('Markdown guides embedded in source directories run governance without repl
 });
 
 test('a qualification policy edit affects governance and leaves the game build evidence reusable', () => {
-  const file = 'config/release-platform-rag-policy.json';
+  const file = 'release-tools/config/release-platform-rag-policy.json';
   const selection = deriveReleaseTestScope(new Map([[file, 'old']]), new Map([[file, 'new']]), groups);
   assert.equal(selection.kind, 'MAINTENANCE');
   assert.deepEqual(selection.runComponentGroups, ['atf-tests']);
@@ -182,6 +182,17 @@ test('qualification path and UI export helpers require offline governance withou
   assert.deepEqual(selection.runComponentGroups, ['atf-tests']);
   assert.deepEqual(selection.requiredE2eGroups, []);
   assert.ok(selection.changes.every(change => change.rule === 'non-runtime'));
+});
+
+test('release-tools module and adapters require offline components but no game E2E', () => {
+  const groups = ['atf-tests', 'atf-validation', 'atf-test-android', 'release-tools'];
+  for (const file of ['release-tools/pom.xml', 'release-tools/src/main/java/atf/release/tools/RagAdvisoryGate.java',
+    'release-tools/scripts/Invoke-ReleaseRag.ps1', 'release-tools/.atf-signing/README.md']) {
+    const selection = deriveReleaseTestScope(new Map(), new Map([[file, 'new']]), groups);
+    assert.equal(selection.kind, file.endsWith('/README.md') ? 'DOCUMENTATION_ONLY' : 'MAINTENANCE', file);
+    assert.deepEqual(selection.runComponentGroups, ['atf-tests', 'release-tools'], file);
+    assert.deepEqual(selection.requiredE2eGroups, [], file);
+  }
 });
 
 for (const file of ['scripts/AtfComponentJvm.ps1', 'scripts/AtfSigningSourcePolicy.ps1']) {

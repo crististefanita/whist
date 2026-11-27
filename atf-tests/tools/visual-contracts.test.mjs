@@ -14,7 +14,7 @@ import {header, headerText, hash} from './visual-scope-fixture.mjs';
 const project = fileURLToPath(new URL('../../', import.meta.url));
 
 test('registered visual contracts retain live source and declared component owners', async () => {
-  const policy = JSON.parse(await fs.readFile(path.join(project, 'config/release-platform-rag-policy.json')));
+  const policy = JSON.parse(await fs.readFile(path.join(project, 'release-tools/config/release-platform-rag-policy.json')));
   const owners = [...policy.ragEvaluator.requiredComponentGroupsByPlatform.android,
     ...policy.ragEvaluator.introducedComponentGroupsByPlatform.android.map(row => row.group)];
   const collections = await fs.readFile(path.join(project, 'config/gradle-app-collections.properties'), 'utf8');
@@ -85,7 +85,7 @@ async function planner(t) {
   git('init', '-q'); git('add', '.'); git('commit', '-qm', 'source');
   const commit = git('rev-parse', 'HEAD'), fingerprint = inputFingerprint(new Map([[header, hash(headerText)]]));
   const input = {sourceCommit: commit, fingerprint, files: [{path: header, sha256: hash(headerText)}]};
-  await write(repository, 'config/release-platform-rag-policy.json', await fs.readFile(path.join(project, 'config/release-platform-rag-policy.json')));
+  await write(repository, 'release-tools/config/release-platform-rag-policy.json', await fs.readFile(path.join(project, 'release-tools/config/release-platform-rag-policy.json')));
   await write(repository, 'release/index.json', JSON.stringify({schemaVersion: 2, currentVersion: '0.21.11', versions: ['0.21.11', '0.21.10']}));
   const manifest = {release: {versionName: '0.21.11'}, qualification: {state: 'PASS'}, publication: {state: 'PUBLISHED'},
     source: {sourceCommit: commit, workingTreeFingerprint: fingerprint, inputManifest: 'reports/apk-inputs.json'}};

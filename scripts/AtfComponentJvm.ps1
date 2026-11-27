@@ -9,7 +9,10 @@ function Assert-AtfComponentJavaEnvironment {
 }
 
 function Get-AtfComponentJvmArguments {
-    param([ValidateRange(2,2147483647)][int]$InputPartCharacters, [string]$SourceRoot)
-    @('-Xmx768m', '-XX:ActiveProcessorCount=2', '-Datf.test.run.scope=suite',
+    param([ValidateRange(2,2147483647)][int]$InputPartCharacters, [string]$SourceRoot,
+        [Parameter(Mandatory)][string]$TempDirectory)
+    if (-not [IO.Path]::IsPathRooted($TempDirectory)) { throw 'COMPONENT-JVM-TEMP: an absolute external path is required.' }
+    $temp = [IO.Path]::GetFullPath($TempDirectory)
+    @('-Xmx768m', '-XX:ActiveProcessorCount=2', "-Djava.io.tmpdir=$temp", '-Datf.test.run.scope=suite',
         "-Datf.component.input-part-characters=$InputPartCharacters", "-Datf.governance.gitRoot=$SourceRoot")
 }

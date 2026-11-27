@@ -29,20 +29,20 @@ Stable contracts belong to thematic guidelines; each criterion remains open unti
 - Select explicit IDs before an iteration and name them in the final audit and reply.
 - A qualified subcriterion does not close its parent gate; remove only completed criteria and state the remaining boundary.
 - The index prioritizes work from the thematic registers; its row count is not a count of completed iterations.
-- This revision has three offline work packages and fourteen aggregate acceptance or research gates.
+- This revision has two offline work packages and fifteen aggregate acceptance or research gates.
 
 ### Offline work packages
 
 | ID | Priority | Score | ToDo remaining and short closing criterion |
 |---|---:|---:|---|
-| RAG-36 | P2 | 84 | Batch admission now validates control ID, base, commit, protected-diff digest, distinct passing positive/negative selectors and exact Extent digest; full-bundle recovery is qualified. Selective per-control reuse remains open pending dependency closures and original JUnit/report admission. [Register](ATF_Governance.md#qualification-of-claims-and-launchers) |
+| RAG-36 | P2 | 84 | Batch admission validates control ID, base, commit, protected-diff digest, distinct passing selectors and exact Extent digest; full-bundle recovery is qualified. A reviewed-reader regression now admits the three live graph owners and preserves four unrelated JUnit/Extent receipts byte-for-byte. Mixed per-control proof-bundle reuse and recovery remain open. [Register](ATF_Governance.md#qualification-of-claims-and-launchers) |
 | LAB-02 | P2 | 82 | The production curator now has a 256-record scale component and a separate forced-stop/recovery component over 64 generated legal records. The interruption case verifies exact-claim recovery, source hashes, the heldout sentinel and re-curation without carrying the full scale fixture into the timed stop path. External-archive qualification and composer recovery remain open. [Register](ATF_Ai.md#autonomous-laboratory-verification) |
-| RAG-37 | P2 | 80 | Assess `config/`, `scripts/` and `.atf-signing/` by file ownership before restructuring: consider `config/rag/` and `scripts/rag/` only for RAG-exclusive inputs, retain shared launchers and game policy in place, and keep private signing material outside Git and RAG snapshots. [Register](ATF_Governance.md) |
 
 ### Acceptance and research gates
 
 | ID | Priority | Score | ToDo remaining and short closing criterion |
 |---|---:|---:|---|
+| RAG-37 | P1 | 93 | `release-tools` now clearly owns release policy, Java gates, signing and operator adapters; shared qualification, evidence tooling, Android and reporting stay with their existing ATF owners. Corrected three fixture contracts and moved physical temp-root rejection ahead of Java/Maven capability probes; the focused negative case passes without staging, a run folder or Maven marker. The complete owner collection and candidate 0.26.0 qualification are still pending. Keep old dossier bytes intact; then qualify required Android flows, signed APK/hash and the README download before publication. [Register](ATF_Governance.md#active-control-rag-37-release-tools) |
 | AND-02 | P1 | 92 | Qualify the active actor, stable geometry and visible hand in bidding, play and AutoGame on the APK, for 3–6 players, RO/EN and enlarged text. [Register](ATF_Android.md) |
 | AI-01 | P1 | 91 | Calibrate Hard inference at 2–8 cards on fresh lots; atomic sample admission and finite-model frequency oracles do not establish posterior calibration or playing-strength gains. [Register](ATF_Ai.md) |
 | UI-04 | P1 | 90 | Qualify mounted Whist bindings, native font visibility and late-owner repaint on an identified renderer; controlled binding components remain separate from glyph acceptance. [Register](ATF_CardUi_Extraction.md#ui-three-module-plan) |

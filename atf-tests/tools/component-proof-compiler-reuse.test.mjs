@@ -11,13 +11,18 @@ async function exercise(t, mode) {
   const root=await fs.mkdtemp(path.join(os.tmpdir(),'whist-proof-compiler-'));
   t.after(()=>fs.rm(root,{recursive:true,force:true}));
   const project=path.resolve(import.meta.dirname,'../..'),host=path.join(root,'host');
-  for(const dir of ['scripts','config','atf-tests/tools']) {
+  for(const dir of ['scripts','config','release-tools/config','atf-tests/tools']) {
     await fs.mkdir(path.join(host,dir),{recursive:true});
     for(const file of await fs.readdir(path.join(project,dir))) {
       if((dir==='scripts'&&!file.endsWith('.ps1'))||(dir==='atf-tests/tools'&&(!file.endsWith('.mjs')||file.endsWith('.test.mjs'))))continue;
       const source=path.join(project,dir,file);if((await fs.stat(source)).isFile())await fs.copyFile(source,path.join(host,dir,file));
     }
   }
+  await fs.appendFile(path.join(host,'scripts/AtfQualificationSnapshot.ps1'),String.raw`
+function Assert-AtfMetadataEditorial($SourceRoot,$TempRoot,$JavaHome,$MavenCache,$Receipt) {
+ [IO.File]::WriteAllText($Receipt,'{"schemaVersion":1,"status":"PASS","diagnostics":[],"files":["release/README.md"],"limit":"Editorial execution is covered by the dedicated documentation governance collection."}')
+}
+`);
   await fs.writeFile(path.join(host,'scripts/AtfTestChangeAdmission.ps1'),String.raw`
 function Invoke-AtfTestChangeAdmission {
  param($SourceRoot,$BaseRef,$TempRoot,$JavaHome,$MavenCache,$ReceiptFile,[switch]$GenerateProofs,$Control)
@@ -49,26 +54,33 @@ if($Mode -eq 'gradle') {
  Put (Join-Path $source 'gradle/src/test/java/OnlyTest.java') 'original Gradle test'
 }
 Write-AtfComponentJson (Join-Path $source 'config/atf-governance-policy.json') $policy
-foreach($name in @('release-platform-rag-policy.json','gradle-app-collections.properties','atf-component-collections.json','atf-test-suites.json')){
+foreach($name in @('gradle-app-collections.properties','atf-component-collections.json','atf-test-suites.json')){
  Copy-Item -LiteralPath (Join-Path $HostRoot "config/$name") -Destination (Join-Path $source "config/$name")
 }
+$releasePolicy=Join-Path $source 'release-tools/config/release-platform-rag-policy.json'
+$null=New-Item -ItemType Directory -Force (Split-Path -Parent $releasePolicy)
+Copy-Item -LiteralPath (Join-Path $HostRoot 'release-tools/config/release-platform-rag-policy.json') -Destination $releasePolicy
 $release=Join-Path $source 'release/1.2.3';$apk=Join-Path $release 'WhistLab-1.2.3.apk'
 Put $apk 'controlled APK fixture';Put ($apk+'.sha256') ((Get-FileHash $apk).Hash.ToLowerInvariant()+'  WhistLab-1.2.3.apk'+[Environment]::NewLine)
+Put (Join-Path $release 'README.md') '# Controlled release 1.2.3 fixture'
+Put (Join-Path $release 'reports/README.md') '# Controlled report index'
 $entries=@($apk,($apk+'.sha256'))|ForEach-Object {@{path=(Split-Path -Leaf $_);bytes=(Get-Item $_).Length;sha256=(Get-FileHash $_).Hash.ToLowerInvariant()}}
-Write-AtfComponentJson (Join-Path $release 'release-validation.json') @{release=@{artifactKind='apk';versionName='1.2.3';apkName='WhistLab-1.2.3.apk';apkRelativePath='WhistLab-1.2.3.apk';apkBytes=(Get-Item $apk).Length;apkSha256=(Get-FileHash $apk).Hash.ToLowerInvariant()};integrity=@{files=@($entries)}}
+Write-AtfComponentJson (Join-Path $release 'release-validation.json') @{release=@{artifactKind='apk';versionName='1.2.3';apkName='WhistLab-1.2.3.apk';apkRelativePath='WhistLab-1.2.3.apk';apkBytes=(Get-Item $apk).Length;apkSha256=(Get-FileHash $apk).Hash.ToLowerInvariant()};integrity=@{files=@($entries)};qualification=@{e2e=@{status='NOT_APPLICABLE';rationale='Controlled compiler reuse fixture has no Android runtime qualification.'};e2eGroups=@{}}}
 Put (Join-Path $source 'release/index.json') '{"schemaVersion":2,"currentVersion":"1.2.3","versions":["1.2.3"]}'
+Put (Join-Path $source 'release/README.md') '# Controlled release fixture'
 $null=& git -C $source init -q
 $null=& git -C $source config core.autocrlf false
 $null=& git -C $source -c user.name=Fixture -c user.email=fixture@example.invalid add .
 $null=& git -C $source -c user.name=Fixture -c user.email=fixture@example.invalid commit -q -m 'Controlled source'
 $base=(& git -C $source rev-parse HEAD).Trim()
-foreach($name in @('bin/javac.exe','release','lib/modules','bin/server/jvm.dll')){Put (Join-Path $javaHome $name) 'fixed tool'}
+foreach($name in @('bin/javac.exe','bin/jar.exe','release','lib/modules','bin/server/jvm.dll')){Put (Join-Path $javaHome $name) 'fixed tool'}
 $csharp=Join-Path $Root 'MockJava.cs'
 Put $csharp @'
 using System;
 using System.IO;
 class MockJava {
  static int Main(string[] args) {
+  if(args.Length==1&&args[0]=="--version") { Console.WriteLine("openjdk version \"21.0.0\""); return 0; }
   int at=Array.IndexOf(args,"atf.tests.execution.components.TestChangeProofExecution");
   if(at<0)return 21;
   File.AppendAllText(Environment.GetEnvironmentVariable("PROOF_RUN_MARKER"),"fresh-control\n");
@@ -88,7 +100,16 @@ class MockJava {
 $compiler=Join-Path $env:WINDIR 'Microsoft.NET/Framework64/v4.0.30319/csc.exe'
 & $compiler /nologo "/out:$java" $csharp | Out-Null
 if($LASTEXITCODE -ne 0){throw 'Controlled Java transport compilation failed'}
-$maven=Join-Path $Root 'maven/bin/mvn.ps1';Put $maven '[IO.File]::WriteAllText($env:MAVEN_RUN_MARKER,"cold");exit 31'
+$maven=Join-Path $Root 'maven/bin/mvn.cmd'
+Put $maven @'
+@echo off
+if /I "%~1"=="-version" (
+  echo Apache Maven 3.9.9
+  exit /b 0
+)
+> "%MAVEN_RUN_MARKER%" echo cold
+exit /b 31
+'@
 $inputs=Join-Path $Root 'inputs.json'
 $rows=@(& (Join-Path $scripts 'Get-AtfSourceInputs.ps1') -SourceRoot $source)
 Write-AtfComponentJson $inputs $rows
@@ -129,7 +150,7 @@ for($n=0;$n -lt $count;$n++){
   const environment={...process.env,MAVEN_OPTS:'',MAVEN_ARGS:'',JAVACMD:'',WHIST_EVIDENCE_ROOT:''};
   for(const name of ['JAVA_TOOL_OPTIONS','JDK_JAVA_OPTIONS','_JAVA_OPTIONS'])delete environment[name];
   return JSON.parse(runFixtureProcess('pwsh',['-NoProfile','-NonInteractive','-File',driver,root,host,mode],{
-    fixture:'proof-compiler-'+mode,env:environment
+    fixture:'proof-compiler-'+mode,env:environment,diagnosticsRoot:root
   }));
 }
 

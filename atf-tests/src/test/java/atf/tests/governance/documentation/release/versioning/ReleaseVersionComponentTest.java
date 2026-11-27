@@ -24,7 +24,7 @@ class ReleaseVersionComponentTest {
 
     @Test void theApplicationUsesTheDeclaredPatchReleaseConvention(ComponentInputs inputs) throws Exception {
         var root = GovernanceProject.locateProjectRoot();
-        var policy = new ObjectMapper().readTree(root.resolve("config/release-platform-rag-policy.json").toFile())
+        var policy = new ObjectMapper().readTree(root.resolve("release-tools/config/release-platform-rag-policy.json").toFile())
                 .required("releaseVersioning");
         var matcher = Pattern.compile("versionName\\s+\"([^\"]+)\"").matcher(
                 Files.readString(root.resolve("whist-lab-app/app/build.gradle")));

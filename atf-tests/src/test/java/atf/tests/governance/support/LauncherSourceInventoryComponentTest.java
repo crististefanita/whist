@@ -47,6 +47,9 @@ class LauncherSourceInventoryComponentTest {
         }
 
         write(root, release, "modified");
+        String refusal = copy(root, scratch.resolve("staging schimbat"), before, scratch, 1);
+        AuditedAssertions.assertTrue(refusal.contains("SOURCE-STAGE-CHANGED:"), "A changed source is refused before compilation");
+
         Files.delete(root.resolve(target));
         String added = "module/src/main/java/legal/target/New.java";
         write(root, added, "new");
@@ -55,8 +58,6 @@ class LauncherSourceInventoryComponentTest {
         AuditedAssertions.assertFalse(after.containsKey(target));
         AuditedAssertions.assertEquals(hash("new"), after.get(added));
         AuditedAssertions.assertEquals(before.get(service), after.get(service));
-        String refusal = copy(root, scratch.resolve("staging schimbat"), before, scratch, 1);
-        AuditedAssertions.assertTrue(refusal.contains("SOURCE-STAGE-CHANGED:"), "A changed source is refused before compilation");
     }
 
     @Test void liveManifestCoversEveryDeclaredJavaSourceAndExtensionRegistration(@TempDir Path scratch) throws Exception {

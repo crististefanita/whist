@@ -76,7 +76,7 @@ function Assert-AtfLauncherCapabilities {
         [string]$Node = '',
         [switch]$RequireNode,
         [string]$GradleRoot = '',
-        [ValidateRange(1,30)][int]$TimeoutSeconds = 10
+        [ValidateRange(1,30)][int]$TimeoutSeconds = 30
     )
     $scriptPath = Join-Path $PSScriptRoot 'AtfLauncherCapabilities.ps1'
     $sourceHash = (Get-FileHash -LiteralPath $scriptPath -Algorithm SHA256).Hash.ToLowerInvariant()

@@ -40,7 +40,10 @@ final class SourceInputFixture {
         Path output = Files.createTempFile(scratch, "process-", ".txt");
         var command = new ArrayList<>(List.of("pwsh", "-NoProfile", "-NonInteractive", "-File", script.toString()));
         command.addAll(arguments);
-        Process process = new ProcessBuilder(command).redirectErrorStream(true).redirectOutput(output.toFile()).start();
+        var builder = new ProcessBuilder(command).redirectErrorStream(true).redirectOutput(output.toFile());
+        builder.environment().put("TEMP", scratch.toString());
+        builder.environment().put("TMP", scratch.toString());
+        Process process = builder.start();
         try {
             AuditedAssertions.assertTrue(process.waitFor(60, TimeUnit.SECONDS), "Source inventory exceeded its process deadline");
             AuditedAssertions.assertEquals(expectedExit, process.exitValue(), process.exitValue() == expectedExit

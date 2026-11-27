@@ -157,8 +157,8 @@ function Invoke-AtfAdbCommand($AdbExecutable,$Arguments,$ServerSocket,$TimeoutSe
 }
 Export-ModuleMember -Function Invoke-AtfAdbCommand
 `.replace('($output -join "\\n")','($output -join "`n")'));
-  fs.mkdirSync(path.join(checkout,'config'),{recursive:true});
-  fs.writeFileSync(path.join(checkout,'config/release-platform-rag-policy.json'),
+  fs.mkdirSync(path.join(checkout,'release-tools/config'),{recursive:true});
+  fs.writeFileSync(path.join(checkout,'release-tools/config/release-platform-rag-policy.json'),
     JSON.stringify({ragEvaluator:{evidenceFreshness:{androidPreflightMaxAgeSeconds:300}}}));
   fs.writeFileSync(path.join(scripts,'check-android-release-device.ps1'),String.raw`
 param($AdbExecutable,$Serial,$AdbServerSocket,$LeasePath,$LeaseId,$ExpectedApi,$ExpectedDisplayProfile,$Receipt)

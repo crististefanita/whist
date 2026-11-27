@@ -71,7 +71,7 @@ final class ReleaseCatalogPresentation {
 
     static boolean authenticatedDownloadChannelMatches(JsonNode download) throws IOException {
         Path root = GovernanceProject.locateProjectRoot();
-        JsonNode policy = new ObjectMapper().readTree(root.resolve("config/release-platform-rag-policy.json").toFile());
+        JsonNode policy = new ObjectMapper().readTree(root.resolve("release-tools/config/release-platform-rag-policy.json").toFile());
         JsonNode channels = policy.path("rules").path("authenticatedDownloadChannels");
         if (!channels.isObject() || channels.isEmpty()) throw new IOException("AUTHENTICATED-CHANNEL-POLICY");
         String proof = channels.path(download.path("channel").asText()).asText();

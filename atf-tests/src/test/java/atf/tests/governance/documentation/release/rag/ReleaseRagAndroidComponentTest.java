@@ -110,7 +110,7 @@ class ReleaseRagAndroidComponentTest {
         verdict = JSON.readTree(fixture.output().toFile());
         AuditedAssertions.assertEquals("BLOCKED", check(verdict, "E2E_SCOPE"));
         AuditedAssertions.assertTrue(details(verdict, "E2E_SCOPE").stream()
-                .anyMatch(value -> value.contains("eliminarea aceluiași utilizator")));
+                .anyMatch(value -> value.contains("same user")));
     }
 
     @Test void disposableAndroidUserCannotPassWithoutCleanupReceipt() throws Exception {
@@ -122,7 +122,7 @@ class ReleaseRagAndroidComponentTest {
         JsonNode verdict = JSON.readTree(fixture.output().toFile());
         AuditedAssertions.assertEquals("BLOCKED", check(verdict, "E2E_SCOPE"));
         AuditedAssertions.assertTrue(details(verdict, "E2E_SCOPE").stream()
-                .anyMatch(value -> value.contains("nu dovedește eliminarea")));
+                .anyMatch(value -> value.contains("teardown receipt")));
     }
 
     @Test void resumedE2eBindsTheCleanupToItsOwnLease() throws Exception {
@@ -179,7 +179,7 @@ class ReleaseRagAndroidComponentTest {
         JsonNode verdict = JSON.readTree(fixture.output().toFile());
         AuditedAssertions.assertEquals("BLOCKED", check(verdict, "E2E_SCOPE"));
         AuditedAssertions.assertTrue(details(verdict, "E2E_SCOPE").stream()
-                .anyMatch(value -> value.contains("stării inițiale a instalării originale")));
+                .anyMatch(value -> value.contains("preservation of the original installation state")));
     }
 
     @Test void aProductionPlanCannotReuseTheDebugTestCertificate() throws Exception {

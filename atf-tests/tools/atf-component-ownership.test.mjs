@@ -40,6 +40,34 @@ test('shared code and ownership changes invalidate every ATF consumer', () => {
   }
 });
 
+test('release-tools changes select their Maven component owner without Android journeys', () => {
+  const previous = new Map([...baseline, ['release-tools/src/main/java/Gate.java', 'a'.repeat(64)]]);
+  const candidate = new Map([...previous, ['release-tools/src/main/java/Gate.java', 'b'.repeat(64)]]);
+  const groups = [...atfGroups, 'atf-validation', 'atf-test-android', 'release-tools',
+    'whist-lab-app-bidding', 'whist-lab-app-display'];
+  const selection = deriveReleaseTestScope(previous, candidate, groups);
+  assert.deepEqual(selection.runComponentGroups, [
+    'atf-tests', 'atf-tests-documentation', 'atf-tests-provenance', 'atf-tests-android',
+    'atf-tests-github', 'atf-tests-orchestration', 'atf-tests-reporting', 'release-tools'
+  ]);
+  assert.deepEqual(selection.requiredE2eGroups, []);
+  assert.equal(selection.userFlowChanged, false);
+  assert.equal(componentEvidenceScope('release-tools', candidate, previous).decision, 'RUN');
+  assert.equal(componentEvidenceScope('whist-lab-app-bidding', candidate, previous).decision, 'REUSE');
+});
+
+test('the Maven aggregator does not invalidate unrelated Gradle product components', () => {
+  const groups = [...atfGroups, 'atf-validation', 'atf-test-android', 'release-tools',
+    'whist-lab-app-bidding', 'whist-lab-app-display'];
+  const previous = new Map([...baseline, ['pom.xml', 'a'.repeat(64)]]);
+  const candidate = new Map([...previous, ['pom.xml', 'b'.repeat(64)]]);
+  const selection = deriveReleaseTestScope(previous, candidate, groups);
+  assert.deepEqual(selection.runComponentGroups, [...atfGroups, 'atf-validation', 'atf-test-android', 'release-tools']);
+  assert.equal(selection.components.find(row => row.group === 'whist-lab-app-bidding').decision, 'REUSE');
+  assert.equal(selection.components.find(row => row.group === 'whist-lab-app-display').decision, 'REUSE');
+  assert.deepEqual(selection.requiredE2eGroups, []);
+});
+
 test('shared Markdown fixture payloads keep test consumers active', () => {
   for (const file of ['src/test/resources/README.md', 'atf-tests/src/test/resources/case.md',
     'whist-lab-app/game-core/src/test/resources/case.md', 'whist-lab-app/app/src/main/assets/README.md']) {
@@ -114,7 +142,7 @@ test('reviewed reader updates reuse unrelated original receipts through the live
   const targetInputs = new Map(rows.map(row => [row.path, row.sha256]));
   const sourceInputs = new Map(targetInputs);
   // Controlled prior body on the same admitted graph, with a distinct reviewed seal.
-  const reader = 'atf-tests/src/main/java/atf/tests/documentation/DocumentationGovernance.java';
+  const reader = 'atf-test-android/src/main/java/atf/android/AdbClient.java';
   sourceInputs.set(reader, digest('prior reader body'));
   sourceInputs.set(atfReaderSealsPath, digest('prior reviewed seals'));
   const f = await fixture(t, {sourceInputs, targetInputs});

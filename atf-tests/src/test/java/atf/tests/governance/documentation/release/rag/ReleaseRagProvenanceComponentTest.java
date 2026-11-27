@@ -255,7 +255,7 @@ class ReleaseRagProvenanceComponentTest {
         AuditedAssertions.assertEquals("BLOCKED", check(verdict, "SOURCE_SNAPSHOT"));
         AuditedAssertions.assertEquals("BLOCKED", check(verdict, "PAYLOAD_INTEGRITY"));
         AuditedAssertions.assertEquals("BLOCKED", check(verdict, "APK_IDENTITY"));
-        AuditedAssertions.assertTrue(details(verdict, "SOURCE_SNAPSHOT").stream().anyMatch(value -> value.contains("src/Game.java") && value.contains("Hash diferit")));
+        AuditedAssertions.assertTrue(details(verdict, "SOURCE_SNAPSHOT").stream().anyMatch(value -> value.contains("src/Game.java") && value.contains("Hash mismatch")));
         AuditedAssertions.assertTrue(details(verdict, "PAYLOAD_INTEGRITY").stream().anyMatch(value -> value.contains("PAYLOAD_MISMATCH")));
     }
 
@@ -266,12 +266,12 @@ class ReleaseRagProvenanceComponentTest {
         AuditedAssertions.assertEquals(2, exit);
         AuditedAssertions.assertEquals("PASS", check(verdict, "SOURCE_SNAPSHOT"));
         AuditedAssertions.assertEquals("BLOCKED", check(verdict, "MAIN_README_SURFACE"));
-        AuditedAssertions.assertTrue(details(verdict, "MAIN_README_SURFACE").stream().anyMatch(value -> value.contains("linia 2")));
+        AuditedAssertions.assertTrue(details(verdict, "MAIN_README_SURFACE").stream().anyMatch(value -> value.contains("line 2")));
     }
 
     @Test void aMalformedReleaseVersionPatternBlocksPolicyWithoutCrashingTheEvaluator() throws Exception {
         RagCandidateFixture fixture = create(temporary);
-        Path policyFile = fixture.project().resolve("config/release-platform-rag-policy.json");
+        Path policyFile = fixture.project().resolve("release-tools/config/release-platform-rag-policy.json");
         ObjectNode policy = (ObjectNode) JSON.readTree(policyFile.toFile());
         ((ObjectNode) policy.path("releaseVersioning")).put("newReleasePattern", "[");
         JSON.writeValue(policyFile.toFile(), policy);
@@ -440,7 +440,7 @@ class ReleaseRagProvenanceComponentTest {
         JsonNode verdict = JSON.readTree(fixture.output().toFile());
         AuditedAssertions.assertEquals(2, exit);
         AuditedAssertions.assertEquals("BLOCKED", check(verdict, "COMPONENT_EXTENT"));
-        AuditedAssertions.assertTrue(details(verdict, "COMPONENT_EXTENT").stream().anyMatch(value -> value.contains("cale Extent canonică/unică")));
+        AuditedAssertions.assertTrue(details(verdict, "COMPONENT_EXTENT").stream().anyMatch(value -> value.contains("canonical/unique Extent path")));
     }
 
     @Test void evaluatorRefusesToWriteItsVerdictInsideAnyInputTree() throws Exception {

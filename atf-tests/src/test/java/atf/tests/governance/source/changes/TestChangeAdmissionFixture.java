@@ -107,6 +107,9 @@ public final class TestChangeAdmissionFixture {
         try (var files = Files.list(real.resolve("config"))) {
             for (Path file : files.filter(Files::isRegularFile).toList()) Files.copy(file, config.resolve(file.getFileName()));
         }
+        Path releasePolicy = Files.createDirectories(directory.resolve("release-tools/config"))
+                .resolve("release-platform-rag-policy.json");
+        Files.copy(real.resolve("release-tools/config/release-platform-rag-policy.json"), releasePolicy);
         Files.writeString(scripts.resolve("AtfTestChangeAdmission.ps1"), """
                 function Invoke-AtfTestChangeAdmission {
                   param($SourceRoot,$BaseRef,$TempRoot,$JavaHome,$MavenCache,$ReceiptFile,[switch]$GenerateProofs,$Control)

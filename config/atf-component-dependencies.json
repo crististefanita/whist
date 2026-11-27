@@ -5,6 +5,8 @@
     "atf-validation/src/test/java",
     "atf-test-android/src/main/java",
     "atf-test-android/src/test/java",
+    "release-tools/src/main/java",
+    "release-tools/src/test/java",
     "atf-tests/src/main/java",
     "atf-tests/src/test/java",
     "atf-ui-browser/src/main/java",
@@ -37,6 +39,7 @@
   "scriptRoots": [
     "atf-tests/tools",
     "scripts",
+    "release-tools/scripts",
     "atf-ui-browser",
     "atf-test-android/tools"
   ],
@@ -45,7 +48,7 @@
     "config/atf-component-collections.json",
     "config/atf-test-suites.json",
     "config/atf-governance-policy.json",
-    "config/release-platform-rag-policy.json",
+    "release-tools/config/release-platform-rag-policy.json",
     "atf-tests/tools/atf-component-dependencies.mjs",
     "atf-tests/tools/atf-dependency-references.mjs",
     "atf-tests/tools/component-evidence-scope.mjs",
@@ -151,5 +154,5 @@
     }
   ],
   "readerSealsPath": "config/atf-component-reader-seals.json",
-  "topologySha256": "3d44b6e5ce6090c334b03e862603035cd4fca4ae0d9176a963bebbb05b6437dc"
+  "topologySha256": "10848af0b52be434ae6c9d3e50031c971c45270769357c101983b5f735fb2749"
 }

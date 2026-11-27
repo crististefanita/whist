@@ -36,7 +36,8 @@ public final class TestChangeReview {
             "atf-tests/src/main/java/atf/tests/jvm/JavaSourceParser.java",
             "atf-tests/src/main/java/atf/tests/documentation/policy/DocumentationContentPolicy.java",
             "config/atf-governance-policy.json", "config/atf-test-suites.json", "config/atf-component-collections.json", "config/gradle-app-collections.properties",
-            "config/gradle-audit-collections.properties", "config/test-collections.json", "config/release-platform-rag-policy.json",
+            "config/gradle-audit-collections.properties", "config/test-collections.json", "release-tools/config/README.md",
+            "release-tools/config/release-platform-rag-policy.json",
             "scripts/run-atf-governance.ps1", "scripts/run-component-suites.ps1",
             "scripts/AtfLauncherCapabilities.ps1", "scripts/run-whist-collection.ps1",
             "scripts/AtfBrowserToolchain.ps1",
@@ -73,9 +74,14 @@ public final class TestChangeReview {
             "config/atf-component-dependencies.json", "config/atf-component-reader-seals.json", "atf-tests/tools/atf-component-dependencies.mjs",
             "atf-tests/tools/component-qualification-context.mjs",
             "atf-tests/tools/atf-dependency-references.mjs", "atf-tests/tools/atf-script-references.mjs",
-            "atf-tests/tools/atf-dependency-cli.mjs");
+            "atf-tests/tools/atf-dependency-cli.mjs",
+            ".atf-signing/.gitignore", ".atf-signing/README.md",
+            ".atf-signing/whist-android-test.pem", ".atf-signing/whist-android-test.fingerprint",
+            "release-tools/.atf-signing/.gitignore", "release-tools/.atf-signing/README.md",
+            "release-tools/.atf-signing/whist-android-test.pem", "release-tools/.atf-signing/whist-android-test.fingerprint");
     private static final List<String> GATE_DIRECTORIES = List.of(
-            "atf-tests/src/main/java/atf/tests/testchange/", "whist-lab-app/gradle/", ".github/workflows/");
+            "atf-tests/src/main/java/atf/tests/testchange/", "release-tools/src/main/java/", "release-tools/scripts/",
+            "whist-lab-app/gradle/", ".github/workflows/");
 
     private TestChangeReview() { }
 
@@ -238,7 +244,9 @@ public final class TestChangeReview {
 
     private static boolean generated(String path) {
         if (path == null) return false;
-        for (String segment : path.split("/")) if (OUTPUTS.contains(segment)) return true;
+        int sourceBoundary = path.indexOf("/src/");
+        String generatedArea = sourceBoundary < 0 ? path : path.substring(0, sourceBoundary);
+        for (String segment : generatedArea.split("/")) if (OUTPUTS.contains(segment)) return true;
         return false;
     }
 

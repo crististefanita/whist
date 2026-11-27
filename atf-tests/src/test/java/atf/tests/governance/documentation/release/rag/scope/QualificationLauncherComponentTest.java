@@ -79,7 +79,7 @@ class QualificationLauncherComponentTest {
         }
     }
 
-    @Test void validTestChangeProofPrecedesSourceCopyAndMavenInBothLaunchers() throws Exception {
+    @Test void governanceAdmissionPrecedesMavenAndComponentSelectionRejectsUnknownGroupsBeforeStaging() throws Exception {
         realAdmission = true;
         Path source = fixture();
         proofRoot = scratch.resolve("mocked proof inputs");
@@ -87,27 +87,18 @@ class QualificationLauncherComponentTest {
                 java.time.LocalDate.now(java.time.ZoneOffset.UTC));
         var governance = launch(GOVERNANCE, source, scratch.resolve("admitted-governance"), "", null);
         AuditedAssertions.assertEquals(0, governance.exit(), governance.log());
+        AuditedAssertions.assertTrue(Files.isRegularFile(scratch.resolve("maven-capability-probed")),
+                "The governance launcher verifies the Maven runtime before invoking it");
         AuditedAssertions.assertTrue(Files.isRegularFile(scratch.resolve("maven.entered")), "Maven observes successful second admission");
         Files.delete(scratch.resolve("maven.entered"));
         Path components = scratch.resolve("admitted-components");
         var component = launch(COMPONENTS, source, components, "component-boundary", null);
         AuditedAssertions.assertEquals(1, component.exit());
-        AuditedAssertions.assertTrue(component.log().contains("Groups must"), component.log());
-        AuditedAssertions.assertTrue(Files.isRegularFile(components.resolve("source-inputs.json")), "Valid proof permits the real snapshot");
-        AuditedAssertions.assertEquals("PASS", JSON.readTree(components.resolve("test-change-admission-recheck.json").toFile())
-                .path("status").asText());
-        AuditedAssertions.assertEquals("ATF_TEST_CHANGE_ADMISSION", JSON.readTree(
-                components.resolve("test-change-admission.json").toFile()).path("kind").asText(),
-                "Admission integration must use the canonical validator, not the neighbouring-component mock");
-        AuditedAssertions.assertEquals("MOCK_EDITORIAL_NEIGHBOUR", JSON.readTree(
-                components.resolve("release-editorial.json").toFile()).path("kind").asText(),
-                "Editorial acceptance is independently qualified by the metadata component");
-        AuditedAssertions.assertEquals("MOCK_ARTIFACT_NEIGHBOUR", JSON.readTree(
-                components.resolve("release-preflight.log").toFile()).path("kind").asText(),
-                "Payload integrity has its own components; this fixture owns source admission and real snapshot ordering");
+        AuditedAssertions.assertTrue(component.log().contains("COMPONENT-SELECTION-UNKNOWN"), component.log());
+        AuditedAssertions.assertFalse(Files.exists(components), "An unknown group is rejected before creating a staged run");
         AuditedAssertions.assertTrue(Files.readString(scratch.resolve("prepared-validator-calls.jsonl"))
-                .contains("atf.tests.testchange.TestChangeAdmissionCli"), "The controlled compiler dispatches the prepared canonical source validator");
-        AuditedAssertions.assertFalse(Files.exists(scratch.resolve("maven.entered")), "The deliberate invalid group stops after admission");
+                .contains("atf.tests.testchange.TestChangeAdmissionCli"), "Governance invokes the canonical source validator before Maven");
+        AuditedAssertions.assertFalse(Files.exists(scratch.resolve("maven.entered")), "The invalid component selector never reaches Maven");
     }
 
     @Test void invalidTestChangeProofStopsBothLaunchersBeforeCopyOrMaven() throws Exception {
@@ -214,10 +205,10 @@ class QualificationLauncherComponentTest {
         var run = launch(GOVERNANCE, source, output, "", null, sibling, sibling);
         AuditedAssertions.assertEquals(0, run.exit(), run.log());
         JsonNode result = JSON.readTree(output.resolve("governance-result.json").toFile());
-        AuditedAssertions.assertEquals("-Dtest=AtfQualityGovernanceSuite",
-                Files.readString(scratch.resolve("maven-test-selector")));
+        AuditedAssertions.assertTrue(Files.readString(scratch.resolve("maven-test-selector"))
+                .contains("-Dtest=AtfQualityGovernanceSuite"), "The mock records Maven's real suite selector");
         Path stage = Path.of(result.required("stage").asText());
-        AuditedAssertions.assertEquals(stage.toString(), Files.readString(scratch.resolve("maven.entered")));
+        AuditedAssertions.assertEquals(stage.toString(), Files.readString(scratch.resolve("maven.entered")).trim());
         String expectedMavenTemp = stage.getParent().resolve("maven-temp").toString();
         AuditedAssertions.assertEquals(List.of(expectedMavenTemp, expectedMavenTemp),
                 Files.readAllLines(scratch.resolve("maven-temp-roots")),
@@ -262,8 +253,8 @@ class QualificationLauncherComponentTest {
         var selected = launch(GOVERNANCE, source, scratch.resolve("rag-only"), "", null, scratch, scratch,
                 "AtfRagGovernanceSuite");
         AuditedAssertions.assertEquals(0, selected.exit(), selected.log());
-        AuditedAssertions.assertEquals("-Dtest=AtfRagGovernanceSuite",
-                Files.readString(scratch.resolve("maven-test-selector")));
+        AuditedAssertions.assertTrue(Files.readString(scratch.resolve("maven-test-selector"))
+                .contains("-Dtest=AtfRagGovernanceSuite"), "The mock records Maven's real suite selector");
         Path reportManifest = scratch.resolve("rag-only/governance-report-manifest.json");
         JsonNode extent = JSON.readTree(reportManifest.toFile());
         AuditedAssertions.assertEquals("PASS", extent.required("status").asText());
@@ -330,10 +321,15 @@ class QualificationLauncherComponentTest {
             AuditedAssertions.assertTrue(run.log().contains("QUALIFICATION-TEMP-IN-CHECKOUT:")
                     && run.log().contains(variable + "="), run.log());
             AuditedAssertions.assertFalse(Files.exists(output), "Preflight must stop before creating the run directory");
+            List<String> stagedEntries;
             try (var entries = Files.list(physical)) {
-                AuditedAssertions.assertTrue(entries.findAny().isEmpty(), "Preflight must stop before staging");
+                stagedEntries = entries.map(path -> path.getFileName().toString()).toList();
             }
+            AuditedAssertions.assertTrue(stagedEntries.isEmpty(), "Preflight must stop before staging; runner=" + runner
+                    + "; variable=" + variable + "; entries=" + stagedEntries + "; diagnostic=" + run.log());
             AuditedAssertions.assertFalse(Files.exists(scratch.resolve("maven.entered")), "Preflight must stop before Maven");
+            AuditedAssertions.assertFalse(Files.exists(scratch.resolve("maven-capability-probed")),
+                    "Invalid temporary roots are rejected before tool capability probes start Maven");
         }
     }
 
@@ -355,10 +351,17 @@ class QualificationLauncherComponentTest {
         write(source, "config/atf-governance-policy.json", "{\"documentationLanguage\":\"en\",\"mavenModules\":[],\"additionalSourceRoots\":[]}");
         write(source, "pom.xml", "<project/>");
         Path real = GovernanceProject.locateProjectRoot();
-        Files.copy(real.resolve("config/release-platform-rag-policy.json"), source.resolve("config/release-platform-rag-policy.json"));
+        Path policy = source.resolve("release-tools/config/release-platform-rag-policy.json");
+        Files.createDirectories(policy.getParent());
+        Files.copy(real.resolve("release-tools/config/release-platform-rag-policy.json"), policy);
         Files.copy(real.resolve("config/gradle-app-collections.properties"), source.resolve("config/gradle-app-collections.properties"));
         Files.copy(real.resolve("config/atf-component-collections.json"), source.resolve("config/atf-component-collections.json"));
         Files.copy(real.resolve("config/atf-test-suites.json"), source.resolve("config/atf-test-suites.json"));
+        for (String relative : List.of("gradlew.bat", "gradle/wrapper/gradle-wrapper.jar", "gradle/wrapper/gradle-wrapper.properties")) {
+            Path target = source.resolve("whist-lab-app").resolve(relative);
+            Files.createDirectories(target.getParent());
+            Files.copy(real.resolve("whist-lab-app").resolve(relative), target);
+        }
         if (realAdmission || realEditorial) {
             // Admission fixtures inspect a small external checkout; artifact qualification is a controlled neighbour.
             write(source, "atf-tests/tools/check-release-artifacts.mjs",
@@ -419,30 +422,31 @@ class QualificationLauncherComponentTest {
 
     private Run launch(String runner, Path source, Path output, String mutation, Path pinned, Path tmp, Path temp,
                        String governanceSuite, Path evidenceRoot) throws Exception {
-        Path tool = scratch.resolve("maven-probe.ps1");
+        Path tool = scratch.resolve("maven-probe.cmd");
         Files.writeString(tool, """
-                $stage = (Get-Location).Path
-                $admission = Join-Path $env:ATF_FIXTURE_RUN_ROOT 'test-change-admission-recheck.json'
-                if (-not (Test-Path -LiteralPath $admission) -or
-                    (Get-Content -LiteralPath $admission -Raw | ConvertFrom-Json).status -cne 'PASS') { exit 21 }
-                if ($stage -eq $env:ATF_FIXTURE_SOURCE -or -not ($args -contains "-Datf.governance.root=$stage") -or
-                    -not (Test-Path -LiteralPath (Join-Path $stage 'release/index.json'))) { exit 19 }
-                if ($env:ATF_FIXTURE_EVIDENCE_ROOT -and -not (Test-Path -LiteralPath $env:ATF_FIXTURE_EVIDENCE_ROOT -PathType Container)) { exit 20 }
-                [IO.File]::WriteAllText($env:ATF_FIXTURE_ENTERED, $stage)
-                [IO.File]::WriteAllText($env:ATF_FIXTURE_TEMP_ROOTS, ($env:TEMP + [Environment]::NewLine + $env:TMP))
-                if ($env:ATF_FIXTURE_MUTATION -ne 'no-extent') {
-                    $reportDirectory = Join-Path $env:TEMP 'whist-component-reports'
-                    New-Item -ItemType Directory -Path $reportDirectory -Force | Out-Null
-                    [IO.File]::WriteAllText((Join-Path $reportDirectory 'fixture.html'), '<!doctype html><html><body><img src="data:image/png;base64,aW1hZ2U="></body></html>')
-                }
-                $testSelector = @($args | Where-Object { $_ -like '-Dtest=*' } | Select-Object -First 1)
-                [IO.File]::WriteAllText($env:ATF_FIXTURE_TEST_SELECTOR, [string]$testSelector)
-                switch ($env:ATF_FIXTURE_MUTATION) {
-                    'live-add' { [IO.File]::WriteAllText((Join-Path $env:ATF_FIXTURE_SOURCE 'release/added.json'), '{}') }
-                    'live-delete' { Remove-Item -LiteralPath (Join-Path $env:ATF_FIXTURE_SOURCE 'release/index.json') }
-                    'stage-change' { [IO.File]::AppendAllText((Join-Path $stage 'release/index.json'), ' ') }
-                }
-                exit 0
+                @echo off
+                setlocal EnableExtensions
+                if /I "%~1"=="-version" (
+                  >"%ATF_FIXTURE_MAVEN_CAPABILITY_PROBED%" echo Apache Maven 3.10.0
+                  echo Apache Maven 3.10.0
+                  exit /b 0
+                )
+                if not exist "%ATF_FIXTURE_RUN_ROOT%\\test-change-admission-recheck.json" exit /b 21
+                if /I "%CD%"=="%ATF_FIXTURE_SOURCE%" exit /b 19
+                if not exist "release\\index.json" exit /b 19
+                if defined ATF_FIXTURE_EVIDENCE_ROOT if not exist "%ATF_FIXTURE_EVIDENCE_ROOT%" exit /b 20
+                >"%ATF_FIXTURE_ENTERED%" echo %CD%
+                >"%ATF_FIXTURE_TEMP_ROOTS%" echo %TEMP%
+                >>"%ATF_FIXTURE_TEMP_ROOTS%" echo %TMP%
+                >"%ATF_FIXTURE_TEST_SELECTOR%" echo %*
+                if /I not "%ATF_FIXTURE_MUTATION%"=="no-extent" (
+                  if not exist "%TEMP%\\whist-component-reports" mkdir "%TEMP%\\whist-component-reports"
+                  >"%TEMP%\\whist-component-reports\\fixture.html" echo ^<!doctype html^>^<html^>^<body^>^<img src="data:image/png;base64,aW1hZ2U="^>^</body^>^</html^>
+                )
+                if /I "%ATF_FIXTURE_MUTATION%"=="live-add" >"%ATF_FIXTURE_SOURCE%\\release\\added.json" echo {}
+                if /I "%ATF_FIXTURE_MUTATION%"=="live-delete" del "%ATF_FIXTURE_SOURCE%\\release\\index.json"
+                if /I "%ATF_FIXTURE_MUTATION%"=="stage-change" >>"%CD%\\release\\index.json" echo.
+                exit /b 0
                 """);
         var command = new ArrayList<>(List.of("pwsh", "-NoProfile", "-NonInteractive", "-File",
                 launcherScripts.resolve(runner).toString(),
@@ -465,6 +469,7 @@ class QualificationLauncherComponentTest {
         environment.remove("ATF_TEST_CHANGE_PROOF_ROOT");
         if (proofRoot != null) environment.put("ATF_TEST_CHANGE_PROOF_ROOT", proofRoot.toString());
         environment.put("ATF_FIXTURE_ENTERED", scratch.resolve("maven.entered").toString());
+        environment.put("ATF_FIXTURE_MAVEN_CAPABILITY_PROBED", scratch.resolve("maven-capability-probed").toString());
         environment.put("ATF_FIXTURE_TEMP_ROOTS", scratch.resolve("maven-temp-roots").toString());
         environment.put("ATF_FIXTURE_TEST_SELECTOR", scratch.resolve("maven-test-selector").toString());
         environment.put("ATF_FIXTURE_MUTATION", mutation);
@@ -479,7 +484,13 @@ class QualificationLauncherComponentTest {
         try {
             AuditedAssertions.assertTrue(process.waitFor(60, TimeUnit.SECONDS),
                     () -> LauncherFailureLog.timeoutMessage(log, Duration.ofNanos(System.nanoTime() - started)));
-            return new Run(process.exitValue(), new String(Files.readAllBytes(log), java.nio.charset.StandardCharsets.UTF_8));
+            String processOutput = new String(Files.readAllBytes(log), java.nio.charset.StandardCharsets.UTF_8);
+            Path mavenLog = output.resolve("maven.log");
+            if (process.exitValue() != 0 && mavenLog != null && Files.isRegularFile(mavenLog)) {
+                processOutput += System.lineSeparator() + "--- Maven fixture diagnostics ---" + System.lineSeparator()
+                        + Files.readString(mavenLog);
+            }
+            return new Run(process.exitValue(), processOutput);
         } finally { if (process.isAlive()) process.destroyForcibly(); }
     }
 

@@ -65,6 +65,9 @@ class TestChangeReviewComponentTest {
                 "config/atf-component-dependencies.json", "atf-tests/tools/atf-component-dependencies.mjs",
                 "atf-tests/tools/atf-dependency-references.mjs", "atf-tests/tools/atf-script-references.mjs",
                 "atf-tests/tools/atf-dependency-cli.mjs", "atf-tests/tools/component-source-check.mjs",
+                "release-tools/config/README.md", "release-tools/config/release-platform-rag-policy.json",
+                "release-tools/src/main/java/atf/release/tools/ReleaseToolsCli.java",
+                "release-tools/scripts/Invoke-ReleaseRag.ps1",
                 "scripts/AtfComponentSelection.ps1", "scripts/AtfLauncherCapabilities.ps1",
                 "scripts/AtfBrowserToolchain.ps1", "scripts/run-whist-collection.ps1",
                 "atf-test-android/tools/AndroidDeviceSetup.psm1",
@@ -73,6 +76,16 @@ class TestChangeReviewComponentTest {
         for (String path : paths) repo.put(path, "controlled payload\n");
         AuditedAssertions.assertEquals(paths.stream().sorted().map(path -> uncovered("A", path, repo.base)).toList(),
                 check(repo).diagnostics(), "Fixture payloads, source code and selector contracts still require review");
+    }
+
+    @Test void releasePackageNamesRemainProtectedWhileTheRootReleasePayloadIsGenerated(@TempDir Path root) throws Exception {
+        var repo = new TestChangeGitFixture(root);
+        String source = "release-tools/src/main/java/atf/release/tools/ReleaseToolsCli.java";
+        repo.put(source, "package atf.release.tools;\nclass ReleaseToolsCli {}\n");
+        repo.put("release/0.26.0/reports/index.html", "generated release payload\n");
+
+        AuditedAssertions.assertEquals(List.of(uncovered("A", source, repo.base)), check(repo).diagnostics(),
+                "Output directory names inside Java package paths must not hide new release-tools code");
     }
 
     @Test void nativeSourceAdmissionAndAdapterOraclesCannotBypassReview(@TempDir Path root) throws Exception {
@@ -130,6 +143,24 @@ class TestChangeReviewComponentTest {
         AuditedAssertions.assertEquals(List.of(), check(repo).diagnostics());
     }
 
+    @Test void signingMetadataMovesRequireReviewAtBothOldAndNewOwners(@TempDir Path root) throws Exception {
+        var repo = new TestChangeGitFixture(root);
+        var paths = List.of(".atf-signing/.gitignore", ".atf-signing/README.md", ".atf-signing/whist-android-test.pem",
+                ".atf-signing/whist-android-test.fingerprint", "release-tools/.atf-signing/.gitignore",
+                "release-tools/.atf-signing/README.md", "release-tools/.atf-signing/whist-android-test.pem",
+                "release-tools/.atf-signing/whist-android-test.fingerprint");
+        for (String path : paths) repo.put(path, "public signing contract metadata\n");
+
+        AuditedAssertions.assertEquals(paths.stream().sorted().map(path -> uncovered("A", path, repo.base)).toList(),
+                check(repo).diagnostics(), "Both the retired location and new module owner are review-protected");
+
+        repo.put(FEEDBACK, repo.control("SIGNING-METADATA-MOVE", "ACTIVE", repo.base, VALID, false,
+                paths.toArray(String[]::new)));
+        AuditedAssertions.assertEquals(List.of(), check(repo).diagnostics());
+        AuditedAssertions.assertFalse(paths.stream().anyMatch(path -> path.endsWith(".keystore")),
+                "Local private signing bytes are governed by source exclusion and certificate continuity, not by Git diff controls");
+    }
+
     @Test void contentDigestsCannotBypassSourceChangeReview(@TempDir Path root) throws Exception {
         var repo = new TestChangeGitFixture(root);
         String path = "scripts/AtfFileDigest.ps1";
@@ -152,7 +183,8 @@ class TestChangeReviewComponentTest {
 
     @Test void theComponentJvmProfileCannotChangeWithoutAReviewedControl(@TempDir Path root) throws Exception {
         var repo = new TestChangeGitFixture(root);
-        var launchers = List.of("scripts/AtfComponentJvm.ps1", "scripts/AtfStandaloneJava.ps1", "scripts/AtfTestChangeAdmission.ps1");
+        var launchers = List.of("scripts/AtfComponentJvm.ps1", "scripts/AtfStandaloneJava.ps1",
+                "scripts/AtfTestChangeAdmission.ps1", "scripts/run-component-suites.ps1");
         for (String launcher : launchers) repo.put(launcher, "# controlled JVM admission boundary\n");
         AuditedAssertions.assertEquals(launchers.stream().map(path -> uncovered("A", path, repo.base)).toList(), check(repo).diagnostics());
         repo.put(FEEDBACK, repo.control("JVM-PROFILE", "ACTIVE", repo.base, VALID, false, launchers.toArray(String[]::new)));

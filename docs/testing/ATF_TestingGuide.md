@@ -49,6 +49,7 @@ The environment is a separate dimension. A component may launch Git, Node or a c
 |---|---|---|---|---|---|
 | `atf-validation` | ✅ | ✅ | — | — | [Validation](../../atf-validation/README.md): public rule and evidence oracles; no application dependency. |
 | `atf-test-android` | ✅ | ✅ | ✅ | ✅ | [Android verification](../../atf-test-android/README.md): clocks, ADB adapters, observations, report integration and installed-app journeys. |
+| `release-tools` | — | ✅ | — | — | [Release tools](../../release-tools/README.md): root resolution, RAG admission, exact evidence hashes and release operation adapters. |
 | `atf-tests` | ✅ | ✅ | ✅ | — | [ATF verification](../../atf-tests/README.md): binary consumers, adapter contracts, source/documentation governance and release qualification. |
 
 <!-- /atf-maven-level-matrix -->

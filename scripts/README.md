@@ -14,6 +14,7 @@
 
 - For incremental qualification, `-SourceRoot` identifies the pinned snapshot and `-Groups` selects groups; omitting it selects all groups. `-ReuseFrom` points to prior component evidence. The launcher runs only affected groups or groups without valid evidence. [Reuse rule](../docs/testing/ATF_ReleaseQualification.md#re-use-of-component-evidence)
 
+- [Release tools](../release-tools/README.md) owns portable RAG, signing-continuity, publication, download and local-release adapters. Shared game, Android and component launchers remain in this directory.
 - [Shared-UI AAR export](export-card-table-ui.ps1) builds a missing version from module inputs and Gradle tooling. A repeated export verifies the existing package manifest and hashes.
 
 This directory coordinates operations across modules: checks, application builds and explicitly enabled Android scenarios. Algorithms, validators and tool tests remain in their owning modules.
@@ -60,13 +61,18 @@ Check PowerShell syntax separately from execution. A device scenario requires an
 
 ## Preconditions after entry
 
-The component launcher uses [suite-local JVM options](AtfComponentJvm.ps1). Remove inherited `JAVA_TOOL_OPTIONS`, `_JAVA_OPTIONS` and `JDK_JAVA_OPTIONS` before running it; the diagnostic names the variable without printing its value. Normal suites and single or batched test-change proofs share this profile, and child JVMs do not inherit its reporting properties.
+The component launcher uses [suite-local JVM options](AtfComponentJvm.ps1).
+
+- Maven compilation, classpath resolution and Java suites use temporary folders under the external qualification workspace. The launcher restores the caller's `TEMP` and `TMP` after each invocation.
+- Maven fixtures receive the run dossier through `WHIST_EVIDENCE_ROOT` and an isolated `WHIST_FIXTURE_DIAGNOSTICS` subfolder. The Android API component selection also receives the configured API 36 SDK; it fails preflight if that platform is absent.
+- `@TempDir` fixtures and framework files do not fall back to Windows user Temp. Remove inherited `JAVA_TOOL_OPTIONS`, `_JAVA_OPTIONS` and `JDK_JAVA_OPTIONS` before launch; the diagnostic names a variable but never prints its value.
+- Normal suites and single or batched test-change proofs share this profile. Child JVMs do not inherit suite properties.
 
 | Entry point | Resources and data required | What checks execution |
 |---|---|---|
 | `run-whist-collection.ps1` | Selected JDK, Gradle wrapper and JVM cache; protocol, candidate and corpus when required by the collection. | Validates the collection and identities, prepares the copy and calls Gradle with `--offline`; reports the exit code separately. |
 | `run-documentation-governance.ps1` | JDK 21 and a Maven cache containing Jackson dependencies. | [Editorial checks](../docs/governance/ATF_Documentation.md#documentation-governance-cli) for selected files or the full inventory. |
-| `run-atf-governance.ps1` | JDK, executable Maven, POM files and JAR/POM pairs; Maven cache available for isolated copying. | Checks APKs before Maven and compares source and release inventories. Defaults to `AtfQualityGovernanceSuite`; `-GovernanceSuite AtfRagGovernanceSuite` runs the bounded offline RAG, launcher, report-integrity and publication collection. Maven and Surefire temporary files stay in the external qualification workspace. The RAG run must export one canonical Extent HTML plus a SHA-256 manifest and JUnit sidecars. Only these two selectors are accepted. [Snapshot contract](../docs/testing/ATF_ReleaseQualification.md#snapshot-and-preflight-before-maven) · [RAG collection](../docs/testing/ATF_ReleaseQualification.md#orchestration-and-the-langgraph-adoption-gate) |
+| `run-atf-governance.ps1` | JDK, executable Maven, POM files and JAR/POM pairs; Maven cache available for isolated copying. | Checks APKs before Maven and compares source and release inventories. Defaults to `AtfQualityGovernanceSuite`; `-GovernanceSuite AtfRagGovernanceSuite` runs the bounded offline RAG, launcher, report-integrity and publication collection. Maven and Surefire temporary files stay in the external qualification workspace. On Windows, configure a short, shallow `WHIST_QUALIFICATION_TEMP_ROOT` as path hygiene for nested JVM/JUnit/PowerShell fixtures; it does not replace complete fixture inputs or an executable Maven shim. The RAG run must export one canonical Extent HTML plus a SHA-256 manifest and JUnit sidecars. Only these two selectors are accepted. [Snapshot contract](../docs/testing/ATF_ReleaseQualification.md#snapshot-and-preflight-before-maven) · [RAG collection](../docs/testing/ATF_ReleaseQualification.md#orchestration-and-the-langgraph-adoption-gate) |
 | `run-offline-*` | Tools and parameters declared by each script; some entries require explicit local paths. | Executes the selected protocol; script existence does not prove tool availability. |
 | Android flow | ADB configuration, identified APK, lease and verified data isolation. | [Infrastructure contract](../atf-test-android/README.md) separates transport, commands and observations. |
 
@@ -99,7 +105,7 @@ The launcher can reuse compilation after an interrupted classpath step; an alter
 
 - [One source policy](AtfSigningSourcePolicy.ps1) admits only public signing metadata and skips private local entries before hashing.
 - [Copying](Copy-AtfSourceInputs.ps1) validates the complete manifest, canonical paths and link-free source and destination ancestors before writing.
-- Private entries are refused even in an old manifest. The [signing guide](../.atf-signing/README.md) defines the public allowlist and policy limits.
+- Private entries are refused even in an old manifest. The [signing guide](../release-tools/.atf-signing/README.md) defines the public allowlist and policy limits.
 
 ## Browser toolchain preflight
 

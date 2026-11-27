@@ -13,6 +13,7 @@
     <modules>
         <module>atf-validation</module>
         <module>atf-test-android</module>
+        <module>release-tools</module>
         <module>atf-tests</module>
     </modules>
 

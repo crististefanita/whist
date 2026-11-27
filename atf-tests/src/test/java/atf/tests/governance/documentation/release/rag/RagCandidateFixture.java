@@ -89,8 +89,8 @@ record RagCandidateFixture(Path candidate, Path source, Path plan, Path output, 
     }
 
     private static String createBaseline(Path project, String sourceHash) throws Exception {
-        Path config = Files.createDirectories(project.resolve("config")).resolve("release-platform-rag-policy.json");
-        Files.copy(GovernanceProject.locateProjectRoot().resolve("config").resolve(config.getFileName()), config);
+        Path config = Files.createDirectories(project.resolve("release-tools/config")).resolve("release-platform-rag-policy.json");
+        Files.copy(GovernanceProject.locateProjectRoot().resolve("release-tools/config").resolve(config.getFileName()), config);
         Path baseline = Files.createDirectories(project.resolve("release/" + BASELINE));
         ObjectNode index = JSON.createObjectNode().put("schemaVersion", 2).put("currentVersion", BASELINE);
         index.putArray("versions").add(BASELINE);

@@ -21,11 +21,13 @@ test('the identified qualification workflow affects framework governance but not
     ...['achievements', 'bidding', 'commands', 'display', 'history'].map(key => 'whist-lab-app-' + key)];
   for (const group of independent) {
     assert.equal(componentEvidenceScope(group, current, previous).decision, 'REUSE', group);
-    for (const critical of ['.github/workflows/unknown.yml', 'whist-lab-app/app/src/main/java/Unknown.java', 'pom.xml']) {
+    for (const critical of ['.github/workflows/unknown.yml', 'whist-lab-app/app/src/main/java/Unknown.java']) {
       const result = componentEvidenceScope(group, new Map([...current, [critical, 'c'.repeat(64)]]), previous);
       if (critical.endsWith('Unknown.java') && ['atf-validation', 'atf-test-android', 'whist-lab-app-rules', 'whist-lab-app-atf-card-table-ui'].includes(group)) continue;
       assert.equal(result.decision, 'RUN', group + ': ' + critical);
     }
+    assert.equal(componentEvidenceScope(group, new Map([...current, ['pom.xml', 'c'.repeat(64)]]), previous).decision,
+      group.startsWith('whist-lab-app-') ? 'REUSE' : 'RUN', group + ': Maven aggregation has separate ownership');
   }
   assert.equal(componentEvidenceScope('atf-tests', current, previous).decision, 'RUN');
   assert.equal(componentEvidenceScope('unknown-group', current, previous).decision, 'RUN');
@@ -37,8 +39,10 @@ test('Web-only artifacts preserve independent native and API evidence while crit
   for(const group of ['atf-validation','atf-test-android','whist-lab-app-rules','whist-lab-app-atf-card-table-ui',
     ...['achievements','bidding','commands','display','history'].map(key=>'whist-lab-app-'+key)]) {
     assert.equal(componentEvidenceScope(group,changed,new Map()).decision,'REUSE',group);
-    for(const critical of ['pom.xml','lib/atf-reporting-changed.jar','unclassified/input.bin'])
+    for(const critical of ['lib/atf-reporting-changed.jar','unclassified/input.bin'])
       assert.equal(componentEvidenceScope(group,new Map([...changed,[critical,'d'.repeat(64)]]),new Map()).decision,'RUN',group+': '+critical);
+    assert.equal(componentEvidenceScope(group,new Map([...changed,['pom.xml','d'.repeat(64)]]),new Map()).decision,
+      group.startsWith('whist-lab-app-') ? 'REUSE' : 'RUN',group+': Maven aggregation has separate ownership');
   }
   assert.equal(componentEvidenceScope('atf-tests',changed,new Map()).decision,'RUN');
   assert.equal(componentEvidenceScope('unregistered-suite',changed,new Map()).decision,'RUN');

@@ -36,17 +36,17 @@ const gradleAppPackages = new Map(collectionOwners.map(([owner, group]) => [owne
 
 const appGroups = [...new Set(gradleAppPackages.values())];
 const gradleGroups = [...appGroups, 'whist-lab-app-atf-card-table-ui', 'whist-lab-app-card-table-core', 'whist-lab-app-rules'];
-const mavenGroups = ['atf-validation', 'atf-test-android', 'atf-tests'];
+const mavenGroups = ['atf-validation', 'atf-test-android', 'release-tools', 'atf-tests'];
 const allGroups = [...mavenGroups, ...gradleGroups];
 const modernGroups = [...new Set([...allGroups, ...atfGroups])];
 const frameworkOnly = file => nonBuildDocumentation(file)
     || file.startsWith('atf-tests/') || file.startsWith('docs/') || file.startsWith('release/')
     || file.startsWith('atf-ui-browser/') || file === '.github/workflows/whist-components.yml'
     || file === 'config/documentation-editions.json'
-    || file.startsWith('config/release-platform-rag-policy.')
+    || file.startsWith('release-tools/config/release-platform-rag-policy.')
     || file.startsWith('config/atf-governance-policy.') || file.startsWith('config/atf-test-suites.')
     || file.startsWith('config/test-collections.') || file.startsWith('scripts/')
-    || file.startsWith('.atf-signing/');
+    || file.startsWith('.atf-signing/') || file.startsWith('release-tools/');
 
 function appPackageOwner(file, sourceSet) {
   const prefix = new RegExp(`^whist-lab-app/(?:app|whist-presentation)/src/${sourceSet}/java/ro/whistlab/app/`).exec(file);
@@ -59,6 +59,7 @@ function affectedGroups(file) {
   // This inventory is checked by every RAG evaluation. A change to the inventory
   // must not invalidate the independent Maven framework suite by itself.
   if (file === 'config/documentation-editions.json') return [];
+  if (file.startsWith('release-tools/')) return ['release-tools', 'atf-tests'];
   if (/^docs\/game\/ATF_Rules(?:Ro|En)\.md$/.test(file)) return ['whist-lab-app-rules', 'atf-tests'];
   if (file.startsWith('.github/')) return file === '.github/workflows/whist-components.yml' ? ['atf-tests'] : allGroups;
   if (frameworkOnly(file)) return ['atf-tests'];
@@ -67,8 +68,8 @@ function affectedGroups(file) {
   if (file.startsWith('atf-test-android/')) return ['atf-test-android', 'atf-tests'];
   if (file.startsWith('atf-tests/')) return ['atf-tests'];
 
-  if (file === 'pom.xml' || file.endsWith('/pom.xml') || file.startsWith('.mvn/')
-      || file.startsWith('lib/')) return allGroups;
+  if (file === 'pom.xml' || file.startsWith('.mvn/')) return [...new Set([...mavenGroups, ...atfGroups])];
+  if (file.endsWith('/pom.xml') || file.startsWith('lib/')) return allGroups;
 
   if (file === 'config/gradle-app-collections.properties') return [...appGroups, 'atf-tests'];
   if (file === 'whist-lab-app/gradle/app-component-collections.gradle') return [...appGroups, 'atf-tests'];
@@ -130,7 +131,7 @@ export function componentEvidenceScope(group, releaseInputs, executionInputs, {a
       // dependencies remain conservative until a narrower edge is qualified.
       if (nonBuildDocumentation(file)) groups = /^docs\/game\/ATF_Rules(?:Ro|En)\.md$/.test(file)
         ? ['atf-tests-documentation', 'whist-lab-app-rules'] : ['atf-tests-documentation'];
-      else if (groups.includes('atf-tests')) {
+      else if (groups.includes('atf-tests') && file !== 'pom.xml') {
         const dependency = atfDependencySelection(file, releaseInputs, executionInputs);
         groups = [...new Set([...groups.filter(group => group !== 'atf-tests'), ...dependency.groups])];
         if (!compatible) groups = [...new Set([...groups, ...atfGroups])];
@@ -145,7 +146,7 @@ export function componentEvidenceScope(group, releaseInputs, executionInputs, {a
     .filter(row => row.file === 'config/documentation-editions.json')
     .map(() => 'DOCUMENTATION_EDITIONS'))].sort();
   const metadataOnlyBuildFile = androidVersionMetadataOnly
-      && classified.every(row => row.file === 'whist-lab-app/app/build.gradle' || frameworkOnly(row.file));
+      && classified.every(row => row.file === 'whist-lab-app/app/build.gradle' || row.file === 'pom.xml' || frameworkOnly(row.file));
   const affected = classified.filter(row => row.groups.includes(group)
       && !(metadataOnlyBuildFile && row.file === 'whist-lab-app/app/build.gradle')).map(row => row.file);
   const unclassified = classified.filter(row => knownGroups.every(group => row.groups.includes(group)));

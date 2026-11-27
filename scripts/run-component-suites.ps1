@@ -31,6 +31,7 @@ Assert-AtfComponentJavaEnvironment
 . (Join-Path $PSScriptRoot 'AtfComponentMavenReuse.ps1')
 . (Join-Path $PSScriptRoot 'AtfLauncherCapabilities.ps1')
 $sourceRoot = [IO.Path]::GetFullPath($SourceRoot)
+$tempRoot = Get-AtfQualificationTempRoot $sourceRoot
 if ($ResumeFrom) {
     if ($ReuseFrom -or $AllTestChangeControls) {
         throw 'ResumeFrom requires a normal component run or one static proof control and its own validated evidence source.'
@@ -97,6 +98,20 @@ function Invoke-MavenSelections($selections, $stage, $provenanceFile) {
         Write-AtfQualificationDecision $timing 'components.compiler-reuse' 'NOT_RUN' $reuseDecision.reason
     }
     $buildWork = if ($prepared -and $prepared.buildWorkspace) { $prepared.buildWorkspace } else { $workspace }
+    $mavenTemp = Join-Path $workspace 'maven-process-temp'
+    New-Item -ItemType Directory -Path $mavenTemp -Force | Out-Null
+    function Invoke-AtfMavenWithWorkspaceTemp([scriptblock]$Action) {
+        $savedTemp = $env:TEMP
+        $savedTmp = $env:TMP
+        try {
+            $env:TEMP = $mavenTemp
+            $env:TMP = $mavenTemp
+            & $Action
+        } finally {
+            $env:TEMP = $savedTemp
+            $env:TMP = $savedTmp
+        }
+    }
     Push-Location $stage
     try {
         Invoke-AtfQualificationPhase $timing 'components.preparation-snapshot' {
@@ -122,9 +137,11 @@ function Invoke-MavenSelections($selections, $stage, $provenanceFile) {
                 }
             }
             $compileExit = Invoke-AtfQualificationPhase $timing 'components.maven-compile' {
-                [string[]]$goals = @(if ($retry) { @('clean','install') } else { 'install' })
-                & $Maven -B -o -ntp "-Dmaven.repo.local=$repository" '-DskipTests' @goals *> (Join-Path $RunRoot 'compile.log')
-                $LASTEXITCODE
+                Invoke-AtfMavenWithWorkspaceTemp {
+                    [string[]]$goals = @(if ($retry) { @('clean','install') } else { 'install' })
+                    & $Maven -B -o -ntp "-Dmaven.repo.local=$repository" '-DskipTests' @goals *> (Join-Path $RunRoot 'compile.log')
+                    $LASTEXITCODE
+                }
             } -ExitCode
             if ($compileExit -ne 0) { throw "Compilation failed: $RunRoot/compile.log" }
             Invoke-AtfQualificationPhase $timing 'components.post-compile-snapshot' {
@@ -152,8 +169,10 @@ function Invoke-MavenSelections($selections, $stage, $provenanceFile) {
         } else {
             if (Test-Path -LiteralPath $classpathFile) { Remove-Item -LiteralPath $classpathFile }
             $classpathExit = Invoke-AtfQualificationPhase $timing 'components.maven-classpath' {
-                & $Maven -B -o -ntp "-Dmaven.repo.local=$repository" -pl atf-tests 'org.apache.maven.plugins:maven-dependency-plugin:3.8.1:build-classpath' '-DincludeScope=test' "-Dmdep.outputFile=$classpathFile" *> (Join-Path $RunRoot 'classpath.log')
-                $LASTEXITCODE
+                Invoke-AtfMavenWithWorkspaceTemp {
+                    & $Maven -B -o -ntp "-Dmaven.repo.local=$repository" -pl atf-tests 'org.apache.maven.plugins:maven-dependency-plugin:3.8.1:build-classpath' '-DincludeScope=test' "-Dmdep.outputFile=$classpathFile" *> (Join-Path $RunRoot 'classpath.log')
+                    $LASTEXITCODE
+                }
             } -ExitCode
             if ($classpathExit -ne 0) { throw "Classpath-ul nu a fost rezolvat: $RunRoot/classpath.log" }
             $mavenReceipt.classpathSha256 = (Get-FileHash -LiteralPath $classpathFile).Hash
@@ -164,7 +183,10 @@ function Invoke-MavenSelections($selections, $stage, $provenanceFile) {
         $entries = @($policy.mavenModules | ForEach-Object { Join-Path $buildWork "project/$_/target/test-classes" })
         $entries += @($policy.mavenModules | ForEach-Object { Join-Path $buildWork "project/$_/target/classes" })
         $classpath = ($entries + @((Get-Content -LiteralPath $classpathFile -Raw).Trim())) -join [IO.Path]::PathSeparator
-        $suiteJvm = @(Get-AtfComponentJvmArguments -InputPartCharacters $InputPartCharacters -SourceRoot $sourceRoot)
+        $suiteTemp = Join-Path $workspace 'component-jvm-temp'
+        New-Item -ItemType Directory -Path $suiteTemp -Force | Out-Null
+        $suiteJvm = @(Get-AtfComponentJvmArguments -InputPartCharacters $InputPartCharacters -SourceRoot $sourceRoot `
+            -TempDirectory $suiteTemp)
         if ($TestChangeControl -or $AllTestChangeControls) {
             Write-AtfComponentJson (Join-Path $workspace 'proof-compiler-context.json') $mavenReceipt
         }
@@ -206,12 +228,20 @@ function Invoke-MavenSelections($selections, $stage, $provenanceFile) {
                 }
             }
             Push-Location (Join-Path $stage $gate.module)
+            $savedSuiteTemp = $env:TEMP
+            $savedSuiteTmp = $env:TMP
             try {
+                $env:TEMP = $suiteTemp
+                $env:TMP = $suiteTemp
                 $exit = Invoke-AtfQualificationPhase $timing ("components.run." + $gate.group) {
                     & $java @suiteJvm -cp $classpath @arguments *> (Join-Path $RunRoot ($gate.group + '.log'))
                     $LASTEXITCODE
                 } -ExitCode
-            } finally { Pop-Location }
+            } finally {
+                $env:TEMP = $savedSuiteTemp
+                $env:TMP = $savedSuiteTmp
+                Pop-Location
+            }
             $receipt = Join-Path $destination 'execution.json'
             $result = [pscustomobject]@{module=$gate.group;suite=$gate.suite;exitCode=$exit;receipt=if(Test-Path -LiteralPath $receipt){Get-Content -LiteralPath $receipt -Raw | ConvertFrom-Json}else{$null}}
             if (!$TestChangeControl) { Save-AtfComponentCheckpoint @($result) }
@@ -237,7 +267,6 @@ function Read-AtfGradleResults($Selections, [string]$Journal) {
     }
 }
 
-$tempRoot = Get-AtfQualificationTempRoot $sourceRoot
 New-Item -ItemType Directory -Path $RunRoot | Out-Null
 $launcherCapabilities | ConvertTo-Json -Depth 7 | Set-Content -LiteralPath (Join-Path $RunRoot 'launcher-capabilities.json') -Encoding utf8
 $timing = New-AtfQualificationTiming 'components' (Join-Path $RunRoot 'timing.json')
@@ -343,10 +372,25 @@ try {
         $savedJavaHome = $env:JAVA_HOME
         $savedAndroidHome = $env:ANDROID_HOME
         $savedAndroidSdkRoot = $env:ANDROID_SDK_ROOT
+        $savedEvidenceRoot = $env:WHIST_EVIDENCE_ROOT
+        $savedFixtureDiagnostics = $env:WHIST_FIXTURE_DIAGNOSTICS
         try {
             $env:ATF_RELEASE_STAGE_TIMING_ROOT = $RunRoot
             if ($JavaHome) { $env:JAVA_HOME = $JavaHome }
+            $fixtureDiagnosticsRoot = Join-Path $RunRoot 'fixture-diagnostics'
+            New-Item -ItemType Directory -Path $fixtureDiagnosticsRoot -Force | Out-Null
+            $env:WHIST_EVIDENCE_ROOT = $RunRoot
+            $env:WHIST_FIXTURE_DIAGNOSTICS = $fixtureDiagnosticsRoot
             if ($mavenSelections.Count) {
+                if (@($mavenSelections | Where-Object group -ceq 'atf-tests-android').Count) {
+                    $AndroidSdk = Get-AtfAndroidSdkRoot $AndroidSdk
+                    $androidJar = Join-Path $AndroidSdk 'platforms/android-36/android.jar'
+                    if (-not (Test-Path -LiteralPath $androidJar -PathType Leaf)) {
+                        throw 'Android API 36 is required by the Android component fixture selection.'
+                    }
+                    $env:ANDROID_HOME = [IO.Path]::GetFullPath($AndroidSdk)
+                    $env:ANDROID_SDK_ROOT = $env:ANDROID_HOME
+                }
                 if ($AllTestChangeControls) {
                     $proofRoot = Invoke-MavenSelections $mavenSelections $stage $provenanceFile
                     Write-Output "PASS: $proofRoot"
@@ -401,6 +445,8 @@ try {
             $env:JAVA_HOME = $savedJavaHome
             $env:ANDROID_HOME = $savedAndroidHome
             $env:ANDROID_SDK_ROOT = $savedAndroidSdkRoot
+            $env:WHIST_EVIDENCE_ROOT = $savedEvidenceRoot
+            $env:WHIST_FIXTURE_DIAGNOSTICS = $savedFixtureDiagnostics
         }
     }
 

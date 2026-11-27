@@ -17,6 +17,8 @@ public final class ComponentJvmFixture {
         if (args[0].equals("child")) {
             for (String property : List.of("atf.test.run.scope", "atf.component.input-part-characters", "atf.governance.gitRoot"))
                 if (System.getProperty(property) != null) throw new IllegalStateException("Suite property leaked to child: " + property);
+            if (System.getProperty("java.io.tmpdir").equals(args[1]))
+                throw new IllegalStateException("Suite temporary directory leaked to child");
             System.out.write(new byte[] {(byte) 0xff, 0, 1, 13, 10});
             System.err.print("separate-error");
             System.exit(7);
@@ -26,9 +28,11 @@ public final class ComponentJvmFixture {
             System.exit(23);
         }
         var command = List.of(Path.of(System.getProperty("java.home"), "bin", "java").toString(),
-                "-Xmx32m", "-cp", System.getProperty("java.class.path"), ComponentJvmFixture.class.getName(), "child");
+                "-Xmx32m", "-cp", System.getProperty("java.class.path"), ComponentJvmFixture.class.getName(),
+                "child", System.getProperty("java.io.tmpdir"));
         var child = CommandProcess.execute(command, Map.of(), Duration.ofSeconds(30), false);
-        var result = Map.of("scope", System.getProperty("atf.test.run.scope", "missing"),
+        var result = Map.of("temporaryDirectory", System.getProperty("java.io.tmpdir", "missing"),
+                "scope", System.getProperty("atf.test.run.scope", "missing"),
                 "partCharacters", System.getProperty("atf.component.input-part-characters", "missing"),
                 "gitRoot", System.getProperty("atf.governance.gitRoot", "missing"),
                 "childExit", child.exitCode(), "stdoutBase64", Base64.getEncoder().encodeToString(child.stdout()),

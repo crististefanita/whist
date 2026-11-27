@@ -86,14 +86,14 @@ flowchart LR
 | Active applications | [Android](whist-lab-app/app/src/main/java/ro/whistlab/app/README.md) · [Core](whist-lab-app/card-table-core/README.md) · [Android table adapter](whist-lab-app/atf-card-table-ui/README.md) · [Web](atf-ui-browser/README.md) |
 | Validation and device scenarios | [atf-validation](atf-validation/README.md) · [atf-test-android](atf-test-android/README.md) |
 | Verification and audit | [atf-tests](atf-tests/README.md) · [test-audit](whist-lab-app/test-audit/README.md) · [JVM build](whist-lab-app/algorithm-build/README.md) |
-| Execution and delivery | [Scripts](scripts/README.md) · [Release catalog](release/README.md) |
+| Execution and delivery | [Scripts](scripts/README.md) · [Release tools](release-tools/README.md) · [Release catalog](release/README.md) |
 
 <details>
 <summary>Verified Maven and Gradle declarations</summary>
 
 | Build | Declared modules |
 |---|---|
-| Maven | atf-validation, atf-test-android, atf-tests |
+| Maven | atf-validation, atf-test-android, release-tools, atf-tests |
 | Gradle | app, game-core, whist-presentation, card-table-core, card-table-android, card-table-web, card-table-names, ai-lab, test-audit, ios-bridge |
 | Gradle JVM | game-core, ai-lab, card-table-names, test-audit |
 
@@ -105,7 +105,9 @@ Direct dependencies use the configuration declared by the consuming module.
 | Maven | atf-validation | test | atf-test-kit |
 | Maven | atf-test-android | compile | atf-core, atf-reporting, atf-test-kit |
 | Maven | atf-test-android | test | atf-console |
+| Maven | release-tools | test | atf-test-kit |
 | Maven | atf-tests | compile | atf-test-kit, atf-core, atf-test-android, atf-reporting |
+| Maven | atf-tests | test | atf-validation |
 | Maven | atf-tests | test | atf-console, atf-mock |
 | Gradle | app | implementation | game-core, card-table-android, whist-presentation |
 | Gradle | app | testImplementation | card-table-core |
@@ -133,6 +135,7 @@ flowchart LR
     APK["Android APK"]
     JVM["JVM components"]
     Maven["Maven ATF"]
+    ReleaseTools["Release tools"]
     Platform["Android · Web"]
     Evidence["Assertions"]
     Gate["Qualification"]
@@ -141,9 +144,11 @@ flowchart LR
     Gradle -->|tests| JVM
     Maven -->|checks| Evidence
     JVM -->|comparisons| Evidence
+    Maven -->|runs| ReleaseTools
     APK -->|candidate| Gate
     Platform -->|observations| Evidence
     Evidence -->|acceptance| Gate
+    ReleaseTools -->|advises only| Gate
     Gate -->|records| Dossier
 ```
 

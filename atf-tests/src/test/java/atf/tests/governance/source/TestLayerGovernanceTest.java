@@ -45,6 +45,14 @@ class TestLayerGovernanceTest {
                 "Documented layers must be derived from live executable declarations");
     }
 
+    @Test void releaseToolsIsIncludedAsAnExecutableMavenOwner() throws Exception {
+        var root = GovernanceProject.locateProjectRoot();
+        var matrix = documentedMatrix(Files.readString(root.resolve("docs/testing/ATF_TestingGuide.md")));
+        AuditedAssertions.assertTrue(matrix.containsKey("release-tools"),
+                "The module × test-level matrix includes every Maven owner, not only names beginning with atf-");
+        AuditedAssertions.assertEquals(Set.of("@AtfComponentTest"), matrix.get("release-tools"));
+    }
+
     @Test void theGuideCannotHideMissingDuplicateOrIncorrectLevels() throws Exception {
         var root = GovernanceProject.locateProjectRoot();
         String guide = Files.readString(root.resolve("docs/testing/ATF_TestingGuide.md"));
@@ -79,7 +87,7 @@ class TestLayerGovernanceTest {
         var documented = new TreeMap<String, Set<String>>();
         var columns = java.util.List.of("@AtfUnitTest", "@AtfComponentTest", "@AtfIntegrationTest", "@AtfE2eTest");
         for (String row : table.lines().toList()) {
-            if (!row.startsWith("| `atf-")) continue;
+            if (!row.matches("^\\| `[^`]+`\\s*\\|.*$")) continue;
             String[] cells = row.split("\\|", -1);
             if (cells.length != 8) throw new IllegalArgumentException("Invalid module matrix row: " + row);
             String module = cells[1].trim().replace("`", "");

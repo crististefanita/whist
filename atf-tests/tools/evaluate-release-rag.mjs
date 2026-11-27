@@ -348,7 +348,7 @@ export async function loadReleaseTestScope(project, source, version, rows) {
   for (const [relative, sha256] of inputs) {
     if (digest(await fs.readFile(await regularFile(source, relative))) !== sha256) throw Error('PINNED_SOURCE_HASH:' + relative);
   }
-  const policy = (await strictJson(await regularFile(project, 'config/release-platform-rag-policy.json'))).value;
+  const policy = (await strictJson(await regularFile(project, 'release-tools/config/release-platform-rag-policy.json'))).value;
   if (!isDeepStrictEqual({...policy.ragEvaluator?.testScope}, scopePolicy)) throw Error('RAG_TEST_SCOPE_POLICY');
   return readTestScope(project, source, version, inputs, policy);
 }
@@ -389,7 +389,7 @@ export async function evaluateRelease({projectRoot, candidateDir, sourceRoot, pl
   };
   const [manifestDoc, policyDoc, planDoc] = await Promise.all([
     strictJson(await regularFile(candidate, 'release-validation.json')),
-    strictJson(await regularFile(project, 'config/release-platform-rag-policy.json')),
+    strictJson(await regularFile(project, 'release-tools/config/release-platform-rag-policy.json')),
     strictJson(planFile)
   ]);
   const manifest = manifestDoc.value, policy = policyDoc.value, plan = planDoc.value;
@@ -426,6 +426,30 @@ export async function evaluateRelease({projectRoot, candidateDir, sourceRoot, pl
           && policy.localReleaseProjection?.onlyCurrentPublishedVersion === true
           && policy.localReleaseProjection?.cleanupRequiresVerifiedProjection === true)
       && policy.ragEvaluator?.entrypoint === 'atf-tests/tools/evaluate-release-rag.mjs'
+      && policy.releaseTools?.mavenModule === 'release-tools'
+      && policy.releaseTools?.rootResolver === 'atf.release.tools.ReleaseProjectRoot'
+      && policy.releaseTools?.advisoryRag?.entrypoint === 'release-tools/scripts/Invoke-ReleaseRag.ps1'
+      && policy.releaseTools?.advisoryRag?.engine === policy.ragEvaluator.entrypoint
+      && policy.releaseTools?.advisoryRag?.admissionGate === 'atf.release.tools.RagAdvisoryGate'
+      && policy.releaseTools?.advisoryRag?.requiresHumanReview === true
+      && policy.releaseTools?.advisoryRag?.maySign === false
+      && policy.releaseTools?.advisoryRag?.mayPromote === false
+      && policy.releaseTools?.advisoryRag?.mayPublish === false
+      && policy.releaseTools?.evidenceGate === 'atf.release.tools.ReleaseEvidenceGate'
+      && policy.releaseTools?.scripts?.apkBuildAndIdentity === 'release-tools/scripts/Build-SignedReleaseApk.ps1'
+      && policy.releaseTools?.scripts?.javaGateExecutor === 'release-tools/scripts/Invoke-ReleaseToolsJavaGate.ps1'
+      && policy.releaseTools?.scripts?.githubPublication === 'release-tools/scripts/Publish-GithubRelease.ps1'
+      && policy.releaseTools?.scripts?.githubDownloadVerification === 'release-tools/scripts/Verify-GithubReleaseDownload.ps1'
+      && policy.releaseTools?.scripts?.localReleaseSynchronization === 'release-tools/scripts/Sync-LocalRelease.ps1'
+      && policy.releaseTools?.signing?.directory === 'release-tools/.atf-signing'
+      && policy.releaseTools?.signing?.privateKeyIsLocalOnly === true
+      && policy.releaseTools?.signing?.privateKeyInSourceInventory === false
+      && policy.releaseTools?.signing?.certificateContinuityMustBeVerified === true
+      && policy.releaseTools?.configuration?.policy === 'release-tools/config/release-platform-rag-policy.json'
+      && policy.releaseTools?.configuration?.ownedByModule === true
+      && policy.releaseTools?.configuration?.duplicatedAtProjectRoot === false
+      && isDeepStrictEqual(policy.releaseTools?.configuration?.consumersReadSingleCopy,
+        ['scripts/AtfAndroidPreflight.ps1', 'atf-tests/tools/evaluate-release-rag.mjs'])
       && isDeepStrictEqual({...policy.ragEvaluator?.testScope}, scopePolicy)
       && isDeepStrictEqual({...policy.ragEvaluator?.githubRetention}, githubRetentionPolicy)
       && isDeepStrictEqual({...policy.ragEvaluator?.evidenceFreshness}, evidenceFreshness)
@@ -497,7 +521,7 @@ export async function evaluateRelease({projectRoot, candidateDir, sourceRoot, pl
       && policy.rules?.ragMayPublish === false && policy.candidateLifecycle?.ragMayAdvanceLifecycle === false;
   recordCheck('RAG_POLICY', policyContract, policyContract
       ? 'The active policy restricts the evaluator to read-only checks and human review.' : 'The RAG policy is missing or permits an action outside the read-only contract.',
-      [citation('config/release-platform-rag-policy.json', policyDoc.sha256, '/ragEvaluator', policyDoc.lines.get('/ragEvaluator') ?? 1)]);
+      [citation('release-tools/config/release-platform-rag-policy.json', policyDoc.sha256, '/ragEvaluator', policyDoc.lines.get('/ragEvaluator') ?? 1)]);
 
   const version = plan.releaseVersion;
   const versionUsesCurrentFormat = !releaseVersionAtLeast(version ?? '', policy.releaseVersioning?.sinceRelease ?? '999.999.999')
@@ -569,7 +593,7 @@ export async function evaluateRelease({projectRoot, candidateDir, sourceRoot, pl
         : 'The reporting schema is missing, unknown, or inconsistent with the declared report paths.',
       [...evidence('/qualification/schemaVersion'), ...evidence('/qualification/reportSchema'),
         ...evidence('/qualification/auditedGroups'), ...evidence('/qualification/e2eGroups'),
-        citation('config/release-platform-rag-policy.json', policyDoc.sha256,
+        citation('release-tools/config/release-platform-rag-policy.json', policyDoc.sha256,
           '/reportingContract/schemaAdmission', policyDoc.lines.get('/reportingContract/schemaAdmission') ?? 1)],
       schemaProblems);
 
@@ -671,7 +695,7 @@ export async function evaluateRelease({projectRoot, candidateDir, sourceRoot, pl
     const bytes = await fs.readFile(file);
     const text = bytes.toString('utf8');
     const match = /\b[0-9a-f]{64}\b/i.exec(text);
-    if (match) readmeProblems.push(`README-ul principal expune un digest brut SHA-256 la linia ${lineCount(text.slice(0, match.index))}.`);
+    if (match) readmeProblems.push(`The root README exposes a raw SHA-256 digest on line ${lineCount(text.slice(0, match.index))}.`);
     readmeOkay = readmeProblems.length === 0;
     readmeEvidence.push(citation(relative, digest(bytes), null, 1));
   } catch (error) {
@@ -684,7 +708,7 @@ export async function evaluateRelease({projectRoot, candidateDir, sourceRoot, pl
   let documentationEditions = null;
   if (releaseVersionAtLeast(version, documentationEditionsPolicy.requiredFromVersion)) {
     const problems = [];
-    const sources = evidence('/ragEvaluator/documentationEditions', policyDoc, 'config/release-platform-rag-policy.json');
+    const sources = evidence('/ragEvaluator/documentationEditions', policyDoc, 'release-tools/config/release-platform-rag-policy.json');
     try {
       if (!matchesDocumentationEditionsPolicy(policy.ragEvaluator?.documentationEditions)) {
         throw new Error('The bilingual documentation policy is missing or invalid.');

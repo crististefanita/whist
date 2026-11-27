@@ -1,7 +1,7 @@
 param([Parameter(Mandatory)][string]$Root,[Parameter(Mandatory)][string]$Work,[ValidateSet('ready','failures')][string]$Case)
 $ErrorActionPreference='Stop'
 . (Join-Path $Root 'scripts/AtfLauncherCapabilities.ps1')
-$script:Events=[Collections.Generic.List[string]]::new()
+$script:Events=[Collections.Generic.List[string]]::new();$script:Timeouts=[Collections.Generic.List[string]]::new()
 $script:Missing='';$script:Bad='';$script:JavaMajor=21
 function Resolve-AtfLauncherApplication([string]$Name,[string]$Override='') {
     $tool=$Name.ToLowerInvariant()
@@ -14,6 +14,7 @@ function Resolve-AtfLauncherApplication([string]$Name,[string]$Override='') {
 }
 function Invoke-AtfLauncherVersion([string]$Executable,[string[]]$Arguments,[int]$TimeoutSeconds,[string]$Tool) {
     $script:Events.Add('probe:'+$Tool)
+    $script:Timeouts.Add($Tool+'='+$TimeoutSeconds)
     if($script:Bad -eq 'java-malformed' -and $Tool -eq 'java'){return @{ExitCode=0;Output='installation alias'} }
     if($script:Bad -eq 'java-old' -and $Tool -eq 'java'){return @{ExitCode=0;Output='openjdk 11.0.1'} }
     if($script:Bad -eq 'java-exit' -and $Tool -eq 'java'){return @{ExitCode=7;Output='openjdk 21.0.1'} }
@@ -39,9 +40,10 @@ $rows=@();$bindings=@()
 if($Case -eq 'ready'){
     $gradle=Join-Path $Work 'gradle-ready';New-GradleFixture $gradle $true
     foreach($major in @(17,21)){
-        $script:JavaMajor=$major;$script:Events.Clear()
+        $script:JavaMajor=$major;$script:Events.Clear();$script:Timeouts.Clear()
         $observed=Assert-AtfLauncherCapabilities -JavaHome 'C:\fixture\jdk' -Maven mvn -RequireMaven -Node node -RequireNode -GradleRoot $gradle
         $rows+=@{name="Java $major";sourceBound=($observed.sourceSha256 -match '^[a-f0-9]{64}$');events=@($script:Events.ToArray());
+            probeTimeouts=@($script:Timeouts.ToArray());
             gradleKind=$observed.capabilities[-1].kind;jdkCapabilities=@($observed.capabilities|Where-Object tool -in @('java','javac','jar')).Count;
             capabilities=@($observed.capabilities|ForEach-Object{@{tool=$_.tool;kind=$_.kind}})}
     }

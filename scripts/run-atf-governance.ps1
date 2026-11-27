@@ -16,6 +16,7 @@ $ErrorActionPreference = 'Stop'
 . (Join-Path $PSScriptRoot 'AtfTestChangeAdmission.ps1')
 . (Join-Path $PSScriptRoot 'AtfLauncherCapabilities.ps1')
 $sourceRoot = [IO.Path]::GetFullPath($SourceRoot)
+$tempRoot = Get-AtfQualificationTempRoot $sourceRoot
 $launcherCapabilities = Assert-AtfLauncherCapabilities -JavaHome $JavaHome -Maven $Maven -RequireMaven -RequireNode
 $evidenceRoot = if (-not [string]::IsNullOrWhiteSpace($env:WHIST_EVIDENCE_ROOT) -or [string]::IsNullOrWhiteSpace($RunRoot)) {
     Ensure-AtfEvidenceRoot $sourceRoot
@@ -29,7 +30,6 @@ if ($RunRoot.Equals($sourceRoot, [StringComparison]::OrdinalIgnoreCase) -or
     throw 'Results must remain outside the source checkout.'
 }
 if (Test-Path -LiteralPath $RunRoot) { throw 'The results directory must be new.' }
-$tempRoot = Get-AtfQualificationTempRoot $sourceRoot
 New-Item -ItemType Directory -Path $RunRoot | Out-Null
 $launcherCapabilities | ConvertTo-Json -Depth 7 | Set-Content -LiteralPath (Join-Path $RunRoot 'launcher-capabilities.json') -Encoding utf8
 $timing = New-AtfQualificationTiming 'governance' (Join-Path $RunRoot 'timing.json')

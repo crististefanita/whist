@@ -135,6 +135,10 @@
         {
           "group": "whist-lab-app-card-table-core",
           "sinceReleaseVersion": "0.23.3"
+      },
+      {
+        "group": "release-tools",
+        "sinceReleaseVersion": "0.26.0"
         }
       ]
     },
@@ -195,6 +199,44 @@
       "inlinePngsMustDecode": true,
       "signedFlowExecutionProfileSince": "0.21.5",
       "reportPathsUniqueAcrossScopes": true
+    }
+  },
+  "releaseTools": {
+    "mavenModule": "release-tools",
+    "rootResolver": "atf.release.tools.ReleaseProjectRoot",
+    "advisoryRag": {
+      "entrypoint": "release-tools/scripts/Invoke-ReleaseRag.ps1",
+      "engine": "atf-tests/tools/evaluate-release-rag.mjs",
+      "admissionGate": "atf.release.tools.RagAdvisoryGate",
+      "allowedVerdicts": ["READY_FOR_HUMAN_REVIEW", "BLOCKED"],
+      "requiresHumanReview": true,
+      "maySign": false,
+      "mayPromote": false,
+      "mayPublish": false
+    },
+    "evidenceGate": "atf.release.tools.ReleaseEvidenceGate",
+    "scripts": {
+      "apkBuildAndIdentity": "release-tools/scripts/Build-SignedReleaseApk.ps1",
+      "javaGateExecutor": "release-tools/scripts/Invoke-ReleaseToolsJavaGate.ps1",
+      "githubPublication": "release-tools/scripts/Publish-GithubRelease.ps1",
+      "githubDownloadVerification": "release-tools/scripts/Verify-GithubReleaseDownload.ps1",
+      "localReleaseSynchronization": "release-tools/scripts/Sync-LocalRelease.ps1"
+    },
+    "signing": {
+      "directory": "release-tools/.atf-signing",
+      "sourcePolicy": "scripts/AtfSigningSourcePolicy.ps1",
+      "privateKeyIsLocalOnly": true,
+      "privateKeyInSourceInventory": false,
+      "certificateContinuityMustBeVerified": true
+    },
+    "configuration": {
+      "policy": "release-tools/config/release-platform-rag-policy.json",
+      "ownedByModule": true,
+      "consumersReadSingleCopy": [
+        "scripts/AtfAndroidPreflight.ps1",
+        "atf-tests/tools/evaluate-release-rag.mjs"
+      ],
+      "duplicatedAtProjectRoot": false
     }
   },
   "suiteQualification": {

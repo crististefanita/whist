@@ -5,6 +5,7 @@
   "mavenModules": [
     "atf-validation",
     "atf-test-android",
+    "release-tools",
     "atf-tests"
   ],
   "projectRootOwners": [
@@ -183,6 +184,18 @@
       "atf.tests.contracts",
       "atf.tests.governance",
       "atf.libraries"
+    ],
+    "release-tools": [
+      "android",
+      "androidx",
+      "org.junit",
+      "atf.android",
+      "atf.tests",
+      "atf.reporting",
+      "atf.testkit",
+      "ro.whistlab",
+      "ro.rentzlab",
+      "ro.atf.holdem"
     ],
     "whist-lab-app/game-core": [
       "atf",

@@ -16,7 +16,7 @@ function Assert-AtfAndroidPreflight($Observation, [string]$LeasePath, [string]$L
         ($ExpectedDisplayProfile -and $Observation.observed.displayProfile -cne $ExpectedDisplayProfile)) {
         throw 'ANDROID_PREFLIGHT_OBSERVATION_MISMATCH'
     }
-    $policy = Get-Content -LiteralPath (Join-Path $PSScriptRoot '../config/release-platform-rag-policy.json') -Raw | ConvertFrom-Json
+    $policy = Get-Content -LiteralPath (Join-Path $PSScriptRoot '../release-tools/config/release-platform-rag-policy.json') -Raw | ConvertFrom-Json
     $maxAge = $policy.ragEvaluator.evidenceFreshness.androidPreflightMaxAgeSeconds
     if ($maxAge -isnot [long] -or $maxAge -le 0) { throw 'ANDROID_PREFLIGHT_FRESHNESS_POLICY' }
     if ($null -eq $Observation.observedAtUtc) { throw 'ANDROID_PREFLIGHT_TIME_REQUIRED' }

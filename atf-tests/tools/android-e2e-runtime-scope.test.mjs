@@ -104,7 +104,7 @@ test('verification maintenance reuses original native evidence without changing 
   console.log('Verification-only native readmission: original execution bytes and source commit preserved');
 });
 
-for(const file of ['config/release-platform-rag-policy.json','whist-lab-app/app/build.gradle',
+for(const file of ['release-tools/config/release-platform-rag-policy.json','whist-lab-app/app/build.gradle',
   'whist-lab-app/card-table-core/src/main/java/CardFaceMetrics.java','whist-lab-app/app/src/main/assets/table.bin',
   'lib/core.jar','config/whist-hard-policy.yaml'])
 test('verification admission cannot conceal a changed native build or scenario '+file,()=>{

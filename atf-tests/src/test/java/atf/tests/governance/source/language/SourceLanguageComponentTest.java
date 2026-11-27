@@ -20,6 +20,13 @@ class SourceLanguageComponentTest {
         AuditedAssertions.assertTrue(actual.contains("Case.java"), "The actual source population is captured");
     }
 
+    @Test void excludesTrackedDeletionsWithoutDroppingTheRemainingInventory(ComponentInputs inputs) throws Exception {
+        String actual = exercise("excludes tracked deletions", inputs);
+        AuditedAssertions.assertTrue(actual.contains("\"status\":\"PASS\""), "A planned tracked deletion does not block the current inventory");
+        AuditedAssertions.assertTrue(actual.contains("release-platform-rag-policy.json"), "The excluded deletion is reported explicitly");
+        AuditedAssertions.assertTrue(actual.contains("Case.java"), "Remaining source files stay in the inspected population");
+    }
+
     @Test void rejectsRomanianImplementationOnBothEditions(ComponentInputs inputs) throws Exception {
         String actual = exercise("rejects implementation", inputs);
         AuditedAssertions.assertTrue(actual.contains("SOURCE-LANGUAGE-EN"), "The real inventory produces source-language diagnostics");

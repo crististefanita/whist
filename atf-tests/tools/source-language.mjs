@@ -33,8 +33,10 @@ export function inspectSource(name, source, policy) {
 export async function inspectCheckout(project) {
   const root = await fs.realpath(project);
   const policy = JSON.parse(await fs.readFile(path.join(root, policyPath), 'utf8'));
-  const names = execFileSync('git', ['-C', root, 'ls-files', '-z', '--cached', '--others', '--exclude-standard'],
+  const gitFiles = args => execFileSync('git', ['-C', root, 'ls-files', '-z', ...args],
     {windowsHide: true, maxBuffer: 16 * 1024 * 1024}).toString().split('\0').filter(Boolean);
+  const deleted = new Set(gitFiles(['--deleted']));
+  const names = gitFiles(['--cached', '--others', '--exclude-standard']).filter(name => !deleted.has(name));
   const configuration=path.join(root,'config/atf-governance-policy.json');
   const governance=await fs.readFile(configuration,'utf8').then(JSON.parse).catch(error=>{
     if(error.code==='ENOENT')return {};throw error;
@@ -42,8 +44,7 @@ export async function inspectCheckout(project) {
   const declared=['scripts/','atf-tests/tools/','atf-ui-browser/src/','atf-ui-browser/tests/','atf-ui-browser/pages/'];
   for(const module of [...(governance.mavenModules??[]),...(governance.additionalSourceRoots??[]).map(row=>row.module)])
     declared.push(safeRelative(module)+'/src/');
-  const ignored=execFileSync('git',['-C',root,'ls-files','-z','--others','--ignored','--exclude-standard'],
-    {windowsHide:true,maxBuffer:16*1024*1024}).toString().split('\0').filter(Boolean);
+  const ignored=gitFiles(['--others','--ignored','--exclude-standard']).filter(name => !deleted.has(name));
   // Ignore rules cannot hide implementation within a declared source owner.
   names.push(...ignored.filter(name=>declared.some(prefix=>name.startsWith(prefix))));
   const files = [...new Set(names)].filter(name => !name.startsWith('release/')
@@ -58,7 +59,8 @@ export async function inspectCheckout(project) {
     }));
     diagnostics.push(...batch.flat());
   }
-  return {schemaVersion: 1, status: diagnostics.length ? 'BLOCKED' : 'PASS', files, diagnostics,
+  return {schemaVersion: 1, status: diagnostics.length ? 'BLOCKED' : 'PASS', files,
+    excludedTrackedDeletions: [...deleted].sort(), diagnostics,
     limits: 'Reviewed Romanian violations and lexical contexts are checked; semantic English review remains mandatory.'};
 }
 

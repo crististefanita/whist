@@ -22,6 +22,20 @@ test('accepts real checkout inventory with localized payloads and reports its ac
   assert.deepEqual(actual.files,['Case.java','config/source-language-policy.json','rules.yaml']);
   process.stdout.write(JSON.stringify(actual)+'\n');
 });
+test('excludes tracked deletions from the current source population',async t=>{
+  const root=await fixture(t);
+  const old=path.join(root,'config/release-platform-rag-policy.json');
+  await fs.writeFile(old,'{}');
+  await fs.writeFile(path.join(root,'Case.java'),'// Preserve progress.\nclass Case {}');
+  execFileSync('git',['-C',root,'add','-A'],{windowsHide:true});
+  execFileSync('git',['-C',root,'-c','user.name=ATF','-c','user.email=atf@example.invalid','commit','-qm','fixture'],{windowsHide:true});
+  await fs.rm(old);
+  const actual=await inspectCheckout(root);
+  assert.equal(actual.status,'PASS');
+  assert.ok(actual.excludedTrackedDeletions.includes('config/release-platform-rag-policy.json'));
+  assert.ok(!actual.files.includes('config/release-platform-rag-policy.json'));
+  process.stdout.write(JSON.stringify(actual)+'\n');
+});
 test('rejects implementation violations on both documentation editions without exempting a whole fixture file',async t=>{
   const root=await fixture(t);
   for(const edition of ['en','ro']){

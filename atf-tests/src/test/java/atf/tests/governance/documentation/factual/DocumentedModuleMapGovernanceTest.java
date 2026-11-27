@@ -32,7 +32,7 @@ class DocumentedModuleMapGovernanceTest {
         String uses = atf.tests.documentation.policy.DocumentationContentPolicy.documentationLanguage(root).equals("en")
                 ? "uses" : "folosește";
         for (var mutation : List.of(
-                List.of("| Maven | atf-validation, atf-test-android, atf-tests |",
+                List.of("| Maven | atf-validation, atf-test-android, release-tools, atf-tests |",
                         "| Maven | atf-validation, atf-tests |", "Maven modules"),
                 List.of("| Maven | atf-validation | test | atf-test-kit |",
                         "| Maven | atf-validation | compile | atf-test-kit |", "dependency scopes"),

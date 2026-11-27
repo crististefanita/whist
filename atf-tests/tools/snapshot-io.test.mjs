@@ -83,7 +83,7 @@ if($Negative -eq 'false' -and $snapshot.includeReleasePayload){
   $rows=@(@{path='README.md';sha256=$hash})
   switch($kind){
    'escape' {$rows+=@{path='../outside';sha256=$hash}}
-   'private' {$rows+=@{path='.atf-signing/private.key';sha256=$hash}}
+  'private' {$rows+=@{path='release-tools/.atf-signing/private.key';sha256=$hash}}
    'changed' {$rows[0].sha256=('0'*64)}
    'duplicate' {$rows+=@{path='README.md';sha256=$hash}}
    'source-link' {$link=Join-Path $live 'linked';$null=New-Item -ItemType Junction -Path $link -Target $run;$links+= $link;$rows+=@{path='linked/file';sha256=$hash}}

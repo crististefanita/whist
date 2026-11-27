@@ -2,7 +2,7 @@
 
 ## Overview
 
-The candidate dossier contains the test plan, results and report for each selection. Prepare it outside the checkout and replace the active dossier only after qualifying the new APK, as defined by the [retention policy](../platform/ATF_ReleaseRetention.md). The [platform evidence policy](../../config/release-platform-rag-policy.json) defines the provenance requirements and checks for the read-only verdict before promotion.
+The candidate dossier contains the test plan, results and report for each selection. Prepare it outside the checkout and replace the active dossier only after qualifying the new APK, as defined by the [retention policy](../platform/ATF_ReleaseRetention.md). The [platform evidence policy](../../release-tools/config/release-platform-rag-policy.json) defines the provenance requirements and checks for the read-only verdict before promotion.
 
 The official repository branch is `main`. Push qualified code to `main` and tag the verified source commit for the version.
 
@@ -259,12 +259,13 @@ After source-control admission, both qualification entry points check metadata b
 
 The [component launcher](../../scripts/run-component-suites.ps1) and [governance launcher](../../scripts/run-atf-governance.ps1) use the [same snapshot preparation](../../scripts/AtfQualificationSnapshot.ps1). Maven compiles and checks the same temporary copy. Published-evidence checks read historical Git objects at the specified commit rather than that checkout's live files.
 
-[Temporary-directory preflight](../../atf-tests/tools/qualification-temp-root.mjs) runs before creating the run directory, copying sources or invoking Maven.
+[Temporary-directory preflight](../../atf-tests/tools/qualification-temp-root.mjs) runs before capability/version probes, creating the run directory, copying sources or invoking Maven. The same order applies to the shared component and governance launchers and to the `release-tools` Java gate; an invalid `TMP`/`TEMP` must not leave JVM performance data or other files in the rejected checkout path.
 
 - `TMP`, `TEMP` and the system-selected temporary directory must resolve to existing external directories.
 - Check both declared paths and physical destinations after resolving links. A checkout in any ancestor, including a worktree `.git` file, produces `QUALIFICATION-TEMP-IN-CHECKOUT`.
 - A non-existent, relative or inaccessible path produces `QUALIFICATION-TEMP-INVALID`.
-- The governance launcher places Maven and Surefire temporary files under the isolated workspace (`maven-temp`) and restores the caller's `TEMP`/`TMP` afterward. Set `WHIST_QUALIFICATION_TEMP_ROOT` to keep this workspace on a chosen disk.
+- On Windows, keep the configured external root shallow and short to leave room for nested JVM, JUnit and PowerShell paths. Treat this as path hygiene only: it does not correct a fixture with missing module inputs or a mock executable that violates the launcher contract. The configured path remains machine-local, and the launcher still validates its physical location.
+- The governance launcher places Maven and Surefire temporary files under the isolated workspace (`maven-temp`) and restores the caller's `TEMP`/`TMP` afterward. The component launcher scopes Maven compile, classpath resolution and each suite to directories under the external run workspace, restoring the caller's `TEMP`/`TMP` after each process. Set `WHIST_QUALIFICATION_TEMP_ROOT` to keep both workspaces on a chosen disk.
 
 | Moment | Control and proof |
 | --- | --- |
@@ -272,9 +273,11 @@ The [component launcher](../../scripts/run-component-suites.ps1) and [governance
 | Before Maven | [Artifact preflight](../../atf-tests/tools/check-release-artifacts.mjs) compares APK names, bytes and SHA-256 with catalog and `.sha256` files. `release-preflight.log` records observed identities or rejection causes. |
 | Closure | Compare copy and checkout inventories again. Any added, changed or deleted input invalidates the result; the receipt names its location and path. |
 
+Registered release dossiers are immutable inputs: do not edit a published version's report index to add current navigation. Add links to the root release catalog or the new candidate dossier, then qualify that candidate's exact bytes.
+
 `-PinnedSourceInputs` links the launch to the list used for selection. A change between plan and execution stops the process before Maven. The `release/` fingerprint shall be kept separately so that the evidence file does not fall into the APK source's fingerprint.
 
-- The [signing source boundary](../../.atf-signing/README.md) excludes local private material from source identity and staging. The same Git revision must reconstruct with identical inputs with or without a local key.
+- The [signing source boundary](../../release-tools/.atf-signing/README.md) excludes local private material from source identity and staging. The same Git revision must reconstruct with identical inputs with or without a local key.
 - Public certificate identity remains source input. Unrelated additions stay visible and invalidate a pinned source list.
 - [Component controls](../../atf-tests/src/test/java/atf/tests/governance/support/SigningSourceIsolationComponentTest.java) verify reconstruction, private-key rotation, forged manifests and indirect paths.
 
@@ -336,7 +339,7 @@ node .\atf-tests\tools\plan-release-tests.mjs $ProjectRoot $SourceSnapshotDir `
 Configure machine-specific paths per workstation and keep generated files outside the source tree.
 
 - `WHIST_EVIDENCE_ROOT` selects the default report and archive root.
-- `WHIST_QUALIFICATION_TEMP_ROOT` selects the isolated source and build workspace.
+- `WHIST_QUALIFICATION_TEMP_ROOT` selects the isolated source, build and component-suite temporary workspace.
 - `ANDROID_SDK_ROOT` or `ANDROID_HOME` identifies the Android SDK.
 - If unset, evidence uses the current user's local application data and qualification uses the operating system's temporary root.
 - Launchers reject a temporary root inside any checkout.
@@ -490,17 +493,18 @@ The read-only verdict neither commits nor publishes. After `READY_FOR_HUMAN_REVI
 
 The [Android delivery guide](../platform/ATF_AndroidDelivery.md#source-and-evidence-commits) defines executable steps and distribution receipts. If a step cannot be verified, retain `PENDING` or `BLOCKED`; a local check alone cannot justify promotion.
 
-From the project root, with plan and candidate in external staging:
+From any directory, with the checkout selected by its module path or `ATF_PROJECT_ROOT`, and candidate, source, plan and verdict outside the checkout:
 
 ```powershell
-$ProjectRoot = (Get-Location).Path
-node .\atf-tests\tools\evaluate-release-rag.mjs `
-  --project-root $ProjectRoot `
-  --candidate-dir $CandidateDir `
-  --source-root $SourceSnapshotDir `
-  --plan-file $QualificationPlan `
-  --output $VerdictFile
+pwsh -NoProfile -File .\release-tools\scripts\Invoke-ReleaseRag.ps1 `
+  -ProjectRoot $ProjectRoot `
+  -CandidateDirectory $CandidateDir `
+  -SourceDirectory $SourceSnapshotDir `
+  -PlanFile $QualificationPlan `
+  -VerdictFile $VerdictFile
 ```
+
+The adapter calls the existing Node evaluator and then the independent Java `RagAdvisoryGate`. It accepts only `READY_FOR_HUMAN_REVIEW` or `BLOCKED`; qualification, signing, promotion and publication remain separate operations.
 
 - Variables identify the candidate version directory, pinned source root, JSON plan and new verdict file. Create its parent outside every input directory.
 - `READY_FOR_HUMAN_REVIEW` confirms only the read evidence that has passed the checks implemented.
@@ -549,7 +553,7 @@ Freshness policy reads UTC timestamps with milliseconds and a `Z` suffix. Expiry
 | GitHub rotation preflight | 5 minutes after download confirmation and branch/latest reread | Immediately before retirement; honor `expiresAtUtc` and repeat verification after state changes. |
 | Hash-pinned artifacts and evidence | No time-only expiry | Reverify when bytes, sources, scenario or required identity changes. APKs, signatures, reports, captures and historical download receipts retain their audit value. |
 
-The [executable policy](../../config/release-platform-rag-policy.json) defines these windows. RAG rechecks GitHub inventory freshness at the end of current evaluation; historical revalidation uses the original verdict and pinned evidence.
+The [executable policy](../../release-tools/config/release-platform-rag-policy.json) defines these windows. RAG rechecks GitHub inventory freshness at the end of current evaluation; historical revalidation uses the original verdict and pinned evidence.
 
 ### Preflight Android
 

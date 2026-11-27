@@ -38,22 +38,30 @@ namespace Atf {
             foreach (string target in targets)
                 if (!targetsSeen.Add(target)) throw new IOException("SOURCE-STAGE-DUPLICATE");
             try { Parallel.For(0, sources.Length, new ParallelOptions { MaxDegreeOfParallelism = 4 }, i => {
-                // Recheck paths at use; no ancestor result is cached between files.
-                var atUse = new HashSet<string>(StringComparer.Ordinal);
-                AssertDirect(sources[i], atUse); AssertDirect(targets[i], atUse);
-                Directory.CreateDirectory(Path.GetDirectoryName(targets[i]));
-                if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows)) {
-                    // CopyFile's per-file overhead dominates small source trees on Windows.
-                    using (var source = File.OpenRead(sources[i]))
-                    using (var target = File.Create(targets[i])) source.CopyTo(target);
-                    File.SetLastWriteTimeUtc(targets[i], File.GetLastWriteTimeUtc(sources[i]));
-                    File.SetAttributes(targets[i], File.GetAttributes(sources[i]));
-                } else {
-                    // Preserve the platform's original mode/attribute copy semantics.
-                    File.Copy(sources[i], targets[i], true);
+                try {
+                    // Recheck paths at use; no ancestor result is cached between files.
+                    var atUse = new HashSet<string>(StringComparer.Ordinal);
+                    AssertDirect(sources[i], atUse); AssertDirect(targets[i], atUse);
+                    Directory.CreateDirectory(Path.GetDirectoryName(targets[i]));
+                    if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows)) {
+                        // CopyFile's per-file overhead dominates small source trees on Windows.
+                        using (var source = File.OpenRead(sources[i]))
+                        using (var target = File.Create(targets[i])) source.CopyTo(target);
+                        File.SetLastWriteTimeUtc(targets[i], File.GetLastWriteTimeUtc(sources[i]));
+                        File.SetAttributes(targets[i], File.GetAttributes(sources[i]));
+                    } else {
+                        // Preserve the platform's original mode/attribute copy semantics.
+                        File.Copy(sources[i], targets[i], true);
+                    }
+                    if (!String.Equals(Sha256(targets[i]), hashes[i], StringComparison.OrdinalIgnoreCase))
+                        throw new IOException("SOURCE-STAGE-CHANGED: " + labels[i]);
+                } catch (FileNotFoundException error) {
+                    if (!File.Exists(sources[i])) throw new IOException("SOURCE-STAGE-CHANGED: " + labels[i], error);
+                    throw;
+                } catch (DirectoryNotFoundException error) {
+                    if (!File.Exists(sources[i])) throw new IOException("SOURCE-STAGE-CHANGED: " + labels[i], error);
+                    throw;
                 }
-                if (!String.Equals(Sha256(targets[i]), hashes[i], StringComparison.OrdinalIgnoreCase))
-                    throw new IOException("SOURCE-STAGE-CHANGED: " + labels[i]);
             }); } catch (AggregateException error) {
                 ExceptionDispatchInfo.Capture(error.Flatten().InnerExceptions[0]).Throw();
                 throw;

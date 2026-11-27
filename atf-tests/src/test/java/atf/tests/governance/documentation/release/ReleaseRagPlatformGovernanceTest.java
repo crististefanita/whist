@@ -142,6 +142,16 @@ class ReleaseRagPlatformGovernanceTest {
         assertEquals(List.of("atf-validation", "atf-test-android", "atf-tests",
                 "whist-lab-app-bidding", "whist-lab-app-commands", "whist-lab-app-display", "whist-lab-app-history"),
                 strings(evaluator.path("requiredComponentGroupsByPlatform").path("android")));
+        assertFalse(strings(evaluator.path("requiredComponentGroupsByPlatform").path("android")).contains("release-tools"),
+                "A module introduced in 0.26.0 must not be imposed on historical releases");
+        boolean releaseToolsVersionIsDeclared = false;
+        for (JsonNode rule : evaluator.path("introducedComponentGroupsByPlatform").path("android")) {
+            if (!rule.path("group").asText().equals("release-tools")) continue;
+            assertEquals("0.26.0", rule.path("sinceReleaseVersion").asText());
+            releaseToolsVersionIsDeclared = true;
+        }
+        assertTrue(releaseToolsVersionIsDeclared,
+                "The new Maven release gate starts with its first release; existing manifests remain historically valid");
         assertEquals(List.of("androidComponents", "apkBuild", "apkIdentity", "signing"),
                 strings(evaluator.path("platformGates").path("androidBeforeHumanReview")));
         assertEquals(List.of("distributionDownload"), strings(evaluator.path("platformGates").path("androidAfterPublication")));
@@ -178,6 +188,46 @@ class ReleaseRagPlatformGovernanceTest {
         assertFalse(cli.contains("spawn("));
     }
 
+    @Test void releaseToolsKeepAssessmentSigningPublicationAndSinglePolicyOwnershipSeparate() throws Exception {
+        Path root = GovernanceProject.locateProjectRoot();
+        JsonNode module = policy().path("releaseTools");
+        assertEquals("release-tools", module.path("mavenModule").asText());
+        assertEquals("atf.release.tools.ReleaseProjectRoot", module.path("rootResolver").asText());
+        JsonNode rag = module.path("advisoryRag");
+        assertEquals("release-tools/scripts/Invoke-ReleaseRag.ps1", rag.path("entrypoint").asText());
+        assertEquals("atf-tests/tools/evaluate-release-rag.mjs", rag.path("engine").asText());
+        assertEquals("atf.release.tools.RagAdvisoryGate", rag.path("admissionGate").asText());
+        assertTrue(rag.path("requiresHumanReview").asBoolean());
+        for (String action : List.of("maySign", "mayPromote", "mayPublish")) assertFalse(rag.path(action).asBoolean(), action);
+        assertEquals("release-tools/scripts/Build-SignedReleaseApk.ps1", module.path("scripts").path("apkBuildAndIdentity").asText());
+        assertEquals("release-tools/scripts/Invoke-ReleaseToolsJavaGate.ps1", module.path("scripts").path("javaGateExecutor").asText());
+        assertEquals("release-tools/scripts/Publish-GithubRelease.ps1", module.path("scripts").path("githubPublication").asText());
+        assertEquals("release-tools/scripts/Verify-GithubReleaseDownload.ps1", module.path("scripts").path("githubDownloadVerification").asText());
+        assertEquals("release-tools/scripts/Sync-LocalRelease.ps1", module.path("scripts").path("localReleaseSynchronization").asText());
+        assertEquals("release-tools/.atf-signing", module.path("signing").path("directory").asText());
+        assertTrue(module.path("signing").path("privateKeyIsLocalOnly").asBoolean());
+        assertFalse(module.path("signing").path("privateKeyInSourceInventory").asBoolean());
+        assertTrue(module.path("signing").path("certificateContinuityMustBeVerified").asBoolean());
+        JsonNode configuration = module.path("configuration");
+        assertEquals("release-tools/config/release-platform-rag-policy.json", configuration.path("policy").asText());
+        assertTrue(configuration.path("ownedByModule").asBoolean());
+        assertFalse(configuration.path("duplicatedAtProjectRoot").asBoolean());
+        assertEquals(List.of("scripts/AtfAndroidPreflight.ps1", "atf-tests/tools/evaluate-release-rag.mjs"),
+                JSON.convertValue(configuration.path("consumersReadSingleCopy"),
+                        JSON.getTypeFactory().constructCollectionType(List.class, String.class)));
+        for (String relative : List.of("release-tools/pom.xml", "release-tools/README.md",
+                "release-tools/scripts/Invoke-ReleaseToolsJavaGate.ps1",
+                "release-tools/scripts/Invoke-ReleaseRag.ps1", "release-tools/scripts/Build-SignedReleaseApk.ps1",
+                "release-tools/scripts/Publish-GithubRelease.ps1", "release-tools/scripts/Verify-GithubReleaseDownload.ps1",
+                "release-tools/scripts/Sync-LocalRelease.ps1", "release-tools/.atf-signing/README.md",
+                "release-tools/.atf-signing/whist-android-test.pem", "release-tools/.atf-signing/whist-android-test.fingerprint")) {
+            assertTrue(Files.isRegularFile(root.resolve(relative)), relative);
+        }
+        String policy = Files.readString(root.resolve("release-tools/config/release-platform-rag-policy.json"));
+        assertTrue(policy.contains("releaseTools"));
+        assertFalse(Files.exists(root.resolve(".atf-signing")), "The signing identity has one module-owned home.");
+    }
+
     @Test void everyDeclaredApplicationAndSharedUiCollectionIsIncludedInReleaseExtentAndRag() throws Exception {
         Path root = GovernanceProject.locateProjectRoot();
         var packageOwners = new java.util.Properties();
@@ -194,8 +244,10 @@ class ReleaseRagPlatformGovernanceTest {
         var declaredGroups = new java.util.TreeSet<String>();
         strings(rag.path("requiredComponentGroupsByPlatform").path("android")).stream()
                 .filter(value -> value.startsWith("whist-lab-app-")).forEach(declaredGroups::add);
-        rag.path("introducedComponentGroupsByPlatform").path("android").forEach(rule ->
-                declaredGroups.add(rule.path("group").asText()));
+        rag.path("introducedComponentGroupsByPlatform").path("android").forEach(rule -> {
+            String group = rule.path("group").asText();
+            if (group.startsWith("whist-lab-app-")) declaredGroups.add(group);
+        });
         assertEquals(allExpectedGroups, declaredGroups,
                 "Every declared Gradle component collection needs its own release Extent gate");
 
@@ -217,14 +269,14 @@ class ReleaseRagPlatformGovernanceTest {
         assertTrue(sharedUiVersionIsDeclared,
                 "The shared UI component suite must become mandatory with the release that first reports it");
 
-        String runner = Files.readString(root.resolve("scripts/run-component-suites.ps1"));
-        assertTrue(runner.contains("gradle-app-collections.properties"),
+        String selection = Files.readString(root.resolve("scripts/AtfComponentSelection.ps1"));
+        assertTrue(selection.contains("gradle-app-collections.properties"),
                 "Release Extent selections must be discovered from the application collection catalog");
-        assertTrue(runner.contains("ToTitleCase($_)"),
+        assertTrue(selection.contains("ToTitleCase($_)"),
                 "Each catalog collection must resolve to its matching Gradle component task");
-        assertTrue(runner.contains(":card-table-android:testDebugUnitTest"),
+        assertTrue(selection.contains(":card-table-android:testDebugUnitTest"),
                 "The shared UI module must execute as a separate Extent selection");
-        assertTrue(runner.contains(":card-table-core:test"),
+        assertTrue(selection.contains(":card-table-core:test"),
                 "The portable core must execute as a separate component selection");
         assertTrue(java.util.stream.StreamSupport.stream(
                 rag.path("introducedComponentGroupsByPlatform").path("android").spliterator(), false)
@@ -291,7 +343,7 @@ class ReleaseRagPlatformGovernanceTest {
         assertTrue(qualificationGuide.contains("executionReceipt"));
         assertTrue(qualificationGuide.contains("source fingerprint"));
         assertTrue(qualificationGuide.contains("inline PNG image count"));
-        assertTrue(qualificationGuide.contains("--plan-file"));
+        assertTrue(qualificationGuide.contains("-PlanFile $QualificationPlan"));
         assertTrue(qualificationGuide.contains("`NOT_RUN`"));
         assertTrue(qualificationGuide.contains("never counts as a passing result"));
         assertTrue(qualificationGuide.contains("`whist-lab-app-bidding`"));
@@ -348,7 +400,7 @@ class ReleaseRagPlatformGovernanceTest {
     @Test void releaseTimingAndCleanupProofStayWithTheReleaseOwners() throws Exception {
         Path root = GovernanceProject.locateProjectRoot();
         var policy = new com.fasterxml.jackson.databind.ObjectMapper()
-                .readTree(root.resolve("config/release-platform-rag-policy.json").toFile()).required("ragEvaluator");
+                .readTree(root.resolve("release-tools/config/release-platform-rag-policy.json").toFile()).required("ragEvaluator");
         var timing = policy.required("stageTiming");
         var proof = policy.required("cleanupSourceProof");
         assertEquals(1, timing.required("schemaVersion").asInt());
@@ -422,7 +474,7 @@ class ReleaseRagPlatformGovernanceTest {
     }
 
     private static JsonNode policy() throws Exception {
-        Path file = GovernanceProject.locateProjectRoot().resolve("config/release-platform-rag-policy.json");
+        Path file = GovernanceProject.locateProjectRoot().resolve("release-tools/config/release-platform-rag-policy.json");
         return JSON.readTree(Files.readString(file));
     }
 

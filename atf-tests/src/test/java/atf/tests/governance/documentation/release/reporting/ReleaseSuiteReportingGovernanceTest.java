@@ -30,7 +30,7 @@ class ReleaseSuiteReportingGovernanceTest {
         String version = JSON.readTree(root.resolve("release/index.json").toFile()).required("currentVersion").asText();
         Path release = root.resolve("release").resolve(version);
         JsonNode manifest = JSON.readTree(release.resolve("release-validation.json").toFile());
-        JsonNode policy = JSON.readTree(root.resolve("config/release-platform-rag-policy.json").toFile());
+        JsonNode policy = JSON.readTree(root.resolve("release-tools/config/release-platform-rag-policy.json").toFile());
         JsonNode rag = policy.required("ragEvaluator"), reporting = policy.required("reportingContract");
         Map<String, String> payload = payloadHashes(manifest);
         Set<String> componentReports = new HashSet<>(), allReports = new HashSet<>();

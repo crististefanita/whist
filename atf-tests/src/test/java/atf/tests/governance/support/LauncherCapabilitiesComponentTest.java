@@ -35,6 +35,8 @@ class LauncherCapabilitiesComponentTest {
             assertEquals("PINNED_WRAPPER_INPUTS", row.path("gradleKind").asText());
             assertEquals(3, row.path("jdkCapabilities").asInt(), "One runtime probe covers all binaries in one JDK");
             assertEquals("RUNTIME_VERSION", row.path("capabilities").get(3).path("kind").asText());
+            assertEquals(List.of("java=30", "mvn=30", "node=30"), JSON.convertValue(row.path("probeTimeouts"), List.class),
+                    "Cold command startup receives a 30-second budget before source staging or Maven preparation");
         }
         for (JsonNode binding : ready.path("bindings")) {
             assertTrue(binding.path("beforePreparation").asBoolean(), binding.path("file").asText());

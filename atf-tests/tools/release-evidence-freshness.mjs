@@ -1,6 +1,6 @@
 import {readFileSync} from 'node:fs';
 
-const policy = JSON.parse(readFileSync(new URL('../../config/release-platform-rag-policy.json', import.meta.url), 'utf8'));
+const policy = JSON.parse(readFileSync(new URL('../../release-tools/config/release-platform-rag-policy.json', import.meta.url), 'utf8'));
 export const evidenceFreshness = Object.freeze(policy.ragEvaluator.evidenceFreshness);
 
 const utcPattern = /^(\d{4}-\d\d-\d\dT\d\d:\d\d:\d\d)\.(\d{3})Z$/;
