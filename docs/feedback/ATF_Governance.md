@@ -145,7 +145,7 @@ The active review control covers the module boundary, public signing metadata mo
 testChanges:
   - id: RAG-37-RELEASE-TOOLS
     status: ACTIVE
-      reason: >-
+    reason: >-
       The Maven module owns release policy, gates and release-only operator adapters; shared suite runners, test/evidence engines, Android infrastructure and reporting remain with their existing ATF owners. Source admission protects module paths, Maven and suite temp stay external, registered release dossiers remain byte-identical, and local key bytes remain excluded while certificate continuity is enforced. Launcher qualification exposed three stale fixture contracts (a .ps1 mock instead of a command shim, omitted module policy, obsolete selector text) and a real ordering defect: temp-root rejection happened after Java/Maven capability probes. The fixtures now model the actual interfaces, and both shared launchers validate physical temp roots before any capability probe, run folder or staging. The release-tools component owner collection passes 11/11; the bounded RAG governance suite passes 116/116 on a stable snapshot with one suite-level Extent. APK candidate qualification remains pending. A short Windows temp root is path hygiene only.
     base: 3c76c3b7f92da8b4c8c210777840364aa07cd0b8
     expires: 2026-12-27
