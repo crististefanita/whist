@@ -88,33 +88,7 @@ Native source and validator separation belongs to the [qualification contract](.
 
 The full responsive renderer matrix remains a component check with unchanged viewport, language, text-size and layout assertions. Its observed Windows duration exceeded the former two-minute Java wrapper limit; the DevTools command budget also needs headroom under suite load. Keep both limits above measured execution time so resource contention is reported as a test failure only when the browser operation itself fails.
 
-<details>
-<summary>RAG-39: responsive browser test budgets</summary>
-
-```yaml
-testChanges:
-  - id: RAG-39-BROWSER-BUDGETS
-    status: VERIFIED
-    base: f6ae65c12128f27799a3662e6f31be3a39a5296c
-    expires: 2026-12-28
-    reason: Preserve the complete Chromium responsive matrix and all existing assertions while setting command and wrapper timeouts above measured Windows execution time; keep invalid-style rejection as the negative control.
-    proof: 'mvn -o -pl atf-tests -am -Dtest=WhistSurfaceAdapterComponentTest,SharedMenuHistoryComponentTest -Dsurefire.failIfNoSpecifiedTests=false test'
-    checks:
-      positive:
-        - atf.tests.governance.documentation.release.rag.nativeproof.WhistSurfaceAdapterComponentTest#adaptiveWebMenusKeepTextIndependentOfTheUsableViewport
-        - atf.tests.governance.uiadapter.SharedMenuHistoryComponentTest#historyTypographyAndDividersFollowTheNativePolicy
-      negative:
-        - atf.tests.governance.uiadapter.SharedMenuHistoryComponentTest#invalidStylesAreAtomicAndClearingRestoresTheBaseline
-    paths:
-      - atf-tests/src/test/java/atf/tests/governance/documentation/release/rag/nativeproof/WhistSurfaceAdapterComponentTest.java
-      - atf-tests/src/test/java/atf/tests/governance/uiadapter/SharedMenuHistoryComponentTest.java
-      - atf-ui-browser/tests/fixtures.mjs
-      - config/atf-component-reader-seals.json
-      - docs/feedback/ATF_Governance.md
-      - docs/governance/ATF_TestChangesBaseline.md
-```
-
-</details>
+The verified test-change control is retained once in the governance baseline: [RAG-39-BROWSER-BUDGETS](../governance/ATF_TestChangesBaseline.md). The complete Chromium responsive matrix and its negative-style control remain covered there; this feedback entry records the measured timeout correction without duplicating executable control metadata.
 
 ## LangGraph shadow pilot
 
