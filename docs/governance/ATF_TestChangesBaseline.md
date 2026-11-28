@@ -56,6 +56,35 @@ testChanges:
 
 </details>
 
+<details>
+<summary>Navigarea rapoartelor release fără rescrierea dovezilor istorice</summary>
+
+```yaml
+testChanges:
+  - id: RELEASE-REPORT-NAVIGATION
+    status: VERIFIED
+    base: a44b8616bcdaf44a893a08bc36440b5566436a35
+    expires: 2026-12-28
+    reason: Verifică navigarea de la ediție la audit și legătura către strategia comună, fără a cere modificarea octeților rapoartelor istorice sigilate în manifest.
+    proof: 'mvn -B -ntp -pl atf-tests -am "-Dtest=ReleaseArtifactLayoutGovernanceTest#registeredVersionsOwnTheirEvidenceAndHaveDiscoverableReadmes,ReleaseArtifactLayoutGovernanceTest#onlyTheExplicitTypedWebFolderIsAcceptedBesideAndroidVersions" "-Datf.governance.testChanges.baseRef=a44b8616bcdaf44a893a08bc36440b5566436a35" -Dsurefire.failIfNoSpecifiedTests=false test'
+    checks:
+      positive:
+        - atf.tests.governance.documentation.release.ReleaseArtifactLayoutGovernanceTest#registeredVersionsOwnTheirEvidenceAndHaveDiscoverableReadmes
+      negative:
+        - atf.tests.governance.documentation.release.ReleaseArtifactLayoutGovernanceTest#onlyTheExplicitTypedWebFolderIsAcceptedBesideAndroidVersions
+    paths:
+      - atf-tests/src/test/java/atf/tests/governance/documentation/release/ReleaseArtifactLayoutGovernanceTest.java
+      - config/atf-component-reader-seals.json
+      - release/README.md
+      - release/index.json
+      - release/0.25.0/README.md
+      - release/0.25.0/reports/README.md
+      - release/0.24.2/README.md
+      - release/0.24.2/reports/README.md
+```
+
+</details>
+
 <a id="rag-36-and-lab-02-receipt-admission-and-curator-recovery"></a>
 
 <details>
@@ -4571,6 +4600,40 @@ testChanges:
       - config/atf-component-collections.json
       - config/atf-component-dependencies.json
       - config/atf-component-reader-seals.json
+```
+
+</details>
+
+<details>
+<summary>RAG-38: checkpointuri serializate și selecția exactă după cititori și consumatori</summary>
+
+```yaml
+testChanges:
+  - id: RAG-38-CHECKPOINT-SELECTION
+    status: VERIFIED
+    base: 48f10669a84bbbcaab548b5b04824afea0be32f2
+    expires: 2026-12-14
+    reason: Serializează actualizările concurente ale checkpointurilor testelor dinamice JUnit, dovedește selecția sigiliilor cititorilor față de graful live al consumatorilor și restaurează README-ul imuabil al raportului 0.25.0 la octeții înregistrați în manifest, păstrând proprietarii ATF separați.
+    proof: "mvn -B -ntp -pl atf-tests -am \"-Dtest=AtfCollectionOwnershipComponentTest,InvocationRecoveryComponentTest,ReleaseIntegrityGovernanceTest\" \"-Datf.governance.testChanges.baseRef=48f10669a84bbbcaab548b5b04824afea0be32f2\" -Dsurefire.failIfNoSpecifiedTests=false test"
+    checks:
+      positive:
+        - atf.tests.governance.suites.AtfCollectionOwnershipComponentTest#realDependencyClosuresSelectOnlyTheirConsumers
+        - atf.tests.governance.suites.AtfCollectionOwnershipComponentTest#reviewedReaderSealsSelectOnlyTheirConsumersAndPreserveOriginalReports
+        - atf.tests.execution.recovery.InvocationRecoveryComponentTest#concurrentDynamicRegistrationsKeepOneCompleteCheckpoint
+        - atf.tests.governance.documentation.release.ReleaseIntegrityGovernanceTest#registeredReleasesKeepTheirActualApkManifestPayloadAndSuccessfulJunitPopulation
+      negative:
+        - atf.tests.governance.suites.AtfCollectionOwnershipComponentTest#missingOrUnreviewedDependenciesCannotAuthorizeReuse
+        - atf.tests.governance.suites.AtfCollectionOwnershipComponentTest#topologyMissingSealsAndUnknownReaderScopesCannotNarrowQualification
+    paths:
+      - atf-tests/src/test/java/atf/tests/execution/components/ComponentExecutionListener.java
+      - atf-tests/src/test/java/atf/tests/execution/recovery/InvocationCheckpoint.java
+      - atf-tests/src/test/java/atf/tests/execution/recovery/InvocationRecoveryComponentTest.java
+      - atf-tests/src/test/java/atf/tests/governance/source/changes/domains/DomainGitFixture.java
+      - atf-tests/tools/atf-component-ownership.test.mjs
+      - config/atf-component-dependencies.json
+      - config/atf-component-reader-seals.json
+      - docs/governance/ATF_TestChangesBaseline.md
+      - release/0.25.0/reports/README.md
 ```
 
 </details>

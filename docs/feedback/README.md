@@ -29,7 +29,7 @@ Contractele stabile aparțin ghidurilor tematice; fiecare criteriu rămâne desc
 - Selectați ID-uri explicite înaintea unei iterații și numiți-le în auditul și răspunsul final.
 - Un subcriteriu calificat nu închide pragul părinte; eliminați doar criteriile finalizate și precizați limita rămasă.
 - Indexul prioritizează lucrări din registrele tematice; numărul rândurilor sale nu numără iterațiile finalizate.
-- Această ediție are trei pachete de lucru offline și paisprezece praguri agregate de acceptanță sau cercetare.
+- Această ediție are două pachete de lucru offline și cincisprezece praguri agregate de acceptanță sau cercetare.
 
 ### Pachete de lucru offline
 
@@ -37,12 +37,12 @@ Contractele stabile aparțin ghidurilor tematice; fiecare criteriu rămâne desc
 |---|---:|---:|---|
 | RAG-36 | P2 | 84 | Admiterea lotului validează ID-ul controlului, baza, commit-ul, digestul diff-ului protejat, selectorii pozitivi/negativi distincți cu verdict PASS și digestul Extent exact; recuperarea lotului complet este calificată. Reutilizarea selectivă per control rămâne deschisă până la închiderea dependențelor și admiterea rapoartelor/JUnit originale. [Registru](ATF_Governance.md#calificarea-afirmațiilor-și-lansatoarelor) |
 | LAB-02 | P2 | 82 | Curatorul de producție are o componentă de scalare la 256 de înregistrări și o componentă separată de oprire/recuperare pe 64 de partide legale generate. Cazul de întrerupere verifică recuperarea după revendicarea exactă, hash-urile sursei, santinela heldout și recurararea, fără a folosi fixture-ul complet de volum în calea temporizată de oprire. Rămân deschise calificarea pe arhiva externă și recuperarea compozitorului. [Registru](ATF_Ai.md#verificarea-autonomă-a-laboratorului) |
-| RAG-37 | P2 | 80 | Evaluează `config/`, `scripts/` și `.atf-signing/` după proprietarul fiecărui fișier înainte de reorganizare: ia în calcul `config/rag/` și `scripts/rag/` numai pentru intrări exclusive RAG, păstrează lansatoarele comune și politica jocului la locul lor și ține materialul privat de semnare în afara Git și a snapshot-urilor RAG. [Registru](ATF_Governance.md) |
 
 ### Praguri de acceptanță și cercetare
 
 | ID | Prioritate | Scor | ToDo rămas și criteriul scurt de închidere |
 |---|---:|---:|---|
+| RAG-37 | P1 | 93 | `release-tools` deține politica, porțile Java, semnarea și adaptoarele de operare; calificarea comună, instrumentele de dovezi, Android și raportarea rămân la proprietarii ATF existenți. Au fost corectate trei contracte ale fixture-urilor, iar respingerea fizică a rădăcinii temp a fost mutată înaintea probelor de capabilitate Java/Maven; testul negativ focalizat trece fără staging, director de execuție sau marker Maven. Colecția completă a proprietarului și calificarea candidatului 0.26.0 rămân în așteptare. Păstrează intacte dosarele vechi; apoi califică fluxurile Android obligatorii, APK-ul semnat/hash-ul și descărcarea din README înainte de publicare. [Registru](ATF_Governance.md#control-activ-rag-37-release-tools) |
 | AND-02 | P1 | 92 | Califică pe APK actorul, geometria stabilă și mâna vizibilă în licitație/joc/AutoGame pentru 3–6 locuri, RO/EN și text mărit. [Registru](ATF_Android.md) |
 | AI-01 | P1 | 91 | Calibrați inferența Hard la 2–8 cărți pe loturi noi; admiterea atomică a eșantioanelor și oracolele frecvențelor din modele finite nu stabilesc calibrarea posteriorului sau câștiguri de forță de joc. [Registru](ATF_Ai.md) |
 | UI-04 | P1 | 90 | Calificați legăturile Whist montate, vizibilitatea fonturilor native și redesenarea unui proprietar vechi pe un renderer identificat; componentele controlate de legare rămân separate de acceptanța glifelor. [Registru](ATF_CardUi_Extraction.md#ui-three-module-plan) |

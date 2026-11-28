@@ -49,6 +49,7 @@ Mediul este o dimensiune separată. O componentă poate lansa Git, Node sau un s
 |---|---|---|---|---|---|
 | `atf-validation` | ✅ | ✅ | — | — | [Validare](../../atf-validation/README.md): oracole pentru contractele publice ale regulilor și dovezilor; fără dependență de aplicație. |
 | `atf-test-android` | ✅ | ✅ | ✅ | ✅ | [Verificare Android](../../atf-test-android/README.md): ceasuri, adaptoare ADB, observații, integrarea raportării și parcursuri în aplicația instalată. |
+| `release-tools` | — | ✅ | — | — | [Unelte de release](../../release-tools/README.md): rezolvarea rădăcinii, admiterea RAG, hash-uri exacte ale dovezilor și adaptoare operaționale de release. |
 | `atf-tests` | ✅ | ✅ | ✅ | — | [Verificare ATF](../../atf-tests/README.md): consumatori de binare, contracte ale adaptoarelor, guvernanța surselor/documentației și calificarea release-ului. |
 
 <!-- /atf-maven-level-matrix -->

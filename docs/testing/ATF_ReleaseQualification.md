@@ -2,7 +2,7 @@
 
 ## Pe scurt
 
-Un singur dosar candidat grupează planul, rezultatele și raportul fiecărei selecții. Pregătirea se face în afara proiectului; dosarul activ se înlocuiește numai după calificarea noului APK, conform [retenției](../platform/ATF_ReleaseRetention.md). [Politica de dovezi pe platforme](../../config/release-platform-rag-policy.json) fixează proveniența și porțile verdictului read-only înaintea promovării.
+Un singur dosar candidat grupează planul, rezultatele și raportul fiecărei selecții. Pregătirea se face în afara proiectului; dosarul activ se înlocuiește numai după calificarea noului APK, conform [retenției](../platform/ATF_ReleaseRetention.md). [Politica de dovezi pe platforme](../../release-tools/config/release-platform-rag-policy.json) fixează proveniența și porțile verdictului read-only înaintea promovării.
 
 Ramura oficială a repository-ului este `main`. Codul calificat se împinge pe `main`, iar tagul versiunii se fixează pe commitul-sursă verificat.
 
@@ -259,12 +259,13 @@ După admiterea controlului sursei, ambele lansatoare verifică metadatele înai
 
 [Lansatorul de componente](../../scripts/run-component-suites.ps1) și [lansatorul de guvernanță](../../scripts/run-atf-governance.ps1) folosesc [aceeași pregătire](../../scripts/AtfQualificationSnapshot.ps1). Maven compilează și verifică fișierele din aceeași copie temporară. Verificarea probelor publicate citește obiecte Git istorice din checkout-ul indicat, prin commit, fără a citi fișierele live din acesta.
 
-[Preflight-ul directorului temporar](../../atf-tests/tools/qualification-temp-root.mjs) rulează înainte de a crea dosarul rulării, de a copia sursele sau de a porni Maven.
+[Preflight-ul directorului temporar](../../atf-tests/tools/qualification-temp-root.mjs) rulează înaintea probelor de capabilitate/versiune, creării dosarului de rulare, copierii surselor sau apelării Maven. Aceeași ordine se aplică lansatoarelor comune pentru componente și guvernanță și porții Java din `release-tools`; un `TMP`/`TEMP` invalid nu trebuie să lase date de performanță JVM sau alte fișiere în calea de checkout respinsă.
 
 - `TMP`, `TEMP` și directorul ales de sistem trebuie să indice directoare externe existente.
 - Controlul verifică atât calea declarată, cât și destinația fizică după rezolvarea linkurilor. Un checkout detectat la oricare dintre strămoși, inclusiv un worktree cu fișier `.git`, produce `QUALIFICATION-TEMP-IN-CHECKOUT`.
 - O cale inexistentă, relativă ori inaccesibilă produce `QUALIFICATION-TEMP-INVALID`.
-- Lansatorul de guvernanță plasează fișierele temporare Maven și Surefire în spațiul izolat (`maven-temp`) și restaurează `TEMP`/`TMP` ale apelantului. Setați `WHIST_QUALIFICATION_TEMP_ROOT` pentru a păstra acest spațiu pe discul dorit.
+- Lansatorul de guvernanță plasează fișierele temporare Maven și Surefire în spațiul izolat (`maven-temp`) și restaurează `TEMP`/`TMP` ale apelantului. Lansatorul de componente delimitează compilarea Maven, rezolvarea classpath-ului și fiecare suită în directoare din spațiul extern al rulării, restaurând `TEMP`/`TMP` după fiecare proces. Setați `WHIST_QUALIFICATION_TEMP_ROOT` pentru a păstra ambele spații pe discul dorit.
+- În Windows, păstrați rădăcina externă configurată scurtă și puțin adâncă pentru a lăsa loc segmentelor imbricate JVM, JUnit și PowerShell. Tratează aceasta doar ca igienă a căilor: nu repară un fixture fără intrări de modul sau un mock executabil care nu respectă contractul lansatorului. Calea rămâne locală mașinii, iar lansatorul îi verifică în continuare destinația fizică.
 
 | Moment | Control și dovadă |
 | --- | --- |
@@ -272,9 +273,11 @@ După admiterea controlului sursei, ambele lansatoare verifică metadatele înai
 | Înainte de Maven | [Preflight-ul](../../atf-tests/tools/check-release-artifacts.mjs) confruntă numele, octeții și SHA-256 pentru APK-urile din catalog și fișierele lor `.sha256`. `release-preflight.log` păstrează identitățile observate sau cauza refuzului. |
 | Închiderea | Inventarul copiei și al checkout-ului se confruntă din nou. Orice fișier adăugat, modificat sau șters invalidează rezultatul, iar receipt-ul indică locul și calea. |
 
+Dosarele release-urilor înregistrate sunt intrări imuabile: nu modificați indexul rapoartelor unei versiuni publicate pentru a adăuga navigare curentă. Adăugați legăturile în catalogul rădăcină sau în dosarul noului candidat, apoi calificați octeții exacți ai candidatului.
+
 `-PinnedSourceInputs` leagă lansarea de lista folosită la selecție. O modificare între plan și execuție oprește procesul înainte de Maven. Amprenta `release/` se păstrează separat, astfel încât dosarul de dovezi să nu intre în amprenta sursei APK.
 
-- [Limita surselor de semnare](../../.atf-signing/README.md) exclude materialul privat local din identitatea surselor și din staging. Aceeași revizie Git trebuie reconstruită cu intrări identice cu sau fără cheie locală.
+- [Limita surselor de semnare](../../release-tools/.atf-signing/README.md) exclude materialul privat local din identitatea surselor și din staging. Aceeași revizie Git trebuie reconstruită cu intrări identice cu sau fără cheie locală.
 - Identitatea certificatului public rămâne intrare sursă. Adăugările fără legătură rămân vizibile și invalidează o listă sursă fixată.
 - [Controalele de componentă](../../atf-tests/src/test/java/atf/tests/governance/support/SigningSourceIsolationComponentTest.java) verifică reconstrucția, rotația cheii private, manifestele falsificate și căile indirecte.
 
@@ -336,7 +339,7 @@ node .\atf-tests\tools\plan-release-tests.mjs $ProjectRoot $SourceSnapshotDir `
 Configurați căile specifice mașinii pentru fiecare stație de lucru și păstrați fișierele generate în afara arborelui sursă.
 
 - `WHIST_EVIDENCE_ROOT` selectează rădăcina implicită pentru rapoarte și arhive.
-- `WHIST_QUALIFICATION_TEMP_ROOT` selectează spațiul izolat pentru surse și build.
+- `WHIST_QUALIFICATION_TEMP_ROOT` selectează spațiul izolat pentru surse, build și directoarele temporare ale suitelor de componente.
 - `ANDROID_SDK_ROOT` sau `ANDROID_HOME` identifică Android SDK.
 - Dacă variabilele nu sunt setate, dovezile folosesc datele locale ale utilizatorului curent, iar calificarea folosește directorul temporar al sistemului de operare.
 - Lansatoarele refuză rădăcini temporare din interiorul unui checkout.
@@ -490,19 +493,19 @@ Verdictul read-only nu comite, nu împinge și nu publică artefacte. După `REA
 
 Instrucțiunile executabile și formatul chitanței de distribuție sunt în [ghidul livrării Android](../platform/ATF_AndroidDelivery.md#commit-ul-surselor-și-commit-ul-dovezilor). Dacă un pas nu poate fi verificat, starea rămâne `PENDING` sau `BLOCKED`; nu se promovează dintr-o verificare locală.
 
-Din rădăcina proiectului, cu planul și candidatul păstrate în locația TMP:
+Din orice director, cu proiectul selectat explicit și planul/candidatul păstrate în afara checkout-ului:
 
 ```powershell
-$ProjectRoot = (Get-Location).Path
-node .\atf-tests\tools\evaluate-release-rag.mjs `
-  --project-root $ProjectRoot `
-  --candidate-dir $CandidateDir `
-  --source-root $SourceSnapshotDir `
-  --plan-file $QualificationPlan `
-  --output $VerdictFile
+pwsh -NoProfile -File .\release-tools\scripts\Invoke-ReleaseRag.ps1 `
+  -ProjectRoot $ProjectRoot `
+  -CandidateDirectory $CandidateDir `
+  -SourceDirectory $SourceSnapshotDir `
+  -PlanFile $QualificationPlan `
+  -VerdictFile $VerdictFile
 ```
 
-- Variabilele indică dosarul de versiune din candidatul TMP, rădăcina completă a surselor fixate, planul JSON și destinația verdictului; creează destinația separat, în afara tuturor intrărilor.
+Adaptorul apelează evaluatorul Node existent și apoi poarta Java independentă `RagAdvisoryGate`. Acceptă numai `READY_FOR_HUMAN_REVIEW` sau `BLOCKED`; calificarea, semnarea, promovarea și publicarea rămân operații separate. Adaptorul este consultativ și nu primește autoritate de semnare sau publicare.
+- Variabilele indică dosarul candidatului, rădăcina completă a surselor fixate, planul JSON și destinația verdictului; creează destinația separat, în afara tuturor intrărilor.
 - `READY_FOR_HUMAN_REVIEW` confirmă numai probele citite care au trecut verificările implementate.
 - Evaluatorul nu inspectează indexul Git. Compară inventarul complet din directorul fixat cu manifestul, iar operatorul confruntă commitul și arborele înainte de promovare.
 - Verdictul include `DIFF_SCOPE`, cu identitatea bazei și a candidatului, regulile aplicate pe căi și grupurile rezultate.
@@ -549,7 +552,7 @@ Politica de calificare citește ora UTC a observației, cu milisecunde și sufix
 | Preflight GitHub de rotație | 5 minute de la confirmarea descărcărilor și recitirea ramurii și a ultimei ediții | Imediat înaintea retragerii. Respectați `expiresAtUtc` și reluați verificarea dacă starea s-a schimbat. |
 | Artefacte și probe fixate prin hash | Fără termen cronologic | Când se schimbă octeții, sursa, scenariul sau identitatea cerută. APK-ul, semnătura, rapoartele, capturile și chitanța unei descărcări istorice păstrează valoarea de audit. |
 
-Verificați ferestrele în [politica executabilă](../../config/release-platform-rag-policy.json). RAG verifică din nou prospețimea inventarului GitHub la finalul evaluării curente și păstrează revalidarea istorică prin verdictul original și dovezile fixate.
+Verificați ferestrele în [politica executabilă](../../release-tools/config/release-platform-rag-policy.json). RAG verifică din nou prospețimea inventarului GitHub la finalul evaluării curente și păstrează revalidarea istorică prin verdictul original și dovezile fixate.
 
 ### Preflight Android
 

@@ -42,13 +42,15 @@ Legarea dovezilor de sursa calificată este verificată de [regresiile evaluator
 - [Domeniile independente ale probelor](../governance/ATF_TestChanges.md#domenii-independente-ale-probelor) dețin selecția după căi, reuniunea diff-urilor mixte și dovezile separate. Excluderea domeniilor neschimbate nu închide criteriile rămase pentru costul snapshot-ului, compilării sau admiterii.
 - [Retenția imaginilor inline](../../atf-tests/src/test/java/atf/tests/governance/documentation/release/ReleaseEvidenceRetentionGovernanceTest.java) verifică duplicarea PNG-urilor lângă HTML; nu dovedește autonomia datelor, lizibilitatea imaginilor sau integritatea APK-ului. [Criteriul adaptorului](../reporting/ATF_Audit.md) rămâne distinct.
 
-## Proprietatea asset-urilor RAG și semnarea locală
+## Proprietatea uneltelor de release și semnarea locală
 
-| Prioritate | Graniță actuală | Criteriu de închidere |
-|---|---|---|
-| P2 | `config/`, `scripts/` și `.atf-signing/` amestecă politica de release, cataloage comune de teste, lansatoare reutilizate, politica jocului, contractul public de semnare și material local ignorat. Mutarea oricărui director întreg ar reloca intrări cu proprietari diferiți și ar încălca contracte de căi existente. | Inventariați mai întâi proprietarii fiecărui fișier și cititorii lui. Luați în calcul `config/rag/` și `scripts/rag/` numai pentru fișiere exclusive RAG; păstrați lansatoarele comune și configurația jocului în zonele comune actuale. Tratați politica de semnare separat de stocarea cheii private și țineți cheile în afara Git și a snapshot-urilor RAG, în stocare locală protejată (de exemplu, `.imp/local/signing`). Nu mutați nimic până când testele de componentă și guvernanță nu dovedesc reconstruirea sursei cu și fără cheie locală, rezolvarea suprascrierilor de cale, evaluarea release-ului și absența octeților privați din manifeste, surse copiate și rapoarte. |
+RAG-37 rămâne activ până trece suita de componente legată de sursă și sunt admise dovezile release-ului.
 
-
+- `release-tools` deține porțile Java, politica, metadatele de semnare și adaptoarele de operare specifice release-ului. Suita sa de componente este obligatorie începând cu 0.26.0; manifestele edițiilor mai vechi își păstrează porțile originale.
+- `scripts/` și `config/` din rădăcină păstrează lansatoarele Android comune, cataloagele de selecție a testelor și regulile de guvernanță. Preflight-ul Android și evaluatorul citesc aceeași politică din `release-tools/config/`.
+- Compilarea Maven, rezolvarea classpath-ului și suitele Java folosesc directoare temporare în spațiul extern de calificare. Lansatorul transmite rădăcina rulării către fixture-uri și restaurează valorile de mediu modificate.
+- Fixture-urile componentei Android primesc SDK-ul API 36 configurat numai când este selectată colecția de fixture-uri Android. Lansatorul respinge un SDK lipsă înainte de Maven.
+- Cheia de test rămâne locală în `release-tools/.atf-signing/`. Certificatul public și amprenta intră în inventar; APK-ul trebuie să păstreze amprenta fixată. RAG poate evalua și bloca, dar nu poate semna, promova sau publica.
 - [Contractul eșecurilor jurnalului](../testing/ATF_ReleaseQualification.md#qualification-journal-failures) păstrează separat cauzele originale ale comenzii și publicării.
 - Erorile controlate de scriere și refuzul real pe disc rămân granițe de regresie în componente; nu califică toate capabilitățile sau condițiile de resurse ale gazdei.
 
@@ -128,4 +130,146 @@ Evaluatorul aplică acum aceeași regulă de admitere a raportării înainte de 
 - Versiunea 3 și cele ulterioare declară `ATF_EXTENT_HTML_INLINE_BASE64_V1`.
 - Modul XML-only, valorile necunoscute, declarația modernă absentă sau formatele amestecate blochează verdictul. JUnit XML rămâne o dovadă temporară, nu raportul canonic.
 
-Politica se află în `config/release-platform-rag-policy.json`, admiterea este aplicată de `atf-tests/tools/evaluate-release-rag.mjs`, iar testele de componentă aparțin claselor `ReleaseRagProvenanceComponentTest` și `ReleaseRagPlatformGovernanceTest`.
+Politica se află în `release-tools/config/release-platform-rag-policy.json`, admiterea este aplicată de `atf-tests/tools/evaluate-release-rag.mjs`, iar testele de componentă aparțin claselor `ReleaseRagProvenanceComponentTest` și `ReleaseRagPlatformGovernanceTest`.
+
+
+## Control activ: RAG-37 release-tools
+
+Controlul de revizie acoperă granița modulului, mutarea metadatelor publice de semnare, clasificarea căilor protejate, proprietatea spațiului temporar extern și intrările executabile de calificare. Octeții keystore-ului local sunt excluși și protejați separat de filtrarea sursei și verificarea continuității certificatului.
+
+```yaml
+testChanges:
+  - id: RAG-37-RELEASE-TOOLS
+    status: ACTIVE
+    reason: >-
+      Modulul Maven deține politica, porțile și adaptoarele de release; lansatoarele comune, motoarele de dovezi, infrastructura Android și raportarea rămân la proprietarii ATF existenți. Admiterea sursei protejează căile modulului, directoarele temporare Maven și ale suitelor rămân externe, dosarele release-urilor înregistrate rămân identice la nivel de octet, iar octeții cheii locale sunt excluși cu continuitatea certificatului verificată. Calificarea lansatorului a scos la iveală trei contracte depășite în fixture-uri (mock `.ps1` în loc de shim de comandă, politica modulului lipsă, text vechi pentru selector) și un defect real de ordine: rădăcina temp era respinsă după probele de capabilitate Java/Maven. Fixture-urile reflectă acum interfețele reale, iar ambele lansatoare verifică rădăcinile fizice înaintea oricărei probe de capabilitate, a directorului de execuție sau a stagingului. Colecția de componente release-tools trece 11/11; suita de guvernanță RAG trece 116/116 pe un snapshot stabil, cu un singur Extent al suitei. Calificarea candidatului APK rămâne în așteptare. O rădăcină Windows scurtă este doar igienă pentru căi.
+    base: 3c76c3b7f92da8b4c8c210777840364aa07cd0b8
+    expires: 2026-12-27
+    proof: "mvn -o -pl atf-tests -am -Dtest=DocumentedModuleMapGovernanceTest,ReleaseRagPlatformGovernanceTest,ReleaseRagAndroidComponentTest,LauncherSourceInventoryComponentTest,QualificationLauncherComponentTest,SigningSourceIsolationComponentTest,TestChangeReviewComponentTest,TestLayerGovernanceTest,ComponentJvmLauncherComponentTest -Dsurefire.failIfNoSpecifiedTests=false test; node --test --test-concurrency=1 atf-tests/tools/prepare-component-reuse.test.mjs"
+    checks:
+      positive:
+        - atf.tests.governance.AtfRagGovernanceSuiteContractTest#theTargetedEntryPointSelectsOnlyOfflineReleaseGovernance
+        - atf.tests.governance.documentation.factual.DocumentedModuleMapGovernanceTest#rootMapMatchesTheBuildDeclarations
+        - atf.tests.governance.source.TestLayerGovernanceTest#releaseToolsIsIncludedAsAnExecutableMavenOwner
+        - atf.tests.governance.documentation.release.ReleaseRagPlatformGovernanceTest#candidateLifecycleKeepsBuildAndPublicationOutsideRagAndRequiresAnExactMainSnapshot
+        - atf.tests.governance.documentation.release.ReleaseRagPlatformGovernanceTest#releaseToolsKeepAssessmentSigningPublicationAndSinglePolicyOwnershipSeparate
+        - atf.tests.governance.support.SigningSourceIsolationComponentTest#gitReconstructionMatchesACheckoutContainingALocalKey
+        - atf.tests.governance.source.changes.TestChangeReviewComponentTest#signingMetadataMovesRequireReviewAtBothOldAndNewOwners
+        - atf.tests.governance.support.LauncherCapabilitiesComponentTest#requiredToolsResolveBeforeVersionProbesAndBeforeLauncherPreparation
+        - atf.tests.execution.jvm.ComponentJvmLauncherComponentTest#scopeBelongsToTheSuiteAndChildBytesStreamsAndExitRemainOriginal
+        - atf.tests.execution.jvm.ComponentJvmLauncherComponentTest#componentRunnerOwnsTemporaryFilesUnderItsExternalWorkspace
+        - atf.tests.governance.source.changes.TestChangeReviewComponentTest#releasePackageNamesRemainProtectedWhileTheRootReleasePayloadIsGenerated
+        - atf.tests.governance.source.changes.TestChangeReviewComponentTest#theComponentJvmProfileCannotChangeWithoutAReviewedControl
+        - atf.tests.governance.source.TestLayerGovernanceTest#theGuideCannotHideMissingDuplicateOrIncorrectLevels
+        - atf.tests.governance.source.language.SourceLanguageGovernanceTest#implementationCommentsAndDiagnosticsUseEnglish
+        - atf.tests.governance.source.language.SourceLanguageComponentTest#excludesTrackedDeletionsWithoutDroppingTheRemainingInventory
+        - atf.tests.governance.documentation.release.rag.ReleaseRagProvenanceComponentTest#aPinnedComponentCandidateProducesCitedHumanReviewWithoutChangingInputsOrCallingE2e
+        - atf.tests.governance.documentation.release.rag.ReleaseRagAndroidComponentTest#disposableAndroidUserRequiresHashBoundPreparationAndCleanupReceipts
+        - atf.tests.governance.support.LauncherSourceInventoryComponentTest#outputBoundariesKeepLegalPackagesAndDetectSourceChanges
+        - atf.tests.governance.documentation.release.rag.scope.QualificationLauncherComponentTest#aMissingConfiguredEvidenceRootIsReadyBeforeTheMavenChildStarts
+      negative:
+        - atf.tests.governance.documentation.release.ReleaseRagPlatformGovernanceTest#anUnscopedCandidateCannotReachHumanReview
+        - atf.tests.governance.support.SigningSourceIsolationComponentTest#aForgedManifestCannotCopyPrivateMaterialOrPartiallyExportPublicFiles
+        - atf.tests.governance.source.changes.TestChangeReviewComponentTest#currentDayIsInclusiveButExpiredClosedAndWrongBaseCannotCoverAGate
+        - atf.tests.execution.jvm.ComponentJvmLauncherComponentTest#relativeTemporaryDirectoryIsRejectedBeforeLaunchingTheSuite
+        - atf.tests.governance.documentation.release.rag.ReleaseRagProvenanceComponentTest#componentSelectionsCannotReuseOneCanonicalExtentForTwoSuites
+        - atf.tests.governance.documentation.release.rag.ReleaseRagAndroidComponentTest#disposableAndroidUserCannotPassWithoutCleanupReceipt
+        - atf.tests.governance.documentation.release.rag.scope.QualificationLauncherComponentTest#invalidTestChangeProofStopsBothLaunchersBeforeCopyOrMaven
+        - atf.tests.governance.documentation.release.rag.scope.QualificationLauncherComponentTest#checkoutTmpStopsBothLaunchersBeforeStagingOrMaven
+    paths:
+      - 'README.md'
+      - 'atf-tests/src/test/java/atf/tests/governance/support/LauncherCapabilitiesComponentTest.java'
+      - 'atf-tests/src/test/java/atf/tests/governance/AtfRagGovernanceSuite.java'
+      - 'atf-tests/src/test/java/atf/tests/governance/AtfRagGovernanceSuiteContractTest.java'
+      - 'atf-tests/src/test/java/atf/tests/execution/jvm/ComponentJvmLauncherComponentTest.java'
+      - 'atf-tests/src/test/java/atf/tests/execution/jvm/ComponentJvmFixture.java'
+      - 'atf-tests/src/test/resources/toolchain/launcher-capabilities-contract.ps1'
+      - 'release-tools/.atf-signing/.gitignore'
+      - 'release-tools/.atf-signing/README.md'
+      - 'release-tools/.atf-signing/whist-android-test.fingerprint'
+      - 'release-tools/.atf-signing/whist-android-test.pem'
+      - 'release-tools/config/README.md'
+      - 'release-tools/config/release-platform-rag-policy.json'
+      - 'release-tools/pom.xml'
+      - 'release-tools/src/main/java/atf/release/tools/RagAdvisoryGate.java'
+      - 'release-tools/src/main/java/atf/release/tools/ReleaseEvidenceGate.java'
+      - 'release-tools/src/main/java/atf/release/tools/ReleaseProjectRoot.java'
+      - 'release-tools/src/main/java/atf/release/tools/ReleaseToolsCli.java'
+      - 'release-tools/src/main/java/atf/release/tools/SigningIdentityGate.java'
+      - 'release-tools/scripts/Build-SignedReleaseApk.ps1'
+      - 'release-tools/scripts/Invoke-ReleaseRag.ps1'
+      - 'release-tools/scripts/Invoke-ReleaseToolsJavaGate.ps1'
+      - 'release-tools/scripts/Publish-GithubRelease.ps1'
+      - 'release-tools/scripts/README.md'
+      - 'release-tools/scripts/Resolve-ReleaseToolsProject.ps1'
+      - 'release-tools/scripts/Sync-LocalRelease.ps1'
+      - 'release-tools/scripts/Verify-GithubReleaseDownload.ps1'
+      - 'release-tools/src/test/java/atf/release/tools/RagAdvisoryGateComponentTest.java'
+      - 'release-tools/src/test/java/atf/release/tools/ReleaseEvidenceGateComponentTest.java'
+      - 'release-tools/src/test/java/atf/release/tools/ReleaseProjectRootComponentTest.java'
+      - 'release-tools/src/test/java/atf/release/tools/ReleaseToolsComponentSuite.java'
+      - 'release-tools/src/test/java/atf/release/tools/ReleaseToolsScriptBoundaryComponentTest.java'
+      - 'release-tools/src/test/java/atf/release/tools/SigningIdentityGateComponentTest.java'
+      - '.atf-signing/.gitignore'
+      - '.atf-signing/README.md'
+      - '.atf-signing/whist-android-test.fingerprint'
+      - '.atf-signing/whist-android-test.pem'
+      - 'atf-tests/src/main/java/atf/tests/testchange/TestChangeReview.java'
+      - 'atf-tests/src/test/java/atf/tests/governance/source/changes/TestChangeAdmissionFixture.java'
+      - 'atf-tests/src/test/java/atf/tests/governance/documentation/factual/DocumentedModuleMapGovernanceTest.java'
+      - 'atf-tests/src/test/java/atf/tests/governance/documentation/release/ReleaseCatalogPresentation.java'
+      - 'atf-tests/src/test/java/atf/tests/governance/documentation/release/ReleaseRagPlatformGovernanceTest.java'
+      - 'atf-tests/src/test/java/atf/tests/governance/documentation/release/rag/RagCandidateFixture.java'
+      - 'atf-tests/src/test/java/atf/tests/governance/documentation/release/rag/scope/QualificationLauncherComponentTest.java'
+      - 'atf-tests/src/test/java/atf/tests/governance/documentation/release/reporting/ReleaseSuiteReportingGovernanceTest.java'
+      - 'atf-tests/src/test/java/atf/tests/governance/documentation/release/versioning/ReleaseVersionComponentTest.java'
+      - 'atf-tests/src/test/java/atf/tests/governance/source/TestLayerGovernanceTest.java'
+      - 'atf-tests/src/test/java/atf/tests/governance/source/language/SourceLanguageComponentTest.java'
+      - 'atf-tests/tools/source-language.mjs'
+      - 'atf-tests/tools/source-language-admission.test.mjs'
+      - 'atf-tests/src/test/java/atf/tests/governance/source/changes/TestChangeReviewComponentTest.java'
+      - 'atf-tests/src/test/java/atf/tests/governance/source/workspace/WorkspaceHygieneRules.java'
+      - 'atf-tests/src/test/java/atf/tests/governance/support/SigningSourceIsolationComponentTest.java'
+      - 'atf-tests/src/test/java/atf/tests/governance/support/SourceInputFixture.java'
+      - 'atf-tests/tools/atf-component-ownership.test.mjs'
+      - 'atf-tests/tools/component-evidence-scope.mjs'
+      - 'atf-tests/tools/evaluate-release-rag.mjs'
+      - 'atf-tests/tools/release-evidence-freshness.mjs'
+      - 'atf-tests/tools/release-test-scope.mjs'
+      - 'atf-tests/tools/release-test-scope.test.mjs'
+      - 'atf-tests/tools/android-e2e-runtime-scope.test.mjs'
+      - 'atf-tests/tools/android-user-ownership.test.mjs'
+      - 'atf-tests/tools/component-proof-compiler-reuse.test.mjs'
+      - 'atf-tests/tools/visual-contracts.test.mjs'
+      - 'atf-tests/tools/snapshot-io.test.mjs'
+      - 'atf-tests/src/test/java/atf/tests/governance/documentation/release/rag/RagComponentEvidenceFixture.java'
+      - 'atf-tests/src/test/java/atf/tests/governance/documentation/release/rag/ReleaseRagAndroidComponentTest.java'
+      - 'atf-tests/src/test/java/atf/tests/governance/documentation/release/rag/ReleaseRagProvenanceComponentTest.java'
+      - 'atf-tests/src/test/java/atf/tests/governance/support/LauncherSourceInventoryComponentTest.java'
+      - 'atf-tests/tools/prepare-component-reuse.test.mjs'
+      - 'config/atf-component-dependencies.json'
+      - 'config/atf-component-reader-seals.json'
+      - 'config/atf-governance-policy.json'
+      - 'config/atf-test-suites.json'
+      - 'config/documentation-editions.json'
+      - 'config/release-platform-rag-policy.json'
+      - 'docs/feedback/ATF_Governance.md'
+      - 'docs/feedback/README.md'
+      - 'docs/platform/ATF_AndroidDelivery.md'
+      - 'docs/platform/ATF_ReleaseRetention.md'
+      - 'docs/testing/ATF_ReleaseQualification.md'
+      - 'docs/testing/ATF_TestingGuide.md'
+      - 'release-tools/README.md'
+      - 'release-tools/src/test/README.md'
+      - 'scripts/AtfAndroidPreflight.ps1'
+      - 'scripts/README.md'
+      - 'pom.xml'
+      - 'scripts/AtfSigningSourcePolicy.ps1'
+      - 'scripts/AtfLauncherCapabilities.ps1'
+      - 'scripts/run-atf-governance.ps1'
+      - 'scripts/AtfComponentJvm.ps1'
+      - 'scripts/AtfFileDigest.ps1'
+      - 'scripts/run-component-suites.ps1'
+      - 'whist-lab-app/app/build.gradle'
+    allowDelete: true
+```

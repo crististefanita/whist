@@ -86,14 +86,14 @@ flowchart LR
 | Aplicații active | [Android](whist-lab-app/app/src/main/java/ro/whistlab/app/README.md) · [Core](whist-lab-app/card-table-core/README.md) · [Adaptor Android pentru masă](whist-lab-app/atf-card-table-ui/README.md) · [Web](atf-ui-browser/README.md) |
 | Validare și scenarii pe dispozitiv | [atf-validation](atf-validation/README.md) · [atf-test-android](atf-test-android/README.md) |
 | Verificare și audit | [atf-tests](atf-tests/README.md) · [test-audit](whist-lab-app/test-audit/README.md) · [Build JVM](whist-lab-app/algorithm-build/README.md) |
-| Execuție și livrare | [Scripturi](scripts/README.md) · [Catalogul livrărilor](release/README.md) |
+| Execuție și livrare | [Scripturi comune](scripts/README.md) · [Unelte de release](release-tools/README.md) · [Catalogul livrărilor](release/README.md) |
 
 <details>
 <summary>Declarațiile verificate din Maven și Gradle</summary>
 
 | Build | Module declarate |
 |---|---|
-| Maven | atf-validation, atf-test-android, atf-tests |
+| Maven | atf-validation, atf-test-android, release-tools, atf-tests |
 | Gradle | app, game-core, whist-presentation, card-table-core, card-table-android, card-table-web, card-table-names, ai-lab, test-audit, ios-bridge |
 | Gradle JVM | game-core, ai-lab, card-table-names, test-audit |
 
@@ -105,7 +105,9 @@ Dependențele directe folosesc configurația din modulul consumator.
 | Maven | atf-validation | test | atf-test-kit |
 | Maven | atf-test-android | compile | atf-core, atf-reporting, atf-test-kit |
 | Maven | atf-test-android | test | atf-console |
+| Maven | release-tools | test | atf-test-kit |
 | Maven | atf-tests | compile | atf-test-kit, atf-core, atf-test-android, atf-reporting |
+| Maven | atf-tests | test | atf-validation |
 | Maven | atf-tests | test | atf-console, atf-mock |
 | Gradle | app | implementation | game-core, card-table-android, whist-presentation |
 | Gradle | app | testImplementation | card-table-core |
@@ -133,6 +135,7 @@ flowchart LR
     APK["Android APK"]
     JVM["Componente JVM"]
     Maven["Maven ATF"]
+    ReleaseTools["Unelte de release"]
     Platform["Android · Web"]
     Evidence["Aserțiuni"]
     Gate["Calificare"]
@@ -141,9 +144,11 @@ flowchart LR
     Gradle -->|testează| JVM
     Maven -->|verificări| Evidence
     JVM -->|comparații| Evidence
+    Maven -->|rulează| ReleaseTools
     APK -->|candidat| Gate
     Platform -->|observații| Evidence
     Evidence -->|acceptanță| Gate
+    ReleaseTools -->|doar recomandă| Gate
     Gate -->|păstrează| Dossier
 ```
 

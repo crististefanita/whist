@@ -14,6 +14,8 @@
 
 - Pentru calificare incrementală, `-SourceRoot` indică snapshot-ul fixat și `-Groups` primește identificatorii selecțiilor care trebuie rulate. Lista omisă selectează toate grupurile. Parametrul -ReuseFrom indică dosarul anterior de componente. Lansatorul rulează grupurile cu intrări afectate sau dovezi invalide. [Regula de reutilizare](../docs/testing/ATF_ReleaseQualification.md#reutilizarea-dovezilor-de-componentă)
 
+- [Uneltele de release](../release-tools/README.md) dețin RAG-ul consultativ, continuitatea identității de semnare și adaptoarele de publicare, descărcare și sincronizare locală. Lansatoarele comune de joc, Android și componente rămân aici.
+
 - [Exportul AAR al bibliotecii grafice](export-card-table-ui.ps1) construiește coordonata lipsă din intrările modulului și ale uneltelor Gradle. Un export repetat verifică manifestul și hash-urile pachetului existent.
 
 Acest director coordonează operații care traversează modulele: verificări, construirea aplicației și scenarii Android activate explicit. Algoritmii, validatoarele și testele uneltelor aparțin modulelor care dețin comportamentul.
@@ -60,13 +62,18 @@ PowerShell se verifică sintactic separat de execuția operației. Un scenariu A
 
 ## Precondiții după intrare
 
-Lansatorul componentelor folosește [opțiuni JVM limitate la suită](AtfComponentJvm.ps1). Elimină `JAVA_TOOL_OPTIONS`, `_JAVA_OPTIONS` și `JDK_JAVA_OPTIONS` moștenite înainte de rulare; diagnosticul numește variabila fără să-i afișeze valoarea. Suitele normale și probele testChanges individuale sau în lot împart acest profil, iar JVM-urile copil nu moștenesc proprietățile sale de raportare.
+Lansatorul componentelor folosește [opțiuni JVM limitate la suită](AtfComponentJvm.ps1).
+
+- Compilarea Maven, rezolvarea classpath-ului și suitele Java folosesc directoare temporare în spațiul extern de calificare. Lansatorul restaurează valorile `TEMP` și `TMP` ale apelantului după fiecare invocare.
+- Fixture-urile Maven primesc dosarul rulării prin `WHIST_EVIDENCE_ROOT` și un subdirector izolat `WHIST_FIXTURE_DIAGNOSTICS`. Selecția componentei Android API primește și SDK-ul API 36 configurat; preflight-ul eșuează dacă platforma lipsește.
+- Fixture-urile `@TempDir` și fișierele frameworkului nu revin la Temp-ul utilizatorului Windows. Elimină `JAVA_TOOL_OPTIONS`, `_JAVA_OPTIONS` și `JDK_JAVA_OPTIONS` moștenite înainte de lansare; diagnosticul numește variabila, dar nu îi afișează valoarea.
+- Suitele normale și probele testChanges individuale sau în lot folosesc același profil. JVM-urile copil nu moștenesc proprietățile suitei.
 
 | Intrare | Resurse și date necesare | Ce verifică executarea |
 |---|---|---|
 | `run-whist-collection.ps1` | JDK selectat prin `JavaHome`, wrapper Gradle și cache JVM; protocol, candidat și corpus când colecția le cere. | Validează colecția și identitățile, pregătește copia și apelează Gradle cu `--offline`; raportează separat codul de ieșire. |
 | `run-documentation-governance.ps1` | JDK 21 și cache Maven pentru dependențele Jackson. | [Verificare editorială](../docs/governance/ATF_Documentation.md#cli-pentru-guvernanța-documentației) pentru fișiere selectate sau inventarul complet. |
-| `run-atf-governance.ps1` | JDK, `mvn` disponibil, POM-uri și perechi JAR/POM; cache Maven pentru depozitul copiei. | Verifică APK-urile înainte de Maven și confruntă inventarele surselor și ale dosarului de release. În mod implicit rulează `AtfQualityGovernanceSuite`; `-GovernanceSuite AtfRagGovernanceSuite` lansează colecția offline, limitată, pentru RAG, lansator, integritatea rapoartelor și publicare. Fișierele temporare Maven și Surefire rămân în spațiul extern de calificare. Rularea RAG exportă un singur Extent HTML canonic, manifestul SHA-256 și fișierele JUnit auxiliare. Sunt acceptați doar acești doi selectori. [Contractul snapshot-ului](../docs/testing/ATF_ReleaseQualification.md#snapshot-și-preflight-înainte-de-maven) · [Colecția RAG](../docs/testing/ATF_ReleaseQualification.md#orchestrare-și-poarta-de-adoptare-langgraph) |
+| `run-atf-governance.ps1` | JDK, `mvn` disponibil, POM-uri și perechi JAR/POM; cache Maven pentru depozitul copiei. | Verifică APK-urile înainte de Maven și confruntă inventarele surselor și ale dosarului de release. În mod implicit rulează `AtfQualityGovernanceSuite`; `-GovernanceSuite AtfRagGovernanceSuite` lansează colecția offline, limitată, pentru RAG, lansator, integritatea rapoartelor și publicare. Fișierele temporare Maven și Surefire rămân în spațiul extern de calificare. În Windows, configurați un `WHIST_QUALIFICATION_TEMP_ROOT` extern, scurt și puțin adânc ca igienă pentru căile fixture-urilor JVM/JUnit/PowerShell imbricate; aceasta nu înlocuiește intrările complete ale fixture-ului sau un wrapper Maven executabil. Rularea RAG exportă un singur Extent HTML canonic, manifestul SHA-256 și fișierele JUnit auxiliare. Sunt acceptați doar acești doi selectori. [Contractul snapshot-ului](../docs/testing/ATF_ReleaseQualification.md#snapshot-și-preflight-înainte-de-maven) · [Colecția RAG](../docs/testing/ATF_ReleaseQualification.md#orchestrare-și-poarta-de-adoptare-langgraph) |
 | `run-offline-*` | Uneltele și parametrii declarați de fiecare fișier; unele intrări folosesc căi locale explicite. | Execută protocolul acelei intrări; disponibilitatea uneltei nu se deduce din parsarea scriptului. |
 | Flux Android | Configurația ADB, binarul aplicației, rezervare și backup verificat. | [Contractul infrastructurii](../atf-test-android/README.md) delimitează transportul, comanda și observația. |
 
@@ -88,7 +95,7 @@ Lansatorul componentelor folosește [opțiuni JVM limitate la suită](AtfCompone
 
 [Recuperarea snapshotului](AtfComponentResume.ps1) validează inventarele originale ale surselor și release-urilor și scrie checkpointuri atomice. [Admiterea Maven](AtfComponentMaven.ps1) verifică separat identitatea pregătirii, clasele compilate, octeții dependențelor și classpathul.
 
-Lansatorul poate reutiliza compilarea după întreruperea etapei de classpath; un classpath alterat reface doar acea etapă, iar clasele schimbate sau o chitanță străină, invalidă ori lipsă cer o nouă pregătire. Niciun helper nu rulează jocul și nu schimbă verdictul raportului.
+Lansatorul poate reutiliza compilarea după întreruperea etapei de classpath; un classpath alterat reface doar acea etapă, iar clasele schimbate sau o chitanță străină, invalidă ori lipsă cer o nouă pregătire. Maven, Surefire și procesele Node copil primesc spații temporare delimitate sub dosarul extern al rulării; lansatorul restaurează variabilele `TMP`/`TEMP` ale apelantului după fiecare proces. Niciun helper nu rulează jocul și nu schimbă verdictul raportului.
 
 - AtfComponentSelection.ps1 rezolvă și validează selectorii înainte de crearea dosarului de rulare sau staging-ul sursei. [Registrul de guvernanță](../docs/feedback/ATF_Governance.md#calificarea-afirmațiilor-și-lansatoarelor) consemnează contractul și limitele.
 - Recipisa este reverificată contra cataloagelor de suite, Gradle și ownership din staging.
@@ -99,7 +106,7 @@ Lansatorul poate reutiliza compilarea după întreruperea etapei de classpath; u
 
 - [O singură politică a surselor](AtfSigningSourcePolicy.ps1) admite numai metadatele publice de semnare și omite intrările private locale înainte de calcularea hash-urilor.
 - [Copierea](Copy-AtfSourceInputs.ps1) validează manifestul complet, căile canonice și absența linkurilor în strămoșii sursei și destinației înainte de scriere.
-- Intrările private sunt refuzate chiar și într-un manifest vechi. [Ghidul de semnare](../.atf-signing/README.md) definește lista publică permisă și limitele politicii.
+- Intrările private sunt refuzate chiar și într-un manifest vechi. [Ghidul de semnare](../release-tools/.atf-signing/README.md) definește lista publică permisă și limitele politicii.
 
 ## Preflight-ul uneltelor pentru browser
 
