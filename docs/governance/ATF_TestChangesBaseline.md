@@ -4599,6 +4599,8 @@ testChanges:
       - atf-tests/src/test/java/atf/tests/execution/recovery/InvocationRecoveryComponentTest.java
       - atf-tests/src/test/java/atf/tests/governance/source/changes/domains/DomainGitFixture.java
       - atf-tests/tools/atf-component-ownership.test.mjs
+      - config/atf-component-dependencies.json
+      - config/atf-component-reader-seals.json
       - docs/governance/ATF_TestChangesBaseline.md
       - release/0.25.0/reports/README.md
 ```
