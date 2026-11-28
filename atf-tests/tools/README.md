@@ -48,6 +48,7 @@ node atf-tests/tools/record-release-integrity.mjs
 The [selector](plan-release-tests.mjs) compares the pinned inventory with the last relevant published source in the catalog. It generates the selection plan and required E2E groups before the build; the [evaluator](evaluate-release-rag.mjs) recomputes selection and reconciles the plan, manifest, payload and APK snapshot. [Selection command](../../docs/testing/ATF_ReleaseQualification.md#selection-of-diff-tests)
 
 - [Scope suite](component-evidence-scope.mjs) determines when an execution can be reused. For Gradle collections, the documentation and entries exclusively of Maven or Android E2E do not invalidate the proof of the application; sources, compilation configuration, dependencies and unknown pathways require new selection. [Preparation of evidence](prepare-component-reuse.mjs) and the evaluator use the same checks for receipts and hashes. The component launcher uses this preparation when requested.
+- Native E2E receipts may be readmitted after verification-only changes only when the APK bytes, Android runtime inputs and scenario inputs remain identical. This allowlist includes test-only governance sources plus the component dependency and reader-seal catalogs; application sources and Android scenarios still require fresh E2E. The original execution receipt, source identity and report remain unchanged.
 - The version policy sets out Maven and Gradle mandatory groups. Each group has its own Extent and Receipt.
 
 ```powershell

@@ -87,16 +87,18 @@ test('browser package rotation preserves native reports and their original sourc
 
 test('verification maintenance reuses original native evidence without changing its commit or bytes',async t=>{
   const verification = {path:'atf-tests/src/test/java/atf/tests/GovernanceTest.java',sha256:digest('old test')};
-  const seals = {path:'config/atf-component-dependencies.json',sha256:digest('old reader seals')};
-  const f=await nativeFixture(t,{extraInputs:[verification,seals,web]});
+  const dependencies = {path:'config/atf-component-dependencies.json',sha256:digest('old dependencies')};
+  const readerSeals = {path:'config/atf-component-reader-seals.json',sha256:digest('old reader seals')};
+  const f=await nativeFixture(t,{extraInputs:[verification,dependencies,readerSeals,web]});
   const receiptFile=e2eSourcePath(flow),original=await fs.readFile(path.join(f.candidate,receiptFile));
   const report=path.join(f.candidate,e2ePaths(flow).report), originalReport=await fs.readFile(report);
-  const next=f.files.map(row=>[verification.path,seals.path,web.path].includes(row.path)?{...row,sha256:digest('reviewed '+row.path)}:row);
+  const next=f.files.map(row=>[verification.path,dependencies.path,readerSeals.path,web.path].includes(row.path)
+    ?{...row,sha256:digest('reviewed '+row.path)}:row);
   await setSources(f.candidate,f.current,next);
   const [row]=await planAndroidE2e(f.candidate,f.current,request);
   assert.equal(row.decision,'REUSE',row.reason);
   assert.equal(row.provenance.runtimeAdmission.kind,'UNCHANGED_ANDROID_BUILD_WITH_VERIFICATION_ONLY_INPUTS');
-  assert.deepEqual(row.provenance.runtimeAdmission.changedInputs,[verification.path,web.path,seals.path].sort());
+  assert.deepEqual(row.provenance.runtimeAdmission.changedInputs,[verification.path,web.path,dependencies.path,readerSeals.path].sort());
   assert.equal(row.provenance.executionSourceCommit,f.manifest.source.sourceCommit);
   assert.deepEqual(await fs.readFile(path.join(f.candidate,receiptFile)),original);
   assert.deepEqual(await fs.readFile(report),originalReport);

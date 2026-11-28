@@ -13,7 +13,7 @@ const select = (inputs, predicate) => new Map([...inputs].filter(([file]) => pre
 const runtimeInput = file => !editorial(file) && !validatorInput(file) && !scenarioInput(file);
 const browserOnly = file => file.startsWith('atf-ui-browser/');
 const verificationOnly = file => /^atf-(?:tests|validation)\/src\/test\//.test(file)
-  || file === 'config/atf-component-dependencies.json';
+  || ['config/atf-component-dependencies.json', 'config/atf-component-reader-seals.json'].includes(file);
 
 export function admitWebOnlyRuntimeChanges(originalFiles, currentFiles) {
   const original = select(componentInputMap(originalFiles), runtimeInput);
