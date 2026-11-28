@@ -84,6 +84,38 @@ Android Download Manager transfer and certificate checks belong to the tested re
 
 Native source and validator separation belongs to the [qualification contract](../testing/ATF_ReleaseQualification.md#native-execution-and-validator-provenance). Reuse remains conditional on unchanged runtime, scenario, APK and original evidence.
 
+## Browser component execution budget
+
+The full responsive renderer matrix remains a component check with unchanged viewport, language, text-size and layout assertions. Its observed Windows duration exceeded the former two-minute Java wrapper limit; the DevTools command budget also needs headroom under suite load. Keep both limits above measured execution time so resource contention is reported as a test failure only when the browser operation itself fails.
+
+<details>
+<summary>RAG-39: responsive browser test budgets</summary>
+
+```yaml
+testChanges:
+  - id: RAG-39-BROWSER-BUDGETS
+    status: VERIFIED
+    base: f6ae65c12128f27799a3662e6f31be3a39a5296c
+    expires: 2026-12-28
+    reason: Preserve the complete Chromium responsive matrix and all existing assertions while setting command and wrapper timeouts above measured Windows execution time; keep invalid-style rejection as the negative control.
+    proof: '.\scripts\run-component-suites.ps1 -TestChangeControl RAG-39-BROWSER-BUDGETS -TestChangeBaseRef f6ae65c12128f27799a3662e6f31be3a39a5296c'
+    checks:
+      positive:
+        - atf.tests.governance.documentation.release.rag.nativeproof.WhistSurfaceAdapterComponentTest#adaptiveWebMenusKeepTextIndependentOfTheUsableViewport
+        - atf.tests.governance.uiadapter.SharedMenuHistoryComponentTest#historyTypographyAndDividersFollowTheNativePolicy
+      negative:
+        - atf.tests.governance.uiadapter.SharedMenuHistoryComponentTest#invalidStylesAreAtomicAndClearingRestoresTheBaseline
+    paths:
+      - atf-tests/src/test/java/atf/tests/governance/documentation/release/rag/nativeproof/WhistSurfaceAdapterComponentTest.java
+      - atf-tests/src/test/java/atf/tests/governance/uiadapter/SharedMenuHistoryComponentTest.java
+      - atf-ui-browser/tests/fixtures.mjs
+      - config/atf-component-reader-seals.json
+      - docs/feedback/ATF_Governance.md
+      - docs/governance/ATF_TestChangesBaseline.md
+```
+
+</details>
+
 ## LangGraph shadow pilot
 
 The production path remains a deterministic PowerShell stage runner with source-bound Maven/Gradle checkpoints and a read-only Node evaluator.

@@ -3,6 +3,8 @@ import { readFile } from "node:fs/promises";
 import { join } from "node:path";
 import { setTimeout as delay } from "node:timers/promises";
 
+const DEVTOOLS_COMMAND_TIMEOUT_MS = 30_000;
+
 export async function until(probe, limit = 10000) {
   const deadline = Date.now() + limit;
   let last;
@@ -100,7 +102,7 @@ export async function withBrowser(executable, profile, exercise) {
       const timer = setTimeout(() => {
         calls.delete(id);
         reject(new Error("DevTools command timed out: " + method));
-      }, 15000);
+      }, DEVTOOLS_COMMAND_TIMEOUT_MS);
       calls.set(id, { resolve, reject, timer });
       socket.send(JSON.stringify({ id, method, params }));
     });
