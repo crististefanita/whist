@@ -35,10 +35,10 @@ $expectedCertificate = (Get-Content -LiteralPath (Join-Path $identity 'whist-and
 if ($expectedCertificate -notmatch '^[0-9a-f]{64}$') { throw 'SIGNING_CERTIFICATE_FINGERPRINT_INVALID' }
 
 $gradleArgs = @('--no-daemon', '--console=plain', '--offline',
-    "-Pandroid.injected.signing.store.file=$preservedKey",
-    '-Pandroid.injected.signing.store.password=android',
-    '-Pandroid.injected.signing.key.alias=androiddebugkey',
-    '-Pandroid.injected.signing.key.password=android',
+    '--project-prop', "android.injected.signing.store.file=$preservedKey",
+    '--project-prop', 'android.injected.signing.store.password=android',
+    '--project-prop', 'android.injected.signing.key.alias=androiddebugkey',
+    '--project-prop', 'android.injected.signing.key.password=android',
     ':app:assembleDebug')
 Push-Location (Join-Path $source 'whist-lab-app')
 try {

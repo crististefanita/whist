@@ -22,8 +22,11 @@ class ReleaseToolsScriptBoundaryComponentTest {
                 "The selected checkout is anchored to stable project markers");
         AuditedAssertions.assertTrue(signer.contains("Join-Path $root 'release-tools/.atf-signing'"),
                 "The existing module identity is the signing input");
-        AuditedAssertions.assertTrue(signer.contains("android.injected.signing.store.file=$preservedKey"),
-                "Gradle receives the preserved key explicitly");
+        AuditedAssertions.assertTrue(signer.contains("'--project-prop', \"android.injected.signing.store.file=$preservedKey\"")
+                        && signer.contains("'--project-prop', 'android.injected.signing.store.password=android'")
+                        && signer.contains("'--project-prop', 'android.injected.signing.key.alias=androiddebugkey'")
+                        && signer.contains("'--project-prop', 'android.injected.signing.key.password=android'"),
+                "Gradle receives every signing property as a distinct option and value");
         AuditedAssertions.assertTrue(signer.contains("APK_CERTIFICATE_CONTINUITY_MISMATCH")
                         && signer.contains("whist-android-test.fingerprint")
                         && signer.contains("SIGNING_KEY_LINK_REFUSED")
@@ -33,6 +36,15 @@ class ReleaseToolsScriptBoundaryComponentTest {
                         || signer.contains("GetFolderPath('UserProfile')"),
                 "Signing must not depend on a machine-local debug keystore");
         AuditedAssertions.assertTrue(Files.isRegularFile(root.resolve("pom.xml")));
+    }
+
+    @Test void windowsBatchArgumentsDoNotUseTheBrokenCombinedProjectPropertyForm() throws Exception {
+        Path module = Path.of("").toAbsolutePath().normalize();
+        String signer = Files.readString(module.resolve("scripts/Build-SignedReleaseApk.ps1"));
+        AuditedAssertions.assertTrue(signer.contains("'--project-prop'"),
+                "The Windows wrapper receives the Gradle project-property option separately");
+        AuditedAssertions.assertFalse(signer.contains("-Pandroid.injected.signing."),
+                "The ambiguous combined -P form must not return to the Windows batch invocation");
     }
 
     @Test void operationAdaptersStaySeparateFromRagAndGameTestOwners() throws Exception {
