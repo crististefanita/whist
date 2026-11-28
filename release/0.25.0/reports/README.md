@@ -61,3 +61,5 @@ Automated producer and detached-report contracts passed in the reporting collect
 This is an Android test channel using the existing test certificate. Native evidence covers API 28 and one readable profile; broader parity criteria remain open in [feedback](../../../docs/feedback/README.md). The final publication, download and two-release retention checks are separate observations.
 
 [Release qualification contract](../../../docs/testing/ATF_ReleaseQualification.md) · [Shared testing strategy](../../../docs/testing/README.md)
+
+[Release catalog](../../README.md) · [Testing strategy](../../../docs/testing/README.md)
