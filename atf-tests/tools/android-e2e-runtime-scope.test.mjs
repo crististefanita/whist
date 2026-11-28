@@ -106,6 +106,23 @@ test('verification maintenance reuses original native evidence without changing 
   console.log('Verification-only native readmission: original execution bytes and source commit preserved');
 });
 
+test('release-tools script and component-test edits preserve native execution evidence when the APK runtime is unchanged',async t=>{
+  const buildAdapter = {path:'release-tools/scripts/Build-SignedReleaseApk.ps1',sha256:digest('old build adapter')};
+  const releaseToolsTest = {path:'release-tools/src/test/java/atf/release/tools/ReleaseToolsScriptBoundaryComponentTest.java',sha256:digest('old test')};
+  const f=await nativeFixture(t,{extraInputs:[buildAdapter,releaseToolsTest]});
+  const receiptFile=e2eSourcePath(flow),original=await fs.readFile(path.join(f.candidate,receiptFile));
+  const report=path.join(f.candidate,e2ePaths(flow).report),originalReport=await fs.readFile(report);
+  const next=f.files.map(row=>[buildAdapter.path,releaseToolsTest.path].includes(row.path)
+    ?{...row,sha256:digest('reviewed '+row.path)}:row);
+  await setSources(f.candidate,f.current,next);
+  const [row]=await planAndroidE2e(f.candidate,f.current,request);
+  assert.equal(row.decision,'REUSE',row.reason);
+  assert.equal(row.provenance.runtimeAdmission.kind,'UNCHANGED_ANDROID_BUILD_WITH_VERIFICATION_ONLY_INPUTS');
+  assert.deepEqual(row.provenance.runtimeAdmission.changedInputs,[buildAdapter.path,releaseToolsTest.path].sort());
+  assert.deepEqual(await fs.readFile(path.join(f.candidate,receiptFile)),original);
+  assert.deepEqual(await fs.readFile(report),originalReport);
+});
+
 for(const file of ['release-tools/config/release-platform-rag-policy.json','whist-lab-app/app/build.gradle',
   'whist-lab-app/card-table-core/src/main/java/CardFaceMetrics.java','whist-lab-app/app/src/main/assets/table.bin',
   'lib/core.jar','config/whist-hard-policy.yaml'])
