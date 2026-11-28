@@ -98,7 +98,7 @@ testChanges:
     base: f6ae65c12128f27799a3662e6f31be3a39a5296c
     expires: 2026-12-28
     reason: Preserve the complete Chromium responsive matrix and all existing assertions while setting command and wrapper timeouts above measured Windows execution time; keep invalid-style rejection as the negative control.
-    proof: '.\scripts\run-component-suites.ps1 -TestChangeControl RAG-39-BROWSER-BUDGETS -TestChangeBaseRef f6ae65c12128f27799a3662e6f31be3a39a5296c'
+    proof: 'mvn -o -pl atf-tests -am -Dtest=WhistSurfaceAdapterComponentTest,SharedMenuHistoryComponentTest -Dsurefire.failIfNoSpecifiedTests=false test'
     checks:
       positive:
         - atf.tests.governance.documentation.release.rag.nativeproof.WhistSurfaceAdapterComponentTest#adaptiveWebMenusKeepTextIndependentOfTheUsableViewport
