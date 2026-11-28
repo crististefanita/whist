@@ -1,0 +1,99 @@
+{
+  "identity" : {
+    "testClass" : "VisualContractScopeComponentTest",
+    "testPackage" : "atf.tests.governance.documentation.release.rag.scope",
+    "scenario" : "provenTypographyKeepsNativeSanityAndItsComponentOwners()",
+    "method" : "provenTypographyKeepsNativeSanityAndItsComponentOwners",
+    "tags" : [ "component", "framework-acceptance", "offline" ]
+  },
+  "scenarioName" : "provenTypographyKeepsNativeSanityAndItsComponentOwners [1]",
+  "inputs" : [ {
+    "name" : "JUnit invocation identity",
+    "value" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfProvenanceComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.rag.scope.VisualContractScopeComponentTest]/[method:provenTypographyKeepsNativeSanityAndItsComponentOwners()]"
+  }, {
+    "name" : "JUnit display name",
+    "value" : "provenTypographyKeepsNativeSanityAndItsComponentOwners()"
+  }, {
+    "name" : "Original invocation recovery",
+    "value" : "{\"originalInvocationId\":\"[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfProvenanceComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.rag.scope.VisualContractScopeComponentTest]/[method:provenTypographyKeepsNativeSanityAndItsComponentOwners()]\",\"originalCheckpointSha256\":\"81fa5f1592ee1c6917091c9bfe6d2adcba2d7c304d6e27b3cdd28e1b0a2bb353\",\"mode\":\"REUSED_ORIGINAL_COMPARISONS\",\"originalReportSha256\":\"c730324dc6dac915eb5c9bcb8f9d027311b09d705eef54072cb1f616c7e19970\"}"
+  } ],
+  "phases" : [ {
+    "phase" : "TEST_BODY",
+    "checks" : [ {
+      "name" : "assertEquals · NodeReleaseContracts.java:36 · The Node child completed successfully",
+      "expected" : "0",
+      "actual" : "0",
+      "passed" : true
+    }, {
+      "name" : "assertEquals · VisualContractScopeComponentTest.java:72 · Only the declared header constants changed",
+      "expected" : "[responsive-ui-sanity, signed-release-smoke]",
+      "actual" : "[responsive-ui-sanity, signed-release-smoke]",
+      "passed" : true
+    }, {
+      "name" : "assertTrue · VisualContractScopeComponentTest.java:73 · Only the declared header constants changed",
+      "expected" : "true",
+      "actual" : "true",
+      "passed" : true
+    }, {
+      "name" : "assertEquals · VisualContractScopeComponentTest.java:74 · Only the declared header constants changed",
+      "expected" : "USER_FLOW",
+      "actual" : "USER_FLOW",
+      "passed" : true
+    }, {
+      "name" : "assertEquals · VisualContractScopeComponentTest.java:28",
+      "expected" : "PROVEN",
+      "actual" : "PROVEN",
+      "passed" : true
+    }, {
+      "name" : "assertEquals · VisualContractScopeComponentTest.java:29",
+      "expected" : "[whist-lab-app-display]",
+      "actual" : "[whist-lab-app-display]",
+      "passed" : true
+    }, {
+      "name" : "assertEquals · VisualContractScopeComponentTest.java:30",
+      "expected" : "TITLE_SP",
+      "actual" : "TITLE_SP",
+      "passed" : true
+    }, {
+      "name" : "assertEquals · VisualContractScopeComponentTest.java:31",
+      "expected" : "14f",
+      "actual" : "14f",
+      "passed" : true
+    }, {
+      "name" : "assertEquals · VisualContractScopeComponentTest.java:32",
+      "expected" : "16f",
+      "actual" : "16f",
+      "passed" : true
+    }, {
+      "name" : "assertEquals · NodeReleaseContracts.java:36 · The Node child completed successfully",
+      "expected" : "0",
+      "actual" : "0",
+      "passed" : true
+    }, {
+      "name" : "assertEquals · VisualContractScopeComponentTest.java:72 · Card ranks retain the collection and AutoGame sanity",
+      "expected" : "[responsive-ui-sanity, signed-release-auto-game, signed-release-smoke]",
+      "actual" : "[responsive-ui-sanity, signed-release-auto-game, signed-release-smoke]",
+      "passed" : true
+    }, {
+      "name" : "assertTrue · VisualContractScopeComponentTest.java:73 · Card ranks retain the collection and AutoGame sanity",
+      "expected" : "true",
+      "actual" : "true",
+      "passed" : true
+    }, {
+      "name" : "assertEquals · VisualContractScopeComponentTest.java:74 · Card ranks retain the collection and AutoGame sanity",
+      "expected" : "USER_FLOW",
+      "actual" : "USER_FLOW",
+      "passed" : true
+    }, {
+      "name" : "assertEquals · VisualContractScopeComponentTest.java:35",
+      "expected" : "[whist-lab-app-display, whist-lab-app-atf-card-table-ui]",
+      "actual" : "[whist-lab-app-display, whist-lab-app-atf-card-table-ui]",
+      "passed" : true
+    } ],
+    "outcome" : "PASS",
+    "diagnostic" : "",
+    "elapsedNanos" : 360314700,
+    "intervals" : 1
+  } ],
+  "outcome" : "PASS"
+}

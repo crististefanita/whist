@@ -1,0 +1,12 @@
+{
+  "stages" : [ {
+    "status" : "PASS",
+    "stage" : "extent.publish-and-audit",
+    "startedUtc" : "2026-11-28T16:27:41.170105Z",
+    "endedUtc" : "2026-11-28T16:27:44.194992500Z",
+    "elapsedMs" : 3313
+  } ],
+  "schemaVersion" : 1,
+  "owner" : "extent.component-report.html",
+  "kind" : "ATF_RELEASE_TIMING"
+}

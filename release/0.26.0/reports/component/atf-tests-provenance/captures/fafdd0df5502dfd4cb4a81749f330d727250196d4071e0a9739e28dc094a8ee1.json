@@ -1,0 +1,34 @@
+{
+  "identity" : {
+    "testClass" : "HtmlInvocationIntegrityComponentTest",
+    "testPackage" : "atf.tests.governance.documentation.release.integrity.html",
+    "scenario" : "receiptsOutsideTheirRenderedOwnerCannotIncreaseThePopulation()",
+    "method" : "receiptsOutsideTheirRenderedOwnerCannotIncreaseThePopulation",
+    "tags" : [ "component", "framework-acceptance", "offline" ]
+  },
+  "scenarioName" : "receiptsOutsideTheirRenderedOwnerCannotIncreaseThePopulation [1]",
+  "inputs" : [ {
+    "name" : "JUnit invocation identity",
+    "value" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfProvenanceComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.integrity.html.HtmlInvocationIntegrityComponentTest]/[method:receiptsOutsideTheirRenderedOwnerCannotIncreaseThePopulation()]"
+  }, {
+    "name" : "JUnit display name",
+    "value" : "receiptsOutsideTheirRenderedOwnerCannotIncreaseThePopulation()"
+  }, {
+    "name" : "Original invocation recovery",
+    "value" : "{\"originalInvocationId\":\"[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfProvenanceComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.integrity.html.HtmlInvocationIntegrityComponentTest]/[method:receiptsOutsideTheirRenderedOwnerCannotIncreaseThePopulation()]\",\"originalCheckpointSha256\":\"81fa5f1592ee1c6917091c9bfe6d2adcba2d7c304d6e27b3cdd28e1b0a2bb353\",\"mode\":\"REUSED_ORIGINAL_COMPARISONS\",\"originalReportSha256\":\"c730324dc6dac915eb5c9bcb8f9d027311b09d705eef54072cb1f616c7e19970\"}"
+  } ],
+  "phases" : [ {
+    "phase" : "TEST_BODY",
+    "checks" : [ {
+      "name" : "assertThrows · HtmlInvocationIntegrityComponentTest.java:44 · Orphan receipt is not an executable test owner",
+      "expected" : "java.io.IOException",
+      "actual" : "java.io.IOException",
+      "passed" : true
+    } ],
+    "outcome" : "PASS",
+    "diagnostic" : "",
+    "elapsedNanos" : 42084800,
+    "intervals" : 1
+  } ],
+  "outcome" : "PASS"
+}

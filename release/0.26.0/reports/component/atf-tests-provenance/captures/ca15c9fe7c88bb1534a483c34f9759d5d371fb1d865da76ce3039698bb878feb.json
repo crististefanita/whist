@@ -1,0 +1,57 @@
+{
+  "identity" : {
+    "testClass" : "ReleaseVersionComponentTest",
+    "testPackage" : "atf.tests.governance.documentation.release.versioning",
+    "scenario" : "releaseAdaptersKeepLegacyTwoPartNamesAndPublishThePatchIdentity(ComponentInputs)",
+    "method" : "releaseAdaptersKeepLegacyTwoPartNamesAndPublishThePatchIdentity",
+    "tags" : [ "component", "framework-acceptance", "offline" ]
+  },
+  "scenarioName" : "releaseAdaptersKeepLegacyTwoPartNamesAndPublishThePatchIdentity [1]",
+  "inputs" : [ {
+    "name" : "JUnit invocation identity",
+    "value" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfProvenanceComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.versioning.ReleaseVersionComponentTest]/[method:releaseAdaptersKeepLegacyTwoPartNamesAndPublishThePatchIdentity(atf.android.evidence.component.ComponentInputs)]"
+  }, {
+    "name" : "Original release-adapter comparisons",
+    "value" : "STDOUT\n✔ a source-bound qualified audit is accepted before publication (2338.1108ms)\n✔ publication rejects absent prepared source without GitHub access (1162.2004ms)\n✔ publication rejects foreign source without GitHub access (1169.4194ms)\n✔ publication rejects another APK without GitHub access (1120.7076ms)\n✔ publication rejects changed report without GitHub access (1314.1398ms)\nfatal: path 'release/0.22/reports/report.html' does not exist in 'dacaa9a6bebe8ae5d13093546b11e165b5a360c6'\n✔ publication rejects missing report without GitHub access (1246.0145ms)\n✔ publication rejects indirect index without GitHub access (1269.3625ms)\n✔ foreign, mutable and duplicate audit URLs are rejected (1030.1363ms)\n✔ two-part ordering retains historical patch precision and rejects equivalent catalog entries (1.996ms)\n✔ invalid version shapes cannot enter a catalog or published asset path (0.5607ms)\n✔ release risk determines patch versus minor increments while the major remains zero (0.3113ms)\n✔ two-part publication keeps the exact APK name and checksum (38.8239ms)\n✔ two-part local delivery reconstructs Git and projects only the current version (2085.3649ms)\nℹ tests 13\nℹ suites 0\nℹ pass 13\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 13871.376\n\nSTDERR\n"
+  }, {
+    "name" : "JUnit display name",
+    "value" : "releaseAdaptersKeepLegacyTwoPartNamesAndPublishThePatchIdentity(ComponentInputs)"
+  }, {
+    "name" : "Original invocation recovery",
+    "value" : "{\"originalInvocationId\":\"[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfProvenanceComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.versioning.ReleaseVersionComponentTest]/[method:releaseAdaptersKeepLegacyTwoPartNamesAndPublishThePatchIdentity(atf.android.evidence.component.ComponentInputs)]\",\"originalCheckpointSha256\":\"81fa5f1592ee1c6917091c9bfe6d2adcba2d7c304d6e27b3cdd28e1b0a2bb353\",\"mode\":\"REUSED_ORIGINAL_COMPARISONS\",\"originalReportSha256\":\"c730324dc6dac915eb5c9bcb8f9d027311b09d705eef54072cb1f616c7e19970\"}"
+  } ],
+  "phases" : [ {
+    "phase" : "TEST_BODY",
+    "checks" : [ {
+      "name" : "assertEquals · ReleaseVersionComponentTest.java:78",
+      "expected" : "https://github.com/example/game/releases/download/v0.22/WhistLab-0.22.apk",
+      "actual" : "https://github.com/example/game/releases/download/v0.22/WhistLab-0.22.apk",
+      "passed" : true
+    }, {
+      "name" : "assertEquals · ReleaseVersionComponentTest.java:80",
+      "expected" : "https://github.com/example/game/releases/download/v0.22.1/WhistLab-0.22.1.apk",
+      "actual" : "https://github.com/example/game/releases/download/v0.22.1/WhistLab-0.22.1.apk",
+      "passed" : true
+    }, {
+      "name" : "assertEquals · NodeReleaseContracts.java:36 · The Node child completed successfully",
+      "expected" : "0",
+      "actual" : "0",
+      "passed" : true
+    }, {
+      "name" : "assertTrue · ReleaseVersionComponentTest.java:84 · ✔ a source-bound qualified audit is accepted before publication (2338.1108ms)\n✔ publication rejects absent prepared source without GitHub access (1162.2004ms)\n✔ publication rejects foreign…",
+      "expected" : "true",
+      "actual" : "true",
+      "passed" : true
+    }, {
+      "name" : "assertTrue · ReleaseVersionComponentTest.java:85 · ✔ a source-bound qualified audit is accepted before publication (2338.1108ms)\n✔ publication rejects absent prepared source without GitHub access (1162.2004ms)\n✔ publication rejects foreign…",
+      "expected" : "true",
+      "actual" : "true",
+      "passed" : true
+    } ],
+    "outcome" : "PASS",
+    "diagnostic" : "",
+    "elapsedNanos" : 14250850400,
+    "intervals" : 1
+  } ],
+  "outcome" : "PASS"
+}

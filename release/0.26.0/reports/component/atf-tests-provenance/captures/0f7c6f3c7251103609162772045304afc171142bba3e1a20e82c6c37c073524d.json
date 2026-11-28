@@ -1,0 +1,44 @@
+{
+  "identity" : {
+    "testClass" : "ApkIntegrityComponentTest",
+    "testPackage" : "atf.tests.governance.documentation.release.integrity",
+    "scenario" : "[2] bad-crc",
+    "method" : "matchingHashesDoNotSubstituteForAConsistentApkArchive",
+    "tags" : [ "component", "framework-acceptance", "offline" ]
+  },
+  "scenarioName" : "matchingHashesDoNotSubstituteForAConsistentApkArchive [2]",
+  "inputs" : [ {
+    "name" : "JUnit invocation identity",
+    "value" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfProvenanceComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.integrity.ApkIntegrityComponentTest]/[test-template:matchingHashesDoNotSubstituteForAConsistentApkArchive(java.lang.String)]/[test-template-invocation:#2]"
+  }, {
+    "name" : "JUnit display name",
+    "value" : "[2] bad-crc"
+  }, {
+    "name" : "Original invocation recovery",
+    "value" : "{\"originalInvocationId\":\"[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfProvenanceComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.integrity.ApkIntegrityComponentTest]/[test-template:matchingHashesDoNotSubstituteForAConsistentApkArchive(java.lang.String)]/[test-template-invocation:#2]\",\"originalCheckpointSha256\":\"81fa5f1592ee1c6917091c9bfe6d2adcba2d7c304d6e27b3cdd28e1b0a2bb353\",\"mode\":\"REUSED_ORIGINAL_COMPARISONS\",\"originalReportSha256\":\"c730324dc6dac915eb5c9bcb8f9d027311b09d705eef54072cb1f616c7e19970\"}"
+  } ],
+  "phases" : [ {
+    "phase" : "TEST_BODY",
+    "checks" : [ {
+      "name" : "assertTrue · ApkIntegrityComponentTest.java:61",
+      "expected" : "true",
+      "actual" : "true",
+      "passed" : true
+    }, {
+      "name" : "assertThrows · ApkIntegrityComponentTest.java:78",
+      "expected" : "java.io.IOException",
+      "actual" : "java.io.IOException",
+      "passed" : true
+    }, {
+      "name" : "assertTrue · ApkIntegrityComponentTest.java:79",
+      "expected" : "true",
+      "actual" : "true",
+      "passed" : true
+    } ],
+    "outcome" : "PASS",
+    "diagnostic" : "",
+    "elapsedNanos" : 366108100,
+    "intervals" : 1
+  } ],
+  "outcome" : "PASS"
+}

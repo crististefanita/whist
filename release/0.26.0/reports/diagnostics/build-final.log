@@ -1,0 +1,12 @@
+Signed Android release build receipt
+Source commit: 6f36b0d6785acde9611209a8f1a09eee5879aa9f
+Builder: release-tools/scripts/Build-SignedReleaseApk.ps1
+APK: WhistLab-0.26.0.apk
+APK SHA-256: ba4fad67af1fcd9758fffdd67bddad0ef5113120ed9c571bab636d2d876cb692
+APK bytes: 2262881
+Gradle: 9.6.1
+Result: BUILD SUCCESSFUL
+Actionable tasks: 61 executed
+Elapsed: 2m 47s
+Signing certificate continuity: PASS
+Verification: APK archive, zip alignment, signer, application id, version name and version code passed.

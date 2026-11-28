@@ -1,0 +1,39 @@
+{
+  "identity" : {
+    "testClass" : "NativeSourceProvenanceComponentTest",
+    "testPackage" : "atf.tests.governance.documentation.release.rag.nativeproof",
+    "scenario" : "presentationOwnersSelectOnlyAffectedCollections(ComponentInputs)",
+    "method" : "presentationOwnersSelectOnlyAffectedCollections",
+    "tags" : [ "component", "framework-acceptance", "offline" ]
+  },
+  "scenarioName" : "presentationOwnersSelectOnlyAffectedCollections [1]",
+  "inputs" : [ {
+    "name" : "JUnit invocation identity",
+    "value" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfProvenanceComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.rag.nativeproof.NativeSourceProvenanceComponentTest]/[method:presentationOwnersSelectOnlyAffectedCollections(atf.android.evidence.component.ComponentInputs)]"
+  }, {
+    "name" : "Original module ownership and Android-flow decisions",
+    "value" : "STDOUT\nPresentation ownership observations: {\"units\":[\"atf-tests\",\"whist-lab-app-card-table-core\"],\"native\":[\"atf-tests\",\"whist-lab-app-atf-card-table-ui\",\"whist-lab-app-bidding\",\"whist-lab-app-display\"],\"core\":[\"atf-tests\",\"whist-lab-app-card-table-core\",\"whist-lab-app-atf-card-table-ui\",\"whist-lab-app-bidding\",\"whist-lab-app-display\"],\"bid\":[\"atf-tests\",\"whist-lab-app-bidding\"]}\n✔ application collection wiring keeps raster coverage offline without invalidating independent modules (20.6616ms)\n✔ presentation module ownership preserves core reuse and excludes unit fixtures from Android journeys (8.4971ms)\n✔ a bidding change requires the native bidding and AutoGame selections (0.3651ms)\n✔ a changed app package reruns its declared owner while unchanged suites reuse hash-bound evidence (0.4915ms)\n✔ package ownership covers product, score and test sources and rejects an unmapped package conservatively (0.798ms)\n✔ shared Gradle dependencies invalidate their consumers and unknown paths fail closed (0.4982ms)\n✔ editorial additions and removals run governance and preserve reusable evidence (0.3682ms)\n✔ Markdown guides embedded in source directories run governance without replaying product suites (0.3711ms)\n✔ a qualification policy edit affects governance and leaves the game build evidence reusable (1.0558ms)\n✔ a bilingual review record reruns governance without replaying unchanged game or device tests (0.5864ms)\n✔ Gradle component checkpoint and audit changes keep qualification offline (2.6509ms)\n✔ standalone governance launchers rerun only the offline governance component (0.4702ms)\n✔ qualification path and UI export helpers require offline governance without native replay (0.4703ms)\n✔ release-tools module and adapters require offline components but no game E2E (1.4245ms)\n✔ scripts/AtfComponentJvm.ps1 requires offline components without selecting native game flows (0.3155ms)\n✔ scripts/AtfSigningSourcePolicy.ps1 requires offline components without selecting native game flows (0.2274ms)\n✔ unclassified shared inputs and runtime assets named README retain conservative E2E (0.434ms)\n✔ the version metadata exemption must reproduce the exact baseline build bytes (1.2056ms)\n✔ bilingual help content selects its offline gate when the candidate requires it (0.1475ms)\nℹ tests 19\nℹ suites 0\nℹ pass 19\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 315.9551\n\nSTDERR\n"
+  }, {
+    "name" : "JUnit display name",
+    "value" : "presentationOwnersSelectOnlyAffectedCollections(ComponentInputs)"
+  } ],
+  "phases" : [ {
+    "phase" : "TEST_BODY",
+    "checks" : [ {
+      "name" : "assertEquals · NodeReleaseContracts.java:36 · The Node child completed successfully",
+      "expected" : "0",
+      "actual" : "0",
+      "passed" : true
+    }, {
+      "name" : "assertTrue · NativeSourceProvenanceComponentTest.java:28 · Core, native and game projection changes retain distinct owners",
+      "expected" : "true",
+      "actual" : "true",
+      "passed" : true
+    } ],
+    "outcome" : "PASS",
+    "diagnostic" : "",
+    "elapsedNanos" : 607871100,
+    "intervals" : 1
+  } ],
+  "outcome" : "PASS"
+}

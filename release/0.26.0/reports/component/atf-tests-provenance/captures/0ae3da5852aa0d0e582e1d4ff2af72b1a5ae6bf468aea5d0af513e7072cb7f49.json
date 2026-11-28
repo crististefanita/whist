@@ -1,0 +1,54 @@
+{
+  "identity" : {
+    "testClass" : "HtmlInvocationIntegrityComponentTest",
+    "testPackage" : "atf.tests.governance.documentation.release.integrity.html",
+    "scenario" : "missingComparisonsFailureSkipAndMissingFixtureCannotQualify()",
+    "method" : "missingComparisonsFailureSkipAndMissingFixtureCannotQualify",
+    "tags" : [ "component", "framework-acceptance", "offline" ]
+  },
+  "scenarioName" : "missingComparisonsFailureSkipAndMissingFixtureCannotQualify [1]",
+  "inputs" : [ {
+    "name" : "JUnit invocation identity",
+    "value" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfProvenanceComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.integrity.html.HtmlInvocationIntegrityComponentTest]/[method:missingComparisonsFailureSkipAndMissingFixtureCannotQualify()]"
+  }, {
+    "name" : "JUnit display name",
+    "value" : "missingComparisonsFailureSkipAndMissingFixtureCannotQualify()"
+  }, {
+    "name" : "Original invocation recovery",
+    "value" : "{\"originalInvocationId\":\"[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfProvenanceComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.integrity.html.HtmlInvocationIntegrityComponentTest]/[method:missingComparisonsFailureSkipAndMissingFixtureCannotQualify()]\",\"originalCheckpointSha256\":\"81fa5f1592ee1c6917091c9bfe6d2adcba2d7c304d6e27b3cdd28e1b0a2bb353\",\"mode\":\"REUSED_ORIGINAL_COMPARISONS\",\"originalReportSha256\":\"c730324dc6dac915eb5c9bcb8f9d027311b09d705eef54072cb1f616c7e19970\"}"
+  } ],
+  "phases" : [ {
+    "phase" : "TEST_BODY",
+    "checks" : [ {
+      "name" : "assertThrows · HtmlInvocationIntegrityComponentTest.java:34 · A non-passing original outcome remains non-passing: FAIL",
+      "expected" : "java.io.IOException",
+      "actual" : "java.io.IOException",
+      "passed" : true
+    }, {
+      "name" : "assertThrows · HtmlInvocationIntegrityComponentTest.java:34 · A non-passing original outcome remains non-passing: ERROR",
+      "expected" : "java.io.IOException",
+      "actual" : "java.io.IOException",
+      "passed" : true
+    }, {
+      "name" : "assertThrows · HtmlInvocationIntegrityComponentTest.java:34 · A non-passing original outcome remains non-passing: SKIP",
+      "expected" : "java.io.IOException",
+      "actual" : "java.io.IOException",
+      "passed" : true
+    }, {
+      "name" : "assertThrows · HtmlInvocationIntegrityComponentTest.java:38 · Metadata cannot substitute a missing rendered comparison",
+      "expected" : "java.io.IOException",
+      "actual" : "java.io.IOException",
+      "passed" : true
+    }, {
+      "name" : "assertThrows · HtmlInvocationIntegrityComponentTest.java:40 · A passing component needs captured runtime context",
+      "expected" : "java.io.IOException",
+      "actual" : "java.io.IOException",
+      "passed" : true
+    } ],
+    "outcome" : "PASS",
+    "diagnostic" : "",
+    "elapsedNanos" : 119609700,
+    "intervals" : 1
+  } ],
+  "outcome" : "PASS"
+}

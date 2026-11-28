@@ -1,0 +1,64 @@
+{
+  "identity" : {
+    "testClass" : "ReleaseRagProvenanceComponentTest",
+    "testPackage" : "atf.tests.governance.documentation.release.rag",
+    "scenario" : "changedSourceAndArtifactBytesBlockWithSeparateDiagnostics()",
+    "method" : "changedSourceAndArtifactBytesBlockWithSeparateDiagnostics",
+    "tags" : [ "component", "framework-acceptance", "offline" ]
+  },
+  "scenarioName" : "changedSourceAndArtifactBytesBlockWithSeparateDiagnostics [1]",
+  "inputs" : [ {
+    "name" : "JUnit invocation identity",
+    "value" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfProvenanceComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.rag.ReleaseRagProvenanceComponentTest]/[method:changedSourceAndArtifactBytesBlockWithSeparateDiagnostics()]"
+  }, {
+    "name" : "JUnit display name",
+    "value" : "changedSourceAndArtifactBytesBlockWithSeparateDiagnostics()"
+  }, {
+    "name" : "Original invocation recovery",
+    "value" : "{\"originalInvocationId\":\"[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfProvenanceComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.rag.ReleaseRagProvenanceComponentTest]/[method:changedSourceAndArtifactBytesBlockWithSeparateDiagnostics()]\",\"originalCheckpointSha256\":\"81fa5f1592ee1c6917091c9bfe6d2adcba2d7c304d6e27b3cdd28e1b0a2bb353\",\"mode\":\"REUSED_ORIGINAL_COMPARISONS\",\"originalReportSha256\":\"c730324dc6dac915eb5c9bcb8f9d027311b09d705eef54072cb1f616c7e19970\"}"
+  } ],
+  "phases" : [ {
+    "phase" : "TEST_BODY",
+    "checks" : [ {
+      "name" : "assertEquals · ReleaseRagProvenanceComponentTest.java:253",
+      "expected" : "2",
+      "actual" : "2",
+      "passed" : true
+    }, {
+      "name" : "assertEquals · ReleaseRagProvenanceComponentTest.java:254",
+      "expected" : "BLOCKED",
+      "actual" : "BLOCKED",
+      "passed" : true
+    }, {
+      "name" : "assertEquals · ReleaseRagProvenanceComponentTest.java:255",
+      "expected" : "BLOCKED",
+      "actual" : "BLOCKED",
+      "passed" : true
+    }, {
+      "name" : "assertEquals · ReleaseRagProvenanceComponentTest.java:256",
+      "expected" : "BLOCKED",
+      "actual" : "BLOCKED",
+      "passed" : true
+    }, {
+      "name" : "assertEquals · ReleaseRagProvenanceComponentTest.java:257",
+      "expected" : "BLOCKED",
+      "actual" : "BLOCKED",
+      "passed" : true
+    }, {
+      "name" : "assertTrue · ReleaseRagProvenanceComponentTest.java:258",
+      "expected" : "true",
+      "actual" : "true",
+      "passed" : true
+    }, {
+      "name" : "assertTrue · ReleaseRagProvenanceComponentTest.java:259",
+      "expected" : "true",
+      "actual" : "true",
+      "passed" : true
+    } ],
+    "outcome" : "PASS",
+    "diagnostic" : "",
+    "elapsedNanos" : 614557500,
+    "intervals" : 1
+  } ],
+  "outcome" : "PASS"
+}

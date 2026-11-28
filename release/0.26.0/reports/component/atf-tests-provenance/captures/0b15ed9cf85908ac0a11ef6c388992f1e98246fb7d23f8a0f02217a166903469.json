@@ -1,0 +1,55 @@
+{
+  "identity" : {
+    "testClass" : "QualifiedCatalogContextComponentTest",
+    "testPackage" : "atf.tests.governance.documentation.release.rag.scope.context",
+    "scenario" : "sourceAndCatalogIdentitySurvivesRestartWithoutRelabelingHistoricalReports(ComponentInputs)",
+    "method" : "sourceAndCatalogIdentitySurvivesRestartWithoutRelabelingHistoricalReports",
+    "tags" : [ "component", "framework-acceptance", "offline" ]
+  },
+  "scenarioName" : "sourceAndCatalogIdentitySurvivesRestartWithoutRelabelingHistoricalReports [1]",
+  "inputs" : [ {
+    "name" : "JUnit invocation identity",
+    "value" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfProvenanceComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.rag.scope.context.QualifiedCatalogContextComponentTest]/[method:sourceAndCatalogIdentitySurvivesRestartWithoutRelabelingHistoricalReports(atf.android.evidence.component.ComponentInputs)]"
+  }, {
+    "name" : "Preconditions",
+    "value" : "A modern execution pins source, full release inventory and catalog index before execution. A historical receipt remains immutable; publication is a later observation."
+  }, {
+    "name" : "Captured inputs, assertions and outcomes",
+    "value" : "STDOUT\n✔ qualified source and catalog context reconstructs exactly while later publication remains a separate observation (3.2072ms)\n✔ historical receipts stay explicit and immutable instead of acquiring an invented qualified context (1.6358ms)\n{\"fixtureDiagnostic\":\"C:\\\\work\\\\whist_back\\\\.imp\\\\e\\\\rag60-components\\\\fixture-diagnostics\\\\fixture-57b05423-4fc1-42da-a05d-0a100678f4ee.json\",\"status\":\"PASS\",\"elapsedMs\":1073.3853}\n{\"fixtureDiagnostic\":\"C:\\\\work\\\\whist_back\\\\.imp\\\\e\\\\rag60-components\\\\fixture-diagnostics\\\\fixture-5daf8206-8835-4b0e-a867-9eda483b5bc6.json\",\"schemaVersion\":1,\"kind\":\"ATF_FIXTURE_PROCESS\",\"fixture\":\"launcher\",\"timeoutMs\":15000,\"profile\":{\"schemaVersion\":1,\"timeoutMs\":90000,\"maximumRetainedBytesPerStream\":65536,\"maximumBufferedBytesPerStream\":1048576,\"concurrentChildren\":1,\"nodeTestConcurrency\":1,\"jvmHeapMiB\":768},\"maximumBufferedBytesPerStream\":1048576,\"status\":\"FAIL\",\"cause\":{\"name\":\"Error\",\"code\":\"FIXTURE-CHILD-EXIT\",\"status\":1,\"signal\":null,\"message\":{\"bytes\":35,\"truncated\":false,\"tail\":\"Fixture child exited unsuccessfully\"}},\"stdout\":{\"bytes\":0,\"truncated\":false,\"tail\":\"\"},\"stderr\":{\"bytes\":349,\"truncated\":false,\"tail\":\"Exception: C:\\\\work\\\\whist_back\\\\.imp\\\\workspaces\\\\whist-component-suites-ed62bb11a3c2469a87b23ae03536c1dd\\\\project\\\\scripts\\\\AtfComponentWorkspace.ps1:49\\r\\nLine |\\r\\n  49 |  . ntext.$key -cne $expected[$key]) { throw 'COMPONENT_RESUME_CONTEXT' }\\r\\n     |                                       ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\\r\\n     | COMPONENT_RESUME_CONTEXT\\r\\n\"},\"elapsedMs\":1300.9909999999998}\n{\"fixtureDiagnostic\":\"C:\\\\work\\\\whist_back\\\\.imp\\\\e\\\\rag60-components\\\\fixture-diagnostics\\\\fixture-f02e3b9c-676e-4cab-9e0b-cf9f922d6065.json\",\"schemaVersion\":1,\"kind\":\"ATF_FIXTURE_PROCESS\",\"fixture\":\"launcher\",\"timeoutMs\":15000,\"profile\":{\"schemaVersion\":1,\"timeoutMs\":90000,\"maximumRetainedBytesPerStream\":65536,\"maximumBufferedBytesPerStream\":1048576,\"concurrentChildren\":1,\"nodeTestConcurrency\":1,\"jvmHeapMiB\":768},\"maximumBufferedBytesPerStream\":1048576,\"status\":\"FAIL\",\"cause\":{\"name\":\"Error\",\"code\":\"FIXTURE-CHILD-EXIT\",\"status\":1,\"signal\":null,\"message\":{\"bytes\":35,\"truncated\":false,\"tail\":\"Fixture child exited unsuccessfully\"}},\"stdout\":{\"bytes\":0,\"truncated\":false,\"tail\":\"\"},\"stderr\":{\"bytes\":349,\"truncated\":false,\"tail\":\"Exception: C:\\\\work\\\\whist_back\\\\.imp\\\\workspaces\\\\whist-component-suites-ed62bb11a3c2469a87b23ae03536c1dd\\\\project\\\\scripts\\\\AtfComponentWorkspace.ps1:45\\r\\nLine |\\r\\n  45 |  . ties).Count -ne $expected.Count) { throw 'COMPONENT_RESUME_CONTEXT' }\\r\\n     |                                       ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\\r\\n     | COMPONENT_RESUME_CONTEXT\\r\\n\"},\"elapsedMs\":2941.9776}\n{\"fixtureDiagnostic\":\"C:\\\\work\\\\whist_back\\\\.imp\\\\e\\\\rag60-components\\\\fixture-diagnostics\\\\fixture-0ef20413-9557-4daa-baa4-76675fe505c8.json\",\"schemaVersion\":1,\"kind\":\"ATF_FIXTURE_PROCESS\",\"fixture\":\"launcher\",\"timeoutMs\":15000,\"profile\":{\"schemaVersion\":1,\"timeoutMs\":90000,\"maximumRetainedBytesPerStream\":65536,\"maximumBufferedBytesPerStream\":1048576,\"concurrentChildren\":1,\"nodeTestConcurrency\":1,\"jvmHeapMiB\":768},\"maximumBufferedBytesPerStream\":1048576,\"status\":\"FAIL\",\"cause\":{\"name\":\"Error\",\"code\":\"FIXTURE-CHILD-EXIT\",\"status\":1,\"signal\":null,\"message\":{\"bytes\":35,\"truncated\":false,\"tail\":\"Fixture child exited unsuccessfully\"}},\"stdout\":{\"bytes\":0,\"truncated\":false,\"tail\":\"\"},\"stderr\":{\"bytes\":356,\"truncated\":false,\"tail\":\"Exception: C:\\\\work\\\\whist_back\\\\.imp\\\\workspaces\\\\whist-component-suites-ed62bb11a3c2469a87b23ae03536c1dd\\\\project\\\\scripts\\\\AtfComponentResume.ps1:35\\r\\nLine |\\r\\n  35 |  . ]::GetFullPath($Work)) { throw 'COMPONENT_RESUME_WORKSPACE_RECEIPT' }\\r\\n     |                             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\\r\\n     | COMPONENT_RESUME_WORKSPACE_RECEIPT\\r\\n\"},\"elapsedMs\":1992.1854000000003}\n✔ PowerShell snapshot and restart reconstruct the same context and refuse missing or foreign workspace identity (7372.5081ms)\nℹ tests 3\nℹ suites 0\nℹ pass 3\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 7660.0412\n\nSTDERR\n"
+  }, {
+    "name" : "JUnit display name",
+    "value" : "sourceAndCatalogIdentitySurvivesRestartWithoutRelabelingHistoricalReports(ComponentInputs)"
+  }, {
+    "name" : "Original invocation recovery",
+    "value" : "{\"originalInvocationId\":\"[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfProvenanceComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.rag.scope.context.QualifiedCatalogContextComponentTest]/[method:sourceAndCatalogIdentitySurvivesRestartWithoutRelabelingHistoricalReports(atf.android.evidence.component.ComponentInputs)]\",\"originalCheckpointSha256\":\"81fa5f1592ee1c6917091c9bfe6d2adcba2d7c304d6e27b3cdd28e1b0a2bb353\",\"mode\":\"REUSED_ORIGINAL_COMPARISONS\",\"originalReportSha256\":\"c730324dc6dac915eb5c9bcb8f9d027311b09d705eef54072cb1f616c7e19970\"}"
+  } ],
+  "phases" : [ {
+    "phase" : "TEST_BODY",
+    "checks" : [ {
+      "name" : "assertEquals · NodeReleaseContracts.java:36 · The Node child completed successfully",
+      "expected" : "0",
+      "actual" : "0",
+      "passed" : true
+    }, {
+      "name" : "assertTrue · QualifiedCatalogContextComponentTest.java:20 · The original source/catalog identity is reconstructed from the bound manifests",
+      "expected" : "true",
+      "actual" : "true",
+      "passed" : true
+    }, {
+      "name" : "assertTrue · QualifiedCatalogContextComponentTest.java:22 · Old reports never acquire a newly invented qualification context",
+      "expected" : "true",
+      "actual" : "true",
+      "passed" : true
+    }, {
+      "name" : "assertTrue · QualifiedCatalogContextComponentTest.java:24 · The real PowerShell restart admits the same context and rejects altered workspace identity",
+      "expected" : "true",
+      "actual" : "true",
+      "passed" : true
+    } ],
+    "outcome" : "PASS",
+    "diagnostic" : "",
+    "elapsedNanos" : 7866413800,
+    "intervals" : 1
+  } ],
+  "outcome" : "PASS"
+}

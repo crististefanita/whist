@@ -1,0 +1,169 @@
+{
+  "identity" : {
+    "testClass" : "VisualContractScopeComponentTest",
+    "testPackage" : "atf.tests.governance.documentation.release.rag.scope",
+    "scenario" : "mixedBehaviorAndBinaryChangesCannotLoseMandatoryFlows()",
+    "method" : "mixedBehaviorAndBinaryChangesCannotLoseMandatoryFlows",
+    "tags" : [ "component", "framework-acceptance", "offline" ]
+  },
+  "scenarioName" : "mixedBehaviorAndBinaryChangesCannotLoseMandatoryFlows [1]",
+  "inputs" : [ {
+    "name" : "JUnit invocation identity",
+    "value" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfProvenanceComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.rag.scope.VisualContractScopeComponentTest]/[method:mixedBehaviorAndBinaryChangesCannotLoseMandatoryFlows()]"
+  }, {
+    "name" : "JUnit display name",
+    "value" : "mixedBehaviorAndBinaryChangesCannotLoseMandatoryFlows()"
+  }, {
+    "name" : "Original invocation recovery",
+    "value" : "{\"originalInvocationId\":\"[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfProvenanceComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.rag.scope.VisualContractScopeComponentTest]/[method:mixedBehaviorAndBinaryChangesCannotLoseMandatoryFlows()]\",\"originalCheckpointSha256\":\"81fa5f1592ee1c6917091c9bfe6d2adcba2d7c304d6e27b3cdd28e1b0a2bb353\",\"mode\":\"REUSED_ORIGINAL_COMPARISONS\",\"originalReportSha256\":\"c730324dc6dac915eb5c9bcb8f9d027311b09d705eef54072cb1f616c7e19970\"}"
+  } ],
+  "phases" : [ {
+    "phase" : "TEST_BODY",
+    "checks" : [ {
+      "name" : "assertEquals · NodeReleaseContracts.java:36 · The Node child completed successfully",
+      "expected" : "0",
+      "actual" : "0",
+      "passed" : true
+    }, {
+      "name" : "assertEquals · VisualContractScopeComponentTest.java:72 · scoring",
+      "expected" : "[history-release-sanity, responsive-ui-sanity, signed-release-smoke]",
+      "actual" : "[history-release-sanity, responsive-ui-sanity, signed-release-smoke]",
+      "passed" : true
+    }, {
+      "name" : "assertTrue · VisualContractScopeComponentTest.java:73 · scoring",
+      "expected" : "true",
+      "actual" : "true",
+      "passed" : true
+    }, {
+      "name" : "assertEquals · VisualContractScopeComponentTest.java:74 · scoring",
+      "expected" : "USER_FLOW",
+      "actual" : "USER_FLOW",
+      "passed" : true
+    }, {
+      "name" : "assertEquals · NodeReleaseContracts.java:36 · The Node child completed successfully",
+      "expected" : "0",
+      "actual" : "0",
+      "passed" : true
+    }, {
+      "name" : "assertEquals · VisualContractScopeComponentTest.java:72 · bidding",
+      "expected" : "[responsive-ui-sanity, signed-release-auto-game, signed-release-bidding, signed-release-smoke]",
+      "actual" : "[responsive-ui-sanity, signed-release-auto-game, signed-release-bidding, signed-release-smoke]",
+      "passed" : true
+    }, {
+      "name" : "assertTrue · VisualContractScopeComponentTest.java:73 · bidding",
+      "expected" : "true",
+      "actual" : "true",
+      "passed" : true
+    }, {
+      "name" : "assertEquals · VisualContractScopeComponentTest.java:74 · bidding",
+      "expected" : "USER_FLOW",
+      "actual" : "USER_FLOW",
+      "passed" : true
+    }, {
+      "name" : "assertEquals · NodeReleaseContracts.java:36 · The Node child completed successfully",
+      "expected" : "0",
+      "actual" : "0",
+      "passed" : true
+    }, {
+      "name" : "assertEquals · VisualContractScopeComponentTest.java:72 · achievements",
+      "expected" : "[responsive-ui-sanity, signed-release-achievements, signed-release-smoke]",
+      "actual" : "[responsive-ui-sanity, signed-release-achievements, signed-release-smoke]",
+      "passed" : true
+    }, {
+      "name" : "assertTrue · VisualContractScopeComponentTest.java:73 · achievements",
+      "expected" : "true",
+      "actual" : "true",
+      "passed" : true
+    }, {
+      "name" : "assertEquals · VisualContractScopeComponentTest.java:74 · achievements",
+      "expected" : "USER_FLOW",
+      "actual" : "USER_FLOW",
+      "passed" : true
+    }, {
+      "name" : "assertEquals · NodeReleaseContracts.java:36 · The Node child completed successfully",
+      "expected" : "0",
+      "actual" : "0",
+      "passed" : true
+    }, {
+      "name" : "assertEquals · VisualContractScopeComponentTest.java:72 · persistence",
+      "expected" : "[history-release-sanity, responsive-ui-sanity, signed-release-achievements, signed-release-auto-game, signed-release-bidding, signed-release-smoke]",
+      "actual" : "[history-release-sanity, responsive-ui-sanity, signed-release-achievements, signed-release-auto-game, signed-release-bidding, signed-release-smoke]",
+      "passed" : true
+    }, {
+      "name" : "assertTrue · VisualContractScopeComponentTest.java:73 · persistence",
+      "expected" : "true",
+      "actual" : "true",
+      "passed" : true
+    }, {
+      "name" : "assertEquals · VisualContractScopeComponentTest.java:74 · persistence",
+      "expected" : "USER_FLOW",
+      "actual" : "USER_FLOW",
+      "passed" : true
+    }, {
+      "name" : "assertEquals · NodeReleaseContracts.java:36 · The Node child completed successfully",
+      "expected" : "0",
+      "actual" : "0",
+      "passed" : true
+    }, {
+      "name" : "assertEquals · VisualContractScopeComponentTest.java:72 · unknown",
+      "expected" : "[history-release-sanity, responsive-ui-sanity, signed-release-achievements, signed-release-auto-game, signed-release-bidding, signed-release-home-profile, signed-release-smoke]",
+      "actual" : "[history-release-sanity, responsive-ui-sanity, signed-release-achievements, signed-release-auto-game, signed-release-bidding, signed-release-home-profile, signed-release-smoke]",
+      "passed" : true
+    }, {
+      "name" : "assertTrue · VisualContractScopeComponentTest.java:73 · unknown",
+      "expected" : "true",
+      "actual" : "true",
+      "passed" : true
+    }, {
+      "name" : "assertEquals · VisualContractScopeComponentTest.java:74 · unknown",
+      "expected" : "USER_FLOW",
+      "actual" : "USER_FLOW",
+      "passed" : true
+    }, {
+      "name" : "assertEquals · NodeReleaseContracts.java:36 · The Node child completed successfully",
+      "expected" : "0",
+      "actual" : "0",
+      "passed" : true
+    }, {
+      "name" : "assertEquals · VisualContractScopeComponentTest.java:72 · profile",
+      "expected" : "[responsive-ui-sanity, signed-release-home-profile, signed-release-smoke]",
+      "actual" : "[responsive-ui-sanity, signed-release-home-profile, signed-release-smoke]",
+      "passed" : true
+    }, {
+      "name" : "assertTrue · VisualContractScopeComponentTest.java:73 · profile",
+      "expected" : "true",
+      "actual" : "true",
+      "passed" : true
+    }, {
+      "name" : "assertEquals · VisualContractScopeComponentTest.java:74 · profile",
+      "expected" : "USER_FLOW",
+      "actual" : "USER_FLOW",
+      "passed" : true
+    }, {
+      "name" : "assertEquals · NodeReleaseContracts.java:36 · The Node child completed successfully",
+      "expected" : "0",
+      "actual" : "0",
+      "passed" : true
+    }, {
+      "name" : "assertEquals · VisualContractScopeComponentTest.java:72 · binary",
+      "expected" : "[history-release-sanity, responsive-ui-sanity, signed-release-achievements, signed-release-auto-game, signed-release-bidding, signed-release-home-profile, signed-release-smoke]",
+      "actual" : "[history-release-sanity, responsive-ui-sanity, signed-release-achievements, signed-release-auto-game, signed-release-bidding, signed-release-home-profile, signed-release-smoke]",
+      "passed" : true
+    }, {
+      "name" : "assertTrue · VisualContractScopeComponentTest.java:73 · binary",
+      "expected" : "true",
+      "actual" : "true",
+      "passed" : true
+    }, {
+      "name" : "assertEquals · VisualContractScopeComponentTest.java:74 · binary",
+      "expected" : "USER_FLOW",
+      "actual" : "USER_FLOW",
+      "passed" : true
+    } ],
+    "outcome" : "PASS",
+    "diagnostic" : "",
+    "elapsedNanos" : 1182284700,
+    "intervals" : 1
+  } ],
+  "outcome" : "PASS"
+}

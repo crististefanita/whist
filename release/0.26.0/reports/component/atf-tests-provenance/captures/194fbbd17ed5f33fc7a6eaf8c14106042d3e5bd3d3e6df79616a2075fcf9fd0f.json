@@ -1,0 +1,64 @@
+{
+  "identity" : {
+    "testClass" : "ReleaseRagProvenanceComponentTest",
+    "testPackage" : "atf.tests.governance.documentation.release.rag",
+    "scenario" : "reusesAnOriginalReceiptOnlyOutsideItsSuiteInputs()",
+    "method" : "reusesAnOriginalReceiptOnlyOutsideItsSuiteInputs",
+    "tags" : [ "component", "framework-acceptance", "offline" ]
+  },
+  "scenarioName" : "reusesAnOriginalReceiptOnlyOutsideItsSuiteInputs [1]",
+  "inputs" : [ {
+    "name" : "JUnit invocation identity",
+    "value" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfProvenanceComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.rag.ReleaseRagProvenanceComponentTest]/[method:reusesAnOriginalReceiptOnlyOutsideItsSuiteInputs()]"
+  }, {
+    "name" : "JUnit display name",
+    "value" : "reusesAnOriginalReceiptOnlyOutsideItsSuiteInputs()"
+  }, {
+    "name" : "Original invocation recovery",
+    "value" : "{\"originalInvocationId\":\"[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfProvenanceComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.rag.ReleaseRagProvenanceComponentTest]/[method:reusesAnOriginalReceiptOnlyOutsideItsSuiteInputs()]\",\"originalCheckpointSha256\":\"81fa5f1592ee1c6917091c9bfe6d2adcba2d7c304d6e27b3cdd28e1b0a2bb353\",\"mode\":\"REUSED_ORIGINAL_COMPARISONS\",\"originalReportSha256\":\"c730324dc6dac915eb5c9bcb8f9d027311b09d705eef54072cb1f616c7e19970\"}"
+  } ],
+  "phases" : [ {
+    "phase" : "TEST_BODY",
+    "checks" : [ {
+      "name" : "assertEquals · ReleaseRagProvenanceComponentTest.java:339",
+      "expected" : "2",
+      "actual" : "2",
+      "passed" : true
+    }, {
+      "name" : "assertEquals · ReleaseRagProvenanceComponentTest.java:341",
+      "expected" : "PASS",
+      "actual" : "PASS",
+      "passed" : true
+    }, {
+      "name" : "assertEquals · ReleaseRagProvenanceComponentTest.java:342",
+      "expected" : "REUSE",
+      "actual" : "REUSE",
+      "passed" : true
+    }, {
+      "name" : "assertEquals · ReleaseRagProvenanceComponentTest.java:343",
+      "expected" : "REUSE",
+      "actual" : "REUSE",
+      "passed" : true
+    }, {
+      "name" : "assertEquals · ReleaseRagProvenanceComponentTest.java:344",
+      "expected" : "RUN",
+      "actual" : "RUN",
+      "passed" : true
+    }, {
+      "name" : "assertEquals · ReleaseRagProvenanceComponentTest.java:345",
+      "expected" : "RUN",
+      "actual" : "RUN",
+      "passed" : true
+    }, {
+      "name" : "assertTrue · ReleaseRagProvenanceComponentTest.java:346",
+      "expected" : "true",
+      "actual" : "true",
+      "passed" : true
+    } ],
+    "outcome" : "PASS",
+    "diagnostic" : "",
+    "elapsedNanos" : 973509500,
+    "intervals" : 1
+  } ],
+  "outcome" : "PASS"
+}

@@ -1,0 +1,49 @@
+{
+  "identity" : {
+    "testClass" : "VisualContractScopeComponentTest",
+    "testPackage" : "atf.tests.governance.documentation.release.rag.scope",
+    "scenario" : "theRealPlannerBindsPinnedBytesAndKeepsUnavailableProofsConservative()",
+    "method" : "theRealPlannerBindsPinnedBytesAndKeepsUnavailableProofsConservative",
+    "tags" : [ "component", "framework-acceptance", "offline" ]
+  },
+  "scenarioName" : "theRealPlannerBindsPinnedBytesAndKeepsUnavailableProofsConservative [1]",
+  "inputs" : [ {
+    "name" : "JUnit invocation identity",
+    "value" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfProvenanceComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.rag.scope.VisualContractScopeComponentTest]/[method:theRealPlannerBindsPinnedBytesAndKeepsUnavailableProofsConservative()]"
+  }, {
+    "name" : "JUnit display name",
+    "value" : "theRealPlannerBindsPinnedBytesAndKeepsUnavailableProofsConservative()"
+  }, {
+    "name" : "Original invocation recovery",
+    "value" : "{\"originalInvocationId\":\"[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfProvenanceComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.rag.scope.VisualContractScopeComponentTest]/[method:theRealPlannerBindsPinnedBytesAndKeepsUnavailableProofsConservative()]\",\"originalCheckpointSha256\":\"81fa5f1592ee1c6917091c9bfe6d2adcba2d7c304d6e27b3cdd28e1b0a2bb353\",\"mode\":\"REUSED_ORIGINAL_COMPARISONS\",\"originalReportSha256\":\"c730324dc6dac915eb5c9bcb8f9d027311b09d705eef54072cb1f616c7e19970\"}"
+  } ],
+  "phases" : [ {
+    "phase" : "TEST_BODY",
+    "checks" : [ {
+      "name" : "assertEquals · NodeReleaseContracts.java:36 · The Node child completed successfully",
+      "expected" : "0",
+      "actual" : "0",
+      "passed" : true
+    }, {
+      "name" : "assertTrue · VisualContractScopeComponentTest.java:59",
+      "expected" : "true",
+      "actual" : "true",
+      "passed" : true
+    }, {
+      "name" : "assertTrue · VisualContractScopeComponentTest.java:60",
+      "expected" : "true",
+      "actual" : "true",
+      "passed" : true
+    }, {
+      "name" : "assertTrue · VisualContractScopeComponentTest.java:61",
+      "expected" : "true",
+      "actual" : "true",
+      "passed" : true
+    } ],
+    "outcome" : "PASS",
+    "diagnostic" : "",
+    "elapsedNanos" : 1566439100,
+    "intervals" : 1
+  } ],
+  "outcome" : "PASS"
+}

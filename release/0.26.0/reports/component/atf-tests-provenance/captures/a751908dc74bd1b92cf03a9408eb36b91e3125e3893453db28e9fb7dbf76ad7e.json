@@ -1,0 +1,52 @@
+{
+  "identity" : {
+    "testClass" : "ReleaseRagProvenanceComponentTest",
+    "testPackage" : "atf.tests.governance.documentation.release.rag",
+    "scenario" : "recoveredComponentAttemptsMustRemainDeclaredSealedAndReadable(ComponentInputs)",
+    "method" : "recoveredComponentAttemptsMustRemainDeclaredSealedAndReadable",
+    "tags" : [ "component", "framework-acceptance", "offline" ]
+  },
+  "scenarioName" : "recoveredComponentAttemptsMustRemainDeclaredSealedAndReadable [1]",
+  "inputs" : [ {
+    "name" : "JUnit invocation identity",
+    "value" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfProvenanceComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.rag.ReleaseRagProvenanceComponentTest]/[method:recoveredComponentAttemptsMustRemainDeclaredSealedAndReadable(atf.android.evidence.component.ComponentInputs)]"
+  }, {
+    "name" : "Final recovery artifact admission",
+    "value" : "valid: PASS; missing retry: BLOCKED; altered index: BLOCKED; undeclared original: BLOCKED"
+  }, {
+    "name" : "JUnit display name",
+    "value" : "recoveredComponentAttemptsMustRemainDeclaredSealedAndReadable(ComponentInputs)"
+  }, {
+    "name" : "Original invocation recovery",
+    "value" : "{\"originalInvocationId\":\"[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfProvenanceComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.rag.ReleaseRagProvenanceComponentTest]/[method:recoveredComponentAttemptsMustRemainDeclaredSealedAndReadable(atf.android.evidence.component.ComponentInputs)]\",\"originalCheckpointSha256\":\"81fa5f1592ee1c6917091c9bfe6d2adcba2d7c304d6e27b3cdd28e1b0a2bb353\",\"mode\":\"REUSED_ORIGINAL_COMPARISONS\",\"originalReportSha256\":\"c730324dc6dac915eb5c9bcb8f9d027311b09d705eef54072cb1f616c7e19970\"}"
+  } ],
+  "phases" : [ {
+    "phase" : "TEST_BODY",
+    "checks" : [ {
+      "name" : "assertEquals · ReleaseRagProvenanceComponentTest.java:61 · Declared lineage belongs to the source-bound component receipt",
+      "expected" : "PASS",
+      "actual" : "PASS",
+      "passed" : true
+    }, {
+      "name" : "assertEquals · ReleaseRagProvenanceComponentTest.java:63 · Removing a retry artifact cannot preserve qualification",
+      "expected" : "BLOCKED",
+      "actual" : "BLOCKED",
+      "passed" : true
+    }, {
+      "name" : "assertEquals · ReleaseRagProvenanceComponentTest.java:66 · Rehashing the payload cannot replace an original lineage seal",
+      "expected" : "BLOCKED",
+      "actual" : "BLOCKED",
+      "passed" : true
+    }, {
+      "name" : "assertEquals · ReleaseRagProvenanceComponentTest.java:71 · Unlisted lineage cannot enter qualification even when its bytes are readable",
+      "expected" : "BLOCKED",
+      "actual" : "BLOCKED",
+      "passed" : true
+    } ],
+    "outcome" : "PASS",
+    "diagnostic" : "",
+    "elapsedNanos" : 2532050800,
+    "intervals" : 1
+  } ],
+  "outcome" : "PASS"
+}

@@ -1,0 +1,55 @@
+{
+  "identity" : {
+    "testClass" : "ManifestIntegrityComponentTest",
+    "testPackage" : "atf.tests.governance.documentation.release.integrity",
+    "scenario" : "theActualRecorderCapturesOnlyHashesWithoutPromotingAQualification()",
+    "method" : "theActualRecorderCapturesOnlyHashesWithoutPromotingAQualification",
+    "tags" : [ "component", "framework-acceptance", "offline" ]
+  },
+  "scenarioName" : "theActualRecorderCapturesOnlyHashesWithoutPromotingAQualification [1]",
+  "inputs" : [ {
+    "name" : "JUnit invocation identity",
+    "value" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfProvenanceComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.integrity.ManifestIntegrityComponentTest]/[method:theActualRecorderCapturesOnlyHashesWithoutPromotingAQualification()]"
+  }, {
+    "name" : "Full comparison value — EXPECTED — assertEquals · ManifestIntegrityComponentTest.java:83",
+    "value" : "{\"release\":{\"versionName\":\"1.2.0\",\"apkName\":\"WhistLab-1.2.0.apk\",\"apkRelativePath\":\"WhistLab-1.2.0.apk\",\"apkBytes\":253,\"apkSha256\":\"05b825ff87149e4a0add742261a8e68c3537106d20e5371ad0de98314662ffd8\"},\"source\":{\"sourceCommit\":null,\"workingTreeFingerprint\":\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\",\"inputManifest\":\"reports/apk-inputs.json\"},\"qualification\":{\"state\":\"PASS\",\"groups\":{\"component\":{\"tests\":1,\"failures\":0,\"errors\":0,\"skipped\":0,\"files\":[\"TEST-example.Game.xml\",\"TEST-example.EmptySuite.xml\"]}}},\"evidenceRetention\":{\"canonicalReport\":\"reports/report.html\",\"canonicalReportSha256\":\"db2f70fb7dc77f3a2b27ca6a49321279660a55236d54c56534aa3e316097f21b\"}}"
+  }, {
+    "name" : "Full comparison value — ACTUAL — assertEquals · ManifestIntegrityComponentTest.java:83",
+    "value" : "{\"release\":{\"versionName\":\"1.2.0\",\"apkName\":\"WhistLab-1.2.0.apk\",\"apkRelativePath\":\"WhistLab-1.2.0.apk\",\"apkBytes\":253,\"apkSha256\":\"05b825ff87149e4a0add742261a8e68c3537106d20e5371ad0de98314662ffd8\"},\"source\":{\"sourceCommit\":null,\"workingTreeFingerprint\":\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\",\"inputManifest\":\"reports/apk-inputs.json\"},\"qualification\":{\"state\":\"PASS\",\"groups\":{\"component\":{\"tests\":1,\"failures\":0,\"errors\":0,\"skipped\":0,\"files\":[\"TEST-example.Game.xml\",\"TEST-example.EmptySuite.xml\"]}}},\"evidenceRetention\":{\"canonicalReport\":\"reports/report.html\",\"canonicalReportSha256\":\"db2f70fb7dc77f3a2b27ca6a49321279660a55236d54c56534aa3e316097f21b\"}}"
+  }, {
+    "name" : "JUnit display name",
+    "value" : "theActualRecorderCapturesOnlyHashesWithoutPromotingAQualification()"
+  }, {
+    "name" : "Original invocation recovery",
+    "value" : "{\"originalInvocationId\":\"[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfProvenanceComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.integrity.ManifestIntegrityComponentTest]/[method:theActualRecorderCapturesOnlyHashesWithoutPromotingAQualification()]\",\"originalCheckpointSha256\":\"81fa5f1592ee1c6917091c9bfe6d2adcba2d7c304d6e27b3cdd28e1b0a2bb353\",\"mode\":\"REUSED_ORIGINAL_COMPARISONS\",\"originalReportSha256\":\"c730324dc6dac915eb5c9bcb8f9d027311b09d705eef54072cb1f616c7e19970\"}"
+  } ],
+  "phases" : [ {
+    "phase" : "TEST_BODY",
+    "checks" : [ {
+      "name" : "assertEquals · ManifestIntegrityComponentTest.java:80",
+      "expected" : "0",
+      "actual" : "0",
+      "passed" : true
+    }, {
+      "name" : "assertEquals · ManifestIntegrityComponentTest.java:82",
+      "expected" : "OBSERVED_PAYLOAD_HASHES",
+      "actual" : "OBSERVED_PAYLOAD_HASHES",
+      "passed" : true
+    }, {
+      "name" : "assertEquals · ManifestIntegrityComponentTest.java:83",
+      "expected" : "{\"release\":{\"versionName\":\"1.2.0\",\"apkName\":\"WhistLab-1.2.0.apk\",\"apkRelativePath\":\"WhistLab-1.2.0.apk\",\"apkBytes\":253,\"apkSha256\":\"05b825ff87149e4a0add742261a8e68c3537106d20e5371ad0de98314662ffd8\"},\"source\":{\"sourceCommit\":null,\"workingTr…",
+      "actual" : "{\"release\":{\"versionName\":\"1.2.0\",\"apkName\":\"WhistLab-1.2.0.apk\",\"apkRelativePath\":\"WhistLab-1.2.0.apk\",\"apkBytes\":253,\"apkSha256\":\"05b825ff87149e4a0add742261a8e68c3537106d20e5371ad0de98314662ffd8\"},\"source\":{\"sourceCommit\":null,\"workingTr…",
+      "passed" : true
+    }, {
+      "name" : "assertDoesNotThrow · ManifestIntegrityComponentTest.java:84",
+      "expected" : "no exception",
+      "actual" : "no exception",
+      "passed" : true
+    } ],
+    "outcome" : "PASS",
+    "diagnostic" : "",
+    "elapsedNanos" : 789886200,
+    "intervals" : 1
+  } ],
+  "outcome" : "PASS"
+}

@@ -1,0 +1,64 @@
+{
+  "identity" : {
+    "testClass" : "ReleaseRagProvenanceComponentTest",
+    "testPackage" : "atf.tests.governance.documentation.release.rag",
+    "scenario" : "docsOnlyRequiresGovernanceAndKeepsE2eNotRun()",
+    "method" : "docsOnlyRequiresGovernanceAndKeepsE2eNotRun",
+    "tags" : [ "component", "framework-acceptance", "offline" ]
+  },
+  "scenarioName" : "docsOnlyRequiresGovernanceAndKeepsE2eNotRun [1]",
+  "inputs" : [ {
+    "name" : "JUnit invocation identity",
+    "value" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfProvenanceComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.rag.ReleaseRagProvenanceComponentTest]/[method:docsOnlyRequiresGovernanceAndKeepsE2eNotRun()]"
+  }, {
+    "name" : "JUnit display name",
+    "value" : "docsOnlyRequiresGovernanceAndKeepsE2eNotRun()"
+  }, {
+    "name" : "Original invocation recovery",
+    "value" : "{\"originalInvocationId\":\"[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfProvenanceComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.rag.ReleaseRagProvenanceComponentTest]/[method:docsOnlyRequiresGovernanceAndKeepsE2eNotRun()]\",\"originalCheckpointSha256\":\"81fa5f1592ee1c6917091c9bfe6d2adcba2d7c304d6e27b3cdd28e1b0a2bb353\",\"mode\":\"REUSED_ORIGINAL_COMPARISONS\",\"originalReportSha256\":\"c730324dc6dac915eb5c9bcb8f9d027311b09d705eef54072cb1f616c7e19970\"}"
+  } ],
+  "phases" : [ {
+    "phase" : "TEST_BODY",
+    "checks" : [ {
+      "name" : "assertEquals · ReleaseRagProvenanceComponentTest.java:456",
+      "expected" : "0",
+      "actual" : "0",
+      "passed" : true
+    }, {
+      "name" : "assertEquals · ReleaseRagProvenanceComponentTest.java:459",
+      "expected" : "PASS",
+      "actual" : "PASS",
+      "passed" : true
+    }, {
+      "name" : "assertEquals · ReleaseRagProvenanceComponentTest.java:460",
+      "expected" : "DOCUMENTATION_ONLY",
+      "actual" : "DOCUMENTATION_ONLY",
+      "passed" : true
+    }, {
+      "name" : "assertEquals · ReleaseRagProvenanceComponentTest.java:461",
+      "expected" : "1",
+      "actual" : "1",
+      "passed" : true
+    }, {
+      "name" : "assertEquals · ReleaseRagProvenanceComponentTest.java:462",
+      "expected" : "atf-tests",
+      "actual" : "atf-tests",
+      "passed" : true
+    }, {
+      "name" : "assertEquals · ReleaseRagProvenanceComponentTest.java:463",
+      "expected" : "0",
+      "actual" : "0",
+      "passed" : true
+    }, {
+      "name" : "assertEquals · ReleaseRagProvenanceComponentTest.java:464",
+      "expected" : "NOT_RUN",
+      "actual" : "NOT_RUN",
+      "passed" : true
+    } ],
+    "outcome" : "PASS",
+    "diagnostic" : "",
+    "elapsedNanos" : 618874500,
+    "intervals" : 1
+  } ],
+  "outcome" : "PASS"
+}

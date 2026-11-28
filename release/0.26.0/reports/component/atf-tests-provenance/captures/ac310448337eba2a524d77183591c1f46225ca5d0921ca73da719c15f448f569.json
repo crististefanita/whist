@@ -1,0 +1,42 @@
+{
+  "identity" : {
+    "testClass" : "ReleaseVersionComponentTest",
+    "testPackage" : "atf.tests.governance.documentation.release.versioning",
+    "scenario" : "aChangeRiskCannotClaimAnIncorrectVersionIncrement(ComponentInputs)",
+    "method" : "aChangeRiskCannotClaimAnIncorrectVersionIncrement",
+    "tags" : [ "component", "framework-acceptance", "offline" ]
+  },
+  "scenarioName" : "aChangeRiskCannotClaimAnIncorrectVersionIncrement [1]",
+  "inputs" : [ {
+    "name" : "JUnit invocation identity",
+    "value" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfProvenanceComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.versioning.ReleaseVersionComponentTest]/[method:aChangeRiskCannotClaimAnIncorrectVersionIncrement(atf.android.evidence.component.ComponentInputs)]"
+  }, {
+    "name" : "Version transition checks",
+    "value" : "✔ two-part ordering retains historical patch precision and rejects equivalent catalog entries (8.9211ms)\n✔ invalid version shapes cannot enter a catalog or published asset path (0.2559ms)\n✔ release risk determines patch versus minor increments while the major remains zero (0.2481ms)\n✔ two-part publication keeps the exact APK name and checksum (68.5614ms)\n✔ two-part local delivery reconstructs Git and projects only the current version (1998.8791ms)\nℹ tests 5\nℹ suites 0\nℹ pass 5\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 2294.4011\n"
+  }, {
+    "name" : "JUnit display name",
+    "value" : "aChangeRiskCannotClaimAnIncorrectVersionIncrement(ComponentInputs)"
+  }, {
+    "name" : "Original invocation recovery",
+    "value" : "{\"originalInvocationId\":\"[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfProvenanceComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.versioning.ReleaseVersionComponentTest]/[method:aChangeRiskCannotClaimAnIncorrectVersionIncrement(atf.android.evidence.component.ComponentInputs)]\",\"originalCheckpointSha256\":\"81fa5f1592ee1c6917091c9bfe6d2adcba2d7c304d6e27b3cdd28e1b0a2bb353\",\"mode\":\"REUSED_ORIGINAL_COMPARISONS\",\"originalReportSha256\":\"c730324dc6dac915eb5c9bcb8f9d027311b09d705eef54072cb1f616c7e19970\"}"
+  } ],
+  "phases" : [ {
+    "phase" : "TEST_BODY",
+    "checks" : [ {
+      "name" : "assertEquals · NodeReleaseContracts.java:36 · The Node child completed successfully",
+      "expected" : "0",
+      "actual" : "0",
+      "passed" : true
+    }, {
+      "name" : "assertTrue · ReleaseVersionComponentTest.java:73 · ✔ two-part ordering retains historical patch precision and rejects equivalent catalog entries (8.9211ms)\n✔ invalid version shapes cannot enter a catalog or published asset path (0.2559ms)\n…",
+      "expected" : "true",
+      "actual" : "true",
+      "passed" : true
+    } ],
+    "outcome" : "PASS",
+    "diagnostic" : "",
+    "elapsedNanos" : 2491505700,
+    "intervals" : 1
+  } ],
+  "outcome" : "PASS"
+}

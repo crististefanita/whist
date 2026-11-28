@@ -1,0 +1,84 @@
+{
+  "identity" : {
+    "testClass" : "ReleaseCommitEvidenceComponentTest",
+    "testPackage" : "atf.tests.governance.documentation.release.handoff",
+    "scenario" : "gitLinkBindsTheIndexManifestAndExactReportBytes(Path)",
+    "method" : "gitLinkBindsTheIndexManifestAndExactReportBytes",
+    "tags" : [ "component", "framework-acceptance", "offline" ]
+  },
+  "scenarioName" : "gitLinkBindsTheIndexManifestAndExactReportBytes [1]",
+  "inputs" : [ {
+    "name" : "JUnit invocation identity",
+    "value" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfProvenanceComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.handoff.ReleaseCommitEvidenceComponentTest]/[method:gitLinkBindsTheIndexManifestAndExactReportBytes(java.nio.file.Path)]"
+  }, {
+    "name" : "JUnit display name",
+    "value" : "gitLinkBindsTheIndexManifestAndExactReportBytes(Path)"
+  }, {
+    "name" : "Original invocation recovery",
+    "value" : "{\"originalInvocationId\":\"[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfProvenanceComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.handoff.ReleaseCommitEvidenceComponentTest]/[method:gitLinkBindsTheIndexManifestAndExactReportBytes(java.nio.file.Path)]\",\"originalCheckpointSha256\":\"81fa5f1592ee1c6917091c9bfe6d2adcba2d7c304d6e27b3cdd28e1b0a2bb353\",\"mode\":\"REUSED_ORIGINAL_COMPARISONS\",\"originalReportSha256\":\"c730324dc6dac915eb5c9bcb8f9d027311b09d705eef54072cb1f616c7e19970\"}"
+  } ],
+  "phases" : [ {
+    "phase" : "TEST_BODY",
+    "checks" : [ {
+      "name" : "assertEquals · ReleaseCommitEvidenceComponentTest.java:51",
+      "expected" : "304db1de1c8219f66892fb1064a254fa522c3f47ad8fe390b30efeebffd9b29d",
+      "actual" : "304db1de1c8219f66892fb1064a254fa522c3f47ad8fe390b30efeebffd9b29d",
+      "passed" : true
+    }, {
+      "name" : "assertThrows · ReleaseCommitEvidenceComponentTest.java:54",
+      "expected" : "java.io.IOException",
+      "actual" : "java.io.IOException",
+      "passed" : true
+    }, {
+      "name" : "assertTrue · ReleaseCommitEvidenceComponentTest.java:56 · RELEASE-COMMIT-BLOB: 60e154e1f6d94260df7a01b33da3b25652d5b955:release/1.2.3/reports/README.md",
+      "expected" : "true",
+      "actual" : "true",
+      "passed" : true
+    }, {
+      "name" : "assertThrows · ReleaseCommitEvidenceComponentTest.java:54",
+      "expected" : "java.io.IOException",
+      "actual" : "java.io.IOException",
+      "passed" : true
+    }, {
+      "name" : "assertTrue · ReleaseCommitEvidenceComponentTest.java:56 · RELEASE-COMMIT-BLOB-HASH: f824d575dddd882dc1bd6bc21ece5198745a621c expected=304db1de1c8219f66892fb1064a254fa522c3f47ad8fe390b30efeebffd9b29d actual=d82f810b600ae3af666625fc44755fdab…",
+      "expected" : "true",
+      "actual" : "true",
+      "passed" : true
+    }, {
+      "name" : "assertThrows · ReleaseCommitEvidenceComponentTest.java:54",
+      "expected" : "java.io.IOException",
+      "actual" : "java.io.IOException",
+      "passed" : true
+    }, {
+      "name" : "assertTrue · ReleaseCommitEvidenceComponentTest.java:56 · RELEASE-COMMIT-INDEX-LINK: extent.html",
+      "expected" : "true",
+      "actual" : "true",
+      "passed" : true
+    }, {
+      "name" : "assertThrows · ReleaseCommitEvidenceComponentTest.java:54",
+      "expected" : "java.io.IOException",
+      "actual" : "java.io.IOException",
+      "passed" : true
+    }, {
+      "name" : "assertTrue · ReleaseCommitEvidenceComponentTest.java:56 · RELEASE-COMMIT-GIT: [cat-file, -t, 0000000000000000000000000000000000000000] fatal: git cat-file: could not get object info",
+      "expected" : "true",
+      "actual" : "true",
+      "passed" : true
+    }, {
+      "name" : "assertThrows · ReleaseCommitEvidenceComponentTest.java:54",
+      "expected" : "java.io.IOException",
+      "actual" : "java.io.IOException",
+      "passed" : true
+    }, {
+      "name" : "assertTrue · ReleaseCommitEvidenceComponentTest.java:56 · RELEASE-COMMIT-RETAINED-HASH: d1549d5901c7a6a1252ea13ee9c62290b8597fc4 expected=304db1de1c8219f66892fb1064a254fa522c3f47ad8fe390b30efeebffd9b29d actual=d82f810b600ae3af666625fc44755…",
+      "expected" : "true",
+      "actual" : "true",
+      "passed" : true
+    } ],
+    "outcome" : "PASS",
+    "diagnostic" : "",
+    "elapsedNanos" : 6574965300,
+    "intervals" : 1
+  } ],
+  "outcome" : "PASS"
+}

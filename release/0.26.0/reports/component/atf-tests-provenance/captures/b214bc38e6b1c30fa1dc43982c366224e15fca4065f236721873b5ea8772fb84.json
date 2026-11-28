@@ -1,0 +1,39 @@
+{
+  "identity" : {
+    "testClass" : "JunitIntegrityComponentTest",
+    "testPackage" : "atf.tests.governance.documentation.release.integrity",
+    "scenario" : "[5] extra-group",
+    "method" : "theManifestCannotLoseAddOrCountTheSameInvocationTwice",
+    "tags" : [ "component", "framework-acceptance", "offline" ]
+  },
+  "scenarioName" : "theManifestCannotLoseAddOrCountTheSameInvocationTwice [5]",
+  "inputs" : [ {
+    "name" : "JUnit invocation identity",
+    "value" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfProvenanceComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.integrity.JunitIntegrityComponentTest]/[test-template:theManifestCannotLoseAddOrCountTheSameInvocationTwice(java.lang.String)]/[test-template-invocation:#5]"
+  }, {
+    "name" : "JUnit display name",
+    "value" : "[5] extra-group"
+  }, {
+    "name" : "Original invocation recovery",
+    "value" : "{\"originalInvocationId\":\"[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfProvenanceComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.integrity.JunitIntegrityComponentTest]/[test-template:theManifestCannotLoseAddOrCountTheSameInvocationTwice(java.lang.String)]/[test-template-invocation:#5]\",\"originalCheckpointSha256\":\"81fa5f1592ee1c6917091c9bfe6d2adcba2d7c304d6e27b3cdd28e1b0a2bb353\",\"mode\":\"REUSED_ORIGINAL_COMPARISONS\",\"originalReportSha256\":\"c730324dc6dac915eb5c9bcb8f9d027311b09d705eef54072cb1f616c7e19970\"}"
+  } ],
+  "phases" : [ {
+    "phase" : "TEST_BODY",
+    "checks" : [ {
+      "name" : "assertThrows · JunitIntegrityComponentTest.java:86",
+      "expected" : "java.io.IOException",
+      "actual" : "java.io.IOException",
+      "passed" : true
+    }, {
+      "name" : "assertTrue · JunitIntegrityComponentTest.java:87",
+      "expected" : "true",
+      "actual" : "true",
+      "passed" : true
+    } ],
+    "outcome" : "PASS",
+    "diagnostic" : "",
+    "elapsedNanos" : 66918600,
+    "intervals" : 1
+  } ],
+  "outcome" : "PASS"
+}

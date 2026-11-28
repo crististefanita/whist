@@ -1,0 +1,44 @@
+{
+  "identity" : {
+    "testClass" : "ReleaseRagProvenanceComponentTest",
+    "testPackage" : "atf.tests.governance.documentation.release.rag",
+    "scenario" : "evaluatorRefusesToWriteItsVerdictInsideAnyInputTree()",
+    "method" : "evaluatorRefusesToWriteItsVerdictInsideAnyInputTree",
+    "tags" : [ "component", "framework-acceptance", "offline" ]
+  },
+  "scenarioName" : "evaluatorRefusesToWriteItsVerdictInsideAnyInputTree [1]",
+  "inputs" : [ {
+    "name" : "JUnit invocation identity",
+    "value" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfProvenanceComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.rag.ReleaseRagProvenanceComponentTest]/[method:evaluatorRefusesToWriteItsVerdictInsideAnyInputTree()]"
+  }, {
+    "name" : "JUnit display name",
+    "value" : "evaluatorRefusesToWriteItsVerdictInsideAnyInputTree()"
+  }, {
+    "name" : "Original invocation recovery",
+    "value" : "{\"originalInvocationId\":\"[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfProvenanceComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.rag.ReleaseRagProvenanceComponentTest]/[method:evaluatorRefusesToWriteItsVerdictInsideAnyInputTree()]\",\"originalCheckpointSha256\":\"81fa5f1592ee1c6917091c9bfe6d2adcba2d7c304d6e27b3cdd28e1b0a2bb353\",\"mode\":\"REUSED_ORIGINAL_COMPARISONS\",\"originalReportSha256\":\"c730324dc6dac915eb5c9bcb8f9d027311b09d705eef54072cb1f616c7e19970\"}"
+  } ],
+  "phases" : [ {
+    "phase" : "TEST_BODY",
+    "checks" : [ {
+      "name" : "assertThrows · ReleaseRagProvenanceComponentTest.java:449",
+      "expected" : "java.lang.AssertionError",
+      "actual" : "java.lang.AssertionError",
+      "passed" : true
+    }, {
+      "name" : "assertTrue · ReleaseRagProvenanceComponentTest.java:450",
+      "expected" : "true",
+      "actual" : "true",
+      "passed" : true
+    }, {
+      "name" : "assertFalse · ReleaseRagProvenanceComponentTest.java:451",
+      "expected" : "false",
+      "actual" : "false",
+      "passed" : true
+    } ],
+    "outcome" : "PASS",
+    "diagnostic" : "",
+    "elapsedNanos" : 351727500,
+    "intervals" : 1
+  } ],
+  "outcome" : "PASS"
+}

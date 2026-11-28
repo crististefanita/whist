@@ -1,0 +1,179 @@
+{
+  "schemaVersion" : 1,
+  "kind" : "live-source-components",
+  "apkQualification" : false,
+  "suite" : "atf.tests.suites.components.AtfAndroidComponentSuite",
+  "tests" : 54,
+  "outcomes" : {
+    "PASS" : 54
+  },
+  "coverageErrors" : [ ],
+  "containerFailures" : [ ],
+  "junitIdentitySha256" : "71930c73abbb0f2e3c1edfd9f2f38457634e0aa681d39a04becd7c107c9903aa",
+  "invocations" : [ {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfAndroidComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.uiadapter.SharedMenuHistoryComponentTest]/[method:historyTypographyAndDividersFollowTheNativePolicy(atf.android.evidence.component.ComponentInputs)]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfAndroidComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.uiadapter.SharedMenuHistoryComponentTest]/[method:newLibraryCoordinatesUseTwoPartsAndLegacyCoordinatesAreReuseOnly(atf.android.evidence.component.ComponentInputs)]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfAndroidComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.uiadapter.SharedMenuHistoryComponentTest]/[method:menuAdaptersKeepNativeLabelsOrderAndDispatch(atf.android.evidence.component.ComponentInputs)]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfAndroidComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.uiadapter.SharedMenuHistoryComponentTest]/[method:semanticActionTypographyMatchesHomeSetupAndScoreWithoutChangingCommands(atf.android.evidence.component.ComponentInputs)]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfAndroidComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.uiadapter.SharedMenuHistoryComponentTest]/[method:invalidStylesAreAtomicAndClearingRestoresTheBaseline(atf.android.evidence.component.ComponentInputs)]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfAndroidComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.rag.nativeproof.AchievementOwnerComponentTest]/[method:hiddenAbsentAndObsoleteStateCannotReopenAnotherRoute(atf.android.evidence.component.ComponentInputs)]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfAndroidComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.rag.nativeproof.AchievementOwnerComponentTest]/[method:activityOwnedStatePreservesTheSharedSelectionAndScroll(atf.android.evidence.component.ComponentInputs)]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfAndroidComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.rag.nativeproof.WhistSurfaceAdapterComponentTest]/[method:dropdownAndScoreTypographyPreserveNativeFactsAndCommandBindings(atf.android.evidence.component.ComponentInputs)]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfAndroidComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.rag.nativeproof.WhistSurfaceAdapterComponentTest]/[method:minimalFlowsReconcileHandsAndRejectMatricesOrExcessiveCaptures(atf.android.evidence.component.ComponentInputs)]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfAndroidComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.rag.nativeproof.WhistSurfaceAdapterComponentTest]/[method:preparedAndLiveSeatsShareIntrinsicHeightWithoutBottomAnchorStretch(atf.android.evidence.component.ComponentInputs)]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfAndroidComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.rag.nativeproof.WhistSurfaceAdapterComponentTest]/[method:portableMenuRolesPreserveBothAdapterBaselines(atf.android.evidence.component.ComponentInputs)]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfAndroidComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.rag.nativeproof.WhistSurfaceAdapterComponentTest]/[method:surfaceLifecycleRejectsInvalidPagesAndCallbacksAfterDisposal(atf.android.evidence.component.ComponentInputs)]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfAndroidComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.rag.nativeproof.WhistSurfaceAdapterComponentTest]/[method:adaptiveWebMenusKeepTextIndependentOfTheUsableViewport(atf.android.evidence.component.ComponentInputs)]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfAndroidComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.rag.nativeproof.WhistSurfaceAdapterComponentTest]/[method:everySeatAndLegalDealShareOneNativeWebPhaseContract(atf.android.evidence.component.ComponentInputs)]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfAndroidComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.rag.nativeproof.WhistSurfaceAdapterComponentTest]/[method:webAndNativePortablePortsKeepMeasuredGeometryFacesAndGesturesAligned(atf.android.evidence.component.ComponentInputs)]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfAndroidComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.rag.nativeproof.WhistSurfaceAdapterComponentTest]/[method:nativeContentMeasurementsRejectClippingAndLateOwners(atf.android.evidence.component.ComponentInputs)]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfAndroidComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.rag.nativeproof.WhistSurfaceAdapterComponentTest]/[method:mountedCardsAndLayoutOwnersSurvivePhaseAndActorChanges(atf.android.evidence.component.ComponentInputs)]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfAndroidComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.rag.nativeproof.WhistSurfaceAdapterComponentTest]/[method:sharedPhaseOracleRejectsEveryDisplacedOrMissingSeat(atf.android.evidence.component.ComponentInputs)]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfAndroidComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.rag.nativeproof.WhistSurfaceAdapterComponentTest]/[method:individualDepositsKeepOrderedBeforeAfterComparisons(atf.android.evidence.component.ComponentInputs)]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfAndroidComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.rag.nativeproof.WhistSurfaceAdapterComponentTest]/[method:deliveredSiteModulesAndFontsAreAdmittedBeforeBrowserStartup(atf.android.evidence.component.ComponentInputs)]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfAndroidComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.rag.nativeproof.SharedPresentationComponentTest]/[method:scoreActionsRejectStaleRolesClippingAndRepeatedScaling(atf.android.evidence.component.ComponentInputs)]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfAndroidComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.rag.nativeproof.SharedPresentationComponentTest]/[method:scoreTextAdapterKeepsLocalizedActionsAtLargerWebSizes(atf.android.evidence.component.ComponentInputs)]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfAndroidComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.rag.nativeproof.SharedPresentationComponentTest]/[method:trickPlaybackRejectsPrematureClearingAndKeepsCollectionOrigins(atf.android.evidence.component.ComponentInputs)]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfAndroidComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.rag.ReleaseRagAndroidComponentTest]/[method:resumedE2eBindsTheCleanupToItsOwnLease()]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfAndroidComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.rag.ReleaseRagAndroidComponentTest]/[method:aPassingE2eReceiptBindsTheInstalledApkSourceOutcomesAndInlineExtentImages()]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfAndroidComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.rag.ReleaseRagAndroidComponentTest]/[method:disposableAndroidUserCannotPassWithoutCleanupReceipt()]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfAndroidComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.rag.ReleaseRagAndroidComponentTest]/[method:aBiddingDiffBlocksAPlanThatDeclaresNoFlowChange()]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfAndroidComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.rag.ReleaseRagAndroidComponentTest]/[method:disposableAndroidUserRequiresHashBoundPreparationAndCleanupReceipts()]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfAndroidComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.rag.ReleaseRagAndroidComponentTest]/[method:componentAndE2eSelectionsCannotReuseAnExtentPath()]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfAndroidComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.rag.ReleaseRagAndroidComponentTest]/[method:disposableAndroidUserMustPreserveTheOriginalPackageInstallationState()]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfAndroidComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.rag.ReleaseRagAndroidComponentTest]/[method:aProductionPlanCannotReuseTheDebugTestCertificate()]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfAndroidComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.rag.ReleaseRagAndroidComponentTest]/[method:aClaimedE2ePassNeedsAnExecutedExtentReceipt()]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfAndroidComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.rag.ReleaseRagAndroidComponentTest]/[method:nativeRuntimeAndValidatorRevisionsRemainIndependentInTheRealEvaluator()]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfAndroidComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.rag.ReleaseRagAndroidComponentTest]/[method:aDamagedReportRequestsOnlyItsOwnFlow()]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfAndroidComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.rag.ReleaseRagAndroidComponentTest]/[method:missingPrePublicationAndroidGateReceiptBlocksHumanReview()]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfAndroidComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.rag.ReleaseRagAndroidComponentTest]/[method:changedUserFlowRequiresPassingE2eAndAnOmissionKeepsItsOwnStatus()]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfAndroidComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.rag.scope.AndroidUserOwnershipComponentTest]/[method:durableRecoveryPreservesOriginalAndForeignUsersWithMockTransport(atf.android.evidence.component.ComponentInputs)]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfAndroidComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.rag.scope.AndroidUserOwnershipComponentTest]/[method:creationIntentAndReturnedIdentityPrecedePackageRegistration()]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfAndroidComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.rag.scope.AndroidReleasePreflightComponentTest]/[method:preflightExpiryAndLeaseBindingUseTheObservationTimeAndAFixedClock()]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfAndroidComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.rag.scope.AndroidReleasePreflightComponentTest]/[method:theSignedFlowRefusesStaleCompiledClassesAndUnrelatedJUnit()]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfAndroidComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.rag.scope.AndroidReleasePreflightComponentTest]/[method:theNativeLauncherBlocksBeforeStagingOrMaven(atf.android.evidence.component.ComponentInputs)]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfAndroidComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.rag.scope.AndroidReleasePreflightComponentTest]/[method:aTimedOutAdbProcessProducesABlockedReceipt(atf.android.evidence.component.ComponentInputs)]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfAndroidComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.rag.scope.AndroidReleasePreflightComponentTest]/[method:theNativeLauncherStartsMavenOnlyAfterAValidPreflight()]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfAndroidComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.rag.scope.AndroidReleasePreflightComponentTest]/[method:aForeignLeaseBlocksBeforeCallingAdb()]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfAndroidComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.rag.scope.AndroidReleasePreflightComponentTest]/[method:theSignedReleaseEntryRecordsTheEffectiveProfile(atf.android.evidence.component.ComponentInputs)]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfAndroidComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.rag.scope.AndroidReleasePreflightComponentTest]/[method:controlledProcessSeparatesReadinessTimeoutAndOriginalFailure(atf.android.evidence.component.ComponentInputs)]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfAndroidComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.rag.nativeproof.WhistBindingComponentTest]/[method:mountedWhistViewsSupplyCurrentHeaderTrumpAndCardBindings(atf.android.evidence.component.ComponentInputs)]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfAndroidComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.rag.nativeproof.WhistBindingComponentTest]/[method:missingDuplicateClippedAndDisposedWhistBindingsAreRejected(atf.android.evidence.component.ComponentInputs)]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfAndroidComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.rag.ReleaseRagAndroidComponentTest]/[test-template:anE2eReceiptCannotDriftFromItsApkSourceExtentOrResults(java.lang.String)]/[test-template-invocation:#1]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfAndroidComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.rag.ReleaseRagAndroidComponentTest]/[test-template:anE2eReceiptCannotDriftFromItsApkSourceExtentOrResults(java.lang.String)]/[test-template-invocation:#2]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfAndroidComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.rag.ReleaseRagAndroidComponentTest]/[test-template:anE2eReceiptCannotDriftFromItsApkSourceExtentOrResults(java.lang.String)]/[test-template-invocation:#3]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfAndroidComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.rag.ReleaseRagAndroidComponentTest]/[test-template:anE2eReceiptCannotDriftFromItsApkSourceExtentOrResults(java.lang.String)]/[test-template-invocation:#4]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfAndroidComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.rag.ReleaseRagAndroidComponentTest]/[test-template:anE2eReceiptCannotDriftFromItsApkSourceExtentOrResults(java.lang.String)]/[test-template-invocation:#5]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfAndroidComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.rag.ReleaseRagAndroidComponentTest]/[test-template:anE2eReceiptCannotDriftFromItsApkSourceExtentOrResults(java.lang.String)]/[test-template-invocation:#6]",
+    "outcome" : "PASS"
+  } ],
+  "invocationCheckpointSha256" : "974581a0f2afe6d3961e5df8f8a9331342e23129d4f136f12bdb7b16f71ba87c",
+  "provenanceSha256" : "8163f7abef34d58634401d7107dca0fb2537aa5b564973f6b0dbdf863d346490",
+  "reportSha256" : "096bbf8f9b7bbdd0fbc3cb5fb7759394d5f34566f1bc5ab661bf1b439cbd0fa7"
+}

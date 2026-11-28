@@ -1,0 +1,4041 @@
+{
+  "schemaVersion": 2,
+  "comparison": {
+    "baselineRelease": null,
+    "androidVersionMetadataOnly": false
+  },
+  "decisions": [
+    {
+      "group": "atf-validation",
+      "decision": "REUSE",
+      "reason": "RAG_GATE_ONLY",
+      "affectedGroups": [
+        "atf-tests",
+        "atf-tests-android",
+        "atf-tests-documentation",
+        "atf-tests-github",
+        "atf-tests-orchestration",
+        "atf-tests-provenance",
+        "atf-tests-reporting",
+        "release-tools"
+      ],
+      "changedInputs": [
+        "atf-tests/src/test/java/atf/tests/execution/components/ComponentExecutionListener.java",
+        "atf-tests/src/test/java/atf/tests/execution/recovery/InvocationCaptureUnitTest.java",
+        "atf-tests/src/test/java/atf/tests/execution/recovery/InvocationCheckpoint.java",
+        "atf-tests/src/test/java/atf/tests/execution/recovery/InvocationRecoveryComponentTest.java",
+        "atf-tests/src/test/java/atf/tests/governance/documentation/release/ReleaseArtifactLayoutGovernanceTest.java",
+        "atf-tests/src/test/java/atf/tests/governance/documentation/release/rag/nativeproof/WhistSurfaceAdapterComponentTest.java",
+        "atf-tests/src/test/java/atf/tests/governance/source/changes/domains/DomainGitFixture.java",
+        "atf-tests/tools/README.md",
+        "atf-tests/tools/android-e2e-provenance.mjs",
+        "atf-tests/tools/android-e2e-runtime-scope.test.mjs",
+        "atf-tests/tools/documentation-editions.mjs",
+        "atf-tests/tools/documentation-editions.test.mjs",
+        "atf-ui-browser/tests/fixtures.mjs",
+        "config/atf-component-dependencies.json",
+        "config/atf-component-reader-seals.json",
+        "config/documentation-editions.json",
+        "docs/feedback/ATF_Governance.md",
+        "docs/governance/ATF_TestChangesBaseline.md",
+        "release-tools/scripts/Build-SignedReleaseApk.ps1",
+        "release-tools/src/test/java/atf/release/tools/ReleaseToolsScriptBoundaryComponentTest.java"
+      ],
+      "affectedInputs": [],
+      "alwaysEvaluatedRagChecks": [
+        "DOCUMENTATION_EDITIONS"
+      ],
+      "qualificationContext": {
+        "schemaVersion": 1,
+        "kind": "QUALIFIED_SOURCE_AND_CATALOG",
+        "sourceSha256": "f2c3afb822fac3a2ec3558f7243646ed7aa2f4f73a6e9f807e6f539deadff121",
+        "releaseSha256": "8a7f98fb09fa74c0292a3c530730c15292fe90209bf0240a433d979f3a25eea1",
+        "catalogSha256": "3e70065a06263b38de93b52bfa797eebfd3611c175d2112c590c278527298cd1",
+        "identitySha256": "e51afb719ea0c1446e204953c3d98d8ae602abe987611c64862bb0ada360087f"
+      },
+      "dependencyEvidence": [
+        {
+          "path": "atf-tests/src/test/java/atf/tests/execution/components/ComponentExecutionListener.java",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "atf-tests/src/test/java/atf/tests/execution/recovery/InvocationCaptureUnitTest.java",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "atf-tests/src/test/java/atf/tests/execution/recovery/InvocationCheckpoint.java",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "atf-tests/src/test/java/atf/tests/execution/recovery/InvocationRecoveryComponentTest.java",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "atf-tests/src/test/java/atf/tests/governance/documentation/release/ReleaseArtifactLayoutGovernanceTest.java",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "atf-tests/src/test/java/atf/tests/governance/documentation/release/rag/nativeproof/WhistSurfaceAdapterComponentTest.java",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "atf-tests/src/test/java/atf/tests/governance/source/changes/domains/DomainGitFixture.java",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "atf-tests/tools/android-e2e-provenance.mjs",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "atf-tests/tools/android-e2e-runtime-scope.test.mjs",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "atf-tests/tools/documentation-editions.mjs",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "atf-tests/tools/documentation-editions.test.mjs",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "atf-ui-browser/tests/fixtures.mjs",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "config/atf-component-dependencies.json",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "config/atf-component-reader-seals.json",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "release-tools/scripts/Build-SignedReleaseApk.ps1",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "release-tools/src/test/java/atf/release/tools/ReleaseToolsScriptBoundaryComponentTest.java",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        }
+      ],
+      "componentEvidenceOrigin": "7b34c2a7db17659b180edd095807d0e79414cdf78ba518c176146028cde055eb",
+      "tests": 19,
+      "reportSha256": "2e7eb6eb61ff6e572d8279a1d38bc5c73f4f154ce5df3e50f287c7160dd9aaeb",
+      "executionSha256": "41c062d36ab3b530fa6628950df37417850ad44eb17d47d1449b9d2501a52671"
+    },
+    {
+      "group": "atf-test-android",
+      "decision": "REUSE",
+      "reason": "RAG_GATE_ONLY",
+      "affectedGroups": [
+        "atf-tests",
+        "atf-tests-android",
+        "atf-tests-documentation",
+        "atf-tests-github",
+        "atf-tests-orchestration",
+        "atf-tests-provenance",
+        "atf-tests-reporting",
+        "release-tools"
+      ],
+      "changedInputs": [
+        "atf-tests/src/test/java/atf/tests/execution/components/ComponentExecutionListener.java",
+        "atf-tests/src/test/java/atf/tests/execution/recovery/InvocationCaptureUnitTest.java",
+        "atf-tests/src/test/java/atf/tests/execution/recovery/InvocationCheckpoint.java",
+        "atf-tests/src/test/java/atf/tests/execution/recovery/InvocationRecoveryComponentTest.java",
+        "atf-tests/src/test/java/atf/tests/governance/documentation/release/ReleaseArtifactLayoutGovernanceTest.java",
+        "atf-tests/src/test/java/atf/tests/governance/documentation/release/rag/nativeproof/WhistSurfaceAdapterComponentTest.java",
+        "atf-tests/src/test/java/atf/tests/governance/source/changes/domains/DomainGitFixture.java",
+        "atf-tests/tools/README.md",
+        "atf-tests/tools/android-e2e-provenance.mjs",
+        "atf-tests/tools/android-e2e-runtime-scope.test.mjs",
+        "atf-tests/tools/documentation-editions.mjs",
+        "atf-tests/tools/documentation-editions.test.mjs",
+        "atf-ui-browser/tests/fixtures.mjs",
+        "config/atf-component-dependencies.json",
+        "config/atf-component-reader-seals.json",
+        "config/documentation-editions.json",
+        "docs/feedback/ATF_Governance.md",
+        "docs/governance/ATF_TestChangesBaseline.md",
+        "release-tools/scripts/Build-SignedReleaseApk.ps1",
+        "release-tools/src/test/java/atf/release/tools/ReleaseToolsScriptBoundaryComponentTest.java"
+      ],
+      "affectedInputs": [],
+      "alwaysEvaluatedRagChecks": [
+        "DOCUMENTATION_EDITIONS"
+      ],
+      "qualificationContext": {
+        "schemaVersion": 1,
+        "kind": "QUALIFIED_SOURCE_AND_CATALOG",
+        "sourceSha256": "f2c3afb822fac3a2ec3558f7243646ed7aa2f4f73a6e9f807e6f539deadff121",
+        "releaseSha256": "8a7f98fb09fa74c0292a3c530730c15292fe90209bf0240a433d979f3a25eea1",
+        "catalogSha256": "3e70065a06263b38de93b52bfa797eebfd3611c175d2112c590c278527298cd1",
+        "identitySha256": "e51afb719ea0c1446e204953c3d98d8ae602abe987611c64862bb0ada360087f"
+      },
+      "dependencyEvidence": [
+        {
+          "path": "atf-tests/src/test/java/atf/tests/execution/components/ComponentExecutionListener.java",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "atf-tests/src/test/java/atf/tests/execution/recovery/InvocationCaptureUnitTest.java",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "atf-tests/src/test/java/atf/tests/execution/recovery/InvocationCheckpoint.java",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "atf-tests/src/test/java/atf/tests/execution/recovery/InvocationRecoveryComponentTest.java",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "atf-tests/src/test/java/atf/tests/governance/documentation/release/ReleaseArtifactLayoutGovernanceTest.java",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "atf-tests/src/test/java/atf/tests/governance/documentation/release/rag/nativeproof/WhistSurfaceAdapterComponentTest.java",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "atf-tests/src/test/java/atf/tests/governance/source/changes/domains/DomainGitFixture.java",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "atf-tests/tools/android-e2e-provenance.mjs",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "atf-tests/tools/android-e2e-runtime-scope.test.mjs",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "atf-tests/tools/documentation-editions.mjs",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "atf-tests/tools/documentation-editions.test.mjs",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "atf-ui-browser/tests/fixtures.mjs",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "config/atf-component-dependencies.json",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "config/atf-component-reader-seals.json",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "release-tools/scripts/Build-SignedReleaseApk.ps1",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "release-tools/src/test/java/atf/release/tools/ReleaseToolsScriptBoundaryComponentTest.java",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        }
+      ],
+      "componentEvidenceOrigin": "7b34c2a7db17659b180edd095807d0e79414cdf78ba518c176146028cde055eb",
+      "tests": 304,
+      "reportSha256": "20c98c2fa9dfd6a0f93015e759898aedfaa90fb20ba7af8d546ef0f21f308b15",
+      "executionSha256": "03cd68827a89d57dae900b1638d5a4d25b0f8834490271c87ae4f46d5bd568b3"
+    },
+    {
+      "group": "atf-tests",
+      "decision": "MATCH",
+      "reason": "IDENTICAL_INPUTS",
+      "affectedGroups": [],
+      "changedInputs": [],
+      "affectedInputs": [],
+      "alwaysEvaluatedRagChecks": [],
+      "qualificationContext": {
+        "schemaVersion": 1,
+        "kind": "QUALIFIED_SOURCE_AND_CATALOG",
+        "sourceSha256": "a952917e44fadde0a45bc087a5de9c63a2c1c72cfa3cb56a88d831b22a625ebe",
+        "releaseSha256": "8a7f98fb09fa74c0292a3c530730c15292fe90209bf0240a433d979f3a25eea1",
+        "catalogSha256": "3e70065a06263b38de93b52bfa797eebfd3611c175d2112c590c278527298cd1",
+        "identitySha256": "6c12a8b37fa26564d2ded7cf68bd3c0595d5507dd4c4031f1e399059ba247c89"
+      },
+      "componentEvidenceOrigin": "8163f7abef34d58634401d7107dca0fb2537aa5b564973f6b0dbdf863d346490",
+      "tests": 124,
+      "reportSha256": "d145e2fe644b1b3b66ec235abb5364bac73b65396666da4c23d34673588487aa",
+      "executionSha256": "1de09261dad1b12c4d3c9f4802c49ff51e5abac662ae402aea4e4f49a3080ebc"
+    },
+    {
+      "group": "whist-lab-app-bidding",
+      "decision": "REUSE",
+      "reason": "RAG_GATE_ONLY",
+      "affectedGroups": [
+        "atf-tests",
+        "atf-tests-android",
+        "atf-tests-documentation",
+        "atf-tests-github",
+        "atf-tests-orchestration",
+        "atf-tests-provenance",
+        "atf-tests-reporting",
+        "release-tools"
+      ],
+      "changedInputs": [
+        "atf-tests/src/test/java/atf/tests/execution/components/ComponentExecutionListener.java",
+        "atf-tests/src/test/java/atf/tests/execution/recovery/InvocationCaptureUnitTest.java",
+        "atf-tests/src/test/java/atf/tests/execution/recovery/InvocationCheckpoint.java",
+        "atf-tests/src/test/java/atf/tests/execution/recovery/InvocationRecoveryComponentTest.java",
+        "atf-tests/src/test/java/atf/tests/governance/documentation/release/ReleaseArtifactLayoutGovernanceTest.java",
+        "atf-tests/src/test/java/atf/tests/governance/documentation/release/rag/nativeproof/WhistSurfaceAdapterComponentTest.java",
+        "atf-tests/src/test/java/atf/tests/governance/source/changes/domains/DomainGitFixture.java",
+        "atf-tests/tools/README.md",
+        "atf-tests/tools/android-e2e-provenance.mjs",
+        "atf-tests/tools/android-e2e-runtime-scope.test.mjs",
+        "atf-tests/tools/documentation-editions.mjs",
+        "atf-tests/tools/documentation-editions.test.mjs",
+        "atf-ui-browser/tests/fixtures.mjs",
+        "config/atf-component-dependencies.json",
+        "config/atf-component-reader-seals.json",
+        "config/documentation-editions.json",
+        "docs/feedback/ATF_Governance.md",
+        "docs/governance/ATF_TestChangesBaseline.md",
+        "release-tools/scripts/Build-SignedReleaseApk.ps1",
+        "release-tools/src/test/java/atf/release/tools/ReleaseToolsScriptBoundaryComponentTest.java"
+      ],
+      "affectedInputs": [],
+      "alwaysEvaluatedRagChecks": [
+        "DOCUMENTATION_EDITIONS"
+      ],
+      "qualificationContext": {
+        "schemaVersion": 1,
+        "kind": "QUALIFIED_SOURCE_AND_CATALOG",
+        "sourceSha256": "f2c3afb822fac3a2ec3558f7243646ed7aa2f4f73a6e9f807e6f539deadff121",
+        "releaseSha256": "8a7f98fb09fa74c0292a3c530730c15292fe90209bf0240a433d979f3a25eea1",
+        "catalogSha256": "3e70065a06263b38de93b52bfa797eebfd3611c175d2112c590c278527298cd1",
+        "identitySha256": "e51afb719ea0c1446e204953c3d98d8ae602abe987611c64862bb0ada360087f"
+      },
+      "dependencyEvidence": [
+        {
+          "path": "atf-tests/src/test/java/atf/tests/execution/components/ComponentExecutionListener.java",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "atf-tests/src/test/java/atf/tests/execution/recovery/InvocationCaptureUnitTest.java",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "atf-tests/src/test/java/atf/tests/execution/recovery/InvocationCheckpoint.java",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "atf-tests/src/test/java/atf/tests/execution/recovery/InvocationRecoveryComponentTest.java",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "atf-tests/src/test/java/atf/tests/governance/documentation/release/ReleaseArtifactLayoutGovernanceTest.java",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "atf-tests/src/test/java/atf/tests/governance/documentation/release/rag/nativeproof/WhistSurfaceAdapterComponentTest.java",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "atf-tests/src/test/java/atf/tests/governance/source/changes/domains/DomainGitFixture.java",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "atf-tests/tools/android-e2e-provenance.mjs",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "atf-tests/tools/android-e2e-runtime-scope.test.mjs",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "atf-tests/tools/documentation-editions.mjs",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "atf-tests/tools/documentation-editions.test.mjs",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "atf-ui-browser/tests/fixtures.mjs",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "config/atf-component-dependencies.json",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "config/atf-component-reader-seals.json",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "release-tools/scripts/Build-SignedReleaseApk.ps1",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "release-tools/src/test/java/atf/release/tools/ReleaseToolsScriptBoundaryComponentTest.java",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        }
+      ],
+      "componentEvidenceOrigin": "7b34c2a7db17659b180edd095807d0e79414cdf78ba518c176146028cde055eb",
+      "tests": 255,
+      "reportSha256": "eb2e910a8b129ae1875e0bd31ac32aea7333ee313021073e92f81e539b3a5754",
+      "executionSha256": "e45cf375e0805b25b3380e561cc3e3bfb8c317dcf294de0653c23ff1db32a019"
+    },
+    {
+      "group": "whist-lab-app-commands",
+      "decision": "REUSE",
+      "reason": "RAG_GATE_ONLY",
+      "affectedGroups": [
+        "atf-tests",
+        "atf-tests-android",
+        "atf-tests-documentation",
+        "atf-tests-github",
+        "atf-tests-orchestration",
+        "atf-tests-provenance",
+        "atf-tests-reporting",
+        "release-tools"
+      ],
+      "changedInputs": [
+        "atf-tests/src/test/java/atf/tests/execution/components/ComponentExecutionListener.java",
+        "atf-tests/src/test/java/atf/tests/execution/recovery/InvocationCaptureUnitTest.java",
+        "atf-tests/src/test/java/atf/tests/execution/recovery/InvocationCheckpoint.java",
+        "atf-tests/src/test/java/atf/tests/execution/recovery/InvocationRecoveryComponentTest.java",
+        "atf-tests/src/test/java/atf/tests/governance/documentation/release/ReleaseArtifactLayoutGovernanceTest.java",
+        "atf-tests/src/test/java/atf/tests/governance/documentation/release/rag/nativeproof/WhistSurfaceAdapterComponentTest.java",
+        "atf-tests/src/test/java/atf/tests/governance/source/changes/domains/DomainGitFixture.java",
+        "atf-tests/tools/README.md",
+        "atf-tests/tools/android-e2e-provenance.mjs",
+        "atf-tests/tools/android-e2e-runtime-scope.test.mjs",
+        "atf-tests/tools/documentation-editions.mjs",
+        "atf-tests/tools/documentation-editions.test.mjs",
+        "atf-ui-browser/tests/fixtures.mjs",
+        "config/atf-component-dependencies.json",
+        "config/atf-component-reader-seals.json",
+        "config/documentation-editions.json",
+        "docs/feedback/ATF_Governance.md",
+        "docs/governance/ATF_TestChangesBaseline.md",
+        "release-tools/scripts/Build-SignedReleaseApk.ps1",
+        "release-tools/src/test/java/atf/release/tools/ReleaseToolsScriptBoundaryComponentTest.java"
+      ],
+      "affectedInputs": [],
+      "alwaysEvaluatedRagChecks": [
+        "DOCUMENTATION_EDITIONS"
+      ],
+      "qualificationContext": {
+        "schemaVersion": 1,
+        "kind": "QUALIFIED_SOURCE_AND_CATALOG",
+        "sourceSha256": "f2c3afb822fac3a2ec3558f7243646ed7aa2f4f73a6e9f807e6f539deadff121",
+        "releaseSha256": "8a7f98fb09fa74c0292a3c530730c15292fe90209bf0240a433d979f3a25eea1",
+        "catalogSha256": "3e70065a06263b38de93b52bfa797eebfd3611c175d2112c590c278527298cd1",
+        "identitySha256": "e51afb719ea0c1446e204953c3d98d8ae602abe987611c64862bb0ada360087f"
+      },
+      "dependencyEvidence": [
+        {
+          "path": "atf-tests/src/test/java/atf/tests/execution/components/ComponentExecutionListener.java",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "atf-tests/src/test/java/atf/tests/execution/recovery/InvocationCaptureUnitTest.java",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "atf-tests/src/test/java/atf/tests/execution/recovery/InvocationCheckpoint.java",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "atf-tests/src/test/java/atf/tests/execution/recovery/InvocationRecoveryComponentTest.java",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "atf-tests/src/test/java/atf/tests/governance/documentation/release/ReleaseArtifactLayoutGovernanceTest.java",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "atf-tests/src/test/java/atf/tests/governance/documentation/release/rag/nativeproof/WhistSurfaceAdapterComponentTest.java",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "atf-tests/src/test/java/atf/tests/governance/source/changes/domains/DomainGitFixture.java",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "atf-tests/tools/android-e2e-provenance.mjs",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "atf-tests/tools/android-e2e-runtime-scope.test.mjs",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "atf-tests/tools/documentation-editions.mjs",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "atf-tests/tools/documentation-editions.test.mjs",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "atf-ui-browser/tests/fixtures.mjs",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "config/atf-component-dependencies.json",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "config/atf-component-reader-seals.json",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "release-tools/scripts/Build-SignedReleaseApk.ps1",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "release-tools/src/test/java/atf/release/tools/ReleaseToolsScriptBoundaryComponentTest.java",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        }
+      ],
+      "componentEvidenceOrigin": "7b34c2a7db17659b180edd095807d0e79414cdf78ba518c176146028cde055eb",
+      "tests": 127,
+      "reportSha256": "b4632bf4d5ccb2935b030be8fbe5bb49a9d3c5614247b2a3125ace3ebac42769",
+      "executionSha256": "e42e5e20d06f0b3e2f0ac615566d4284b0cf7b8ae01a43ee8f5a053d547e9163"
+    },
+    {
+      "group": "whist-lab-app-display",
+      "decision": "REUSE",
+      "reason": "RAG_GATE_ONLY",
+      "affectedGroups": [
+        "atf-tests",
+        "atf-tests-android",
+        "atf-tests-documentation",
+        "atf-tests-github",
+        "atf-tests-orchestration",
+        "atf-tests-provenance",
+        "atf-tests-reporting",
+        "release-tools"
+      ],
+      "changedInputs": [
+        "atf-tests/src/test/java/atf/tests/execution/components/ComponentExecutionListener.java",
+        "atf-tests/src/test/java/atf/tests/execution/recovery/InvocationCaptureUnitTest.java",
+        "atf-tests/src/test/java/atf/tests/execution/recovery/InvocationCheckpoint.java",
+        "atf-tests/src/test/java/atf/tests/execution/recovery/InvocationRecoveryComponentTest.java",
+        "atf-tests/src/test/java/atf/tests/governance/documentation/release/ReleaseArtifactLayoutGovernanceTest.java",
+        "atf-tests/src/test/java/atf/tests/governance/documentation/release/rag/nativeproof/WhistSurfaceAdapterComponentTest.java",
+        "atf-tests/src/test/java/atf/tests/governance/source/changes/domains/DomainGitFixture.java",
+        "atf-tests/tools/README.md",
+        "atf-tests/tools/android-e2e-provenance.mjs",
+        "atf-tests/tools/android-e2e-runtime-scope.test.mjs",
+        "atf-tests/tools/documentation-editions.mjs",
+        "atf-tests/tools/documentation-editions.test.mjs",
+        "atf-ui-browser/tests/fixtures.mjs",
+        "config/atf-component-dependencies.json",
+        "config/atf-component-reader-seals.json",
+        "config/documentation-editions.json",
+        "docs/feedback/ATF_Governance.md",
+        "docs/governance/ATF_TestChangesBaseline.md",
+        "release-tools/scripts/Build-SignedReleaseApk.ps1",
+        "release-tools/src/test/java/atf/release/tools/ReleaseToolsScriptBoundaryComponentTest.java"
+      ],
+      "affectedInputs": [],
+      "alwaysEvaluatedRagChecks": [
+        "DOCUMENTATION_EDITIONS"
+      ],
+      "qualificationContext": {
+        "schemaVersion": 1,
+        "kind": "QUALIFIED_SOURCE_AND_CATALOG",
+        "sourceSha256": "f2c3afb822fac3a2ec3558f7243646ed7aa2f4f73a6e9f807e6f539deadff121",
+        "releaseSha256": "8a7f98fb09fa74c0292a3c530730c15292fe90209bf0240a433d979f3a25eea1",
+        "catalogSha256": "3e70065a06263b38de93b52bfa797eebfd3611c175d2112c590c278527298cd1",
+        "identitySha256": "e51afb719ea0c1446e204953c3d98d8ae602abe987611c64862bb0ada360087f"
+      },
+      "dependencyEvidence": [
+        {
+          "path": "atf-tests/src/test/java/atf/tests/execution/components/ComponentExecutionListener.java",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "atf-tests/src/test/java/atf/tests/execution/recovery/InvocationCaptureUnitTest.java",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "atf-tests/src/test/java/atf/tests/execution/recovery/InvocationCheckpoint.java",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "atf-tests/src/test/java/atf/tests/execution/recovery/InvocationRecoveryComponentTest.java",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "atf-tests/src/test/java/atf/tests/governance/documentation/release/ReleaseArtifactLayoutGovernanceTest.java",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "atf-tests/src/test/java/atf/tests/governance/documentation/release/rag/nativeproof/WhistSurfaceAdapterComponentTest.java",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "atf-tests/src/test/java/atf/tests/governance/source/changes/domains/DomainGitFixture.java",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "atf-tests/tools/android-e2e-provenance.mjs",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "atf-tests/tools/android-e2e-runtime-scope.test.mjs",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "atf-tests/tools/documentation-editions.mjs",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "atf-tests/tools/documentation-editions.test.mjs",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "atf-ui-browser/tests/fixtures.mjs",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "config/atf-component-dependencies.json",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "config/atf-component-reader-seals.json",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "release-tools/scripts/Build-SignedReleaseApk.ps1",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "release-tools/src/test/java/atf/release/tools/ReleaseToolsScriptBoundaryComponentTest.java",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        }
+      ],
+      "componentEvidenceOrigin": "7b34c2a7db17659b180edd095807d0e79414cdf78ba518c176146028cde055eb",
+      "tests": 107,
+      "reportSha256": "dd087ab3691aa85ef5a3195112add32fe0a1c77c2963b320ba6030f2a19e14bb",
+      "executionSha256": "ddfc56648df938bd8fe7ce5225370078c5a2caa0490a59f0f3ddf84cfe79f0fa"
+    },
+    {
+      "group": "whist-lab-app-history",
+      "decision": "REUSE",
+      "reason": "RAG_GATE_ONLY",
+      "affectedGroups": [
+        "atf-tests",
+        "atf-tests-android",
+        "atf-tests-documentation",
+        "atf-tests-github",
+        "atf-tests-orchestration",
+        "atf-tests-provenance",
+        "atf-tests-reporting",
+        "release-tools"
+      ],
+      "changedInputs": [
+        "atf-tests/src/test/java/atf/tests/execution/components/ComponentExecutionListener.java",
+        "atf-tests/src/test/java/atf/tests/execution/recovery/InvocationCaptureUnitTest.java",
+        "atf-tests/src/test/java/atf/tests/execution/recovery/InvocationCheckpoint.java",
+        "atf-tests/src/test/java/atf/tests/execution/recovery/InvocationRecoveryComponentTest.java",
+        "atf-tests/src/test/java/atf/tests/governance/documentation/release/ReleaseArtifactLayoutGovernanceTest.java",
+        "atf-tests/src/test/java/atf/tests/governance/documentation/release/rag/nativeproof/WhistSurfaceAdapterComponentTest.java",
+        "atf-tests/src/test/java/atf/tests/governance/source/changes/domains/DomainGitFixture.java",
+        "atf-tests/tools/README.md",
+        "atf-tests/tools/android-e2e-provenance.mjs",
+        "atf-tests/tools/android-e2e-runtime-scope.test.mjs",
+        "atf-tests/tools/documentation-editions.mjs",
+        "atf-tests/tools/documentation-editions.test.mjs",
+        "atf-ui-browser/tests/fixtures.mjs",
+        "config/atf-component-dependencies.json",
+        "config/atf-component-reader-seals.json",
+        "config/documentation-editions.json",
+        "docs/feedback/ATF_Governance.md",
+        "docs/governance/ATF_TestChangesBaseline.md",
+        "release-tools/scripts/Build-SignedReleaseApk.ps1",
+        "release-tools/src/test/java/atf/release/tools/ReleaseToolsScriptBoundaryComponentTest.java"
+      ],
+      "affectedInputs": [],
+      "alwaysEvaluatedRagChecks": [
+        "DOCUMENTATION_EDITIONS"
+      ],
+      "qualificationContext": {
+        "schemaVersion": 1,
+        "kind": "QUALIFIED_SOURCE_AND_CATALOG",
+        "sourceSha256": "f2c3afb822fac3a2ec3558f7243646ed7aa2f4f73a6e9f807e6f539deadff121",
+        "releaseSha256": "8a7f98fb09fa74c0292a3c530730c15292fe90209bf0240a433d979f3a25eea1",
+        "catalogSha256": "3e70065a06263b38de93b52bfa797eebfd3611c175d2112c590c278527298cd1",
+        "identitySha256": "e51afb719ea0c1446e204953c3d98d8ae602abe987611c64862bb0ada360087f"
+      },
+      "dependencyEvidence": [
+        {
+          "path": "atf-tests/src/test/java/atf/tests/execution/components/ComponentExecutionListener.java",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "atf-tests/src/test/java/atf/tests/execution/recovery/InvocationCaptureUnitTest.java",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "atf-tests/src/test/java/atf/tests/execution/recovery/InvocationCheckpoint.java",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "atf-tests/src/test/java/atf/tests/execution/recovery/InvocationRecoveryComponentTest.java",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "atf-tests/src/test/java/atf/tests/governance/documentation/release/ReleaseArtifactLayoutGovernanceTest.java",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "atf-tests/src/test/java/atf/tests/governance/documentation/release/rag/nativeproof/WhistSurfaceAdapterComponentTest.java",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "atf-tests/src/test/java/atf/tests/governance/source/changes/domains/DomainGitFixture.java",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "atf-tests/tools/android-e2e-provenance.mjs",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "atf-tests/tools/android-e2e-runtime-scope.test.mjs",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "atf-tests/tools/documentation-editions.mjs",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "atf-tests/tools/documentation-editions.test.mjs",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "atf-ui-browser/tests/fixtures.mjs",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "config/atf-component-dependencies.json",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "config/atf-component-reader-seals.json",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "release-tools/scripts/Build-SignedReleaseApk.ps1",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "release-tools/src/test/java/atf/release/tools/ReleaseToolsScriptBoundaryComponentTest.java",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        }
+      ],
+      "componentEvidenceOrigin": "7b34c2a7db17659b180edd095807d0e79414cdf78ba518c176146028cde055eb",
+      "tests": 70,
+      "reportSha256": "f096723e027b2b3ab8cfce789b6214a889570de4d32cb400eb31eacac34ca93a",
+      "executionSha256": "95f64aa330ff50bcc0b4e57393e209b6c249bc9552afddc829ad9b08d6bfcbc2"
+    },
+    {
+      "group": "whist-lab-app-achievements",
+      "decision": "REUSE",
+      "reason": "RAG_GATE_ONLY",
+      "affectedGroups": [
+        "atf-tests",
+        "atf-tests-android",
+        "atf-tests-documentation",
+        "atf-tests-github",
+        "atf-tests-orchestration",
+        "atf-tests-provenance",
+        "atf-tests-reporting",
+        "release-tools"
+      ],
+      "changedInputs": [
+        "atf-tests/src/test/java/atf/tests/execution/components/ComponentExecutionListener.java",
+        "atf-tests/src/test/java/atf/tests/execution/recovery/InvocationCaptureUnitTest.java",
+        "atf-tests/src/test/java/atf/tests/execution/recovery/InvocationCheckpoint.java",
+        "atf-tests/src/test/java/atf/tests/execution/recovery/InvocationRecoveryComponentTest.java",
+        "atf-tests/src/test/java/atf/tests/governance/documentation/release/ReleaseArtifactLayoutGovernanceTest.java",
+        "atf-tests/src/test/java/atf/tests/governance/documentation/release/rag/nativeproof/WhistSurfaceAdapterComponentTest.java",
+        "atf-tests/src/test/java/atf/tests/governance/source/changes/domains/DomainGitFixture.java",
+        "atf-tests/tools/README.md",
+        "atf-tests/tools/android-e2e-provenance.mjs",
+        "atf-tests/tools/android-e2e-runtime-scope.test.mjs",
+        "atf-tests/tools/documentation-editions.mjs",
+        "atf-tests/tools/documentation-editions.test.mjs",
+        "atf-ui-browser/tests/fixtures.mjs",
+        "config/atf-component-dependencies.json",
+        "config/atf-component-reader-seals.json",
+        "config/documentation-editions.json",
+        "docs/feedback/ATF_Governance.md",
+        "docs/governance/ATF_TestChangesBaseline.md",
+        "release-tools/scripts/Build-SignedReleaseApk.ps1",
+        "release-tools/src/test/java/atf/release/tools/ReleaseToolsScriptBoundaryComponentTest.java"
+      ],
+      "affectedInputs": [],
+      "alwaysEvaluatedRagChecks": [
+        "DOCUMENTATION_EDITIONS"
+      ],
+      "qualificationContext": {
+        "schemaVersion": 1,
+        "kind": "QUALIFIED_SOURCE_AND_CATALOG",
+        "sourceSha256": "f2c3afb822fac3a2ec3558f7243646ed7aa2f4f73a6e9f807e6f539deadff121",
+        "releaseSha256": "8a7f98fb09fa74c0292a3c530730c15292fe90209bf0240a433d979f3a25eea1",
+        "catalogSha256": "3e70065a06263b38de93b52bfa797eebfd3611c175d2112c590c278527298cd1",
+        "identitySha256": "e51afb719ea0c1446e204953c3d98d8ae602abe987611c64862bb0ada360087f"
+      },
+      "dependencyEvidence": [
+        {
+          "path": "atf-tests/src/test/java/atf/tests/execution/components/ComponentExecutionListener.java",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "atf-tests/src/test/java/atf/tests/execution/recovery/InvocationCaptureUnitTest.java",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "atf-tests/src/test/java/atf/tests/execution/recovery/InvocationCheckpoint.java",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "atf-tests/src/test/java/atf/tests/execution/recovery/InvocationRecoveryComponentTest.java",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "atf-tests/src/test/java/atf/tests/governance/documentation/release/ReleaseArtifactLayoutGovernanceTest.java",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "atf-tests/src/test/java/atf/tests/governance/documentation/release/rag/nativeproof/WhistSurfaceAdapterComponentTest.java",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "atf-tests/src/test/java/atf/tests/governance/source/changes/domains/DomainGitFixture.java",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "atf-tests/tools/android-e2e-provenance.mjs",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "atf-tests/tools/android-e2e-runtime-scope.test.mjs",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "atf-tests/tools/documentation-editions.mjs",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "atf-tests/tools/documentation-editions.test.mjs",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "atf-ui-browser/tests/fixtures.mjs",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "config/atf-component-dependencies.json",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "config/atf-component-reader-seals.json",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "release-tools/scripts/Build-SignedReleaseApk.ps1",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "release-tools/src/test/java/atf/release/tools/ReleaseToolsScriptBoundaryComponentTest.java",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        }
+      ],
+      "componentEvidenceOrigin": "7b34c2a7db17659b180edd095807d0e79414cdf78ba518c176146028cde055eb",
+      "tests": 28,
+      "reportSha256": "7d89f331b5a1c054ba8fcb3913f1a818cebf71c912c7a8e01f703b31d7a6a5af",
+      "executionSha256": "e1e4ac21cf389232e4a60cc051dca77d7e8621610bf95797d8575a856a9a3359"
+    },
+    {
+      "group": "whist-lab-app-atf-card-table-ui",
+      "decision": "REUSE",
+      "reason": "RAG_GATE_ONLY",
+      "affectedGroups": [
+        "atf-tests",
+        "atf-tests-android",
+        "atf-tests-documentation",
+        "atf-tests-github",
+        "atf-tests-orchestration",
+        "atf-tests-provenance",
+        "atf-tests-reporting",
+        "release-tools"
+      ],
+      "changedInputs": [
+        "atf-tests/src/test/java/atf/tests/execution/components/ComponentExecutionListener.java",
+        "atf-tests/src/test/java/atf/tests/execution/recovery/InvocationCaptureUnitTest.java",
+        "atf-tests/src/test/java/atf/tests/execution/recovery/InvocationCheckpoint.java",
+        "atf-tests/src/test/java/atf/tests/execution/recovery/InvocationRecoveryComponentTest.java",
+        "atf-tests/src/test/java/atf/tests/governance/documentation/release/ReleaseArtifactLayoutGovernanceTest.java",
+        "atf-tests/src/test/java/atf/tests/governance/documentation/release/rag/nativeproof/WhistSurfaceAdapterComponentTest.java",
+        "atf-tests/src/test/java/atf/tests/governance/source/changes/domains/DomainGitFixture.java",
+        "atf-tests/tools/README.md",
+        "atf-tests/tools/android-e2e-provenance.mjs",
+        "atf-tests/tools/android-e2e-runtime-scope.test.mjs",
+        "atf-tests/tools/documentation-editions.mjs",
+        "atf-tests/tools/documentation-editions.test.mjs",
+        "atf-ui-browser/tests/fixtures.mjs",
+        "config/atf-component-dependencies.json",
+        "config/atf-component-reader-seals.json",
+        "config/documentation-editions.json",
+        "docs/feedback/ATF_Governance.md",
+        "docs/governance/ATF_TestChangesBaseline.md",
+        "release-tools/scripts/Build-SignedReleaseApk.ps1",
+        "release-tools/src/test/java/atf/release/tools/ReleaseToolsScriptBoundaryComponentTest.java"
+      ],
+      "affectedInputs": [],
+      "alwaysEvaluatedRagChecks": [
+        "DOCUMENTATION_EDITIONS"
+      ],
+      "qualificationContext": {
+        "schemaVersion": 1,
+        "kind": "QUALIFIED_SOURCE_AND_CATALOG",
+        "sourceSha256": "f2c3afb822fac3a2ec3558f7243646ed7aa2f4f73a6e9f807e6f539deadff121",
+        "releaseSha256": "8a7f98fb09fa74c0292a3c530730c15292fe90209bf0240a433d979f3a25eea1",
+        "catalogSha256": "3e70065a06263b38de93b52bfa797eebfd3611c175d2112c590c278527298cd1",
+        "identitySha256": "e51afb719ea0c1446e204953c3d98d8ae602abe987611c64862bb0ada360087f"
+      },
+      "dependencyEvidence": [
+        {
+          "path": "atf-tests/src/test/java/atf/tests/execution/components/ComponentExecutionListener.java",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "atf-tests/src/test/java/atf/tests/execution/recovery/InvocationCaptureUnitTest.java",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "atf-tests/src/test/java/atf/tests/execution/recovery/InvocationCheckpoint.java",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "atf-tests/src/test/java/atf/tests/execution/recovery/InvocationRecoveryComponentTest.java",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "atf-tests/src/test/java/atf/tests/governance/documentation/release/ReleaseArtifactLayoutGovernanceTest.java",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "atf-tests/src/test/java/atf/tests/governance/documentation/release/rag/nativeproof/WhistSurfaceAdapterComponentTest.java",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "atf-tests/src/test/java/atf/tests/governance/source/changes/domains/DomainGitFixture.java",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "atf-tests/tools/android-e2e-provenance.mjs",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "atf-tests/tools/android-e2e-runtime-scope.test.mjs",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "atf-tests/tools/documentation-editions.mjs",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "atf-tests/tools/documentation-editions.test.mjs",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "atf-ui-browser/tests/fixtures.mjs",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "config/atf-component-dependencies.json",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "config/atf-component-reader-seals.json",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "release-tools/scripts/Build-SignedReleaseApk.ps1",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "release-tools/src/test/java/atf/release/tools/ReleaseToolsScriptBoundaryComponentTest.java",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        }
+      ],
+      "componentEvidenceOrigin": "7b34c2a7db17659b180edd095807d0e79414cdf78ba518c176146028cde055eb",
+      "tests": 8,
+      "reportSha256": "a461f9375602a2ca0584c8193a9c2af46dbd1751eb16caf4c68daf349b55f766",
+      "executionSha256": "e85089ff6a9a7bc1ce9cf091601256dd798b4e402e1fcb624545a509da3719e4"
+    },
+    {
+      "group": "whist-lab-app-rules",
+      "decision": "REUSE",
+      "reason": "RAG_GATE_ONLY",
+      "affectedGroups": [
+        "atf-tests",
+        "atf-tests-android",
+        "atf-tests-documentation",
+        "atf-tests-github",
+        "atf-tests-orchestration",
+        "atf-tests-provenance",
+        "atf-tests-reporting",
+        "release-tools"
+      ],
+      "changedInputs": [
+        "atf-tests/src/test/java/atf/tests/execution/components/ComponentExecutionListener.java",
+        "atf-tests/src/test/java/atf/tests/execution/recovery/InvocationCaptureUnitTest.java",
+        "atf-tests/src/test/java/atf/tests/execution/recovery/InvocationCheckpoint.java",
+        "atf-tests/src/test/java/atf/tests/execution/recovery/InvocationRecoveryComponentTest.java",
+        "atf-tests/src/test/java/atf/tests/governance/documentation/release/ReleaseArtifactLayoutGovernanceTest.java",
+        "atf-tests/src/test/java/atf/tests/governance/documentation/release/rag/nativeproof/WhistSurfaceAdapterComponentTest.java",
+        "atf-tests/src/test/java/atf/tests/governance/source/changes/domains/DomainGitFixture.java",
+        "atf-tests/tools/README.md",
+        "atf-tests/tools/android-e2e-provenance.mjs",
+        "atf-tests/tools/android-e2e-runtime-scope.test.mjs",
+        "atf-tests/tools/documentation-editions.mjs",
+        "atf-tests/tools/documentation-editions.test.mjs",
+        "atf-ui-browser/tests/fixtures.mjs",
+        "config/atf-component-dependencies.json",
+        "config/atf-component-reader-seals.json",
+        "config/documentation-editions.json",
+        "docs/feedback/ATF_Governance.md",
+        "docs/governance/ATF_TestChangesBaseline.md",
+        "release-tools/scripts/Build-SignedReleaseApk.ps1",
+        "release-tools/src/test/java/atf/release/tools/ReleaseToolsScriptBoundaryComponentTest.java"
+      ],
+      "affectedInputs": [],
+      "alwaysEvaluatedRagChecks": [
+        "DOCUMENTATION_EDITIONS"
+      ],
+      "qualificationContext": {
+        "schemaVersion": 1,
+        "kind": "QUALIFIED_SOURCE_AND_CATALOG",
+        "sourceSha256": "f2c3afb822fac3a2ec3558f7243646ed7aa2f4f73a6e9f807e6f539deadff121",
+        "releaseSha256": "8a7f98fb09fa74c0292a3c530730c15292fe90209bf0240a433d979f3a25eea1",
+        "catalogSha256": "3e70065a06263b38de93b52bfa797eebfd3611c175d2112c590c278527298cd1",
+        "identitySha256": "e51afb719ea0c1446e204953c3d98d8ae602abe987611c64862bb0ada360087f"
+      },
+      "dependencyEvidence": [
+        {
+          "path": "atf-tests/src/test/java/atf/tests/execution/components/ComponentExecutionListener.java",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "atf-tests/src/test/java/atf/tests/execution/recovery/InvocationCaptureUnitTest.java",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "atf-tests/src/test/java/atf/tests/execution/recovery/InvocationCheckpoint.java",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "atf-tests/src/test/java/atf/tests/execution/recovery/InvocationRecoveryComponentTest.java",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "atf-tests/src/test/java/atf/tests/governance/documentation/release/ReleaseArtifactLayoutGovernanceTest.java",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "atf-tests/src/test/java/atf/tests/governance/documentation/release/rag/nativeproof/WhistSurfaceAdapterComponentTest.java",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "atf-tests/src/test/java/atf/tests/governance/source/changes/domains/DomainGitFixture.java",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "atf-tests/tools/android-e2e-provenance.mjs",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "atf-tests/tools/android-e2e-runtime-scope.test.mjs",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "atf-tests/tools/documentation-editions.mjs",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "atf-tests/tools/documentation-editions.test.mjs",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "atf-ui-browser/tests/fixtures.mjs",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "config/atf-component-dependencies.json",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "config/atf-component-reader-seals.json",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "release-tools/scripts/Build-SignedReleaseApk.ps1",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "release-tools/src/test/java/atf/release/tools/ReleaseToolsScriptBoundaryComponentTest.java",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        }
+      ],
+      "componentEvidenceOrigin": "7b34c2a7db17659b180edd095807d0e79414cdf78ba518c176146028cde055eb",
+      "tests": 40,
+      "reportSha256": "fe0b8c6a74ae441db48fcb9bd18a631dbdbbe4a7f0e21e7b36073f04888211c5",
+      "executionSha256": "1b8c9e09915dd0e321cfafa891ba444c0962ab0e43529b4ffdb07367d9097d8f"
+    },
+    {
+      "group": "whist-lab-app-card-table-core",
+      "decision": "REUSE",
+      "reason": "RAG_GATE_ONLY",
+      "affectedGroups": [
+        "atf-tests",
+        "atf-tests-android",
+        "atf-tests-documentation",
+        "atf-tests-github",
+        "atf-tests-orchestration",
+        "atf-tests-provenance",
+        "atf-tests-reporting",
+        "release-tools"
+      ],
+      "changedInputs": [
+        "atf-tests/src/test/java/atf/tests/execution/components/ComponentExecutionListener.java",
+        "atf-tests/src/test/java/atf/tests/execution/recovery/InvocationCaptureUnitTest.java",
+        "atf-tests/src/test/java/atf/tests/execution/recovery/InvocationCheckpoint.java",
+        "atf-tests/src/test/java/atf/tests/execution/recovery/InvocationRecoveryComponentTest.java",
+        "atf-tests/src/test/java/atf/tests/governance/documentation/release/ReleaseArtifactLayoutGovernanceTest.java",
+        "atf-tests/src/test/java/atf/tests/governance/documentation/release/rag/nativeproof/WhistSurfaceAdapterComponentTest.java",
+        "atf-tests/src/test/java/atf/tests/governance/source/changes/domains/DomainGitFixture.java",
+        "atf-tests/tools/README.md",
+        "atf-tests/tools/android-e2e-provenance.mjs",
+        "atf-tests/tools/android-e2e-runtime-scope.test.mjs",
+        "atf-tests/tools/documentation-editions.mjs",
+        "atf-tests/tools/documentation-editions.test.mjs",
+        "atf-ui-browser/tests/fixtures.mjs",
+        "config/atf-component-dependencies.json",
+        "config/atf-component-reader-seals.json",
+        "config/documentation-editions.json",
+        "docs/feedback/ATF_Governance.md",
+        "docs/governance/ATF_TestChangesBaseline.md",
+        "release-tools/scripts/Build-SignedReleaseApk.ps1",
+        "release-tools/src/test/java/atf/release/tools/ReleaseToolsScriptBoundaryComponentTest.java"
+      ],
+      "affectedInputs": [],
+      "alwaysEvaluatedRagChecks": [
+        "DOCUMENTATION_EDITIONS"
+      ],
+      "qualificationContext": {
+        "schemaVersion": 1,
+        "kind": "QUALIFIED_SOURCE_AND_CATALOG",
+        "sourceSha256": "f2c3afb822fac3a2ec3558f7243646ed7aa2f4f73a6e9f807e6f539deadff121",
+        "releaseSha256": "8a7f98fb09fa74c0292a3c530730c15292fe90209bf0240a433d979f3a25eea1",
+        "catalogSha256": "3e70065a06263b38de93b52bfa797eebfd3611c175d2112c590c278527298cd1",
+        "identitySha256": "e51afb719ea0c1446e204953c3d98d8ae602abe987611c64862bb0ada360087f"
+      },
+      "dependencyEvidence": [
+        {
+          "path": "atf-tests/src/test/java/atf/tests/execution/components/ComponentExecutionListener.java",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "atf-tests/src/test/java/atf/tests/execution/recovery/InvocationCaptureUnitTest.java",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "atf-tests/src/test/java/atf/tests/execution/recovery/InvocationCheckpoint.java",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "atf-tests/src/test/java/atf/tests/execution/recovery/InvocationRecoveryComponentTest.java",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "atf-tests/src/test/java/atf/tests/governance/documentation/release/ReleaseArtifactLayoutGovernanceTest.java",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "atf-tests/src/test/java/atf/tests/governance/documentation/release/rag/nativeproof/WhistSurfaceAdapterComponentTest.java",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "atf-tests/src/test/java/atf/tests/governance/source/changes/domains/DomainGitFixture.java",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "atf-tests/tools/android-e2e-provenance.mjs",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "atf-tests/tools/android-e2e-runtime-scope.test.mjs",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "atf-tests/tools/documentation-editions.mjs",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "atf-tests/tools/documentation-editions.test.mjs",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "atf-ui-browser/tests/fixtures.mjs",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "config/atf-component-dependencies.json",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "config/atf-component-reader-seals.json",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "release-tools/scripts/Build-SignedReleaseApk.ps1",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        },
+        {
+          "path": "release-tools/src/test/java/atf/release/tools/ReleaseToolsScriptBoundaryComponentTest.java",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration",
+            "atf-tests-reporting"
+          ],
+          "status": "CONSERVATIVE",
+          "reason": "DEPENDENCY_POLICY_NOT_SHARED"
+        }
+      ],
+      "componentEvidenceOrigin": "7b34c2a7db17659b180edd095807d0e79414cdf78ba518c176146028cde055eb",
+      "tests": 50,
+      "reportSha256": "86f58a3be7a52417cbb18b8aa1f294ab9a6337737d3534aac1419563f6a54d95",
+      "executionSha256": "4ecc04a718b54863cd0f22106ba1c24c927d5ef44a2dbbf7eabc943266ee222a"
+    },
+    {
+      "group": "release-tools",
+      "decision": "REUSE",
+      "reason": "OWNED_INPUTS_UNCHANGED",
+      "affectedGroups": [
+        "atf-tests",
+        "atf-tests-android",
+        "atf-tests-documentation",
+        "atf-tests-github",
+        "atf-tests-orchestration",
+        "atf-tests-provenance"
+      ],
+      "changedInputs": [
+        "atf-tests/tools/android-e2e-provenance.mjs",
+        "atf-tests/tools/android-e2e-runtime-scope.test.mjs",
+        "config/atf-component-reader-seals.json"
+      ],
+      "affectedInputs": [],
+      "alwaysEvaluatedRagChecks": [],
+      "qualificationContext": {
+        "schemaVersion": 1,
+        "kind": "QUALIFIED_SOURCE_AND_CATALOG",
+        "sourceSha256": "2cb72fa52474d33d33120b21ed1adcecd1978a15fdb98cb0b3cf0e685b579a10",
+        "releaseSha256": "8a7f98fb09fa74c0292a3c530730c15292fe90209bf0240a433d979f3a25eea1",
+        "catalogSha256": "3e70065a06263b38de93b52bfa797eebfd3611c175d2112c590c278527298cd1",
+        "identitySha256": "3a9631da31b47bbe5d906d0b62a73cc53c9498e3b231e603483a7ee45df09863"
+      },
+      "dependencyEvidence": [
+        {
+          "path": "atf-tests/tools/android-e2e-provenance.mjs",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration"
+          ],
+          "status": "ADMITTED",
+          "reason": "TRANSITIVE_SOURCE_DEPENDENCIES",
+          "evidence": [
+            {
+              "group": "atf-tests",
+              "chain": [
+                "atf-tests/src/test/java/atf/tests/governance/source/changes/domains/TestChangeDomainComponentTest.java",
+                "atf-tests/src/test/java/atf/tests/governance/source/changes/domains/DomainGitFixture.java",
+                "atf-tests/src/main/java/atf/tests/testchange/TestChangeReview.java",
+                "atf-tests/tools/android-e2e-provenance.mjs"
+              ]
+            },
+            {
+              "group": "atf-tests-documentation",
+              "chain": [
+                "atf-tests/src/test/java/atf/tests/governance/source/changes/TestChangeGovernanceTest.java",
+                "atf-tests/src/main/java/atf/tests/testchange/TestChangeReview.java",
+                "atf-tests/tools/android-e2e-provenance.mjs"
+              ]
+            },
+            {
+              "group": "atf-tests-provenance",
+              "chain": [
+                "atf-tests/src/test/java/atf/tests/governance/documentation/release/versioning/ReleaseVersionComponentTest.java",
+                "atf-tests/tools/publication-audit.test.mjs",
+                "atf-tests/tools/release-git-fixture.mjs",
+                "atf-tests/tools/evaluate-release-rag.mjs",
+                "atf-tests/tools/android-e2e-evidence.mjs",
+                "atf-tests/tools/android-e2e-provenance.mjs"
+              ]
+            },
+            {
+              "group": "atf-tests-android",
+              "chain": [
+                "atf-tests/src/test/java/atf/tests/governance/documentation/release/rag/ReleaseRagAndroidComponentTest.java",
+                "atf-tests/tools/android-e2e-provenance-fixture.mjs",
+                "atf-tests/tools/apply-android-e2e.mjs",
+                "atf-tests/tools/android-e2e-evidence.mjs",
+                "atf-tests/tools/android-e2e-provenance.mjs"
+              ]
+            },
+            {
+              "group": "atf-tests-github",
+              "chain": [
+                "atf-tests/src/test/java/atf/tests/governance/documentation/release/rag/scope/ReleasePublicationSealComponentTest.java",
+                "atf-tests/tools/release-git-snapshot.test.mjs",
+                "atf-tests/tools/evaluate-release-rag.mjs",
+                "atf-tests/tools/android-e2e-evidence.mjs",
+                "atf-tests/tools/android-e2e-provenance.mjs"
+              ]
+            },
+            {
+              "group": "atf-tests-orchestration",
+              "chain": [
+                "atf-tests/src/test/java/atf/tests/governance/documentation/release/rag/scope/metrics/DigestReadComponentTest.java",
+                "atf-tests/tools/seal-reader.test.mjs",
+                "scripts/AtfQualificationSnapshot.ps1",
+                "atf-tests/tools/check-release-artifacts.mjs",
+                "atf-tests/tools/evaluate-release-rag.mjs",
+                "atf-tests/tools/android-e2e-evidence.mjs",
+                "atf-tests/tools/android-e2e-provenance.mjs"
+              ]
+            }
+          ],
+          "topologySha256": "d72421bc706482d4f73397059eb1f23b97ce98294ff3d70469982e0944e9aa96",
+          "policySha256": "1cff547194fdcbbeca335364ffb447a5023181fb25ad0f9f1d52ca0deb1813d3",
+          "readerSealsSha256": "86024f4da2ad50e5947ef75385108a3cbdd0d5bca62148fc5b315e75c4e80ffd"
+        },
+        {
+          "path": "atf-tests/tools/android-e2e-runtime-scope.test.mjs",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-orchestration"
+          ],
+          "status": "ADMITTED",
+          "reason": "TRANSITIVE_SOURCE_DEPENDENCIES",
+          "evidence": [
+            {
+              "group": "atf-tests",
+              "chain": [
+                "atf-tests/src/test/java/atf/tests/governance/source/language/SourceLanguageGovernanceTest.java",
+                "atf-tests/tools/source-language.mjs"
+              ],
+              "observer": "^(?:.*\\/)?[^/]*\\.mjs$"
+            },
+            {
+              "group": "atf-tests-documentation",
+              "chain": [
+                "atf-tests/src/test/java/atf/tests/governance/source/changes/TestChangeGovernanceTest.java"
+              ],
+              "observer": "^atf-tests\\/tools\\/.*$"
+            },
+            {
+              "group": "atf-tests-provenance",
+              "chain": [
+                "atf-tests/src/test/java/atf/tests/governance/documentation/release/rag/nativeproof/NativeSourceProvenanceComponentTest.java",
+                "atf-tests/tools/android-e2e-provenance.test.mjs",
+                "atf-tests/tools/android-e2e-runtime-scope.test.mjs"
+              ]
+            },
+            {
+              "group": "atf-tests-android",
+              "chain": [
+                "atf-tests/src/test/java/atf/tests/governance/uiadapter/SharedMenuHistoryComponentTest.java",
+                "atf-ui-browser/tests/menu-history.test.mjs"
+              ],
+              "observer": "^(?:.*\\/)?[^/]*\\.mjs$"
+            },
+            {
+              "group": "atf-tests-orchestration",
+              "chain": [
+                "atf-tests/src/test/java/atf/tests/browser/toolchain/BrowserToolchainComponentTest.java",
+                "atf-tests/src/test/resources/toolchain/browser-toolchain-contract.ps1"
+              ],
+              "observer": "^.*$"
+            }
+          ],
+          "topologySha256": "d72421bc706482d4f73397059eb1f23b97ce98294ff3d70469982e0944e9aa96",
+          "policySha256": "1cff547194fdcbbeca335364ffb447a5023181fb25ad0f9f1d52ca0deb1813d3",
+          "readerSealsSha256": "86024f4da2ad50e5947ef75385108a3cbdd0d5bca62148fc5b315e75c4e80ffd"
+        },
+        {
+          "path": "config/atf-component-reader-seals.json",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration"
+          ],
+          "status": "ADMITTED",
+          "reason": "REVIEWED_READER_SEAL_CONSUMERS",
+          "evidence": [
+            {
+              "group": "atf-tests",
+              "chain": [
+                "atf-tests/src/test/java/atf/tests/governance/source/changes/domains/TestChangeDomainComponentTest.java",
+                "atf-tests/src/test/java/atf/tests/governance/source/changes/domains/DomainGitFixture.java",
+                "atf-tests/src/main/java/atf/tests/testchange/TestChangeReview.java",
+                "atf-tests/tools/android-e2e-provenance.mjs"
+              ],
+              "reader": "atf-tests/tools/android-e2e-provenance.mjs"
+            },
+            {
+              "group": "atf-tests-documentation",
+              "chain": [
+                "atf-tests/src/test/java/atf/tests/governance/source/changes/TestChangeGovernanceTest.java",
+                "atf-tests/src/main/java/atf/tests/testchange/TestChangeReview.java",
+                "atf-tests/tools/android-e2e-provenance.mjs"
+              ],
+              "reader": "atf-tests/tools/android-e2e-provenance.mjs"
+            },
+            {
+              "group": "atf-tests-provenance",
+              "chain": [
+                "atf-tests/src/test/java/atf/tests/governance/documentation/release/versioning/ReleaseVersionComponentTest.java",
+                "atf-tests/tools/publication-audit.test.mjs",
+                "atf-tests/tools/release-git-fixture.mjs",
+                "atf-tests/tools/evaluate-release-rag.mjs",
+                "atf-tests/tools/android-e2e-evidence.mjs",
+                "atf-tests/tools/android-e2e-provenance.mjs"
+              ],
+              "reader": "atf-tests/tools/android-e2e-provenance.mjs"
+            },
+            {
+              "group": "atf-tests-android",
+              "chain": [
+                "atf-tests/src/test/java/atf/tests/governance/documentation/release/rag/ReleaseRagAndroidComponentTest.java",
+                "atf-tests/tools/android-e2e-provenance-fixture.mjs",
+                "atf-tests/tools/apply-android-e2e.mjs",
+                "atf-tests/tools/android-e2e-evidence.mjs",
+                "atf-tests/tools/android-e2e-provenance.mjs"
+              ],
+              "reader": "atf-tests/tools/android-e2e-provenance.mjs"
+            },
+            {
+              "group": "atf-tests-github",
+              "chain": [
+                "atf-tests/src/test/java/atf/tests/governance/documentation/release/rag/scope/ReleasePublicationSealComponentTest.java",
+                "atf-tests/tools/release-git-snapshot.test.mjs",
+                "atf-tests/tools/evaluate-release-rag.mjs",
+                "atf-tests/tools/android-e2e-evidence.mjs",
+                "atf-tests/tools/android-e2e-provenance.mjs"
+              ],
+              "reader": "atf-tests/tools/android-e2e-provenance.mjs"
+            },
+            {
+              "group": "atf-tests-orchestration",
+              "chain": [
+                "atf-tests/src/test/java/atf/tests/governance/documentation/release/rag/scope/metrics/DigestReadComponentTest.java",
+                "atf-tests/tools/seal-reader.test.mjs",
+                "scripts/AtfQualificationSnapshot.ps1",
+                "atf-tests/tools/check-release-artifacts.mjs",
+                "atf-tests/tools/evaluate-release-rag.mjs",
+                "atf-tests/tools/android-e2e-evidence.mjs",
+                "atf-tests/tools/android-e2e-provenance.mjs"
+              ],
+              "reader": "atf-tests/tools/android-e2e-provenance.mjs"
+            },
+            {
+              "group": "atf-tests",
+              "chain": [
+                "atf-tests/src/test/java/atf/tests/governance/source/language/SourceLanguageGovernanceTest.java",
+                "atf-tests/tools/source-language.mjs"
+              ],
+              "observer": "^(?:.*\\/)?[^/]*\\.mjs$",
+              "reader": "atf-tests/tools/android-e2e-runtime-scope.test.mjs"
+            },
+            {
+              "group": "atf-tests-documentation",
+              "chain": [
+                "atf-tests/src/test/java/atf/tests/governance/source/changes/TestChangeGovernanceTest.java"
+              ],
+              "observer": "^atf-tests\\/tools\\/.*$",
+              "reader": "atf-tests/tools/android-e2e-runtime-scope.test.mjs"
+            },
+            {
+              "group": "atf-tests-provenance",
+              "chain": [
+                "atf-tests/src/test/java/atf/tests/governance/documentation/release/rag/nativeproof/NativeSourceProvenanceComponentTest.java",
+                "atf-tests/tools/android-e2e-provenance.test.mjs",
+                "atf-tests/tools/android-e2e-runtime-scope.test.mjs"
+              ],
+              "reader": "atf-tests/tools/android-e2e-runtime-scope.test.mjs"
+            },
+            {
+              "group": "atf-tests-android",
+              "chain": [
+                "atf-tests/src/test/java/atf/tests/governance/uiadapter/SharedMenuHistoryComponentTest.java",
+                "atf-ui-browser/tests/menu-history.test.mjs"
+              ],
+              "observer": "^(?:.*\\/)?[^/]*\\.mjs$",
+              "reader": "atf-tests/tools/android-e2e-runtime-scope.test.mjs"
+            },
+            {
+              "group": "atf-tests-orchestration",
+              "chain": [
+                "atf-tests/src/test/java/atf/tests/browser/toolchain/BrowserToolchainComponentTest.java",
+                "atf-tests/src/test/resources/toolchain/browser-toolchain-contract.ps1"
+              ],
+              "observer": "^.*$",
+              "reader": "atf-tests/tools/android-e2e-runtime-scope.test.mjs"
+            }
+          ],
+          "changedReaders": [
+            "atf-tests/tools/android-e2e-provenance.mjs",
+            "atf-tests/tools/android-e2e-runtime-scope.test.mjs"
+          ],
+          "topologySha256": "d72421bc706482d4f73397059eb1f23b97ce98294ff3d70469982e0944e9aa96",
+          "policySha256": "1cff547194fdcbbeca335364ffb447a5023181fb25ad0f9f1d52ca0deb1813d3",
+          "readerSealsSha256": "86024f4da2ad50e5947ef75385108a3cbdd0d5bca62148fc5b315e75c4e80ffd"
+        }
+      ],
+      "componentEvidenceOrigin": "09cfeaf35f881dd9b18252df4f24ca50508fa2528c1249516b32850171d61d38",
+      "tests": 12,
+      "reportSha256": "7a6d36e58c5bd455c046d4a0acc032f36c665c77eaadcc545d9ec521a925b5f0",
+      "executionSha256": "3eca28d5a40eb20a0811f40564f4baf682568b1192d491e3a0e078fadb93deda"
+    },
+    {
+      "group": "atf-tests-documentation",
+      "decision": "MATCH",
+      "reason": "IDENTICAL_INPUTS",
+      "affectedGroups": [],
+      "changedInputs": [],
+      "affectedInputs": [],
+      "alwaysEvaluatedRagChecks": [],
+      "qualificationContext": {
+        "schemaVersion": 1,
+        "kind": "QUALIFIED_SOURCE_AND_CATALOG",
+        "sourceSha256": "a952917e44fadde0a45bc087a5de9c63a2c1c72cfa3cb56a88d831b22a625ebe",
+        "releaseSha256": "8a7f98fb09fa74c0292a3c530730c15292fe90209bf0240a433d979f3a25eea1",
+        "catalogSha256": "3e70065a06263b38de93b52bfa797eebfd3611c175d2112c590c278527298cd1",
+        "identitySha256": "6c12a8b37fa26564d2ded7cf68bd3c0595d5507dd4c4031f1e399059ba247c89"
+      },
+      "componentEvidenceOrigin": "8163f7abef34d58634401d7107dca0fb2537aa5b564973f6b0dbdf863d346490",
+      "tests": 172,
+      "reportSha256": "1d8607c4ca8f4c8b2c3997ce8f23f955721e06b72571681b57e7414b8368f9f3",
+      "executionSha256": "fdac3761c9f71d11d776b9cd599e7c06cf074dea50e671c4e86937e304591470"
+    },
+    {
+      "group": "atf-tests-provenance",
+      "decision": "INVALID",
+      "reason": "ATF_COLLECTION_IDENTITY_MISMATCH"
+    },
+    {
+      "group": "atf-tests-android",
+      "decision": "MATCH",
+      "reason": "IDENTICAL_INPUTS",
+      "affectedGroups": [],
+      "changedInputs": [],
+      "affectedInputs": [],
+      "alwaysEvaluatedRagChecks": [],
+      "qualificationContext": {
+        "schemaVersion": 1,
+        "kind": "QUALIFIED_SOURCE_AND_CATALOG",
+        "sourceSha256": "a952917e44fadde0a45bc087a5de9c63a2c1c72cfa3cb56a88d831b22a625ebe",
+        "releaseSha256": "8a7f98fb09fa74c0292a3c530730c15292fe90209bf0240a433d979f3a25eea1",
+        "catalogSha256": "3e70065a06263b38de93b52bfa797eebfd3611c175d2112c590c278527298cd1",
+        "identitySha256": "6c12a8b37fa26564d2ded7cf68bd3c0595d5507dd4c4031f1e399059ba247c89"
+      },
+      "componentEvidenceOrigin": "8163f7abef34d58634401d7107dca0fb2537aa5b564973f6b0dbdf863d346490",
+      "tests": 54,
+      "reportSha256": "096bbf8f9b7bbdd0fbc3cb5fb7759394d5f34566f1bc5ab661bf1b439cbd0fa7",
+      "executionSha256": "4d10c80192fb04fd2fd7a3f5a85a6d65baa7000934fbdab5767d0a27e62c831f"
+    },
+    {
+      "group": "atf-tests-github",
+      "decision": "MATCH",
+      "reason": "IDENTICAL_INPUTS",
+      "affectedGroups": [],
+      "changedInputs": [],
+      "affectedInputs": [],
+      "alwaysEvaluatedRagChecks": [],
+      "qualificationContext": {
+        "schemaVersion": 1,
+        "kind": "QUALIFIED_SOURCE_AND_CATALOG",
+        "sourceSha256": "a952917e44fadde0a45bc087a5de9c63a2c1c72cfa3cb56a88d831b22a625ebe",
+        "releaseSha256": "8a7f98fb09fa74c0292a3c530730c15292fe90209bf0240a433d979f3a25eea1",
+        "catalogSha256": "3e70065a06263b38de93b52bfa797eebfd3611c175d2112c590c278527298cd1",
+        "identitySha256": "6c12a8b37fa26564d2ded7cf68bd3c0595d5507dd4c4031f1e399059ba247c89"
+      },
+      "componentEvidenceOrigin": "8163f7abef34d58634401d7107dca0fb2537aa5b564973f6b0dbdf863d346490",
+      "tests": 33,
+      "reportSha256": "6006b0e01e518cd576abc0c9503ba55a604df4c830784ca012b30aaea7743953",
+      "executionSha256": "e52a95ed0608b8d8b326d95f3a59c47c67dcbe0ae04e6e0b2d9d3a5725a3b9bb"
+    },
+    {
+      "group": "atf-tests-orchestration",
+      "decision": "MATCH",
+      "reason": "IDENTICAL_INPUTS",
+      "affectedGroups": [],
+      "changedInputs": [],
+      "affectedInputs": [],
+      "alwaysEvaluatedRagChecks": [],
+      "qualificationContext": {
+        "schemaVersion": 1,
+        "kind": "QUALIFIED_SOURCE_AND_CATALOG",
+        "sourceSha256": "a952917e44fadde0a45bc087a5de9c63a2c1c72cfa3cb56a88d831b22a625ebe",
+        "releaseSha256": "8a7f98fb09fa74c0292a3c530730c15292fe90209bf0240a433d979f3a25eea1",
+        "catalogSha256": "3e70065a06263b38de93b52bfa797eebfd3611c175d2112c590c278527298cd1",
+        "identitySha256": "6c12a8b37fa26564d2ded7cf68bd3c0595d5507dd4c4031f1e399059ba247c89"
+      },
+      "componentEvidenceOrigin": "8163f7abef34d58634401d7107dca0fb2537aa5b564973f6b0dbdf863d346490",
+      "tests": 137,
+      "reportSha256": "595f0491ad8962d2cd3fb0ef237aa1180e151a45503b9082e3a7fbf8bf331c02",
+      "executionSha256": "f3cd263fc4f112ba56f7e8c1e83b5238688681ef0cfc3b3aa81a056853c1962e"
+    },
+    {
+      "group": "atf-tests-reporting",
+      "decision": "REUSE",
+      "reason": "RAG_GATE_ONLY",
+      "affectedGroups": [
+        "atf-tests",
+        "atf-tests-android",
+        "atf-tests-documentation",
+        "atf-tests-github",
+        "atf-tests-orchestration",
+        "atf-tests-provenance",
+        "release-tools"
+      ],
+      "changedInputs": [
+        "atf-tests/src/test/java/atf/tests/governance/documentation/release/ReleaseArtifactLayoutGovernanceTest.java",
+        "atf-tests/src/test/java/atf/tests/governance/documentation/release/rag/nativeproof/WhistSurfaceAdapterComponentTest.java",
+        "atf-tests/tools/README.md",
+        "atf-tests/tools/android-e2e-provenance.mjs",
+        "atf-tests/tools/android-e2e-runtime-scope.test.mjs",
+        "atf-tests/tools/documentation-editions.mjs",
+        "atf-tests/tools/documentation-editions.test.mjs",
+        "atf-ui-browser/tests/fixtures.mjs",
+        "config/atf-component-reader-seals.json",
+        "config/documentation-editions.json",
+        "docs/feedback/ATF_Governance.md",
+        "docs/governance/ATF_TestChangesBaseline.md",
+        "release-tools/scripts/Build-SignedReleaseApk.ps1",
+        "release-tools/src/test/java/atf/release/tools/ReleaseToolsScriptBoundaryComponentTest.java"
+      ],
+      "affectedInputs": [],
+      "alwaysEvaluatedRagChecks": [
+        "DOCUMENTATION_EDITIONS"
+      ],
+      "qualificationContext": {
+        "schemaVersion": 1,
+        "kind": "QUALIFIED_SOURCE_AND_CATALOG",
+        "sourceSha256": "57ce3fe3bf8be25d77656eadf1078729cca042042e88a5fae43710a5535f1ba4",
+        "releaseSha256": "8a7f98fb09fa74c0292a3c530730c15292fe90209bf0240a433d979f3a25eea1",
+        "catalogSha256": "3e70065a06263b38de93b52bfa797eebfd3611c175d2112c590c278527298cd1",
+        "identitySha256": "9b80e6e2e66e819475702a23e6d6050738a7e82e273a6f0af7152dbf8bb7fd12"
+      },
+      "dependencyEvidence": [
+        {
+          "path": "atf-tests/src/test/java/atf/tests/governance/documentation/release/ReleaseArtifactLayoutGovernanceTest.java",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-orchestration"
+          ],
+          "status": "ADMITTED",
+          "reason": "TRANSITIVE_SOURCE_DEPENDENCIES",
+          "evidence": [
+            {
+              "group": "atf-tests",
+              "chain": [
+                "atf-tests/src/test/java/atf/tests/governance/source/language/SourceLanguageGovernanceTest.java",
+                "atf-tests/tools/source-language.mjs"
+              ],
+              "observer": "^(?:.*\\/)?[^/]*\\.java$"
+            },
+            {
+              "group": "atf-tests-documentation",
+              "chain": [
+                "atf-tests/src/test/java/atf/tests/governance/documentation/release/ReleaseArtifactLayoutGovernanceTest.java"
+              ]
+            },
+            {
+              "group": "atf-tests-orchestration",
+              "chain": [
+                "atf-tests/src/test/java/atf/tests/browser/toolchain/BrowserToolchainComponentTest.java",
+                "atf-tests/src/test/resources/toolchain/browser-toolchain-contract.ps1"
+              ],
+              "observer": "^.*$"
+            }
+          ],
+          "topologySha256": "d72421bc706482d4f73397059eb1f23b97ce98294ff3d70469982e0944e9aa96",
+          "policySha256": "1cff547194fdcbbeca335364ffb447a5023181fb25ad0f9f1d52ca0deb1813d3",
+          "readerSealsSha256": "86024f4da2ad50e5947ef75385108a3cbdd0d5bca62148fc5b315e75c4e80ffd"
+        },
+        {
+          "path": "atf-tests/src/test/java/atf/tests/governance/documentation/release/rag/nativeproof/WhistSurfaceAdapterComponentTest.java",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-android",
+            "atf-tests-orchestration"
+          ],
+          "status": "ADMITTED",
+          "reason": "TRANSITIVE_SOURCE_DEPENDENCIES",
+          "evidence": [
+            {
+              "group": "atf-tests",
+              "chain": [
+                "atf-tests/src/test/java/atf/tests/governance/source/language/SourceLanguageGovernanceTest.java",
+                "atf-tests/tools/source-language.mjs"
+              ],
+              "observer": "^(?:.*\\/)?[^/]*\\.java$"
+            },
+            {
+              "group": "atf-tests-documentation",
+              "chain": [
+                "atf-tests/src/test/java/atf/tests/governance/source/changes/TestChangeGovernanceTest.java"
+              ],
+              "observer": "^(?:.*\\/)?src\\/test\\/.*$"
+            },
+            {
+              "group": "atf-tests-android",
+              "chain": [
+                "atf-tests/src/test/java/atf/tests/governance/documentation/release/rag/nativeproof/WhistSurfaceAdapterComponentTest.java"
+              ]
+            },
+            {
+              "group": "atf-tests-orchestration",
+              "chain": [
+                "atf-tests/src/test/java/atf/tests/browser/toolchain/BrowserToolchainComponentTest.java",
+                "atf-tests/src/test/resources/toolchain/browser-toolchain-contract.ps1"
+              ],
+              "observer": "^.*$"
+            }
+          ],
+          "topologySha256": "d72421bc706482d4f73397059eb1f23b97ce98294ff3d70469982e0944e9aa96",
+          "policySha256": "1cff547194fdcbbeca335364ffb447a5023181fb25ad0f9f1d52ca0deb1813d3",
+          "readerSealsSha256": "86024f4da2ad50e5947ef75385108a3cbdd0d5bca62148fc5b315e75c4e80ffd"
+        },
+        {
+          "path": "atf-tests/tools/android-e2e-provenance.mjs",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration"
+          ],
+          "status": "ADMITTED",
+          "reason": "TRANSITIVE_SOURCE_DEPENDENCIES",
+          "evidence": [
+            {
+              "group": "atf-tests",
+              "chain": [
+                "atf-tests/src/test/java/atf/tests/governance/source/changes/domains/TestChangeDomainComponentTest.java",
+                "atf-tests/src/test/java/atf/tests/governance/source/changes/domains/DomainGitFixture.java",
+                "atf-tests/src/main/java/atf/tests/testchange/TestChangeReview.java",
+                "atf-tests/tools/android-e2e-provenance.mjs"
+              ]
+            },
+            {
+              "group": "atf-tests-documentation",
+              "chain": [
+                "atf-tests/src/test/java/atf/tests/governance/source/changes/TestChangeGovernanceTest.java",
+                "atf-tests/src/main/java/atf/tests/testchange/TestChangeReview.java",
+                "atf-tests/tools/android-e2e-provenance.mjs"
+              ]
+            },
+            {
+              "group": "atf-tests-provenance",
+              "chain": [
+                "atf-tests/src/test/java/atf/tests/governance/documentation/release/versioning/ReleaseVersionComponentTest.java",
+                "atf-tests/tools/publication-audit.test.mjs",
+                "atf-tests/tools/release-git-fixture.mjs",
+                "atf-tests/tools/evaluate-release-rag.mjs",
+                "atf-tests/tools/android-e2e-evidence.mjs",
+                "atf-tests/tools/android-e2e-provenance.mjs"
+              ]
+            },
+            {
+              "group": "atf-tests-android",
+              "chain": [
+                "atf-tests/src/test/java/atf/tests/governance/documentation/release/rag/ReleaseRagAndroidComponentTest.java",
+                "atf-tests/tools/android-e2e-provenance-fixture.mjs",
+                "atf-tests/tools/apply-android-e2e.mjs",
+                "atf-tests/tools/android-e2e-evidence.mjs",
+                "atf-tests/tools/android-e2e-provenance.mjs"
+              ]
+            },
+            {
+              "group": "atf-tests-github",
+              "chain": [
+                "atf-tests/src/test/java/atf/tests/governance/documentation/release/rag/scope/ReleasePublicationSealComponentTest.java",
+                "atf-tests/tools/release-git-snapshot.test.mjs",
+                "atf-tests/tools/evaluate-release-rag.mjs",
+                "atf-tests/tools/android-e2e-evidence.mjs",
+                "atf-tests/tools/android-e2e-provenance.mjs"
+              ]
+            },
+            {
+              "group": "atf-tests-orchestration",
+              "chain": [
+                "atf-tests/src/test/java/atf/tests/governance/documentation/release/rag/scope/metrics/DigestReadComponentTest.java",
+                "atf-tests/tools/seal-reader.test.mjs",
+                "scripts/AtfQualificationSnapshot.ps1",
+                "atf-tests/tools/check-release-artifacts.mjs",
+                "atf-tests/tools/evaluate-release-rag.mjs",
+                "atf-tests/tools/android-e2e-evidence.mjs",
+                "atf-tests/tools/android-e2e-provenance.mjs"
+              ]
+            }
+          ],
+          "topologySha256": "d72421bc706482d4f73397059eb1f23b97ce98294ff3d70469982e0944e9aa96",
+          "policySha256": "1cff547194fdcbbeca335364ffb447a5023181fb25ad0f9f1d52ca0deb1813d3",
+          "readerSealsSha256": "86024f4da2ad50e5947ef75385108a3cbdd0d5bca62148fc5b315e75c4e80ffd"
+        },
+        {
+          "path": "atf-tests/tools/android-e2e-runtime-scope.test.mjs",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-orchestration"
+          ],
+          "status": "ADMITTED",
+          "reason": "TRANSITIVE_SOURCE_DEPENDENCIES",
+          "evidence": [
+            {
+              "group": "atf-tests",
+              "chain": [
+                "atf-tests/src/test/java/atf/tests/governance/source/language/SourceLanguageGovernanceTest.java",
+                "atf-tests/tools/source-language.mjs"
+              ],
+              "observer": "^(?:.*\\/)?[^/]*\\.mjs$"
+            },
+            {
+              "group": "atf-tests-documentation",
+              "chain": [
+                "atf-tests/src/test/java/atf/tests/governance/source/changes/TestChangeGovernanceTest.java"
+              ],
+              "observer": "^atf-tests\\/tools\\/.*$"
+            },
+            {
+              "group": "atf-tests-provenance",
+              "chain": [
+                "atf-tests/src/test/java/atf/tests/governance/documentation/release/rag/nativeproof/NativeSourceProvenanceComponentTest.java",
+                "atf-tests/tools/android-e2e-provenance.test.mjs",
+                "atf-tests/tools/android-e2e-runtime-scope.test.mjs"
+              ]
+            },
+            {
+              "group": "atf-tests-android",
+              "chain": [
+                "atf-tests/src/test/java/atf/tests/governance/uiadapter/SharedMenuHistoryComponentTest.java",
+                "atf-ui-browser/tests/menu-history.test.mjs"
+              ],
+              "observer": "^(?:.*\\/)?[^/]*\\.mjs$"
+            },
+            {
+              "group": "atf-tests-orchestration",
+              "chain": [
+                "atf-tests/src/test/java/atf/tests/browser/toolchain/BrowserToolchainComponentTest.java",
+                "atf-tests/src/test/resources/toolchain/browser-toolchain-contract.ps1"
+              ],
+              "observer": "^.*$"
+            }
+          ],
+          "topologySha256": "d72421bc706482d4f73397059eb1f23b97ce98294ff3d70469982e0944e9aa96",
+          "policySha256": "1cff547194fdcbbeca335364ffb447a5023181fb25ad0f9f1d52ca0deb1813d3",
+          "readerSealsSha256": "86024f4da2ad50e5947ef75385108a3cbdd0d5bca62148fc5b315e75c4e80ffd"
+        },
+        {
+          "path": "atf-tests/tools/documentation-editions.mjs",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-provenance",
+            "atf-tests-android",
+            "atf-tests-github",
+            "atf-tests-orchestration"
+          ],
+          "status": "ADMITTED",
+          "reason": "TRANSITIVE_SOURCE_DEPENDENCIES",
+          "evidence": [
+            {
+              "group": "atf-tests",
+              "chain": [
+                "atf-tests/src/test/java/atf/tests/governance/source/changes/domains/TestChangeDomainComponentTest.java",
+                "atf-tests/src/test/java/atf/tests/governance/source/changes/domains/DomainGitFixture.java",
+                "atf-tests/src/main/java/atf/tests/testchange/TestChangeReview.java",
+                "atf-tests/tools/evaluate-release-rag.mjs",
+                "atf-tests/tools/documentation-editions.mjs"
+              ]
+            },
+            {
+              "group": "atf-tests-documentation",
+              "chain": [
+                "atf-tests/src/test/java/atf/tests/governance/source/changes/TestChangeGovernanceTest.java",
+                "atf-tests/src/main/java/atf/tests/testchange/TestChangeReview.java",
+                "atf-tests/tools/evaluate-release-rag.mjs",
+                "atf-tests/tools/documentation-editions.mjs"
+              ]
+            },
+            {
+              "group": "atf-tests-provenance",
+              "chain": [
+                "atf-tests/src/test/java/atf/tests/governance/documentation/release/versioning/ReleaseVersionComponentTest.java",
+                "atf-tests/tools/publication-audit.test.mjs",
+                "atf-tests/tools/release-git-fixture.mjs",
+                "atf-tests/tools/evaluate-release-rag.mjs",
+                "atf-tests/tools/documentation-editions.mjs"
+              ]
+            },
+            {
+              "group": "atf-tests-android",
+              "chain": [
+                "atf-tests/src/test/java/atf/tests/governance/documentation/release/rag/ReleaseRagAndroidComponentTest.java",
+                "atf-tests/tools/android-e2e-provenance-fixture.mjs",
+                "atf-tests/tools/evaluate-release-rag.mjs",
+                "atf-tests/tools/documentation-editions.mjs"
+              ]
+            },
+            {
+              "group": "atf-tests-github",
+              "chain": [
+                "atf-tests/src/test/java/atf/tests/governance/documentation/release/rag/scope/ReleasePublicationSealComponentTest.java",
+                "atf-tests/tools/release-git-snapshot.test.mjs",
+                "atf-tests/tools/evaluate-release-rag.mjs",
+                "atf-tests/tools/documentation-editions.mjs"
+              ]
+            },
+            {
+              "group": "atf-tests-orchestration",
+              "chain": [
+                "atf-tests/src/test/java/atf/tests/governance/documentation/release/rag/scope/metrics/DigestReadComponentTest.java",
+                "atf-tests/tools/seal-reader.test.mjs",
+                "scripts/AtfQualificationSnapshot.ps1",
+                "atf-tests/tools/check-release-artifacts.mjs",
+                "atf-tests/tools/evaluate-release-rag.mjs",
+                "atf-tests/tools/documentation-editions.mjs"
+              ]
+            }
+          ],
+          "topologySha256": "d72421bc706482d4f73397059eb1f23b97ce98294ff3d70469982e0944e9aa96",
+          "policySha256": "1cff547194fdcbbeca335364ffb447a5023181fb25ad0f9f1d52ca0deb1813d3",
+          "readerSealsSha256": "86024f4da2ad50e5947ef75385108a3cbdd0d5bca62148fc5b315e75c4e80ffd"
+        },
+        {
+          "path": "atf-tests/tools/documentation-editions.test.mjs",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-android",
+            "atf-tests-orchestration"
+          ],
+          "status": "ADMITTED",
+          "reason": "TRANSITIVE_SOURCE_DEPENDENCIES",
+          "evidence": [
+            {
+              "group": "atf-tests",
+              "chain": [
+                "atf-tests/src/test/java/atf/tests/governance/source/language/SourceLanguageGovernanceTest.java",
+                "atf-tests/tools/source-language.mjs"
+              ],
+              "observer": "^(?:.*\\/)?[^/]*\\.mjs$"
+            },
+            {
+              "group": "atf-tests-documentation",
+              "chain": [
+                "atf-tests/src/test/java/atf/tests/governance/source/changes/TestChangeGovernanceTest.java"
+              ],
+              "observer": "^atf-tests\\/tools\\/.*$"
+            },
+            {
+              "group": "atf-tests-android",
+              "chain": [
+                "atf-tests/src/test/java/atf/tests/governance/uiadapter/SharedMenuHistoryComponentTest.java",
+                "atf-ui-browser/tests/menu-history.test.mjs"
+              ],
+              "observer": "^(?:.*\\/)?[^/]*\\.mjs$"
+            },
+            {
+              "group": "atf-tests-orchestration",
+              "chain": [
+                "atf-tests/src/test/java/atf/tests/governance/documentation/release/rag/scope/ComponentEvidenceScopeComponentTest.java",
+                "atf-tests/tools/documentation-editions.test.mjs"
+              ]
+            }
+          ],
+          "topologySha256": "d72421bc706482d4f73397059eb1f23b97ce98294ff3d70469982e0944e9aa96",
+          "policySha256": "1cff547194fdcbbeca335364ffb447a5023181fb25ad0f9f1d52ca0deb1813d3",
+          "readerSealsSha256": "86024f4da2ad50e5947ef75385108a3cbdd0d5bca62148fc5b315e75c4e80ffd"
+        },
+        {
+          "path": "atf-ui-browser/tests/fixtures.mjs",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-android",
+            "atf-tests-orchestration"
+          ],
+          "status": "ADMITTED",
+          "reason": "TRANSITIVE_SOURCE_DEPENDENCIES",
+          "evidence": [
+            {
+              "group": "atf-tests",
+              "chain": [
+                "atf-tests/src/test/java/atf/tests/governance/source/changes/domains/TestChangeDomainComponentTest.java",
+                "atf-tests/src/test/java/atf/tests/governance/source/changes/domains/DomainGitFixture.java",
+                "atf-tests/src/main/java/atf/tests/testchange/TestChangeReview.java",
+                "atf-ui-browser/tests/fixtures.mjs"
+              ]
+            },
+            {
+              "group": "atf-tests-documentation",
+              "chain": [
+                "atf-tests/src/test/java/atf/tests/governance/source/changes/TestChangeGovernanceTest.java",
+                "atf-tests/src/main/java/atf/tests/testchange/TestChangeReview.java",
+                "atf-ui-browser/tests/fixtures.mjs"
+              ]
+            },
+            {
+              "group": "atf-tests-android",
+              "chain": [
+                "atf-tests/src/test/java/atf/tests/governance/uiadapter/SharedMenuHistoryComponentTest.java",
+                "atf-ui-browser/tests/action-typography.test.mjs",
+                "atf-ui-browser/tests/fixtures.mjs"
+              ]
+            },
+            {
+              "group": "atf-tests-orchestration",
+              "chain": [
+                "atf-tests/src/test/java/atf/tests/governance/documentation/release/rag/scope/QualificationLauncherComponentTest.java",
+                "atf-tests/src/test/java/atf/tests/governance/source/changes/TestChangeAdmissionFixture.java",
+                "atf-tests/src/main/java/atf/tests/testchange/TestChangeReview.java",
+                "atf-ui-browser/tests/fixtures.mjs"
+              ]
+            }
+          ],
+          "topologySha256": "d72421bc706482d4f73397059eb1f23b97ce98294ff3d70469982e0944e9aa96",
+          "policySha256": "1cff547194fdcbbeca335364ffb447a5023181fb25ad0f9f1d52ca0deb1813d3",
+          "readerSealsSha256": "86024f4da2ad50e5947ef75385108a3cbdd0d5bca62148fc5b315e75c4e80ffd"
+        },
+        {
+          "path": "config/atf-component-reader-seals.json",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-orchestration",
+            "atf-tests-android",
+            "atf-tests-provenance",
+            "atf-tests-github"
+          ],
+          "status": "ADMITTED",
+          "reason": "REVIEWED_READER_SEAL_CONSUMERS",
+          "evidence": [
+            {
+              "group": "atf-tests",
+              "chain": [
+                "atf-tests/src/test/java/atf/tests/governance/source/language/SourceLanguageGovernanceTest.java",
+                "atf-tests/tools/source-language.mjs"
+              ],
+              "observer": "^(?:.*\\/)?[^/]*\\.java$",
+              "reader": "atf-tests/src/test/java/atf/tests/governance/documentation/release/ReleaseArtifactLayoutGovernanceTest.java"
+            },
+            {
+              "group": "atf-tests-documentation",
+              "chain": [
+                "atf-tests/src/test/java/atf/tests/governance/documentation/release/ReleaseArtifactLayoutGovernanceTest.java"
+              ],
+              "reader": "atf-tests/src/test/java/atf/tests/governance/documentation/release/ReleaseArtifactLayoutGovernanceTest.java"
+            },
+            {
+              "group": "atf-tests-orchestration",
+              "chain": [
+                "atf-tests/src/test/java/atf/tests/browser/toolchain/BrowserToolchainComponentTest.java",
+                "atf-tests/src/test/resources/toolchain/browser-toolchain-contract.ps1"
+              ],
+              "observer": "^.*$",
+              "reader": "atf-tests/src/test/java/atf/tests/governance/documentation/release/ReleaseArtifactLayoutGovernanceTest.java"
+            },
+            {
+              "group": "atf-tests",
+              "chain": [
+                "atf-tests/src/test/java/atf/tests/governance/source/language/SourceLanguageGovernanceTest.java",
+                "atf-tests/tools/source-language.mjs"
+              ],
+              "observer": "^(?:.*\\/)?[^/]*\\.java$",
+              "reader": "atf-tests/src/test/java/atf/tests/governance/documentation/release/rag/nativeproof/WhistSurfaceAdapterComponentTest.java"
+            },
+            {
+              "group": "atf-tests-documentation",
+              "chain": [
+                "atf-tests/src/test/java/atf/tests/governance/source/changes/TestChangeGovernanceTest.java"
+              ],
+              "observer": "^(?:.*\\/)?src\\/test\\/.*$",
+              "reader": "atf-tests/src/test/java/atf/tests/governance/documentation/release/rag/nativeproof/WhistSurfaceAdapterComponentTest.java"
+            },
+            {
+              "group": "atf-tests-android",
+              "chain": [
+                "atf-tests/src/test/java/atf/tests/governance/documentation/release/rag/nativeproof/WhistSurfaceAdapterComponentTest.java"
+              ],
+              "reader": "atf-tests/src/test/java/atf/tests/governance/documentation/release/rag/nativeproof/WhistSurfaceAdapterComponentTest.java"
+            },
+            {
+              "group": "atf-tests-orchestration",
+              "chain": [
+                "atf-tests/src/test/java/atf/tests/browser/toolchain/BrowserToolchainComponentTest.java",
+                "atf-tests/src/test/resources/toolchain/browser-toolchain-contract.ps1"
+              ],
+              "observer": "^.*$",
+              "reader": "atf-tests/src/test/java/atf/tests/governance/documentation/release/rag/nativeproof/WhistSurfaceAdapterComponentTest.java"
+            },
+            {
+              "group": "atf-tests",
+              "chain": [
+                "atf-tests/src/test/java/atf/tests/governance/source/changes/domains/TestChangeDomainComponentTest.java",
+                "atf-tests/src/test/java/atf/tests/governance/source/changes/domains/DomainGitFixture.java",
+                "atf-tests/src/main/java/atf/tests/testchange/TestChangeReview.java",
+                "atf-tests/tools/android-e2e-provenance.mjs"
+              ],
+              "reader": "atf-tests/tools/android-e2e-provenance.mjs"
+            },
+            {
+              "group": "atf-tests-documentation",
+              "chain": [
+                "atf-tests/src/test/java/atf/tests/governance/source/changes/TestChangeGovernanceTest.java",
+                "atf-tests/src/main/java/atf/tests/testchange/TestChangeReview.java",
+                "atf-tests/tools/android-e2e-provenance.mjs"
+              ],
+              "reader": "atf-tests/tools/android-e2e-provenance.mjs"
+            },
+            {
+              "group": "atf-tests-provenance",
+              "chain": [
+                "atf-tests/src/test/java/atf/tests/governance/documentation/release/versioning/ReleaseVersionComponentTest.java",
+                "atf-tests/tools/publication-audit.test.mjs",
+                "atf-tests/tools/release-git-fixture.mjs",
+                "atf-tests/tools/evaluate-release-rag.mjs",
+                "atf-tests/tools/android-e2e-evidence.mjs",
+                "atf-tests/tools/android-e2e-provenance.mjs"
+              ],
+              "reader": "atf-tests/tools/android-e2e-provenance.mjs"
+            },
+            {
+              "group": "atf-tests-android",
+              "chain": [
+                "atf-tests/src/test/java/atf/tests/governance/documentation/release/rag/ReleaseRagAndroidComponentTest.java",
+                "atf-tests/tools/android-e2e-provenance-fixture.mjs",
+                "atf-tests/tools/apply-android-e2e.mjs",
+                "atf-tests/tools/android-e2e-evidence.mjs",
+                "atf-tests/tools/android-e2e-provenance.mjs"
+              ],
+              "reader": "atf-tests/tools/android-e2e-provenance.mjs"
+            },
+            {
+              "group": "atf-tests-github",
+              "chain": [
+                "atf-tests/src/test/java/atf/tests/governance/documentation/release/rag/scope/ReleasePublicationSealComponentTest.java",
+                "atf-tests/tools/release-git-snapshot.test.mjs",
+                "atf-tests/tools/evaluate-release-rag.mjs",
+                "atf-tests/tools/android-e2e-evidence.mjs",
+                "atf-tests/tools/android-e2e-provenance.mjs"
+              ],
+              "reader": "atf-tests/tools/android-e2e-provenance.mjs"
+            },
+            {
+              "group": "atf-tests-orchestration",
+              "chain": [
+                "atf-tests/src/test/java/atf/tests/governance/documentation/release/rag/scope/metrics/DigestReadComponentTest.java",
+                "atf-tests/tools/seal-reader.test.mjs",
+                "scripts/AtfQualificationSnapshot.ps1",
+                "atf-tests/tools/check-release-artifacts.mjs",
+                "atf-tests/tools/evaluate-release-rag.mjs",
+                "atf-tests/tools/android-e2e-evidence.mjs",
+                "atf-tests/tools/android-e2e-provenance.mjs"
+              ],
+              "reader": "atf-tests/tools/android-e2e-provenance.mjs"
+            },
+            {
+              "group": "atf-tests",
+              "chain": [
+                "atf-tests/src/test/java/atf/tests/governance/source/language/SourceLanguageGovernanceTest.java",
+                "atf-tests/tools/source-language.mjs"
+              ],
+              "observer": "^(?:.*\\/)?[^/]*\\.mjs$",
+              "reader": "atf-tests/tools/android-e2e-runtime-scope.test.mjs"
+            },
+            {
+              "group": "atf-tests-documentation",
+              "chain": [
+                "atf-tests/src/test/java/atf/tests/governance/source/changes/TestChangeGovernanceTest.java"
+              ],
+              "observer": "^atf-tests\\/tools\\/.*$",
+              "reader": "atf-tests/tools/android-e2e-runtime-scope.test.mjs"
+            },
+            {
+              "group": "atf-tests-provenance",
+              "chain": [
+                "atf-tests/src/test/java/atf/tests/governance/documentation/release/rag/nativeproof/NativeSourceProvenanceComponentTest.java",
+                "atf-tests/tools/android-e2e-provenance.test.mjs",
+                "atf-tests/tools/android-e2e-runtime-scope.test.mjs"
+              ],
+              "reader": "atf-tests/tools/android-e2e-runtime-scope.test.mjs"
+            },
+            {
+              "group": "atf-tests-android",
+              "chain": [
+                "atf-tests/src/test/java/atf/tests/governance/uiadapter/SharedMenuHistoryComponentTest.java",
+                "atf-ui-browser/tests/menu-history.test.mjs"
+              ],
+              "observer": "^(?:.*\\/)?[^/]*\\.mjs$",
+              "reader": "atf-tests/tools/android-e2e-runtime-scope.test.mjs"
+            },
+            {
+              "group": "atf-tests-orchestration",
+              "chain": [
+                "atf-tests/src/test/java/atf/tests/browser/toolchain/BrowserToolchainComponentTest.java",
+                "atf-tests/src/test/resources/toolchain/browser-toolchain-contract.ps1"
+              ],
+              "observer": "^.*$",
+              "reader": "atf-tests/tools/android-e2e-runtime-scope.test.mjs"
+            },
+            {
+              "group": "atf-tests",
+              "chain": [
+                "atf-tests/src/test/java/atf/tests/governance/source/language/SourceLanguageGovernanceTest.java",
+                "atf-tests/tools/source-language.mjs"
+              ],
+              "observer": "^(?:.*\\/)?[^/]*\\.mjs$",
+              "reader": "atf-tests/tools/documentation-editions.test.mjs"
+            },
+            {
+              "group": "atf-tests-documentation",
+              "chain": [
+                "atf-tests/src/test/java/atf/tests/governance/source/changes/TestChangeGovernanceTest.java"
+              ],
+              "observer": "^atf-tests\\/tools\\/.*$",
+              "reader": "atf-tests/tools/documentation-editions.test.mjs"
+            },
+            {
+              "group": "atf-tests-android",
+              "chain": [
+                "atf-tests/src/test/java/atf/tests/governance/uiadapter/SharedMenuHistoryComponentTest.java",
+                "atf-ui-browser/tests/menu-history.test.mjs"
+              ],
+              "observer": "^(?:.*\\/)?[^/]*\\.mjs$",
+              "reader": "atf-tests/tools/documentation-editions.test.mjs"
+            },
+            {
+              "group": "atf-tests-orchestration",
+              "chain": [
+                "atf-tests/src/test/java/atf/tests/governance/documentation/release/rag/scope/ComponentEvidenceScopeComponentTest.java",
+                "atf-tests/tools/documentation-editions.test.mjs"
+              ],
+              "reader": "atf-tests/tools/documentation-editions.test.mjs"
+            },
+            {
+              "group": "atf-tests",
+              "chain": [
+                "atf-tests/src/test/java/atf/tests/governance/source/changes/domains/TestChangeDomainComponentTest.java",
+                "atf-tests/src/test/java/atf/tests/governance/source/changes/domains/DomainGitFixture.java",
+                "atf-tests/src/main/java/atf/tests/testchange/TestChangeReview.java",
+                "atf-ui-browser/tests/fixtures.mjs"
+              ],
+              "reader": "atf-ui-browser/tests/fixtures.mjs"
+            },
+            {
+              "group": "atf-tests-documentation",
+              "chain": [
+                "atf-tests/src/test/java/atf/tests/governance/source/changes/TestChangeGovernanceTest.java",
+                "atf-tests/src/main/java/atf/tests/testchange/TestChangeReview.java",
+                "atf-ui-browser/tests/fixtures.mjs"
+              ],
+              "reader": "atf-ui-browser/tests/fixtures.mjs"
+            },
+            {
+              "group": "atf-tests-android",
+              "chain": [
+                "atf-tests/src/test/java/atf/tests/governance/uiadapter/SharedMenuHistoryComponentTest.java",
+                "atf-ui-browser/tests/action-typography.test.mjs",
+                "atf-ui-browser/tests/fixtures.mjs"
+              ],
+              "reader": "atf-ui-browser/tests/fixtures.mjs"
+            },
+            {
+              "group": "atf-tests-orchestration",
+              "chain": [
+                "atf-tests/src/test/java/atf/tests/governance/documentation/release/rag/scope/QualificationLauncherComponentTest.java",
+                "atf-tests/src/test/java/atf/tests/governance/source/changes/TestChangeAdmissionFixture.java",
+                "atf-tests/src/main/java/atf/tests/testchange/TestChangeReview.java",
+                "atf-ui-browser/tests/fixtures.mjs"
+              ],
+              "reader": "atf-ui-browser/tests/fixtures.mjs"
+            },
+            {
+              "group": "atf-tests",
+              "chain": [
+                "atf-tests/src/test/java/atf/tests/governance/source/language/SourceLanguageGovernanceTest.java",
+                "atf-tests/tools/source-language.mjs"
+              ],
+              "observer": "^(?:.*\\/)?[^/]*\\.ps1$",
+              "reader": "release-tools/scripts/Build-SignedReleaseApk.ps1"
+            },
+            {
+              "group": "atf-tests-documentation",
+              "chain": [
+                "atf-tests/src/test/java/atf/tests/governance/documentation/release/ReleaseRagPlatformGovernanceTest.java",
+                "release-tools/scripts/Build-SignedReleaseApk.ps1"
+              ],
+              "reader": "release-tools/scripts/Build-SignedReleaseApk.ps1"
+            },
+            {
+              "group": "atf-tests-orchestration",
+              "chain": [
+                "atf-tests/src/test/java/atf/tests/browser/toolchain/BrowserToolchainComponentTest.java",
+                "atf-tests/src/test/resources/toolchain/browser-toolchain-contract.ps1"
+              ],
+              "observer": "^.*$",
+              "reader": "release-tools/scripts/Build-SignedReleaseApk.ps1"
+            },
+            {
+              "group": "atf-tests",
+              "chain": [
+                "atf-tests/src/test/java/atf/tests/governance/source/language/SourceLanguageGovernanceTest.java",
+                "atf-tests/tools/source-language.mjs"
+              ],
+              "observer": "^(?:.*\\/)?[^/]*\\.java$",
+              "reader": "release-tools/src/test/java/atf/release/tools/ReleaseToolsScriptBoundaryComponentTest.java"
+            },
+            {
+              "group": "atf-tests-documentation",
+              "chain": [
+                "atf-tests/src/test/java/atf/tests/governance/source/changes/TestChangeGovernanceTest.java"
+              ],
+              "observer": "^(?:.*\\/)?src\\/test\\/.*$",
+              "reader": "release-tools/src/test/java/atf/release/tools/ReleaseToolsScriptBoundaryComponentTest.java"
+            },
+            {
+              "group": "atf-tests-orchestration",
+              "chain": [
+                "atf-tests/src/test/java/atf/tests/browser/toolchain/BrowserToolchainComponentTest.java",
+                "atf-tests/src/test/resources/toolchain/browser-toolchain-contract.ps1"
+              ],
+              "observer": "^.*$",
+              "reader": "release-tools/src/test/java/atf/release/tools/ReleaseToolsScriptBoundaryComponentTest.java"
+            }
+          ],
+          "changedReaders": [
+            "atf-tests/src/test/java/atf/tests/governance/documentation/release/ReleaseArtifactLayoutGovernanceTest.java",
+            "atf-tests/src/test/java/atf/tests/governance/documentation/release/rag/nativeproof/WhistSurfaceAdapterComponentTest.java",
+            "atf-tests/tools/android-e2e-provenance.mjs",
+            "atf-tests/tools/android-e2e-runtime-scope.test.mjs",
+            "atf-tests/tools/documentation-editions.test.mjs",
+            "atf-ui-browser/tests/fixtures.mjs",
+            "release-tools/scripts/Build-SignedReleaseApk.ps1",
+            "release-tools/src/test/java/atf/release/tools/ReleaseToolsScriptBoundaryComponentTest.java"
+          ],
+          "topologySha256": "d72421bc706482d4f73397059eb1f23b97ce98294ff3d70469982e0944e9aa96",
+          "policySha256": "1cff547194fdcbbeca335364ffb447a5023181fb25ad0f9f1d52ca0deb1813d3",
+          "readerSealsSha256": "86024f4da2ad50e5947ef75385108a3cbdd0d5bca62148fc5b315e75c4e80ffd"
+        },
+        {
+          "path": "release-tools/scripts/Build-SignedReleaseApk.ps1",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-orchestration"
+          ],
+          "status": "ADMITTED",
+          "reason": "TRANSITIVE_SOURCE_DEPENDENCIES",
+          "evidence": [
+            {
+              "group": "atf-tests",
+              "chain": [
+                "atf-tests/src/test/java/atf/tests/governance/source/language/SourceLanguageGovernanceTest.java",
+                "atf-tests/tools/source-language.mjs"
+              ],
+              "observer": "^(?:.*\\/)?[^/]*\\.ps1$"
+            },
+            {
+              "group": "atf-tests-documentation",
+              "chain": [
+                "atf-tests/src/test/java/atf/tests/governance/documentation/release/ReleaseRagPlatformGovernanceTest.java",
+                "release-tools/scripts/Build-SignedReleaseApk.ps1"
+              ]
+            },
+            {
+              "group": "atf-tests-orchestration",
+              "chain": [
+                "atf-tests/src/test/java/atf/tests/browser/toolchain/BrowserToolchainComponentTest.java",
+                "atf-tests/src/test/resources/toolchain/browser-toolchain-contract.ps1"
+              ],
+              "observer": "^.*$"
+            }
+          ],
+          "topologySha256": "d72421bc706482d4f73397059eb1f23b97ce98294ff3d70469982e0944e9aa96",
+          "policySha256": "1cff547194fdcbbeca335364ffb447a5023181fb25ad0f9f1d52ca0deb1813d3",
+          "readerSealsSha256": "86024f4da2ad50e5947ef75385108a3cbdd0d5bca62148fc5b315e75c4e80ffd"
+        },
+        {
+          "path": "release-tools/src/test/java/atf/release/tools/ReleaseToolsScriptBoundaryComponentTest.java",
+          "groups": [
+            "atf-tests",
+            "atf-tests-documentation",
+            "atf-tests-orchestration"
+          ],
+          "status": "ADMITTED",
+          "reason": "TRANSITIVE_SOURCE_DEPENDENCIES",
+          "evidence": [
+            {
+              "group": "atf-tests",
+              "chain": [
+                "atf-tests/src/test/java/atf/tests/governance/source/language/SourceLanguageGovernanceTest.java",
+                "atf-tests/tools/source-language.mjs"
+              ],
+              "observer": "^(?:.*\\/)?[^/]*\\.java$"
+            },
+            {
+              "group": "atf-tests-documentation",
+              "chain": [
+                "atf-tests/src/test/java/atf/tests/governance/source/changes/TestChangeGovernanceTest.java"
+              ],
+              "observer": "^(?:.*\\/)?src\\/test\\/.*$"
+            },
+            {
+              "group": "atf-tests-orchestration",
+              "chain": [
+                "atf-tests/src/test/java/atf/tests/browser/toolchain/BrowserToolchainComponentTest.java",
+                "atf-tests/src/test/resources/toolchain/browser-toolchain-contract.ps1"
+              ],
+              "observer": "^.*$"
+            }
+          ],
+          "topologySha256": "d72421bc706482d4f73397059eb1f23b97ce98294ff3d70469982e0944e9aa96",
+          "policySha256": "1cff547194fdcbbeca335364ffb447a5023181fb25ad0f9f1d52ca0deb1813d3",
+          "readerSealsSha256": "86024f4da2ad50e5947ef75385108a3cbdd0d5bca62148fc5b315e75c4e80ffd"
+        }
+      ],
+      "componentEvidenceOrigin": "8a91daad486b28cfd40f8bce440f241054e01a3057901888f6df1bb3573e6143",
+      "tests": 82,
+      "reportSha256": "34b4e3b622f8444b76dd6526b276d7bf314e5d4ec57df3709a88cbbf3f5a3923",
+      "executionSha256": "63bbe9b26cea8c6934295c0976762c5ab916caec6791a2fce196087adae6c686"
+    }
+  ]
+}

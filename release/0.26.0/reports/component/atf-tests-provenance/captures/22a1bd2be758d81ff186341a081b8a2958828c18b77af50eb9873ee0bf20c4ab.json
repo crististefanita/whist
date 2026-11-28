@@ -1,0 +1,75 @@
+{
+  "identity" : {
+    "testClass" : "ReleaseVersionComponentTest",
+    "testPackage" : "atf.tests.governance.documentation.release.versioning",
+    "scenario" : "theApplicationUsesTheDeclaredPatchReleaseConvention(ComponentInputs)",
+    "method" : "theApplicationUsesTheDeclaredPatchReleaseConvention",
+    "tags" : [ "component", "framework-acceptance", "offline" ]
+  },
+  "scenarioName" : "theApplicationUsesTheDeclaredPatchReleaseConvention [1]",
+  "inputs" : [ {
+    "name" : "JUnit invocation identity",
+    "value" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfProvenanceComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.versioning.ReleaseVersionComponentTest]/[method:theApplicationUsesTheDeclaredPatchReleaseConvention(atf.android.evidence.component.ComponentInputs)]"
+  }, {
+    "name" : "Application version",
+    "value" : "0.26.0"
+  }, {
+    "name" : "Version policy",
+    "value" : "{\"sinceRelease\":\"0.22.1\",\"activeMajor\":0,\"newReleaseFormat\":\"0.x.y\",\"maintenanceIncrement\":\"increase-y\",\"featureOrContractIncrement\":\"increase-x-and-reset-y-to-zero\",\"transitionRules\":{\"maintenanceOrRefactor\":\"patch-only\",\"behaviorChange\":\"minor-and-reset-patch\",\"structuralOrReleaseChange\":\"minor-and-reset-patch\",\"majorReleaseRequires\":\"explicit-policy-change\"},\"stableMajorReservedUntil\":\"1.0.0\",\"legacyTwoPartOrdering\":\"0.x-is-equivalent-to-0.x.0\",\"newReleasePattern\":\"^0\\\\.(?:0|[1-9]\\\\d*)\\\\.(?:0|[1-9]\\\\d*)$\",\"retainHistoricalPatchNames\":true}"
+  }, {
+    "name" : "JUnit display name",
+    "value" : "theApplicationUsesTheDeclaredPatchReleaseConvention(ComponentInputs)"
+  }, {
+    "name" : "Original invocation recovery",
+    "value" : "{\"originalInvocationId\":\"[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfProvenanceComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.versioning.ReleaseVersionComponentTest]/[method:theApplicationUsesTheDeclaredPatchReleaseConvention(atf.android.evidence.component.ComponentInputs)]\",\"originalCheckpointSha256\":\"81fa5f1592ee1c6917091c9bfe6d2adcba2d7c304d6e27b3cdd28e1b0a2bb353\",\"mode\":\"REUSED_ORIGINAL_COMPARISONS\",\"originalReportSha256\":\"c730324dc6dac915eb5c9bcb8f9d027311b09d705eef54072cb1f616c7e19970\"}"
+  } ],
+  "phases" : [ {
+    "phase" : "TEST_BODY",
+    "checks" : [ {
+      "name" : "assertTrue · ReleaseVersionComponentTest.java:31 · The application declares its delivery version",
+      "expected" : "true",
+      "actual" : "true",
+      "passed" : true
+    }, {
+      "name" : "assertEquals · ReleaseVersionComponentTest.java:35",
+      "expected" : "0.x.y",
+      "actual" : "0.x.y",
+      "passed" : true
+    }, {
+      "name" : "assertTrue · ReleaseVersionComponentTest.java:36",
+      "expected" : "true",
+      "actual" : "true",
+      "passed" : true
+    }, {
+      "name" : "assertTrue · ReleaseVersionComponentTest.java:37",
+      "expected" : "true",
+      "actual" : "true",
+      "passed" : true
+    }, {
+      "name" : "assertTrue · ReleaseVersionComponentTest.java:38 · New application releases use three numeric components",
+      "expected" : "true",
+      "actual" : "true",
+      "passed" : true
+    }, {
+      "name" : "assertEquals · ReleaseVersionComponentTest.java:40",
+      "expected" : "patch-only",
+      "actual" : "patch-only",
+      "passed" : true
+    }, {
+      "name" : "assertEquals · ReleaseVersionComponentTest.java:41",
+      "expected" : "minor-and-reset-patch",
+      "actual" : "minor-and-reset-patch",
+      "passed" : true
+    }, {
+      "name" : "assertEquals · ReleaseVersionComponentTest.java:42",
+      "expected" : "explicit-policy-change",
+      "actual" : "explicit-policy-change",
+      "passed" : true
+    } ],
+    "outcome" : "PASS",
+    "diagnostic" : "",
+    "elapsedNanos" : 21484300,
+    "intervals" : 1
+  } ],
+  "outcome" : "PASS"
+}

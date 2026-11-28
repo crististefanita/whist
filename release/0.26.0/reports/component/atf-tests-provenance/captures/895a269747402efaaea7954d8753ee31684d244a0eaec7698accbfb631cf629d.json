@@ -1,0 +1,37 @@
+{
+  "identity" : {
+    "testClass" : "ReleaseVersionComponentTest",
+    "testPackage" : "atf.tests.governance.documentation.release.versioning",
+    "scenario" : "[9] 0.9007199254740993, 0.9007199254740992, true",
+    "method" : "numericOrderPreservesHistoricalPatchPrecision",
+    "tags" : [ "component", "framework-acceptance", "offline" ]
+  },
+  "scenarioName" : "numericOrderPreservesHistoricalPatchPrecision [9]",
+  "inputs" : [ {
+    "name" : "JUnit invocation identity",
+    "value" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfProvenanceComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.versioning.ReleaseVersionComponentTest]/[test-template:numericOrderPreservesHistoricalPatchPrecision(java.lang.String, java.lang.String, boolean, atf.android.evidence.component.ComponentInputs)]/[test-template-invocation:#9]"
+  }, {
+    "name" : "Version comparison",
+    "value" : "0.9007199254740993 >= 0.9007199254740992"
+  }, {
+    "name" : "JUnit display name",
+    "value" : "[9] 0.9007199254740993, 0.9007199254740992, true"
+  }, {
+    "name" : "Original invocation recovery",
+    "value" : "{\"originalInvocationId\":\"[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfProvenanceComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.versioning.ReleaseVersionComponentTest]/[test-template:numericOrderPreservesHistoricalPatchPrecision(java.lang.String, java.lang.String, boolean, atf.android.evidence.component.ComponentInputs)]/[test-template-invocation:#9]\",\"originalCheckpointSha256\":\"81fa5f1592ee1c6917091c9bfe6d2adcba2d7c304d6e27b3cdd28e1b0a2bb353\",\"mode\":\"REUSED_ORIGINAL_COMPARISONS\",\"originalReportSha256\":\"c730324dc6dac915eb5c9bcb8f9d027311b09d705eef54072cb1f616c7e19970\"}"
+  } ],
+  "phases" : [ {
+    "phase" : "TEST_BODY",
+    "checks" : [ {
+      "name" : "assertEquals · ReleaseVersionComponentTest.java:52",
+      "expected" : "true",
+      "actual" : "true",
+      "passed" : true
+    } ],
+    "outcome" : "PASS",
+    "diagnostic" : "",
+    "elapsedNanos" : 513400,
+    "intervals" : 1
+  } ],
+  "outcome" : "PASS"
+}

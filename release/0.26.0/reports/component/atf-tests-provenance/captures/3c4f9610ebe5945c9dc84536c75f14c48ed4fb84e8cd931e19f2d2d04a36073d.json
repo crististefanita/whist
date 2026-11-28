@@ -1,0 +1,44 @@
+{
+  "identity" : {
+    "testClass" : "HtmlInvocationIntegrityComponentTest",
+    "testPackage" : "atf.tests.governance.documentation.release.integrity.html",
+    "scenario" : "currentAtfExtentReceiptsQualifyWithoutDuplicateJunitXml()",
+    "method" : "currentAtfExtentReceiptsQualifyWithoutDuplicateJunitXml",
+    "tags" : [ "component", "framework-acceptance", "offline" ]
+  },
+  "scenarioName" : "currentAtfExtentReceiptsQualifyWithoutDuplicateJunitXml [1]",
+  "inputs" : [ {
+    "name" : "JUnit invocation identity",
+    "value" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfProvenanceComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.integrity.html.HtmlInvocationIntegrityComponentTest]/[method:currentAtfExtentReceiptsQualifyWithoutDuplicateJunitXml()]"
+  }, {
+    "name" : "JUnit display name",
+    "value" : "currentAtfExtentReceiptsQualifyWithoutDuplicateJunitXml()"
+  }, {
+    "name" : "Original invocation recovery",
+    "value" : "{\"originalInvocationId\":\"[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfProvenanceComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.integrity.html.HtmlInvocationIntegrityComponentTest]/[method:currentAtfExtentReceiptsQualifyWithoutDuplicateJunitXml()]\",\"originalCheckpointSha256\":\"81fa5f1592ee1c6917091c9bfe6d2adcba2d7c304d6e27b3cdd28e1b0a2bb353\",\"mode\":\"REUSED_ORIGINAL_COMPARISONS\",\"originalReportSha256\":\"c730324dc6dac915eb5c9bcb8f9d027311b09d705eef54072cb1f616c7e19970\"}"
+  } ],
+  "phases" : [ {
+    "phase" : "TEST_BODY",
+    "checks" : [ {
+      "name" : "assertEquals · HtmlInvocationIntegrityComponentTest.java:60",
+      "expected" : "1",
+      "actual" : "1",
+      "passed" : true
+    }, {
+      "name" : "assertEquals · HtmlInvocationIntegrityComponentTest.java:62",
+      "expected" : "1",
+      "actual" : "1",
+      "passed" : true
+    }, {
+      "name" : "assertFalse · HtmlInvocationIntegrityComponentTest.java:70 · Canonical Extent keeps invocation evidence without duplicate XML",
+      "expected" : "false",
+      "actual" : "false",
+      "passed" : true
+    } ],
+    "outcome" : "PASS",
+    "diagnostic" : "",
+    "elapsedNanos" : 58798900,
+    "intervals" : 1
+  } ],
+  "outcome" : "PASS"
+}

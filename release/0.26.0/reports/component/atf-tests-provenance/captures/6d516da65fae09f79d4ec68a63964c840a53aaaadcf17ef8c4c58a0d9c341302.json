@@ -1,0 +1,89 @@
+{
+  "identity" : {
+    "testClass" : "ReleaseRagProvenanceComponentTest",
+    "testPackage" : "atf.tests.governance.documentation.release.rag",
+    "scenario" : "aPinnedComponentCandidateProducesCitedHumanReviewWithoutChangingInputsOrCallingE2e()",
+    "method" : "aPinnedComponentCandidateProducesCitedHumanReviewWithoutChangingInputsOrCallingE2e",
+    "tags" : [ "component", "framework-acceptance", "offline" ]
+  },
+  "scenarioName" : "aPinnedComponentCandidateProducesCitedHumanReviewWithoutChangingInputsOrCallingE2e [1]",
+  "inputs" : [ {
+    "name" : "JUnit invocation identity",
+    "value" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfProvenanceComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.rag.ReleaseRagProvenanceComponentTest]/[method:aPinnedComponentCandidateProducesCitedHumanReviewWithoutChangingInputsOrCallingE2e()]"
+  }, {
+    "name" : "JUnit display name",
+    "value" : "aPinnedComponentCandidateProducesCitedHumanReviewWithoutChangingInputsOrCallingE2e()"
+  }, {
+    "name" : "Original invocation recovery",
+    "value" : "{\"originalInvocationId\":\"[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfProvenanceComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.rag.ReleaseRagProvenanceComponentTest]/[method:aPinnedComponentCandidateProducesCitedHumanReviewWithoutChangingInputsOrCallingE2e()]\",\"originalCheckpointSha256\":\"81fa5f1592ee1c6917091c9bfe6d2adcba2d7c304d6e27b3cdd28e1b0a2bb353\",\"mode\":\"REUSED_ORIGINAL_COMPARISONS\",\"originalReportSha256\":\"c730324dc6dac915eb5c9bcb8f9d027311b09d705eef54072cb1f616c7e19970\"}"
+  } ],
+  "phases" : [ {
+    "phase" : "TEST_BODY",
+    "checks" : [ {
+      "name" : "assertEquals · ReleaseRagProvenanceComponentTest.java:125",
+      "expected" : "0",
+      "actual" : "0",
+      "passed" : true
+    }, {
+      "name" : "assertEquals · ReleaseRagProvenanceComponentTest.java:126",
+      "expected" : "READY_FOR_HUMAN_REVIEW",
+      "actual" : "READY_FOR_HUMAN_REVIEW",
+      "passed" : true
+    }, {
+      "name" : "assertEquals · ReleaseRagProvenanceComponentTest.java:127",
+      "expected" : "NOT_RUN",
+      "actual" : "NOT_RUN",
+      "passed" : true
+    }, {
+      "name" : "assertEquals · ReleaseRagProvenanceComponentTest.java:128",
+      "expected" : "NONE",
+      "actual" : "NONE",
+      "passed" : true
+    }, {
+      "name" : "assertEquals · ReleaseRagProvenanceComponentTest.java:129",
+      "expected" : "PASS",
+      "actual" : "PASS",
+      "passed" : true
+    }, {
+      "name" : "assertEquals · ReleaseRagProvenanceComponentTest.java:130",
+      "expected" : "PASS",
+      "actual" : "PASS",
+      "passed" : true
+    }, {
+      "name" : "assertEquals · ReleaseRagProvenanceComponentTest.java:131",
+      "expected" : "PASS",
+      "actual" : "PASS",
+      "passed" : true
+    }, {
+      "name" : "assertTrue · ReleaseRagProvenanceComponentTest.java:132",
+      "expected" : "true",
+      "actual" : "true",
+      "passed" : true
+    }, {
+      "name" : "assertEquals · ReleaseRagProvenanceComponentTest.java:133 · Evaluator must not mutate the candidate",
+      "expected" : "723bb52f40b5b8d01fa66a67f5fd35693263cb8238c94f6c5f4001ee63b5a896",
+      "actual" : "723bb52f40b5b8d01fa66a67f5fd35693263cb8238c94f6c5f4001ee63b5a896",
+      "passed" : true
+    }, {
+      "name" : "assertTrue · ReleaseRagProvenanceComponentTest.java:135",
+      "expected" : "true",
+      "actual" : "true",
+      "passed" : true
+    }, {
+      "name" : "assertTrue · ReleaseRagProvenanceComponentTest.java:136",
+      "expected" : "true",
+      "actual" : "true",
+      "passed" : true
+    }, {
+      "name" : "assertEquals · ReleaseRagProvenanceComponentTest.java:137",
+      "expected" : "/source",
+      "actual" : "/source",
+      "passed" : true
+    } ],
+    "outcome" : "PASS",
+    "diagnostic" : "",
+    "elapsedNanos" : 935534500,
+    "intervals" : 1
+  } ],
+  "outcome" : "PASS"
+}

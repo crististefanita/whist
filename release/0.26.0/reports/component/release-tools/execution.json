@@ -1,0 +1,53 @@
+{
+  "schemaVersion" : 1,
+  "kind" : "live-source-components",
+  "apkQualification" : false,
+  "suite" : "atf.release.tools.ReleaseToolsComponentSuite",
+  "tests" : 12,
+  "outcomes" : {
+    "PASS" : 12
+  },
+  "coverageErrors" : [ ],
+  "containerFailures" : [ ],
+  "junitIdentitySha256" : "e1f48fdf622066de491d5e9f53100a237931230b5766e6bab57f61697885b63a",
+  "invocations" : [ {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.release.tools.ReleaseToolsComponentSuite]/[engine:junit-jupiter]/[class:atf.release.tools.RagAdvisoryGateComponentTest]/[method:admitsOnlyAHashBoundReadOnlyReviewRecommendation(java.nio.file.Path)]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.release.tools.ReleaseToolsComponentSuite]/[engine:junit-jupiter]/[class:atf.release.tools.RagAdvisoryGateComponentTest]/[method:blocksPromotionStateWrongHashesAndVerdictsInsideInputs(java.nio.file.Path)]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.release.tools.ReleaseToolsComponentSuite]/[engine:junit-jupiter]/[class:atf.release.tools.SigningIdentityGateComponentTest]/[method:preservedKeyAndProducedCertificateMustMatchThePublicFingerprint(java.nio.file.Path)]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.release.tools.ReleaseToolsComponentSuite]/[engine:junit-jupiter]/[class:atf.release.tools.SigningIdentityGateComponentTest]/[method:aNonDirectoryModuleParentCannotSubstituteAnExternalIdentity(java.nio.file.Path)]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.release.tools.ReleaseToolsComponentSuite]/[engine:junit-jupiter]/[class:atf.release.tools.SigningIdentityGateComponentTest]/[method:missingKeyMalformedIdentityAndCertificateRotationFailClosed(java.nio.file.Path)]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.release.tools.ReleaseToolsComponentSuite]/[engine:junit-jupiter]/[class:atf.release.tools.ReleaseEvidenceGateComponentTest]/[method:changedBytesAndEscapingOrPrivatePathsAreRejected(java.nio.file.Path)]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.release.tools.ReleaseToolsComponentSuite]/[engine:junit-jupiter]/[class:atf.release.tools.ReleaseEvidenceGateComponentTest]/[method:verifiesTheExactBytesForEveryDeclaredEvidenceFile(java.nio.file.Path)]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.release.tools.ReleaseToolsComponentSuite]/[engine:junit-jupiter]/[class:atf.release.tools.ReleaseProjectRootComponentTest]/[method:explicitAndEnvironmentOverridesResolveTheSameQualifiedRoot(java.nio.file.Path)]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.release.tools.ReleaseToolsComponentSuite]/[engine:junit-jupiter]/[class:atf.release.tools.ReleaseProjectRootComponentTest]/[method:invalidOverrideAndMissingAncestorFailClosed(java.nio.file.Path)]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.release.tools.ReleaseToolsComponentSuite]/[engine:junit-jupiter]/[class:atf.release.tools.ReleaseToolsScriptBoundaryComponentTest]/[method:adaptersUseTheOwningCheckoutAndPortableSigningIdentity()]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.release.tools.ReleaseToolsComponentSuite]/[engine:junit-jupiter]/[class:atf.release.tools.ReleaseToolsScriptBoundaryComponentTest]/[method:windowsBatchArgumentsDoNotUseTheBrokenCombinedProjectPropertyForm()]",
+    "outcome" : "PASS"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.release.tools.ReleaseToolsComponentSuite]/[engine:junit-jupiter]/[class:atf.release.tools.ReleaseToolsScriptBoundaryComponentTest]/[method:operationAdaptersStaySeparateFromRagAndGameTestOwners()]",
+    "outcome" : "PASS"
+  } ],
+  "invocationCheckpointSha256" : "fb3f071c3088f728f165d2d0669f02a65d451a91feb49da1ff489c5979825806",
+  "provenanceSha256" : "09cfeaf35f881dd9b18252df4f24ca50508fa2528c1249516b32850171d61d38",
+  "reportSha256" : "7a6d36e58c5bd455c046d4a0acc032f36c665c77eaadcc545d9ec521a925b5f0"
+}

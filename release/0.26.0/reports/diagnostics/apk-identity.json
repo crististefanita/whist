@@ -1,0 +1,11 @@
+{
+  "result": "PASS",
+  "applicationId": "ro.whistlab.app",
+  "versionName": "0.26.0",
+  "versionCode": 54,
+  "apkSha256": "ba4fad67af1fcd9758fffdd67bddad0ef5113120ed9c571bab636d2d876cb692",
+  "apkBytes": 2262881,
+  "zipalign": "PASS",
+  "signatureVerification": "PASS",
+  "sourceCommit": "6f36b0d6785acde9611209a8f1a09eee5879aa9f"
+}

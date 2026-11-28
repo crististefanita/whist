@@ -1,0 +1,543 @@
+{
+  "schemaVersion" : 1,
+  "kind" : "COMPONENT_INVOCATION_CHECKPOINT",
+  "suite" : "atf.tests.suites.components.AtfProvenanceComponentSuite",
+  "provenanceSha256" : "8163f7abef34d58634401d7107dca0fb2537aa5b564973f6b0dbdf863d346490",
+  "sourceContext" : {
+    "schemaVersion" : 2,
+    "qualificationContext" : {
+      "schemaVersion" : 1,
+      "kind" : "QUALIFIED_SOURCE_AND_CATALOG",
+      "sourceSha256" : "a952917e44fadde0a45bc087a5de9c63a2c1c72cfa3cb56a88d831b22a625ebe",
+      "releaseSha256" : "8a7f98fb09fa74c0292a3c530730c15292fe90209bf0240a433d979f3a25eea1",
+      "catalogSha256" : "3e70065a06263b38de93b52bfa797eebfd3611c175d2112c590c278527298cd1",
+      "identitySha256" : "6c12a8b37fa26564d2ded7cf68bd3c0595d5507dd4c4031f1e399059ba247c89"
+    },
+    "kind" : "live-source-components",
+    "apkQualification" : false,
+    "androidExecution" : false,
+    "observedUtc" : "2026-11-28T15:39:05.3186725Z",
+    "sourceFingerprint" : "a952917e44fadde0a45bc087a5de9c63a2c1c72cfa3cb56a88d831b22a625ebe",
+    "inputCount" : 1619,
+    "inputManifest" : "source-inputs.json",
+    "inputPartCharacters" : 16384,
+    "libraries" : [ {
+      "path" : "lib/atf-console-1.0.0-c2.jar",
+      "sha256" : "5a1cc9f3125a2e43134a2048476793e0b733b61e37a7f00b171a42990cc2a6aa"
+    }, {
+      "path" : "lib/atf-core-1.0.0-c4.jar",
+      "sha256" : "7c72a3f08c27f1a5cc1b2d61e2378801e130dd4d54d7eec99481348e1b1752b4"
+    }, {
+      "path" : "lib/atf-mock-1.0.0-m2.jar",
+      "sha256" : "0ae87d84905e3d3177e60a3c3ac2db6d0775852eb88162476f554ba247456704"
+    }, {
+      "path" : "lib/atf-reporting-1.0.0-j24.jar",
+      "sha256" : "8dd71735de004853210a91169297d8965691f6c4bf6781195594be50f70b69ef"
+    }, {
+      "path" : "lib/atf-test-kit-1.0.0-k2.jar",
+      "sha256" : "77767919b304afb093d80f4badcd9342c2192a4edb70884c2b61cbaf9a59ccc6"
+    } ],
+    "releaseFingerprint" : "8a7f98fb09fa74c0292a3c530730c15292fe90209bf0240a433d979f3a25eea1",
+    "releaseInputManifest" : "release-inputs.json",
+    "includeReleasePayload" : true
+  },
+  "populationComplete" : true,
+  "containerFailures" : [ ],
+  "invocations" : [ {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfProvenanceComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.versioning.ReleaseVersionComponentTest]/[method:theApplicationUsesTheDeclaredPatchReleaseConvention(atf.android.evidence.component.ComponentInputs)]",
+    "outcome" : "PASS",
+    "captureSha256" : "6b9c4f96e872ff79114ef2d26696599395f2332ee7d8cf8aac88af061daf309f"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfProvenanceComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.versioning.ReleaseVersionComponentTest]/[method:aChangeRiskCannotClaimAnIncorrectVersionIncrement(atf.android.evidence.component.ComponentInputs)]",
+    "outcome" : "PASS",
+    "captureSha256" : "6d86e57a6bee401d707a09b29286c16d94c205cfb79f37bf95927de632f3e8ec"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfProvenanceComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.versioning.ReleaseVersionComponentTest]/[method:releaseAdaptersKeepLegacyTwoPartNamesAndPublishThePatchIdentity(atf.android.evidence.component.ComponentInputs)]",
+    "outcome" : "PASS",
+    "captureSha256" : "46440ceb56a2f004bb25ee35f4cdbbb3aa224ef8b37a8cd0fcf86c22b4a7183f"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfProvenanceComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.versioning.ReleaseVersionComponentTest]/[method:absentVersionCannotBecomeADownloadIdentity(atf.android.evidence.component.ComponentInputs)]",
+    "outcome" : "PASS",
+    "captureSha256" : "ee512895fbf6eab5c65cbddab74c9481257f8959b2e4eaa897c1be2d8c5ed67c"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfProvenanceComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.rag.ReleaseRagProvenanceComponentTest]/[method:aPinnedComponentCandidateProducesCitedHumanReviewWithoutChangingInputsOrCallingE2e()]",
+    "outcome" : "PASS",
+    "captureSha256" : "619e445dfbedf54744b618621c7841a9017a63b57e181e8ece33f617d7606226"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfProvenanceComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.rag.ReleaseRagProvenanceComponentTest]/[method:documentationDriftRequiresBoundObservationsInTheReleasePayload(atf.android.evidence.component.ComponentInputs)]",
+    "outcome" : "PASS",
+    "captureSha256" : "bbff49c2502b72b12e1d97731747dc606f7d7bd75e314c829e9aab90fab217f3"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfProvenanceComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.rag.ReleaseRagProvenanceComponentTest]/[method:refusesAPlanThatSubstitutesItsOwnBaselineOrOmitsSnapshotFiles()]",
+    "outcome" : "PASS",
+    "captureSha256" : "843302c7832b7462f371a7d153d03f8fc1f0c0310d6c75ada67258b3ba48ddd4"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfProvenanceComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.rag.ReleaseRagProvenanceComponentTest]/[method:preparedOriginalReceiptsSatisfyEveryComponentGateWithoutANewRun()]",
+    "outcome" : "PASS",
+    "captureSha256" : "aefcb30d38fd60c0ce3b000c1f227e72e52d771e16e487e8186df031588bc843"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfProvenanceComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.rag.ReleaseRagProvenanceComponentTest]/[method:reusesAnOriginalReceiptOnlyOutsideItsSuiteInputs()]",
+    "outcome" : "PASS",
+    "captureSha256" : "50eb40f7cb764094ead441ea08733e27e772a3ce3216fc1b0cea0d059400b13a"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfProvenanceComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.rag.ReleaseRagProvenanceComponentTest]/[method:aNewCandidateCannotReuseGovernanceFromADifferentReleaseInventory()]",
+    "outcome" : "PASS",
+    "captureSha256" : "ec9cd769b54d20aed2bb5edcda4ca6e31b9163146113121778b73319e096963d"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfProvenanceComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.rag.ReleaseRagProvenanceComponentTest]/[method:componentSelectionsCannotReuseOneCanonicalExtentForTwoSuites()]",
+    "outcome" : "PASS",
+    "captureSha256" : "7b8c55d9165d78c45dbbc3f89b944615d309d1de5521de39fd661797bc36b83c"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfProvenanceComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.rag.ReleaseRagProvenanceComponentTest]/[method:provenanceReceiptMustBindTheSameComponentManifestAndAggregateRun()]",
+    "outcome" : "PASS",
+    "captureSha256" : "e75d73bd94c1b816ae9d72ea5df8b030e31cbf381366475a24e807a94b24efdc"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfProvenanceComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.rag.ReleaseRagProvenanceComponentTest]/[method:evaluatorRefusesToWriteItsVerdictInsideAnyInputTree()]",
+    "outcome" : "PASS",
+    "captureSha256" : "041f5d8662795c345eeb4a625d6ac762ec2c975514817bb58c652e7dab0094ed"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfProvenanceComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.rag.ReleaseRagProvenanceComponentTest]/[method:recoveredComponentAttemptsMustRemainDeclaredSealedAndReadable(atf.android.evidence.component.ComponentInputs)]",
+    "outcome" : "PASS",
+    "captureSha256" : "82a46990a11b29d1553b4ad3ddfac793240b48e32e025fe567c4c5fa39b0f282"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfProvenanceComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.rag.ReleaseRagProvenanceComponentTest]/[method:anApkDigestInThePinnedMainReadmeBlocksRagWithoutMaskingTheSourceCheck()]",
+    "outcome" : "PASS",
+    "captureSha256" : "e016f870a64c8550dd276a829a18d1dfb24c0dd2ee2ecc3dbbdc8323f025d017"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfProvenanceComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.rag.ReleaseRagProvenanceComponentTest]/[method:componentReportsFromAnotherSourceInventoryCannotQualifyTheApk()]",
+    "outcome" : "PASS",
+    "captureSha256" : "45fe4cd3b3ee58d0e22c34639a906e52940b249e463fd6a07e31b1de7bc59936"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfProvenanceComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.rag.ReleaseRagProvenanceComponentTest]/[method:docsOnlyRequiresGovernanceAndKeepsE2eNotRun()]",
+    "outcome" : "PASS",
+    "captureSha256" : "35ef40e5db726749fb59b41a6d69ec46f8aa46e61dc37cfa5ab3728d2508c3f4"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfProvenanceComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.rag.ReleaseRagProvenanceComponentTest]/[method:aMalformedReleaseVersionPatternBlocksPolicyWithoutCrashingTheEvaluator()]",
+    "outcome" : "PASS",
+    "captureSha256" : "92120e9e8990e6ac9217e0ef4bb87a4dee973d978a75c8945a3232cfbcf1adcd"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfProvenanceComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.rag.ReleaseRagProvenanceComponentTest]/[method:reportSchemaAdmissionPreservesLegacyHtmlAndRejectsXmlModeMissingModernSchemaAndMixedPaths()]",
+    "outcome" : "PASS",
+    "captureSha256" : "f928d4e1e161090a4331a9e8625008acbd8e691f283e7a6ea943ab96c2dbd5e0"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfProvenanceComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.rag.ReleaseRagProvenanceComponentTest]/[method:verdictEmbedsExactPlanBytesAndCitesTheEmbeddedReceipt()]",
+    "outcome" : "PASS",
+    "captureSha256" : "5c933ef278468c2cdef5062d5691771aef5f84e04fb73076c1dff5cf33812dc0"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfProvenanceComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.rag.ReleaseRagProvenanceComponentTest]/[method:documentationDriftReadmissionKeepsTheRejectedAggregateAndOriginalReports(atf.android.evidence.component.ComponentInputs)]",
+    "outcome" : "PASS",
+    "captureSha256" : "c6cb0c1cfbafc179c48aeca7edd3c9a104b7bf3a5844a1f30d7f34bbdc9caea6"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfProvenanceComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.rag.ReleaseRagProvenanceComponentTest]/[method:changedSourceAndArtifactBytesBlockWithSeparateDiagnostics()]",
+    "outcome" : "PASS",
+    "captureSha256" : "0e33e87224421e893e1be9897b33b8ce24749c3def2bc16dc2535b5c6dae46f1"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfProvenanceComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.rag.ReleaseRagProvenanceComponentTest]/[method:aMissingApplicationExtentGroupCannotBeReplacedByTheGovernanceSuite()]",
+    "outcome" : "PASS",
+    "captureSha256" : "123e02ef1a37e477dc95a354674bba30ad21aa6e55176889c22f5684e2dc282b"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfProvenanceComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.handoff.ReleaseCommitEvidenceComponentTest]/[method:gitLinkBindsTheIndexManifestAndExactReportBytes(java.nio.file.Path)]",
+    "outcome" : "PASS",
+    "captureSha256" : "9dbb927316f3b177ed95d12f0ba651441ff7e9b8cf74699cf771a13ffebc46a0"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfProvenanceComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.rag.nativeproof.NativeSourceProvenanceComponentTest]/[method:presentationOwnersSelectOnlyAffectedCollections(atf.android.evidence.component.ComponentInputs)]",
+    "outcome" : "FAIL",
+    "captureSha256" : "7b94fcf6851b493e9516ddc209c369f6c90844e50393a072ee6e8122472c7b3d"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfProvenanceComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.rag.nativeproof.NativeSourceProvenanceComponentTest]/[method:legacyEvidenceAndSourceSelectionKeepTheirIndependentGuards(atf.android.evidence.component.ComponentInputs)]",
+    "outcome" : "PASS",
+    "captureSha256" : "d0212ba9034e25064c72223dfa36f75f1eb80b09ba8b33abf0e9b7d6ccffa351"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfProvenanceComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.rag.nativeproof.NativeSourceProvenanceComponentTest]/[method:immutableRuntimeEvidenceSurvivesValidatorMaintenanceButRejectsChangedInputs(atf.android.evidence.component.ComponentInputs)]",
+    "outcome" : "PASS",
+    "captureSha256" : "723a5711bba8c5b2e4ee18ff87d225d9f3384aed0eeae28e46b3265a3c84a904"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfProvenanceComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.integrity.JunitIntegrityComponentTest]/[method:nestedSuitesAreRecountedOnceAndEmptyWrappersDoNotInventTests()]",
+    "outcome" : "PASS",
+    "captureSha256" : "01ec08deb62e08ddff2781222ccf5547e2930a14ade6bbc258a91156d9df67eb"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfProvenanceComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.integrity.JunitIntegrityComponentTest]/[method:aDeclaredAggregateMustMatchTheCasesActuallyRead()]",
+    "outcome" : "PASS",
+    "captureSha256" : "2545a7b3e30d8f817feedefb77f0913ed1630923f65f6763115a12c2b3bea69f"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfProvenanceComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.rag.scope.VisualContractScopeComponentTest]/[method:theRealPlannerBindsPinnedBytesAndKeepsUnavailableProofsConservative()]",
+    "outcome" : "PASS",
+    "captureSha256" : "61f7c4be79097fe2fdd7c924685c22d6c9bbf9fea51cda6dca1a25225075401f"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfProvenanceComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.rag.scope.VisualContractScopeComponentTest]/[method:mixedBehaviorAndBinaryChangesCannotLoseMandatoryFlows()]",
+    "outcome" : "PASS",
+    "captureSha256" : "477b35b814eb14220b18bd30b4f69d2347a5a2b547567984e6e13a1cd9b0b4a4"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfProvenanceComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.rag.scope.VisualContractScopeComponentTest]/[method:provenTypographyKeepsNativeSanityAndItsComponentOwners()]",
+    "outcome" : "PASS",
+    "captureSha256" : "2e89e27d2be38ed5b319f714a634b50130b42b291fe2bf29f88e8a628724d865"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfProvenanceComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.rag.scope.VisualContractScopeComponentTest]/[method:unprovenContractsKeepEveryNativeFlow()]",
+    "outcome" : "PASS",
+    "captureSha256" : "f9fffd4adf422d80210251f8393681cf73691068642e38ae2606c0b6cb258520"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfProvenanceComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.integrity.html.HtmlInvocationIntegrityComponentTest]/[method:selfReportingGovernanceExtentIsBoundByItsExecutionReceiptAfterTheSuite()]",
+    "outcome" : "PASS",
+    "captureSha256" : "0235e36e4103abbc94ebb1b764833c7584971649ca02948bc4360329910de641"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfProvenanceComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.integrity.html.HtmlInvocationIntegrityComponentTest]/[method:anExternalEvidenceAttachmentCannotQualifyAnOtherwisePassingReceipt()]",
+    "outcome" : "PASS",
+    "captureSha256" : "9838239a6831d710b5e11e73037fb3bc1b73313841717ac6c0bbfffdce80a1db"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfProvenanceComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.integrity.html.HtmlInvocationIntegrityComponentTest]/[method:receiptsOutsideTheirRenderedOwnerCannotIncreaseThePopulation()]",
+    "outcome" : "PASS",
+    "captureSha256" : "3125ac59299de0247ccf78f4980e5d01b335e235c4446e3731099539a1d938ef"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfProvenanceComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.integrity.html.HtmlInvocationIntegrityComponentTest]/[method:missingComparisonsFailureSkipAndMissingFixtureCannotQualify()]",
+    "outcome" : "PASS",
+    "captureSha256" : "742ce73b70486bc01211e3d8c0c78576653a7da825393a4988cff19cd5e2ed78"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfProvenanceComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.integrity.html.HtmlInvocationIntegrityComponentTest]/[method:aPassingOwnedReceiptMatchesItsActualRowsAndCannotBeCountedTwice()]",
+    "outcome" : "PASS",
+    "captureSha256" : "d4cee553ae0cd00e22bd6c77b074b33c49b7e39e9a14c2b3311faa9d8e9b4925"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfProvenanceComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.integrity.html.HtmlInvocationIntegrityComponentTest]/[method:currentAtfExtentReceiptsQualifyWithoutDuplicateJunitXml()]",
+    "outcome" : "PASS",
+    "captureSha256" : "c35becd92bfb29edb9570f5a1a265b7b2298b5c47cf19ec7072cf2c5a92a0083"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfProvenanceComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.integrity.html.HtmlInvocationIntegrityComponentTest]/[method:modernQualificationRefusesMissingHtmlGroupsAndDuplicateXmlReporting()]",
+    "outcome" : "PASS",
+    "captureSha256" : "970c8bb2a181643b63bf2b7918f5c663ba6bf4093395e97317a70d6435526c82"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfProvenanceComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.rag.scope.context.QualifiedCatalogContextComponentTest]/[method:sourceAndCatalogIdentitySurvivesRestartWithoutRelabelingHistoricalReports(atf.android.evidence.component.ComponentInputs)]",
+    "outcome" : "PASS",
+    "captureSha256" : "c9d3072d93abbaf24d85e4d925440f6410025f352d5426815a49bf5e9173a8fa"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfProvenanceComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.rag.scope.context.QualifiedCatalogContextComponentTest]/[method:missingForeignContextAndLiveCatalogCorruptionCannotQualify(atf.android.evidence.component.ComponentInputs)]",
+    "outcome" : "PASS",
+    "captureSha256" : "4a286cdf9fc1c8f0635ea9dab0bb58f19b2b230833f8ffed533cd4a79cc8cef1"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfProvenanceComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.integrity.ManifestIntegrityComponentTest]/[method:anInvalidRecorderTargetLeavesTheManifestUnchanged()]",
+    "outcome" : "PASS",
+    "captureSha256" : "3110f026af1f98f9e5666d9478197da5f0976e34b9d7b9ac01a0cd69828ac344"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfProvenanceComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.integrity.ManifestIntegrityComponentTest]/[method:theActualRecorderCapturesOnlyHashesWithoutPromotingAQualification()]",
+    "outcome" : "PASS",
+    "captureSha256" : "2a93e07cb136c9c48822dc3d812c643bb06da911031cb7f94cde1217c7a94a16"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfProvenanceComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.integrity.ApkIntegrityComponentTest]/[method:aConsistentApkAndItsPayloadAreReadWithoutChangingThem()]",
+    "outcome" : "PASS",
+    "captureSha256" : "4c16dfda8d8ef77dcabde6d9c969f5d8dc0dcc759151cedcad72b281878e8912"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfProvenanceComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.versioning.ReleaseVersionComponentTest]/[test-template:numericOrderPreservesHistoricalPatchPrecision(java.lang.String, java.lang.String, boolean, atf.android.evidence.component.ComponentInputs)]/[test-template-invocation:#1]",
+    "outcome" : "PASS",
+    "captureSha256" : "4142abdcd93649f02c6ac7e0f592546a1f9ea06f5b97a58c65495aa395264fcc"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfProvenanceComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.versioning.ReleaseVersionComponentTest]/[test-template:numericOrderPreservesHistoricalPatchPrecision(java.lang.String, java.lang.String, boolean, atf.android.evidence.component.ComponentInputs)]/[test-template-invocation:#2]",
+    "outcome" : "PASS",
+    "captureSha256" : "73865570ebc721bd7c02aff3e0589fd7956f7fea53ac47b69f14b8c4f6ad7f73"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfProvenanceComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.versioning.ReleaseVersionComponentTest]/[test-template:numericOrderPreservesHistoricalPatchPrecision(java.lang.String, java.lang.String, boolean, atf.android.evidence.component.ComponentInputs)]/[test-template-invocation:#3]",
+    "outcome" : "PASS",
+    "captureSha256" : "4b257be7a613e309a0c96e377e99efdc6c47a7c99d53a7a1035f0ab1cf0af1a2"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfProvenanceComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.versioning.ReleaseVersionComponentTest]/[test-template:numericOrderPreservesHistoricalPatchPrecision(java.lang.String, java.lang.String, boolean, atf.android.evidence.component.ComponentInputs)]/[test-template-invocation:#4]",
+    "outcome" : "PASS",
+    "captureSha256" : "e5327b66759aade1c47aca84c508fb2f17bedeaebe8eda30c308753ca9b535c5"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfProvenanceComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.versioning.ReleaseVersionComponentTest]/[test-template:numericOrderPreservesHistoricalPatchPrecision(java.lang.String, java.lang.String, boolean, atf.android.evidence.component.ComponentInputs)]/[test-template-invocation:#5]",
+    "outcome" : "PASS",
+    "captureSha256" : "cff62f215976ed0cb6aa2a2d003c3ce029d8f3ae25988d3e7527b6cd7e6ff9ef"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfProvenanceComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.versioning.ReleaseVersionComponentTest]/[test-template:numericOrderPreservesHistoricalPatchPrecision(java.lang.String, java.lang.String, boolean, atf.android.evidence.component.ComponentInputs)]/[test-template-invocation:#6]",
+    "outcome" : "PASS",
+    "captureSha256" : "d851840a4f540aa71f53c3d08c9edad6af6294ec775636f95333b7906a95a5de"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfProvenanceComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.versioning.ReleaseVersionComponentTest]/[test-template:numericOrderPreservesHistoricalPatchPrecision(java.lang.String, java.lang.String, boolean, atf.android.evidence.component.ComponentInputs)]/[test-template-invocation:#7]",
+    "outcome" : "PASS",
+    "captureSha256" : "7bab50d607f5edfbc24e54c7f982de52cdbacfb7c8e68dad2d82482e759e13c7"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfProvenanceComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.versioning.ReleaseVersionComponentTest]/[test-template:numericOrderPreservesHistoricalPatchPrecision(java.lang.String, java.lang.String, boolean, atf.android.evidence.component.ComponentInputs)]/[test-template-invocation:#8]",
+    "outcome" : "PASS",
+    "captureSha256" : "7ec9b7767b5be97b5e0d5dd78829ddd3c43c6d22626a4cae5b23430cddeb8c16"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfProvenanceComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.versioning.ReleaseVersionComponentTest]/[test-template:numericOrderPreservesHistoricalPatchPrecision(java.lang.String, java.lang.String, boolean, atf.android.evidence.component.ComponentInputs)]/[test-template-invocation:#9]",
+    "outcome" : "PASS",
+    "captureSha256" : "82cf6c64a9f11b89a9332f9ca791cc3f07fbc0a4528dfc6c4fbeb8945a3a1f71"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfProvenanceComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.versioning.ReleaseVersionComponentTest]/[test-template:invalidIdentitiesCannotConstructDownloadPaths(java.lang.String, atf.android.evidence.component.ComponentInputs)]/[test-template-invocation:#1]",
+    "outcome" : "PASS",
+    "captureSha256" : "82747dd4457e992e7005d1dfce23246bda306c563b25da7bee7d82d1127aaabd"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfProvenanceComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.versioning.ReleaseVersionComponentTest]/[test-template:invalidIdentitiesCannotConstructDownloadPaths(java.lang.String, atf.android.evidence.component.ComponentInputs)]/[test-template-invocation:#2]",
+    "outcome" : "PASS",
+    "captureSha256" : "f27f2018f01baca263bc48d0d9a2375e18d8f7b745563ba86834c04cc6435705"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfProvenanceComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.versioning.ReleaseVersionComponentTest]/[test-template:invalidIdentitiesCannotConstructDownloadPaths(java.lang.String, atf.android.evidence.component.ComponentInputs)]/[test-template-invocation:#3]",
+    "outcome" : "PASS",
+    "captureSha256" : "a7927de20332c1466c57b9a37bba4610edf5dc970bee1469e4798bc4bb5de0ee"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfProvenanceComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.versioning.ReleaseVersionComponentTest]/[test-template:invalidIdentitiesCannotConstructDownloadPaths(java.lang.String, atf.android.evidence.component.ComponentInputs)]/[test-template-invocation:#4]",
+    "outcome" : "PASS",
+    "captureSha256" : "309c1ded20c8396fa507f2cc05d05d8421978af9e3feff8ab441fd369ff36a76"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfProvenanceComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.versioning.ReleaseVersionComponentTest]/[test-template:invalidIdentitiesCannotConstructDownloadPaths(java.lang.String, atf.android.evidence.component.ComponentInputs)]/[test-template-invocation:#5]",
+    "outcome" : "PASS",
+    "captureSha256" : "a597ebce0f3d64cb956a8951a6ce7acf76a1f6170a9bf0ee74f7b88fd24e089c"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfProvenanceComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.versioning.ReleaseVersionComponentTest]/[test-template:invalidIdentitiesCannotConstructDownloadPaths(java.lang.String, atf.android.evidence.component.ComponentInputs)]/[test-template-invocation:#6]",
+    "outcome" : "PASS",
+    "captureSha256" : "8e201db1d0058f9fc6b21288d007787b0ecb3db55aa312e64c8fc434df0084cd"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfProvenanceComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.versioning.ReleaseVersionComponentTest]/[test-template:invalidIdentitiesCannotConstructDownloadPaths(java.lang.String, atf.android.evidence.component.ComponentInputs)]/[test-template-invocation:#7]",
+    "outcome" : "PASS",
+    "captureSha256" : "afb9139a8e26e9e75e647e7f2bde6772179bedda214b3179b5a78bd52365d386"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfProvenanceComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.versioning.ReleaseVersionComponentTest]/[test-template:invalidIdentitiesCannotConstructDownloadPaths(java.lang.String, atf.android.evidence.component.ComponentInputs)]/[test-template-invocation:#8]",
+    "outcome" : "PASS",
+    "captureSha256" : "86a9b0dc3152240e23c410156a43c52389fa5ded416b1e0744bea7392d0ee5b8"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfProvenanceComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.rag.ReleaseRagProvenanceComponentTest]/[test-template:aCollectionIntroducedForTheCandidateVersionCannotBeOmittedFromItsPlan(java.lang.String)]/[test-template-invocation:#1]",
+    "outcome" : "PASS",
+    "captureSha256" : "46c9093fb0e8fb912fea5eeea00166850f6647beeb52996e2f0c6ffd74a456d5"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfProvenanceComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.rag.ReleaseRagProvenanceComponentTest]/[test-template:aCollectionIntroducedForTheCandidateVersionCannotBeOmittedFromItsPlan(java.lang.String)]/[test-template-invocation:#2]",
+    "outcome" : "PASS",
+    "captureSha256" : "24d78ea26cd7cf4413eb9e214730ebd992cdfe590acef7ee7c0fa6791ddd66c1"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfProvenanceComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.integrity.JunitIntegrityComponentTest]/[test-template:zeroSummaryAttributesCannotHideAnActualNonPassingCase(java.lang.String)]/[test-template-invocation:#1]",
+    "outcome" : "PASS",
+    "captureSha256" : "b6a825d41801327bc1f26503737b7af0f40c24cdcfa10ea7da36264e1369de65"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfProvenanceComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.integrity.JunitIntegrityComponentTest]/[test-template:zeroSummaryAttributesCannotHideAnActualNonPassingCase(java.lang.String)]/[test-template-invocation:#2]",
+    "outcome" : "PASS",
+    "captureSha256" : "ed5e3df0a041af99332b19be6d0479c8dc2b233303789f40f578c841f0d9ab36"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfProvenanceComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.integrity.JunitIntegrityComponentTest]/[test-template:zeroSummaryAttributesCannotHideAnActualNonPassingCase(java.lang.String)]/[test-template-invocation:#3]",
+    "outcome" : "PASS",
+    "captureSha256" : "26549704c994eb501105fb661687180c37dfbca7e944a1ecffc67de1e8b6d636"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfProvenanceComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.integrity.JunitIntegrityComponentTest]/[test-template:actualNonPassingOutcomesAreRejectedEvenWithHonestCountsAndMatchingHashes(java.lang.String)]/[test-template-invocation:#1]",
+    "outcome" : "PASS",
+    "captureSha256" : "0d5b1d3fdcb4a188fed486c8585a0e8f4dbf4058e4d90169fcd79d85ccccb4f5"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfProvenanceComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.integrity.JunitIntegrityComponentTest]/[test-template:actualNonPassingOutcomesAreRejectedEvenWithHonestCountsAndMatchingHashes(java.lang.String)]/[test-template-invocation:#2]",
+    "outcome" : "PASS",
+    "captureSha256" : "b820bbcf3a4f02631d33913466e90e09b593a63fd65aaa9c15bcccdcd911ea8a"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfProvenanceComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.integrity.JunitIntegrityComponentTest]/[test-template:actualNonPassingOutcomesAreRejectedEvenWithHonestCountsAndMatchingHashes(java.lang.String)]/[test-template-invocation:#3]",
+    "outcome" : "PASS",
+    "captureSha256" : "659dcba3f8de93646dcc7d90f05d5aa6662c193de76803e0ca757e359f4f38ab"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfProvenanceComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.integrity.JunitIntegrityComponentTest]/[test-template:malformedOrAmbiguousXmlIsRefusedAfterItsReceiptHasBeenUpdated(java.lang.String)]/[test-template-invocation:#1]",
+    "outcome" : "PASS",
+    "captureSha256" : "5f751dbf6aaa5f9610dc507f9e9dd43e352bded650fb1dde09137b4277148062"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfProvenanceComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.integrity.JunitIntegrityComponentTest]/[test-template:malformedOrAmbiguousXmlIsRefusedAfterItsReceiptHasBeenUpdated(java.lang.String)]/[test-template-invocation:#2]",
+    "outcome" : "PASS",
+    "captureSha256" : "b996ed11d5f617025c6684c2289f4de11c4ceb158c50c5e4e099323cc3270470"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfProvenanceComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.integrity.JunitIntegrityComponentTest]/[test-template:malformedOrAmbiguousXmlIsRefusedAfterItsReceiptHasBeenUpdated(java.lang.String)]/[test-template-invocation:#3]",
+    "outcome" : "PASS",
+    "captureSha256" : "47fed3993c527459a7316fdae25c9f20b83c034bd401e29ad875c3dcc53fd888"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfProvenanceComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.integrity.JunitIntegrityComponentTest]/[test-template:malformedOrAmbiguousXmlIsRefusedAfterItsReceiptHasBeenUpdated(java.lang.String)]/[test-template-invocation:#4]",
+    "outcome" : "PASS",
+    "captureSha256" : "faf25c652378051d3b89959cd7b89eebbae3bd4b7b54a53ea0449d13610055e0"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfProvenanceComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.integrity.JunitIntegrityComponentTest]/[test-template:malformedOrAmbiguousXmlIsRefusedAfterItsReceiptHasBeenUpdated(java.lang.String)]/[test-template-invocation:#5]",
+    "outcome" : "PASS",
+    "captureSha256" : "83f456a89e4e282f790dfed5ffd49884f53e7421cfd88064b296f8242de98475"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfProvenanceComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.integrity.JunitIntegrityComponentTest]/[test-template:malformedOrAmbiguousXmlIsRefusedAfterItsReceiptHasBeenUpdated(java.lang.String)]/[test-template-invocation:#6]",
+    "outcome" : "PASS",
+    "captureSha256" : "4198fa8cc08430a77d2bf6371557ae4c9b95390239b05da4ca9b06eda5505dee"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfProvenanceComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.integrity.JunitIntegrityComponentTest]/[test-template:malformedOrAmbiguousXmlIsRefusedAfterItsReceiptHasBeenUpdated(java.lang.String)]/[test-template-invocation:#7]",
+    "outcome" : "PASS",
+    "captureSha256" : "dfcab3da3b1caa6d9f2b26d234ad4ae9551239cf33335d640ffea1ca08820531"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfProvenanceComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.integrity.JunitIntegrityComponentTest]/[test-template:malformedOrAmbiguousXmlIsRefusedAfterItsReceiptHasBeenUpdated(java.lang.String)]/[test-template-invocation:#8]",
+    "outcome" : "PASS",
+    "captureSha256" : "b7dc74a84f439cdb18e68fbccfe4d73083ed83460da9defa53faece1db26b338"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfProvenanceComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.integrity.JunitIntegrityComponentTest]/[test-template:malformedOrAmbiguousXmlIsRefusedAfterItsReceiptHasBeenUpdated(java.lang.String)]/[test-template-invocation:#9]",
+    "outcome" : "PASS",
+    "captureSha256" : "577a2140c7f14f837c2a27245db5bc58fb32aa0904f7cdcc5fa3baee5f4b1953"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfProvenanceComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.integrity.JunitIntegrityComponentTest]/[test-template:malformedOrAmbiguousXmlIsRefusedAfterItsReceiptHasBeenUpdated(java.lang.String)]/[test-template-invocation:#10]",
+    "outcome" : "PASS",
+    "captureSha256" : "f940b965a6aead44b0e9a0358c8b0ecb924b3af81b50e711a617dad3c4b91de1"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfProvenanceComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.integrity.JunitIntegrityComponentTest]/[test-template:theManifestCannotLoseAddOrCountTheSameInvocationTwice(java.lang.String)]/[test-template-invocation:#1]",
+    "outcome" : "PASS",
+    "captureSha256" : "bc4f125e5138d5ae9149e2add12a750fdc02415aca71a23f65aaaa7449e08a9f"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfProvenanceComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.integrity.JunitIntegrityComponentTest]/[test-template:theManifestCannotLoseAddOrCountTheSameInvocationTwice(java.lang.String)]/[test-template-invocation:#2]",
+    "outcome" : "PASS",
+    "captureSha256" : "4270d2f10a1fe33da4a3f75f32332a33c4011e27783adeaf7db89ff412549420"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfProvenanceComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.integrity.JunitIntegrityComponentTest]/[test-template:theManifestCannotLoseAddOrCountTheSameInvocationTwice(java.lang.String)]/[test-template-invocation:#3]",
+    "outcome" : "PASS",
+    "captureSha256" : "0f2d3ac7f274e400cfdab9efd0ad00de53909a5834db3838626ef3d17555c095"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfProvenanceComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.integrity.JunitIntegrityComponentTest]/[test-template:theManifestCannotLoseAddOrCountTheSameInvocationTwice(java.lang.String)]/[test-template-invocation:#4]",
+    "outcome" : "PASS",
+    "captureSha256" : "2ca3f21da8d448a9b161bf26542dfccf2638f3e34c6fbd393b5bce00978c18ed"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfProvenanceComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.integrity.JunitIntegrityComponentTest]/[test-template:theManifestCannotLoseAddOrCountTheSameInvocationTwice(java.lang.String)]/[test-template-invocation:#5]",
+    "outcome" : "PASS",
+    "captureSha256" : "35de40e8dea1c9cb0c65d1b6e8c46d88b8333b0133c8871a7e140f87e85af984"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfProvenanceComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.integrity.JunitIntegrityComponentTest]/[test-template:theManifestCannotLoseAddOrCountTheSameInvocationTwice(java.lang.String)]/[test-template-invocation:#6]",
+    "outcome" : "PASS",
+    "captureSha256" : "8adaffed64c7f2d4c4ef8f43ad178c17b30408908cecfd3699af35cfe2fc12a9"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfProvenanceComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.integrity.ManifestIntegrityComponentTest]/[test-template:theReceiptMustDescribeExactlyTheExistingPayload(java.lang.String)]/[test-template-invocation:#1]",
+    "outcome" : "PASS",
+    "captureSha256" : "f42df1b305da58387b5aeca7e34f8ed35566b71b375bbd2b41b08f03e9649bff"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfProvenanceComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.integrity.ManifestIntegrityComponentTest]/[test-template:theReceiptMustDescribeExactlyTheExistingPayload(java.lang.String)]/[test-template-invocation:#2]",
+    "outcome" : "PASS",
+    "captureSha256" : "d1c24e1c7c28543b690d8ad679a6ea1eb09c273d9f3bfa1290dc349c3a809c30"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfProvenanceComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.integrity.ManifestIntegrityComponentTest]/[test-template:theReceiptMustDescribeExactlyTheExistingPayload(java.lang.String)]/[test-template-invocation:#3]",
+    "outcome" : "PASS",
+    "captureSha256" : "482f5c22dd2089fb0cfb9c1a86c3e25ec1f7fd284d365e4ae03016a68c60cb4e"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfProvenanceComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.integrity.ManifestIntegrityComponentTest]/[test-template:theReceiptMustDescribeExactlyTheExistingPayload(java.lang.String)]/[test-template-invocation:#4]",
+    "outcome" : "PASS",
+    "captureSha256" : "99320c73bc87ed43c75aca4b51c1a98e105dc09e02b69bc6be2ad5f1ecbffc44"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfProvenanceComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.integrity.ManifestIntegrityComponentTest]/[test-template:theReceiptMustDescribeExactlyTheExistingPayload(java.lang.String)]/[test-template-invocation:#5]",
+    "outcome" : "PASS",
+    "captureSha256" : "e78c901bc89bfe2f11be334e970daade0e9451f1dcbe18be8d71f36dd45debd5"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfProvenanceComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.integrity.ManifestIntegrityComponentTest]/[test-template:theReceiptMustDescribeExactlyTheExistingPayload(java.lang.String)]/[test-template-invocation:#6]",
+    "outcome" : "PASS",
+    "captureSha256" : "61833ae81b76e6518c3279938bbf5f883ae2564a1714380ff0f8ec55ef3684a9"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfProvenanceComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.integrity.ManifestIntegrityComponentTest]/[test-template:theReceiptMustDescribeExactlyTheExistingPayload(java.lang.String)]/[test-template-invocation:#7]",
+    "outcome" : "PASS",
+    "captureSha256" : "eb9ff0e3734d642862a1340a3ec9330f8a712f3cf34564707761da118452a9ae"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfProvenanceComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.integrity.ManifestIntegrityComponentTest]/[test-template:theReceiptMustDescribeExactlyTheExistingPayload(java.lang.String)]/[test-template-invocation:#8]",
+    "outcome" : "PASS",
+    "captureSha256" : "dfc6009d8e4a1a715facec4a5c33b474409c4be59cb361d91e8bcf347902f756"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfProvenanceComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.integrity.ManifestIntegrityComponentTest]/[test-template:theReceiptMustDescribeExactlyTheExistingPayload(java.lang.String)]/[test-template-invocation:#9]",
+    "outcome" : "PASS",
+    "captureSha256" : "734d4e2e7090f4afef16bc83bc983b41c51dc8e832f40a213b28463919aee5b7"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfProvenanceComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.integrity.ManifestIntegrityComponentTest]/[test-template:theReceiptMustDescribeExactlyTheExistingPayload(java.lang.String)]/[test-template-invocation:#10]",
+    "outcome" : "PASS",
+    "captureSha256" : "5645ce795041c3b126e3374361e258b4edd41674101775663ace61c1f4748ede"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfProvenanceComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.integrity.ManifestIntegrityComponentTest]/[test-template:theReceiptMustDescribeExactlyTheExistingPayload(java.lang.String)]/[test-template-invocation:#11]",
+    "outcome" : "PASS",
+    "captureSha256" : "436b29e430d1d05fe74175df75b4991e522628de477badc1947d6b2c3815ae57"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfProvenanceComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.integrity.ManifestIntegrityComponentTest]/[test-template:jsonSyntaxCannotSilentlyReplaceOrIgnoreDeclaredFields(java.lang.String)]/[test-template-invocation:#1]",
+    "outcome" : "PASS",
+    "captureSha256" : "b9d7802836a7df4f0d38e3691d0b732a92324d7e7f593705fd7197c5a5e19c22"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfProvenanceComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.integrity.ManifestIntegrityComponentTest]/[test-template:jsonSyntaxCannotSilentlyReplaceOrIgnoreDeclaredFields(java.lang.String)]/[test-template-invocation:#2]",
+    "outcome" : "PASS",
+    "captureSha256" : "899c31e65afd030c431685d9d3fefd6a797ce8251a5a786ca8963f9750b0a55b"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfProvenanceComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.integrity.ManifestIntegrityComponentTest]/[test-template:jsonSyntaxCannotSilentlyReplaceOrIgnoreDeclaredFields(java.lang.String)]/[test-template-invocation:#3]",
+    "outcome" : "PASS",
+    "captureSha256" : "6f6ba6c7e67c93cc97762dd0eb3febd0d83e2b3fde98a18e049cb8d941d4496a"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfProvenanceComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.integrity.ManifestIntegrityComponentTest]/[test-template:refreshedReceiptsDoNotHideInconsistentSourceOrReportDeclarations(java.lang.String)]/[test-template-invocation:#1]",
+    "outcome" : "PASS",
+    "captureSha256" : "826b19a041eff5121286b0a84eb4bab8334295a7490d5acbf6ebddb28e23c9a5"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfProvenanceComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.integrity.ManifestIntegrityComponentTest]/[test-template:refreshedReceiptsDoNotHideInconsistentSourceOrReportDeclarations(java.lang.String)]/[test-template-invocation:#2]",
+    "outcome" : "PASS",
+    "captureSha256" : "1cf695d0aec75e1a4e49dd760841952f4314b50b3f2535877006e4ea96028232"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfProvenanceComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.integrity.ManifestIntegrityComponentTest]/[test-template:refreshedReceiptsDoNotHideInconsistentSourceOrReportDeclarations(java.lang.String)]/[test-template-invocation:#3]",
+    "outcome" : "PASS",
+    "captureSha256" : "ddd194ee1fb0bfd03afd01dc6820129912b72ba163f92d1e65104d6052415fcd"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfProvenanceComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.integrity.ManifestIntegrityComponentTest]/[test-template:refreshedReceiptsDoNotHideInconsistentSourceOrReportDeclarations(java.lang.String)]/[test-template-invocation:#4]",
+    "outcome" : "PASS",
+    "captureSha256" : "5ae98d1e4490bc4e677092e113ad2497c5e217d8b6c1e7d2904a5f0e9b725720"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfProvenanceComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.integrity.ManifestIntegrityComponentTest]/[test-template:refreshedReceiptsDoNotHideInconsistentSourceOrReportDeclarations(java.lang.String)]/[test-template-invocation:#5]",
+    "outcome" : "PASS",
+    "captureSha256" : "1eb50c713ee3db03f887086f92aab27f4725eb747e7e87d96eb613433cf117be"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfProvenanceComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.integrity.ManifestIntegrityComponentTest]/[test-template:refreshedReceiptsDoNotHideInconsistentSourceOrReportDeclarations(java.lang.String)]/[test-template-invocation:#6]",
+    "outcome" : "PASS",
+    "captureSha256" : "ff30f5c1dcc1b01dba3c84c92d65b3a5ee473113d1bd829ba5c6a081885bddba"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfProvenanceComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.integrity.ManifestIntegrityComponentTest]/[test-template:refreshedReceiptsDoNotHideInconsistentSourceOrReportDeclarations(java.lang.String)]/[test-template-invocation:#7]",
+    "outcome" : "PASS",
+    "captureSha256" : "60dfea60e6306e7cb4ae804c195e5d62a6a1dd985cffca1b96f96dad106cb385"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfProvenanceComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.integrity.ManifestIntegrityComponentTest]/[test-template:refreshedReceiptsDoNotHideInconsistentSourceOrReportDeclarations(java.lang.String)]/[test-template-invocation:#8]",
+    "outcome" : "PASS",
+    "captureSha256" : "2f38e1d91050d9ac30636a484efbcc8a5069566f93f15e465ecb76aa74cfbf73"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfProvenanceComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.integrity.ApkIntegrityComponentTest]/[test-template:missingChangedOrMisidentifiedBinariesCannotPass(java.lang.String)]/[test-template-invocation:#1]",
+    "outcome" : "PASS",
+    "captureSha256" : "8599c1a62f9cee2baa7ca301ea99cd24935227603ae42830911d35843a3d43b2"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfProvenanceComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.integrity.ApkIntegrityComponentTest]/[test-template:missingChangedOrMisidentifiedBinariesCannotPass(java.lang.String)]/[test-template-invocation:#2]",
+    "outcome" : "PASS",
+    "captureSha256" : "640ac99663acaecc41670976093805dd7b5574818c6883ce6b7cb2c3cd738290"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfProvenanceComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.integrity.ApkIntegrityComponentTest]/[test-template:missingChangedOrMisidentifiedBinariesCannotPass(java.lang.String)]/[test-template-invocation:#3]",
+    "outcome" : "PASS",
+    "captureSha256" : "456e6b31f225afae2c2faee2d77f48afa4f0d927a1cdf0588ca22ddde618f75f"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfProvenanceComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.integrity.ApkIntegrityComponentTest]/[test-template:missingChangedOrMisidentifiedBinariesCannotPass(java.lang.String)]/[test-template-invocation:#4]",
+    "outcome" : "PASS",
+    "captureSha256" : "e872b22b1bcfb10379135a5259ac43dd3167369d4079a43a606a0bade6927aff"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfProvenanceComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.integrity.ApkIntegrityComponentTest]/[test-template:missingChangedOrMisidentifiedBinariesCannotPass(java.lang.String)]/[test-template-invocation:#5]",
+    "outcome" : "PASS",
+    "captureSha256" : "9cfd60bc71d3b4d5e781914d5cef11c523a1ce891069d41b49037a48a9e2bea7"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfProvenanceComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.integrity.ApkIntegrityComponentTest]/[test-template:missingChangedOrMisidentifiedBinariesCannotPass(java.lang.String)]/[test-template-invocation:#6]",
+    "outcome" : "PASS",
+    "captureSha256" : "180dc17029f332c9cce949003054209a839cb5a3cd742a6dfa2e38d0a6da3fe6"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfProvenanceComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.integrity.ApkIntegrityComponentTest]/[test-template:missingChangedOrMisidentifiedBinariesCannotPass(java.lang.String)]/[test-template-invocation:#7]",
+    "outcome" : "PASS",
+    "captureSha256" : "c3d701e347a6c9509465589ba96c882fa2b789dcc13e8e3f43fb1ef46043572a"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfProvenanceComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.integrity.ApkIntegrityComponentTest]/[test-template:missingChangedOrMisidentifiedBinariesCannotPass(java.lang.String)]/[test-template-invocation:#8]",
+    "outcome" : "PASS",
+    "captureSha256" : "a2125e642d05514af678446dbeb957d763fbf3a6cf8714a43c525939d4e812da"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfProvenanceComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.integrity.ApkIntegrityComponentTest]/[test-template:missingChangedOrMisidentifiedBinariesCannotPass(java.lang.String)]/[test-template-invocation:#9]",
+    "outcome" : "PASS",
+    "captureSha256" : "469ee9384d00212ba3d6f58307c4d5494feb3295fb29ed950527de640f5f49f9"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfProvenanceComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.integrity.ApkIntegrityComponentTest]/[test-template:missingChangedOrMisidentifiedBinariesCannotPass(java.lang.String)]/[test-template-invocation:#10]",
+    "outcome" : "PASS",
+    "captureSha256" : "b61b01a396b8753b5b5c0b6b05f78ab96f41eddbddd101feb7eeb71bc73e4f73"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfProvenanceComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.integrity.ApkIntegrityComponentTest]/[test-template:matchingHashesDoNotSubstituteForAConsistentApkArchive(java.lang.String)]/[test-template-invocation:#1]",
+    "outcome" : "PASS",
+    "captureSha256" : "eac61ae534b126a7a57dd70c3b279d26b44130e63c2710d50f6d9dcac6594e37"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfProvenanceComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.integrity.ApkIntegrityComponentTest]/[test-template:matchingHashesDoNotSubstituteForAConsistentApkArchive(java.lang.String)]/[test-template-invocation:#2]",
+    "outcome" : "PASS",
+    "captureSha256" : "f94e0749b0fb74e329e060c8e2cdc064baaab7183b192688aabc415509071f62"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfProvenanceComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.integrity.ApkIntegrityComponentTest]/[test-template:matchingHashesDoNotSubstituteForAConsistentApkArchive(java.lang.String)]/[test-template-invocation:#3]",
+    "outcome" : "PASS",
+    "captureSha256" : "7df7b4c2b1a363b3c85b46c7f189f56ad044694c0b0e39d33e6d959f9dfcdbcd"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfProvenanceComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.integrity.ApkIntegrityComponentTest]/[test-template:matchingHashesDoNotSubstituteForAConsistentApkArchive(java.lang.String)]/[test-template-invocation:#4]",
+    "outcome" : "PASS",
+    "captureSha256" : "512b2a24e18ad9b9a89f17aa6cc1d62db16229e340e7481a5211ded6eeefe237"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfProvenanceComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.integrity.ApkIntegrityComponentTest]/[test-template:matchingHashesDoNotSubstituteForAConsistentApkArchive(java.lang.String)]/[test-template-invocation:#5]",
+    "outcome" : "PASS",
+    "captureSha256" : "2b0fc7967da05e8c2db45d063a403a02e3f180bc074ac473dd0e8ac77d5e99cc"
+  }, {
+    "id" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfProvenanceComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.integrity.ApkIntegrityComponentTest]/[test-template:matchingHashesDoNotSubstituteForAConsistentApkArchive(java.lang.String)]/[test-template-invocation:#6]",
+    "outcome" : "PASS",
+    "captureSha256" : "f9b2e96d92e80725a50b845989275c3ac7c1309bfa271ab1ceb2ecc721302ab8"
+  } ]
+}

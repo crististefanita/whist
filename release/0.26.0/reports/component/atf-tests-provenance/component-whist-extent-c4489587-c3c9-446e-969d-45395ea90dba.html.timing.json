@@ -1,0 +1,12 @@
+{
+  "stages" : [ {
+    "status" : "PASS",
+    "stage" : "extent.publish-and-audit",
+    "startedUtc" : "2026-11-28T16:27:34.974237800Z",
+    "endedUtc" : "2026-11-28T16:27:37.971843800Z",
+    "elapsedMs" : 3402
+  } ],
+  "schemaVersion" : 1,
+  "owner" : "extent.component-whist-extent-c4489587-c3c9-446e-969d-45395ea90dba.html",
+  "kind" : "ATF_RELEASE_TIMING"
+}

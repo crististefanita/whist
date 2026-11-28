@@ -1,0 +1,32 @@
+{
+  "kind" : "COMPONENT_REPORT_PUBLICATION",
+  "canonical" : "C:\\work\\whist_back\\.imp\\e\\rag61-components\\atf-tests-provenance\\component-report.html",
+  "staged" : "C:\\work\\whist_back\\.imp\\e\\rag61-components\\atf-tests-provenance\\.component-publication-10331693699360150542\\component-report.html",
+  "maximumBytes" : 67108864,
+  "maximumHeapBytes" : 805306368,
+  "stages" : [ {
+    "name" : "RENDER_AND_FINALIZE",
+    "status" : "PASS",
+    "heapUsedBefore" : 62040848,
+    "elapsedNanos" : 2156526900,
+    "heapUsedAfter" : 106642232,
+    "cumulativePoolPeakUpperBound" : 208421816
+  }, {
+    "name" : "VERIFY",
+    "status" : "PASS",
+    "heapUsedBefore" : 106642232,
+    "elapsedNanos" : 1131622800,
+    "heapUsedAfter" : 106771736,
+    "cumulativePoolPeakUpperBound" : 245121976
+  }, {
+    "name" : "PROMOTE",
+    "status" : "PASS",
+    "heapUsedBefore" : 106771736,
+    "elapsedNanos" : 4393400,
+    "heapUsedAfter" : 106771736,
+    "cumulativePoolPeakUpperBound" : 245121976
+  } ],
+  "bytes" : 4741635,
+  "sha256" : "4ae2ea9ee9fe8710f472f460b6bc57c2c8badeafd3f5a3bdfb109927bf738b54",
+  "status" : "PASS"
+}

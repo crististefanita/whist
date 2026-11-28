@@ -1,0 +1,42 @@
+{
+  "identity" : {
+    "testClass" : "NativeSourceProvenanceComponentTest",
+    "testPackage" : "atf.tests.governance.documentation.release.rag.nativeproof",
+    "scenario" : "immutableRuntimeEvidenceSurvivesValidatorMaintenanceButRejectsChangedInputs(ComponentInputs)",
+    "method" : "immutableRuntimeEvidenceSurvivesValidatorMaintenanceButRejectsChangedInputs",
+    "tags" : [ "component", "framework-acceptance", "offline" ]
+  },
+  "scenarioName" : "immutableRuntimeEvidenceSurvivesValidatorMaintenanceButRejectsChangedInputs [1]",
+  "inputs" : [ {
+    "name" : "JUnit invocation identity",
+    "value" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfProvenanceComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.rag.nativeproof.NativeSourceProvenanceComponentTest]/[method:immutableRuntimeEvidenceSurvivesValidatorMaintenanceButRejectsChangedInputs(atf.android.evidence.component.ComponentInputs)]"
+  }, {
+    "name" : "Original native-source observations",
+    "value" : "STDOUT\n✔ the browser module remains outside the declared Android build graph (31.0233ms)\n✔ an unused Web declaration is allowed but transitive and dynamic production edges fail closed (7.2248ms)\n✔ Web-only add preserves the Android runtime fingerprint (0.9909ms)\n✔ Web-only modify preserves the Android runtime fingerprint (0.4619ms)\n✔ Web-only remove preserves the Android runtime fingerprint (1.4757ms)\n✔ a Web change cannot conceal native or unknown input whist-lab-app/atf-card-table-ui/lib/table.aar (0.5018ms)\n✔ a Web change cannot conceal native or unknown input whist-lab-app/app/build.gradle (0.1112ms)\n✔ a Web change cannot conceal native or unknown input config/whist-hard-policy.yaml (0.2612ms)\n✔ a Web change cannot conceal native or unknown input atf-ui-browser-shadow/config.json (0.1982ms)\n✔ a browser-only inventory cannot impersonate an Android runtime (0.3568ms)\nWeb-only source admission: {\"kind\":\"UNCHANGED_ANDROID_RUNTIME_WITH_WEB_ONLY_INPUTS\",\"changedInputs\":[\"atf-ui-browser/lib/atf-ui-browser-0.4.jar\",\"atf-ui-browser/lib/atf-ui-browser-0.5.jar\"],\"androidRuntimeFingerprint\":\"9783ba870a67a6dd86b2b00bf3b37a55f811f00e8a22d5b096c18b363c1be348\"}\n✔ browser package rotation preserves native reports and their original source identities (691.3787ms)\nVerification-only native readmission: original execution bytes and source commit preserved\n✔ verification maintenance reuses original native evidence without changing its commit or bytes (551.841ms)\n✔ release-tools script and component-test edits preserve native execution evidence when the APK runtime is unchanged (556.9606ms)\n✔ verification admission cannot conceal a changed native build or scenario release-tools/config/release-platform-rag-policy.json (0.6063ms)\n✔ verification admission cannot conceal a changed native build or scenario whist-lab-app/app/build.gradle (0.105ms)\n✔ verification admission cannot conceal a changed native build or scenario whist-lab-app/card-table-core/src/main/java/CardFaceMetrics.java (0.1975ms)\n✔ verification admission cannot conceal a changed native build or scenario whist-lab-app/app/src/main/assets/table.bin (0.0738ms)\n✔ verification admission cannot conceal a changed native build or scenario lib/core.jar (0.0459ms)\n✔ verification admission cannot conceal a changed native build or scenario config/whist-hard-policy.yaml (0.0554ms)\n✔ verification maintenance cannot readmit changed native scenarios through the real planner (368.0515ms)\nNative source admission: {\"executionSourceCommit\":\"cccccccccccccccccccccccccccccccccccccccc\",\"executionSourceFingerprint\":\"fa410434c05de41e0e81f07f353001fa0638b356484116eb292ddc2cf1c295f5\",\"candidateSourceCommit\":\"bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb\",\"candidateSourceFingerprint\":\"e30d0a76ed7d704be350f8f8093bab78ffd5351e3663afd7de8a2f13315d569f\",\"runtimeFingerprint\":\"9783ba870a67a6dd86b2b00bf3b37a55f811f00e8a22d5b096c18b363c1be348\",\"scenarioFingerprint\":\"ba3d813fb3f92c2b3314a23c0159d2bcd72cd7d934ba46c17751b8f3a11ee9e5\",\"executionSnapshotValidatorFingerprint\":\"bb8bed1db4564d542df5a22981ce2df55bfcd6b7cc8a3cbf2864c912c4886a89\",\"validator\":{\"fingerprint\":\"5c9d43ba3ae6b438b3a198a59bc665430dd6cb64f5e0c688333b1811382bed73\"}}\n✔ validator-only maintenance reuses immutable native bytes and records both source identities (1119.7751ms)\n✔ unchanged APK hash cannot conceal changed game inputs (403.9105ms)\n✔ unchanged APK hash cannot conceal changed binary inputs (408.9236ms)\n✔ unchanged APK hash cannot conceal changed asset inputs (410.7341ms)\n✔ unchanged APK hash cannot conceal changed unknown inputs (412.4365ms)\n✔ unchanged APK hash cannot conceal changed scenario inputs (422.5947ms)\n✔ unchanged APK hash cannot conceal changed launcher inputs (398.1325ms)\n✔ missing origin and stale validator pins cannot be promoted to reuse (1007.7614ms)\n✔ mismatched original validator provenance is rejected even after payload rehash (398.1165ms)\n✔ original captures and device profiles retain their independent rejection checks (818.5148ms)\n✔ re-export flattens provenance and shares the original snapshot without rewriting receipts (1231.661ms)\nℹ tests 31\nℹ suites 0\nℹ pass 31\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 9444.7534\n\nSTDERR\n"
+  }, {
+    "name" : "JUnit display name",
+    "value" : "immutableRuntimeEvidenceSurvivesValidatorMaintenanceButRejectsChangedInputs(ComponentInputs)"
+  }, {
+    "name" : "Original invocation recovery",
+    "value" : "{\"originalInvocationId\":\"[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfProvenanceComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.rag.nativeproof.NativeSourceProvenanceComponentTest]/[method:immutableRuntimeEvidenceSurvivesValidatorMaintenanceButRejectsChangedInputs(atf.android.evidence.component.ComponentInputs)]\",\"originalCheckpointSha256\":\"81fa5f1592ee1c6917091c9bfe6d2adcba2d7c304d6e27b3cdd28e1b0a2bb353\",\"mode\":\"REUSED_ORIGINAL_COMPARISONS\",\"originalReportSha256\":\"c730324dc6dac915eb5c9bcb8f9d027311b09d705eef54072cb1f616c7e19970\"}"
+  } ],
+  "phases" : [ {
+    "phase" : "TEST_BODY",
+    "checks" : [ {
+      "name" : "assertEquals · NodeReleaseContracts.java:36 · The Node child completed successfully",
+      "expected" : "0",
+      "actual" : "0",
+      "passed" : true
+    }, {
+      "name" : "assertTrue · NativeSourceProvenanceComponentTest.java:23 · ✔ the browser module remains outside the declared Android build graph (31.0233ms)\n✔ an unused Web declaration is allowed but transitive and dynamic production edges fail closed (7.…",
+      "expected" : "true",
+      "actual" : "true",
+      "passed" : true
+    } ],
+    "outcome" : "PASS",
+    "diagnostic" : "",
+    "elapsedNanos" : 9624392300,
+    "intervals" : 1
+  } ],
+  "outcome" : "PASS"
+}

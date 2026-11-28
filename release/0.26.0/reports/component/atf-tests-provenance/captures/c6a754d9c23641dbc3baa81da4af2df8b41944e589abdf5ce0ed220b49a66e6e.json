@@ -1,0 +1,49 @@
+{
+  "identity" : {
+    "testClass" : "ReleaseRagProvenanceComponentTest",
+    "testPackage" : "atf.tests.governance.documentation.release.rag",
+    "scenario" : "anApkDigestInThePinnedMainReadmeBlocksRagWithoutMaskingTheSourceCheck()",
+    "method" : "anApkDigestInThePinnedMainReadmeBlocksRagWithoutMaskingTheSourceCheck",
+    "tags" : [ "component", "framework-acceptance", "offline" ]
+  },
+  "scenarioName" : "anApkDigestInThePinnedMainReadmeBlocksRagWithoutMaskingTheSourceCheck [1]",
+  "inputs" : [ {
+    "name" : "JUnit invocation identity",
+    "value" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfProvenanceComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.rag.ReleaseRagProvenanceComponentTest]/[method:anApkDigestInThePinnedMainReadmeBlocksRagWithoutMaskingTheSourceCheck()]"
+  }, {
+    "name" : "JUnit display name",
+    "value" : "anApkDigestInThePinnedMainReadmeBlocksRagWithoutMaskingTheSourceCheck()"
+  }, {
+    "name" : "Original invocation recovery",
+    "value" : "{\"originalInvocationId\":\"[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfProvenanceComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.rag.ReleaseRagProvenanceComponentTest]/[method:anApkDigestInThePinnedMainReadmeBlocksRagWithoutMaskingTheSourceCheck()]\",\"originalCheckpointSha256\":\"81fa5f1592ee1c6917091c9bfe6d2adcba2d7c304d6e27b3cdd28e1b0a2bb353\",\"mode\":\"REUSED_ORIGINAL_COMPARISONS\",\"originalReportSha256\":\"c730324dc6dac915eb5c9bcb8f9d027311b09d705eef54072cb1f616c7e19970\"}"
+  } ],
+  "phases" : [ {
+    "phase" : "TEST_BODY",
+    "checks" : [ {
+      "name" : "assertEquals · ReleaseRagProvenanceComponentTest.java:266",
+      "expected" : "2",
+      "actual" : "2",
+      "passed" : true
+    }, {
+      "name" : "assertEquals · ReleaseRagProvenanceComponentTest.java:267",
+      "expected" : "PASS",
+      "actual" : "PASS",
+      "passed" : true
+    }, {
+      "name" : "assertEquals · ReleaseRagProvenanceComponentTest.java:268",
+      "expected" : "BLOCKED",
+      "actual" : "BLOCKED",
+      "passed" : true
+    }, {
+      "name" : "assertTrue · ReleaseRagProvenanceComponentTest.java:269",
+      "expected" : "true",
+      "actual" : "true",
+      "passed" : true
+    } ],
+    "outcome" : "PASS",
+    "diagnostic" : "",
+    "elapsedNanos" : 758353700,
+    "intervals" : 1
+  } ],
+  "outcome" : "PASS"
+}

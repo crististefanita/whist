@@ -1,0 +1,42 @@
+{
+  "identity" : {
+    "testClass" : "ReleaseVersionComponentTest",
+    "testPackage" : "atf.tests.governance.documentation.release.versioning",
+    "scenario" : "[6] ../0.22",
+    "method" : "invalidIdentitiesCannotConstructDownloadPaths",
+    "tags" : [ "component", "framework-acceptance", "offline" ]
+  },
+  "scenarioName" : "invalidIdentitiesCannotConstructDownloadPaths [6]",
+  "inputs" : [ {
+    "name" : "JUnit invocation identity",
+    "value" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfProvenanceComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.versioning.ReleaseVersionComponentTest]/[test-template:invalidIdentitiesCannotConstructDownloadPaths(java.lang.String, atf.android.evidence.component.ComponentInputs)]/[test-template-invocation:#6]"
+  }, {
+    "name" : "Rejected release identity",
+    "value" : "../0.22"
+  }, {
+    "name" : "JUnit display name",
+    "value" : "[6] ../0.22"
+  }, {
+    "name" : "Original invocation recovery",
+    "value" : "{\"originalInvocationId\":\"[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfProvenanceComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.versioning.ReleaseVersionComponentTest]/[test-template:invalidIdentitiesCannotConstructDownloadPaths(java.lang.String, atf.android.evidence.component.ComponentInputs)]/[test-template-invocation:#6]\",\"originalCheckpointSha256\":\"81fa5f1592ee1c6917091c9bfe6d2adcba2d7c304d6e27b3cdd28e1b0a2bb353\",\"mode\":\"REUSED_ORIGINAL_COMPARISONS\",\"originalReportSha256\":\"c730324dc6dac915eb5c9bcb8f9d027311b09d705eef54072cb1f616c7e19970\"}"
+  } ],
+  "phases" : [ {
+    "phase" : "TEST_BODY",
+    "checks" : [ {
+      "name" : "assertFalse · ReleaseVersionComponentTest.java:59",
+      "expected" : "false",
+      "actual" : "false",
+      "passed" : true
+    }, {
+      "name" : "assertThrows · ReleaseVersionComponentTest.java:60",
+      "expected" : "java.lang.IllegalArgumentException",
+      "actual" : "java.lang.IllegalArgumentException",
+      "passed" : true
+    } ],
+    "outcome" : "PASS",
+    "diagnostic" : "",
+    "elapsedNanos" : 1293700,
+    "intervals" : 1
+  } ],
+  "outcome" : "PASS"
+}

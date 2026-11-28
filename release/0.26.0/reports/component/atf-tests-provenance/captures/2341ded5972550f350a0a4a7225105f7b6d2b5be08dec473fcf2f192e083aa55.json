@@ -1,0 +1,50 @@
+{
+  "identity" : {
+    "testClass" : "QualifiedCatalogContextComponentTest",
+    "testPackage" : "atf.tests.governance.documentation.release.rag.scope.context",
+    "scenario" : "missingForeignContextAndLiveCatalogCorruptionCannotQualify(ComponentInputs)",
+    "method" : "missingForeignContextAndLiveCatalogCorruptionCannotQualify",
+    "tags" : [ "component", "framework-acceptance", "offline" ]
+  },
+  "scenarioName" : "missingForeignContextAndLiveCatalogCorruptionCannotQualify [1]",
+  "inputs" : [ {
+    "name" : "JUnit invocation identity",
+    "value" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfProvenanceComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.rag.scope.context.QualifiedCatalogContextComponentTest]/[method:missingForeignContextAndLiveCatalogCorruptionCannotQualify(atf.android.evidence.component.ComponentInputs)]"
+  }, {
+    "name" : "Negative controls",
+    "value" : "Independently alter source, catalog, inventory, context identity, schema and asset bytes; remove catalog files and modern declarations."
+  }, {
+    "name" : "Captured inputs, assertions and outcomes",
+    "value" : "STDOUT\n✔ missing foreign altered or downgraded qualified context cannot bind a modern origin (4.0971ms)\n✔ live catalog drift missing files and corrupt APK bytes are rejected independently of the original context (224.9282ms)\nℹ tests 2\nℹ suites 0\nℹ pass 2\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 572.3372\n\nSTDERR\n"
+  }, {
+    "name" : "JUnit display name",
+    "value" : "missingForeignContextAndLiveCatalogCorruptionCannotQualify(ComponentInputs)"
+  }, {
+    "name" : "Original invocation recovery",
+    "value" : "{\"originalInvocationId\":\"[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfProvenanceComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.rag.scope.context.QualifiedCatalogContextComponentTest]/[method:missingForeignContextAndLiveCatalogCorruptionCannotQualify(atf.android.evidence.component.ComponentInputs)]\",\"originalCheckpointSha256\":\"81fa5f1592ee1c6917091c9bfe6d2adcba2d7c304d6e27b3cdd28e1b0a2bb353\",\"mode\":\"REUSED_ORIGINAL_COMPARISONS\",\"originalReportSha256\":\"c730324dc6dac915eb5c9bcb8f9d027311b09d705eef54072cb1f616c7e19970\"}"
+  } ],
+  "phases" : [ {
+    "phase" : "TEST_BODY",
+    "checks" : [ {
+      "name" : "assertEquals · NodeReleaseContracts.java:36 · The Node child completed successfully",
+      "expected" : "0",
+      "actual" : "0",
+      "passed" : true
+    }, {
+      "name" : "assertTrue · QualifiedCatalogContextComponentTest.java:31 · Missing, foreign, downgraded and malformed context fails source admission",
+      "expected" : "true",
+      "actual" : "true",
+      "passed" : true
+    }, {
+      "name" : "assertTrue · QualifiedCatalogContextComponentTest.java:33 · Live delivery drift is rejected without rewriting original qualified reports",
+      "expected" : "true",
+      "actual" : "true",
+      "passed" : true
+    } ],
+    "outcome" : "PASS",
+    "diagnostic" : "",
+    "elapsedNanos" : 799600500,
+    "intervals" : 1
+  } ],
+  "outcome" : "PASS"
+}

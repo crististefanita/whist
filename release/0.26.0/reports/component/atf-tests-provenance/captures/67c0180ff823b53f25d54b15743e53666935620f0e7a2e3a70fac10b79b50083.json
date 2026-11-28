@@ -1,0 +1,39 @@
+{
+  "identity" : {
+    "testClass" : "HtmlInvocationIntegrityComponentTest",
+    "testPackage" : "atf.tests.governance.documentation.release.integrity.html",
+    "scenario" : "modernQualificationRefusesMissingHtmlGroupsAndDuplicateXmlReporting()",
+    "method" : "modernQualificationRefusesMissingHtmlGroupsAndDuplicateXmlReporting",
+    "tags" : [ "component", "framework-acceptance", "offline" ]
+  },
+  "scenarioName" : "modernQualificationRefusesMissingHtmlGroupsAndDuplicateXmlReporting [1]",
+  "inputs" : [ {
+    "name" : "JUnit invocation identity",
+    "value" : "[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfProvenanceComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.integrity.html.HtmlInvocationIntegrityComponentTest]/[method:modernQualificationRefusesMissingHtmlGroupsAndDuplicateXmlReporting()]"
+  }, {
+    "name" : "JUnit display name",
+    "value" : "modernQualificationRefusesMissingHtmlGroupsAndDuplicateXmlReporting()"
+  }, {
+    "name" : "Original invocation recovery",
+    "value" : "{\"originalInvocationId\":\"[engine:junit-platform-suite]/[suite:atf.tests.suites.components.AtfProvenanceComponentSuite]/[engine:junit-jupiter]/[class:atf.tests.governance.documentation.release.integrity.html.HtmlInvocationIntegrityComponentTest]/[method:modernQualificationRefusesMissingHtmlGroupsAndDuplicateXmlReporting()]\",\"originalCheckpointSha256\":\"81fa5f1592ee1c6917091c9bfe6d2adcba2d7c304d6e27b3cdd28e1b0a2bb353\",\"mode\":\"REUSED_ORIGINAL_COMPARISONS\",\"originalReportSha256\":\"c730324dc6dac915eb5c9bcb8f9d027311b09d705eef54072cb1f616c7e19970\"}"
+  } ],
+  "phases" : [ {
+    "phase" : "TEST_BODY",
+    "checks" : [ {
+      "name" : "assertThrows · HtmlInvocationIntegrityComponentTest.java:49 · Modern audit schema requires canonical HTML groups",
+      "expected" : "java.io.IOException",
+      "actual" : "java.io.IOException",
+      "passed" : true
+    }, {
+      "name" : "assertThrows · HtmlInvocationIntegrityComponentTest.java:56 · Audited HTML and raw component JUnit cannot be retained as duplicate reports",
+      "expected" : "java.io.IOException",
+      "actual" : "java.io.IOException",
+      "passed" : true
+    } ],
+    "outcome" : "PASS",
+    "diagnostic" : "",
+    "elapsedNanos" : 41276500,
+    "intervals" : 1
+  } ],
+  "outcome" : "PASS"
+}
