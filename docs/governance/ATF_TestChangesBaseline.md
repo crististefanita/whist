@@ -56,6 +56,35 @@ testChanges:
 
 </details>
 
+
+<details>
+<summary>Release report navigation without rewriting historical evidence</summary>
+
+```yaml
+testChanges:
+  - id: RELEASE-REPORT-NAVIGATION
+    status: VERIFIED
+    base: a44b8616bcdaf44a893a08bc36440b5566436a35
+    expires: 2026-12-28
+    reason: Verify edition-to-audit navigation and the shared strategy link without requiring edits to manifest-sealed historical report bytes.
+    proof: 'mvn -B -ntp -pl atf-tests -am "-Dtest=ReleaseArtifactLayoutGovernanceTest#registeredVersionsOwnTheirEvidenceAndHaveDiscoverableReadmes,ReleaseArtifactLayoutGovernanceTest#onlyTheExplicitTypedWebFolderIsAcceptedBesideAndroidVersions" "-Datf.governance.testChanges.baseRef=a44b8616bcdaf44a893a08bc36440b5566436a35" -Dsurefire.failIfNoSpecifiedTests=false test'
+    checks:
+      positive:
+        - atf.tests.governance.documentation.release.ReleaseArtifactLayoutGovernanceTest#registeredVersionsOwnTheirEvidenceAndHaveDiscoverableReadmes
+      negative:
+        - atf.tests.governance.documentation.release.ReleaseArtifactLayoutGovernanceTest#onlyTheExplicitTypedWebFolderIsAcceptedBesideAndroidVersions
+    paths:
+      - atf-tests/src/test/java/atf/tests/governance/documentation/release/ReleaseArtifactLayoutGovernanceTest.java
+      - release/README.md
+      - release/index.json
+      - release/0.25.0/README.md
+      - release/0.25.0/reports/README.md
+      - release/0.24.2/README.md
+      - release/0.24.2/reports/README.md
+```
+
+</details>
+
 <a id="rag-36-and-lab-02-receipt-admission-and-curator-recovery"></a>
 
 <details>

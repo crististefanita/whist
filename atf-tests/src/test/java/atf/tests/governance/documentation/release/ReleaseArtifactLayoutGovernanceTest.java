@@ -43,9 +43,10 @@ class ReleaseArtifactLayoutGovernanceTest {
         AuditedAssertions.assertTrue(hasReleaseOverview(currentSection, current), "The current entry follows the structured index");
         for (Path folder : ReleaseArtifactCatalog.folders(root)) {
             AuditedAssertions.assertTrue(hasReleaseOverview(catalog, folder.getFileName().toString()), folder.toString());
-            String guide = Files.readString(folder.resolve("reports/README.md"));
-            AuditedAssertions.assertTrue(guide.contains("(../../README.md)"), "Each release links back to the catalog");
-            AuditedAssertions.assertTrue(guide.contains("(../../../docs/testing/README.md)"), "Results point to the shared strategy");
+            String editionGuide = Files.readString(folder.resolve("README.md"));
+            String reportGuide = Files.readString(folder.resolve("reports/README.md"));
+            AuditedAssertions.assertTrue(editionGuide.contains("(reports/README.md)"), "The edition links to its audit index");
+            AuditedAssertions.assertTrue(reportGuide.contains("(../../../docs/testing/README.md)"), "Results point to the shared strategy");
         }
     }
 
