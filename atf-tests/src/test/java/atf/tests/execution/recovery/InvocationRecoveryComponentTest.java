@@ -10,9 +10,14 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.*;
 import java.time.Duration;
 import java.util.*;
+import java.util.concurrent.*;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.api.io.TempDir;
+import org.junit.platform.engine.TestDescriptor;
+import org.junit.platform.engine.UniqueId;
+import org.junit.platform.engine.support.descriptor.AbstractTestDescriptor;
+import org.junit.platform.launcher.TestIdentifier;
 import static atf.testkit.assertions.AuditedAssertions.*;
 
 @AtfComponentTest @ExtendWith(GameReportAudit.class)
@@ -32,6 +37,31 @@ class InvocationRecoveryComponentTest {
     @org.junit.jupiter.api.AfterAll static void originalPreconditionsStayImmutable() throws Exception {
         if(originalFixtureHash!=null) org.junit.jupiter.api.Assertions.assertEquals(originalFixtureHash,fixtureHash(originalFixture),"Shared original observations stay immutable across all recovery controls");
     }
+    @Test void concurrentDynamicRegistrationsKeepOneCompleteCheckpoint(ComponentInputs inputs) throws Exception {
+        Path output=Files.createDirectory(temporary.resolve("concurrent-checkpoint"));
+        var checkpoint=new InvocationCheckpoint(output,"controlled.concurrent", "{}".getBytes(StandardCharsets.UTF_8));
+        var listener=new atf.tests.execution.components.ComponentExecutionListener(checkpoint::save);
+        var start=new CountDownLatch(1);var executor=Executors.newFixedThreadPool(8);
+        try {
+            var writes=java.util.stream.IntStream.range(0,48).mapToObj(index -> executor.submit(() -> {
+                start.await();listener.dynamicTestRegistered(TestIdentifier.from(new ConcurrentTestDescriptor("event-"+index)));
+                return null;
+            })).toList();
+            start.countDown();for(var write:writes)write.get(10,TimeUnit.SECONDS);
+        } finally {executor.shutdownNow();}
+        var saved=JSON.readTree(output.resolve("invocation-checkpoint.json").toFile());
+        var ids=new HashSet<String>();saved.path("invocations").forEach(row -> ids.add(row.path("id").asText()));
+        assertEquals(48,ids.size(),"Every concurrent test registration must survive in the checkpoint");
+        assertTrue(saved.path("invocations").findValuesAsText("outcome").stream().allMatch("NOT_EXECUTED"::equals));
+        assertFalse(Files.exists(output.resolve("invocation-checkpoint.writing")),"A temporary replacement file cannot be left behind");
+        inputs.add("Concurrent invocation population",JSON.writerWithDefaultPrettyPrinter().writeValueAsString(saved.path("invocations")));
+    }
+
+    private static final class ConcurrentTestDescriptor extends AbstractTestDescriptor {
+        ConcurrentTestDescriptor(String name) { super(UniqueId.forEngine("fixture").append("test",name),name); }
+        @Override public TestDescriptor.Type getType() { return TestDescriptor.Type.TEST; }
+    }
+
     private static String fixtureHash(Path root) throws Exception {
         var value=new StringBuilder();
         try(var paths=Files.walk(root)) {

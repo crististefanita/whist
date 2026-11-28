@@ -23,7 +23,7 @@ public final class InvocationCheckpoint {
     public void save(ComponentExecutionListener listener) {
         save(listener.invocations(),listener.populationComplete(),listener.containerFailures());
     }
-    public void save(java.util.List<atf.tests.reporting.aggregate.ComponentReportCoverage.Invocation> invocations,
+    public synchronized void save(java.util.List<atf.tests.reporting.aggregate.ComponentReportCoverage.Invocation> invocations,
             boolean complete,java.util.List<String> failures) {
         try {
             var rows=new ArrayList<Map<String,Object>>();

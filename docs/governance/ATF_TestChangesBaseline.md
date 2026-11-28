@@ -4571,3 +4571,36 @@ testChanges:
 ```
 
 </details>
+
+
+<details>
+<summary>RAG-38: serialized checkpoints and exact reader-consumer selection</summary>
+
+```yaml
+testChanges:
+  - id: RAG-38-CHECKPOINT-SELECTION
+    status: VERIFIED
+    base: 48f10669a84bbbcaab548b5b04824afea0be32f2
+    expires: 2026-12-14
+    reason: Serialize concurrent JUnit dynamic-test checkpoint updates, prove reader-seal selection against the live consumer graph, and restore the immutable 0.25.0 report README to its manifest-recorded bytes while preserving separate ATF owners.
+    proof: "mvn -B -ntp -pl atf-tests -am \"-Dtest=AtfCollectionOwnershipComponentTest,InvocationRecoveryComponentTest,ReleaseIntegrityGovernanceTest\" \"-Datf.governance.testChanges.baseRef=48f10669a84bbbcaab548b5b04824afea0be32f2\" -Dsurefire.failIfNoSpecifiedTests=false test"
+    checks:
+      positive:
+        - atf.tests.governance.suites.AtfCollectionOwnershipComponentTest#realDependencyClosuresSelectOnlyTheirConsumers
+        - atf.tests.governance.suites.AtfCollectionOwnershipComponentTest#reviewedReaderSealsSelectOnlyTheirConsumersAndPreserveOriginalReports
+        - atf.tests.execution.recovery.InvocationRecoveryComponentTest#concurrentDynamicRegistrationsKeepOneCompleteCheckpoint
+        - atf.tests.governance.documentation.release.ReleaseIntegrityGovernanceTest#registeredReleasesKeepTheirActualApkManifestPayloadAndSuccessfulJunitPopulation
+      negative:
+        - atf.tests.governance.suites.AtfCollectionOwnershipComponentTest#missingOrUnreviewedDependenciesCannotAuthorizeReuse
+        - atf.tests.governance.suites.AtfCollectionOwnershipComponentTest#topologyMissingSealsAndUnknownReaderScopesCannotNarrowQualification
+    paths:
+      - atf-tests/src/test/java/atf/tests/execution/components/ComponentExecutionListener.java
+      - atf-tests/src/test/java/atf/tests/execution/recovery/InvocationCheckpoint.java
+      - atf-tests/src/test/java/atf/tests/execution/recovery/InvocationRecoveryComponentTest.java
+      - atf-tests/src/test/java/atf/tests/governance/source/changes/domains/DomainGitFixture.java
+      - atf-tests/tools/atf-component-ownership.test.mjs
+      - docs/governance/ATF_TestChangesBaseline.md
+      - release/0.25.0/reports/README.md
+```
+
+</details>

@@ -30,7 +30,6 @@ final class DomainGitFixture {
         this.root = root;
         git("init", "-q", "-b", "main");
         git("config", "core.autocrlf", "false");
-        git("config", "core.longpaths", "true");
         put("pom.xml", "<project/>\n");
         for (String id : ReviewedDomains.IDS) for (String path : domains.paths(id))
             put(path, path.endsWith(".json") ? "{}\n" : "// Controlled source boundary\n");

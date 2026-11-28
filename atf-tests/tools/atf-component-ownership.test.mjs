@@ -147,7 +147,8 @@ test('reviewed reader updates reuse unrelated original receipts through the live
   sourceInputs.set(atfReaderSealsPath, digest('prior reviewed seals'));
   const f = await fixture(t, {sourceInputs, targetInputs});
   const plan = deriveReleaseTestScope(sourceInputs, targetInputs, atfGroups);
-  const affected = ['atf-tests', 'atf-tests-documentation', 'atf-tests-orchestration'];
+  const affected = ['atf-tests', 'atf-tests-documentation', 'atf-tests-provenance',
+    'atf-tests-android', 'atf-tests-github', 'atf-tests-orchestration', 'atf-tests-reporting'];
   assert.deepEqual(plan.runComponentGroups, affected);
   assert.deepEqual(plan.requiredE2eGroups, []);
   const decisions = await prepareComponentReuse(f.target, f.previous, atfGroups);
