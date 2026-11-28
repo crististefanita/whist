@@ -75,6 +75,7 @@ testChanges:
         - atf.tests.governance.documentation.release.ReleaseArtifactLayoutGovernanceTest#onlyTheExplicitTypedWebFolderIsAcceptedBesideAndroidVersions
     paths:
       - atf-tests/src/test/java/atf/tests/governance/documentation/release/ReleaseArtifactLayoutGovernanceTest.java
+      - config/atf-component-reader-seals.json
       - release/README.md
       - release/index.json
       - release/0.25.0/README.md

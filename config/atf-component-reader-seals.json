@@ -221,7 +221,7 @@
     "atf-tests/src/test/java/atf/tests/governance/documentation/language/DocumentationTerminologyGovernanceTest.java": "9bf9bbb4e9de0f38cd6ff41b2823b8a15f1028468c8a13258dc56a848a523cbb",
     "atf-tests/src/test/java/atf/tests/governance/documentation/links/DocumentationLinkGovernanceTest.java": "ecff1d442dccf078e57892fe66d5f4c4ebb8331dc3923603fd6fa23016c06d73",
     "atf-tests/src/test/java/atf/tests/governance/documentation/release/ReleaseArtifactCatalog.java": "3bb9dbbb4f0c959b11db875cb78066b08e1a87394b0a1e68d4a983a8c8b11660",
-    "atf-tests/src/test/java/atf/tests/governance/documentation/release/ReleaseArtifactLayoutGovernanceTest.java": "00c12dd00d1e4128ae9ed9e14b2b8d9ee4ed85ae88522af0686eb6e54e5e1446",
+    "atf-tests/src/test/java/atf/tests/governance/documentation/release/ReleaseArtifactLayoutGovernanceTest.java": "ff321029577319f3780d25a1b3e28599c30ec9c7ec3f81954255f051b98e49f6",
     "atf-tests/src/test/java/atf/tests/governance/documentation/release/ReleaseCatalogPresentation.java": "21577d28b6ffa683b1eb60945f7684492fac8495e26623f3d4931c51f78750aa",
     "atf-tests/src/test/java/atf/tests/governance/documentation/release/ReleaseEvidenceRetentionGovernanceTest.java": "88ce98c162b001f1810fbe81f71eaae745223b2fa0f9345a18b4f6a0d8f96590",
     "atf-tests/src/test/java/atf/tests/governance/documentation/release/ReleaseIntegrityGovernanceTest.java": "691a59dc3c91505459f8b58259122c04f14072fb1cbeafd89ef1c76b37c26f89",
