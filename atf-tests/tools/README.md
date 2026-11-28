@@ -48,6 +48,7 @@ node atf-tests/tools/record-release-integrity.mjs
 [Selectorul](plan-release-tests.mjs) compară inventarul fixat cu ultima sursă publicată relevantă din catalog. Generează planul de selecție și grupurile E2E cerute înainte de build. [Evaluatorul](evaluate-release-rag.mjs) recalculează selecția și confruntă planul, manifestul, payload-ul și snapshot-ul APK. [Comanda de selecție](../../docs/testing/ATF_ReleaseQualification.md#selecția-testelor-din-diff)
 
 - [Perimetrul suitei](component-evidence-scope.mjs) stabilește când se poate reutiliza o execuție. Pentru colecțiile Gradle, documentația și intrările exclusiv Maven ori Android E2E nu invalidează dovada aplicației; sursele, configurația de compilare, dependențele și căile necunoscute cer selecție nouă. [Pregătirea dovezilor](prepare-component-reuse.mjs) și evaluatorul folosesc aceleași verificări pentru receipt-uri și hash-uri. Lansatorul componentelor folosește această pregătire la cerere.
+- Dovezile E2E native pot fi readmise după schimbări exclusiv de verificare numai dacă octeții APK-ului, intrările runtime Android și intrările scenariilor rămân identice. Lista permisă include surse de teste de guvernanță și cataloagele dependențelor componentelor și ale sigiliilor cititorilor; sursele aplicației și scenariile Android necesită E2E nou. Receipt-ul de execuție original, identitatea sursei și raportul rămân neschimbate.
 - Politica pe versiuni stabilește grupurile Maven și Gradle obligatorii. Fiecare grup are propriul Extent și receipt.
 
 ```powershell
