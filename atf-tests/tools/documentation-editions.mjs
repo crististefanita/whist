@@ -82,12 +82,25 @@ function diagramStructure(line) {
 function markdownContract(path, text) {
   const structure = [], destinations = [];
   let inside = null;
+  let localizedYamlBlockIndent = null;
   for (const line of text.replaceAll('\r\n', '\n').split('\n')) {
     const fence = FENCE.exec(line);
     if (fence) {
       structure.push(['fence', fence[1], fence[2]]);
       inside = inside ? null : fence[2] || 'code';
     } else if (inside) {
+      if (inside === 'yaml' && localizedYamlBlockIndent !== null) {
+        if (!line.trim() || line.match(/^\s*/)[0].length > localizedYamlBlockIndent) continue;
+        localizedYamlBlockIndent = null;
+      }
+      if (inside === 'yaml') {
+        const localizedBlock = /^(\s*)reason:\s*[>|][1-9]?[+-]?\s*(?:#.*)?$/.exec(line);
+        if (localizedBlock) {
+          localizedYamlBlockIndent = localizedBlock[1].length;
+          structure.push(['yaml', localizedBlock[1] + 'reason: <localized explanation>']);
+          continue;
+        }
+      }
       structure.push([inside, inside === 'mermaid' ? diagramStructure(line)
         : inside === 'yaml' ? line.replace(/^(\s*reason:\s*).+$/, '$1<localized explanation>') : line]);
     } else if (line.trim()) {

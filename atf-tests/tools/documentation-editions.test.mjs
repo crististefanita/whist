@@ -60,6 +60,16 @@ test('localized control explanations do not permit changes to technical YAML fie
   assert.deepEqual(compareDocumentationEditions(en, ro).problems, ['Markdown structure differs: docs/control.md']);
 });
 
+test('localized folded YAML reason blocks preserve structure without requiring identical prose', () => {
+  const en = english(), ro = romanian();
+  const guide = reason => '# Guide\n\n```yaml\nid: CHECK-01\nbase: abc123\nreason: >-\n' + reason + '\nexpires: 2026-12-28\n```\n';
+  en.set('docs/control.md', Buffer.from(guide('  Preserve the verified contract.\n  Keep this explanation in the source language.')));
+  ro.set('docs/control.md', Buffer.from(guide('  Păstrează contractul verificat.')));
+  assert.deepEqual(compareDocumentationEditions(en, ro).problems, []);
+  ro.set('docs/control.md', Buffer.from(guide('  Păstrează contractul verificat.').replace('abc123', 'different')));
+  assert.deepEqual(compareDocumentationEditions(en, ro).problems, ['Markdown structure differs: docs/control.md']);
+});
+
 test('checks the orientation of the actual editions', () => {
   const en = english(), ro = romanian();
   ro.set('README.md', en.get('README.md'));
