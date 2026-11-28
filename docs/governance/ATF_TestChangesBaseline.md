@@ -4637,3 +4637,31 @@ testChanges:
 ```
 
 </details>
+
+<details>
+<summary>RAG-39: bugetele testelor responsive din browser</summary>
+
+```yaml
+testChanges:
+  - id: RAG-39-BROWSER-BUDGETS
+    status: VERIFIED
+    base: f6ae65c12128f27799a3662e6f31be3a39a5296c
+    expires: 2026-12-28
+    reason: Păstrează matricea responsive Chromium completă și toate aserțiunile existente, stabilind limite pentru comandă și wrapper peste durata măsurată pe Windows; controlul negativ continuă să respingă stilurile invalide.
+    proof: 'mvn -o -pl atf-tests -am -Dtest=WhistSurfaceAdapterComponentTest,SharedMenuHistoryComponentTest -Dsurefire.failIfNoSpecifiedTests=false test'
+    checks:
+      positive:
+        - atf.tests.governance.documentation.release.rag.nativeproof.WhistSurfaceAdapterComponentTest#adaptiveWebMenusKeepTextIndependentOfTheUsableViewport
+        - atf.tests.governance.uiadapter.SharedMenuHistoryComponentTest#historyTypographyAndDividersFollowTheNativePolicy
+      negative:
+        - atf.tests.governance.uiadapter.SharedMenuHistoryComponentTest#invalidStylesAreAtomicAndClearingRestoresTheBaseline
+    paths:
+      - atf-tests/src/test/java/atf/tests/governance/documentation/release/rag/nativeproof/WhistSurfaceAdapterComponentTest.java
+      - atf-tests/src/test/java/atf/tests/governance/uiadapter/SharedMenuHistoryComponentTest.java
+      - atf-ui-browser/tests/fixtures.mjs
+      - config/atf-component-reader-seals.json
+      - docs/feedback/ATF_Governance.md
+      - docs/governance/ATF_TestChangesBaseline.md
+```
+
+</details>

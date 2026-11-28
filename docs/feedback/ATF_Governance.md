@@ -80,6 +80,12 @@ Proba de transfer prin Android DownloadManager și verificarea certificatului ap
 
 Separarea sursei native de validator aparține [contractului de calificare](../testing/ATF_ReleaseQualification.md#proveniența-execuției-native-și-a-validatorului). Reutilizarea cere în continuare motor, scenariu, APK și dovezi originale neschimbate.
 
+## Bugetul de execuție al componentelor de browser
+
+Matricea responsive completă rămâne un test de componentă, cu viewport-ul, limba, dimensiunea textului și aserțiunile de layout neschimbate. Durata măsurată pe Windows a depășit limita Java anterioară de două minute; comanda DevTools are nevoie și ea de rezervă sub încărcarea suitei. Ambele limite trebuie să depășească durata măsurată, astfel încât concurența pentru resurse să nu fie confundată cu eșecul operației de browser.
+
+Controlul testChanges verificat rămâne o singură dată în registrul de guvernanță: [RAG-39-BROWSER-BUDGETS](../governance/ATF_TestChangesBaseline.md). Matricea responsive Chromium completă și controlul negativ pentru stil invalid sunt acoperite acolo; această intrare de feedback consemnează corecția măsurată a timeout-urilor fără să dubleze metadatele executabile ale controlului.
+
 ## Pilot LangGraph în umbră
 
 Calea de producție rămâne un lansator PowerShell determinist, cu checkpoint-uri Maven/Gradle legate de sursă și un evaluator Node cu acces doar la citire.
